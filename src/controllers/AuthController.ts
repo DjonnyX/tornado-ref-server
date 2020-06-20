@@ -1,8 +1,10 @@
 import * as config from "../config";
 import * as jwt from "jsonwebtoken";
-import { UserModel, IUser, hashPassword, checkIfUnencryptedPasswordIsValid } from "../models/index";
+import { UserModel, IUser, hashPassword, checkIfUnencryptedPasswordIsValid, RefTypes } from "../models/index";
 import { Controller, Route, Post, Tags, Example, Body } from "tsoa";
 import * as joi from "@hapi/joi";
+import { riseRefVersion } from "src/db/refs";
+import { IRefItem } from "./RefsController";
 
 interface ILoginParams {
     email: string;
@@ -115,6 +117,8 @@ export class SignupController extends Controller {
             };
         }
 
+        let ref: IRefItem;
+
         try {
             const password = await hashPassword(requestBody.password);
             const newUser = new UserModel({
@@ -124,6 +128,7 @@ export class SignupController extends Controller {
                 password,
             });
             await newUser.save();
+            ref = await riseRefVersion(RefTypes.USERS);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -136,7 +141,9 @@ export class SignupController extends Controller {
             };
         }
 
-        return {};
+        return {
+            meta: { ref }
+        };
     }
 }
 
