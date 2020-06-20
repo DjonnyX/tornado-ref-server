@@ -65,7 +65,7 @@ const META_TEMPLATE: INodesMeta = {
     }
 };
 
-@Route("/Nodes")
+@Route("/nodes")
 @Tags("Node")
 export class NodesController extends Controller {
     @Get()

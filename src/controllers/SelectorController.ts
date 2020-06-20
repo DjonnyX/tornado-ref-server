@@ -64,7 +64,7 @@ const META_TEMPLATE: ISelectorsMeta = {
     }
 };
 
-@Route("/Selectors")
+@Route("/selectors")
 @Tags("Selector")
 export class SelectorsController extends Controller {
     @Get()

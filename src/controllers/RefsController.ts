@@ -63,7 +63,7 @@ const formatModel = (model: IRef): IRefItem => ({
     lastUpdate: model.lastUpdate
 });
 
-@Route("/Refs")
+@Route("/refs")
 @Tags("Ref")
 export class RefController extends Controller {
     @Get()
