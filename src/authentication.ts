@@ -5,7 +5,9 @@ import * as jwt from "jsonwebtoken";
 export async function expressAuthentication(
   request: express.Request,
   securityName: string,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   scopes?: string[],
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<any> {
   if (securityName === "jwt") {
     const token = request.headers["authorization"] ? String(request.headers["authorization"]) : undefined;
