@@ -5,10 +5,12 @@ import { TarifModel, ITarif } from "./Tarif";
 import { TagModel, ITag } from "./Tag";
 import { RefModel, IRef } from "./Ref";
 import { INode, NodeModel } from "./Node";
+import { ISelector, SelectorModel } from "./Selector";
 
 export {
     UserModel, IUser, hashPassword, checkIfUnencryptedPasswordIsValid,
     NodeModel, INode,
+    SelectorModel, ISelector,
     IReceiptItem,
     ProductModel, IProduct,
     ScheduleModel, ISchedule,
