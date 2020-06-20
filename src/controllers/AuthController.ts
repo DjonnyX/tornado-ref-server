@@ -3,7 +3,7 @@ import * as jwt from "jsonwebtoken";
 import { UserModel, IUser, hashPassword, checkIfUnencryptedPasswordIsValid, RefTypes } from "../models/index";
 import { Controller, Route, Post, Tags, Example, Body } from "tsoa";
 import * as joi from "@hapi/joi";
-import { riseRefVersion } from "src/db/refs";
+import { riseRefVersion } from "../db/refs";
 import { IRefItem } from "./RefsController";
 
 interface ILoginParams {

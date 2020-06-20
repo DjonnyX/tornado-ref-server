@@ -1,7 +1,7 @@
 import { NodeModel, INode } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
-import { NodeTypes, RefTypes } from "src/models/enums";
+import { NodeTypes, RefTypes } from "../models/enums";
 
 interface INodeItem {
     id: string;

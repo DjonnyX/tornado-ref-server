@@ -6,6 +6,87 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
+			"IRefItem": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"version": {
+						"type": "number",
+						"format": "double"
+					},
+					"lastUpdate": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"name",
+					"version",
+					"lastUpdate"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"RefsResponse": {
+				"properties": {
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/IRefItem"
+						},
+						"type": "array"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"RefResponse": {
+				"properties": {
+					"data": {
+						"$ref": "#/components/schemas/IRefItem"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
 			"SignupResponse": {
 				"properties": {
 					"meta": {
@@ -135,52 +216,6 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"IRefItem": {
-				"properties": {
-					"name": {
-						"type": "string"
-					},
-					"version": {
-						"type": "number",
-						"format": "double"
-					},
-					"lastUpdate": {
-						"type": "number",
-						"format": "double"
-					}
-				},
-				"required": [
-					"name",
-					"version",
-					"lastUpdate"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"RefsResponse": {
-				"properties": {
-					"data": {
-						"items": {
-							"$ref": "#/components/schemas/IRefItem"
-						},
-						"type": "array"
-					}
-				},
-				"required": [
-					"data"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"RefResponse": {
-				"properties": {
-					"data": {
-						"$ref": "#/components/schemas/IRefItem"
-					}
-				},
-				"type": "object",
-				"additionalProperties": false
-			},
 			"INodesMeta": {
 				"properties": {
 					"ref": {
@@ -243,6 +278,12 @@
 					"meta": {
 						"$ref": "#/components/schemas/INodesMeta"
 					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/INodeItem"
+						},
+						"type": "array"
+					},
 					"error": {
 						"items": {
 							"properties": {
@@ -259,12 +300,6 @@
 								"code"
 							],
 							"type": "object"
-						},
-						"type": "array"
-					},
-					"data": {
-						"items": {
-							"$ref": "#/components/schemas/INodeItem"
 						},
 						"type": "array"
 					}
@@ -277,6 +312,9 @@
 					"meta": {
 						"$ref": "#/components/schemas/INodesMeta"
 					},
+					"data": {
+						"$ref": "#/components/schemas/INodeItem"
+					},
 					"error": {
 						"items": {
 							"properties": {
@@ -295,9 +333,6 @@
 							"type": "object"
 						},
 						"type": "array"
-					},
-					"data": {
-						"$ref": "#/components/schemas/INodeItem"
 					}
 				},
 				"type": "object",
@@ -431,6 +466,12 @@
 					"meta": {
 						"$ref": "#/components/schemas/IProductsMeta"
 					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/IProductItem"
+						},
+						"type": "array"
+					},
 					"error": {
 						"items": {
 							"properties": {
@@ -447,12 +488,6 @@
 								"code"
 							],
 							"type": "object"
-						},
-						"type": "array"
-					},
-					"data": {
-						"items": {
-							"$ref": "#/components/schemas/IProductItem"
 						},
 						"type": "array"
 					}
@@ -465,6 +500,9 @@
 					"meta": {
 						"$ref": "#/components/schemas/IProductsMeta"
 					},
+					"data": {
+						"$ref": "#/components/schemas/IProductItem"
+					},
 					"error": {
 						"items": {
 							"properties": {
@@ -483,9 +521,6 @@
 							"type": "object"
 						},
 						"type": "array"
-					},
-					"data": {
-						"$ref": "#/components/schemas/IProductItem"
 					}
 				},
 				"type": "object",
@@ -688,6 +723,156 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"ISelectorsMeta": {
+				"properties": {
+					"ref": {
+						"properties": {
+							"lastUpdate": {
+								"type": "number",
+								"format": "double"
+							},
+							"version": {
+								"type": "number",
+								"format": "double"
+							},
+							"name": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"lastUpdate",
+							"version",
+							"name"
+						],
+						"type": "object"
+					}
+				},
+				"required": [
+					"ref"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ISelectorItem": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"tags": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"tags"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"SelectorsResponse": {
+				"properties": {
+					"meta": {
+						"$ref": "#/components/schemas/ISelectorsMeta"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/ISelectorItem"
+						},
+						"type": "array"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"SelectorResponse": {
+				"properties": {
+					"meta": {
+						"$ref": "#/components/schemas/ISelectorsMeta"
+					},
+					"data": {
+						"$ref": "#/components/schemas/ISelectorItem"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"SelectorCreateRequest": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"schedule": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"tags": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"name",
+					"schedule",
+					"tags"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"ITagsMeta": {
 				"properties": {
 					"ref": {
@@ -751,12 +936,27 @@
 							"$ref": "#/components/schemas/ITagItem"
 						},
 						"type": "array"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
 					}
 				},
-				"required": [
-					"meta",
-					"data"
-				],
 				"type": "object",
 				"additionalProperties": false
 			},
@@ -767,11 +967,27 @@
 					},
 					"data": {
 						"$ref": "#/components/schemas/ITagItem"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
 					}
 				},
-				"required": [
-					"meta"
-				],
 				"type": "object",
 				"additionalProperties": false
 			},
@@ -920,6 +1136,116 @@
 	},
 	"openapi": "3.0.0",
 	"paths": {
+		"/refs": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/RefsResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"data": [
+												{
+													"name": "users",
+													"version": 1,
+													"lastUpdate": 1589885721
+												},
+												{
+													"name": "roles",
+													"version": 2,
+													"lastUpdate": 1589885721
+												},
+												{
+													"name": "nodes",
+													"version": 1,
+													"lastUpdate": 1589885721
+												},
+												{
+													"name": "products",
+													"version": 3,
+													"lastUpdate": 1589885721
+												},
+												{
+													"name": "selectors",
+													"version": 4,
+													"lastUpdate": 1589885721
+												},
+												{
+													"name": "tags",
+													"version": 5,
+													"lastUpdate": 1589885721
+												}
+											]
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Ref"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/refs/{name}": {
+			"get": {
+				"operationId": "GetOne",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/RefResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"data": {
+												"name": "products",
+												"version": 1,
+												"lastUpdate": 1589885721
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Ref"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "name",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
 		"/auth/signup": {
 			"post": {
 				"operationId": "Registration",
@@ -1005,107 +1331,7 @@
 				}
 			}
 		},
-		"/Refs": {
-			"get": {
-				"operationId": "GetAll",
-				"responses": {
-					"200": {
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/RefsResponse"
-								},
-								"examples": {
-									"example": {
-										"value": {
-											"data": [
-												{
-													"name": "tickets",
-													"version": 1,
-													"lastUpdate": 1589885721
-												},
-												{
-													"name": "schedules",
-													"version": 3,
-													"lastUpdate": 1589885721
-												},
-												{
-													"name": "tags",
-													"version": 5,
-													"lastUpdate": 1589885721
-												},
-												{
-													"name": "tarifs",
-													"version": 2,
-													"lastUpdate": 1589885721
-												}
-											]
-										}
-									}
-								}
-							}
-						},
-						"description": "Ok"
-					}
-				},
-				"tags": [
-					"Ref"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": []
-			}
-		},
-		"/Refs/{name}": {
-			"get": {
-				"operationId": "GetOne",
-				"responses": {
-					"200": {
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/RefResponse"
-								},
-								"examples": {
-									"example": {
-										"value": {
-											"data": {
-												"name": "tickets",
-												"version": 1,
-												"lastUpdate": 1589885721
-											}
-										}
-									}
-								}
-							}
-						},
-						"description": "Ok"
-					}
-				},
-				"tags": [
-					"Ref"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "name",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			}
-		},
-		"/Nodes": {
+		"/nodes": {
 			"get": {
 				"operationId": "GetAll",
 				"responses": {
@@ -1120,7 +1346,7 @@
 										"value": {
 											"meta": {
 												"ref": {
-													"name": "Nodes",
+													"name": "nodes",
 													"version": 1,
 													"lastUpdate": 1589885721
 												}
@@ -1167,7 +1393,7 @@
 										"value": {
 											"meta": {
 												"ref": {
-													"name": "Nodes",
+													"name": "nodes",
 													"version": 1,
 													"lastUpdate": 1589885721
 												}
@@ -1209,7 +1435,7 @@
 				}
 			}
 		},
-		"/Nodes/{id}": {
+		"/nodes/{id}": {
 			"get": {
 				"operationId": "GetOne",
 				"responses": {
@@ -1224,7 +1450,7 @@
 										"value": {
 											"meta": {
 												"ref": {
-													"name": "Nodes",
+													"name": "nodes",
 													"version": 1,
 													"lastUpdate": 1589885721
 												}
@@ -1278,7 +1504,7 @@
 										"value": {
 											"meta": {
 												"ref": {
-													"name": "Nodes",
+													"name": "nodes",
 													"version": 1,
 													"lastUpdate": 1589885721
 												}
@@ -1342,7 +1568,7 @@
 										"value": {
 											"meta": {
 												"ref": {
-													"name": "Nodes",
+													"name": "nodes",
 													"version": 1,
 													"lastUpdate": 1589885721
 												}
@@ -1991,6 +2217,276 @@
 					"Schedule"
 				],
 				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/selectors": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SelectorsResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "selectors",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": [
+												{
+													"id": "507c7f79bcf86cd7994f6c0e",
+													"name": "Selectors on concert",
+													"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+													"tags": [
+														"123c7f79bcf86cd7994f6c0e"
+													]
+												}
+											]
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Selector"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SelectorResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "selectors",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": {
+												"id": "507c7f79bcf86cd7994f6c0e",
+												"name": "Selectors on concert",
+												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+												"tags": [
+													"123c7f79bcf86cd7994f6c0e"
+												]
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Selector"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/SelectorCreateRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/selectors/{id}": {
+			"get": {
+				"operationId": "GetOne",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SelectorResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "selectors",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": {
+												"id": "507c7f79bcf86cd7994f6c0e",
+												"name": "Selectors on concert",
+												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+												"tags": [
+													"123c7f79bcf86cd7994f6c0e"
+												]
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Selector"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SelectorResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "selectors",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": {
+												"id": "507c7f79bcf86cd7994f6c0e",
+												"name": "Selectors on concert",
+												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+												"tags": [
+													"123c7f79bcf86cd7994f6c0e"
+												]
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Selector"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/SelectorCreateRequest"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "Delete",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SelectorResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "selectors",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Selector"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
 				"parameters": [
 					{
 						"in": "path",
