@@ -1,4 +1,4 @@
-import { RefModel } from "../models/index";
+import { RefModel, RefTypes } from "../models/index";
 
 export const initRefs = async (): Promise<void> => {
 
@@ -9,26 +9,32 @@ export const initRefs = async (): Promise<void> => {
 
     const INITIAL_STATE = [
         {
-            name: "products",
+            name: RefTypes.ROLES,
+            version: 1,
+            lastUpdate
+        },
+        {
+            name: RefTypes.USERS,
             version: 1,
             lastUpdate
         }, {
-            name: "nodes",
+            name: RefTypes.NODES,
+            version: 1,
+            lastUpdate
+        },
+        {
+            name: RefTypes.PRODUCTS,
             version: 1,
             lastUpdate
         }, {
-            name: "selectors",
+            name: RefTypes.SELECTORS,
             version: 1,
             lastUpdate
         }, {
-            name: "tags",
+            name: RefTypes.TAGS,
             version: 1,
             lastUpdate
-        }, {
-            name: "roles",
-            version: 1,
-            lastUpdate
-        }
+        },
     ];
 
     for (let i = 0, l = INITIAL_STATE.length; i < l; i++) {

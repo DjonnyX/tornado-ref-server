@@ -1,4 +1,4 @@
-import { SelectorModel, ISelector, IReceiptItem } from "../models/index";
+import { SelectorModel, ISelector, IReceiptItem, RefTypes } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 
@@ -58,7 +58,7 @@ const formatModel = (model: ISelector) => ({
 
 const META_TEMPLATE: ISelectorsMeta = {
     ref: {
-        name: "selectors",
+        name: RefTypes.SELECTORS,
         version: 1,
         lastUpdate: 1589885721
     }
@@ -77,7 +77,7 @@ export class SelectorsController extends Controller {
     public async getAll(): Promise<SelectorsResponse> {
         try {
             const items = await SelectorModel.find({});
-            const ref = await getRef("selectors");
+            const ref = await getRef(RefTypes.SELECTORS);
             return {
                 meta: { ref },
                 data: items.map(v => formatModel(v))
@@ -105,7 +105,7 @@ export class SelectorsController extends Controller {
     public async getOne(id: string): Promise<SelectorResponse> {
         try {
             const item = await SelectorModel.findById(id);
-            const ref = await getRef("selectors");
+            const ref = await getRef(RefTypes.SELECTORS);
             return {
                 meta: { ref },
                 data: formatModel(item)
@@ -134,7 +134,7 @@ export class SelectorsController extends Controller {
         try {
             const item = new SelectorModel(request);
             const savedItem = await item.save();
-            const ref = await riseRefVersion("selectors");
+            const ref = await riseRefVersion(RefTypes.SELECTORS);
             return {
                 meta: { ref },
                 data: formatModel(savedItem)
@@ -162,7 +162,7 @@ export class SelectorsController extends Controller {
     public async update(id: string, @Body() request: SelectorCreateRequest): Promise<SelectorResponse> {
         try {
             const item = await SelectorModel.findOneAndUpdate({ id }, request);
-            const ref = await riseRefVersion("selectors");
+            const ref = await riseRefVersion(RefTypes.SELECTORS);
             return {
                 meta: { ref },
                 data: formatModel(item)
@@ -189,7 +189,7 @@ export class SelectorsController extends Controller {
     public async delete(id: string): Promise<SelectorResponse> {
         try {
             await SelectorModel.findOneAndDelete({ id });
-            const ref = await riseRefVersion("selectors");
+            const ref = await riseRefVersion(RefTypes.SELECTORS);
             return {
                 meta: { ref }
             };

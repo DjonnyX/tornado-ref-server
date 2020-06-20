@@ -6,6 +6,7 @@ import { TagModel, ITag } from "./Tag";
 import { RefModel, IRef } from "./Ref";
 import { INode, NodeModel } from "./Node";
 import { ISelector, SelectorModel } from "./Selector";
+import { RefTypes } from "./enums";
 
 export {
     UserModel, IUser, hashPassword, checkIfUnencryptedPasswordIsValid,
@@ -17,5 +18,5 @@ export {
     IPeriod, Days,
     TarifModel, ITarif,
     TagModel, ITag,
-    RefModel, IRef
+    RefModel, IRef, RefTypes,
 };

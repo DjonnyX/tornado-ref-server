@@ -1,7 +1,7 @@
 import { NodeModel, INode } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
-import { NodeTypes } from "src/models/enums";
+import { NodeTypes, RefTypes } from "src/models/enums";
 
 interface INodeItem {
     id: string;
@@ -59,7 +59,7 @@ const formatModel = (model: INode) => ({
 
 const META_TEMPLATE: INodesMeta = {
     ref: {
-        name: "Nodes",
+        name: RefTypes.NODES,
         version: 1,
         lastUpdate: 1589885721
     }
@@ -78,7 +78,7 @@ export class NodesController extends Controller {
     public async getAll(): Promise<NodesResponse> {
         try {
             const items = await NodeModel.find({});
-            const ref = await getRef("Nodes");
+            const ref = await getRef(RefTypes.NODES);
             return {
                 meta: { ref },
                 data: items.map(v => formatModel(v))
@@ -106,7 +106,7 @@ export class NodesController extends Controller {
     public async getOne(id: string): Promise<NodeResponse> {
         try {
             const item = await NodeModel.findById(id);
-            const ref = await getRef("Nodes");
+            const ref = await getRef(RefTypes.NODES);
             return {
                 meta: { ref },
                 data: formatModel(item)
@@ -135,7 +135,7 @@ export class NodesController extends Controller {
         try {
             const item = new NodeModel(request);
             const savedItem = await item.save();
-            const ref = await riseRefVersion("Nodes");
+            const ref = await riseRefVersion(RefTypes.NODES);
             return {
                 meta: { ref },
                 data: formatModel(savedItem)
@@ -163,7 +163,7 @@ export class NodesController extends Controller {
     public async update(id: string, @Body() request: NodeCreateRequest): Promise<NodeResponse> {
         try {
             const item = await NodeModel.findOneAndUpdate({ id }, request);
-            const ref = await riseRefVersion("Nodes");
+            const ref = await riseRefVersion(RefTypes.NODES);
             return {
                 meta: { ref },
                 data: formatModel(item)
@@ -190,7 +190,7 @@ export class NodesController extends Controller {
     public async delete(id: string): Promise<NodeResponse> {
         try {
             await NodeModel.findOneAndDelete({ id });
-            const ref = await riseRefVersion("Nodes");
+            const ref = await riseRefVersion(RefTypes.NODES);
             return {
                 meta: { ref }
             };

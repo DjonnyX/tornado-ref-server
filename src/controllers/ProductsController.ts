@@ -1,4 +1,4 @@
-import { ProductModel, IProduct, IReceiptItem } from "../models/index";
+import { ProductModel, IProduct, IReceiptItem, RefTypes } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 
@@ -74,7 +74,7 @@ const formatModel = (model: IProduct) => ({
 
 const META_TEMPLATE: IProductsMeta = {
     ref: {
-        name: "products",
+        name: RefTypes.PRODUCTS,
         version: 1,
         lastUpdate: 1589885721
     }
@@ -93,7 +93,7 @@ export class ProductsController extends Controller {
     public async getAll(): Promise<ProductsResponse> {
         try {
             const items = await ProductModel.find({});
-            const ref = await getRef("products");
+            const ref = await getRef(RefTypes.PRODUCTS);
             return {
                 meta: { ref },
                 data: items.map(v => formatModel(v))
@@ -121,7 +121,7 @@ export class ProductsController extends Controller {
     public async getOne(id: string): Promise<ProductResponse> {
         try {
             const item = await ProductModel.findById(id);
-            const ref = await getRef("products");
+            const ref = await getRef(RefTypes.PRODUCTS);
             return {
                 meta: { ref },
                 data: formatModel(item)
@@ -150,7 +150,7 @@ export class ProductsController extends Controller {
         try {
             const item = new ProductModel(request);
             const savedItem = await item.save();
-            const ref = await riseRefVersion("products");
+            const ref = await riseRefVersion(RefTypes.PRODUCTS);
             return {
                 meta: { ref },
                 data: formatModel(savedItem)
@@ -178,7 +178,7 @@ export class ProductsController extends Controller {
     public async update(id: string, @Body() request: ProductCreateRequest): Promise<ProductResponse> {
         try {
             const item = await ProductModel.findOneAndUpdate({ id }, request);
-            const ref = await riseRefVersion("products");
+            const ref = await riseRefVersion(RefTypes.PRODUCTS);
             return {
                 meta: { ref },
                 data: formatModel(item)
@@ -205,7 +205,7 @@ export class ProductsController extends Controller {
     public async delete(id: string): Promise<ProductResponse> {
         try {
             await ProductModel.findOneAndDelete({ id });
-            const ref = await riseRefVersion("products");
+            const ref = await riseRefVersion(RefTypes.PRODUCTS);
             return {
                 meta: { ref }
             };

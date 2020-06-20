@@ -1,4 +1,4 @@
-import { TagModel, ITag } from "../models/index";
+import { TagModel, ITag, RefTypes } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 
@@ -57,7 +57,7 @@ const formatModel = (model: ITag) => ({
 
 const META_TEMPLATE: ITagsMeta = {
     ref: {
-        name: "tags",
+        name: RefTypes.TAGS,
         version: 1,
         lastUpdate: 1589885721
     }
@@ -76,7 +76,7 @@ export class TagController extends Controller {
     public async getAll(): Promise<TagsResponse> {
         try {
             const items = await TagModel.find({});
-            const ref = await getRef("tags");
+            const ref = await getRef(RefTypes.TAGS);
             return {
                 meta: { ref },
                 data: items.map(v => formatModel(v))
@@ -104,7 +104,7 @@ export class TagController extends Controller {
     public async getOne(id: string): Promise<TagResponse> {
         try {
             const item = await TagModel.findById(id);
-            const ref = await getRef("tags");
+            const ref = await getRef(RefTypes.TAGS);
             return {
                 meta: { ref },
                 data: formatModel(item)
@@ -133,7 +133,7 @@ export class TagController extends Controller {
         try {
             const item = new TagModel(request);
             const savedItem = await item.save();
-            const ref = await riseRefVersion("tags");
+            const ref = await riseRefVersion(RefTypes.TAGS);
             return {
                 meta: { ref },
                 data: formatModel(savedItem)
@@ -161,7 +161,7 @@ export class TagController extends Controller {
     public async update(id: string, @Body() request: TagCreateRequest): Promise<TagResponse> {
         try {
             const item = await TagModel.findOneAndUpdate({ id }, request);
-            const ref = await riseRefVersion("tags");
+            const ref = await riseRefVersion(RefTypes.TAGS);
             return {
                 meta: { ref },
                 data: formatModel(item)
@@ -188,7 +188,7 @@ export class TagController extends Controller {
     public async delete(id: string): Promise<TagResponse> {
         try {
             await TagModel.findOneAndDelete({ id });
-            const ref = await riseRefVersion("tags");
+            const ref = await riseRefVersion(RefTypes.TAGS);
             return {
                 meta: { ref }
             };

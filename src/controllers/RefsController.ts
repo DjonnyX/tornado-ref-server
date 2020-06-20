@@ -1,4 +1,4 @@
-import { RefModel, IRef } from "../models/index";
+import { RefModel, IRef, RefTypes } from "../models/index";
 import { Controller, Route, Get, Tags, OperationId, Example, Security } from "tsoa";
 
 export interface IRefItem {
@@ -25,37 +25,34 @@ interface RefResponse {
 
 const RESPONSE_TEMPLATE: Array<IRefItem> = [
     {
-        name: "users",
+        name: RefTypes.USERS,
         version: 1,
         lastUpdate: 1589885721
     }, {
-        name: "roles",
+        name: RefTypes.ROLES,
         version: 2,
         lastUpdate: 1589885721
     }, {
-        name: "nodes",
+        name: RefTypes.NODES,
         version: 1,
         lastUpdate: 1589885721
     }, {
-        name: "products",
+        name: RefTypes.PRODUCTS,
         version: 3,
         lastUpdate: 1589885721
     }, {
-        name: "selectors",
+        name: RefTypes.SELECTORS,
         version: 4,
         lastUpdate: 1589885721
     }, {
-        name: "tags",
+        name: RefTypes.TAGS,
         version: 5,
         lastUpdate: 1589885721
-    }, {
-        name: "tarifs",
-        version: 2,
-        lastUpdate: 1589885721
-    }];
+    }
+];
 
 const RESPONSE_SINGLE_TEMPLATE: IRefItem = {
-    name: "tickets",
+    name: RefTypes.PRODUCTS,
     version: 1,
     lastUpdate: 1589885721
 };
