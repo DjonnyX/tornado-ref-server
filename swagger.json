@@ -1,0 +1,2045 @@
+{
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"ErrorResponse": {
+				"items": {
+					"properties": {
+						"message": {
+							"type": "string"
+						},
+						"code": {
+							"type": "number",
+							"format": "double"
+						}
+					},
+					"required": [
+						"message",
+						"code"
+					],
+					"type": "object"
+				},
+				"type": "array"
+			},
+			"SignupResponse": {
+				"properties": {
+					"meta": {
+						"properties": {},
+						"type": "object"
+					},
+					"data": {
+						"properties": {},
+						"type": "object"
+					},
+					"error": {
+						"$ref": "#/components/schemas/ErrorResponse"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IRegistrationParams": {
+				"properties": {
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					},
+					"confirmPassword": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"firstName",
+					"lastName",
+					"email",
+					"password",
+					"confirmPassword"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"SigninResponse": {
+				"properties": {
+					"meta": {
+						"properties": {},
+						"type": "object"
+					},
+					"data": {
+						"properties": {
+							"email": {
+								"type": "string"
+							},
+							"lastName": {
+								"type": "string"
+							},
+							"firstName": {
+								"type": "string"
+							},
+							"token": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"email",
+							"lastName",
+							"firstName",
+							"token"
+						],
+						"type": "object"
+					},
+					"error": {
+						"$ref": "#/components/schemas/ErrorResponse"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ILoginParams": {
+				"properties": {
+					"email": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"email",
+					"password"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IRefItem": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"version": {
+						"type": "number",
+						"format": "double"
+					},
+					"lastUpdate": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"name",
+					"version",
+					"lastUpdate"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"RefsResponse": {
+				"properties": {
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/IRefItem"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"RefResponse": {
+				"properties": {
+					"data": {
+						"$ref": "#/components/schemas/IRefItem"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IProductsMeta": {
+				"properties": {
+					"ref": {
+						"properties": {
+							"lastUpdate": {
+								"type": "number",
+								"format": "double"
+							},
+							"version": {
+								"type": "number",
+								"format": "double"
+							},
+							"name": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"lastUpdate",
+							"version",
+							"name"
+						],
+						"type": "object"
+					}
+				},
+				"required": [
+					"ref"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IReceiptItem": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"calories": {
+						"type": "number",
+						"format": "double"
+					},
+					"quantity": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"name",
+					"description",
+					"calories",
+					"quantity"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IProductItem": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"receipt": {
+						"items": {
+							"$ref": "#/components/schemas/IReceiptItem"
+						},
+						"type": "array"
+					},
+					"tags": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"receipt",
+					"tags"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ProductsResponse": {
+				"properties": {
+					"meta": {
+						"$ref": "#/components/schemas/IProductsMeta"
+					},
+					"error": {
+						"$ref": "#/components/schemas/ErrorResponse"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/IProductItem"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ProductResponse": {
+				"properties": {
+					"meta": {
+						"$ref": "#/components/schemas/IProductsMeta"
+					},
+					"error": {
+						"$ref": "#/components/schemas/ErrorResponse"
+					},
+					"data": {
+						"$ref": "#/components/schemas/IProductItem"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ProductCreateRequest": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"schedule": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"tags": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"name",
+					"schedule",
+					"tags"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ISchedulesMeta": {
+				"properties": {
+					"ref": {
+						"properties": {
+							"lastUpdate": {
+								"type": "number",
+								"format": "double"
+							},
+							"version": {
+								"type": "number",
+								"format": "double"
+							},
+							"name": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"lastUpdate",
+							"version",
+							"name"
+						],
+						"type": "object"
+					}
+				},
+				"required": [
+					"ref"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Days": {
+				"enum": [
+					0,
+					1,
+					2,
+					3,
+					4,
+					5,
+					6
+				],
+				"type": "number"
+			},
+			"ITime": {
+				"properties": {
+					"start": {
+						"type": "number",
+						"format": "double"
+					},
+					"end": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IPeriod": {
+				"properties": {
+					"start": {
+						"type": "number",
+						"format": "double"
+					},
+					"end": {
+						"type": "number",
+						"format": "double"
+					},
+					"days": {
+						"items": {
+							"$ref": "#/components/schemas/Days"
+						},
+						"type": "array"
+					},
+					"times": {
+						"items": {
+							"$ref": "#/components/schemas/ITime"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"days",
+					"times"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IScheduleItem": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"period": {
+						"items": {
+							"$ref": "#/components/schemas/IPeriod"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"period"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"SchedulesResponse": {
+				"properties": {
+					"meta": {
+						"$ref": "#/components/schemas/ISchedulesMeta"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/IScheduleItem"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"meta",
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ScheduleResponse": {
+				"properties": {
+					"meta": {
+						"$ref": "#/components/schemas/ISchedulesMeta"
+					},
+					"data": {
+						"$ref": "#/components/schemas/IScheduleItem"
+					}
+				},
+				"required": [
+					"meta"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ScheduleCreateRequest": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"period": {
+						"items": {
+							"$ref": "#/components/schemas/IPeriod"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"name",
+					"period"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ITagsMeta": {
+				"properties": {
+					"ref": {
+						"properties": {
+							"lastUpdate": {
+								"type": "number",
+								"format": "double"
+							},
+							"version": {
+								"type": "number",
+								"format": "double"
+							},
+							"name": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"lastUpdate",
+							"version",
+							"name"
+						],
+						"type": "object"
+					}
+				},
+				"required": [
+					"ref"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ITagItem": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"color": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"color"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"TagsResponse": {
+				"properties": {
+					"meta": {
+						"$ref": "#/components/schemas/ITagsMeta"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/ITagItem"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"meta",
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"TagResponse": {
+				"properties": {
+					"meta": {
+						"$ref": "#/components/schemas/ITagsMeta"
+					},
+					"data": {
+						"$ref": "#/components/schemas/ITagItem"
+					}
+				},
+				"required": [
+					"meta"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"TagCreateRequest": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"color": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"color"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ITarifsMeta": {
+				"properties": {
+					"ref": {
+						"properties": {
+							"lastUpdate": {
+								"type": "number",
+								"format": "double"
+							},
+							"version": {
+								"type": "number",
+								"format": "double"
+							},
+							"name": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"lastUpdate",
+							"version",
+							"name"
+						],
+						"type": "object"
+					}
+				},
+				"required": [
+					"ref"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ITarifItem": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"price": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"price"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"TarifsResponse": {
+				"properties": {
+					"meta": {
+						"$ref": "#/components/schemas/ITarifsMeta"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/ITarifItem"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"meta",
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"TarifResponse": {
+				"properties": {
+					"meta": {
+						"$ref": "#/components/schemas/ITarifsMeta"
+					},
+					"data": {
+						"$ref": "#/components/schemas/ITarifItem"
+					}
+				},
+				"required": [
+					"meta"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"TarifCreateRequest": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"price": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"name",
+					"price"
+				],
+				"type": "object",
+				"additionalProperties": false
+			}
+		},
+		"securitySchemes": {
+			"jwt": {
+				"type": "apiKey",
+				"name": "authorization",
+				"in": "header"
+			}
+		}
+	},
+	"info": {
+		"title": "tornado-server",
+		"version": "0.0.1",
+		"license": {
+			"name": "Commercial"
+		}
+	},
+	"openapi": "3.0.0",
+	"paths": {
+		"/auth/signup": {
+			"post": {
+				"operationId": "Registration",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SignupResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {},
+											"data": {}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Signup"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IRegistrationParams"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/auth/signin": {
+			"post": {
+				"operationId": "Login",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SigninResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {},
+											"data": {
+												"token": "507c7f79bcf86cd7994f6c0e",
+												"firstName": "First name",
+												"lastName": "Last name",
+												"email": "test@test.com"
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Signin"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ILoginParams"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/Refs": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/RefsResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"data": [
+												{
+													"name": "tickets",
+													"version": 1,
+													"lastUpdate": 1589885721
+												},
+												{
+													"name": "schedules",
+													"version": 3,
+													"lastUpdate": 1589885721
+												},
+												{
+													"name": "tags",
+													"version": 5,
+													"lastUpdate": 1589885721
+												},
+												{
+													"name": "tarifs",
+													"version": 2,
+													"lastUpdate": 1589885721
+												}
+											]
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Ref"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/Refs/{name}": {
+			"get": {
+				"operationId": "GetOne",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/RefResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"data": {
+												"name": "tickets",
+												"version": 1,
+												"lastUpdate": 1589885721
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Ref"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "name",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/products": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProductsResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "products",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": [
+												{
+													"id": "507c7f79bcf86cd7994f6c0e",
+													"name": "Products on concert",
+													"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+													"receipt": [
+														{
+															"name": "Bun",
+															"description": "Crispy bun",
+															"quantity": 1,
+															"calories": 142
+														},
+														{
+															"name": "Cutlet",
+															"description": "Beef cutlet",
+															"quantity": 1,
+															"calories": 346
+														}
+													],
+													"tags": [
+														"123c7f79bcf86cd7994f6c0e"
+													]
+												}
+											]
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Product"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProductResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "products",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": {
+												"id": "507c7f79bcf86cd7994f6c0e",
+												"name": "Products on concert",
+												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+												"receipt": [
+													{
+														"name": "Bun",
+														"description": "Crispy bun",
+														"quantity": 1,
+														"calories": 142
+													},
+													{
+														"name": "Cutlet",
+														"description": "Beef cutlet",
+														"quantity": 1,
+														"calories": 346
+													}
+												],
+												"tags": [
+													"123c7f79bcf86cd7994f6c0e"
+												]
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Product"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ProductCreateRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/products/{id}": {
+			"get": {
+				"operationId": "GetOne",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProductResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "products",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": {
+												"id": "507c7f79bcf86cd7994f6c0e",
+												"name": "Products on concert",
+												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+												"receipt": [
+													{
+														"name": "Bun",
+														"description": "Crispy bun",
+														"quantity": 1,
+														"calories": 142
+													},
+													{
+														"name": "Cutlet",
+														"description": "Beef cutlet",
+														"quantity": 1,
+														"calories": 346
+													}
+												],
+												"tags": [
+													"123c7f79bcf86cd7994f6c0e"
+												]
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Product"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProductResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "products",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": {
+												"id": "507c7f79bcf86cd7994f6c0e",
+												"name": "Products on concert",
+												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+												"receipt": [
+													{
+														"name": "Bun",
+														"description": "Crispy bun",
+														"quantity": 1,
+														"calories": 142
+													},
+													{
+														"name": "Cutlet",
+														"description": "Beef cutlet",
+														"quantity": 1,
+														"calories": 346
+													}
+												],
+												"tags": [
+													"123c7f79bcf86cd7994f6c0e"
+												]
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Product"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ProductCreateRequest"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "Delete",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProductResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "products",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Product"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/schedules": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SchedulesResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "schedules",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": [
+												{
+													"id": "507c7f79bcf86cd7994f6c0e",
+													"name": "Morning schedule",
+													"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+													"period": [
+														{
+															"start": 1589830619,
+															"end": 1589850000,
+															"days": [
+																0,
+																4
+															],
+															"times": [
+																{
+																	"start": 1589830619,
+																	"end": 1589850000
+																}
+															]
+														}
+													]
+												}
+											]
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Schedule"
+				],
+				"security": [],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ScheduleResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "schedules",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": {
+												"id": "507c7f79bcf86cd7994f6c0e",
+												"name": "Morning schedule",
+												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+												"period": [
+													{
+														"start": 1589830619,
+														"end": 1589850000,
+														"days": [
+															0,
+															4
+														],
+														"times": [
+															{
+																"start": 1589830619,
+																"end": 1589850000
+															}
+														]
+													}
+												]
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Schedule"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ScheduleCreateRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/schedules/{id}": {
+			"get": {
+				"operationId": "GetOne",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ScheduleResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "schedules",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": {
+												"id": "507c7f79bcf86cd7994f6c0e",
+												"name": "Morning schedule",
+												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+												"period": [
+													{
+														"start": 1589830619,
+														"end": 1589850000,
+														"days": [
+															0,
+															4
+														],
+														"times": [
+															{
+																"start": 1589830619,
+																"end": 1589850000
+															}
+														]
+													}
+												]
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Schedule"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ScheduleResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "schedules",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": {
+												"id": "507c7f79bcf86cd7994f6c0e",
+												"name": "Morning schedule",
+												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+												"period": [
+													{
+														"start": 1589830619,
+														"end": 1589850000,
+														"days": [
+															0,
+															4
+														],
+														"times": [
+															{
+																"start": 1589830619,
+																"end": 1589850000
+															}
+														]
+													}
+												]
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Schedule"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ScheduleCreateRequest"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "Delete",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ScheduleResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "schedules",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Schedule"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/tags": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/TagsResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "tags",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": [
+												{
+													"id": "507c7f79bcf86cd7994f6c0e",
+													"name": "Morning Tag",
+													"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+													"color": "0x000fff"
+												}
+											]
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Tag"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/TagResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "tags",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": {
+												"id": "507c7f79bcf86cd7994f6c0e",
+												"name": "Morning Tag",
+												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+												"color": "0x000fff"
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Tag"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/TagCreateRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/tags/{id}": {
+			"get": {
+				"operationId": "GetOne",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/TagResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "tags",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": {
+												"id": "507c7f79bcf86cd7994f6c0e",
+												"name": "Morning Tag",
+												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+												"color": "0x000fff"
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Tag"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/TagResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "tags",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": {
+												"id": "507c7f79bcf86cd7994f6c0e",
+												"name": "Morning Tag",
+												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+												"color": "0x000fff"
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Tag"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/TagCreateRequest"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "Delete",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/TagResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "tags",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Tag"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/tarifs": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/TarifsResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "tarifs",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": [
+												{
+													"id": "507c7f79bcf86cd7994f6c0e",
+													"name": "Morning Tarif",
+													"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+													"price": 15000
+												}
+											]
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Tarif"
+				],
+				"security": [],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/TarifResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "tarifs",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": {
+												"id": "507c7f79bcf86cd7994f6c0e",
+												"name": "Morning Tarif",
+												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+												"price": 15000
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Tarif"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/TarifCreateRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/tarifs/{id}": {
+			"get": {
+				"operationId": "GetOne",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/TarifResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "tarifs",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": {
+												"id": "507c7f79bcf86cd7994f6c0e",
+												"name": "Morning Tarif",
+												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+												"price": 15000
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Tarif"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/TarifResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "tarifs",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": {
+												"id": "507c7f79bcf86cd7994f6c0e",
+												"name": "Morning Tarif",
+												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+												"price": 15000
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Tarif"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/TarifCreateRequest"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "Delete",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/TarifResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "tarifs",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Tarif"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "/api/v1"
+		}
+	]
+}
