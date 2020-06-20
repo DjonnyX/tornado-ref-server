@@ -17,11 +17,15 @@ export const initRefs = async (): Promise<void> => {
             version: 1,
             lastUpdate
         }, {
+            name: "selectors",
+            version: 1,
+            lastUpdate
+        }, {
             name: "tags",
             version: 1,
             lastUpdate
         }, {
-            name: "rights",
+            name: "roles",
             version: 1,
             lastUpdate
         }

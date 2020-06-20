@@ -1,15 +1,16 @@
-import { TagModel, ITag } from "../models/index";
+import { NodeModel, INode } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
+import { NodeTypes } from "src/models/enums";
 
-interface ITagItem {
+interface INodeItem {
     id: string;
-    name: string;
-    description?: string;
-    color: string;
+    parentId: string;
+    contentId: string;
+    children: Array<string>;
 }
 
-interface ITagsMeta {
+interface INodesMeta {
     ref: {
         name: string;
         version: number;
@@ -17,66 +18,67 @@ interface ITagsMeta {
     };
 }
 
-interface TagsResponse {
-    meta?: ITagsMeta;
-    data?: Array<ITagItem>;
+interface NodesResponse {
+    meta?: INodesMeta;
+    data?: Array<INodeItem>;
     error?: Array<{
         code: number;
         message: string;
     }>;
 }
 
-interface TagResponse {
-    meta?: ITagsMeta;
-    data?: ITagItem;
+interface NodeResponse {
+    meta?: INodesMeta;
+    data?: INodeItem;
     error?: Array<{
         code: number;
         message: string;
     }>;
 }
 
-interface TagCreateRequest {
-    name: string;
-    description?: string;
-    color: string;
+interface NodeCreateRequest {
+    type: NodeTypes;
+    parentId: string;
+    contentId: string;
+    children: Array<string>;
 }
 
-const RESPONSE_TEMPLATE: ITagItem = {
+const RESPONSE_TEMPLATE: INodeItem = {
     id: "507c7f79bcf86cd7994f6c0e",
-    name: "Morning Tag",
-    description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-    color: "0x000fff"
+    parentId: "107c7f79bcf86cd7994f6c0e",
+    contentId: "407c7f79bcf86cd7994f6c0e",
+    children: ["123c7f79bcf86cd7994f6c0e"],
 };
 
-const formatModel = (model: ITag) => ({
+const formatModel = (model: INode) => ({
     id: model._id,
-    name: model.name,
-    description: model.description,
-    color: model.color
+    parentId: model.parentId,
+    contentId: model.contentId,
+    children: model.children,
 });
 
-const META_TEMPLATE: ITagsMeta = {
+const META_TEMPLATE: INodesMeta = {
     ref: {
-        name: "tags",
+        name: "Nodes",
         version: 1,
         lastUpdate: 1589885721
     }
 };
 
-@Route("/tags")
-@Tags("Tag")
-export class TagController extends Controller {
+@Route("/Nodes")
+@Tags("Node")
+export class NodesController extends Controller {
     @Get()
     @Security("jwt")
     @OperationId("GetAll")
-    @Example<TagsResponse>({
+    @Example<NodesResponse>({
         meta: META_TEMPLATE,
         data: [RESPONSE_TEMPLATE]
     })
-    public async getAll(): Promise<TagsResponse> {
+    public async getAll(): Promise<NodesResponse> {
         try {
-            const items = await TagModel.find({});
-            const ref = await getRef("tags");
+            const items = await NodeModel.find({});
+            const ref = await getRef("Nodes");
             return {
                 meta: { ref },
                 data: items.map(v => formatModel(v))
@@ -97,14 +99,14 @@ export class TagController extends Controller {
     @Get("{id}")
     @Security("jwt")
     @OperationId("GetOne")
-    @Example<TagResponse>({
+    @Example<NodeResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE
     })
-    public async getOne(id: string): Promise<TagResponse> {
+    public async getOne(id: string): Promise<NodeResponse> {
         try {
-            const item = await TagModel.findById(id);
-            const ref = await getRef("tags");
+            const item = await NodeModel.findById(id);
+            const ref = await getRef("Nodes");
             return {
                 meta: { ref },
                 data: formatModel(item)
@@ -125,15 +127,15 @@ export class TagController extends Controller {
     @Post()
     @Security("jwt")
     @OperationId("Create")
-    @Example<TagResponse>({
+    @Example<NodeResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE
     })
-    public async create(@Body() request: TagCreateRequest): Promise<TagResponse> {
+    public async create(@Body() request: NodeCreateRequest): Promise<NodeResponse> {
         try {
-            const item = new TagModel(request);
+            const item = new NodeModel(request);
             const savedItem = await item.save();
-            const ref = await riseRefVersion("tags");
+            const ref = await riseRefVersion("Nodes");
             return {
                 meta: { ref },
                 data: formatModel(savedItem)
@@ -154,14 +156,14 @@ export class TagController extends Controller {
     @Put("{id}")
     @Security("jwt")
     @OperationId("Update")
-    @Example<TagResponse>({
+    @Example<NodeResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE
     })
-    public async update(id: string, @Body() request: TagCreateRequest): Promise<TagResponse> {
+    public async update(id: string, @Body() request: NodeCreateRequest): Promise<NodeResponse> {
         try {
-            const item = await TagModel.findOneAndUpdate({ id }, request);
-            const ref = await riseRefVersion("tags");
+            const item = await NodeModel.findOneAndUpdate({ id }, request);
+            const ref = await riseRefVersion("Nodes");
             return {
                 meta: { ref },
                 data: formatModel(item)
@@ -182,13 +184,13 @@ export class TagController extends Controller {
     @Delete("{id}")
     @Security("jwt")
     @OperationId("Delete")
-    @Example<TagResponse>({
+    @Example<NodeResponse>({
         meta: META_TEMPLATE
     })
-    public async delete(id: string): Promise<TagResponse> {
+    public async delete(id: string): Promise<NodeResponse> {
         try {
-            await TagModel.findOneAndDelete({ id });
-            const ref = await riseRefVersion("tags");
+            await NodeModel.findOneAndDelete({ id });
+            const ref = await riseRefVersion("Nodes");
             return {
                 meta: { ref }
             };

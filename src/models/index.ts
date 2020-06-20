@@ -4,9 +4,11 @@ import { UserModel, IUser, hashPassword, checkIfUnencryptedPasswordIsValid } fro
 import { TarifModel, ITarif } from "./Tarif";
 import { TagModel, ITag } from "./Tag";
 import { RefModel, IRef } from "./Ref";
+import { INode, NodeModel } from "./Node";
 
 export {
     UserModel, IUser, hashPassword, checkIfUnencryptedPasswordIsValid,
+    NodeModel, INode,
     IReceiptItem,
     ProductModel, IProduct,
     ScheduleModel, ISchedule,

@@ -6,25 +6,6 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
-			"ErrorResponse": {
-				"items": {
-					"properties": {
-						"message": {
-							"type": "string"
-						},
-						"code": {
-							"type": "number",
-							"format": "double"
-						}
-					},
-					"required": [
-						"message",
-						"code"
-					],
-					"type": "object"
-				},
-				"type": "array"
-			},
 			"SignupResponse": {
 				"properties": {
 					"meta": {
@@ -36,7 +17,23 @@
 						"type": "object"
 					},
 					"error": {
-						"$ref": "#/components/schemas/ErrorResponse"
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
 					}
 				},
 				"type": "object",
@@ -100,7 +97,23 @@
 						"type": "object"
 					},
 					"error": {
-						"$ref": "#/components/schemas/ErrorResponse"
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
 					}
 				},
 				"type": "object",
@@ -165,6 +178,162 @@
 						"$ref": "#/components/schemas/IRefItem"
 					}
 				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"INodesMeta": {
+				"properties": {
+					"ref": {
+						"properties": {
+							"lastUpdate": {
+								"type": "number",
+								"format": "double"
+							},
+							"version": {
+								"type": "number",
+								"format": "double"
+							},
+							"name": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"lastUpdate",
+							"version",
+							"name"
+						],
+						"type": "object"
+					}
+				},
+				"required": [
+					"ref"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"INodeItem": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"parentId": {
+						"type": "string"
+					},
+					"contentId": {
+						"type": "string"
+					},
+					"children": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"id",
+					"parentId",
+					"contentId",
+					"children"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"NodesResponse": {
+				"properties": {
+					"meta": {
+						"$ref": "#/components/schemas/INodesMeta"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/INodeItem"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"NodeResponse": {
+				"properties": {
+					"meta": {
+						"$ref": "#/components/schemas/INodesMeta"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					},
+					"data": {
+						"$ref": "#/components/schemas/INodeItem"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"NodeTypes": {
+				"enum": [
+					"selector",
+					"product"
+				],
+				"type": "string"
+			},
+			"NodeCreateRequest": {
+				"properties": {
+					"type": {
+						"$ref": "#/components/schemas/NodeTypes"
+					},
+					"parentId": {
+						"type": "string"
+					},
+					"contentId": {
+						"type": "string"
+					},
+					"children": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"type",
+					"parentId",
+					"contentId",
+					"children"
+				],
 				"type": "object",
 				"additionalProperties": false
 			},
@@ -263,7 +432,23 @@
 						"$ref": "#/components/schemas/IProductsMeta"
 					},
 					"error": {
-						"$ref": "#/components/schemas/ErrorResponse"
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
 					},
 					"data": {
 						"items": {
@@ -281,7 +466,23 @@
 						"$ref": "#/components/schemas/IProductsMeta"
 					},
 					"error": {
-						"$ref": "#/components/schemas/ErrorResponse"
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
 					},
 					"data": {
 						"$ref": "#/components/schemas/IProductItem"
@@ -896,6 +1097,276 @@
 					{
 						"in": "path",
 						"name": "name",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/Nodes": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NodesResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "Nodes",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": [
+												{
+													"id": "507c7f79bcf86cd7994f6c0e",
+													"parentId": "107c7f79bcf86cd7994f6c0e",
+													"contentId": "407c7f79bcf86cd7994f6c0e",
+													"children": [
+														"123c7f79bcf86cd7994f6c0e"
+													]
+												}
+											]
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Node"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NodeResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "Nodes",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": {
+												"id": "507c7f79bcf86cd7994f6c0e",
+												"parentId": "107c7f79bcf86cd7994f6c0e",
+												"contentId": "407c7f79bcf86cd7994f6c0e",
+												"children": [
+													"123c7f79bcf86cd7994f6c0e"
+												]
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Node"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/NodeCreateRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/Nodes/{id}": {
+			"get": {
+				"operationId": "GetOne",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NodeResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "Nodes",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": {
+												"id": "507c7f79bcf86cd7994f6c0e",
+												"parentId": "107c7f79bcf86cd7994f6c0e",
+												"contentId": "407c7f79bcf86cd7994f6c0e",
+												"children": [
+													"123c7f79bcf86cd7994f6c0e"
+												]
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Node"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NodeResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "Nodes",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": {
+												"id": "507c7f79bcf86cd7994f6c0e",
+												"parentId": "107c7f79bcf86cd7994f6c0e",
+												"contentId": "407c7f79bcf86cd7994f6c0e",
+												"children": [
+													"123c7f79bcf86cd7994f6c0e"
+												]
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Node"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/NodeCreateRequest"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "Delete",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NodeResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "Nodes",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Node"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
 						"required": true,
 						"schema": {
 							"type": "string"

@@ -4,11 +4,6 @@ import { UserModel, IUser, hashPassword, checkIfUnencryptedPasswordIsValid } fro
 import { Controller, Route, Post, Tags, Example, Body } from "tsoa";
 import * as joi from "@hapi/joi";
 
-export type ErrorResponse = Array<{
-    code: number;
-    message: string;
-}>;
-
 interface ILoginParams {
     email: string;
     password: string;
@@ -30,13 +25,19 @@ interface SigninResponse {
         lastName: string;
         email: string;
     };
-    error?: ErrorResponse;
+    error?: Array<{
+        code: number;
+        message: string;
+    }>;
 }
 
 interface SignupResponse {
     meta?: {};
     data?: {};
-    error?: ErrorResponse;
+    error?: Array<{
+        code: number;
+        message: string;
+    }>;
 }
 
 //function to validate user 
@@ -78,6 +79,7 @@ export class SignupController extends Controller {
     public async registration(@Body() requestBody: IRegistrationParams): Promise<SignupResponse> {
         const validation = validateRegistrationParams(requestBody);
         if (validation.error) {
+            this.setStatus(500);
             return {
                 error: [
                     {
@@ -89,6 +91,7 @@ export class SignupController extends Controller {
         }
 
         if (requestBody.password !== requestBody.confirmPassword) {
+            this.setStatus(500);
             return {
                 error: [
                     {
@@ -101,6 +104,7 @@ export class SignupController extends Controller {
 
         const user = await UserModel.findOne({ email: requestBody.email });
         if (user) {
+            this.setStatus(500);
             return {
                 error: [
                     {
@@ -121,6 +125,7 @@ export class SignupController extends Controller {
             });
             await newUser.save();
         } catch (err) {
+            this.setStatus(500);
             return {
                 error: [
                     {
@@ -151,6 +156,7 @@ export class SigninController extends Controller {
     public async login(@Body() requestBody: ILoginParams): Promise<SigninResponse> {
         const validation = validateLoginParams(requestBody);
         if (validation.error) {
+            this.setStatus(500);
             return {
                 error: [
                     {
@@ -166,6 +172,7 @@ export class SigninController extends Controller {
         try {
             user = await UserModel.findOne({ email: requestBody.email });
         } catch (err) {
+            this.setStatus(500);
             return {
                 error: [
                     {
@@ -177,6 +184,7 @@ export class SigninController extends Controller {
         }
 
         if (!user) {
+            this.setStatus(500);
             return {
                 error: [
                     {
@@ -188,6 +196,7 @@ export class SigninController extends Controller {
         }
 
         if (!checkIfUnencryptedPasswordIsValid(requestBody.password, user.password)) {
+            this.setStatus(500);
             return {
                 error: [
                     {

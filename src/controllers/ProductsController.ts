@@ -1,7 +1,6 @@
 import { ProductModel, IProduct, IReceiptItem } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
-import { ErrorResponse } from "src/interfaces";
 
 interface IProductItem {
     id: string;
@@ -21,14 +20,20 @@ interface IProductsMeta {
 
 interface ProductsResponse {
     meta?: IProductsMeta;
-    error?: ErrorResponse;
     data?: Array<IProductItem>;
+    error?: Array<{
+        code: number;
+        message: string;
+    }>;
 }
 
 interface ProductResponse {
     meta?: IProductsMeta;
-    error?: ErrorResponse;
     data?: IProductItem;
+    error?: Array<{
+        code: number;
+        message: string;
+    }>;
 }
 
 interface ProductCreateRequest {
@@ -94,6 +99,7 @@ export class ProductsController extends Controller {
                 data: items.map(v => formatModel(v))
             };
         } catch (err) {
+            this.setStatus(500);
             return {
                 error: [
                     {
@@ -121,6 +127,7 @@ export class ProductsController extends Controller {
                 data: formatModel(item)
             };
         } catch (err) {
+            this.setStatus(500);
             return {
                 error: [
                     {
@@ -149,6 +156,7 @@ export class ProductsController extends Controller {
                 data: formatModel(savedItem)
             };
         } catch (err) {
+            this.setStatus(500);
             return {
                 error: [
                     {
@@ -176,6 +184,7 @@ export class ProductsController extends Controller {
                 data: formatModel(item)
             };
         } catch (err) {
+            this.setStatus(500);
             return {
                 error: [
                     {
@@ -198,8 +207,10 @@ export class ProductsController extends Controller {
             await ProductModel.findOneAndDelete({ id });
             const ref = await riseRefVersion("products");
             return {
-                meta: { ref }};
+                meta: { ref }
+            };
         } catch (err) {
+            this.setStatus(500);
             return {
                 error: [
                     {
