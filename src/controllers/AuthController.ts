@@ -52,19 +52,23 @@ const validateLoginParams = (user: ILoginParams): joi.ValidationResult => {
     return schema.validate(user);
 };
 
+const NAME_PATTERN = "([\u00c0-\u01ffa-zA-Z\wа-яА-Я.'\-]+[ ]?[*]?[\u00c0-\u01ffa-zA-Z\wа-яА-Я.'\-]*)+";
+
+// At least one upper case English letter, (?=.*?[A-Z])
+// At least one lower case English letter, (?=.*?[a-z])
+// At least one digit, (?=.*?[0-9])
+// At least one special character, (?=.*?[#?!@$%^&*-])
+// Minimum eight in length .{8,} (with the anchors)
+// ^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$
+const PASSWORD_PATTERN = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$";
+
 const validateRegistrationParams = (params: IRegistrationParams): joi.ValidationResult => {
     const schema = joi.object({
-        firstName: joi.string().min(3).max(50).required(),
-        lastName: joi.string().min(3).max(50).required(),
+        firstName: joi.string().min(3).max(50).pattern(new RegExp(NAME_PATTERN)).required(),
+        lastName: joi.string().min(3).max(50).pattern(new RegExp(NAME_PATTERN)).required(),
         email: joi.string().min(5).max(255).email().required(),
-        // At least one upper case English letter, (?=.*?[A-Z])
-        // At least one lower case English letter, (?=.*?[a-z])
-        // At least one digit, (?=.*?[0-9])
-        // At least one special character, (?=.*?[#?!@$%^&*-])
-        // Minimum eight in length .{8,} (with the anchors)
-        // ^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$
-        password: joi.string().pattern(new RegExp("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$")).required(),
-        confirmPassword: joi.string().pattern(new RegExp("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$")).required(),
+        password: joi.string().pattern(new RegExp(PASSWORD_PATTERN)).required(),
+        confirmPassword: joi.string().pattern(new RegExp(PASSWORD_PATTERN)).required(),
     });
 
     return schema.validate(params);
