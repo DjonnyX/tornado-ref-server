@@ -54,7 +54,7 @@ const formatModel = (model: INode) => ({
     id: model._id,
     parentId: model.parentId,
     contentId: model.contentId,
-    children: model.children,
+    children: model.children || [],
 });
 
 const META_TEMPLATE: INodesMeta = {

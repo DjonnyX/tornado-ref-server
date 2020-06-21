@@ -32,7 +32,7 @@ const UserSchema = new Schema({
     password: {
         type: String,
         required: true,
-        minlength: 3,
+        minlength: 8,
         maxlength: 255
     },
     isAdmin: Boolean

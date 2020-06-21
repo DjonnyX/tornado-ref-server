@@ -69,7 +69,7 @@ const formatModel = (model: IProduct) => ({
     name: model.name,
     description: model.description,
     receipt: model.receipt,
-    tags: model.tags,
+    tags: model.tags || [],
 });
 
 const META_TEMPLATE: IProductsMeta = {
