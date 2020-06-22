@@ -52,7 +52,7 @@ const validateLoginParams = (user: ILoginParams): joi.ValidationResult => {
     return schema.validate(user);
 };
 
-const NAME_PATTERN = /^([\u00c0-\u01ffa-zA-Zа-яА-Я.'\-]+[ ]?[*]?[\u00c0-\u01ffa-zA-Zа-яА-Я.'\-]*)+$/;
+const NAME_PATTERN = /^([\u00c0-\u01ffa-zA-Zа-яА-Я.'\-]+)$/;
 
 // At least one upper case English letter, (?=.*?[A-Z])
 // At least one lower case English letter, (?=.*?[a-z])
