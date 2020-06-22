@@ -2,9 +2,6 @@ import { RefModel, RefTypes } from "../models/index";
 
 export const initRefs = async (): Promise<void> => {
 
-    const refs = await RefModel.find({});
-    if (refs.length > 0) return;
-
     const lastUpdate = Date.now();
 
     const INITIAL_STATE = [
@@ -12,8 +9,7 @@ export const initRefs = async (): Promise<void> => {
             name: RefTypes.ROLES,
             version: 1,
             lastUpdate
-        },
-        {
+        }, {
             name: RefTypes.USERS,
             version: 1,
             lastUpdate
@@ -21,8 +17,7 @@ export const initRefs = async (): Promise<void> => {
             name: RefTypes.NODES,
             version: 1,
             lastUpdate
-        },
-        {
+        }, {
             name: RefTypes.PRODUCTS,
             version: 1,
             lastUpdate
@@ -39,6 +34,10 @@ export const initRefs = async (): Promise<void> => {
 
     for (let i = 0, l = INITIAL_STATE.length; i < l; i++) {
         const refData = INITIAL_STATE[i];
+        const existsRef = await RefModel.findOne({ name: refData.name });
+        if (existsRef) {
+            continue;
+        }
         const model = new RefModel(refData);
         await model.save();
     }
