@@ -9,8 +9,8 @@ interface IRef extends Document {
 
 const RefSchema = new Schema({
     name: { type: String, required: true },
-    version: [{ type: Number, required: true }],
-    lastUpdate: [{ type: Number, required: true }]
+    version: { type: Number, required: true },
+    lastUpdate: { type: Number, required: true },
 });
 
 const RefModel = mongoose.model<IRef>("Ref", RefSchema);
