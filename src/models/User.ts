@@ -7,6 +7,8 @@ interface IUser extends Document {
     lastName: string;
     email: string;
     password: string;
+    resetPasswordToken: string;
+    resetPasswordExpires: number;
 }
 
 const UserSchema = new Schema({
@@ -35,7 +37,8 @@ const UserSchema = new Schema({
         minlength: 8,
         maxlength: 255
     },
-    isAdmin: Boolean
+    resetPasswordToken: String,
+    resetPasswordExpires: Date,
 });
 
 const UserModel = mongoose.model<IUser>("User", UserSchema);

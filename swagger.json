@@ -120,7 +120,7 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"IRegistrationParams": {
+			"ISignupParams": {
 				"properties": {
 					"firstName": {
 						"type": "string"
@@ -200,7 +200,7 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"ILoginParams": {
+			"ISigninParams": {
 				"properties": {
 					"email": {
 						"type": "string"
@@ -212,6 +212,63 @@
 				"required": [
 					"email",
 					"password"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ResetPasswordResponse": {
+				"properties": {
+					"meta": {
+						"properties": {},
+						"type": "object"
+					},
+					"data": {
+						"properties": {},
+						"type": "object"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IResetPasswordParams": {
+				"properties": {
+					"token": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"token"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IForgotPasswordParams": {
+				"properties": {
+					"email": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"email"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -1248,7 +1305,7 @@
 		},
 		"/auth/signup": {
 			"post": {
-				"operationId": "Registration",
+				"operationId": "Signup",
 				"responses": {
 					"200": {
 						"content": {
@@ -1279,7 +1336,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/IRegistrationParams"
+								"$ref": "#/components/schemas/ISignupParams"
 							}
 						}
 					}
@@ -1288,7 +1345,7 @@
 		},
 		"/auth/signin": {
 			"post": {
-				"operationId": "Login",
+				"operationId": "Signin",
 				"responses": {
 					"200": {
 						"content": {
@@ -1324,7 +1381,87 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/ILoginParams"
+								"$ref": "#/components/schemas/ISigninParams"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/auth/reset-password": {
+			"post": {
+				"operationId": "ResetPassword",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ResetPasswordResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {},
+											"data": {}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Reset password"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IResetPasswordParams"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/auth/forgot-password": {
+			"post": {
+				"operationId": "ForgotPassword",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ResetPasswordResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {},
+											"data": {}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Forgot password"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IForgotPasswordParams"
 							}
 						}
 					}
