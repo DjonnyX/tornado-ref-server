@@ -30,6 +30,10 @@ interface IForgotPasswordParams {
     email: string;
 }
 
+interface IVerifyResetPasswordTokenParams {
+    token: string;
+}
+
 interface SigninResponse {
     meta?: {};
     data?: {
@@ -63,6 +67,15 @@ interface ResetPasswordResponse {
 }
 
 interface ForgotPasswordResponse {
+    meta?: {};
+    data?: {};
+    error?: Array<{
+        code: number;
+        message: string;
+    }>;
+}
+
+interface VerifyResetPasswordTokenResponse {
     meta?: {};
     data?: {};
     error?: Array<{
@@ -322,7 +335,7 @@ export class ResetPasswordController extends Controller {
                 error: [
                     {
                         code: 500,
-                        message: "User not found.",
+                        message: "Token is not valid.",
                     }
                 ]
             };
@@ -377,16 +390,15 @@ export class ResetPasswordController extends Controller {
     }
 }
 
-
 @Route("/auth/forgot-password")
 @Tags("Forgot password")
 export class ForgotPasswordController extends Controller {
     @Post()
-    @Example<ResetPasswordResponse>({
+    @Example<ForgotPasswordResponse>({
         meta: {},
         data: {}
     })
-    public async forgotPassword(@Body() requestBody: IForgotPasswordParams): Promise<ResetPasswordResponse> {
+    public async forgotPassword(@Body() requestBody: IForgotPasswordParams): Promise<ForgotPasswordResponse> {
         const validation = validateForgotPasswordParams(requestBody);
         if (validation.error) {
             this.setStatus(500);
@@ -480,6 +492,88 @@ export class ForgotPasswordController extends Controller {
                     {
                         code: 500,
                         message: `Internal server error. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        return {
+            data: {}
+        };
+    }
+}
+
+@Route("/auth/verify-reset-password-token")
+@Tags("Verify reset password token")
+export class VerifyResetPasswordTokenController extends Controller {
+    @Post()
+    @Example<VerifyResetPasswordTokenResponse>({
+        meta: {},
+        data: {}
+    })
+    public async verifyResetPasswordToken(@Body() requestBody: IVerifyResetPasswordTokenParams): Promise<VerifyResetPasswordTokenResponse> {
+        const validation = validateResetPasswordParams(requestBody);
+        if (validation.error) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: validation.error.message,
+                    }
+                ]
+            };
+        }
+
+        let user: IUser;
+
+        try {
+            user = await UserModel.findOne({ resetPasswordToken: requestBody.token });
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: err,
+                    }
+                ]
+            };
+        }
+
+        if (!user) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: "Token is not valid.",
+                    }
+                ]
+            };
+        }
+
+        const token = user.resetPasswordToken;
+        if (!token) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: "Link is not valid.",
+                    }
+                ]
+            };
+        }
+
+        const resetPasswordExpires = user.resetPasswordExpires;
+        if (resetPasswordExpires && resetPasswordExpires < Date.now()) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: "Password reset link timed out.",
                     }
                 ]
             };

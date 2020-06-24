@@ -261,6 +261,39 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"ForgotPasswordResponse": {
+				"properties": {
+					"meta": {
+						"properties": {},
+						"type": "object"
+					},
+					"data": {
+						"properties": {},
+						"type": "object"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
 			"IForgotPasswordParams": {
 				"properties": {
 					"email": {
@@ -269,6 +302,51 @@
 				},
 				"required": [
 					"email"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"VerifyResetPasswordTokenResponse": {
+				"properties": {
+					"meta": {
+						"properties": {},
+						"type": "object"
+					},
+					"data": {
+						"properties": {},
+						"type": "object"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IVerifyResetPasswordTokenParams": {
+				"properties": {
+					"token": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"token"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -1436,7 +1514,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/ResetPasswordResponse"
+									"$ref": "#/components/schemas/ForgotPasswordResponse"
 								},
 								"examples": {
 									"example": {
@@ -1462,6 +1540,46 @@
 						"application/json": {
 							"schema": {
 								"$ref": "#/components/schemas/IForgotPasswordParams"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/auth/verify-reset-password-token": {
+			"post": {
+				"operationId": "VerifyResetPasswordToken",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/VerifyResetPasswordTokenResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {},
+											"data": {}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Verify reset password token"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IVerifyResetPasswordTokenParams"
 							}
 						}
 					}
