@@ -24,6 +24,7 @@ interface ISignupParams {
 
 interface IResetPasswordParams {
     token: string;
+    password: string;
 }
 
 interface IForgotPasswordParams {
@@ -116,7 +117,16 @@ const validateSignupParams = (params: ISignupParams): joi.ValidationResult => {
     return schema.validate(params);
 };
 
-const validateResetPasswordParams = (params: IResetPasswordParams): joi.ValidationResult => {
+const validateResetPasswordParams = (params: IVerifyResetPasswordTokenParams): joi.ValidationResult => {
+    const schema = joi.object({
+        token: joi.string().required(),
+        password: joi.string().pattern(PASSWORD_PATTERN).required(),
+    });
+
+    return schema.validate(params);
+};
+
+const validateVerifyResetPasswordParams = (params: IVerifyResetPasswordTokenParams): joi.ValidationResult => {
     const schema = joi.object({
         token: joi.string().required(),
     });
@@ -369,6 +379,19 @@ export class ResetPasswordController extends Controller {
 
         user.resetPasswordToken = undefined;
         user.resetPasswordExpires = undefined;
+        try {
+            user.password = await hashPassword(requestBody.password);
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Password changed error. ${err}`,
+                    }
+                ]
+            };
+        }
 
         try {
             await user.save();
@@ -512,7 +535,7 @@ export class VerifyResetPasswordTokenController extends Controller {
         data: {}
     })
     public async verifyResetPasswordToken(@Body() requestBody: IVerifyResetPasswordTokenParams): Promise<VerifyResetPasswordTokenResponse> {
-        const validation = validateResetPasswordParams(requestBody);
+        const validation = validateVerifyResetPasswordParams(requestBody);
         if (validation.error) {
             this.setStatus(500);
             return {
