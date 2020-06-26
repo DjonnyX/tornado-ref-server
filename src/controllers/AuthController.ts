@@ -315,12 +315,7 @@ export class SignoutController extends Controller {
     @Post()
     @Example<SignoutResponse>({
         meta: {},
-        data: {
-            token: "507c7f79bcf86cd7994f6c0e",
-            firstName: "First name",
-            lastName: "Last name",
-            email: "test@test.com",
-        }
+        data: {}
     })
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public async signout(@Header("authorization") token: string): Promise<SignoutResponse> {
