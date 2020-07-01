@@ -279,7 +279,7 @@ const models: TsoaRoute.Models = {
         "properties": {
             "name": { "dataType": "string", "required": true },
             "description": { "dataType": "string" },
-            "schedule": { "dataType": "array", "array": { "dataType": "string" }, "required": true },
+            "receipt": { "dataType": "array", "array": { "ref": "IReceiptItem" }, "required": true },
             "tags": { "dataType": "array", "array": { "dataType": "string" }, "required": true },
         },
         "additionalProperties": false,

@@ -161,7 +161,7 @@ export class SelectorsController extends Controller {
     })
     public async update(id: string, @Body() request: SelectorCreateRequest): Promise<SelectorResponse> {
         try {
-            const item = await SelectorModel.findOneAndUpdate({ id }, request);
+            const item = await SelectorModel.findOneAndUpdate({ _id: id }, request);
             const ref = await riseRefVersion(RefTypes.SELECTORS);
             return {
                 meta: { ref },
@@ -188,7 +188,7 @@ export class SelectorsController extends Controller {
     })
     public async delete(id: string): Promise<SelectorResponse> {
         try {
-            await SelectorModel.findOneAndDelete({ id });
+            await SelectorModel.findOneAndDelete({ _id: id });
             const ref = await riseRefVersion(RefTypes.SELECTORS);
             return {
                 meta: { ref }

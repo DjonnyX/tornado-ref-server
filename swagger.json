@@ -706,9 +706,9 @@
 					"description": {
 						"type": "string"
 					},
-					"schedule": {
+					"receipt": {
 						"items": {
-							"type": "string"
+							"$ref": "#/components/schemas/IReceiptItem"
 						},
 						"type": "array"
 					},
@@ -721,7 +721,7 @@
 				},
 				"required": [
 					"name",
-					"schedule",
+					"receipt",
 					"tags"
 				],
 				"type": "object",

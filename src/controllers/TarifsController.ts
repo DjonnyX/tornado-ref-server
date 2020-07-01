@@ -127,7 +127,7 @@ export class TarifController extends Controller {
     })
     public async update(id: string, @Body() request: TarifCreateRequest): Promise<TarifResponse> {
         try {
-            const item = await TarifModel.findOneAndUpdate({ id }, request);
+            const item = await TarifModel.findOneAndUpdate({ _id: id }, request);
             const ref = await riseRefVersion("tarifs");
             return {
                 meta: { ref },
@@ -146,7 +146,7 @@ export class TarifController extends Controller {
     })
     public async delete(id: string): Promise<TarifResponse> {
         try {
-            await TarifModel.findOneAndDelete({ id });
+            await TarifModel.findOneAndDelete({ _id: id });
             const ref = await riseRefVersion("tarifs");
             return {
                 meta: { ref }};

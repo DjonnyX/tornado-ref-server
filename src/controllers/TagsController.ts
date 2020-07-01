@@ -160,7 +160,7 @@ export class TagController extends Controller {
     })
     public async update(id: string, @Body() request: TagCreateRequest): Promise<TagResponse> {
         try {
-            const item = await TagModel.findOneAndUpdate({ id }, request);
+            const item = await TagModel.findOneAndUpdate({ _id: id }, request);
             const ref = await riseRefVersion(RefTypes.TAGS);
             return {
                 meta: { ref },
@@ -187,7 +187,7 @@ export class TagController extends Controller {
     })
     public async delete(id: string): Promise<TagResponse> {
         try {
-            await TagModel.findOneAndDelete({ id });
+            await TagModel.findOneAndDelete({ _id: id });
             const ref = await riseRefVersion(RefTypes.TAGS);
             return {
                 meta: { ref }

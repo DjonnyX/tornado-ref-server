@@ -39,7 +39,7 @@ interface ProductResponse {
 interface ProductCreateRequest {
     name: string;
     description?: string;
-    schedule: Array<string>;
+    receipt: Array<IReceiptItem>;
     tags: Array<string>;
 }
 
@@ -177,7 +177,7 @@ export class ProductsController extends Controller {
     })
     public async update(id: string, @Body() request: ProductCreateRequest): Promise<ProductResponse> {
         try {
-            const item = await ProductModel.findOneAndUpdate({ id }, request);
+            const item = await ProductModel.findOneAndUpdate({ _id: id }, request);
             const ref = await riseRefVersion(RefTypes.PRODUCTS);
             return {
                 meta: { ref },
@@ -204,7 +204,7 @@ export class ProductsController extends Controller {
     })
     public async delete(id: string): Promise<ProductResponse> {
         try {
-            await ProductModel.findOneAndDelete({ id });
+            await ProductModel.findOneAndDelete({ _id: id });
             const ref = await riseRefVersion(RefTypes.PRODUCTS);
             return {
                 meta: { ref }

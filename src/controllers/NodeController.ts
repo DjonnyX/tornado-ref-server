@@ -162,7 +162,7 @@ export class NodesController extends Controller {
     })
     public async update(id: string, @Body() request: NodeCreateRequest): Promise<NodeResponse> {
         try {
-            const item = await NodeModel.findOneAndUpdate({ id }, request);
+            const item = await NodeModel.findOneAndUpdate({ _id: id }, request);
             const ref = await riseRefVersion(RefTypes.NODES);
             return {
                 meta: { ref },
@@ -189,7 +189,7 @@ export class NodesController extends Controller {
     })
     public async delete(id: string): Promise<NodeResponse> {
         try {
-            await NodeModel.findOneAndDelete({ id });
+            await NodeModel.findOneAndDelete({ _id: id });
             const ref = await riseRefVersion(RefTypes.NODES);
             return {
                 meta: { ref }
