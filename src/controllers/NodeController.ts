@@ -5,6 +5,7 @@ import { NodeTypes, RefTypes } from "../models/enums";
 
 interface INodeItem {
     id: string;
+    type: NodeTypes;
     parentId: string;
     contentId: string;
     children: Array<string>;
@@ -45,6 +46,7 @@ interface NodeCreateRequest {
 
 const RESPONSE_TEMPLATE: INodeItem = {
     id: "507c7f79bcf86cd7994f6c0e",
+    type: NodeTypes.SELECTOR,
     parentId: "107c7f79bcf86cd7994f6c0e",
     contentId: "407c7f79bcf86cd7994f6c0e",
     children: ["123c7f79bcf86cd7994f6c0e"],
@@ -52,6 +54,7 @@ const RESPONSE_TEMPLATE: INodeItem = {
 
 const formatModel = (model: INode) => ({
     id: model._id,
+    type: model.type,
     parentId: model.parentId,
     contentId: model.contentId,
     children: model.children || [],

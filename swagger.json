@@ -418,10 +418,21 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"NodeTypes": {
+				"enum": [
+					"root",
+					"selector",
+					"product"
+				],
+				"type": "string"
+			},
 			"INodeItem": {
 				"properties": {
 					"id": {
 						"type": "string"
+					},
+					"type": {
+						"$ref": "#/components/schemas/NodeTypes"
 					},
 					"parentId": {
 						"type": "string"
@@ -438,6 +449,7 @@
 				},
 				"required": [
 					"id",
+					"type",
 					"parentId",
 					"contentId",
 					"children"
@@ -509,14 +521,6 @@
 				},
 				"type": "object",
 				"additionalProperties": false
-			},
-			"NodeTypes": {
-				"enum": [
-					"root",
-					"selector",
-					"product"
-				],
-				"type": "string"
 			},
 			"NodeCreateRequest": {
 				"properties": {
@@ -1665,6 +1669,7 @@
 											"data": [
 												{
 													"id": "507c7f79bcf86cd7994f6c0e",
+													"type": "selector",
 													"parentId": "107c7f79bcf86cd7994f6c0e",
 													"contentId": "407c7f79bcf86cd7994f6c0e",
 													"children": [
@@ -1711,6 +1716,7 @@
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
+												"type": "selector",
 												"parentId": "107c7f79bcf86cd7994f6c0e",
 												"contentId": "407c7f79bcf86cd7994f6c0e",
 												"children": [
@@ -1768,6 +1774,7 @@
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
+												"type": "selector",
 												"parentId": "107c7f79bcf86cd7994f6c0e",
 												"contentId": "407c7f79bcf86cd7994f6c0e",
 												"children": [
@@ -1822,6 +1829,7 @@
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
+												"type": "selector",
 												"parentId": "107c7f79bcf86cd7994f6c0e",
 												"contentId": "407c7f79bcf86cd7994f6c0e",
 												"children": [

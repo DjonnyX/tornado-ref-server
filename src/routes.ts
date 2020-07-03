@@ -176,10 +176,16 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "NodeTypes": {
+        "dataType": "refEnum",
+        "enums": ["root", "selector", "product"],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "INodeItem": {
         "dataType": "refObject",
         "properties": {
             "id": { "dataType": "string", "required": true },
+            "type": { "ref": "NodeTypes", "required": true },
             "parentId": { "dataType": "string", "required": true },
             "contentId": { "dataType": "string", "required": true },
             "children": { "dataType": "array", "array": { "dataType": "string" }, "required": true },
@@ -205,11 +211,6 @@ const models: TsoaRoute.Models = {
             "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
         },
         "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "NodeTypes": {
-        "dataType": "refEnum",
-        "enums": ["root", "selector", "product"],
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "NodeCreateRequest": {
