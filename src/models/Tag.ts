@@ -10,7 +10,7 @@ interface ITag extends Document {
 const TagSchema = new Schema({
     name: { type: String, required: true },
     description: { type: String },
-    color: [{ type: String, required: true }]
+    color: { type: String, required: true },
 });
 
 const TagModel = mongoose.model<ITag>("Tag", TagSchema);
