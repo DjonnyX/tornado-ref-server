@@ -6,7 +6,6 @@ interface ISelectorItem {
     id: string;
     name: string;
     description?: string;
-    tags: Array<string>;
 }
 
 interface ISelectorsMeta {
@@ -39,21 +38,18 @@ interface SelectorCreateRequest {
     name: string;
     description?: string;
     schedule: Array<string>;
-    tags: Array<string>;
 }
 
 const RESPONSE_TEMPLATE: ISelectorItem = {
     id: "507c7f79bcf86cd7994f6c0e",
     name: "Selectors on concert",
     description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-    tags: ["123c7f79bcf86cd7994f6c0e"],
 };
 
 const formatModel = (model: ISelector) => ({
     id: model._id,
     name: model.name,
     description: model.description,
-    tags: model.tags || [],
 });
 
 const META_TEMPLATE: ISelectorsMeta = {
