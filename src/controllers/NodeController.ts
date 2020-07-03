@@ -2,6 +2,7 @@ import { NodeModel, INode } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { NodeTypes, RefTypes } from "../models/enums";
+import * as joi from "@hapi/joi";
 
 interface INodeItem {
     id: string;
@@ -19,7 +20,7 @@ interface INodesMeta {
     };
 }
 
-interface NodesResponse {
+interface INodesResponse {
     meta?: INodesMeta;
     data?: Array<INodeItem>;
     error?: Array<{
@@ -28,7 +29,7 @@ interface NodesResponse {
     }>;
 }
 
-interface NodeResponse {
+interface INodeResponse {
     meta?: INodesMeta;
     data?: INodeItem;
     error?: Array<{
@@ -37,7 +38,7 @@ interface NodeResponse {
     }>;
 }
 
-interface NodeCreateRequest {
+interface INodeCreateRequest {
     type: NodeTypes;
     parentId: string;
     contentId: string;
@@ -68,17 +69,28 @@ const META_TEMPLATE: INodesMeta = {
     }
 };
 
+const validateCreateNode = (node: INodeCreateRequest): joi.ValidationResult => {
+    const schema = joi.object({
+        type: joi.string().pattern(new RegExp(`^[${NodeTypes.PRODUCT}|${NodeTypes.SELECTOR}]`)),
+        parentId: joi.string().required(),
+        contentId: joi.string().required(),
+        children: joi.required(),
+    });
+
+    return schema.validate(node);
+};
+
 @Route("/nodes")
 @Tags("Node")
 export class NodesController extends Controller {
     @Get()
     @Security("jwt")
     @OperationId("GetAll")
-    @Example<NodesResponse>({
+    @Example<INodesResponse>({
         meta: META_TEMPLATE,
         data: [RESPONSE_TEMPLATE]
     })
-    public async getAll(): Promise<NodesResponse> {
+    public async getAll(): Promise<INodesResponse> {
         try {
             const items = await NodeModel.find({});
             const ref = await getRef(RefTypes.NODES);
@@ -102,11 +114,11 @@ export class NodesController extends Controller {
     @Get("{id}")
     @Security("jwt")
     @OperationId("GetOne")
-    @Example<NodeResponse>({
+    @Example<INodeResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE
     })
-    public async getOne(id: string): Promise<NodeResponse> {
+    public async getOne(id: string): Promise<INodeResponse> {
         try {
             const item = await NodeModel.findById(id);
             const ref = await getRef(RefTypes.NODES);
@@ -130,11 +142,24 @@ export class NodesController extends Controller {
     @Post()
     @Security("jwt")
     @OperationId("Create")
-    @Example<NodeResponse>({
+    @Example<INodeResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE
     })
-    public async create(@Body() request: NodeCreateRequest): Promise<NodeResponse> {
+    public async create(@Body() request: INodeCreateRequest): Promise<INodeResponse> {
+        const validation = validateCreateNode(request);
+        if (validation.error) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: validation.error.message,
+                    }
+                ]
+            };
+        }
+        
         try {
             const item = new NodeModel(request);
             const savedItem = await item.save();
@@ -159,11 +184,11 @@ export class NodesController extends Controller {
     @Put("{id}")
     @Security("jwt")
     @OperationId("Update")
-    @Example<NodeResponse>({
+    @Example<INodeResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE
     })
-    public async update(id: string, @Body() request: NodeCreateRequest): Promise<NodeResponse> {
+    public async update(id: string, @Body() request: INodeCreateRequest): Promise<INodeResponse> {
         try {
             const item = await NodeModel.findOneAndUpdate({ _id: id }, request);
             const ref = await riseRefVersion(RefTypes.NODES);
@@ -187,10 +212,10 @@ export class NodesController extends Controller {
     @Delete("{id}")
     @Security("jwt")
     @OperationId("Delete")
-    @Example<NodeResponse>({
+    @Example<INodeResponse>({
         meta: META_TEMPLATE
     })
-    public async delete(id: string): Promise<NodeResponse> {
+    public async delete(id: string): Promise<INodeResponse> {
         try {
             await NodeModel.findOneAndDelete({ _id: id });
             const ref = await riseRefVersion(RefTypes.NODES);

@@ -1,5 +1,5 @@
 export enum NodeTypes {
-    ROOT = "root",
+    KIOSK_ROOT = "kiosk-root",
     SELECTOR = "selector",
     PRODUCT = "product",
 }

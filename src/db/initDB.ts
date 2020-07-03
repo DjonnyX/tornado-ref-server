@@ -2,12 +2,12 @@ import { RefModel, RefTypes, NodeModel } from "../models/index";
 import { NodeTypes } from "../models/enums";
 
 const createRootNode = async () => {
-    const existsRootNode = await NodeModel.findOne({ type: NodeTypes.ROOT });
+    const existsRootNode = await NodeModel.findOne({ type: NodeTypes.KIOSK_ROOT });
 
     if (!existsRootNode) {
         // generate new root node
         const rootMenuNode = new NodeModel({
-            type: NodeTypes.ROOT,
+            type: NodeTypes.KIOSK_ROOT,
             parentId: null,
             contentId: null,
             children: [],
