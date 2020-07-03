@@ -1,4 +1,20 @@
-import { RefModel, RefTypes } from "../models/index";
+import { RefModel, RefTypes, NodeModel } from "../models/index";
+import { NodeTypes } from "../models/enums";
+
+const createRootNode = async () => {
+    const existsRootNode = await NodeModel.findOne({ type: NodeTypes.ROOT });
+
+    if (!existsRootNode) {
+        // generate new root node
+        const rootMenuNode = new NodeModel({
+            type: NodeTypes.ROOT,
+            parentId: null,
+            contentId: null,
+            children: [],
+        });
+        await rootMenuNode.save();
+    }
+};
 
 export const initRefs = async (): Promise<void> => {
 
@@ -41,6 +57,9 @@ export const initRefs = async (): Promise<void> => {
         const model = new RefModel(refData);
         await model.save();
     }
+
+    // root node
+    await createRootNode();
 
     console.info("Refs are initialized.");
 };
