@@ -1,4 +1,4 @@
-import { SelectorModel, ISelector, IReceiptItem, RefTypes } from "../models/index";
+import { SelectorModel, ISelector, RefTypes } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 
@@ -37,7 +37,6 @@ interface SelectorResponse {
 interface SelectorCreateRequest {
     name: string;
     description?: string;
-    schedule: Array<string>;
 }
 
 const RESPONSE_TEMPLATE: ISelectorItem = {
