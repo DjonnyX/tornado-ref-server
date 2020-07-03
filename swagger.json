@@ -420,7 +420,7 @@
 			},
 			"NodeTypes": {
 				"enum": [
-					"root",
+					"kiosk-root",
 					"selector",
 					"product"
 				],
@@ -457,7 +457,7 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"NodesResponse": {
+			"INodesResponse": {
 				"properties": {
 					"meta": {
 						"$ref": "#/components/schemas/INodesMeta"
@@ -491,7 +491,7 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"NodeResponse": {
+			"INodeResponse": {
 				"properties": {
 					"meta": {
 						"$ref": "#/components/schemas/INodesMeta"
@@ -522,7 +522,7 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"NodeCreateRequest": {
+			"INodeCreateRequest": {
 				"properties": {
 					"type": {
 						"$ref": "#/components/schemas/NodeTypes"
@@ -1654,7 +1654,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/NodesResponse"
+									"$ref": "#/components/schemas/INodesResponse"
 								},
 								"examples": {
 									"example": {
@@ -1702,7 +1702,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/NodeResponse"
+									"$ref": "#/components/schemas/INodeResponse"
 								},
 								"examples": {
 									"example": {
@@ -1745,7 +1745,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/NodeCreateRequest"
+								"$ref": "#/components/schemas/INodeCreateRequest"
 							}
 						}
 					}
@@ -1760,7 +1760,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/NodeResponse"
+									"$ref": "#/components/schemas/INodeResponse"
 								},
 								"examples": {
 									"example": {
@@ -1815,7 +1815,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/NodeResponse"
+									"$ref": "#/components/schemas/INodeResponse"
 								},
 								"examples": {
 									"example": {
@@ -1867,7 +1867,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/NodeCreateRequest"
+								"$ref": "#/components/schemas/INodeCreateRequest"
 							}
 						}
 					}
@@ -1880,7 +1880,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/NodeResponse"
+									"$ref": "#/components/schemas/INodeResponse"
 								},
 								"examples": {
 									"example": {

@@ -178,7 +178,7 @@ const models: TsoaRoute.Models = {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "NodeTypes": {
         "dataType": "refEnum",
-        "enums": ["root", "selector", "product"],
+        "enums": ["kiosk-root", "selector", "product"],
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "INodeItem": {
@@ -193,7 +193,7 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "NodesResponse": {
+    "INodesResponse": {
         "dataType": "refObject",
         "properties": {
             "meta": { "ref": "INodesMeta" },
@@ -203,7 +203,7 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "NodeResponse": {
+    "INodeResponse": {
         "dataType": "refObject",
         "properties": {
             "meta": { "ref": "INodesMeta" },
@@ -213,7 +213,7 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "NodeCreateRequest": {
+    "INodeCreateRequest": {
         "dataType": "refObject",
         "properties": {
             "type": { "ref": "NodeTypes", "required": true },
@@ -737,7 +737,7 @@ export function RegisterRoutes(app: express.Express) {
         authenticateMiddleware([{ "jwt": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
-                request: { "in": "body", "name": "request", "required": true, "ref": "NodeCreateRequest" },
+                request: { "in": "body", "name": "request", "required": true, "ref": "INodeCreateRequest" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -761,7 +761,7 @@ export function RegisterRoutes(app: express.Express) {
         function(request: any, response: any, next: any) {
             const args = {
                 id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                request: { "in": "body", "name": "request", "required": true, "ref": "NodeCreateRequest" },
+                request: { "in": "body", "name": "request", "required": true, "ref": "INodeCreateRequest" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
