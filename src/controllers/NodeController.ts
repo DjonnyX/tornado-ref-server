@@ -122,14 +122,16 @@ const getNodesChain = async (id: string): Promise<Array<INode>> => {
         throw Error(`Can not be found not with id: ${id}. ${err}`);
     }
 
-    for (let i = 0, l = item.children.length; i < l; i++) {
-        const childId = item.children[i];
+    if (item) {
+        for (let i = 0, l = item.children.length; i < l; i++) {
+            const childId = item.children[i];
 
-        const childrenNodes = await getNodesChain(childId);
-        result = [...result, ...childrenNodes];
+            const childrenNodes = await getNodesChain(childId);
+            result = [...result, ...childrenNodes];
+        }
+
+        result.push(item);
     }
-
-    result.push(item);
 
     return result;
 };
