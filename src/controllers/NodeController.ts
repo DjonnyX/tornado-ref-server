@@ -119,7 +119,7 @@ const getNodesChain = async (id: string): Promise<Array<INode>> => {
     try {
         item = await NodeModel.findById(id);
     } catch (err) {
-        throw Error(`Can not be found not with id: ${id}. ${err}`);
+        throw Error(`Can not be found node with id: ${id}. ${err}`);
     }
 
     if (item) {
