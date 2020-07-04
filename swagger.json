@@ -522,6 +522,51 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"ICreateNodeResponse": {
+				"properties": {
+					"meta": {
+						"$ref": "#/components/schemas/INodesMeta"
+					},
+					"data": {
+						"properties": {
+							"child": {
+								"$ref": "#/components/schemas/INodeItem",
+								"description": "Передается созданный ребенок"
+							},
+							"parent": {
+								"$ref": "#/components/schemas/INodeItem",
+								"description": "Передается измененный родитель"
+							}
+						},
+						"required": [
+							"child",
+							"parent"
+						],
+						"type": "object"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
 			"INodeCreateRequest": {
 				"properties": {
 					"type": {
@@ -1736,7 +1781,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/INodeResponse"
+									"$ref": "#/components/schemas/ICreateNodeResponse"
 								},
 								"examples": {
 									"example": {

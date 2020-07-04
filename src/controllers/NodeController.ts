@@ -38,6 +38,25 @@ interface INodeResponse {
         message: string;
     }>;
 }
+
+interface ICreateNodeResponse {
+    meta?: INodesMeta;
+    data?: {
+        /**
+         * Передается измененный родитель
+         */
+        parent: INodeItem;
+        /**
+         * Передается созданный ребенок
+         */
+        child: INodeItem;
+    };
+    error?: Array<{
+        code: number;
+        message: string;
+    }>;
+}
+
 interface IDeleteNodeResponse {
     meta?: INodesMeta;
     data?: Array<string>;
@@ -62,7 +81,7 @@ const RESPONSE_TEMPLATE: INodeItem = {
     children: ["123c7f79bcf86cd7994f6c0e"],
 };
 
-const formatModel = (model: INode) => ({
+const formatModel = (model: INode): INodeItem => ({
     id: model._id,
     type: model.type,
     parentId: model.parentId,
@@ -206,7 +225,7 @@ export class NodesController extends Controller {
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE
     })
-    public async create(@Body() request: INodeCreateRequest): Promise<INodeResponse> {
+    public async create(@Body() request: INodeCreateRequest): Promise<ICreateNodeResponse> {
         const validation = validateCreateNode(request);
         if (validation.error) {
             this.setStatus(500);
@@ -251,8 +270,10 @@ export class NodesController extends Controller {
             };
         }
 
+        let parentNode: INode;
+
         try {
-            const parentNode = await NodeModel.findOne({ _id: savedItem.parentId });
+            parentNode = await NodeModel.findOne({ _id: savedItem.parentId });
             parentNode.children.push(savedItem._id);
             await parentNode.save();
         } catch (err) {
@@ -269,7 +290,10 @@ export class NodesController extends Controller {
 
         return {
             meta: { ref },
-            data: formatModel(savedItem)
+            data: {
+                parent: formatModel(parentNode),
+                child: formatModel(savedItem),
+            }
         };
     }
 
@@ -286,7 +310,7 @@ export class NodesController extends Controller {
             const ref = await riseRefVersion(RefTypes.NODES);
             return {
                 meta: { ref },
-                data: formatModel(item)
+                data: formatModel(item),
             };
         } catch (err) {
             this.setStatus(500);

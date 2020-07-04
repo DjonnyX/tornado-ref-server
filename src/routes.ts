@@ -213,6 +213,16 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ICreateNodeResponse": {
+        "dataType": "refObject",
+        "properties": {
+            "meta": { "ref": "INodesMeta" },
+            "data": { "dataType": "nestedObjectLiteral", "nestedProperties": { "child": { "ref": "INodeItem", "required": true }, "parent": { "ref": "INodeItem", "required": true } } },
+            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "INodeCreateRequest": {
         "dataType": "refObject",
         "properties": {
