@@ -159,6 +159,103 @@ const deleteNodesChain = async (id: string): Promise<Array<string>> => {
     return result;
 };
 
+@Route("/root-nodes")
+@Tags("Root nodes")
+export class RootNodesController extends Controller {
+    @Get()
+    @Security("jwt")
+    @OperationId("GetRootNodes")
+    @Example<INodesResponse>({
+        meta: META_TEMPLATE,
+        data: [{
+            id: "507c7f79bcf86cd7994f6c0e",
+            type: NodeTypes.KIOSK_ROOT,
+            parentId: "107c7f79bcf86cd7994f6c0e",
+            contentId: "407c7f79bcf86cd7994f6c0e",
+            children: ["123c7f79bcf86cd7994f6c0e"],
+        }]
+    })
+    public async getAll(): Promise<INodesResponse> {
+        try {
+            const items = await NodeModel.find({ type: NodeTypes.KIOSK_ROOT });
+            const ref = await getRef(RefTypes.NODES);
+            return {
+                meta: { ref },
+                data: items.map(v => formatModel(v))
+            };
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Caught error. ${err}`,
+                    }
+                ]
+            };
+        }
+    }
+}
+
+@Route("/nodes")
+@Tags("Node")
+export class NodesController extends Controller {
+    @Get()
+    @Security("jwt")
+    @OperationId("GetAll")
+    @Example<INodesResponse>({
+        meta: META_TEMPLATE,
+        data: [RESPONSE_TEMPLATE]
+    })
+    public async getAll(): Promise<INodesResponse> {
+        try {
+            const items = await NodeModel.find({});
+            const ref = await getRef(RefTypes.NODES);
+            return {
+                meta: { ref },
+                data: items.map(v => formatModel(v))
+            };
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Caught error. ${err}`,
+                    }
+                ]
+            };
+        }
+    }
+
+    @Get("{id}")
+    @Security("jwt")
+    @OperationId("GetAllById")
+    @Example<INodesResponse>({
+        meta: META_TEMPLATE,
+        data: [RESPONSE_TEMPLATE]
+    })
+    public async getAllById(id: string): Promise<INodesResponse> {
+        try {
+            const items = await getNodesChain(id);
+            const ref = await getRef(RefTypes.NODES);
+            return {
+                meta: { ref },
+                data: items.map(v => formatModel(v))
+            };
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Caught error. ${err}`,
+                    }
+                ]
+            };
+        }
+    }
+}
 
 @Route("/node")
 @Tags("Node")
@@ -290,7 +387,7 @@ export class NodeController extends Controller {
                 ]
             };
         }
-        
+
         try {
             const item = await NodeModel.findById(id);
             item.contentId = request.contentId;
@@ -331,66 +428,6 @@ export class NodeController extends Controller {
             return {
                 meta: { ref },
                 data: ids,
-            };
-        } catch (err) {
-            this.setStatus(500);
-            return {
-                error: [
-                    {
-                        code: 500,
-                        message: `Caught error. ${err}`,
-                    }
-                ]
-            };
-        }
-    }
-}
-
-@Route("/nodes")
-@Tags("Node")
-export class NodesController extends Controller {
-    @Get()
-    @Security("jwt")
-    @OperationId("GetAll")
-    @Example<INodesResponse>({
-        meta: META_TEMPLATE,
-        data: [RESPONSE_TEMPLATE]
-    })
-    public async getAll(): Promise<INodesResponse> {
-        try {
-            const items = await NodeModel.find({});
-            const ref = await getRef(RefTypes.NODES);
-            return {
-                meta: { ref },
-                data: items.map(v => formatModel(v))
-            };
-        } catch (err) {
-            this.setStatus(500);
-            return {
-                error: [
-                    {
-                        code: 500,
-                        message: `Caught error. ${err}`,
-                    }
-                ]
-            };
-        }
-    }
-    
-    @Get("{id}")
-    @Security("jwt")
-    @OperationId("GetAllById")
-    @Example<INodesResponse>({
-        meta: META_TEMPLATE,
-        data: [RESPONSE_TEMPLATE]
-    })
-    public async getAllById(id: string): Promise<INodesResponse> {
-        try {
-            const items = await getNodesChain(id);
-            const ref = await getRef(RefTypes.NODES);
-            return {
-                meta: { ref },
-                data: items.map(v => formatModel(v))
             };
         } catch (err) {
             this.setStatus(500);

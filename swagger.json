@@ -457,6 +457,40 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"INodesResponse": {
+				"properties": {
+					"meta": {
+						"$ref": "#/components/schemas/INodesMeta"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/INodeItem"
+						},
+						"type": "array"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
 			"INodeResponse": {
 				"properties": {
 					"meta": {
@@ -568,40 +602,6 @@
 					"data": {
 						"items": {
 							"type": "string"
-						},
-						"type": "array"
-					},
-					"error": {
-						"items": {
-							"properties": {
-								"message": {
-									"type": "string"
-								},
-								"code": {
-									"type": "number",
-									"format": "double"
-								}
-							},
-							"required": [
-								"message",
-								"code"
-							],
-							"type": "object"
-						},
-						"type": "array"
-					}
-				},
-				"type": "object",
-				"additionalProperties": false
-			},
-			"INodesResponse": {
-				"properties": {
-					"meta": {
-						"$ref": "#/components/schemas/INodesMeta"
-					},
-					"data": {
-						"items": {
-							"$ref": "#/components/schemas/INodeItem"
 						},
 						"type": "array"
 					},
@@ -1449,6 +1449,165 @@
 				}
 			}
 		},
+		"/root-nodes": {
+			"get": {
+				"operationId": "GetRootNodes",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/INodesResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "nodes",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": [
+												{
+													"id": "507c7f79bcf86cd7994f6c0e",
+													"type": "kiosk-root",
+													"parentId": "107c7f79bcf86cd7994f6c0e",
+													"contentId": "407c7f79bcf86cd7994f6c0e",
+													"children": [
+														"123c7f79bcf86cd7994f6c0e"
+													]
+												}
+											]
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Root nodes"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/nodes": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/INodesResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "nodes",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": [
+												{
+													"id": "507c7f79bcf86cd7994f6c0e",
+													"type": "selector",
+													"parentId": "107c7f79bcf86cd7994f6c0e",
+													"contentId": "407c7f79bcf86cd7994f6c0e",
+													"children": [
+														"123c7f79bcf86cd7994f6c0e"
+													]
+												}
+											]
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Node"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/nodes/{id}": {
+			"get": {
+				"operationId": "GetAllById",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/INodesResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "nodes",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": [
+												{
+													"id": "507c7f79bcf86cd7994f6c0e",
+													"type": "selector",
+													"parentId": "107c7f79bcf86cd7994f6c0e",
+													"contentId": "407c7f79bcf86cd7994f6c0e",
+													"children": [
+														"123c7f79bcf86cd7994f6c0e"
+													]
+												}
+											]
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Node"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
 		"/node/{id}": {
 			"get": {
 				"operationId": "GetOne",
@@ -1673,115 +1832,6 @@
 						}
 					}
 				}
-			}
-		},
-		"/nodes": {
-			"get": {
-				"operationId": "GetAll",
-				"responses": {
-					"200": {
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/INodesResponse"
-								},
-								"examples": {
-									"example": {
-										"value": {
-											"meta": {
-												"ref": {
-													"name": "nodes",
-													"version": 1,
-													"lastUpdate": 1589885721
-												}
-											},
-											"data": [
-												{
-													"id": "507c7f79bcf86cd7994f6c0e",
-													"type": "selector",
-													"parentId": "107c7f79bcf86cd7994f6c0e",
-													"contentId": "407c7f79bcf86cd7994f6c0e",
-													"children": [
-														"123c7f79bcf86cd7994f6c0e"
-													]
-												}
-											]
-										}
-									}
-								}
-							}
-						},
-						"description": "Ok"
-					}
-				},
-				"tags": [
-					"Node"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": []
-			}
-		},
-		"/nodes/{id}": {
-			"get": {
-				"operationId": "GetAllById",
-				"responses": {
-					"200": {
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/INodesResponse"
-								},
-								"examples": {
-									"example": {
-										"value": {
-											"meta": {
-												"ref": {
-													"name": "nodes",
-													"version": 1,
-													"lastUpdate": 1589885721
-												}
-											},
-											"data": [
-												{
-													"id": "507c7f79bcf86cd7994f6c0e",
-													"type": "selector",
-													"parentId": "107c7f79bcf86cd7994f6c0e",
-													"contentId": "407c7f79bcf86cd7994f6c0e",
-													"children": [
-														"123c7f79bcf86cd7994f6c0e"
-													]
-												}
-											]
-										}
-									}
-								}
-							}
-						},
-						"description": "Ok"
-					}
-				},
-				"tags": [
-					"Node"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
 			}
 		},
 		"/products": {
