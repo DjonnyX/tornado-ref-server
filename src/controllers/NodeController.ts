@@ -190,7 +190,7 @@ export class NodeController extends Controller {
             };
         }
     }
-    
+
     @Post()
     @Security("jwt")
     @OperationId("Create")
@@ -278,6 +278,19 @@ export class NodeController extends Controller {
         data: RESPONSE_TEMPLATE
     })
     public async update(id: string, @Body() request: INodeCreateRequest): Promise<INodeResponse> {
+        const validation = validateCreateNode(request);
+        if (validation.error) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: validation.error.message,
+                    }
+                ]
+            };
+        }
+        
         try {
             const item = await NodeModel.findById(id);
             item.contentId = request.contentId;
