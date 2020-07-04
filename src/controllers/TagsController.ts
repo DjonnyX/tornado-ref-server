@@ -65,7 +65,7 @@ const META_TEMPLATE: ITagsMeta = {
 
 @Route("/tags")
 @Tags("Tag")
-export class TagController extends Controller {
+export class TagsController extends Controller {
     @Get()
     @Security("jwt")
     @OperationId("GetAll")
@@ -93,7 +93,11 @@ export class TagController extends Controller {
             };
         }
     }
+}
 
+@Route("/tag")
+@Tags("Tag")
+export class TagController extends Controller {
     @Get("{id}")
     @Security("jwt")
     @OperationId("GetOne")

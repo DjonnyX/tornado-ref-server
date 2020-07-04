@@ -457,40 +457,6 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"INodesResponse": {
-				"properties": {
-					"meta": {
-						"$ref": "#/components/schemas/INodesMeta"
-					},
-					"data": {
-						"items": {
-							"$ref": "#/components/schemas/INodeItem"
-						},
-						"type": "array"
-					},
-					"error": {
-						"items": {
-							"properties": {
-								"message": {
-									"type": "string"
-								},
-								"code": {
-									"type": "number",
-									"format": "double"
-								}
-							},
-							"required": [
-								"message",
-								"code"
-							],
-							"type": "object"
-						},
-						"type": "array"
-					}
-				},
-				"type": "object",
-				"additionalProperties": false
-			},
 			"INodeResponse": {
 				"properties": {
 					"meta": {
@@ -602,6 +568,40 @@
 					"data": {
 						"items": {
 							"type": "string"
+						},
+						"type": "array"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"INodesResponse": {
+				"properties": {
+					"meta": {
+						"$ref": "#/components/schemas/INodesMeta"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/INodeItem"
 						},
 						"type": "array"
 					},
@@ -1159,7 +1159,7 @@
 				"parameters": []
 			}
 		},
-		"/refs/{name}": {
+		"/ref/{name}": {
 			"get": {
 				"operationId": "GetOne",
 				"responses": {
@@ -1449,113 +1449,7 @@
 				}
 			}
 		},
-		"/nodes": {
-			"get": {
-				"operationId": "GetAll",
-				"responses": {
-					"200": {
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/INodesResponse"
-								},
-								"examples": {
-									"example": {
-										"value": {
-											"meta": {
-												"ref": {
-													"name": "nodes",
-													"version": 1,
-													"lastUpdate": 1589885721
-												}
-											},
-											"data": [
-												{
-													"id": "507c7f79bcf86cd7994f6c0e",
-													"type": "selector",
-													"parentId": "107c7f79bcf86cd7994f6c0e",
-													"contentId": "407c7f79bcf86cd7994f6c0e",
-													"children": [
-														"123c7f79bcf86cd7994f6c0e"
-													]
-												}
-											]
-										}
-									}
-								}
-							}
-						},
-						"description": "Ok"
-					}
-				},
-				"tags": [
-					"Node"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": []
-			},
-			"post": {
-				"operationId": "Create",
-				"responses": {
-					"200": {
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ICreateNodeResponse"
-								},
-								"examples": {
-									"example": {
-										"value": {
-											"meta": {
-												"ref": {
-													"name": "nodes",
-													"version": 1,
-													"lastUpdate": 1589885721
-												}
-											},
-											"data": {
-												"id": "507c7f79bcf86cd7994f6c0e",
-												"type": "selector",
-												"parentId": "107c7f79bcf86cd7994f6c0e",
-												"contentId": "407c7f79bcf86cd7994f6c0e",
-												"children": [
-													"123c7f79bcf86cd7994f6c0e"
-												]
-											}
-										}
-									}
-								}
-							}
-						},
-						"description": "Ok"
-					}
-				},
-				"tags": [
-					"Node"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/INodeCreateRequest"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/nodes/{id}": {
+		"/node/{id}": {
 			"get": {
 				"operationId": "GetOne",
 				"responses": {
@@ -1723,6 +1617,173 @@
 				]
 			}
 		},
+		"/node": {
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ICreateNodeResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "nodes",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": {
+												"id": "507c7f79bcf86cd7994f6c0e",
+												"type": "selector",
+												"parentId": "107c7f79bcf86cd7994f6c0e",
+												"contentId": "407c7f79bcf86cd7994f6c0e",
+												"children": [
+													"123c7f79bcf86cd7994f6c0e"
+												]
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Node"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/INodeCreateRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/nodes": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/INodesResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "nodes",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": [
+												{
+													"id": "507c7f79bcf86cd7994f6c0e",
+													"type": "selector",
+													"parentId": "107c7f79bcf86cd7994f6c0e",
+													"contentId": "407c7f79bcf86cd7994f6c0e",
+													"children": [
+														"123c7f79bcf86cd7994f6c0e"
+													]
+												}
+											]
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Node"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/nodes/{id}": {
+			"get": {
+				"operationId": "GetAllById",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/INodesResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "nodes",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": [
+												{
+													"id": "507c7f79bcf86cd7994f6c0e",
+													"type": "selector",
+													"parentId": "107c7f79bcf86cd7994f6c0e",
+													"contentId": "407c7f79bcf86cd7994f6c0e",
+													"children": [
+														"123c7f79bcf86cd7994f6c0e"
+													]
+												}
+											]
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Node"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
 		"/products": {
 			"get": {
 				"operationId": "GetAll",
@@ -1784,78 +1845,9 @@
 					}
 				],
 				"parameters": []
-			},
-			"post": {
-				"operationId": "Create",
-				"responses": {
-					"200": {
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ProductResponse"
-								},
-								"examples": {
-									"example": {
-										"value": {
-											"meta": {
-												"ref": {
-													"name": "products",
-													"version": 1,
-													"lastUpdate": 1589885721
-												}
-											},
-											"data": {
-												"id": "507c7f79bcf86cd7994f6c0e",
-												"name": "Products on concert",
-												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-												"receipt": [
-													{
-														"name": "Bun",
-														"description": "Crispy bun",
-														"quantity": 1,
-														"calories": 142
-													},
-													{
-														"name": "Cutlet",
-														"description": "Beef cutlet",
-														"quantity": 1,
-														"calories": 346
-													}
-												],
-												"tags": [
-													"123c7f79bcf86cd7994f6c0e"
-												]
-											}
-										}
-									}
-								}
-							}
-						},
-						"description": "Ok"
-					}
-				},
-				"tags": [
-					"Product"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/ProductCreateRequest"
-							}
-						}
-					}
-				}
 			}
 		},
-		"/products/{id}": {
+		"/product/{id}": {
 			"get": {
 				"operationId": "GetOne",
 				"responses": {
@@ -2047,6 +2039,77 @@
 						}
 					}
 				]
+			}
+		},
+		"/product": {
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProductResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "products",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": {
+												"id": "507c7f79bcf86cd7994f6c0e",
+												"name": "Products on concert",
+												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+												"receipt": [
+													{
+														"name": "Bun",
+														"description": "Crispy bun",
+														"quantity": 1,
+														"calories": 142
+													},
+													{
+														"name": "Cutlet",
+														"description": "Beef cutlet",
+														"quantity": 1,
+														"calories": 346
+													}
+												],
+												"tags": [
+													"123c7f79bcf86cd7994f6c0e"
+												]
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Product"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ProductCreateRequest"
+							}
+						}
+					}
+				}
 			}
 		},
 		"/selectors": {
@@ -2093,61 +2156,9 @@
 					}
 				],
 				"parameters": []
-			},
-			"post": {
-				"operationId": "Create",
-				"responses": {
-					"200": {
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/SelectorResponse"
-								},
-								"examples": {
-									"example": {
-										"value": {
-											"meta": {
-												"ref": {
-													"name": "selectors",
-													"version": 1,
-													"lastUpdate": 1589885721
-												}
-											},
-											"data": {
-												"id": "507c7f79bcf86cd7994f6c0e",
-												"name": "Selectors on concert",
-												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
-											}
-										}
-									}
-								}
-							}
-						},
-						"description": "Ok"
-					}
-				},
-				"tags": [
-					"Selector"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/SelectorCreateRequest"
-							}
-						}
-					}
-				}
 			}
 		},
-		"/selectors/{id}": {
+		"/selector/{id}": {
 			"get": {
 				"operationId": "GetOne",
 				"responses": {
@@ -2305,6 +2316,60 @@
 						}
 					}
 				]
+			}
+		},
+		"/selector": {
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/SelectorResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "selectors",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": {
+												"id": "507c7f79bcf86cd7994f6c0e",
+												"name": "Selectors on concert",
+												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Selector"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/SelectorCreateRequest"
+							}
+						}
+					}
+				}
 			}
 		},
 		"/tags": {
@@ -2352,62 +2417,9 @@
 					}
 				],
 				"parameters": []
-			},
-			"post": {
-				"operationId": "Create",
-				"responses": {
-					"200": {
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/TagResponse"
-								},
-								"examples": {
-									"example": {
-										"value": {
-											"meta": {
-												"ref": {
-													"name": "tags",
-													"version": 1,
-													"lastUpdate": 1589885721
-												}
-											},
-											"data": {
-												"id": "507c7f79bcf86cd7994f6c0e",
-												"name": "Morning Tag",
-												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-												"color": "0x000fff"
-											}
-										}
-									}
-								}
-							}
-						},
-						"description": "Ok"
-					}
-				},
-				"tags": [
-					"Tag"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/TagCreateRequest"
-							}
-						}
-					}
-				}
 			}
 		},
-		"/tags/{id}": {
+		"/tag/{id}": {
 			"get": {
 				"operationId": "GetOne",
 				"responses": {
@@ -2567,6 +2579,61 @@
 						}
 					}
 				]
+			}
+		},
+		"/tag": {
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/TagResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "tags",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": {
+												"id": "507c7f79bcf86cd7994f6c0e",
+												"name": "Morning Tag",
+												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+												"color": "0x000fff"
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Tag"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/TagCreateRequest"
+							}
+						}
+					}
+				}
 			}
 		}
 	},

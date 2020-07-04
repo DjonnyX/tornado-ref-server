@@ -159,37 +159,10 @@ const deleteNodesChain = async (id: string): Promise<Array<string>> => {
     return result;
 };
 
-@Route("/nodes")
-@Tags("Node")
-export class NodesController extends Controller {
-    @Get()
-    @Security("jwt")
-    @OperationId("GetAll")
-    @Example<INodesResponse>({
-        meta: META_TEMPLATE,
-        data: [RESPONSE_TEMPLATE]
-    })
-    public async getAll(): Promise<INodesResponse> {
-        try {
-            const items = await NodeModel.find({});
-            const ref = await getRef(RefTypes.NODES);
-            return {
-                meta: { ref },
-                data: items.map(v => formatModel(v))
-            };
-        } catch (err) {
-            this.setStatus(500);
-            return {
-                error: [
-                    {
-                        code: 500,
-                        message: `Caught error. ${err}`,
-                    }
-                ]
-            };
-        }
-    }
 
+@Route("/node")
+@Tags("Node")
+export class NodeController extends Controller {
     @Get("{id}")
     @Security("jwt")
     @OperationId("GetOne")
@@ -217,7 +190,7 @@ export class NodesController extends Controller {
             };
         }
     }
-
+    
     @Post()
     @Security("jwt")
     @OperationId("Create")
@@ -309,7 +282,7 @@ export class NodesController extends Controller {
             const item = await NodeModel.findById(id);
             item.contentId = request.contentId;
             item.type = request.type;
-            
+
             await item.save();
 
             const ref = await riseRefVersion(RefTypes.NODES);
@@ -345,6 +318,66 @@ export class NodesController extends Controller {
             return {
                 meta: { ref },
                 data: ids,
+            };
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Caught error. ${err}`,
+                    }
+                ]
+            };
+        }
+    }
+}
+
+@Route("/nodes")
+@Tags("Node")
+export class NodesController extends Controller {
+    @Get()
+    @Security("jwt")
+    @OperationId("GetAll")
+    @Example<INodesResponse>({
+        meta: META_TEMPLATE,
+        data: [RESPONSE_TEMPLATE]
+    })
+    public async getAll(): Promise<INodesResponse> {
+        try {
+            const items = await NodeModel.find({});
+            const ref = await getRef(RefTypes.NODES);
+            return {
+                meta: { ref },
+                data: items.map(v => formatModel(v))
+            };
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Caught error. ${err}`,
+                    }
+                ]
+            };
+        }
+    }
+    
+    @Get("{id}")
+    @Security("jwt")
+    @OperationId("GetAllById")
+    @Example<INodesResponse>({
+        meta: META_TEMPLATE,
+        data: [RESPONSE_TEMPLATE]
+    })
+    public async getAllById(id: string): Promise<INodesResponse> {
+        try {
+            const items = await getNodesChain(id);
+            const ref = await getRef(RefTypes.NODES);
+            return {
+                meta: { ref },
+                data: items.map(v => formatModel(v))
             };
         } catch (err) {
             this.setStatus(500);

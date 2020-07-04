@@ -65,7 +65,7 @@ const formatModel = (model: IRef): IRefItem => ({
 
 @Route("/refs")
 @Tags("Ref")
-export class RefController extends Controller {
+export class RefsController extends Controller {
     @Get()
     @Security("jwt")
     @OperationId("GetAll")
@@ -90,7 +90,11 @@ export class RefController extends Controller {
             };
         }
     }
+}
 
+@Route("/ref")
+@Tags("Ref")
+export class RefController extends Controller {
     @Get("{name}")
     @Security("jwt")
     @OperationId("GetOne")

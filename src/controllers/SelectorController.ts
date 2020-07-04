@@ -89,7 +89,11 @@ export class SelectorsController extends Controller {
             };
         }
     }
+}
 
+@Route("/selector")
+@Tags("Selector")
+export class SelectorController extends Controller {
     @Get("{id}")
     @Security("jwt")
     @OperationId("GetOne")

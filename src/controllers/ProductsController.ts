@@ -110,7 +110,11 @@ export class ProductsController extends Controller {
             };
         }
     }
+}
 
+@Route("/product")
+@Tags("Product")
+export class ProductController extends Controller {
     @Get("{id}")
     @Security("jwt")
     @OperationId("GetOne")
