@@ -549,6 +549,40 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"IDeleteNodeResponse": {
+				"properties": {
+					"meta": {
+						"$ref": "#/components/schemas/INodesMeta"
+					},
+					"data": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
 			"IProductsMeta": {
 				"properties": {
 					"ref": {
@@ -1880,7 +1914,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/INodeResponse"
+									"$ref": "#/components/schemas/IDeleteNodeResponse"
 								},
 								"examples": {
 									"example": {

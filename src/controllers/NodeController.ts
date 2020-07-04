@@ -3,6 +3,7 @@ import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, 
 import { getRef, riseRefVersion } from "../db/refs";
 import { NodeTypes, RefTypes } from "../models/enums";
 import * as joi from "@hapi/joi";
+import { IRefItem } from "./RefsController";
 
 interface INodeItem {
     id: string;
@@ -32,6 +33,14 @@ interface INodesResponse {
 interface INodeResponse {
     meta?: INodesMeta;
     data?: INodeItem;
+    error?: Array<{
+        code: number;
+        message: string;
+    }>;
+}
+interface IDeleteNodeResponse {
+    meta?: INodesMeta;
+    data?: Array<string>;
     error?: Array<{
         code: number;
         message: string;
@@ -78,6 +87,57 @@ const validateCreateNode = (node: INodeCreateRequest): joi.ValidationResult => {
     });
 
     return schema.validate(node);
+};
+
+/**
+ * Возвращает список всех дочерних нодов.
+ * Сбор нодов происходит от последних элементов в цепи.
+ */
+const getNodesChain = async (id: string): Promise<Array<INode>> => {
+    let result = new Array<INode>();
+
+    let item: INode;
+    try {
+        item = await NodeModel.findById(id);
+    } catch (err) {
+        throw Error(`Can not be found not with id: ${id}. ${err}`);
+    }
+
+    for (let i = 0, l = item.children.length; i < l; i++) {
+        const childId = item.children[i];
+
+        const childrenNodes = await getNodesChain(childId);
+        result = [...result, ...childrenNodes];
+    }
+
+    result.push(item);
+
+    return result;
+};
+
+/**
+ * Возвращает список id's удаленных нодов (с учетом детей).
+ * Удаление происходит от последних элементов в цепи, тем самым,
+ * если в процессе возникнет exception, то "открепленных" от цепи нодов не образуется!
+ */
+const deleteNodesChain = async (id: string): Promise<Array<string>> => {
+    const result = new Array<string>();
+
+    const nodes = await getNodesChain(id);
+
+    for (let i = 0, l = nodes.length; i < l; i++) {
+        const node = nodes[i];
+
+        try {
+            await NodeModel.findByIdAndDelete(node.id);
+        } catch (err) {
+            throw Error(`Can not be deleted not with id: ${node.id}. ${err}`);
+        }
+
+        result.push(node.id);
+    }
+
+    return result;
 };
 
 @Route("/nodes")
@@ -159,26 +219,58 @@ export class NodesController extends Controller {
                 ]
             };
         }
-        
+
+        let savedItem: INode;
         try {
             const item = new NodeModel(request);
-            const savedItem = await item.save();
-            const ref = await riseRefVersion(RefTypes.NODES);
-            return {
-                meta: { ref },
-                data: formatModel(savedItem)
-            };
+            savedItem = await item.save();
         } catch (err) {
             this.setStatus(500);
             return {
                 error: [
                     {
                         code: 500,
-                        message: `Caught error. ${err}`,
+                        message: `Can not be save node. ${err}`,
                     }
                 ]
             };
         }
+
+        let ref: IRefItem;
+        try {
+            ref = await riseRefVersion(RefTypes.NODES);
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Can not be bumped version for node ref. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        try {
+            const parentNode = await NodeModel.findOne({ _id: savedItem.parentId });
+            parentNode.children.push(savedItem._id);
+            await parentNode.save();
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Can not be setted children for parent node. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        return {
+            meta: { ref },
+            data: formatModel(savedItem)
+        };
     }
 
     @Put("{id}")
@@ -215,12 +307,15 @@ export class NodesController extends Controller {
     @Example<INodeResponse>({
         meta: META_TEMPLATE
     })
-    public async delete(id: string): Promise<INodeResponse> {
+    public async delete(id: string): Promise<IDeleteNodeResponse> {
+        let ids: Array<string>;
+
         try {
-            await NodeModel.findOneAndDelete({ _id: id });
+            ids = await deleteNodesChain(id);
             const ref = await riseRefVersion(RefTypes.NODES);
             return {
-                meta: { ref }
+                meta: { ref },
+                data: ids,
             };
         } catch (err) {
             this.setStatus(500);
