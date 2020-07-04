@@ -160,7 +160,13 @@ export class TagController extends Controller {
     })
     public async update(id: string, @Body() request: TagCreateRequest): Promise<TagResponse> {
         try {
-            const item = await TagModel.findOneAndUpdate({ _id: id }, request);
+            const item = await TagModel.findById(id);
+            item.name = request.name;
+            item.description = request.description;
+            item.color = request.color;
+            
+            await item.save();
+
             const ref = await riseRefVersion(RefTypes.TAGS);
             return {
                 meta: { ref },

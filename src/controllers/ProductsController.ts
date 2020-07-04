@@ -177,7 +177,14 @@ export class ProductsController extends Controller {
     })
     public async update(id: string, @Body() request: ProductCreateRequest): Promise<ProductResponse> {
         try {
-            const item = await ProductModel.findOneAndUpdate({ _id: id }, request);
+            const item = await ProductModel.findById(id);
+            item.name = request.name;
+            item.description = request.description;
+            item.receipt = request.receipt;
+            item.tags = request.tags;
+            
+            await item.save();
+
             const ref = await riseRefVersion(RefTypes.PRODUCTS);
             return {
                 meta: { ref },

@@ -306,7 +306,12 @@ export class NodesController extends Controller {
     })
     public async update(id: string, @Body() request: INodeCreateRequest): Promise<INodeResponse> {
         try {
-            const item = await NodeModel.findOneAndUpdate({ _id: id }, request);
+            const item = await NodeModel.findById(id);
+            item.contentId = request.contentId;
+            item.type = request.type;
+            
+            await item.save();
+
             const ref = await riseRefVersion(RefTypes.NODES);
             return {
                 meta: { ref },

@@ -156,7 +156,12 @@ export class SelectorsController extends Controller {
     })
     public async update(id: string, @Body() request: SelectorCreateRequest): Promise<SelectorResponse> {
         try {
-            const item = await SelectorModel.findOneAndUpdate({ _id: id }, request);
+            const item = await SelectorModel.findById(id);
+            item.name = request.name;
+            item.description = request.description;
+
+            await item.save();
+
             const ref = await riseRefVersion(RefTypes.SELECTORS);
             return {
                 meta: { ref },
