@@ -21,7 +21,7 @@ interface IProductsMeta {
     };
 }
 
-interface ProductsResponse {
+interface IProductsResponse {
     meta?: IProductsMeta;
     data?: Array<IProductItem>;
     error?: Array<{
@@ -30,7 +30,7 @@ interface ProductsResponse {
     }>;
 }
 
-interface ProductResponse {
+interface IProductResponse {
     meta?: IProductsMeta;
     data?: IProductItem;
     error?: Array<{
@@ -39,11 +39,12 @@ interface ProductResponse {
     }>;
 }
 
-interface ProductCreateRequest {
+interface IProductCreateRequest {
     name: string;
     description?: string;
     receipt: Array<IReceiptItem>;
     tags: Array<string>;
+    joint: string;
 }
 
 const RESPONSE_TEMPLATE: IProductItem = {
@@ -91,11 +92,11 @@ export class ProductsController extends Controller {
     @Get()
     @Security("jwt")
     @OperationId("GetAll")
-    @Example<ProductsResponse>({
+    @Example<IProductsResponse>({
         meta: META_TEMPLATE,
         data: [RESPONSE_TEMPLATE]
     })
-    public async getAll(): Promise<ProductsResponse> {
+    public async getAll(): Promise<IProductsResponse> {
         try {
             const items = await ProductModel.find({});
             const ref = await getRef(RefTypes.PRODUCTS);
@@ -123,11 +124,11 @@ export class ProductController extends Controller {
     @Get("{id}")
     @Security("jwt")
     @OperationId("GetOne")
-    @Example<ProductResponse>({
+    @Example<IProductResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE
     })
-    public async getOne(id: string): Promise<ProductResponse> {
+    public async getOne(id: string): Promise<IProductResponse> {
         try {
             const item = await ProductModel.findById(id);
             const ref = await getRef(RefTypes.PRODUCTS);
@@ -151,11 +152,11 @@ export class ProductController extends Controller {
     @Post()
     @Security("jwt")
     @OperationId("Create")
-    @Example<ProductResponse>({
+    @Example<IProductResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE
     })
-    public async create(@Body() request: ProductCreateRequest): Promise<ProductResponse> {
+    public async create(@Body() request: IProductCreateRequest): Promise<IProductResponse> {
         let params: IProductItem;
         try {
 
@@ -205,11 +206,11 @@ export class ProductController extends Controller {
     @Put("{id}")
     @Security("jwt")
     @OperationId("Update")
-    @Example<ProductResponse>({
+    @Example<IProductResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE
     })
-    public async update(id: string, @Body() request: ProductCreateRequest): Promise<ProductResponse> {
+    public async update(id: string, @Body() request: IProductCreateRequest): Promise<IProductResponse> {
         try {
             const item = await ProductModel.findById(id);
             item.name = request.name;
@@ -240,10 +241,10 @@ export class ProductController extends Controller {
     @Delete("{id}")
     @Security("jwt")
     @OperationId("Delete")
-    @Example<ProductResponse>({
+    @Example<IProductResponse>({
         meta: META_TEMPLATE
     })
-    public async delete(id: string): Promise<ProductResponse> {
+    public async delete(id: string): Promise<IProductResponse> {
         let product: IProduct;
         try {
             product = await ProductModel.findByIdAndDelete(id);

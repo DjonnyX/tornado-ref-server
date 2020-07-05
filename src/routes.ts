@@ -284,7 +284,7 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ProductsResponse": {
+    "IProductsResponse": {
         "dataType": "refObject",
         "properties": {
             "meta": { "ref": "IProductsMeta" },
@@ -294,7 +294,7 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ProductResponse": {
+    "IProductResponse": {
         "dataType": "refObject",
         "properties": {
             "meta": { "ref": "IProductsMeta" },
@@ -304,13 +304,14 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ProductCreateRequest": {
+    "IProductCreateRequest": {
         "dataType": "refObject",
         "properties": {
             "name": { "dataType": "string", "required": true },
             "description": { "dataType": "string" },
             "receipt": { "dataType": "array", "array": { "ref": "IReceiptItem" }, "required": true },
             "tags": { "dataType": "array", "array": { "dataType": "string" }, "required": true },
+            "joint": { "dataType": "string", "required": true },
         },
         "additionalProperties": false,
     },
@@ -334,7 +335,7 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "SelectorsResponse": {
+    "ISelectorsResponse": {
         "dataType": "refObject",
         "properties": {
             "meta": { "ref": "ISelectorsMeta" },
@@ -344,7 +345,7 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "SelectorResponse": {
+    "ISelectorResponse": {
         "dataType": "refObject",
         "properties": {
             "meta": { "ref": "ISelectorsMeta" },
@@ -354,11 +355,12 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "SelectorCreateRequest": {
+    "ISelectorCreateRequest": {
         "dataType": "refObject",
         "properties": {
             "name": { "dataType": "string", "required": true },
             "description": { "dataType": "string" },
+            "joint": { "dataType": "string", "required": true },
         },
         "additionalProperties": false,
     },
@@ -808,7 +810,7 @@ export function RegisterRoutes(app: express.Express) {
         authenticateMiddleware([{ "jwt": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
-                request: { "in": "body", "name": "request", "required": true, "ref": "ProductCreateRequest" },
+                request: { "in": "body", "name": "request", "required": true, "ref": "IProductCreateRequest" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -832,7 +834,7 @@ export function RegisterRoutes(app: express.Express) {
         function(request: any, response: any, next: any) {
             const args = {
                 id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                request: { "in": "body", "name": "request", "required": true, "ref": "ProductCreateRequest" },
+                request: { "in": "body", "name": "request", "required": true, "ref": "IProductCreateRequest" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -923,7 +925,7 @@ export function RegisterRoutes(app: express.Express) {
         authenticateMiddleware([{ "jwt": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
-                request: { "in": "body", "name": "request", "required": true, "ref": "SelectorCreateRequest" },
+                request: { "in": "body", "name": "request", "required": true, "ref": "ISelectorCreateRequest" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -947,7 +949,7 @@ export function RegisterRoutes(app: express.Express) {
         function(request: any, response: any, next: any) {
             const args = {
                 id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                request: { "in": "body", "name": "request", "required": true, "ref": "SelectorCreateRequest" },
+                request: { "in": "body", "name": "request", "required": true, "ref": "ISelectorCreateRequest" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

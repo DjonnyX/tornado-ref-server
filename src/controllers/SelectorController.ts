@@ -19,7 +19,7 @@ interface ISelectorsMeta {
     };
 }
 
-interface SelectorsResponse {
+interface ISelectorsResponse {
     meta?: ISelectorsMeta;
     data?: Array<ISelectorItem>;
     error?: Array<{
@@ -28,7 +28,7 @@ interface SelectorsResponse {
     }>;
 }
 
-interface SelectorResponse {
+interface ISelectorResponse {
     meta?: ISelectorsMeta;
     data?: ISelectorItem;
     error?: Array<{
@@ -37,9 +37,10 @@ interface SelectorResponse {
     }>;
 }
 
-interface SelectorCreateRequest {
+interface ISelectorCreateRequest {
     name: string;
     description?: string;
+    joint: string;
 }
 
 const RESPONSE_TEMPLATE: ISelectorItem = {
@@ -70,11 +71,11 @@ export class SelectorsController extends Controller {
     @Get()
     @Security("jwt")
     @OperationId("GetAll")
-    @Example<SelectorsResponse>({
+    @Example<ISelectorsResponse>({
         meta: META_TEMPLATE,
         data: [RESPONSE_TEMPLATE]
     })
-    public async getAll(): Promise<SelectorsResponse> {
+    public async getAll(): Promise<ISelectorsResponse> {
         try {
             const items = await SelectorModel.find({});
             const ref = await getRef(RefTypes.SELECTORS);
@@ -102,11 +103,11 @@ export class SelectorController extends Controller {
     @Get("{id}")
     @Security("jwt")
     @OperationId("GetOne")
-    @Example<SelectorResponse>({
+    @Example<ISelectorResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE
     })
-    public async getOne(id: string): Promise<SelectorResponse> {
+    public async getOne(id: string): Promise<ISelectorResponse> {
         try {
             const item = await SelectorModel.findById(id);
             const ref = await getRef(RefTypes.SELECTORS);
@@ -130,11 +131,11 @@ export class SelectorController extends Controller {
     @Post()
     @Security("jwt")
     @OperationId("Create")
-    @Example<SelectorResponse>({
+    @Example<ISelectorResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE
     })
-    public async create(@Body() request: SelectorCreateRequest): Promise<SelectorResponse> {
+    public async create(@Body() request: ISelectorCreateRequest): Promise<ISelectorResponse> {
         let params: ISelectorItem;
         try {
 
@@ -184,11 +185,11 @@ export class SelectorController extends Controller {
     @Put("{id}")
     @Security("jwt")
     @OperationId("Update")
-    @Example<SelectorResponse>({
+    @Example<ISelectorResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE
     })
-    public async update(id: string, @Body() request: SelectorCreateRequest): Promise<SelectorResponse> {
+    public async update(id: string, @Body() request: ISelectorCreateRequest): Promise<ISelectorResponse> {
         try {
             const item = await SelectorModel.findById(id);
             item.name = request.name;
@@ -217,10 +218,10 @@ export class SelectorController extends Controller {
     @Delete("{id}")
     @Security("jwt")
     @OperationId("Delete")
-    @Example<SelectorResponse>({
+    @Example<ISelectorResponse>({
         meta: META_TEMPLATE
     })
-    public async delete(id: string): Promise<SelectorResponse> {
+    public async delete(id: string): Promise<ISelectorResponse> {
         let selector: ISelector;
         try {
             selector = await SelectorModel.findByIdAndDelete(id);
