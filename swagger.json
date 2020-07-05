@@ -421,6 +421,7 @@
 			"NodeTypes": {
 				"enum": [
 					"kiosk-root",
+					"product-root",
 					"selector",
 					"product"
 				],
@@ -720,13 +721,16 @@
 							"type": "string"
 						},
 						"type": "array"
+					},
+					"joint": {
+						"type": "string"
 					}
 				},
 				"required": [
-					"id",
 					"name",
 					"receipt",
-					"tags"
+					"tags",
+					"joint"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -1889,7 +1893,8 @@
 													],
 													"tags": [
 														"123c7f79bcf86cd7994f6c0e"
-													]
+													],
+													"joint": "df3c7f79bcf86cd7994f9d8f"
 												}
 											]
 										}
@@ -1951,7 +1956,8 @@
 												],
 												"tags": [
 													"123c7f79bcf86cd7994f6c0e"
-												]
+												],
+												"joint": "df3c7f79bcf86cd7994f9d8f"
 											}
 										}
 									}
@@ -2019,7 +2025,8 @@
 												],
 												"tags": [
 													"123c7f79bcf86cd7994f6c0e"
-												]
+												],
+												"joint": "df3c7f79bcf86cd7994f9d8f"
 											}
 										}
 									}
@@ -2145,7 +2152,8 @@
 												],
 												"tags": [
 													"123c7f79bcf86cd7994f6c0e"
-												]
+												],
+												"joint": "df3c7f79bcf86cd7994f9d8f"
 											}
 										}
 									}

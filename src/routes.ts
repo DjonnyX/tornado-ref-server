@@ -186,7 +186,7 @@ const models: TsoaRoute.Models = {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "NodeTypes": {
         "dataType": "refEnum",
-        "enums": ["kiosk-root", "selector", "product"],
+        "enums": ["kiosk-root", "product-root", "selector", "product"],
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "INodeItem": {
@@ -274,11 +274,12 @@ const models: TsoaRoute.Models = {
     "IProductItem": {
         "dataType": "refObject",
         "properties": {
-            "id": { "dataType": "string", "required": true },
+            "id": { "dataType": "string" },
             "name": { "dataType": "string", "required": true },
             "description": { "dataType": "string" },
             "receipt": { "dataType": "array", "array": { "ref": "IReceiptItem" }, "required": true },
             "tags": { "dataType": "array", "array": { "dataType": "string" }, "required": true },
+            "joint": { "dataType": "string", "required": true },
         },
         "additionalProperties": false,
     },

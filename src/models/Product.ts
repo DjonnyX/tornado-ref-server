@@ -13,6 +13,7 @@ interface IProduct extends Document {
     description: string;
     receipt: Array<IReceiptItem>;
     tags: Array<string>;
+    joint: string;
 }
 
 const ReceiptSchema = new Schema({
@@ -27,6 +28,7 @@ const ProductSchema = new Schema({
     description: { type: Schema.Types.String, required: false },
     receipt: [ReceiptSchema],
     tags: [{ type: Schema.Types.ObjectId }],
+    joint: { type: Schema.Types.ObjectId, required: true },
 });
 
 const ProductModel = mongoose.model<IProduct>("Product", ProductSchema);

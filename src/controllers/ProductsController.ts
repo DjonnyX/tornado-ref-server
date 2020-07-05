@@ -1,13 +1,15 @@
-import { ProductModel, IProduct, IReceiptItem, RefTypes } from "../models/index";
+import { ProductModel, IProduct, IReceiptItem, RefTypes, NodeModel } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
+import { NodeTypes } from "../models/enums";
 
 interface IProductItem {
-    id: string;
+    id?: string;
     name: string;
     description?: string;
     receipt: Array<IReceiptItem>;
     tags: Array<string>;
+    joint: string;
 }
 
 interface IProductsMeta {
@@ -61,7 +63,8 @@ const RESPONSE_TEMPLATE: IProductItem = {
             calories: 346,
         }
     ],
-    tags: ["123c7f79bcf86cd7994f6c0e"]
+    tags: ["123c7f79bcf86cd7994f6c0e"],
+    joint: "df3c7f79bcf86cd7994f9d8f",
 };
 
 const formatModel = (model: IProduct) => ({
@@ -70,6 +73,7 @@ const formatModel = (model: IProduct) => ({
     description: model.description,
     receipt: model.receipt,
     tags: model.tags || [],
+    joint: model.joint,
 });
 
 const META_TEMPLATE: IProductsMeta = {
@@ -151,8 +155,33 @@ export class ProductController extends Controller {
         data: RESPONSE_TEMPLATE
     })
     public async create(@Body() request: ProductCreateRequest): Promise<ProductResponse> {
+        let params: IProductItem;
         try {
-            const item = new ProductModel(request);
+
+            // создается корневой нод
+            const rootNode = new NodeModel({
+                type: NodeTypes.PRODUCT_ROOT,
+                parentId: null,
+                contentId: null,
+                children: [],
+            });
+            const savedRootNode = await rootNode.save();
+
+            params = {...request, joint: savedRootNode._id};
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Error in creation joint node. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        try {
+            const item = new ProductModel(params);
             const savedItem = await item.save();
             const ref = await riseRefVersion(RefTypes.PRODUCTS);
             return {
