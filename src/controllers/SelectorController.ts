@@ -40,7 +40,6 @@ interface ISelectorResponse {
 interface ISelectorCreateRequest {
     name: string;
     description?: string;
-    joint: string;
 }
 
 const RESPONSE_TEMPLATE: ISelectorItem = {

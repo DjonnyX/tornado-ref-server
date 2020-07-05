@@ -44,7 +44,6 @@ interface IProductCreateRequest {
     description?: string;
     receipt: Array<IReceiptItem>;
     tags: Array<string>;
-    joint: string;
 }
 
 const RESPONSE_TEMPLATE: IProductItem = {
