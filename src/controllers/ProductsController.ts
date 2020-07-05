@@ -160,7 +160,7 @@ export class ProductController extends Controller {
 
             // создается корневой нод
             const rootNode = new NodeModel({
-                type: NodeTypes.PRODUCT_ROOT,
+                type: NodeTypes.PRODUCT_JOINT,
                 parentId: null,
                 contentId: null,
                 children: [],

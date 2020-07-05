@@ -1,6 +1,7 @@
 export enum NodeTypes {
     KIOSK_ROOT = "kiosk-root",
-    PRODUCT_ROOT ="product-root",
+    PRODUCT_JOINT ="product-joint",
+    SELECTOR_JOINT ="selector-joint",
     SELECTOR = "selector",
     PRODUCT = "product",
 }
