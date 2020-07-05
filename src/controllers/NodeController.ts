@@ -108,30 +108,48 @@ const validateCreateNode = (node: INodeCreateRequest): joi.ValidationResult => {
     return schema.validate(node);
 };
 
+interface IDictionary<T = any> {
+    [_id: string]: T;
+}
+
+const getMapOfCollection = <T extends INode>(collection: Array<T>): IDictionary<T> => {
+    const result: IDictionary<T> = {};
+
+    collection.forEach(item => {
+        result[item._id] = item;
+    });
+
+    return result;
+};
+
+const extractNodeChain = <T extends INode>(dictionary: IDictionary<T>, item: T): Array<T> => {
+    let result = new Array<T>();
+
+    item.children.forEach(id => {
+        result = [...result, ...extractNodeChain<T>(dictionary, dictionary[id])];
+    });
+
+    result.push(item);
+
+    return result;
+};
+
 /**
  * Возвращает список всех дочерних нодов.
  * Сбор нодов происходит от последних элементов в цепи.
  */
 const getNodesChain = async (id: string): Promise<Array<INode>> => {
-    let result = new Array<INode>();
-
-    let item: INode;
+    let items: Array<INode>;
     try {
-        item = await NodeModel.findById(id);
+        items = await NodeModel.find();
     } catch (err) {
-        throw Error(`Can not be found node with id: ${id}. ${err}`);
+        throw Error(`Can not be found nodes. ${err}`);
     }
 
-    if (item) {
-        for (let i = 0, l = item.children.length; i < l; i++) {
-            const childId = item.children[i];
+    const dictionary = getMapOfCollection(items);
 
-            const childrenNodes = await getNodesChain(childId);
-            result = [...result, ...childrenNodes];
-        }
-
-        result.push(item);
-    }
+    const rootChainNode = dictionary[id];
+    const result = extractNodeChain(dictionary, rootChainNode);
 
     return result;
 };
@@ -142,23 +160,17 @@ const getNodesChain = async (id: string): Promise<Array<INode>> => {
  * если в процессе возникнет exception, то "открепленных" от цепи нодов не образуется!
  */
 const deleteNodesChain = async (id: string): Promise<Array<string>> => {
-    const result = new Array<string>();
-
     const nodes = await getNodesChain(id);
 
-    for (let i = 0, l = nodes.length; i < l; i++) {
-        const node = nodes[i];
+    const ids = nodes.map(item => item.id);
 
-        try {
-            await NodeModel.findByIdAndDelete(node.id);
-        } catch (err) {
-            throw Error(`Can not be deleted not with id: ${node.id}. ${err}`);
-        }
-
-        result.push(node.id);
+    try {
+        await NodeModel.deleteMany({ _id: ids });
+    } catch (err) {
+        throw Error(`Can not be deleted not with id. ${err}`);
     }
 
-    return result;
+    return ids;
 };
 
 @Route("/root-nodes")
@@ -423,6 +435,26 @@ export class NodeController extends Controller {
     })
     public async delete(id: string): Promise<IDeleteNodeResponse> {
         let ids: Array<string>;
+
+        try {
+            const item = await NodeModel.findById(id);
+            const parent = await NodeModel.findById(item.parentId);
+            const ind = parent.children.indexOf(id);
+            if (ind > -1) {
+                parent.children.splice(ind, 1);
+            }
+            await parent.save();
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Caught error. ${err}`,
+                    }
+                ]
+            };
+        }
 
         try {
             ids = await deleteNodesChain(id);
