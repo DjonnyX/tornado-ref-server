@@ -2,6 +2,7 @@ import { ProductModel, IProduct, IReceiptItem, RefTypes, NodeModel } from "../mo
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { NodeTypes } from "../models/enums";
+import { deleteNodesChain } from "../utils/node";
 
 interface IProductItem {
     id?: string;
@@ -243,9 +244,9 @@ export class ProductController extends Controller {
         meta: META_TEMPLATE
     })
     public async delete(id: string): Promise<ProductResponse> {
-        let deletedProduct: IProduct;
+        let product: IProduct;
         try {
-            deletedProduct = await ProductModel.findByIdAndDelete(id);
+            product = await ProductModel.findByIdAndDelete(id);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -259,9 +260,7 @@ export class ProductController extends Controller {
         }
 
         try {
-            await NodeModel.findByIdAndDelete(deletedProduct.joint);
-            
-            // тут ещё нужно всю цепь нодов удалять
+            await deleteNodesChain(product.joint);
         } catch (err) {
             this.setStatus(500);
             return {

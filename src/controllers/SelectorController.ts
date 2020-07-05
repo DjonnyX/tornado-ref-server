@@ -2,6 +2,7 @@ import { SelectorModel, ISelector, RefTypes, NodeModel } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { NodeTypes } from "../models/enums";
+import { deleteNodesChain } from "../utils/node";
 
 interface ISelectorItem {
     id?: string;
@@ -220,9 +221,9 @@ export class SelectorController extends Controller {
         meta: META_TEMPLATE
     })
     public async delete(id: string): Promise<SelectorResponse> {
-        let deletedSelector: ISelector;
+        let selector: ISelector;
         try {
-            deletedSelector = await SelectorModel.findByIdAndDelete(id);
+            selector = await SelectorModel.findByIdAndDelete(id);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -236,9 +237,7 @@ export class SelectorController extends Controller {
         }
 
         try {
-            await NodeModel.findByIdAndDelete(deletedSelector.joint);
-
-            // тут ещё нужно всю цепь нодов удалять
+            await deleteNodesChain(selector.joint);
         } catch (err) {
             this.setStatus(500);
             return {
