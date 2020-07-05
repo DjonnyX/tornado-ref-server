@@ -529,18 +529,18 @@
 					},
 					"data": {
 						"properties": {
-							"child": {
+							"created": {
 								"$ref": "#/components/schemas/INodeItem",
-								"description": "Передается созданный ребенок"
+								"description": "созданный ребенок"
 							},
-							"parent": {
+							"changed": {
 								"$ref": "#/components/schemas/INodeItem",
-								"description": "Передается измененный родитель"
+								"description": "измененный нод"
 							}
 						},
 						"required": [
-							"child",
-							"parent"
+							"created",
+							"changed"
 						],
 						"type": "object"
 					},
@@ -600,10 +600,24 @@
 						"$ref": "#/components/schemas/INodesMeta"
 					},
 					"data": {
-						"items": {
-							"type": "string"
+						"properties": {
+							"deleted": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array",
+								"description": "удаленные ноды"
+							},
+							"changed": {
+								"$ref": "#/components/schemas/INodeItem",
+								"description": "измененный нод"
+							}
 						},
-						"type": "array"
+						"required": [
+							"deleted",
+							"changed"
+						],
+						"type": "object"
 					},
 					"error": {
 						"items": {

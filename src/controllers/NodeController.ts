@@ -43,13 +43,13 @@ interface ICreateNodeResponse {
     meta?: INodesMeta;
     data?: {
         /**
-         * Передается измененный родитель
+         * измененный нод
          */
-        parent: INodeItem;
+        changed: INodeItem;
         /**
-         * Передается созданный ребенок
+         * созданный ребенок
          */
-        child: INodeItem;
+        created: INodeItem;
     };
     error?: Array<{
         code: number;
@@ -59,7 +59,16 @@ interface ICreateNodeResponse {
 
 interface IDeleteNodeResponse {
     meta?: INodesMeta;
-    data?: Array<string>;
+    data?: {
+        /**
+         * измененный нод
+         */
+        changed: INodeItem;
+        /**
+         * удаленные ноды
+         */
+        deleted: Array<string>;
+    };
     error?: Array<{
         code: number;
         message: string;
@@ -375,8 +384,8 @@ export class NodeController extends Controller {
         return {
             meta: { ref },
             data: {
-                parent: formatModel(parentNode),
-                child: formatModel(savedItem),
+                changed: formatModel(parentNode),
+                created: formatModel(savedItem),
             }
         };
     }
@@ -436,14 +445,17 @@ export class NodeController extends Controller {
     public async delete(id: string): Promise<IDeleteNodeResponse> {
         let ids: Array<string>;
 
+        let parentNode: INode;
         try {
             const item = await NodeModel.findById(id);
-            const parent = await NodeModel.findById(item.parentId);
-            const ind = parent.children.indexOf(id);
+            parentNode = await NodeModel.findById(item.parentId);
+            
+            const ind = parentNode.children.indexOf(id);
             if (ind > -1) {
-                parent.children.splice(ind, 1);
+                parentNode.children.splice(ind, 1);
             }
-            await parent.save();
+
+            await parentNode.save();
         } catch (err) {
             this.setStatus(500);
             return {
@@ -461,7 +473,10 @@ export class NodeController extends Controller {
             const ref = await riseRefVersion(RefTypes.NODES);
             return {
                 meta: { ref },
-                data: ids,
+                data: {
+                    deleted: ids,
+                    changed: formatModel(parentNode),
+                },
             };
         } catch (err) {
             this.setStatus(500);

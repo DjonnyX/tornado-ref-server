@@ -225,7 +225,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "meta": { "ref": "INodesMeta" },
-            "data": { "dataType": "nestedObjectLiteral", "nestedProperties": { "child": { "ref": "INodeItem", "required": true }, "parent": { "ref": "INodeItem", "required": true } } },
+            "data": { "dataType": "nestedObjectLiteral", "nestedProperties": { "created": { "ref": "INodeItem", "required": true }, "changed": { "ref": "INodeItem", "required": true } } },
             "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
         },
         "additionalProperties": false,
@@ -246,7 +246,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "meta": { "ref": "INodesMeta" },
-            "data": { "dataType": "array", "array": { "dataType": "string" } },
+            "data": { "dataType": "nestedObjectLiteral", "nestedProperties": { "deleted": { "dataType": "array", "array": { "dataType": "string" }, "required": true }, "changed": { "ref": "INodeItem", "required": true } } },
             "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
         },
         "additionalProperties": false,
