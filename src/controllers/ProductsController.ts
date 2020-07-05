@@ -159,15 +159,15 @@ export class ProductController extends Controller {
         try {
 
             // создается корневой нод
-            const rootNode = new NodeModel({
+            const jointNode = new NodeModel({
                 type: NodeTypes.PRODUCT_JOINT,
                 parentId: null,
                 contentId: null,
                 children: [],
             });
-            const savedRootNode = await rootNode.save();
+            const jointRootNode = await jointNode.save();
 
-            params = {...request, joint: savedRootNode._id};
+            params = {...request, joint: jointRootNode._id};
         } catch (err) {
             this.setStatus(500);
             return {
