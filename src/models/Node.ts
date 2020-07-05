@@ -22,7 +22,7 @@ interface INode extends Document {
 }
 
 const NodeSchema = new Schema({
-    type: { type: String, enum: [NodeTypes.SELECTOR, NodeTypes.PRODUCT, NodeTypes.KIOSK_ROOT], required: true },
+    type: { type: String, enum: [NodeTypes.SELECTOR, NodeTypes.PRODUCT, NodeTypes.KIOSK_ROOT, NodeTypes.SELECTOR_JOINT, NodeTypes.PRODUCT_JOINT], required: true },
     parentId: { type: Schema.Types.ObjectId },
     contentId: { type: Schema.Types.ObjectId },
     children: [{ type: Schema.Types.ObjectId }],
