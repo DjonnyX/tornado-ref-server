@@ -1,11 +1,13 @@
-import { SelectorModel, ISelector, RefTypes } from "../models/index";
+import { SelectorModel, ISelector, RefTypes, NodeModel } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
+import { NodeTypes } from "../models/enums";
 
 interface ISelectorItem {
-    id: string;
+    id?: string;
     name: string;
     description?: string;
+    joint: string;
 }
 
 interface ISelectorsMeta {
@@ -43,12 +45,14 @@ const RESPONSE_TEMPLATE: ISelectorItem = {
     id: "507c7f79bcf86cd7994f6c0e",
     name: "Selectors on concert",
     description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+    joint: "890c7f79bcf86cd7994f3t8y",
 };
 
 const formatModel = (model: ISelector) => ({
     id: model._id,
     name: model.name,
     description: model.description,
+    joint: model.joint,
 });
 
 const META_TEMPLATE: ISelectorsMeta = {
@@ -130,8 +134,33 @@ export class SelectorController extends Controller {
         data: RESPONSE_TEMPLATE
     })
     public async create(@Body() request: SelectorCreateRequest): Promise<SelectorResponse> {
+        let params: ISelectorItem;
         try {
-            const item = new SelectorModel(request);
+
+            // создается корневой нод
+            const jointNode = new NodeModel({
+                type: NodeTypes.SELECTOR_JOINT,
+                parentId: null,
+                contentId: null,
+                children: [],
+            });
+            const savedJointNode = await jointNode.save();
+
+            params = {...request, joint: savedJointNode._id};
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Error in creation joint node. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        try {
+            const item = new SelectorModel(params);
             const savedItem = await item.save();
             const ref = await riseRefVersion(RefTypes.SELECTORS);
             return {

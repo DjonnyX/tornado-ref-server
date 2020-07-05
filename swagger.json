@@ -870,11 +870,14 @@
 					},
 					"description": {
 						"type": "string"
+					},
+					"joint": {
+						"type": "string"
 					}
 				},
 				"required": [
-					"id",
-					"name"
+					"name",
+					"joint"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -2209,7 +2212,8 @@
 												{
 													"id": "507c7f79bcf86cd7994f6c0e",
 													"name": "Selectors on concert",
-													"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+													"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+													"joint": "890c7f79bcf86cd7994f3t8y"
 												}
 											]
 										}
@@ -2254,7 +2258,8 @@
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"name": "Selectors on concert",
-												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+												"joint": "890c7f79bcf86cd7994f3t8y"
 											}
 										}
 									}
@@ -2305,7 +2310,8 @@
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"name": "Selectors on concert",
-												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+												"joint": "890c7f79bcf86cd7994f3t8y"
 											}
 										}
 									}
@@ -2414,7 +2420,8 @@
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"name": "Selectors on concert",
-												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+												"joint": "890c7f79bcf86cd7994f3t8y"
 											}
 										}
 									}

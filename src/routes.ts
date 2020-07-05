@@ -326,9 +326,10 @@ const models: TsoaRoute.Models = {
     "ISelectorItem": {
         "dataType": "refObject",
         "properties": {
-            "id": { "dataType": "string", "required": true },
+            "id": { "dataType": "string" },
             "name": { "dataType": "string", "required": true },
             "description": { "dataType": "string" },
+            "joint": { "dataType": "string", "required": true },
         },
         "additionalProperties": false,
     },
