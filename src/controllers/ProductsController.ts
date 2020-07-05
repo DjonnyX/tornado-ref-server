@@ -243,8 +243,38 @@ export class ProductController extends Controller {
         meta: META_TEMPLATE
     })
     public async delete(id: string): Promise<ProductResponse> {
+        let deletedProduct: IProduct;
         try {
-            await ProductModel.findOneAndDelete({ _id: id });
+            deletedProduct = await ProductModel.findByIdAndDelete(id);
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Caught error. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        try {
+            await NodeModel.findByIdAndDelete(deletedProduct.joint);
+            
+            // тут ещё нужно всю цепь нодов удалять
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Error in delete joint node. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        try {
             const ref = await riseRefVersion(RefTypes.PRODUCTS);
             return {
                 meta: { ref }

@@ -146,7 +146,7 @@ export class SelectorController extends Controller {
             });
             const savedJointNode = await jointNode.save();
 
-            params = {...request, joint: savedJointNode._id};
+            params = { ...request, joint: savedJointNode._id };
         } catch (err) {
             this.setStatus(500);
             return {
@@ -220,8 +220,38 @@ export class SelectorController extends Controller {
         meta: META_TEMPLATE
     })
     public async delete(id: string): Promise<SelectorResponse> {
+        let deletedSelector: ISelector;
         try {
-            await SelectorModel.findOneAndDelete({ _id: id });
+            deletedSelector = await SelectorModel.findByIdAndDelete(id);
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Caught error. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        try {
+            await NodeModel.findByIdAndDelete(deletedSelector.joint);
+
+            // тут ещё нужно всю цепь нодов удалять
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Error in delete joint node. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        try {
             const ref = await riseRefVersion(RefTypes.SELECTORS);
             return {
                 meta: { ref }
