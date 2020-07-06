@@ -598,6 +598,35 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"INodeUpdateRequest": {
+				"properties": {
+					"type": {
+						"$ref": "#/components/schemas/NodeTypes"
+					},
+					"parentId": {
+						"type": "string",
+						"nullable": true
+					},
+					"contentId": {
+						"type": "string",
+						"nullable": true
+					},
+					"children": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"type",
+					"parentId",
+					"contentId",
+					"children"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"IDeleteNodeResponse": {
 				"properties": {
 					"meta": {
@@ -1747,7 +1776,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/INodeCreateRequest"
+								"$ref": "#/components/schemas/INodeUpdateRequest"
 							}
 						}
 					}

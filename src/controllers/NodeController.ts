@@ -5,6 +5,7 @@ import { NodeTypes, RefTypes } from "../models/enums";
 import * as joi from "@hapi/joi";
 import { IRefItem } from "./RefsController";
 import { getNodesChain, deleteNodesChain, checkOnRecursion } from "../utils/node";
+import { required } from "@hapi/joi";
 
 interface INodeItem {
     id: string;
@@ -83,6 +84,13 @@ interface INodeCreateRequest {
     children: Array<string>;
 }
 
+interface INodeUpdateRequest {
+    type: NodeTypes;
+    parentId: string | null;
+    contentId: string | null;
+    children: Array<string>;
+}
+
 const RESPONSE_TEMPLATE: INodeItem = {
     id: "507c7f79bcf86cd7994f6c0e",
     type: NodeTypes.SELECTOR,
@@ -112,6 +120,20 @@ const validateCreateNode = (node: INodeCreateRequest): joi.ValidationResult => {
         type: joi.string().pattern(new RegExp(`^(${NodeTypes.PRODUCT}|${NodeTypes.SELECTOR})$`)),
         parentId: joi.string().required(),
         contentId: joi.string().required(),
+        children: joi.required(),
+    });
+
+    return schema.validate(node);
+};
+
+// часть валидируемых параметров убрана, для того чтобы работала сортировка детей
+const validateUpdateNode = (node: INodeUpdateRequest): joi.ValidationResult => {
+    const schema = joi.object({
+        type: joi.string()
+        // включен полный список для сортировки
+        .pattern(new RegExp(`^(${NodeTypes.PRODUCT}|${NodeTypes.SELECTOR}|${NodeTypes.KIOSK_PRESETS_ROOT}|${NodeTypes.KIOSK_ROOT}|${NodeTypes.SELECTOR_JOINT}|${NodeTypes.PRODUCT_JOINT})$`)),
+        parentId: joi.optional(), // для рутовых элементов
+        contentId: joi.optional(), // для рутовых элементов
         children: joi.required(),
     });
 
@@ -360,8 +382,8 @@ export class NodeController extends Controller {
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE
     })
-    public async update(id: string, @Body() request: INodeCreateRequest): Promise<INodeResponse> {
-        const validation = validateCreateNode(request);
+    public async update(id: string, @Body() request: INodeUpdateRequest): Promise<INodeResponse> {
+        const validation = validateUpdateNode(request);
         if (validation.error) {
             this.setStatus(500);
             return {
@@ -405,6 +427,8 @@ export class NodeController extends Controller {
             const item = await NodeModel.findById(id);
             item.contentId = request.contentId;
             item.type = request.type;
+            // для сортировки
+            item.children = request.children;
 
             if (item.type === NodeTypes.SELECTOR_NODE && !!request.children && request.children.length > 0) {
                 this.setStatus(500);
