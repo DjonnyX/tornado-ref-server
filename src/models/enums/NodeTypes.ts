@@ -4,6 +4,10 @@ export enum NodeTypes {
      */
     KIOSK_ROOT = "kiosk-root",
     /**
+     * корневой нод дерева меню киоска
+     */
+    KIOSK_PRESETS_ROOT = "kiosk-presets-root",
+    /**
      * контент является селектором
      */
     SELECTOR = "selector",

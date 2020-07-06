@@ -27,6 +27,7 @@ const NodeSchema = new Schema({
             NodeTypes.SELECTOR,
             NodeTypes.PRODUCT,
             NodeTypes.KIOSK_ROOT,
+            NodeTypes.KIOSK_PRESETS_ROOT,
             NodeTypes.SELECTOR_JOINT,
             NodeTypes.PRODUCT_JOINT,
             NodeTypes.SELECTOR_NODE
