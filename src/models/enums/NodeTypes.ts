@@ -22,5 +22,5 @@ export enum NodeTypes {
     /**
      * контент является нодом ссылающимся на селектор
      */
-    SELECTOR_NODE = "node-selector",
+    SELECTOR_NODE = "selector-node",
 }
