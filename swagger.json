@@ -421,6 +421,7 @@
 			"NodeTypes": {
 				"enum": [
 					"kiosk-root",
+					"kiosk-presets-root",
 					"selector",
 					"product",
 					"product-joint",
