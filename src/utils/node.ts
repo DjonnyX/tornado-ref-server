@@ -26,6 +26,21 @@ const extractNodeChain = <T extends INode>(dictionary: IDictionary<T>, item: T):
     return result;
 };
 
+const extractNodeInvokeChain = <T extends INode>(dictionary: IDictionary<T>, id: string): Array<T> => {
+    let result = new Array<T>();
+
+    const entity = dictionary[id];
+
+    if (!!entity) {
+        result.push(entity);
+        if (!!entity.parentId) {
+            result = [...result, ...extractNodeInvokeChain(dictionary, entity.parentId)];
+        }
+    }
+
+    return result;
+};
+
 /**
  * Возвращает список всех дочерних нодов.
  * Сбор нодов происходит от последних элементов в цепи.
@@ -35,7 +50,7 @@ export const getNodesChain = async (id: string): Promise<Array<INode>> => {
     try {
         items = await NodeModel.find();
     } catch (err) {
-        throw Error(`Can not be found nodes. ${err}`);
+        throw Error(`Could not find nodes. ${err}`);
     }
 
     const dictionary = getMapOfCollection(items);
@@ -59,8 +74,23 @@ export const deleteNodesChain = async (id: string): Promise<Array<string>> => {
     try {
         await NodeModel.deleteMany({ _id: ids });
     } catch (err) {
-        throw Error(`Can not be deleted not with id. ${err}`);
+        throw Error(`Could not deleted nod with id. ${err}`);
     }
 
     return ids;
+};
+
+export const checkOnRecursion = async (id: string, contentId: string): Promise<boolean> => {
+    let items: Array<INode>;
+    try {
+        items = await NodeModel.find();
+    } catch (err) {
+        throw Error(`Could not find nodes. ${err}`);
+    }
+
+    const dictionary = getMapOfCollection(items);
+
+    const nodeChain = extractNodeInvokeChain(dictionary, id);
+
+    return !!nodeChain.find(item => item._id == contentId);
 };

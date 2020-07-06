@@ -4,7 +4,7 @@ import { getRef, riseRefVersion } from "../db/refs";
 import { NodeTypes, RefTypes } from "../models/enums";
 import * as joi from "@hapi/joi";
 import { IRefItem } from "./RefsController";
-import { getNodesChain, deleteNodesChain } from "../utils/node";
+import { getNodesChain, deleteNodesChain, checkOnRecursion } from "../utils/node";
 
 interface INodeItem {
     id: string;
@@ -268,6 +268,21 @@ export class NodeController extends Controller {
             };
         }
 
+        if (request.type === NodeTypes.SELECTOR_NODE) {
+            const hasRecursion = await checkOnRecursion(request.parentId, request.contentId);
+            if (hasRecursion) {
+                this.setStatus(500);
+                return {
+                    error: [
+                        {
+                            code: 500,
+                            message: "Invalid combination. Probably recursion.",
+                        }
+                    ]
+                };
+            }
+        }
+
         if (request.type === NodeTypes.SELECTOR_NODE && !!request.children && request.children.length > 0) {
             this.setStatus(500);
             return {
@@ -359,6 +374,21 @@ export class NodeController extends Controller {
             };
         }
 
+        if (request.type === NodeTypes.SELECTOR_NODE) {
+            const hasRecursion = await checkOnRecursion(request.parentId, request.contentId);
+            if (hasRecursion) {
+                this.setStatus(500);
+                return {
+                    error: [
+                        {
+                            code: 500,
+                            message: "Invalid combination. Probably recursion.",
+                        }
+                    ]
+                };
+            }
+        }
+
         if (request.type === NodeTypes.SELECTOR_NODE && !!request.children && request.children.length > 0) {
             this.setStatus(500);
             return {
@@ -421,7 +451,7 @@ export class NodeController extends Controller {
         try {
             const item = await NodeModel.findById(id);
             parentNode = await NodeModel.findById(item.parentId);
-            
+
             const ind = parentNode.children.indexOf(id);
             if (ind > -1) {
                 parentNode.children.splice(ind, 1);
