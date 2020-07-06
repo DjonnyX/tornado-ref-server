@@ -268,6 +268,18 @@ export class NodeController extends Controller {
             };
         }
 
+        if (request.type === NodeTypes.SELECTOR_NODE && !!request.children && request.children.length > 0) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: "Node with type SELECTOR_NODE can not be contains children",
+                    }
+                ]
+            };
+        }
+
         let savedItem: INode;
         try {
             const item = new NodeModel(request);
@@ -347,10 +359,34 @@ export class NodeController extends Controller {
             };
         }
 
+        if (request.type === NodeTypes.SELECTOR_NODE && !!request.children && request.children.length > 0) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: "Node with type SELECTOR_NODE can not be contains children",
+                    }
+                ]
+            };
+        }
+
         try {
             const item = await NodeModel.findById(id);
             item.contentId = request.contentId;
             item.type = request.type;
+
+            if (item.type === NodeTypes.SELECTOR_NODE && !!request.children && request.children.length > 0) {
+                this.setStatus(500);
+                return {
+                    error: [
+                        {
+                            code: 500,
+                            message: "Node with type SELECTOR_NODE can not be contains children",
+                        }
+                    ]
+                };
+            }
 
             await item.save();
 
