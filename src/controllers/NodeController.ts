@@ -130,8 +130,8 @@ const validateCreateNode = (node: INodeCreateRequest): joi.ValidationResult => {
 const validateUpdateNode = (node: INodeUpdateRequest): joi.ValidationResult => {
     const schema = joi.object({
         type: joi.string()
-        // включен полный список для сортировки
-        .pattern(new RegExp(`^(${NodeTypes.PRODUCT}|${NodeTypes.SELECTOR}|${NodeTypes.KIOSK_PRESETS_ROOT}|${NodeTypes.KIOSK_ROOT}|${NodeTypes.SELECTOR_JOINT}|${NodeTypes.PRODUCT_JOINT})$`)),
+            // включен полный список для сортировки
+            .pattern(new RegExp(`^(${NodeTypes.PRODUCT}|${NodeTypes.SELECTOR}|${NodeTypes.KIOSK_PRESETS_ROOT}|${NodeTypes.KIOSK_ROOT}|${NodeTypes.SELECTOR_JOINT}|${NodeTypes.PRODUCT_JOINT}|${NodeTypes.SELECTOR_NODE})$`)),
         parentId: joi.optional(), // для рутовых элементов
         contentId: joi.optional(), // для рутовых элементов
         children: joi.required(),
