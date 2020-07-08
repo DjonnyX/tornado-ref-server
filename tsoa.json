@@ -24,7 +24,24 @@
           "url": "http://swagger.io"
         }
       }
-    ]
+    ],
+    "paths": {
+      "/assets/upload": {
+        "post": {
+          "consumes": [
+            "multipart/form-data"
+          ],
+          "parameters": [
+            {
+              "in": "formData",
+              "name": "asset",
+              "required": true,
+              "type": "file"
+            }
+          ]
+        }
+      }
+    }
   },
   "routes": {
     "basePath": "/api/v1",
