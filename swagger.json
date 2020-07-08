@@ -873,6 +873,9 @@
 			},
 			"IProductAsset": {
 				"properties": {
+					"id": {
+						"type": "string"
+					},
 					"name": {
 						"type": "string"
 					},
@@ -884,6 +887,7 @@
 					}
 				},
 				"required": [
+					"id",
 					"name",
 					"ext",
 					"path"
@@ -894,10 +898,50 @@
 			"IProductImagesResponse": {
 				"properties": {
 					"meta": {
-						"$ref": "#/components/schemas/IProductsMeta"
+						"properties": {
+							"asset": {
+								"properties": {
+									"ref": {
+										"$ref": "#/components/schemas/IRefItem"
+									}
+								},
+								"required": [
+									"ref"
+								],
+								"type": "object"
+							},
+							"product": {
+								"properties": {
+									"ref": {
+										"$ref": "#/components/schemas/IRefItem"
+									}
+								},
+								"required": [
+									"ref"
+								],
+								"type": "object"
+							}
+						},
+						"required": [
+							"asset",
+							"product"
+						],
+						"type": "object"
 					},
 					"data": {
-						"$ref": "#/components/schemas/IProductAsset"
+						"properties": {
+							"product": {
+								"$ref": "#/components/schemas/IProductItem"
+							},
+							"asset": {
+								"$ref": "#/components/schemas/IProductAsset"
+							}
+						},
+						"required": [
+							"product",
+							"asset"
+						],
+						"type": "object"
 					},
 					"error": {
 						"items": {
@@ -1561,32 +1605,6 @@
 						}
 					}
 				}
-			}
-		},
-		"/files/uploadFile": {
-			"post": {
-				"operationId": "UploadFile",
-				"responses": {
-					"200": {
-						"content": {
-							"application/json": {
-								"schema": {
-									"additionalProperties": true
-								}
-							}
-						},
-						"description": "Ok"
-					}
-				},
-				"tags": [
-					"File"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": []
 			}
 		},
 		"/root-nodes": {
@@ -2306,7 +2324,7 @@
 				}
 			}
 		},
-		"/product/images": {
+		"/product/{id}/images": {
 			"post": {
 				"operationId": "Create",
 				"responses": {
@@ -2320,16 +2338,28 @@
 									"example": {
 										"value": {
 											"meta": {
-												"ref": {
-													"name": "products",
-													"version": 1,
-													"lastUpdate": 1589885721
+												"product": {
+													"ref": {
+														"name": "products",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												},
+												"asset": {
+													"ref": {
+														"name": "assets",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
 												}
 											},
 											"data": {
-												"name": "some_3d_model",
-												"ext": ".fbx",
-												"path": "assets/some_model.fbx"
+												"asset": {
+													"id": "107c7f79bcf86cd7994f6c0e",
+													"name": "some_3d_model",
+													"ext": ".fbx",
+													"path": "assets/some_model.fbx"
+												}
 											}
 										}
 									}
@@ -2347,7 +2377,16 @@
 						"jwt": []
 					}
 				],
-				"parameters": []
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		},
 		"/selectors": {

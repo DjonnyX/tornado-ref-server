@@ -1,6 +1,6 @@
 import { IAsset } from "src/models/Asset";
 
-export const formatAsset = (model: IAsset) => ({
+export const formatAssetModel = (model: IAsset) => ({
     id: model._id,
     name: model.name,
     ext: model.ext,
