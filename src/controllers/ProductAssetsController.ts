@@ -34,8 +34,6 @@ const META_TEMPLATE: IProductsMeta = {
     }
 };
 
-const EXT_PATTERN = new RegExp(`^(${AssetExtensions.PNG}|${AssetExtensions.JPG}|${AssetExtensions.OBJ}|${AssetExtensions.FBX}|${AssetExtensions.COLLADA})$`);
-
 @Route("/product/images")
 @Tags("Product images")
 export class ProductImagesController extends Controller {
@@ -48,35 +46,21 @@ export class ProductImagesController extends Controller {
             // id: "107c7f79bcf86cd7994f6c0e",
             name: "some_3d_model",
             ext: AssetExtensions.FBX,
-            path: "products/assets/some_model.fbx"
+            path: "assets/some_model.fbx"
         }
     })
     public async create(@Request() request: express.Request): Promise<IProductImagesResponse> {
 
-        /*const isValidExt = EXT_PATTERN.test(request.file.originalname);
-
-        if (!isValidExt) {
-            this.setStatus(500);
-            return {
-                error: [
-                    {
-                        code: 500,
-                        message: "Extension is not valid.",
-                    }
-                ]
-            };
-        }*/
-
         let fileInfo: IFileInfo;
         try {
-            fileInfo = await assetsUploader("file", request);
+            fileInfo = await assetsUploader("file", [AssetExtensions.JPG, AssetExtensions.PNG], request);
         } catch (err) {
             this.setStatus(500);
             return {
                 error: [
                     {
                         code: 500,
-                        message: `Caught error. ${err}`,
+                        message: `Upload error. ${err}`,
                     }
                 ]
             };

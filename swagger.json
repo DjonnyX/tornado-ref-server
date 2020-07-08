@@ -863,11 +863,11 @@
 			},
 			"AssetExtensions": {
 				"enum": [
-					"jpg",
-					"png",
-					"fbx",
-					"obj",
-					"dae"
+					".jpg",
+					".png",
+					".fbx",
+					".obj",
+					".dae"
 				],
 				"type": "string"
 			},
@@ -2328,8 +2328,8 @@
 											},
 											"data": {
 												"name": "some_3d_model",
-												"ext": "fbx",
-												"path": "products/assets/some_model.fbx"
+												"ext": ".fbx",
+												"path": "assets/some_model.fbx"
 											}
 										}
 									}
