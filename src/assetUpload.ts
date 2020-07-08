@@ -11,21 +11,19 @@ export interface IFileInfo {
 
 export const assetsUploader = (name: string, allowedExtensions: Array<AssetExtensions>, request: express.Request): Promise<IFileInfo> => {
     return new Promise((resolve, reject) => {
+        const EXT_PATTERN = new RegExp(`^(${allowedExtensions.map(v => `\\${v}`).join("|")})$`);
         multer({
             dest: "assets/",
-            fileFilter: function(req, file, cb) {
-                if (!!file) {
-                    const EXT_PATTERN = new RegExp(`^(${allowedExtensions.join("|")})$`);
-                    const ext = path.extname(file.originalname);
-                    if (EXT_PATTERN.test(ext)) {
-                        return cb(Error("Asset extension is not supported."));
-                    }
+            fileFilter: function (req, file, cb) {
+                const ext = path.extname(file.originalname);
+                if (!EXT_PATTERN.test(ext)) {
+                    return cb(Error("Asset extension is not supported."));
                 }
                 cb(null, true);
             },
-        }).single(name)(request, undefined, async (error) => {
-            if (error) {
-                reject(error);
+        }).single(name)(request, undefined, (error) => {
+            if (!!error) {
+                return reject(error);
             }
             resolve({
                 name: request.file.filename,
