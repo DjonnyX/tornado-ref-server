@@ -13,7 +13,7 @@ interface IProductItem {
     joint: string;
 }
 
-interface IProductsMeta {
+export interface IProductsMeta {
     ref: {
         name: string;
         version: number;

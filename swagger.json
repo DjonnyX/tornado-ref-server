@@ -861,6 +861,67 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"AssetExtensions": {
+				"enum": [
+					"jpg",
+					"png",
+					"fbx",
+					"obj",
+					"dae"
+				],
+				"type": "string"
+			},
+			"IProductAsset": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"ext": {
+						"$ref": "#/components/schemas/AssetExtensions"
+					},
+					"path": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"ext",
+					"path"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IProductImagesResponse": {
+				"properties": {
+					"meta": {
+						"$ref": "#/components/schemas/IProductsMeta"
+					},
+					"data": {
+						"$ref": "#/components/schemas/IProductAsset"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
 			"ISelectorsMeta": {
 				"properties": {
 					"ref": {
@@ -1500,6 +1561,32 @@
 						}
 					}
 				}
+			}
+		},
+		"/files/uploadFile": {
+			"post": {
+				"operationId": "UploadFile",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"additionalProperties": true
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"File"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
 			}
 		},
 		"/root-nodes": {
@@ -2217,6 +2304,50 @@
 						}
 					}
 				}
+			}
+		},
+		"/product/images": {
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IProductImagesResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "products",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": {
+												"name": "some_3d_model",
+												"ext": "fbx",
+												"path": "products/assets/some_model.fbx"
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Product images"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
 			}
 		},
 		"/selectors": {

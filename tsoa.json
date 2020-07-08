@@ -34,7 +34,7 @@
           "parameters": [
             {
               "in": "formData",
-              "name": "asset",
+              "name": "file",
               "required": true,
               "type": "file"
             }
