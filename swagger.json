@@ -861,6 +861,111 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"AssetExtensions": {
+				"enum": [
+					".jpg",
+					".png",
+					".fbx",
+					".obj",
+					".dae"
+				],
+				"type": "string"
+			},
+			"IProductAsset": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"ext": {
+						"$ref": "#/components/schemas/AssetExtensions"
+					},
+					"path": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"ext",
+					"path"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IProductImagesResponse": {
+				"properties": {
+					"meta": {
+						"properties": {
+							"asset": {
+								"properties": {
+									"ref": {
+										"$ref": "#/components/schemas/IRefItem"
+									}
+								},
+								"required": [
+									"ref"
+								],
+								"type": "object"
+							},
+							"product": {
+								"properties": {
+									"ref": {
+										"$ref": "#/components/schemas/IRefItem"
+									}
+								},
+								"required": [
+									"ref"
+								],
+								"type": "object"
+							}
+						},
+						"required": [
+							"asset",
+							"product"
+						],
+						"type": "object"
+					},
+					"data": {
+						"properties": {
+							"product": {
+								"$ref": "#/components/schemas/IProductItem"
+							},
+							"asset": {
+								"$ref": "#/components/schemas/IProductAsset"
+							}
+						},
+						"required": [
+							"product",
+							"asset"
+						],
+						"type": "object"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
 			"ISelectorsMeta": {
 				"properties": {
 					"ref": {
@@ -2217,6 +2322,71 @@
 						}
 					}
 				}
+			}
+		},
+		"/product/{id}/images": {
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IProductImagesResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"product": {
+													"ref": {
+														"name": "products",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												},
+												"asset": {
+													"ref": {
+														"name": "assets",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												}
+											},
+											"data": {
+												"asset": {
+													"id": "107c7f79bcf86cd7994f6c0e",
+													"name": "some_3d_model",
+													"ext": ".fbx",
+													"path": "assets/some_model.fbx"
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Product images"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		},
 		"/selectors": {

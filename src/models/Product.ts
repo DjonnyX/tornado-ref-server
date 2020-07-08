@@ -1,5 +1,6 @@
 import * as mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
+import { IAsset } from "./Asset";
 
 interface IReceiptItem {
     name: string;
@@ -14,6 +15,7 @@ interface IProduct extends Document {
     receipt: Array<IReceiptItem>;
     tags: Array<string>;
     joint: string;
+    assets: Array<IAsset>;
 }
 
 const ReceiptSchema = new Schema({
@@ -29,6 +31,7 @@ const ProductSchema = new Schema({
     receipt: [ReceiptSchema],
     tags: [{ type: Schema.Types.ObjectId }],
     joint: { type: Schema.Types.ObjectId, required: true },
+    assets: [{ type: Schema.Types.ObjectId, required: true }]
 });
 
 const ProductModel = mongoose.model<IProduct>("Product", ProductSchema);
