@@ -15,7 +15,7 @@ interface IProduct extends Document {
     receipt: Array<IReceiptItem>;
     tags: Array<string>;
     joint: string;
-    assets: Array<IAsset>;
+    assets: Array<string>;
 }
 
 const ReceiptSchema = new Schema({

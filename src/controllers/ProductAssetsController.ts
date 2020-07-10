@@ -1,14 +1,14 @@
 import * as express from "express";
 import { ProductModel, IProduct, RefTypes } from "../models/index";
-import { Controller, Route, Post, Tags, OperationId, Example, Request, Security } from "tsoa";
+import { Controller, Route, Post, Tags, OperationId, Example, Request, Security, Get } from "tsoa";
 import { riseRefVersion } from "../db/refs";
 import { AssetExtensions } from "../models/enums";
-import { IAsset, AssetModel } from "../models/Asset";
-import { formatAssetModel } from "../utils/asset";
 import { IProductItem, RESPONSE_TEMPLATE as PRODUCT_RESPONSE_TEMPLATE } from "./ProductsController";
-import { assetsUploader, IFileInfo } from "../assetUpload";
 import { formatProductModel } from "../utils/product";
 import { IRefItem } from "./RefsController";
+import { uploadAsset } from "./AssetsController";
+import { AssetModel } from "src/models/Asset";
+import { formatAssetModel } from "src/utils/asset";
 
 interface IProductAsset {
     id: string;
@@ -17,7 +17,16 @@ interface IProductAsset {
     path: string;
 }
 
-interface IProductImagesResponse {
+interface IProductGetAssetsResponse {
+    meta?: { };
+    data?: Array<IProductAsset>;
+    error?: Array<{
+        code: number;
+        message: string;
+    }>;
+}
+
+interface IProductCreateAssetsResponse {
     meta?: {
         product: {
             ref: IRefItem;
@@ -54,12 +63,62 @@ const META_TEMPLATE = {
 };
 
 @Route("/product")
-@Tags("Product images")
+@Tags("Product assets")
 export class ProductImagesController extends Controller {
-    @Post("{id}/images")
+    @Get("{id}")
+    @Security("jwt")
+    @OperationId("GetOne")
+    @Example<IProductGetAssetsResponse>({
+        meta: META_TEMPLATE,
+        data: [
+            {
+                id: "",
+                name: "Some asset",
+                ext: AssetExtensions.OBJ,
+                path: "assets/some_model.obj",
+            }
+        ]
+    })
+    public async getAssets(id: string): Promise<IProductGetAssetsResponse> {
+        let product: IProduct;
+        try {
+            product = await ProductModel.findById(id);
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Product with id: "${id}" not found. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        try {
+            const assets = await AssetModel.find({ id: product.assets, });
+            
+            return {
+                meta: {},
+                data: assets.map(asset => formatAssetModel(asset)),
+            };
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Caught error. ${err}`,
+                    }
+                ]
+            };
+        }
+    }
+    
+    @Post("{id}/assets")
     @Security("jwt")
     @OperationId("Create")
-    @Example<IProductImagesResponse>({
+    @Example<IProductCreateAssetsResponse>({
         meta: META_TEMPLATE,
         data: {
             asset: {
@@ -71,40 +130,8 @@ export class ProductImagesController extends Controller {
             product: PRODUCT_RESPONSE_TEMPLATE,
         }
     })
-    public async create(id: string, @Request() request: express.Request): Promise<IProductImagesResponse> {
-
-        let fileInfo: IFileInfo;
-        try {
-            fileInfo = await assetsUploader("file", [AssetExtensions.JPG, AssetExtensions.PNG], request);
-        } catch (err) {
-            this.setStatus(500);
-            return {
-                error: [
-                    {
-                        code: 500,
-                        message: `Upload error. ${err}`,
-                    }
-                ]
-            };
-        }
-
-        let asset: IAsset;
-        let assetRef: IRefItem;
-        try {
-            asset = new AssetModel(fileInfo);
-            assetRef = await riseRefVersion(RefTypes.ASSETS);
-            await asset.save();
-        } catch (err) {
-            this.setStatus(500);
-            return {
-                error: [
-                    {
-                        code: 500,
-                        message: `Create asset error. ${err}`,
-                    }
-                ]
-            };
-        }
+    public async create(id: string, @Request() request: express.Request): Promise<IProductCreateAssetsResponse> {
+        const assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA]);
 
         let product: IProduct;
         try {
@@ -123,7 +150,7 @@ export class ProductImagesController extends Controller {
 
         let productRef: IRefItem;
         try {
-            product.assets.push(asset._id);
+            product.assets.push(assetsInfo.data.id);
             productRef = await riseRefVersion(RefTypes.PRODUCTS);
             await product.save();
         } catch (err) {
@@ -144,12 +171,12 @@ export class ProductImagesController extends Controller {
                     ref: productRef,
                 },
                 asset: {
-                    ref: assetRef,
+                    ref: assetsInfo.meta.ref,
                 }
             },
             data: {
                 product: formatProductModel(product),
-                asset: formatAssetModel(asset),
+                asset: assetsInfo.data,
             }
         };
     }

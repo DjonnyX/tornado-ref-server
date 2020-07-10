@@ -1,7 +1,7 @@
 import * as express from "express";
 import * as path from "path";
 import multer = require("multer");
-import { AssetExtensions } from "./models/enums";
+import { AssetExtensions } from "../models/enums";
 
 export interface IFileInfo {
     name: string;
