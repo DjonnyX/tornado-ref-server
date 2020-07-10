@@ -1,5 +1,6 @@
 import { INode, NodeModel } from "../models";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 interface IDictionary<T = any> {
     [_id: string]: T;
 }

@@ -1,6 +1,5 @@
 import * as mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
-import { IAsset } from "./Asset";
 
 interface IReceiptItem {
     name: string;

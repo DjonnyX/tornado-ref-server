@@ -5,7 +5,6 @@ import { NodeTypes, RefTypes } from "../models/enums";
 import * as joi from "@hapi/joi";
 import { IRefItem } from "./RefsController";
 import { getNodesChain, deleteNodesChain, checkOnRecursion } from "../utils/node";
-import { required } from "@hapi/joi";
 
 interface INodeItem {
     id: string;
