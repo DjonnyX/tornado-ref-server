@@ -87,7 +87,7 @@ const RESPONSE_TEMPLATE = {
 
 @Route("/product")
 @Tags("Product assets")
-export class ProductImagesController extends Controller {
+export class ProductAssetsController extends Controller {
     @Get("{productId}/assets")
     @Security("jwt")
     @OperationId("Get")
