@@ -223,7 +223,8 @@ export class AssetController extends Controller {
     public async delete(id: string): Promise<IDeleteAssetsResponse> {
         let ref: IRefItem;
         try {
-            await AssetModel.findByIdAndDelete(id);
+            const asset = await AssetModel.findByIdAndDelete(id);
+            await deleteAsset(asset.path);
             ref = await riseRefVersion(RefTypes.ASSETS);
         } catch (err) {
             this.setStatus(500);

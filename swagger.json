@@ -87,6 +87,192 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"IAssetMeta": {
+				"properties": {
+					"ref": {
+						"$ref": "#/components/schemas/IRefItem"
+					}
+				},
+				"required": [
+					"ref"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"AssetExtensions": {
+				"enum": [
+					".jpg",
+					".png",
+					".fbx",
+					".obj",
+					".dae"
+				],
+				"type": "string"
+			},
+			"IAssetItem": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"ext": {
+						"$ref": "#/components/schemas/AssetExtensions"
+					},
+					"path": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"ext",
+					"path"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IGetAssetsResponse": {
+				"properties": {
+					"meta": {
+						"$ref": "#/components/schemas/IAssetMeta"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/IAssetItem"
+						},
+						"type": "array"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ICreateAssetsResponse": {
+				"properties": {
+					"meta": {
+						"$ref": "#/components/schemas/IAssetMeta"
+					},
+					"data": {
+						"$ref": "#/components/schemas/IAssetItem"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IUpdateAssetsResponse": {
+				"properties": {
+					"meta": {
+						"$ref": "#/components/schemas/IAssetMeta"
+					},
+					"data": {
+						"$ref": "#/components/schemas/IAssetItem"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IAssetUpdateRequest": {
+				"properties": {
+					"name": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IDeleteAssetsResponse": {
+				"properties": {
+					"meta": {
+						"$ref": "#/components/schemas/IAssetMeta"
+					},
+					"data": {
+						"properties": {},
+						"type": "object"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
 			"SignupResponse": {
 				"properties": {
 					"meta": {
@@ -861,16 +1047,6 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"AssetExtensions": {
-				"enum": [
-					".jpg",
-					".png",
-					".fbx",
-					".obj",
-					".dae"
-				],
-				"type": "string"
-			},
 			"IProductAsset": {
 				"properties": {
 					"id": {
@@ -895,7 +1071,42 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"IProductImagesResponse": {
+			"IProductGetAssetsResponse": {
+				"properties": {
+					"meta": {
+						"properties": {},
+						"type": "object"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/IProductAsset"
+						},
+						"type": "array"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IProductCreateAssetsResponse": {
 				"properties": {
 					"meta": {
 						"properties": {
@@ -941,6 +1152,66 @@
 							"product",
 							"asset"
 						],
+						"type": "object"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IProductDeleteAssetsResponse": {
+				"properties": {
+					"meta": {
+						"properties": {
+							"asset": {
+								"properties": {
+									"ref": {
+										"$ref": "#/components/schemas/IRefItem"
+									}
+								},
+								"required": [
+									"ref"
+								],
+								"type": "object"
+							},
+							"product": {
+								"properties": {
+									"ref": {
+										"$ref": "#/components/schemas/IRefItem"
+									}
+								},
+								"required": [
+									"ref"
+								],
+								"type": "object"
+							}
+						},
+						"required": [
+							"asset",
+							"product"
+						],
+						"type": "object"
+					},
+					"data": {
+						"properties": {},
 						"type": "object"
 					},
 					"error": {
@@ -1355,6 +1626,209 @@
 					{
 						"in": "path",
 						"name": "name",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/assets": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IGetAssetsResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "assets",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": [
+												{
+													"id": "107c7f79bcf86cd7994f6c0e",
+													"name": "some_3d_model",
+													"ext": ".fbx",
+													"path": "assets/some_3d_model.fbx"
+												}
+											]
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Assets"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/asset": {
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ICreateAssetsResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "assets",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": {
+												"id": "107c7f79bcf86cd7994f6c0e",
+												"name": "some_3d_model",
+												"ext": ".fbx",
+												"path": "assets/some_3d_model.fbx"
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Asset"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/asset/{id}": {
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IUpdateAssetsResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "assets",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": {
+												"id": "107c7f79bcf86cd7994f6c0e",
+												"name": "some_3d_model",
+												"ext": ".fbx",
+												"path": "assets/some_3d_model.fbx"
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Asset"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IAssetUpdateRequest"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "Delete",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IDeleteAssetsResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "assets",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": {}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Asset"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
 						"required": true,
 						"schema": {
 							"type": "string"
@@ -2324,7 +2798,72 @@
 				}
 			}
 		},
-		"/product/{id}/images": {
+		"/product/{productId}/assets": {
+			"get": {
+				"operationId": "Get",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IProductGetAssetsResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"product": {
+													"ref": {
+														"name": "products",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												},
+												"asset": {
+													"ref": {
+														"name": "assets",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												}
+											},
+											"data": [
+												{
+													"id": "107c7f79bcf86cd7994f6c0e",
+													"name": "some_3d_model",
+													"ext": ".fbx",
+													"path": "assets/some_3d_model.fbx"
+												}
+											]
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Product assets"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "productId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/product/{productId}/asset": {
 			"post": {
 				"operationId": "Create",
 				"responses": {
@@ -2332,7 +2871,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/IProductImagesResponse"
+									"$ref": "#/components/schemas/IProductCreateAssetsResponse"
 								},
 								"examples": {
 									"example": {
@@ -2358,7 +2897,7 @@
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"name": "some_3d_model",
 													"ext": ".fbx",
-													"path": "assets/some_model.fbx"
+													"path": "assets/some_3d_model.fbx"
 												}
 											}
 										}
@@ -2370,7 +2909,7 @@
 					}
 				},
 				"tags": [
-					"Product images"
+					"Product assets"
 				],
 				"security": [
 					{
@@ -2380,7 +2919,72 @@
 				"parameters": [
 					{
 						"in": "path",
-						"name": "id",
+						"name": "productId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/product/{productId}/asset/{assetId}": {
+			"delete": {
+				"operationId": "Delete",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IProductDeleteAssetsResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"product": {
+													"ref": {
+														"name": "products",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												},
+												"asset": {
+													"ref": {
+														"name": "assets",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Product assets"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "productId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "assetId",
 						"required": true,
 						"schema": {
 							"type": "string"

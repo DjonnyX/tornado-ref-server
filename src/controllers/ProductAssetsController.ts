@@ -1,14 +1,14 @@
 import * as express from "express";
 import { ProductModel, IProduct, RefTypes } from "../models/index";
-import { Controller, Route, Post, Tags, OperationId, Example, Request, Security, Get } from "tsoa";
+import { Controller, Route, Post, Tags, OperationId, Example, Request, Security, Get, Delete } from "tsoa";
 import { riseRefVersion } from "../db/refs";
 import { AssetExtensions } from "../models/enums";
 import { IProductItem, RESPONSE_TEMPLATE as PRODUCT_RESPONSE_TEMPLATE } from "./ProductsController";
 import { formatProductModel } from "../utils/product";
 import { IRefItem } from "./RefsController";
-import { uploadAsset } from "./AssetsController";
-import { AssetModel } from "src/models/Asset";
-import { formatAssetModel } from "src/utils/asset";
+import { uploadAsset, deleteAsset } from "./AssetsController";
+import { AssetModel } from "../models/Asset";
+import { formatAssetModel } from "../utils/asset";
 
 interface IProductAsset {
     id: string;
@@ -18,7 +18,7 @@ interface IProductAsset {
 }
 
 interface IProductGetAssetsResponse {
-    meta?: { };
+    meta?: {};
     data?: Array<IProductAsset>;
     error?: Array<{
         code: number;
@@ -45,6 +45,22 @@ interface IProductCreateAssetsResponse {
     }>;
 }
 
+interface IProductDeleteAssetsResponse {
+    meta?: {
+        product: {
+            ref: IRefItem;
+        };
+        asset: {
+            ref: IRefItem;
+        };
+    };
+    data?: {};
+    error?: Array<{
+        code: number;
+        message: string;
+    }>;
+}
+
 const META_TEMPLATE = {
     product: {
         ref: {
@@ -62,34 +78,34 @@ const META_TEMPLATE = {
     },
 };
 
+const RESPONSE_TEMPLATE = {
+    id: "107c7f79bcf86cd7994f6c0e",
+    name: "some_3d_model",
+    ext: AssetExtensions.FBX,
+    path: "assets/some_3d_model.fbx",
+};
+
 @Route("/product")
 @Tags("Product assets")
 export class ProductImagesController extends Controller {
-    @Get("{id}")
+    @Get("{productId}/assets")
     @Security("jwt")
-    @OperationId("GetOne")
+    @OperationId("Get")
     @Example<IProductGetAssetsResponse>({
         meta: META_TEMPLATE,
-        data: [
-            {
-                id: "",
-                name: "Some asset",
-                ext: AssetExtensions.OBJ,
-                path: "assets/some_model.obj",
-            }
-        ]
+        data: [RESPONSE_TEMPLATE],
     })
-    public async getAssets(id: string): Promise<IProductGetAssetsResponse> {
+    public async getAssets(productId: string): Promise<IProductGetAssetsResponse> {
         let product: IProduct;
         try {
-            product = await ProductModel.findById(id);
+            product = await ProductModel.findById(productId);
         } catch (err) {
             this.setStatus(500);
             return {
                 error: [
                     {
                         code: 500,
-                        message: `Product with id: "${id}" not found. ${err}`,
+                        message: `Product with id: "${productId}" not found. ${err}`,
                     }
                 ]
             };
@@ -97,7 +113,7 @@ export class ProductImagesController extends Controller {
 
         try {
             const assets = await AssetModel.find({ id: product.assets, });
-            
+
             return {
                 meta: {},
                 data: assets.map(asset => formatAssetModel(asset)),
@@ -114,28 +130,23 @@ export class ProductImagesController extends Controller {
             };
         }
     }
-    
-    @Post("{id}/assets")
+
+    @Post("{productId}/asset")
     @Security("jwt")
     @OperationId("Create")
     @Example<IProductCreateAssetsResponse>({
         meta: META_TEMPLATE,
         data: {
-            asset: {
-                id: "107c7f79bcf86cd7994f6c0e",
-                name: "some_3d_model",
-                ext: AssetExtensions.FBX,
-                path: "assets/some_model.fbx",
-            },
+            asset: RESPONSE_TEMPLATE,
             product: PRODUCT_RESPONSE_TEMPLATE,
         }
     })
-    public async create(id: string, @Request() request: express.Request): Promise<IProductCreateAssetsResponse> {
+    public async create(productId: string, @Request() request: express.Request): Promise<IProductCreateAssetsResponse> {
         const assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA]);
 
         let product: IProduct;
         try {
-            product = await ProductModel.findById(id);
+            product = await ProductModel.findById(productId);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -179,5 +190,75 @@ export class ProductImagesController extends Controller {
                 asset: assetsInfo.data,
             }
         };
+    }
+
+    @Delete("{productId}/asset/{assetId}")
+    @Security("jwt")
+    @OperationId("Delete")
+    @Example<IProductDeleteAssetsResponse>({
+        meta: META_TEMPLATE
+    })
+    public async delete(productId: string, assetId: string): Promise<IProductDeleteAssetsResponse> {
+        let product: IProduct;
+        try {
+            product = await ProductModel.findById(productId);
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Caught error. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        let assetRef: IRefItem;
+        const assetIndex = product.assets.indexOf(assetId);
+        if (assetIndex > -1) {
+            try {
+                const asset = await AssetModel.findByIdAndDelete(assetId);
+                await deleteAsset(asset.path);
+                assetRef = await riseRefVersion(RefTypes.ASSETS);
+            } catch (err) {
+                this.setStatus(500);
+                return {
+                    error: [
+                        {
+                            code: 500,
+                            message: `Caught error. ${err}`,
+                        }
+                    ]
+                };
+            }
+        }
+
+        let productsRef: IRefItem;
+        try {
+            product.assets.splice(assetIndex, 1);
+            await product.save();
+            productsRef = await riseRefVersion(RefTypes.PRODUCTS);
+            return {
+                meta: {
+                    product: {
+                        ref: productsRef,
+                    },
+                    asset: {
+                        ref: assetRef,
+                    },
+                }
+            };
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Caught error. ${err}`,
+                    }
+                ]
+            };
+        }
     }
 }
