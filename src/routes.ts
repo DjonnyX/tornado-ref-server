@@ -33,7 +33,7 @@ import { ProductsController } from './controllers/ProductsController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { ProductController } from './controllers/ProductsController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { ProductImagesController } from './controllers/ProductAssetsController';
+import { ProductAssetsController } from './controllers/ProductAssetsController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { SelectorsController } from './controllers/SelectorController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -1112,7 +1112,7 @@ export function RegisterRoutes(app: express.Express) {
                 return next(err);
             }
 
-            const controller = new ProductImagesController();
+            const controller = new ProductAssetsController();
 
 
             const promise = controller.getAssets.apply(controller, validatedArgs as any);
@@ -1136,7 +1136,7 @@ export function RegisterRoutes(app: express.Express) {
                 return next(err);
             }
 
-            const controller = new ProductImagesController();
+            const controller = new ProductAssetsController();
 
 
             const promise = controller.create.apply(controller, validatedArgs as any);
@@ -1160,7 +1160,7 @@ export function RegisterRoutes(app: express.Express) {
                 return next(err);
             }
 
-            const controller = new ProductImagesController();
+            const controller = new ProductAssetsController();
 
 
             const promise = controller.delete.apply(controller, validatedArgs as any);

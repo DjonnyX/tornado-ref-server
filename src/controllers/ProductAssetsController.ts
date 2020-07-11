@@ -112,7 +112,7 @@ export class ProductAssetsController extends Controller {
         }
 
         try {
-            const assets = await AssetModel.find({ id: product.assets, });
+            const assets = await AssetModel.find({ _id: product.assets, });
 
             return {
                 meta: {},
