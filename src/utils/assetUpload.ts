@@ -26,7 +26,7 @@ export const assetsUploader = (name: string, allowedExtensions: Array<AssetExten
                 return reject(error);
             }
             resolve({
-                name: request.file.filename,
+                name: request.file.originalname,
                 ext: path.extname(request.file.originalname) as AssetExtensions,
                 path: request.file.path,
             });
