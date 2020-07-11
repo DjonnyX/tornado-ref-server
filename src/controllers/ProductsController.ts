@@ -11,7 +11,8 @@ export interface IProductItem {
     description?: string;
     receipt: Array<IReceiptItem>;
     tags: Array<string>;
-    joint: string;
+    assets?: Array<string>;
+    joint?: string;
 }
 
 export interface IProductsMeta {
@@ -45,6 +46,9 @@ interface IProductCreateRequest {
     description?: string;
     receipt: Array<IReceiptItem>;
     tags: Array<string>;
+    assets?: Array<string>;
+    joint?: string;
+
 }
 
 export const RESPONSE_TEMPLATE: IProductItem = {
@@ -66,6 +70,7 @@ export const RESPONSE_TEMPLATE: IProductItem = {
         }
     ],
     tags: ["123c7f79bcf86cd7994f6c0e"],
+    assets: [],
     joint: "df3c7f79bcf86cd7994f9d8f",
 };
 

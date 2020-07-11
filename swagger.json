@@ -943,6 +943,12 @@
 						},
 						"type": "array"
 					},
+					"assets": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
 					"joint": {
 						"type": "string"
 					}
@@ -950,8 +956,7 @@
 				"required": [
 					"name",
 					"receipt",
-					"tags",
-					"joint"
+					"tags"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -1040,6 +1045,15 @@
 							"type": "string"
 						},
 						"type": "array"
+					},
+					"assets": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"joint": {
+						"type": "string"
 					}
 				},
 				"required": [
@@ -2514,6 +2528,7 @@
 													"tags": [
 														"123c7f79bcf86cd7994f6c0e"
 													],
+													"assets": [],
 													"joint": "df3c7f79bcf86cd7994f9d8f"
 												}
 											]
@@ -2577,6 +2592,7 @@
 												"tags": [
 													"123c7f79bcf86cd7994f6c0e"
 												],
+												"assets": [],
 												"joint": "df3c7f79bcf86cd7994f9d8f"
 											}
 										}
@@ -2646,6 +2662,7 @@
 												"tags": [
 													"123c7f79bcf86cd7994f6c0e"
 												],
+												"assets": [],
 												"joint": "df3c7f79bcf86cd7994f9d8f"
 											}
 										}
@@ -2773,6 +2790,7 @@
 												"tags": [
 													"123c7f79bcf86cd7994f6c0e"
 												],
+												"assets": [],
 												"joint": "df3c7f79bcf86cd7994f9d8f"
 											}
 										}
