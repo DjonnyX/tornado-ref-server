@@ -7,7 +7,7 @@ import * as swaggerUI from "swagger-ui-express";
 import * as config from "./config";
 
 const app = express();
-app.use("/public/uploads", express.static("uploads"));
+app.use("/assets", express.static("assets"));
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header(
