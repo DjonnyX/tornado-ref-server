@@ -123,7 +123,10 @@ export const uploadAsset = async (request: express.Request, allowedExtensions: A
  */
 export const deleteAsset = (assetPath: string): Promise<IAsset> => {
     return new Promise((resolve, reject) => {
-        fs.unlink(path.relative(__dirname, assetPath), (err) => {
+        fs.unlink(path.normalize(assetPath), (err) => {
+            if(!!err && err.code === "ENOENT") {
+                return reject(Error("File doesn't exist, won't remove it."));
+            } else
             if (!!err) {
                 return reject(err);
             }
