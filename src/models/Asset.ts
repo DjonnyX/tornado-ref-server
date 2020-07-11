@@ -5,6 +5,7 @@ import { AssetExtensions } from "./enums";
 interface IAsset extends Document {
     name: string;
     ext: AssetExtensions;
+    thumbnail: string;
     path: string;
 }
 
@@ -20,6 +21,7 @@ const AssetSchema = new Schema({
         ],
         required: true
     },
+    thumbnail: { type: Schema.Types.String, required: false, },
     path: { type: String, required: true },
 });
 

@@ -122,6 +122,9 @@
 					},
 					"path": {
 						"type": "string"
+					},
+					"thumnail": {
+						"type": "string"
 					}
 				},
 				"required": [
@@ -1059,6 +1062,9 @@
 						"$ref": "#/components/schemas/AssetExtensions"
 					},
 					"path": {
+						"type": "string"
+					},
+					"thumnail": {
 						"type": "string"
 					}
 				},
@@ -2832,6 +2838,7 @@
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"name": "some_3d_model",
 													"ext": ".fbx",
+													"thumbnail": "assets/some_3d_model.fbx",
 													"path": "assets/some_3d_model.fbx"
 												}
 											]
@@ -2897,6 +2904,7 @@
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"name": "some_3d_model",
 													"ext": ".fbx",
+													"thumbnail": "assets/some_3d_model.fbx",
 													"path": "assets/some_3d_model.fbx"
 												}
 											}

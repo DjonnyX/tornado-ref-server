@@ -1,13 +1,34 @@
 import * as express from "express";
 import * as path from "path";
+import * as sharp from "sharp";
 import multer = require("multer");
 import { AssetExtensions } from "../models/enums";
 
 export interface IFileInfo {
     name: string;
     ext: AssetExtensions;
+    thumbnail: string;
     path: string;
 }
+
+const THUMBNAIL_WIDTH = 128;
+const THUMBNAIL_HEIGHT = 128;
+
+export const makeThumbnail = (ext: string, pathToImage: string, width: number, height: number): Promise<string> => {
+    return new Promise((resolve, reject) => {
+        const thumbnailPath = path.normalize(`${pathToImage}_${width}x${height}`);
+
+        // создается миниатюра
+        sharp(pathToImage)
+            .resize(width, height)
+            .toFile(thumbnailPath, (err, info) => { 
+                if (!!err) {
+                    return reject(Error(`Thumbnail is not created. ${err}`));
+                };
+                resolve(thumbnailPath);
+            });
+    });
+};
 
 export const assetsUploader = (name: string, allowedExtensions: Array<AssetExtensions>, request: express.Request): Promise<IFileInfo> => {
     return new Promise((resolve, reject) => {
@@ -25,10 +46,16 @@ export const assetsUploader = (name: string, allowedExtensions: Array<AssetExten
             if (!!error) {
                 return reject(error);
             }
-            resolve({
-                name: request.file.originalname,
-                ext: path.extname(request.file.originalname) as AssetExtensions,
-                path: request.file.path,
+
+            const ext = path.extname(request.file.originalname) as AssetExtensions;
+            
+            makeThumbnail(ext, request.file.path, THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT).then(pathToThumbnail => {
+                resolve({
+                    name: request.file.originalname,
+                    ext,
+                    thumbnail: pathToThumbnail,
+                    path: request.file.path,
+                });
             });
         });
     });

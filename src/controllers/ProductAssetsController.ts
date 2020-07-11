@@ -6,16 +6,12 @@ import { AssetExtensions } from "../models/enums";
 import { IProductItem, RESPONSE_TEMPLATE as PRODUCT_RESPONSE_TEMPLATE } from "./ProductsController";
 import { formatProductModel } from "../utils/product";
 import { IRefItem } from "./RefsController";
-import { uploadAsset, deleteAsset } from "./AssetsController";
+import { uploadAsset, deleteAsset, IAssetItem } from "./AssetsController";
 import { AssetModel } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
 
-interface IProductAsset {
-    id: string;
-    name: string;
-    ext: AssetExtensions;
-    path: string;
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface IProductAsset extends IAssetItem { }
 
 interface IProductGetAssetsResponse {
     meta?: {};
@@ -82,6 +78,7 @@ const RESPONSE_TEMPLATE = {
     id: "107c7f79bcf86cd7994f6c0e",
     name: "some_3d_model",
     ext: AssetExtensions.FBX,
+    thumbnail: "assets/some_3d_model.fbx",
     path: "assets/some_3d_model.fbx",
 };
 

@@ -10,11 +10,13 @@ import { formatAssetModel } from "../utils/asset";
 import { assetsUploader, IFileInfo } from "../utils/assetUpload";
 import { IRefItem } from "./RefsController";
 
-interface IAssetItem {
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface IAssetItem {
     id: string;
     name: string;
     ext: AssetExtensions;
     path: string;
+    thumnail?: string;
 }
 
 interface IAssetMeta {
@@ -124,12 +126,12 @@ export const uploadAsset = async (request: express.Request, allowedExtensions: A
 export const deleteAsset = (assetPath: string): Promise<IAsset> => {
     return new Promise((resolve, reject) => {
         fs.unlink(path.normalize(assetPath), (err) => {
-            if(!!err && err.code === "ENOENT") {
+            if (!!err && err.code === "ENOENT") {
                 return reject(Error("File doesn't exist, won't remove it."));
             } else
-            if (!!err) {
-                return reject(err);
-            }
+                if (!!err) {
+                    return reject(err);
+                }
 
             return resolve();
         });
