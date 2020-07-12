@@ -424,10 +424,10 @@ export class NodeController extends Controller {
 
         try {
             const item = await NodeModel.findById(id);
-            item.contentId = request.contentId;
-            item.type = request.type;
-            // для сортировки
-            item.children = request.children;
+            
+            for (const key in request) {
+                item[key] = request[key];
+            }
 
             if (item.type === NodeTypes.SELECTOR_NODE && !!request.children && request.children.length > 0) {
                 this.setStatus(500);

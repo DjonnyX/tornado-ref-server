@@ -13,6 +13,7 @@ export interface IProductItem {
     tags: Array<string>;
     assets?: Array<string>;
     joint?: string;
+    mainAsset?: string;
 }
 
 export interface IProductsMeta {
@@ -48,7 +49,7 @@ interface IProductCreateRequest {
     tags: Array<string>;
     assets?: Array<string>;
     joint?: string;
-
+    mainAsset?: string;
 }
 
 export const RESPONSE_TEMPLATE: IProductItem = {
@@ -71,6 +72,7 @@ export const RESPONSE_TEMPLATE: IProductItem = {
     ],
     tags: ["123c7f79bcf86cd7994f6c0e"],
     assets: [],
+    mainAsset: "g8h07f79bcf86cd7994f9d7k",
     joint: "df3c7f79bcf86cd7994f9d8f",
 };
 
@@ -209,10 +211,10 @@ export class ProductController extends Controller {
     public async update(id: string, @Body() request: IProductCreateRequest): Promise<IProductResponse> {
         try {
             const item = await ProductModel.findById(id);
-            item.name = request.name;
-            item.description = request.description;
-            item.receipt = request.receipt;
-            item.tags = request.tags;
+            
+            for (const key in request) {
+                item[key] = request[key];
+            }
             
             await item.save();
 

@@ -191,8 +191,10 @@ export class SelectorController extends Controller {
     public async update(id: string, @Body() request: ISelectorCreateRequest): Promise<ISelectorResponse> {
         try {
             const item = await SelectorModel.findById(id);
-            item.name = request.name;
-            item.description = request.description;
+            
+            for (const key in request) {
+                item[key] = request[key];
+            }
 
             await item.save();
 

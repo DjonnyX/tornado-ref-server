@@ -8,4 +8,5 @@ export const formatProductModel = (model: IProduct) => ({
     tags: model.tags,
     joint: model.joint,
     assets: model.assets,
+    mainAsset: model.mainAsset,
 });

@@ -165,9 +165,10 @@ export class TagController extends Controller {
     public async update(id: string, @Body() request: TagCreateRequest): Promise<TagResponse> {
         try {
             const item = await TagModel.findById(id);
-            item.name = request.name;
-            item.description = request.description;
-            item.color = request.color;
+            
+            for (const key in request) {
+                item[key] = request[key];
+            }
             
             await item.save();
 
