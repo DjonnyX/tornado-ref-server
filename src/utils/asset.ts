@@ -5,5 +5,6 @@ export const formatAssetModel = (model: IAsset) => ({
     name: model.name,
     ext: model.ext,
     thumbnail: model.thumbnail,
+    favicon: model.favicon,
     path: model.path,
 });

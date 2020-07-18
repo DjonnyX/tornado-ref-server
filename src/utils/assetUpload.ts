@@ -8,11 +8,15 @@ export interface IFileInfo {
     name: string;
     ext: AssetExtensions;
     thumbnail: string;
+    favicon: string;
     path: string;
 }
 
 const THUMBNAIL_WIDTH = 128;
 const THUMBNAIL_HEIGHT = 128;
+
+const THUMBNAIL_FAV_WIDTH = 32;
+const THUMBNAIL_FAV_HEIGHT = 32;
 
 export const makeThumbnail = (ext: string, pathToImage: string, width: number, height: number): Promise<string> => {
     return new Promise((resolve, reject) => {
@@ -20,8 +24,13 @@ export const makeThumbnail = (ext: string, pathToImage: string, width: number, h
 
         // создается миниатюра
         sharp(pathToImage)
-            .resize(width, height)
-            .toFile(thumbnailPath, (err, info) => { 
+            .ensureAlpha()
+            .resize(width, height, {
+                fit: "contain",
+                background: { r: 0, g: 0, b: 0, alpha: 0 },
+            })
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            .toFile(thumbnailPath, (err, info) => {
                 if (!!err) {
                     return reject(Error(`Thumbnail is not created. ${err}`));
                 };
@@ -48,13 +57,16 @@ export const assetsUploader = (name: string, allowedExtensions: Array<AssetExten
             }
 
             const ext = path.extname(request.file.originalname) as AssetExtensions;
-            
+
             makeThumbnail(ext, request.file.path, THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT).then(pathToThumbnail => {
-                resolve({
-                    name: request.file.originalname,
-                    ext,
-                    thumbnail: pathToThumbnail,
-                    path: request.file.path,
+                makeThumbnail(ext, request.file.path, THUMBNAIL_FAV_WIDTH, THUMBNAIL_FAV_HEIGHT).then(pathToFavicon => {
+                    resolve({
+                        name: request.file.originalname,
+                        ext,
+                        thumbnail: pathToThumbnail,
+                        favicon: pathToFavicon,
+                        path: request.file.path,
+                    });
                 });
             });
         });

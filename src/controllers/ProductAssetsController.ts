@@ -78,7 +78,8 @@ const RESPONSE_TEMPLATE = {
     id: "107c7f79bcf86cd7994f6c0e",
     name: "some_3d_model",
     ext: AssetExtensions.FBX,
-    thumbnail: "assets/some_3d_model.fbx",
+    thumbnail: "assets/some_3d_model_128x128.png",
+    favicon: "assets/favicon.png",
     path: "assets/some_3d_model.fbx",
 };
 
@@ -218,6 +219,7 @@ export class ProductAssetsController extends Controller {
                 const asset = await AssetModel.findByIdAndDelete(assetId);
                 await deleteAsset(asset.path);
                 await deleteAsset(asset.thumbnail);
+                await deleteAsset(asset.favicon);
                 assetRef = await riseRefVersion(RefTypes.ASSETS);
             } catch (err) {
                 this.setStatus(500);

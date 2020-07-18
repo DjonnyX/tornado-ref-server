@@ -125,6 +125,9 @@
 					},
 					"thumnail": {
 						"type": "string"
+					},
+					"favicon": {
+						"type": "string"
 					}
 				},
 				"required": [
@@ -1086,6 +1089,9 @@
 					},
 					"thumnail": {
 						"type": "string"
+					},
+					"favicon": {
+						"type": "string"
 					}
 				},
 				"required": [
@@ -1685,7 +1691,9 @@
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"name": "some_3d_model",
 													"ext": ".fbx",
-													"path": "assets/some_3d_model.fbx"
+													"path": "assets/some_3d_model.fbx",
+													"thumbnail": "assets/some_3d_model_128x128.png",
+													"favicon": "assets/favicon.png"
 												}
 											]
 										}
@@ -1731,7 +1739,9 @@
 												"id": "107c7f79bcf86cd7994f6c0e",
 												"name": "some_3d_model",
 												"ext": ".fbx",
-												"path": "assets/some_3d_model.fbx"
+												"path": "assets/some_3d_model.fbx",
+												"thumbnail": "assets/some_3d_model_128x128.png",
+												"favicon": "assets/favicon.png"
 											}
 										}
 									}
@@ -1776,7 +1786,9 @@
 												"id": "107c7f79bcf86cd7994f6c0e",
 												"name": "some_3d_model",
 												"ext": ".fbx",
-												"path": "assets/some_3d_model.fbx"
+												"path": "assets/some_3d_model.fbx",
+												"thumbnail": "assets/some_3d_model_128x128.png",
+												"favicon": "assets/favicon.png"
 											}
 										}
 									}
@@ -2866,7 +2878,8 @@
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"name": "some_3d_model",
 													"ext": ".fbx",
-													"thumbnail": "assets/some_3d_model.fbx",
+													"thumbnail": "assets/some_3d_model_128x128.png",
+													"favicon": "assets/favicon.png",
 													"path": "assets/some_3d_model.fbx"
 												}
 											]
@@ -2932,7 +2945,8 @@
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"name": "some_3d_model",
 													"ext": ".fbx",
-													"thumbnail": "assets/some_3d_model.fbx",
+													"thumbnail": "assets/some_3d_model_128x128.png",
+													"favicon": "assets/favicon.png",
 													"path": "assets/some_3d_model.fbx"
 												}
 											}

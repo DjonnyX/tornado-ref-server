@@ -17,6 +17,7 @@ export interface IAssetItem {
     ext: AssetExtensions;
     path: string;
     thumnail?: string;
+    favicon?: string;
 }
 
 interface IAssetMeta {
@@ -76,6 +77,8 @@ const RESPONSE_TEMPLATE = {
     name: "some_3d_model",
     ext: AssetExtensions.FBX,
     path: "assets/some_3d_model.fbx",
+    thumbnail: "assets/some_3d_model_128x128.png",
+    favicon: "assets/favicon.png",
 };
 
 export const uploadAsset = async (request: express.Request, allowedExtensions: Array<AssetExtensions>): Promise<ICreateAssetsResponse> => {
@@ -231,6 +234,7 @@ export class AssetController extends Controller {
             const asset = await AssetModel.findByIdAndDelete(id);
             await deleteAsset(asset.path);
             await deleteAsset(asset.thumbnail);
+            await deleteAsset(asset.favicon);
             ref = await riseRefVersion(RefTypes.ASSETS);
         } catch (err) {
             this.setStatus(500);

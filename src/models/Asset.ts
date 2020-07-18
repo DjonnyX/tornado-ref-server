@@ -6,6 +6,7 @@ interface IAsset extends Document {
     name: string;
     ext: AssetExtensions;
     thumbnail: string;
+    favicon: string;
     path: string;
 }
 
@@ -22,6 +23,7 @@ const AssetSchema = new Schema({
         required: true
     },
     thumbnail: { type: Schema.Types.String, required: false, },
+    favicon: { type: Schema.Types.String, required: false, },
     path: { type: String, required: true },
 });
 
