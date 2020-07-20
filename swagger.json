@@ -1544,6 +1544,11 @@
 				"type": "apiKey",
 				"name": "authorization",
 				"in": "header"
+			},
+			"apiKey": {
+				"type": "apiKey",
+				"name": "x-auth-token",
+				"in": "header"
 			}
 		}
 	},
@@ -1615,6 +1620,9 @@
 				"security": [
 					{
 						"jwt": []
+					},
+					{
+						"aoiKey": []
 					}
 				],
 				"parameters": []
@@ -1652,6 +1660,9 @@
 				"security": [
 					{
 						"jwt": []
+					},
+					{
+						"aoiKey": []
 					}
 				],
 				"parameters": [
@@ -1710,6 +1721,9 @@
 				"security": [
 					{
 						"jwt": []
+					},
+					{
+						"aoiKey": []
 					}
 				],
 				"parameters": []
@@ -2164,6 +2178,9 @@
 				"security": [
 					{
 						"jwt": []
+					},
+					{
+						"aoiKey": []
 					}
 				],
 				"parameters": []
@@ -2214,6 +2231,9 @@
 				"security": [
 					{
 						"jwt": []
+					},
+					{
+						"aoiKey": []
 					}
 				],
 				"parameters": []
@@ -2264,6 +2284,9 @@
 				"security": [
 					{
 						"jwt": []
+					},
+					{
+						"aoiKey": []
 					}
 				],
 				"parameters": [
@@ -2321,6 +2344,9 @@
 				"security": [
 					{
 						"jwt": []
+					},
+					{
+						"aoiKey": []
 					}
 				],
 				"parameters": [
@@ -2565,6 +2591,9 @@
 				"security": [
 					{
 						"jwt": []
+					},
+					{
+						"aoiKey": []
 					}
 				],
 				"parameters": []
@@ -2629,6 +2658,9 @@
 				"security": [
 					{
 						"jwt": []
+					},
+					{
+						"aoiKey": []
 					}
 				],
 				"parameters": [
@@ -2897,6 +2929,9 @@
 				"security": [
 					{
 						"jwt": []
+					},
+					{
+						"aoiKey": []
 					}
 				],
 				"parameters": [
@@ -3085,6 +3120,9 @@
 				"security": [
 					{
 						"jwt": []
+					},
+					{
+						"aoiKey": []
 					}
 				],
 				"parameters": []
@@ -3130,6 +3168,9 @@
 				"security": [
 					{
 						"jwt": []
+					},
+					{
+						"aoiKey": []
 					}
 				],
 				"parameters": [
@@ -3349,6 +3390,9 @@
 				"security": [
 					{
 						"jwt": []
+					},
+					{
+						"aoiKey": []
 					}
 				],
 				"parameters": []
@@ -3394,6 +3438,9 @@
 				"security": [
 					{
 						"jwt": []
+					},
+					{
+						"aoiKey": []
 					}
 				],
 				"parameters": [
