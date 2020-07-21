@@ -76,6 +76,7 @@ const META_TEMPLATE = {
 
 const RESPONSE_TEMPLATE = {
     id: "107c7f79bcf86cd7994f6c0e",
+    lastupdate: 1589885721,
     name: "some_3d_model",
     ext: AssetExtensions.FBX,
     thumbnail: "assets/some_3d_model_128x128.png",

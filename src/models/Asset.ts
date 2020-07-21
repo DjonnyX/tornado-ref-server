@@ -4,6 +4,7 @@ import { AssetExtensions } from "./enums";
 
 interface IAsset extends Document {
     name: string;
+    lastupdate: number;
     ext: AssetExtensions;
     thumbnail: string;
     favicon: string;
@@ -12,6 +13,7 @@ interface IAsset extends Document {
 
 const AssetSchema = new Schema({
     name: { type: String, required: true },
+    lastupdate: { type: Number, required: true },
     ext: {
         type: String, enum: [
             AssetExtensions.JPG,

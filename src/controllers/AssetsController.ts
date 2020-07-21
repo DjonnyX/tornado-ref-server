@@ -13,6 +13,7 @@ import { IRefItem } from "./RefsController";
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IAssetItem {
     id: string;
+    lastupdate: number;
     name: string;
     ext: AssetExtensions;
     path: string;
@@ -74,6 +75,7 @@ const META_TEMPLATE = {
 
 const RESPONSE_TEMPLATE = {
     id: "107c7f79bcf86cd7994f6c0e",
+    lastupdate: 1589885721,
     name: "some_3d_model",
     ext: AssetExtensions.FBX,
     path: "assets/some_3d_model.fbx",
@@ -198,6 +200,7 @@ export class AssetController extends Controller {
     public async update(id: string, @Body() request: IAssetUpdateRequest): Promise<IUpdateAssetsResponse> {
         try {
             const item = await AssetModel.findById(id);
+            item.lastupdate = Date.now();
             if (request.name !== undefined) {
                 item.name = request.name;
             }

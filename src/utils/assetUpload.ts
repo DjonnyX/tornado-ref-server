@@ -6,6 +6,7 @@ import { AssetExtensions } from "../models/enums";
 
 export interface IFileInfo {
     name: string;
+    lastupdate: number;
     ext: AssetExtensions;
     thumbnail: string;
     favicon: string;
@@ -62,6 +63,7 @@ export const assetsUploader = (name: string, allowedExtensions: Array<AssetExten
                 makeThumbnail(ext, request.file.path, THUMBNAIL_FAV_WIDTH, THUMBNAIL_FAV_HEIGHT).then(pathToFavicon => {
                     resolve({
                         name: request.file.originalname,
+                        lastupdate: Date.now(),
                         ext,
                         thumbnail: pathToThumbnail,
                         favicon: pathToFavicon,
