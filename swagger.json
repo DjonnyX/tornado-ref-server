@@ -114,6 +114,10 @@
 					"id": {
 						"type": "string"
 					},
+					"lastupdate": {
+						"type": "number",
+						"format": "double"
+					},
 					"name": {
 						"type": "string"
 					},
@@ -132,6 +136,7 @@
 				},
 				"required": [
 					"id",
+					"lastupdate",
 					"name",
 					"ext",
 					"path"
@@ -1078,6 +1083,10 @@
 					"id": {
 						"type": "string"
 					},
+					"lastupdate": {
+						"type": "number",
+						"format": "double"
+					},
 					"name": {
 						"type": "string"
 					},
@@ -1096,6 +1105,7 @@
 				},
 				"required": [
 					"id",
+					"lastupdate",
 					"name",
 					"ext",
 					"path"
@@ -1700,6 +1710,7 @@
 											"data": [
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
+													"lastupdate": 1589885721,
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"path": "assets/some_3d_model.fbx",
@@ -1751,6 +1762,7 @@
 											},
 											"data": {
 												"id": "107c7f79bcf86cd7994f6c0e",
+												"lastupdate": 1589885721,
 												"name": "some_3d_model",
 												"ext": ".fbx",
 												"path": "assets/some_3d_model.fbx",
@@ -1798,6 +1810,7 @@
 											},
 											"data": {
 												"id": "107c7f79bcf86cd7994f6c0e",
+												"lastupdate": 1589885721,
 												"name": "some_3d_model",
 												"ext": ".fbx",
 												"path": "assets/some_3d_model.fbx",
@@ -2908,6 +2921,7 @@
 											"data": [
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
+													"lastupdate": 1589885721,
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"thumbnail": "assets/some_3d_model_128x128.png",
@@ -2978,6 +2992,7 @@
 											"data": {
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
+													"lastupdate": 1589885721,
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"thumbnail": "assets/some_3d_model_128x128.png",

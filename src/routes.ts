@@ -93,6 +93,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "id": { "dataType": "string", "required": true },
+            "lastupdate": { "dataType": "double", "required": true },
             "name": { "dataType": "string", "required": true },
             "ext": { "ref": "AssetExtensions", "required": true },
             "path": { "dataType": "string", "required": true },
@@ -415,6 +416,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "id": { "dataType": "string", "required": true },
+            "lastupdate": { "dataType": "double", "required": true },
             "name": { "dataType": "string", "required": true },
             "ext": { "ref": "AssetExtensions", "required": true },
             "path": { "dataType": "string", "required": true },
