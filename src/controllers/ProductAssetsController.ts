@@ -220,8 +220,8 @@ export class ProductAssetsController extends Controller {
             try {
                 const asset = await AssetModel.findByIdAndDelete(assetId);
                 await deleteAsset(asset.path);
-                await deleteAsset(asset.thumbnail);
-                await deleteAsset(asset.favicon);
+                await deleteAsset(asset.mipmap.x128);
+                await deleteAsset(asset.mipmap.x32);
                 assetRef = await riseRefVersion(RefTypes.ASSETS);
             } catch (err) {
                 this.setStatus(500);

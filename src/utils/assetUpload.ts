@@ -8,8 +8,10 @@ export interface IFileInfo {
     name: string;
     lastupdate: number;
     ext: AssetExtensions;
-    thumbnail: string;
-    favicon: string;
+    mipmap: {
+        x128: string;
+        x32: string;
+    };
     path: string;
 }
 
@@ -59,14 +61,16 @@ export const assetsUploader = (name: string, allowedExtensions: Array<AssetExten
 
             const ext = path.extname(request.file.originalname) as AssetExtensions;
 
-            makeThumbnail(ext, request.file.path, THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT).then(pathToThumbnail => {
-                makeThumbnail(ext, request.file.path, THUMBNAIL_FAV_WIDTH, THUMBNAIL_FAV_HEIGHT).then(pathToFavicon => {
+            makeThumbnail(ext, request.file.path, THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT).then(x128Path => {
+                makeThumbnail(ext, request.file.path, THUMBNAIL_FAV_WIDTH, THUMBNAIL_FAV_HEIGHT).then(x32Path => {
                     resolve({
                         name: request.file.originalname,
                         lastupdate: Date.now(),
                         ext,
-                        thumbnail: pathToThumbnail,
-                        favicon: pathToFavicon,
+                        mipmap: {
+                            x128: x128Path,
+                            x32: x32Path,
+                        },
                         path: request.file.path,
                     });
                 });

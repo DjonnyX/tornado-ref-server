@@ -237,8 +237,8 @@ export class AssetController extends Controller {
         try {
             const asset = await AssetModel.findByIdAndDelete(id);
             await deleteAsset(asset.path);
-            await deleteAsset(asset.thumbnail);
-            await deleteAsset(asset.favicon);
+            await deleteAsset(asset.mipmap.x128);
+            await deleteAsset(asset.mipmap.x32);
             ref = await riseRefVersion(RefTypes.ASSETS);
         } catch (err) {
             this.setStatus(500);

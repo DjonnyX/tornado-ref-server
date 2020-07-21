@@ -6,8 +6,10 @@ interface IAsset extends Document {
     name: string;
     lastupdate: number;
     ext: AssetExtensions;
-    thumbnail: string;
-    favicon: string;
+    mipmap: {
+        x128: string;
+        x32: string;
+    };
     path: string;
 }
 
@@ -24,8 +26,10 @@ const AssetSchema = new Schema({
         ],
         required: true
     },
-    thumbnail: { type: Schema.Types.String, required: false, },
-    favicon: { type: Schema.Types.String, required: false, },
+    mipmap: {
+        x128: { type: Schema.Types.String, required: false, },
+        x32: { type: Schema.Types.String, required: false, },
+    },
     path: { type: String, required: true },
 });
 

@@ -5,7 +5,6 @@ export const formatAssetModel = (model: IAsset) => ({
     lastupdate: model.lastupdate,
     name: model.name,
     ext: model.ext,
-    thumbnail: model.thumbnail,
-    favicon: model.favicon,
+    mipmap: model.mipmap,
     path: model.path,
 });
