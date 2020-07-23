@@ -3,17 +3,20 @@ import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, 
 import { getRef, riseRefVersion } from "../db/refs";
 import { NodeTypes } from "../models/enums";
 import { deleteNodesChain } from "../utils/node";
+import { formatProductModel } from "../utils/product";
 
-interface IProductItem {
+export interface IProductItem {
     id?: string;
     name: string;
     description?: string;
     receipt: Array<IReceiptItem>;
     tags: Array<string>;
-    joint: string;
+    assets?: Array<string>;
+    joint?: string;
+    mainAsset?: string;
 }
 
-interface IProductsMeta {
+export interface IProductsMeta {
     ref: {
         name: string;
         version: number;
@@ -44,9 +47,12 @@ interface IProductCreateRequest {
     description?: string;
     receipt: Array<IReceiptItem>;
     tags: Array<string>;
+    assets?: Array<string>;
+    joint?: string;
+    mainAsset?: string;
 }
 
-const RESPONSE_TEMPLATE: IProductItem = {
+export const RESPONSE_TEMPLATE: IProductItem = {
     id: "507c7f79bcf86cd7994f6c0e",
     name: "Products on concert",
     description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
@@ -65,17 +71,10 @@ const RESPONSE_TEMPLATE: IProductItem = {
         }
     ],
     tags: ["123c7f79bcf86cd7994f6c0e"],
+    assets: [],
+    mainAsset: "g8h07f79bcf86cd7994f9d7k",
     joint: "df3c7f79bcf86cd7994f9d8f",
 };
-
-const formatModel = (model: IProduct) => ({
-    id: model._id,
-    name: model.name,
-    description: model.description,
-    receipt: model.receipt,
-    tags: model.tags || [],
-    joint: model.joint,
-});
 
 const META_TEMPLATE: IProductsMeta = {
     ref: {
@@ -90,6 +89,7 @@ const META_TEMPLATE: IProductsMeta = {
 export class ProductsController extends Controller {
     @Get()
     @Security("jwt")
+    @Security("aoiKey")
     @OperationId("GetAll")
     @Example<IProductsResponse>({
         meta: META_TEMPLATE,
@@ -101,7 +101,7 @@ export class ProductsController extends Controller {
             const ref = await getRef(RefTypes.PRODUCTS);
             return {
                 meta: { ref },
-                data: items.map(v => formatModel(v))
+                data: items.map(v => formatProductModel(v))
             };
         } catch (err) {
             this.setStatus(500);
@@ -122,6 +122,7 @@ export class ProductsController extends Controller {
 export class ProductController extends Controller {
     @Get("{id}")
     @Security("jwt")
+    @Security("aoiKey")
     @OperationId("GetOne")
     @Example<IProductResponse>({
         meta: META_TEMPLATE,
@@ -133,7 +134,7 @@ export class ProductController extends Controller {
             const ref = await getRef(RefTypes.PRODUCTS);
             return {
                 meta: { ref },
-                data: formatModel(item)
+                data: formatProductModel(item)
             };
         } catch (err) {
             this.setStatus(500);
@@ -187,7 +188,7 @@ export class ProductController extends Controller {
             const ref = await riseRefVersion(RefTypes.PRODUCTS);
             return {
                 meta: { ref },
-                data: formatModel(savedItem)
+                data: formatProductModel(savedItem)
             };
         } catch (err) {
             this.setStatus(500);
@@ -212,17 +213,17 @@ export class ProductController extends Controller {
     public async update(id: string, @Body() request: IProductCreateRequest): Promise<IProductResponse> {
         try {
             const item = await ProductModel.findById(id);
-            item.name = request.name;
-            item.description = request.description;
-            item.receipt = request.receipt;
-            item.tags = request.tags;
+            
+            for (const key in request) {
+                item[key] = request[key];
+            }
             
             await item.save();
 
             const ref = await riseRefVersion(RefTypes.PRODUCTS);
             return {
                 meta: { ref },
-                data: formatModel(item)
+                data: formatProductModel(item)
             };
         } catch (err) {
             this.setStatus(500);

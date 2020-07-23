@@ -14,6 +14,8 @@ interface IProduct extends Document {
     receipt: Array<IReceiptItem>;
     tags: Array<string>;
     joint: string;
+    assets: Array<string>;
+    mainAsset: string;
 }
 
 const ReceiptSchema = new Schema({
@@ -29,6 +31,8 @@ const ProductSchema = new Schema({
     receipt: [ReceiptSchema],
     tags: [{ type: Schema.Types.ObjectId }],
     joint: { type: Schema.Types.ObjectId, required: true },
+    assets: [{ type: Schema.Types.ObjectId, required: true }],
+    mainAsset: { type: Schema.Types.ObjectId },
 });
 
 const ProductModel = mongoose.model<IProduct>("Product", ProductSchema);

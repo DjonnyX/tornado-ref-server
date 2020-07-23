@@ -24,27 +24,31 @@ export const initRefs = async (): Promise<void> => {
         {
             name: RefTypes.ROLES,
             version: 1,
-            lastUpdate
+            lastUpdate,
         }, {
             name: RefTypes.USERS,
             version: 1,
-            lastUpdate
+            lastUpdate,
         }, {
             name: RefTypes.NODES,
             version: 1,
-            lastUpdate
+            lastUpdate,
         }, {
             name: RefTypes.PRODUCTS,
             version: 1,
-            lastUpdate
+            lastUpdate,
         }, {
             name: RefTypes.SELECTORS,
             version: 1,
-            lastUpdate
+            lastUpdate,
+        }, {
+            name: RefTypes.ASSETS,
+            version: 1,
+            lastUpdate,
         }, {
             name: RefTypes.TAGS,
             version: 1,
-            lastUpdate
+            lastUpdate,
         },
     ];
 

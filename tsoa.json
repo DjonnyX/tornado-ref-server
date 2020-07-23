@@ -10,6 +10,11 @@
         "type": "apiKey",
         "name": "authorization",
         "in": "header"
+      },
+      "apiKey": {
+        "type": "apiKey",
+        "name": "x-auth-token",
+        "in": "header"
       }
     },
     "basePath": "/api/v1",
@@ -24,7 +29,24 @@
           "url": "http://swagger.io"
         }
       }
-    ]
+    ],
+    "paths": {
+      "/assets/upload": {
+        "post": {
+          "consumes": [
+            "multipart/form-data"
+          ],
+          "parameters": [
+            {
+              "in": "formData",
+              "name": "file",
+              "required": true,
+              "type": "file"
+            }
+          ]
+        }
+      }
+    }
   },
   "routes": {
     "basePath": "/api/v1",

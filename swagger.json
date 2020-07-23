@@ -87,6 +87,203 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"IAssetMeta": {
+				"properties": {
+					"ref": {
+						"$ref": "#/components/schemas/IRefItem"
+					}
+				},
+				"required": [
+					"ref"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"AssetExtensions": {
+				"enum": [
+					".jpg",
+					".png",
+					".fbx",
+					".obj",
+					".dae"
+				],
+				"type": "string"
+			},
+			"IAssetItem": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"lastupdate": {
+						"type": "number",
+						"format": "double"
+					},
+					"name": {
+						"type": "string"
+					},
+					"ext": {
+						"$ref": "#/components/schemas/AssetExtensions"
+					},
+					"path": {
+						"type": "string"
+					},
+					"thumnail": {
+						"type": "string"
+					},
+					"favicon": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"lastupdate",
+					"name",
+					"ext",
+					"path"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IGetAssetsResponse": {
+				"properties": {
+					"meta": {
+						"$ref": "#/components/schemas/IAssetMeta"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/IAssetItem"
+						},
+						"type": "array"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ICreateAssetsResponse": {
+				"properties": {
+					"meta": {
+						"$ref": "#/components/schemas/IAssetMeta"
+					},
+					"data": {
+						"$ref": "#/components/schemas/IAssetItem"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IUpdateAssetsResponse": {
+				"properties": {
+					"meta": {
+						"$ref": "#/components/schemas/IAssetMeta"
+					},
+					"data": {
+						"$ref": "#/components/schemas/IAssetItem"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IAssetUpdateRequest": {
+				"properties": {
+					"name": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IDeleteAssetsResponse": {
+				"properties": {
+					"meta": {
+						"$ref": "#/components/schemas/IAssetMeta"
+					},
+					"data": {
+						"properties": {},
+						"type": "object"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
 			"SignupResponse": {
 				"properties": {
 					"meta": {
@@ -430,6 +627,52 @@
 				],
 				"type": "string"
 			},
+			"ScenarioIntroActionTypes": {
+				"enum": [
+					"duration"
+				],
+				"type": "string"
+			},
+			"ScenarioCommonActionTypes": {
+				"enum": [
+					"visible-by-point-of-sale",
+					"visible-by-business-period"
+				],
+				"type": "string"
+			},
+			"IScenario": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"action": {
+						"anyOf": [
+							{
+								"$ref": "#/components/schemas/ScenarioIntroActionTypes"
+							},
+							{
+								"$ref": "#/components/schemas/ScenarioCommonActionTypes"
+							}
+						]
+					},
+					"value": {
+						"additionalProperties": true
+					},
+					"extra": {
+						"properties": {},
+						"additionalProperties": {
+							"additionalProperties": true
+						},
+						"type": "object"
+					}
+				},
+				"required": [
+					"name",
+					"action"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"INodeItem": {
 				"properties": {
 					"id": {
@@ -449,6 +692,12 @@
 							"type": "string"
 						},
 						"type": "array"
+					},
+					"scenarios": {
+						"items": {
+							"$ref": "#/components/schemas/IScenario"
+						},
+						"type": "array"
 					}
 				},
 				"required": [
@@ -456,7 +705,8 @@
 					"type",
 					"parentId",
 					"contentId",
-					"children"
+					"children",
+					"scenarios"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -587,13 +837,56 @@
 							"type": "string"
 						},
 						"type": "array"
+					},
+					"scenarios": {
+						"items": {
+							"$ref": "#/components/schemas/IScenario"
+						},
+						"type": "array"
 					}
 				},
 				"required": [
 					"type",
 					"parentId",
 					"contentId",
-					"children"
+					"children",
+					"scenarios"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"INodeUpdateRequest": {
+				"properties": {
+					"type": {
+						"$ref": "#/components/schemas/NodeTypes"
+					},
+					"parentId": {
+						"type": "string",
+						"nullable": true
+					},
+					"contentId": {
+						"type": "string",
+						"nullable": true
+					},
+					"children": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"scenarios": {
+						"items": {
+							"$ref": "#/components/schemas/IScenario"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"type",
+					"parentId",
+					"contentId",
+					"children",
+					"scenarios"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -725,15 +1018,23 @@
 						},
 						"type": "array"
 					},
+					"assets": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
 					"joint": {
+						"type": "string"
+					},
+					"mainAsset": {
 						"type": "string"
 					}
 				},
 				"required": [
 					"name",
 					"receipt",
-					"tags",
-					"joint"
+					"tags"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -822,6 +1123,18 @@
 							"type": "string"
 						},
 						"type": "array"
+					},
+					"assets": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"joint": {
+						"type": "string"
+					},
+					"mainAsset": {
+						"type": "string"
 					}
 				},
 				"required": [
@@ -829,6 +1142,207 @@
 					"receipt",
 					"tags"
 				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IProductAsset": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"lastupdate": {
+						"type": "number",
+						"format": "double"
+					},
+					"name": {
+						"type": "string"
+					},
+					"ext": {
+						"$ref": "#/components/schemas/AssetExtensions"
+					},
+					"path": {
+						"type": "string"
+					},
+					"thumnail": {
+						"type": "string"
+					},
+					"favicon": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"lastupdate",
+					"name",
+					"ext",
+					"path"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IProductGetAssetsResponse": {
+				"properties": {
+					"meta": {
+						"properties": {},
+						"type": "object"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/IProductAsset"
+						},
+						"type": "array"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IProductCreateAssetsResponse": {
+				"properties": {
+					"meta": {
+						"properties": {
+							"asset": {
+								"properties": {
+									"ref": {
+										"$ref": "#/components/schemas/IRefItem"
+									}
+								},
+								"required": [
+									"ref"
+								],
+								"type": "object"
+							},
+							"product": {
+								"properties": {
+									"ref": {
+										"$ref": "#/components/schemas/IRefItem"
+									}
+								},
+								"required": [
+									"ref"
+								],
+								"type": "object"
+							}
+						},
+						"required": [
+							"asset",
+							"product"
+						],
+						"type": "object"
+					},
+					"data": {
+						"properties": {
+							"product": {
+								"$ref": "#/components/schemas/IProductItem"
+							},
+							"asset": {
+								"$ref": "#/components/schemas/IProductAsset"
+							}
+						},
+						"required": [
+							"product",
+							"asset"
+						],
+						"type": "object"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IProductDeleteAssetsResponse": {
+				"properties": {
+					"meta": {
+						"properties": {
+							"asset": {
+								"properties": {
+									"ref": {
+										"$ref": "#/components/schemas/IRefItem"
+									}
+								},
+								"required": [
+									"ref"
+								],
+								"type": "object"
+							},
+							"product": {
+								"properties": {
+									"ref": {
+										"$ref": "#/components/schemas/IRefItem"
+									}
+								},
+								"required": [
+									"ref"
+								],
+								"type": "object"
+							}
+						},
+						"required": [
+							"asset",
+							"product"
+						],
+						"type": "object"
+					},
+					"data": {
+						"properties": {},
+						"type": "object"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
 				"type": "object",
 				"additionalProperties": false
 			},
@@ -1107,6 +1621,11 @@
 				"type": "apiKey",
 				"name": "authorization",
 				"in": "header"
+			},
+			"apiKey": {
+				"type": "apiKey",
+				"name": "x-auth-token",
+				"in": "header"
 			}
 		}
 	},
@@ -1178,6 +1697,9 @@
 				"security": [
 					{
 						"jwt": []
+					},
+					{
+						"aoiKey": []
 					}
 				],
 				"parameters": []
@@ -1215,12 +1737,230 @@
 				"security": [
 					{
 						"jwt": []
+					},
+					{
+						"aoiKey": []
 					}
 				],
 				"parameters": [
 					{
 						"in": "path",
 						"name": "name",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/assets": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IGetAssetsResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "assets",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": [
+												{
+													"id": "107c7f79bcf86cd7994f6c0e",
+													"lastupdate": 1589885721,
+													"name": "some_3d_model",
+													"ext": ".fbx",
+													"path": "assets/some_3d_model.fbx",
+													"thumbnail": "assets/some_3d_model_128x128.png",
+													"favicon": "assets/favicon.png"
+												}
+											]
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Assets"
+				],
+				"security": [
+					{
+						"jwt": []
+					},
+					{
+						"aoiKey": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/asset": {
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ICreateAssetsResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "assets",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": {
+												"id": "107c7f79bcf86cd7994f6c0e",
+												"lastupdate": 1589885721,
+												"name": "some_3d_model",
+												"ext": ".fbx",
+												"path": "assets/some_3d_model.fbx",
+												"thumbnail": "assets/some_3d_model_128x128.png",
+												"favicon": "assets/favicon.png"
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Asset"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/asset/{id}": {
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IUpdateAssetsResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "assets",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": {
+												"id": "107c7f79bcf86cd7994f6c0e",
+												"lastupdate": 1589885721,
+												"name": "some_3d_model",
+												"ext": ".fbx",
+												"path": "assets/some_3d_model.fbx",
+												"thumbnail": "assets/some_3d_model_128x128.png",
+												"favicon": "assets/favicon.png"
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Asset"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IAssetUpdateRequest"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "Delete",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IDeleteAssetsResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "assets",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": {}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Asset"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
 						"required": true,
 						"schema": {
 							"type": "string"
@@ -1501,6 +2241,12 @@
 													"contentId": "407c7f79bcf86cd7994f6c0e",
 													"children": [
 														"123c7f79bcf86cd7994f6c0e"
+													],
+													"scenarios": [
+														{
+															"name": "scenario 1",
+															"action": "visible-by-business-period"
+														}
 													]
 												}
 											]
@@ -1518,6 +2264,9 @@
 				"security": [
 					{
 						"jwt": []
+					},
+					{
+						"aoiKey": []
 					}
 				],
 				"parameters": []
@@ -1551,6 +2300,12 @@
 													"contentId": "407c7f79bcf86cd7994f6c0e",
 													"children": [
 														"123c7f79bcf86cd7994f6c0e"
+													],
+													"scenarios": [
+														{
+															"name": "scenario 1",
+															"action": "visible-by-business-period"
+														}
 													]
 												}
 											]
@@ -1568,6 +2323,9 @@
 				"security": [
 					{
 						"jwt": []
+					},
+					{
+						"aoiKey": []
 					}
 				],
 				"parameters": []
@@ -1601,6 +2359,12 @@
 													"contentId": "407c7f79bcf86cd7994f6c0e",
 													"children": [
 														"123c7f79bcf86cd7994f6c0e"
+													],
+													"scenarios": [
+														{
+															"name": "scenario 1",
+															"action": "visible-by-business-period"
+														}
 													]
 												}
 											]
@@ -1618,6 +2382,9 @@
 				"security": [
 					{
 						"jwt": []
+					},
+					{
+						"aoiKey": []
 					}
 				],
 				"parameters": [
@@ -1659,6 +2426,12 @@
 												"contentId": "407c7f79bcf86cd7994f6c0e",
 												"children": [
 													"123c7f79bcf86cd7994f6c0e"
+												],
+												"scenarios": [
+													{
+														"name": "scenario 1",
+														"action": "visible-by-business-period"
+													}
 												]
 											}
 										}
@@ -1675,6 +2448,9 @@
 				"security": [
 					{
 						"jwt": []
+					},
+					{
+						"aoiKey": []
 					}
 				],
 				"parameters": [
@@ -1714,6 +2490,12 @@
 												"contentId": "407c7f79bcf86cd7994f6c0e",
 												"children": [
 													"123c7f79bcf86cd7994f6c0e"
+												],
+												"scenarios": [
+													{
+														"name": "scenario 1",
+														"action": "visible-by-business-period"
+													}
 												]
 											}
 										}
@@ -1747,7 +2529,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/INodeCreateRequest"
+								"$ref": "#/components/schemas/INodeUpdateRequest"
 							}
 						}
 					}
@@ -1827,6 +2609,12 @@
 												"contentId": "407c7f79bcf86cd7994f6c0e",
 												"children": [
 													"123c7f79bcf86cd7994f6c0e"
+												],
+												"scenarios": [
+													{
+														"name": "scenario 1",
+														"action": "visible-by-business-period"
+													}
 												]
 											}
 										}
@@ -1900,6 +2688,8 @@
 													"tags": [
 														"123c7f79bcf86cd7994f6c0e"
 													],
+													"assets": [],
+													"mainAsset": "g8h07f79bcf86cd7994f9d7k",
 													"joint": "df3c7f79bcf86cd7994f9d8f"
 												}
 											]
@@ -1917,6 +2707,9 @@
 				"security": [
 					{
 						"jwt": []
+					},
+					{
+						"aoiKey": []
 					}
 				],
 				"parameters": []
@@ -1963,6 +2756,8 @@
 												"tags": [
 													"123c7f79bcf86cd7994f6c0e"
 												],
+												"assets": [],
+												"mainAsset": "g8h07f79bcf86cd7994f9d7k",
 												"joint": "df3c7f79bcf86cd7994f9d8f"
 											}
 										}
@@ -1979,6 +2774,9 @@
 				"security": [
 					{
 						"jwt": []
+					},
+					{
+						"aoiKey": []
 					}
 				],
 				"parameters": [
@@ -2032,6 +2830,8 @@
 												"tags": [
 													"123c7f79bcf86cd7994f6c0e"
 												],
+												"assets": [],
+												"mainAsset": "g8h07f79bcf86cd7994f9d7k",
 												"joint": "df3c7f79bcf86cd7994f9d8f"
 											}
 										}
@@ -2159,6 +2959,8 @@
 												"tags": [
 													"123c7f79bcf86cd7994f6c0e"
 												],
+												"assets": [],
+												"mainAsset": "g8h07f79bcf86cd7994f9d7k",
 												"joint": "df3c7f79bcf86cd7994f9d8f"
 											}
 										}
@@ -2188,6 +2990,210 @@
 						}
 					}
 				}
+			}
+		},
+		"/product/{productId}/assets": {
+			"get": {
+				"operationId": "Get",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IProductGetAssetsResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"product": {
+													"ref": {
+														"name": "products",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												},
+												"asset": {
+													"ref": {
+														"name": "assets",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												}
+											},
+											"data": [
+												{
+													"id": "107c7f79bcf86cd7994f6c0e",
+													"lastupdate": 1589885721,
+													"name": "some_3d_model",
+													"ext": ".fbx",
+													"thumbnail": "assets/some_3d_model_128x128.png",
+													"favicon": "assets/favicon.png",
+													"path": "assets/some_3d_model.fbx"
+												}
+											]
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Product assets"
+				],
+				"security": [
+					{
+						"jwt": []
+					},
+					{
+						"aoiKey": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "productId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/product/{productId}/asset": {
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IProductCreateAssetsResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"product": {
+													"ref": {
+														"name": "products",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												},
+												"asset": {
+													"ref": {
+														"name": "assets",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												}
+											},
+											"data": {
+												"asset": {
+													"id": "107c7f79bcf86cd7994f6c0e",
+													"lastupdate": 1589885721,
+													"name": "some_3d_model",
+													"ext": ".fbx",
+													"thumbnail": "assets/some_3d_model_128x128.png",
+													"favicon": "assets/favicon.png",
+													"path": "assets/some_3d_model.fbx"
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Product assets"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "productId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/product/{productId}/asset/{assetId}": {
+			"delete": {
+				"operationId": "Delete",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IProductDeleteAssetsResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"product": {
+													"ref": {
+														"name": "products",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												},
+												"asset": {
+													"ref": {
+														"name": "assets",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Product assets"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "productId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "assetId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		},
 		"/selectors": {
@@ -2232,6 +3238,9 @@
 				"security": [
 					{
 						"jwt": []
+					},
+					{
+						"aoiKey": []
 					}
 				],
 				"parameters": []
@@ -2277,6 +3286,9 @@
 				"security": [
 					{
 						"jwt": []
+					},
+					{
+						"aoiKey": []
 					}
 				],
 				"parameters": [
@@ -2496,6 +3508,9 @@
 				"security": [
 					{
 						"jwt": []
+					},
+					{
+						"aoiKey": []
 					}
 				],
 				"parameters": []
@@ -2541,6 +3556,9 @@
 				"security": [
 					{
 						"jwt": []
+					},
+					{
+						"aoiKey": []
 					}
 				],
 				"parameters": [

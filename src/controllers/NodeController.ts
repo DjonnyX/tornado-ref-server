@@ -1,7 +1,7 @@
-import { NodeModel, INode } from "../models/index";
+import { NodeModel, INode, IScenario } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
-import { NodeTypes, RefTypes } from "../models/enums";
+import { NodeTypes, RefTypes, ScenarioCommonActionTypes } from "../models/enums";
 import * as joi from "@hapi/joi";
 import { IRefItem } from "./RefsController";
 import { getNodesChain, deleteNodesChain, checkOnRecursion } from "../utils/node";
@@ -12,6 +12,7 @@ interface INodeItem {
     parentId: string;
     contentId: string;
     children: Array<string>;
+    scenarios: Array<IScenario>;
 }
 
 interface INodesMeta {
@@ -81,6 +82,15 @@ interface INodeCreateRequest {
     parentId: string;
     contentId: string;
     children: Array<string>;
+    scenarios: Array<IScenario>;
+}
+
+interface INodeUpdateRequest {
+    type: NodeTypes;
+    parentId: string | null;
+    contentId: string | null;
+    children: Array<string>;
+    scenarios: Array<IScenario>;
 }
 
 const RESPONSE_TEMPLATE: INodeItem = {
@@ -89,6 +99,10 @@ const RESPONSE_TEMPLATE: INodeItem = {
     parentId: "107c7f79bcf86cd7994f6c0e",
     contentId: "407c7f79bcf86cd7994f6c0e",
     children: ["123c7f79bcf86cd7994f6c0e"],
+    scenarios: [{
+        name: "scenario 1",
+        action: ScenarioCommonActionTypes.VISIBLE_BY_BUSINESS_PERIOD,
+    }]
 };
 
 const formatModel = (model: INode): INodeItem => ({
@@ -97,6 +111,7 @@ const formatModel = (model: INode): INodeItem => ({
     parentId: model.parentId,
     contentId: model.contentId,
     children: model.children || [],
+    scenarios: model.scenarios || [],
 });
 
 const META_TEMPLATE: INodesMeta = {
@@ -113,6 +128,22 @@ const validateCreateNode = (node: INodeCreateRequest): joi.ValidationResult => {
         parentId: joi.string().required(),
         contentId: joi.string().required(),
         children: joi.required(),
+        scenarios: joi.optional(),
+    });
+
+    return schema.validate(node);
+};
+
+// часть валидируемых параметров убрана, для того чтобы работала сортировка детей
+const validateUpdateNode = (node: INodeUpdateRequest): joi.ValidationResult => {
+    const schema = joi.object({
+        type: joi.string()
+            // включен полный список для сортировки
+            .pattern(new RegExp(`^(${NodeTypes.PRODUCT}|${NodeTypes.SELECTOR}|${NodeTypes.KIOSK_PRESETS_ROOT}|${NodeTypes.KIOSK_ROOT}|${NodeTypes.SELECTOR_JOINT}|${NodeTypes.PRODUCT_JOINT}|${NodeTypes.SELECTOR_NODE})$`)),
+        parentId: joi.optional(), // для рутовых элементов
+        contentId: joi.optional(), // для рутовых элементов
+        children: joi.required(),
+        scenarios: joi.optional(),
     });
 
     return schema.validate(node);
@@ -123,6 +154,7 @@ const validateCreateNode = (node: INodeCreateRequest): joi.ValidationResult => {
 export class RootNodesController extends Controller {
     @Get()
     @Security("jwt")
+    @Security("aoiKey")
     @OperationId("GetRootNodes")
     @Example<INodesResponse>({
         meta: META_TEMPLATE,
@@ -132,6 +164,10 @@ export class RootNodesController extends Controller {
             parentId: "107c7f79bcf86cd7994f6c0e",
             contentId: "407c7f79bcf86cd7994f6c0e",
             children: ["123c7f79bcf86cd7994f6c0e"],
+            scenarios: [{
+                name: "scenario 1",
+                action: ScenarioCommonActionTypes.VISIBLE_BY_BUSINESS_PERIOD,
+            }]
         }]
     })
     public async getAll(): Promise<INodesResponse> {
@@ -161,6 +197,7 @@ export class RootNodesController extends Controller {
 export class NodesController extends Controller {
     @Get()
     @Security("jwt")
+    @Security("aoiKey")
     @OperationId("GetAll")
     @Example<INodesResponse>({
         meta: META_TEMPLATE,
@@ -189,6 +226,7 @@ export class NodesController extends Controller {
 
     @Get("{id}")
     @Security("jwt")
+    @Security("aoiKey")
     @OperationId("GetAllById")
     @Example<INodesResponse>({
         meta: META_TEMPLATE,
@@ -221,6 +259,7 @@ export class NodesController extends Controller {
 export class NodeController extends Controller {
     @Get("{id}")
     @Security("jwt")
+    @Security("aoiKey")
     @OperationId("GetOne")
     @Example<INodeResponse>({
         meta: META_TEMPLATE,
@@ -360,8 +399,8 @@ export class NodeController extends Controller {
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE
     })
-    public async update(id: string, @Body() request: INodeCreateRequest): Promise<INodeResponse> {
-        const validation = validateCreateNode(request);
+    public async update(id: string, @Body() request: INodeUpdateRequest): Promise<INodeResponse> {
+        const validation = validateUpdateNode(request);
         if (validation.error) {
             this.setStatus(500);
             return {
@@ -403,8 +442,10 @@ export class NodeController extends Controller {
 
         try {
             const item = await NodeModel.findById(id);
-            item.contentId = request.contentId;
-            item.type = request.type;
+            
+            for (const key in request) {
+                item[key] = request[key];
+            }
 
             if (item.type === NodeTypes.SELECTOR_NODE && !!request.children && request.children.length > 0) {
                 this.setStatus(500);

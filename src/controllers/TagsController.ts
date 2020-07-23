@@ -68,6 +68,7 @@ const META_TEMPLATE: ITagsMeta = {
 export class TagsController extends Controller {
     @Get()
     @Security("jwt")
+    @Security("aoiKey")
     @OperationId("GetAll")
     @Example<TagsResponse>({
         meta: META_TEMPLATE,
@@ -100,6 +101,7 @@ export class TagsController extends Controller {
 export class TagController extends Controller {
     @Get("{id}")
     @Security("jwt")
+    @Security("aoiKey")
     @OperationId("GetOne")
     @Example<TagResponse>({
         meta: META_TEMPLATE,
@@ -165,9 +167,10 @@ export class TagController extends Controller {
     public async update(id: string, @Body() request: TagCreateRequest): Promise<TagResponse> {
         try {
             const item = await TagModel.findById(id);
-            item.name = request.name;
-            item.description = request.description;
-            item.color = request.color;
+            
+            for (const key in request) {
+                item[key] = request[key];
+            }
             
             await item.save();
 
