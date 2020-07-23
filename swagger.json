@@ -627,6 +627,52 @@
 				],
 				"type": "string"
 			},
+			"ScenarioIntroActionTypes": {
+				"enum": [
+					"duration"
+				],
+				"type": "string"
+			},
+			"ScenarioCommonActionTypes": {
+				"enum": [
+					"visible-by-point-of-sale",
+					"visible-by-business-period"
+				],
+				"type": "string"
+			},
+			"IScenario": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"action": {
+						"anyOf": [
+							{
+								"$ref": "#/components/schemas/ScenarioIntroActionTypes"
+							},
+							{
+								"$ref": "#/components/schemas/ScenarioCommonActionTypes"
+							}
+						]
+					},
+					"value": {
+						"additionalProperties": true
+					},
+					"extra": {
+						"properties": {},
+						"additionalProperties": {
+							"additionalProperties": true
+						},
+						"type": "object"
+					}
+				},
+				"required": [
+					"name",
+					"action"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"INodeItem": {
 				"properties": {
 					"id": {
@@ -646,6 +692,12 @@
 							"type": "string"
 						},
 						"type": "array"
+					},
+					"scenarios": {
+						"items": {
+							"$ref": "#/components/schemas/IScenario"
+						},
+						"type": "array"
 					}
 				},
 				"required": [
@@ -653,7 +705,8 @@
 					"type",
 					"parentId",
 					"contentId",
-					"children"
+					"children",
+					"scenarios"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -784,13 +837,20 @@
 							"type": "string"
 						},
 						"type": "array"
+					},
+					"scenarios": {
+						"items": {
+							"$ref": "#/components/schemas/IScenario"
+						},
+						"type": "array"
 					}
 				},
 				"required": [
 					"type",
 					"parentId",
 					"contentId",
-					"children"
+					"children",
+					"scenarios"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -813,13 +873,20 @@
 							"type": "string"
 						},
 						"type": "array"
+					},
+					"scenarios": {
+						"items": {
+							"$ref": "#/components/schemas/IScenario"
+						},
+						"type": "array"
 					}
 				},
 				"required": [
 					"type",
 					"parentId",
 					"contentId",
-					"children"
+					"children",
+					"scenarios"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -2174,6 +2241,12 @@
 													"contentId": "407c7f79bcf86cd7994f6c0e",
 													"children": [
 														"123c7f79bcf86cd7994f6c0e"
+													],
+													"scenarios": [
+														{
+															"name": "scenario 1",
+															"action": "visible-by-business-period"
+														}
 													]
 												}
 											]
@@ -2227,6 +2300,12 @@
 													"contentId": "407c7f79bcf86cd7994f6c0e",
 													"children": [
 														"123c7f79bcf86cd7994f6c0e"
+													],
+													"scenarios": [
+														{
+															"name": "scenario 1",
+															"action": "visible-by-business-period"
+														}
 													]
 												}
 											]
@@ -2280,6 +2359,12 @@
 													"contentId": "407c7f79bcf86cd7994f6c0e",
 													"children": [
 														"123c7f79bcf86cd7994f6c0e"
+													],
+													"scenarios": [
+														{
+															"name": "scenario 1",
+															"action": "visible-by-business-period"
+														}
 													]
 												}
 											]
@@ -2341,6 +2426,12 @@
 												"contentId": "407c7f79bcf86cd7994f6c0e",
 												"children": [
 													"123c7f79bcf86cd7994f6c0e"
+												],
+												"scenarios": [
+													{
+														"name": "scenario 1",
+														"action": "visible-by-business-period"
+													}
 												]
 											}
 										}
@@ -2399,6 +2490,12 @@
 												"contentId": "407c7f79bcf86cd7994f6c0e",
 												"children": [
 													"123c7f79bcf86cd7994f6c0e"
+												],
+												"scenarios": [
+													{
+														"name": "scenario 1",
+														"action": "visible-by-business-period"
+													}
 												]
 											}
 										}
@@ -2512,6 +2609,12 @@
 												"contentId": "407c7f79bcf86cd7994f6c0e",
 												"children": [
 													"123c7f79bcf86cd7994f6c0e"
+												],
+												"scenarios": [
+													{
+														"name": "scenario 1",
+														"action": "visible-by-business-period"
+													}
 												]
 											}
 										}

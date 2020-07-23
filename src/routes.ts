@@ -270,6 +270,27 @@ const models: TsoaRoute.Models = {
         "enums": ["kiosk-root", "kiosk-presets-root", "selector", "product", "product-joint", "selector-joint", "selector-node"],
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ScenarioIntroActionTypes": {
+        "dataType": "refEnum",
+        "enums": ["duration"],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ScenarioCommonActionTypes": {
+        "dataType": "refEnum",
+        "enums": ["visible-by-point-of-sale", "visible-by-business-period"],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IScenario": {
+        "dataType": "refObject",
+        "properties": {
+            "name": { "dataType": "string", "required": true },
+            "action": { "dataType": "union", "subSchemas": [{ "ref": "ScenarioIntroActionTypes" }, { "ref": "ScenarioCommonActionTypes" }], "required": true },
+            "value": { "dataType": "any" },
+            "extra": { "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "INodeItem": {
         "dataType": "refObject",
         "properties": {
@@ -278,6 +299,7 @@ const models: TsoaRoute.Models = {
             "parentId": { "dataType": "string", "required": true },
             "contentId": { "dataType": "string", "required": true },
             "children": { "dataType": "array", "array": { "dataType": "string" }, "required": true },
+            "scenarios": { "dataType": "array", "array": { "ref": "IScenario" }, "required": true },
         },
         "additionalProperties": false,
     },
@@ -319,6 +341,7 @@ const models: TsoaRoute.Models = {
             "parentId": { "dataType": "string", "required": true },
             "contentId": { "dataType": "string", "required": true },
             "children": { "dataType": "array", "array": { "dataType": "string" }, "required": true },
+            "scenarios": { "dataType": "array", "array": { "ref": "IScenario" }, "required": true },
         },
         "additionalProperties": false,
     },
@@ -330,6 +353,7 @@ const models: TsoaRoute.Models = {
             "parentId": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }], "required": true },
             "contentId": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }], "required": true },
             "children": { "dataType": "array", "array": { "dataType": "string" }, "required": true },
+            "scenarios": { "dataType": "array", "array": { "ref": "IScenario" }, "required": true },
         },
         "additionalProperties": false,
     },

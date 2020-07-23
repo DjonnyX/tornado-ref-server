@@ -1,7 +1,6 @@
 import * as mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
 import { NodeTypes, ScenarioIntroActionTypes, ScenarioCommonActionTypes, ScenarioProductActionTypes, ScenarioSelectorActionTypes } from "./enums";
-import { ExtraSchema } from "./ExtraSchema";
 
 interface IScenario {
     name: string;

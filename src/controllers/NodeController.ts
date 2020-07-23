@@ -82,6 +82,7 @@ interface INodeCreateRequest {
     parentId: string;
     contentId: string;
     children: Array<string>;
+    scenarios: Array<IScenario>;
 }
 
 interface INodeUpdateRequest {
@@ -89,6 +90,7 @@ interface INodeUpdateRequest {
     parentId: string | null;
     contentId: string | null;
     children: Array<string>;
+    scenarios: Array<IScenario>;
 }
 
 const RESPONSE_TEMPLATE: INodeItem = {
@@ -126,6 +128,7 @@ const validateCreateNode = (node: INodeCreateRequest): joi.ValidationResult => {
         parentId: joi.string().required(),
         contentId: joi.string().required(),
         children: joi.required(),
+        scenario: joi.optional(),
     });
 
     return schema.validate(node);
@@ -140,6 +143,7 @@ const validateUpdateNode = (node: INodeUpdateRequest): joi.ValidationResult => {
         parentId: joi.optional(), // для рутовых элементов
         contentId: joi.optional(), // для рутовых элементов
         children: joi.required(),
+        scenario: joi.optional(),
     });
 
     return schema.validate(node);
