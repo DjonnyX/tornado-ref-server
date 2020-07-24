@@ -585,6 +585,174 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"IBusinessPeriodMeta": {
+				"properties": {
+					"ref": {
+						"properties": {
+							"lastUpdate": {
+								"type": "number",
+								"format": "double"
+							},
+							"version": {
+								"type": "number",
+								"format": "double"
+							},
+							"name": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"lastUpdate",
+							"version",
+							"name"
+						],
+						"type": "object"
+					}
+				},
+				"required": [
+					"ref"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ISchedule": {
+				"properties": {
+					"time": {
+						"properties": {
+							"end": {
+								"type": "string",
+								"format": "date-time"
+							},
+							"start": {
+								"type": "string",
+								"format": "date-time"
+							}
+						},
+						"required": [
+							"start"
+						],
+						"type": "object"
+					},
+					"weekDays": {
+						"items": {
+							"type": "number",
+							"format": "double"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IBusinessPeriodItem": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"schedule": {
+						"items": {
+							"$ref": "#/components/schemas/ISchedule"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"name",
+					"schedule"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IBusinessPeriodsResponse": {
+				"properties": {
+					"meta": {
+						"$ref": "#/components/schemas/IBusinessPeriodMeta"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/IBusinessPeriodItem"
+						},
+						"type": "array"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IBusinessPeriodResponse": {
+				"properties": {
+					"meta": {
+						"$ref": "#/components/schemas/IBusinessPeriodMeta"
+					},
+					"data": {
+						"$ref": "#/components/schemas/IBusinessPeriodItem"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IBusinessPeriodCreateRequest": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"schedule": {
+						"$ref": "#/components/schemas/ISchedule"
+					}
+				},
+				"required": [
+					"name",
+					"schedule"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"INodesMeta": {
 				"properties": {
 					"ref": {
@@ -1681,6 +1849,11 @@
 													"name": "tags",
 													"version": 5,
 													"lastUpdate": 1589885721
+												},
+												{
+													"name": "business-periods",
+													"version": 3,
+													"lastUpdate": 1589885721
 												}
 											]
 										}
@@ -2207,6 +2380,324 @@
 						"application/json": {
 							"schema": {
 								"$ref": "#/components/schemas/IVerifyResetPasswordTokenParams"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/business-periods": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IBusinessPeriodsResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "business-periods",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": [
+												{
+													"id": "507c7f79bcf86cd7994f6c0e",
+													"name": "Selectors on concert",
+													"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+													"schedule": [
+														{
+															"time": {
+																"start": "2020-07-24T08:16:43.866Z",
+																"end": "2020-07-24T08:16:43.866Z"
+															},
+															"weekDays": [
+																0,
+																1,
+																2
+															]
+														}
+													]
+												}
+											]
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Business Periods"
+				],
+				"security": [
+					{
+						"jwt": []
+					},
+					{
+						"aoiKey": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/business-period/{id}": {
+			"get": {
+				"operationId": "GetOne",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IBusinessPeriodResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "business-periods",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": {
+												"id": "507c7f79bcf86cd7994f6c0e",
+												"name": "Selectors on concert",
+												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+												"schedule": [
+													{
+														"time": {
+															"start": "2020-07-24T08:16:43.869Z",
+															"end": "2020-07-24T08:16:43.869Z"
+														},
+														"weekDays": [
+															0,
+															1,
+															2
+														]
+													}
+												]
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Business Period"
+				],
+				"security": [
+					{
+						"jwt": []
+					},
+					{
+						"aoiKey": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IBusinessPeriodResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "business-periods",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": {
+												"id": "507c7f79bcf86cd7994f6c0e",
+												"name": "Selectors on concert",
+												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+												"schedule": [
+													{
+														"time": {
+															"start": "2020-07-24T08:16:43.872Z",
+															"end": "2020-07-24T08:16:43.872Z"
+														},
+														"weekDays": [
+															0,
+															1,
+															2
+														]
+													}
+												]
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Business Period"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IBusinessPeriodCreateRequest"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "Delete",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IBusinessPeriodResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "business-periods",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Business Period"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/business-period": {
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IBusinessPeriodResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "business-periods",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": {
+												"id": "507c7f79bcf86cd7994f6c0e",
+												"name": "Selectors on concert",
+												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+												"schedule": [
+													{
+														"time": {
+															"start": "2020-07-24T08:16:43.869Z",
+															"end": "2020-07-24T08:16:43.869Z"
+														},
+														"weekDays": [
+															0,
+															1,
+															2
+														]
+													}
+												]
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Business Period"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IBusinessPeriodCreateRequest"
 							}
 						}
 					}

@@ -49,6 +49,10 @@ export const initRefs = async (): Promise<void> => {
             name: RefTypes.TAGS,
             version: 1,
             lastUpdate,
+        }, {
+            name: RefTypes.BUSINESS_PERIODS,
+            version: 1,
+            lastUpdate,
         },
     ];
 

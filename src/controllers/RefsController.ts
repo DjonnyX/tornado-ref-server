@@ -48,6 +48,10 @@ const RESPONSE_TEMPLATE: Array<IRefItem> = [
         name: RefTypes.TAGS,
         version: 5,
         lastUpdate: 1589885721
+    }, {
+        name: RefTypes.BUSINESS_PERIODS,
+        version: 3,
+        lastUpdate: 1589885721
     }
 ];
 
