@@ -4,6 +4,7 @@ import { TagModel, ITag } from "./Tag";
 import { RefModel, IRef } from "./Ref";
 import { INode, NodeModel, IScenario } from "./Node";
 import { ISelector, SelectorModel } from "./Selector";
+import { IBusinessPeriod, BusinessPeriodModel, ISchedule } from "./BusinessPeriod";
 import { RefTypes } from "./enums";
 
 export {
@@ -14,5 +15,6 @@ export {
     IReceiptItem,
     ProductModel, IProduct,
     TagModel, ITag,
+    IBusinessPeriod, BusinessPeriodModel, ISchedule,
     RefModel, IRef, RefTypes,
 };
