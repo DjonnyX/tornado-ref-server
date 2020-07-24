@@ -68,7 +68,7 @@ const META_TEMPLATE: ITagsMeta = {
 export class TagsController extends Controller {
     @Get()
     @Security("jwt")
-    @Security("aoiKey")
+    @Security("apiKey")
     @OperationId("GetAll")
     @Example<TagsResponse>({
         meta: META_TEMPLATE,
@@ -101,7 +101,7 @@ export class TagsController extends Controller {
 export class TagController extends Controller {
     @Get("{id}")
     @Security("jwt")
-    @Security("aoiKey")
+    @Security("apiKey")
     @OperationId("GetOne")
     @Example<TagResponse>({
         meta: META_TEMPLATE,

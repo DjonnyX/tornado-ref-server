@@ -89,7 +89,7 @@ const RESPONSE_TEMPLATE = {
 export class ProductAssetsController extends Controller {
     @Get("{productId}/assets")
     @Security("jwt")
-    @Security("aoiKey")
+    @Security("apiKey")
     @OperationId("Get")
     @Example<IProductGetAssetsResponse>({
         meta: META_TEMPLATE,

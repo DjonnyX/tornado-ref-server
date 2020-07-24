@@ -89,7 +89,7 @@ const META_TEMPLATE: IProductsMeta = {
 export class ProductsController extends Controller {
     @Get()
     @Security("jwt")
-    @Security("aoiKey")
+    @Security("apiKey")
     @OperationId("GetAll")
     @Example<IProductsResponse>({
         meta: META_TEMPLATE,
@@ -122,7 +122,7 @@ export class ProductsController extends Controller {
 export class ProductController extends Controller {
     @Get("{id}")
     @Security("jwt")
-    @Security("aoiKey")
+    @Security("apiKey")
     @OperationId("GetOne")
     @Example<IProductResponse>({
         meta: META_TEMPLATE,
