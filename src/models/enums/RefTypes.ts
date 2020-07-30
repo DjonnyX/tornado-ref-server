@@ -6,4 +6,5 @@ export enum RefTypes {
     NODES = "nodes",
     USERS = "users",
     TAGS = "tags",
+    BUSINESS_PERIODS = "business-periods",
 }

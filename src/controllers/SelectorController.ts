@@ -69,7 +69,7 @@ const META_TEMPLATE: ISelectorsMeta = {
 export class SelectorsController extends Controller {
     @Get()
     @Security("jwt")
-    @Security("aoiKey")
+    @Security("apiKey")
     @OperationId("GetAll")
     @Example<ISelectorsResponse>({
         meta: META_TEMPLATE,
@@ -102,7 +102,7 @@ export class SelectorsController extends Controller {
 export class SelectorController extends Controller {
     @Get("{id}")
     @Security("jwt")
-    @Security("aoiKey")
+    @Security("apiKey")
     @OperationId("GetOne")
     @Example<ISelectorResponse>({
         meta: META_TEMPLATE,

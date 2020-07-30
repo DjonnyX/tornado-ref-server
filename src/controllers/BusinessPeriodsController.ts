@@ -1,22 +1,17 @@
-import { ProductModel, IProduct, IReceiptItem, RefTypes, NodeModel } from "../models/index";
+import { RefTypes, ISchedule, IBusinessPeriod, BusinessPeriodModel } from "../models";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security } from "tsoa";
+import * as joi from "@hapi/joi";
 import { getRef, riseRefVersion } from "../db/refs";
-import { NodeTypes } from "../models/enums";
-import { deleteNodesChain } from "../utils/node";
-import { formatProductModel } from "../utils/product";
+import { formatModel } from "../utils/businessPeriod";
 
-export interface IProductItem {
+interface IBusinessPeriodItem {
     id?: string;
     name: string;
     description?: string;
-    receipt: Array<IReceiptItem>;
-    tags: Array<string>;
-    assets?: Array<string>;
-    joint?: string;
-    mainAsset?: string;
+    schedule: Array<ISchedule>;
 }
 
-export interface IProductsMeta {
+interface IBusinessPeriodMeta {
     ref: {
         name: string;
         version: number;
@@ -24,84 +19,81 @@ export interface IProductsMeta {
     };
 }
 
-interface IProductsResponse {
-    meta?: IProductsMeta;
-    data?: Array<IProductItem>;
+interface IBusinessPeriodsResponse {
+    meta?: IBusinessPeriodMeta;
+    data?: Array<IBusinessPeriodItem>;
     error?: Array<{
         code: number;
         message: string;
     }>;
 }
 
-interface IProductResponse {
-    meta?: IProductsMeta;
-    data?: IProductItem;
+interface IBusinessPeriodResponse {
+    meta?: IBusinessPeriodMeta;
+    data?: IBusinessPeriodItem;
     error?: Array<{
         code: number;
         message: string;
     }>;
 }
 
-interface IProductCreateRequest {
+interface IBusinessPeriodCreateRequest {
     name: string;
     description?: string;
-    receipt: Array<IReceiptItem>;
-    tags: Array<string>;
-    assets?: Array<string>;
-    joint?: string;
-    mainAsset?: string;
+    schedule: Array<ISchedule>;
 }
 
-export const RESPONSE_TEMPLATE: IProductItem = {
+const RESPONSE_TEMPLATE: IBusinessPeriodItem = {
     id: "507c7f79bcf86cd7994f6c0e",
-    name: "Products on concert",
+    name: "Selectors on concert",
     description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-    receipt: [
+    schedule: [
         {
-            name: "Bun",
-            description: "Crispy bun",
-            quantity: 1,
-            calories: 142,
-        },
-        {
-            name: "Cutlet",
-            description: "Beef cutlet",
-            quantity: 1,
-            calories: 346,
+            time: {
+                start: Date.now(),
+                end: Date.now(),
+            },
+            weekDays: [0, 1, 2],
         }
     ],
-    tags: ["123c7f79bcf86cd7994f6c0e"],
-    assets: [],
-    mainAsset: "g8h07f79bcf86cd7994f9d7k",
-    joint: "df3c7f79bcf86cd7994f9d8f",
 };
 
-const META_TEMPLATE: IProductsMeta = {
+const validateBP = (node: IBusinessPeriodCreateRequest): joi.ValidationResult => {
+    const schema = joi.object({
+        name: joi.string(),
+        description: joi.optional(),
+        schedule: joi.optional(),
+    });
+
+    return schema.validate(node);
+};
+
+const META_TEMPLATE: IBusinessPeriodMeta = {
     ref: {
-        name: RefTypes.PRODUCTS,
+        name: RefTypes.BUSINESS_PERIODS,
         version: 1,
         lastUpdate: 1589885721
     }
 };
 
-@Route("/products")
-@Tags("Product")
-export class ProductsController extends Controller {
+@Route("/business-periods")
+@Tags("Business Periods")
+export class BusinessPeriodsController extends Controller {
     @Get()
     @Security("jwt")
     @Security("apiKey")
     @OperationId("GetAll")
-    @Example<IProductsResponse>({
+    @Example<IBusinessPeriodsResponse>({
         meta: META_TEMPLATE,
         data: [RESPONSE_TEMPLATE]
     })
-    public async getAll(): Promise<IProductsResponse> {
+    public async getAll(): Promise<IBusinessPeriodsResponse> {
         try {
-            const items = await ProductModel.find({});
-            const ref = await getRef(RefTypes.PRODUCTS);
+            const items = await BusinessPeriodModel.find({});
+            const ref = await getRef(RefTypes.BUSINESS_PERIODS);
             return {
                 meta: { ref },
-                data: items.map(v => formatProductModel(v))
+                data: items.map(v => formatModel(v))
             };
         } catch (err) {
             this.setStatus(500);
@@ -117,24 +109,24 @@ export class ProductsController extends Controller {
     }
 }
 
-@Route("/product")
-@Tags("Product")
-export class ProductController extends Controller {
+@Route("/business-period")
+@Tags("Business Period")
+export class BusinessPeriodController extends Controller {
     @Get("{id}")
     @Security("jwt")
     @Security("apiKey")
     @OperationId("GetOne")
-    @Example<IProductResponse>({
+    @Example<IBusinessPeriodResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE
     })
-    public async getOne(id: string): Promise<IProductResponse> {
+    public async getOne(id: string): Promise<IBusinessPeriodResponse> {
         try {
-            const item = await ProductModel.findById(id);
-            const ref = await getRef(RefTypes.PRODUCTS);
+            const item = await BusinessPeriodModel.findById(id);
+            const ref = await getRef(RefTypes.BUSINESS_PERIODS);
             return {
                 meta: { ref },
-                data: formatProductModel(item)
+                data: formatModel(item)
             };
         } catch (err) {
             this.setStatus(500);
@@ -152,43 +144,31 @@ export class ProductController extends Controller {
     @Post()
     @Security("jwt")
     @OperationId("Create")
-    @Example<IProductResponse>({
+    @Example<IBusinessPeriodResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE
     })
-    public async create(@Body() request: IProductCreateRequest): Promise<IProductResponse> {
-        let params: IProductItem;
-        try {
-
-            // создается корневой нод
-            const jointNode = new NodeModel({
-                type: NodeTypes.PRODUCT_JOINT,
-                parentId: null,
-                contentId: null,
-                children: [],
-            });
-            const jointRootNode = await jointNode.save();
-
-            params = {...request, joint: jointRootNode._id};
-        } catch (err) {
+    public async create(@Body() request: IBusinessPeriodCreateRequest): Promise<IBusinessPeriodResponse> {
+        const validation = validateBP(request);
+        if (validation.error) {
             this.setStatus(500);
             return {
                 error: [
                     {
                         code: 500,
-                        message: `Error in creation joint node. ${err}`,
+                        message: validation.error.message,
                     }
                 ]
             };
         }
 
         try {
-            const item = new ProductModel(params);
+            const item = new BusinessPeriodModel(request);
             const savedItem = await item.save();
-            const ref = await riseRefVersion(RefTypes.PRODUCTS);
+            const ref = await riseRefVersion(RefTypes.BUSINESS_PERIODS);
             return {
                 meta: { ref },
-                data: formatProductModel(savedItem)
+                data: formatModel(savedItem)
             };
         } catch (err) {
             this.setStatus(500);
@@ -206,24 +186,37 @@ export class ProductController extends Controller {
     @Put("{id}")
     @Security("jwt")
     @OperationId("Update")
-    @Example<IProductResponse>({
+    @Example<IBusinessPeriodResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE
     })
-    public async update(id: string, @Body() request: IProductCreateRequest): Promise<IProductResponse> {
+    public async update(id: string, @Body() request: IBusinessPeriodCreateRequest): Promise<IBusinessPeriodResponse> {
+        const validation = validateBP(request);
+        if (validation.error) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: validation.error.message,
+                    }
+                ]
+            };
+        }
+
         try {
-            const item = await ProductModel.findById(id);
+            const item = await BusinessPeriodModel.findById(id);
             
             for (const key in request) {
                 item[key] = request[key];
             }
-            
+
             await item.save();
 
-            const ref = await riseRefVersion(RefTypes.PRODUCTS);
+            const ref = await riseRefVersion(RefTypes.BUSINESS_PERIODS);
             return {
                 meta: { ref },
-                data: formatProductModel(item)
+                data: formatModel(item)
             };
         } catch (err) {
             this.setStatus(500);
@@ -241,13 +234,13 @@ export class ProductController extends Controller {
     @Delete("{id}")
     @Security("jwt")
     @OperationId("Delete")
-    @Example<IProductResponse>({
+    @Example<IBusinessPeriodResponse>({
         meta: META_TEMPLATE
     })
-    public async delete(id: string): Promise<IProductResponse> {
-        let product: IProduct;
+    public async delete(id: string): Promise<IBusinessPeriodResponse> {
+        let bp: IBusinessPeriod;
         try {
-            product = await ProductModel.findByIdAndDelete(id);
+            bp = await BusinessPeriodModel.findByIdAndDelete(id);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -261,21 +254,7 @@ export class ProductController extends Controller {
         }
 
         try {
-            await deleteNodesChain(product.joint);
-        } catch (err) {
-            this.setStatus(500);
-            return {
-                error: [
-                    {
-                        code: 500,
-                        message: `Error in delete joint node. ${err}`,
-                    }
-                ]
-            };
-        }
-
-        try {
-            const ref = await riseRefVersion(RefTypes.PRODUCTS);
+            const ref = await riseRefVersion(RefTypes.BUSINESS_PERIODS);
             return {
                 meta: { ref }
             };

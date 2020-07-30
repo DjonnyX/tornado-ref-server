@@ -148,7 +148,7 @@ export const deleteAsset = (assetPath: string): Promise<IAsset> => {
 export class AssetsController extends Controller {
     @Get()
     @Security("jwt")
-    @Security("aoiKey")
+    @Security("apiKey")
     @OperationId("GetAll")
     @Example<IGetAssetsResponse>({
         meta: META_TEMPLATE,

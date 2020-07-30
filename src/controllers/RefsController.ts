@@ -48,6 +48,10 @@ const RESPONSE_TEMPLATE: Array<IRefItem> = [
         name: RefTypes.TAGS,
         version: 5,
         lastUpdate: 1589885721
+    }, {
+        name: RefTypes.BUSINESS_PERIODS,
+        version: 3,
+        lastUpdate: 1589885721
     }
 ];
 
@@ -68,7 +72,7 @@ const formatModel = (model: IRef): IRefItem => ({
 export class RefsController extends Controller {
     @Get()
     @Security("jwt")
-    @Security("aoiKey")
+    @Security("apiKey")
     @OperationId("GetAll")
     @Example<RefsResponse>({
         data: RESPONSE_TEMPLATE
@@ -98,7 +102,7 @@ export class RefsController extends Controller {
 export class RefController extends Controller {
     @Get("{name}")
     @Security("jwt")
-    @Security("aoiKey")
+    @Security("apiKey")
     @OperationId("GetOne")
     @Example<RefResponse>({
         data: RESPONSE_SINGLE_TEMPLATE
