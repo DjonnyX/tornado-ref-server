@@ -40,7 +40,7 @@ interface IBusinessPeriodResponse {
 interface IBusinessPeriodCreateRequest {
     name: string;
     description?: string;
-    schedule: ISchedule;
+    schedule: Array<ISchedule>;
 }
 
 const RESPONSE_TEMPLATE: IBusinessPeriodItem = {
@@ -50,8 +50,8 @@ const RESPONSE_TEMPLATE: IBusinessPeriodItem = {
     schedule: [
         {
             time: {
-                start: new Date(),
-                end: new Date(),
+                start: Date.now(),
+                end: Date.now(),
             },
             weekDays: [0, 1, 2],
         }
@@ -60,9 +60,9 @@ const RESPONSE_TEMPLATE: IBusinessPeriodItem = {
 
 const validateBP = (node: IBusinessPeriodCreateRequest): joi.ValidationResult => {
     const schema = joi.object({
-        name: joi.string().optional(),
-        description: joi.string().optional(),
-        schedule: joi.array().optional(),
+        name: joi.string(),
+        description: joi.optional(),
+        schedule: joi.optional(),
     });
 
     return schema.validate(node);

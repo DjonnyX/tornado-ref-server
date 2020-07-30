@@ -3,8 +3,8 @@ import { Schema, Document } from "mongoose";
 
 interface ISchedule {
     time?: {
-        start: Date;
-        end?: Date;
+        start: number;
+        end?: number;
     },
     weekDays?: number[],
 }
@@ -16,8 +16,8 @@ interface IBusinessPeriod extends Document {
 }
 
 const TimeRangeSchema = new Schema({
-    start: { type: Schema.Types.Date, required: true },
-    end: { type: Schema.Types.Date, required: false },
+    start: { type: Schema.Types.Number, required: true },
+    end: { type: Schema.Types.Number, required: false },
 });
 
 const ScheduleSchema = new Schema({
@@ -29,7 +29,7 @@ const ScheduleSchema = new Schema({
 const BusinessPeriodSchema = new Schema({
     name: { type: String, required: true },
     description: { type: String, required: false },
-    schedule: ScheduleSchema,
+    schedule: [ScheduleSchema],
 });
 
 const BusinessPeriodModel = mongoose.model<IBusinessPeriod>("BusinessPeriod", BusinessPeriodSchema);

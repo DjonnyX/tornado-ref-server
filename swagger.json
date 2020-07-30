@@ -620,12 +620,12 @@
 					"time": {
 						"properties": {
 							"end": {
-								"type": "string",
-								"format": "date-time"
+								"type": "number",
+								"format": "double"
 							},
 							"start": {
-								"type": "string",
-								"format": "date-time"
+								"type": "number",
+								"format": "double"
 							}
 						},
 						"required": [
@@ -743,7 +743,10 @@
 						"type": "string"
 					},
 					"schedule": {
-						"$ref": "#/components/schemas/ISchedule"
+						"items": {
+							"$ref": "#/components/schemas/ISchedule"
+						},
+						"type": "array"
 					}
 				},
 				"required": [
@@ -2413,10 +2416,7 @@
 													"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
 													"schedule": [
 														{
-															"time": {
-																"start": "2020-07-24T08:19:15.386Z",
-																"end": "2020-07-24T08:19:15.386Z"
-															},
+															"time": {},
 															"weekDays": [
 																0,
 																1,
@@ -2474,10 +2474,7 @@
 												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
 												"schedule": [
 													{
-														"time": {
-															"start": "2020-07-24T08:19:15.389Z",
-															"end": "2020-07-24T08:19:15.389Z"
-														},
+														"time": {},
 														"weekDays": [
 															0,
 															1,
@@ -2541,10 +2538,7 @@
 												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
 												"schedule": [
 													{
-														"time": {
-															"start": "2020-07-24T08:19:15.392Z",
-															"end": "2020-07-24T08:19:15.392Z"
-														},
+														"time": {},
 														"weekDays": [
 															0,
 															1,
@@ -2663,10 +2657,7 @@
 												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
 												"schedule": [
 													{
-														"time": {
-															"start": "2020-07-24T08:19:15.390Z",
-															"end": "2020-07-24T08:19:15.390Z"
-														},
+														"time": {},
 														"weekDays": [
 															0,
 															1,

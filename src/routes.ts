@@ -272,7 +272,7 @@ const models: TsoaRoute.Models = {
     "ISchedule": {
         "dataType": "refObject",
         "properties": {
-            "time": { "dataType": "nestedObjectLiteral", "nestedProperties": { "end": { "dataType": "datetime" }, "start": { "dataType": "datetime", "required": true } } },
+            "time": { "dataType": "nestedObjectLiteral", "nestedProperties": { "end": { "dataType": "double" }, "start": { "dataType": "double", "required": true } } },
             "weekDays": { "dataType": "array", "array": { "dataType": "double" } },
         },
         "additionalProperties": false,
@@ -314,7 +314,7 @@ const models: TsoaRoute.Models = {
         "properties": {
             "name": { "dataType": "string", "required": true },
             "description": { "dataType": "string" },
-            "schedule": { "ref": "ISchedule", "required": true },
+            "schedule": { "dataType": "array", "array": { "ref": "ISchedule" }, "required": true },
         },
         "additionalProperties": false,
     },
