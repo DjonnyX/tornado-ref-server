@@ -112,7 +112,6 @@ const formatModel = (model: INode): INodeItem => ({
     children: model.children || [],
     scenarios: model.scenarios.map(scenario => {
         return {
-            id: (scenario as any)._id,
             action: scenario.action,
             value: scenario.value,
             extra: scenario.extra,
