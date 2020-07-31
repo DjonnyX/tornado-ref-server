@@ -4,7 +4,7 @@ import { NodeTypes, ScenarioIntroActionTypes, ScenarioCommonActionTypes, Scenari
 
 interface IScenario {
     action: ScenarioIntroActionTypes | ScenarioCommonActionTypes | ScenarioProductActionTypes | ScenarioSelectorActionTypes;
-    value?: Array<string> | string | number | null;
+    value?: any;
     extra?: { [key: string]: any } | null;
 }
 

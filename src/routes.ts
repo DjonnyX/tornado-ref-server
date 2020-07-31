@@ -356,7 +356,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "action": { "dataType": "union", "subSchemas": [{ "ref": "ScenarioIntroActionTypes" }, { "ref": "ScenarioCommonActionTypes" }, { "ref": "ScenarioProductActionTypes" }, { "ref": "ScenarioSelectorActionTypes" }], "required": true },
-            "value": { "dataType": "union", "subSchemas": [{ "dataType": "array", "array": { "dataType": "string" } }, { "dataType": "string" }, { "dataType": "double" }, { "dataType": "enum", "enums": [null] }] },
+            "value": { "dataType": "any" },
             "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
         "additionalProperties": false,

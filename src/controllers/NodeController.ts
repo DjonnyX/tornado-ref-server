@@ -129,7 +129,7 @@ const META_TEMPLATE: INodesMeta = {
 
 const validateCreateNode = (node: INodeCreateRequest): joi.ValidationResult => {
     const schema = joi.object({
-        type: joi.string().pattern(new RegExp(`^(${NodeTypes.PRODUCT}|${NodeTypes.SELECTOR})$`)),
+        type: joi.string().pattern(new RegExp(`^(${NodeTypes.PRODUCT}|${NodeTypes.SELECTOR}|${NodeTypes.SELECTOR_NODE})$`)),
         parentId: joi.string().required(),
         contentId: joi.string().required(),
         children: joi.required(),

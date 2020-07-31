@@ -844,28 +844,7 @@
 						]
 					},
 					"value": {
-						"anyOf": [
-							{
-								"items": {
-									"type": "string"
-								},
-								"type": "array"
-							},
-							{
-								"type": "string"
-							},
-							{
-								"type": "number",
-								"format": "double"
-							},
-							{
-								"type": "number",
-								"enum": [
-									null
-								],
-								"nullable": true
-							}
-						]
+						"additionalProperties": true
 					},
 					"extra": {
 						"properties": {},
