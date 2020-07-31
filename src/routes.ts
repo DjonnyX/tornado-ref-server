@@ -342,13 +342,22 @@ const models: TsoaRoute.Models = {
         "enums": ["visible-by-point-of-sale", "visible-by-business-period"],
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ScenarioProductActionTypes": {
+        "dataType": "refEnum",
+        "enums": ["up-limit", "down-limit"],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ScenarioSelectorActionTypes": {
+        "dataType": "refEnum",
+        "enums": ["max-usage", "default-products"],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "IScenario": {
         "dataType": "refObject",
         "properties": {
-            "name": { "dataType": "string", "required": true },
-            "action": { "dataType": "union", "subSchemas": [{ "ref": "ScenarioIntroActionTypes" }, { "ref": "ScenarioCommonActionTypes" }], "required": true },
-            "value": { "dataType": "any" },
-            "extra": { "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } },
+            "action": { "dataType": "union", "subSchemas": [{ "ref": "ScenarioIntroActionTypes" }, { "ref": "ScenarioCommonActionTypes" }, { "ref": "ScenarioProductActionTypes" }, { "ref": "ScenarioSelectorActionTypes" }], "required": true },
+            "value": { "dataType": "union", "subSchemas": [{ "dataType": "array", "array": { "dataType": "string" } }, { "dataType": "string" }, { "dataType": "double" }, { "dataType": "enum", "enums": [null] }] },
+            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
         "additionalProperties": false,
     },
@@ -361,7 +370,7 @@ const models: TsoaRoute.Models = {
             "parentId": { "dataType": "string", "required": true },
             "contentId": { "dataType": "string", "required": true },
             "children": { "dataType": "array", "array": { "dataType": "string" }, "required": true },
-            "scenarios": { "dataType": "array", "array": { "ref": "IScenario" }, "required": true },
+            "scenarios": { "dataType": "array", "array": { "ref": "IScenario" } },
         },
         "additionalProperties": false,
     },

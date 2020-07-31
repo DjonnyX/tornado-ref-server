@@ -12,7 +12,7 @@ interface INodeItem {
     parentId: string;
     contentId: string;
     children: Array<string>;
-    scenarios: Array<IScenario>;
+    scenarios?: Array<IScenario>;
 }
 
 interface INodesMeta {
@@ -100,7 +100,6 @@ const RESPONSE_TEMPLATE: INodeItem = {
     contentId: "407c7f79bcf86cd7994f6c0e",
     children: ["123c7f79bcf86cd7994f6c0e"],
     scenarios: [{
-        name: "scenario 1",
         action: ScenarioCommonActionTypes.VISIBLE_BY_BUSINESS_PERIOD,
     }]
 };
@@ -111,7 +110,14 @@ const formatModel = (model: INode): INodeItem => ({
     parentId: model.parentId,
     contentId: model.contentId,
     children: model.children || [],
-    scenarios: model.scenarios || [],
+    scenarios: model.scenarios.map(scenario => {
+        return {
+            id: (scenario as any)._id,
+            action: scenario.action,
+            value: scenario.value,
+            extra: scenario.extra,
+        }
+    }) || [],
 });
 
 const META_TEMPLATE: INodesMeta = {
@@ -165,7 +171,6 @@ export class RootNodesController extends Controller {
             contentId: "407c7f79bcf86cd7994f6c0e",
             children: ["123c7f79bcf86cd7994f6c0e"],
             scenarios: [{
-                name: "scenario 1",
                 action: ScenarioCommonActionTypes.VISIBLE_BY_BUSINESS_PERIOD,
             }]
         }]
@@ -442,9 +447,18 @@ export class NodeController extends Controller {
 
         try {
             const item = await NodeModel.findById(id);
-            
+
             for (const key in request) {
-                item[key] = request[key];
+                if (key === "scenarios") {
+                    const scenarios = request.scenarios.map(scenario => ({
+                        action: scenario.action,
+                        value: scenario.value,
+                        extra: scenario.extra,
+                    }));
+                    item["scenarios"] = scenarios;
+                } else {
+                    item[key] = request[key];
+                }
             }
 
             if (item.type === NodeTypes.SELECTOR_NODE && !!request.children && request.children.length > 0) {

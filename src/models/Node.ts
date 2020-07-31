@@ -3,10 +3,9 @@ import { Schema, Document } from "mongoose";
 import { NodeTypes, ScenarioIntroActionTypes, ScenarioCommonActionTypes, ScenarioProductActionTypes, ScenarioSelectorActionTypes } from "./enums";
 
 interface IScenario {
-    name: string;
-    action: ScenarioIntroActionTypes | ScenarioCommonActionTypes;
-    value?: any;
-    extra?: { [key: string]: any };
+    action: ScenarioIntroActionTypes | ScenarioCommonActionTypes | ScenarioProductActionTypes | ScenarioSelectorActionTypes;
+    value?: Array<string> | string | number | null;
+    extra?: { [key: string]: any } | null;
 }
 
 interface INode extends Document {
@@ -33,7 +32,6 @@ interface INode extends Document {
 }
 
 const ScenarioSchema = new Schema({
-    name: { type: Schema.Types.String, required: true },
     action: {
         type: Schema.Types.String, enum: [
             // common

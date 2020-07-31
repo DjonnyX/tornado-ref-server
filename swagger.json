@@ -811,11 +811,22 @@
 				],
 				"type": "string"
 			},
+			"ScenarioProductActionTypes": {
+				"enum": [
+					"up-limit",
+					"down-limit"
+				],
+				"type": "string"
+			},
+			"ScenarioSelectorActionTypes": {
+				"enum": [
+					"max-usage",
+					"default-products"
+				],
+				"type": "string"
+			},
 			"IScenario": {
 				"properties": {
-					"name": {
-						"type": "string"
-					},
 					"action": {
 						"anyOf": [
 							{
@@ -823,22 +834,49 @@
 							},
 							{
 								"$ref": "#/components/schemas/ScenarioCommonActionTypes"
+							},
+							{
+								"$ref": "#/components/schemas/ScenarioProductActionTypes"
+							},
+							{
+								"$ref": "#/components/schemas/ScenarioSelectorActionTypes"
 							}
 						]
 					},
 					"value": {
-						"additionalProperties": true
+						"anyOf": [
+							{
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							},
+							{
+								"type": "string"
+							},
+							{
+								"type": "number",
+								"format": "double"
+							},
+							{
+								"type": "number",
+								"enum": [
+									null
+								],
+								"nullable": true
+							}
+						]
 					},
 					"extra": {
 						"properties": {},
 						"additionalProperties": {
 							"additionalProperties": true
 						},
-						"type": "object"
+						"type": "object",
+						"nullable": true
 					}
 				},
 				"required": [
-					"name",
 					"action"
 				],
 				"type": "object",
@@ -876,8 +914,7 @@
 					"type",
 					"parentId",
 					"contentId",
-					"children",
-					"scenarios"
+					"children"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -2726,7 +2763,6 @@
 													],
 													"scenarios": [
 														{
-															"name": "scenario 1",
 															"action": "visible-by-business-period"
 														}
 													]
@@ -2785,7 +2821,6 @@
 													],
 													"scenarios": [
 														{
-															"name": "scenario 1",
 															"action": "visible-by-business-period"
 														}
 													]
@@ -2844,7 +2879,6 @@
 													],
 													"scenarios": [
 														{
-															"name": "scenario 1",
 															"action": "visible-by-business-period"
 														}
 													]
@@ -2911,7 +2945,6 @@
 												],
 												"scenarios": [
 													{
-														"name": "scenario 1",
 														"action": "visible-by-business-period"
 													}
 												]
@@ -2975,7 +3008,6 @@
 												],
 												"scenarios": [
 													{
-														"name": "scenario 1",
 														"action": "visible-by-business-period"
 													}
 												]
@@ -3094,7 +3126,6 @@
 												],
 												"scenarios": [
 													{
-														"name": "scenario 1",
 														"action": "visible-by-business-period"
 													}
 												]
