@@ -7,10 +7,12 @@ const createRootNode = async () => {
     if (!existsRootNode) {
         // generate new root node
         const rootMenuNode = new NodeModel({
+            active: true,
             type: NodeTypes.KIOSK_ROOT,
             parentId: null,
             contentId: null,
             children: [],
+            extra: {},
         });
         await rootMenuNode.save();
     }

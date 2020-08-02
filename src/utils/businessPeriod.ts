@@ -7,6 +7,7 @@ const formatSchedule = (model: Array<ISchedule>) => {
 
     return model.map(schedule => {
         return {
+            active: schedule.active,
             time: {
                 end: schedule.time.end || 0,
                 start: schedule.time.start || 0,
@@ -18,7 +19,9 @@ const formatSchedule = (model: Array<ISchedule>) => {
 
 export const formatModel = (model: IBusinessPeriod) => ({
     id: model._id,
+    active: model.active,
     name: model.name,
     description: model.description,
     schedule: formatSchedule(model.schedule),
+    extra: model.extra,
 });

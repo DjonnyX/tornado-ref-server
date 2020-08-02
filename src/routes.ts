@@ -97,12 +97,12 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "id": { "dataType": "string", "required": true },
+            "active": { "dataType": "boolean", "required": true },
             "lastupdate": { "dataType": "double", "required": true },
             "name": { "dataType": "string", "required": true },
             "ext": { "ref": "AssetExtensions", "required": true },
             "path": { "dataType": "string", "required": true },
-            "thumnail": { "dataType": "string" },
-            "favicon": { "dataType": "string" },
+            "mipmap": { "dataType": "nestedObjectLiteral", "nestedProperties": { "x32": { "dataType": "string", "required": true }, "x128": { "dataType": "string", "required": true } }, "required": true },
         },
         "additionalProperties": false,
     },
@@ -272,8 +272,10 @@ const models: TsoaRoute.Models = {
     "ISchedule": {
         "dataType": "refObject",
         "properties": {
+            "active": { "dataType": "boolean", "required": true },
             "time": { "dataType": "nestedObjectLiteral", "nestedProperties": { "end": { "dataType": "double" }, "start": { "dataType": "double", "required": true } } },
             "weekDays": { "dataType": "array", "array": { "dataType": "double" } },
+            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
         "additionalProperties": false,
     },
@@ -282,9 +284,11 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "id": { "dataType": "string" },
+            "active": { "dataType": "boolean", "required": true },
             "name": { "dataType": "string", "required": true },
             "description": { "dataType": "string" },
             "schedule": { "dataType": "array", "array": { "ref": "ISchedule" }, "required": true },
+            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
         "additionalProperties": false,
     },
@@ -312,9 +316,11 @@ const models: TsoaRoute.Models = {
     "IBusinessPeriodCreateRequest": {
         "dataType": "refObject",
         "properties": {
+            "active": { "dataType": "boolean", "required": true },
             "name": { "dataType": "string", "required": true },
             "description": { "dataType": "string" },
             "schedule": { "dataType": "array", "array": { "ref": "ISchedule" }, "required": true },
+            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
         "additionalProperties": false,
     },
@@ -355,6 +361,7 @@ const models: TsoaRoute.Models = {
     "IScenario": {
         "dataType": "refObject",
         "properties": {
+            "active": { "dataType": "boolean", "required": true },
             "action": { "dataType": "union", "subSchemas": [{ "ref": "ScenarioIntroActionTypes" }, { "ref": "ScenarioCommonActionTypes" }, { "ref": "ScenarioProductActionTypes" }, { "ref": "ScenarioSelectorActionTypes" }], "required": true },
             "value": { "dataType": "any" },
             "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
@@ -366,11 +373,13 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "id": { "dataType": "string", "required": true },
+            "active": { "dataType": "boolean", "required": true },
             "type": { "ref": "NodeTypes", "required": true },
             "parentId": { "dataType": "string", "required": true },
             "contentId": { "dataType": "string", "required": true },
             "children": { "dataType": "array", "array": { "dataType": "string" }, "required": true },
             "scenarios": { "dataType": "array", "array": { "ref": "IScenario" } },
+            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
         "additionalProperties": false,
     },
@@ -409,10 +418,12 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "type": { "ref": "NodeTypes", "required": true },
+            "active": { "dataType": "boolean", "required": true },
             "parentId": { "dataType": "string", "required": true },
             "contentId": { "dataType": "string", "required": true },
             "children": { "dataType": "array", "array": { "dataType": "string" }, "required": true },
             "scenarios": { "dataType": "array", "array": { "ref": "IScenario" }, "required": true },
+            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
         "additionalProperties": false,
     },
@@ -421,10 +432,12 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "type": { "ref": "NodeTypes", "required": true },
+            "active": { "dataType": "boolean", "required": true },
             "parentId": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }], "required": true },
             "contentId": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }], "required": true },
             "children": { "dataType": "array", "array": { "dataType": "string" }, "required": true },
             "scenarios": { "dataType": "array", "array": { "ref": "IScenario" }, "required": true },
+            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
         "additionalProperties": false,
     },
@@ -462,6 +475,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "id": { "dataType": "string" },
+            "active": { "dataType": "boolean", "required": true },
             "name": { "dataType": "string", "required": true },
             "description": { "dataType": "string" },
             "receipt": { "dataType": "array", "array": { "ref": "IReceiptItem" }, "required": true },
@@ -469,6 +483,7 @@ const models: TsoaRoute.Models = {
             "assets": { "dataType": "array", "array": { "dataType": "string" } },
             "joint": { "dataType": "string" },
             "mainAsset": { "dataType": "string" },
+            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
         "additionalProperties": false,
     },
@@ -497,6 +512,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "name": { "dataType": "string", "required": true },
+            "active": { "dataType": "boolean", "required": true },
             "description": { "dataType": "string" },
             "receipt": { "dataType": "array", "array": { "ref": "IReceiptItem" }, "required": true },
             "tags": { "dataType": "array", "array": { "dataType": "string" }, "required": true },
@@ -511,12 +527,12 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "id": { "dataType": "string", "required": true },
+            "active": { "dataType": "boolean", "required": true },
             "lastupdate": { "dataType": "double", "required": true },
             "name": { "dataType": "string", "required": true },
             "ext": { "ref": "AssetExtensions", "required": true },
             "path": { "dataType": "string", "required": true },
-            "thumnail": { "dataType": "string" },
-            "favicon": { "dataType": "string" },
+            "mipmap": { "dataType": "nestedObjectLiteral", "nestedProperties": { "x32": { "dataType": "string", "required": true }, "x128": { "dataType": "string", "required": true } }, "required": true },
         },
         "additionalProperties": false,
     },
@@ -563,9 +579,11 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "id": { "dataType": "string" },
+            "active": { "dataType": "boolean", "required": true },
             "name": { "dataType": "string", "required": true },
             "description": { "dataType": "string" },
             "joint": { "dataType": "string", "required": true },
+            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
         "additionalProperties": false,
     },
@@ -593,6 +611,7 @@ const models: TsoaRoute.Models = {
     "ISelectorCreateRequest": {
         "dataType": "refObject",
         "properties": {
+            "active": { "dataType": "boolean", "required": true },
             "name": { "dataType": "string", "required": true },
             "description": { "dataType": "string" },
         },
@@ -611,9 +630,11 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "id": { "dataType": "string", "required": true },
+            "active": { "dataType": "boolean", "required": true },
             "name": { "dataType": "string", "required": true },
             "description": { "dataType": "string" },
             "color": { "dataType": "string", "required": true },
+            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
         "additionalProperties": false,
     },
@@ -641,6 +662,7 @@ const models: TsoaRoute.Models = {
     "TagCreateRequest": {
         "dataType": "refObject",
         "properties": {
+            "active": { "dataType": "boolean", "required": true },
             "name": { "dataType": "string", "required": true },
             "description": { "dataType": "string" },
             "color": { "dataType": "string", "required": true },

@@ -2,15 +2,19 @@ import * as mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
 
 interface ITag extends Document {
+    active: boolean;
     name: string;
     description?: string;
     color: string;
+    extra?: { [key: string]: any } | null;
 }
 
 const TagSchema = new Schema({
-    name: { type: String, required: true },
-    description: { type: String },
-    color: { type: String, required: true },
+    active: { type: Schema.Types.Boolean, required: true },
+    name: { type: Schema.Types.String, required: true },
+    description: { type: Schema.Types.String },
+    color: { type: Schema.Types.String, required: true },
+    extra: { type: Schema.Types.Mixed, required: false },
 });
 
 const TagModel = mongoose.model<ITag>("Tag", TagSchema);
