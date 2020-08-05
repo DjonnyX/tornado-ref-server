@@ -1300,14 +1300,14 @@
 						},
 						"type": "array"
 					},
+					"joint": {
+						"type": "string"
+					},
 					"assets": {
 						"items": {
 							"type": "string"
 						},
 						"type": "array"
-					},
-					"joint": {
-						"type": "string"
 					},
 					"mainAsset": {
 						"type": "string"
@@ -1418,17 +1418,25 @@
 						},
 						"type": "array"
 					},
+					"joint": {
+						"type": "string"
+					},
 					"assets": {
 						"items": {
 							"type": "string"
 						},
 						"type": "array"
 					},
-					"joint": {
-						"type": "string"
-					},
 					"mainAsset": {
 						"type": "string"
+					},
+					"extra": {
+						"properties": {},
+						"additionalProperties": {
+							"additionalProperties": true
+						},
+						"type": "object",
+						"nullable": true
 					}
 				},
 				"required": [
@@ -1712,6 +1720,15 @@
 					"joint": {
 						"type": "string"
 					},
+					"assets": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"mainAsset": {
+						"type": "string"
+					},
 					"extra": {
 						"properties": {},
 						"additionalProperties": {
@@ -1808,6 +1825,23 @@
 					},
 					"description": {
 						"type": "string"
+					},
+					"assets": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"mainAsset": {
+						"type": "string"
+					},
+					"extra": {
+						"properties": {},
+						"additionalProperties": {
+							"additionalProperties": true
+						},
+						"type": "object",
+						"nullable": true
 					}
 				},
 				"required": [
@@ -1815,6 +1849,221 @@
 					"type",
 					"name"
 				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ISelectorAsset": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"active": {
+						"type": "boolean"
+					},
+					"lastupdate": {
+						"type": "number",
+						"format": "double"
+					},
+					"name": {
+						"type": "string"
+					},
+					"ext": {
+						"$ref": "#/components/schemas/AssetExtensions"
+					},
+					"path": {
+						"type": "string"
+					},
+					"mipmap": {
+						"properties": {
+							"x32": {
+								"type": "string"
+							},
+							"x128": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"x32",
+							"x128"
+						],
+						"type": "object"
+					}
+				},
+				"required": [
+					"id",
+					"active",
+					"lastupdate",
+					"name",
+					"ext",
+					"path",
+					"mipmap"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ISelectorGetAssetsResponse": {
+				"properties": {
+					"meta": {
+						"properties": {},
+						"type": "object"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/ISelectorAsset"
+						},
+						"type": "array"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ISelectorCreateAssetsResponse": {
+				"properties": {
+					"meta": {
+						"properties": {
+							"asset": {
+								"properties": {
+									"ref": {
+										"$ref": "#/components/schemas/IRefItem"
+									}
+								},
+								"required": [
+									"ref"
+								],
+								"type": "object"
+							},
+							"selector": {
+								"properties": {
+									"ref": {
+										"$ref": "#/components/schemas/IRefItem"
+									}
+								},
+								"required": [
+									"ref"
+								],
+								"type": "object"
+							}
+						},
+						"required": [
+							"asset",
+							"selector"
+						],
+						"type": "object"
+					},
+					"data": {
+						"properties": {
+							"selector": {
+								"$ref": "#/components/schemas/ISelectorItem"
+							},
+							"asset": {
+								"$ref": "#/components/schemas/ISelectorAsset"
+							}
+						},
+						"required": [
+							"selector",
+							"asset"
+						],
+						"type": "object"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ISelectorDeleteAssetsResponse": {
+				"properties": {
+					"meta": {
+						"properties": {
+							"asset": {
+								"properties": {
+									"ref": {
+										"$ref": "#/components/schemas/IRefItem"
+									}
+								},
+								"required": [
+									"ref"
+								],
+								"type": "object"
+							},
+							"selector": {
+								"properties": {
+									"ref": {
+										"$ref": "#/components/schemas/IRefItem"
+									}
+								},
+								"required": [
+									"ref"
+								],
+								"type": "object"
+							}
+						},
+						"required": [
+							"asset",
+							"selector"
+						],
+						"type": "object"
+					},
+					"data": {
+						"properties": {},
+						"type": "object"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
 				"type": "object",
 				"additionalProperties": false
 			},
@@ -3391,7 +3640,9 @@
 													"tags": [
 														"123c7f79bcf86cd7994f6c0e"
 													],
-													"assets": [],
+													"assets": [
+														"g8h07f79bcf86cd7994f9d7k"
+													],
 													"mainAsset": "g8h07f79bcf86cd7994f9d7k",
 													"joint": "df3c7f79bcf86cd7994f9d8f",
 													"extra": {
@@ -3463,7 +3714,9 @@
 												"tags": [
 													"123c7f79bcf86cd7994f6c0e"
 												],
-												"assets": [],
+												"assets": [
+													"g8h07f79bcf86cd7994f9d7k"
+												],
 												"mainAsset": "g8h07f79bcf86cd7994f9d7k",
 												"joint": "df3c7f79bcf86cd7994f9d8f",
 												"extra": {
@@ -3541,7 +3794,9 @@
 												"tags": [
 													"123c7f79bcf86cd7994f6c0e"
 												],
-												"assets": [],
+												"assets": [
+													"g8h07f79bcf86cd7994f9d7k"
+												],
 												"mainAsset": "g8h07f79bcf86cd7994f9d7k",
 												"joint": "df3c7f79bcf86cd7994f9d8f",
 												"extra": {
@@ -3674,7 +3929,9 @@
 												"tags": [
 													"123c7f79bcf86cd7994f6c0e"
 												],
-												"assets": [],
+												"assets": [
+													"g8h07f79bcf86cd7994f9d7k"
+												],
 												"mainAsset": "g8h07f79bcf86cd7994f9d7k",
 												"joint": "df3c7f79bcf86cd7994f9d8f",
 												"extra": {
@@ -3948,6 +4205,10 @@
 													"name": "Selectors on concert",
 													"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
 													"joint": "890c7f79bcf86cd7994f3t8y",
+													"assets": [
+														"g8h07f79bcf86cd7994f9d7k"
+													],
+													"mainAsset": "g8h07f79bcf86cd7994f9d7k",
 													"extra": {
 														"key": "value"
 													}
@@ -4011,6 +4272,10 @@
 												"name": "Selectors on concert",
 												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
 												"joint": "890c7f79bcf86cd7994f3t8y",
+												"assets": [
+													"g8h07f79bcf86cd7994f9d7k"
+												],
+												"mainAsset": "g8h07f79bcf86cd7994f9d7k",
 												"extra": {
 													"key": "value"
 												}
@@ -4071,6 +4336,10 @@
 												"name": "Selectors on concert",
 												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
 												"joint": "890c7f79bcf86cd7994f3t8y",
+												"assets": [
+													"g8h07f79bcf86cd7994f9d7k"
+												],
+												"mainAsset": "g8h07f79bcf86cd7994f9d7k",
 												"extra": {
 													"key": "value"
 												}
@@ -4186,6 +4455,10 @@
 												"name": "Selectors on concert",
 												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
 												"joint": "890c7f79bcf86cd7994f3t8y",
+												"assets": [
+													"g8h07f79bcf86cd7994f9d7k"
+												],
+												"mainAsset": "g8h07f79bcf86cd7994f9d7k",
 												"extra": {
 													"key": "value"
 												}
@@ -4217,6 +4490,216 @@
 						}
 					}
 				}
+			}
+		},
+		"/selector/{selectorId}/assets": {
+			"get": {
+				"operationId": "Get",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ISelectorGetAssetsResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"selector": {
+													"ref": {
+														"name": "selectors",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												},
+												"asset": {
+													"ref": {
+														"name": "assets",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												}
+											},
+											"data": [
+												{
+													"id": "107c7f79bcf86cd7994f6c0e",
+													"active": true,
+													"lastupdate": 1589885721,
+													"name": "some_3d_model",
+													"ext": ".fbx",
+													"mipmap": {
+														"x128": "assets/some_3d_model_128x128.png",
+														"x32": "assets/favicon.png"
+													},
+													"path": "assets/some_3d_model.fbx"
+												}
+											]
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Selector assets"
+				],
+				"security": [
+					{
+						"jwt": []
+					},
+					{
+						"apiKey": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "selectorId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/selector/{selectorId}/asset": {
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ISelectorCreateAssetsResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"selector": {
+													"ref": {
+														"name": "selectors",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												},
+												"asset": {
+													"ref": {
+														"name": "assets",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												}
+											},
+											"data": {
+												"asset": {
+													"id": "107c7f79bcf86cd7994f6c0e",
+													"active": true,
+													"lastupdate": 1589885721,
+													"name": "some_3d_model",
+													"ext": ".fbx",
+													"mipmap": {
+														"x128": "assets/some_3d_model_128x128.png",
+														"x32": "assets/favicon.png"
+													},
+													"path": "assets/some_3d_model.fbx"
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Selector assets"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "selectorId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/selector/{selectorId}/asset/{assetId}": {
+			"delete": {
+				"operationId": "Delete",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ISelectorDeleteAssetsResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"selector": {
+													"ref": {
+														"name": "selectors",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												},
+												"asset": {
+													"ref": {
+														"name": "assets",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Selector assets"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "selectorId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "assetId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		},
 		"/tags": {

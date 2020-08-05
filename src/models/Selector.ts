@@ -8,6 +8,8 @@ interface ISelector extends Document {
     name: string;
     description?: string;
     joint: string;
+    assets: Array<string>;
+    mainAsset: string;
     extra?: { [key: string]: any } | null;
 }
 
@@ -16,12 +18,14 @@ const SelectorSchema = new Schema({
     type: {
         type: Schema.Types.String, enum: [
             SelectorTypes.MENU_CATEGORY,
-            SelectorTypes.SCHEMA_CATEGORY
+            SelectorTypes.SCHEMA_CATEGORY,
         ], required: true
     },
     name: { type: Schema.Types.String, required: true },
     description: { type: Schema.Types.String, required: false },
     joint: { type: Schema.Types.ObjectId, required: true },
+    assets: [{ type: Schema.Types.ObjectId, required: true }],
+    mainAsset: { type: Schema.Types.ObjectId },
     extra: { type: Schema.Types.Mixed, required: false },
 });
 
