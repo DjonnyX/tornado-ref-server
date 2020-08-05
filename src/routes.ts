@@ -23,6 +23,10 @@ import { ForgotPasswordController } from './controllers/AuthController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { VerifyResetPasswordTokenController } from './controllers/AuthController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { BusinessPeriodsController } from './controllers/BusinessPeriodsController';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { BusinessPeriodController } from './controllers/BusinessPeriodsController';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { RootNodesController } from './controllers/NodeController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { NodesController } from './controllers/NodeController';
@@ -93,12 +97,12 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "id": { "dataType": "string", "required": true },
+            "active": { "dataType": "boolean", "required": true },
             "lastupdate": { "dataType": "double", "required": true },
             "name": { "dataType": "string", "required": true },
             "ext": { "ref": "AssetExtensions", "required": true },
             "path": { "dataType": "string", "required": true },
-            "thumnail": { "dataType": "string" },
-            "favicon": { "dataType": "string" },
+            "mipmap": { "dataType": "nestedObjectLiteral", "nestedProperties": { "x32": { "dataType": "string", "required": true }, "x128": { "dataType": "string", "required": true } }, "required": true },
         },
         "additionalProperties": false,
     },
@@ -257,6 +261,70 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IBusinessPeriodMeta": {
+        "dataType": "refObject",
+        "properties": {
+            "ref": { "dataType": "nestedObjectLiteral", "nestedProperties": { "lastUpdate": { "dataType": "double", "required": true }, "version": { "dataType": "double", "required": true }, "name": { "dataType": "string", "required": true } }, "required": true },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ISchedule": {
+        "dataType": "refObject",
+        "properties": {
+            "active": { "dataType": "boolean", "required": true },
+            "time": { "dataType": "nestedObjectLiteral", "nestedProperties": { "end": { "dataType": "double" }, "start": { "dataType": "double", "required": true } } },
+            "weekDays": { "dataType": "array", "array": { "dataType": "double" } },
+            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IBusinessPeriodItem": {
+        "dataType": "refObject",
+        "properties": {
+            "id": { "dataType": "string" },
+            "active": { "dataType": "boolean", "required": true },
+            "name": { "dataType": "string", "required": true },
+            "description": { "dataType": "string" },
+            "schedule": { "dataType": "array", "array": { "ref": "ISchedule" }, "required": true },
+            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IBusinessPeriodsResponse": {
+        "dataType": "refObject",
+        "properties": {
+            "meta": { "ref": "IBusinessPeriodMeta" },
+            "data": { "dataType": "array", "array": { "ref": "IBusinessPeriodItem" } },
+            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IBusinessPeriodResponse": {
+        "dataType": "refObject",
+        "properties": {
+            "meta": { "ref": "IBusinessPeriodMeta" },
+            "data": { "ref": "IBusinessPeriodItem" },
+            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IBusinessPeriodCreateRequest": {
+        "dataType": "refObject",
+        "properties": {
+            "active": { "dataType": "boolean", "required": true },
+            "name": { "dataType": "string", "required": true },
+            "description": { "dataType": "string" },
+            "schedule": { "dataType": "array", "array": { "ref": "ISchedule" }, "required": true },
+            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "INodesMeta": {
         "dataType": "refObject",
         "properties": {
@@ -280,13 +348,23 @@ const models: TsoaRoute.Models = {
         "enums": ["visible-by-point-of-sale", "visible-by-business-period"],
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ScenarioProductActionTypes": {
+        "dataType": "refEnum",
+        "enums": ["up-limit", "down-limit"],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ScenarioSelectorActionTypes": {
+        "dataType": "refEnum",
+        "enums": ["max-usage", "default-products"],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "IScenario": {
         "dataType": "refObject",
         "properties": {
-            "name": { "dataType": "string", "required": true },
-            "action": { "dataType": "union", "subSchemas": [{ "ref": "ScenarioIntroActionTypes" }, { "ref": "ScenarioCommonActionTypes" }], "required": true },
+            "active": { "dataType": "boolean", "required": true },
+            "action": { "dataType": "union", "subSchemas": [{ "ref": "ScenarioIntroActionTypes" }, { "ref": "ScenarioCommonActionTypes" }, { "ref": "ScenarioProductActionTypes" }, { "ref": "ScenarioSelectorActionTypes" }], "required": true },
             "value": { "dataType": "any" },
-            "extra": { "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } },
+            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
         "additionalProperties": false,
     },
@@ -295,11 +373,13 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "id": { "dataType": "string", "required": true },
+            "active": { "dataType": "boolean", "required": true },
             "type": { "ref": "NodeTypes", "required": true },
             "parentId": { "dataType": "string", "required": true },
             "contentId": { "dataType": "string", "required": true },
             "children": { "dataType": "array", "array": { "dataType": "string" }, "required": true },
-            "scenarios": { "dataType": "array", "array": { "ref": "IScenario" }, "required": true },
+            "scenarios": { "dataType": "array", "array": { "ref": "IScenario" } },
+            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
         "additionalProperties": false,
     },
@@ -338,10 +418,12 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "type": { "ref": "NodeTypes", "required": true },
+            "active": { "dataType": "boolean", "required": true },
             "parentId": { "dataType": "string", "required": true },
             "contentId": { "dataType": "string", "required": true },
             "children": { "dataType": "array", "array": { "dataType": "string" }, "required": true },
             "scenarios": { "dataType": "array", "array": { "ref": "IScenario" }, "required": true },
+            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
         "additionalProperties": false,
     },
@@ -350,10 +432,12 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "type": { "ref": "NodeTypes", "required": true },
+            "active": { "dataType": "boolean", "required": true },
             "parentId": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }], "required": true },
             "contentId": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }], "required": true },
             "children": { "dataType": "array", "array": { "dataType": "string" }, "required": true },
             "scenarios": { "dataType": "array", "array": { "ref": "IScenario" }, "required": true },
+            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
         "additionalProperties": false,
     },
@@ -391,6 +475,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "id": { "dataType": "string" },
+            "active": { "dataType": "boolean", "required": true },
             "name": { "dataType": "string", "required": true },
             "description": { "dataType": "string" },
             "receipt": { "dataType": "array", "array": { "ref": "IReceiptItem" }, "required": true },
@@ -398,6 +483,7 @@ const models: TsoaRoute.Models = {
             "assets": { "dataType": "array", "array": { "dataType": "string" } },
             "joint": { "dataType": "string" },
             "mainAsset": { "dataType": "string" },
+            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
         "additionalProperties": false,
     },
@@ -426,6 +512,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "name": { "dataType": "string", "required": true },
+            "active": { "dataType": "boolean", "required": true },
             "description": { "dataType": "string" },
             "receipt": { "dataType": "array", "array": { "ref": "IReceiptItem" }, "required": true },
             "tags": { "dataType": "array", "array": { "dataType": "string" }, "required": true },
@@ -440,12 +527,12 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "id": { "dataType": "string", "required": true },
+            "active": { "dataType": "boolean", "required": true },
             "lastupdate": { "dataType": "double", "required": true },
             "name": { "dataType": "string", "required": true },
             "ext": { "ref": "AssetExtensions", "required": true },
             "path": { "dataType": "string", "required": true },
-            "thumnail": { "dataType": "string" },
-            "favicon": { "dataType": "string" },
+            "mipmap": { "dataType": "nestedObjectLiteral", "nestedProperties": { "x32": { "dataType": "string", "required": true }, "x128": { "dataType": "string", "required": true } }, "required": true },
         },
         "additionalProperties": false,
     },
@@ -488,13 +575,21 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "SelectorTypes": {
+        "dataType": "refEnum",
+        "enums": ["menu-category", "schema-category"],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ISelectorItem": {
         "dataType": "refObject",
         "properties": {
             "id": { "dataType": "string" },
+            "type": { "ref": "SelectorTypes", "required": true },
+            "active": { "dataType": "boolean", "required": true },
             "name": { "dataType": "string", "required": true },
             "description": { "dataType": "string" },
             "joint": { "dataType": "string", "required": true },
+            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
         "additionalProperties": false,
     },
@@ -522,6 +617,8 @@ const models: TsoaRoute.Models = {
     "ISelectorCreateRequest": {
         "dataType": "refObject",
         "properties": {
+            "active": { "dataType": "boolean", "required": true },
+            "type": { "ref": "SelectorTypes", "required": true },
             "name": { "dataType": "string", "required": true },
             "description": { "dataType": "string" },
         },
@@ -540,9 +637,11 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "id": { "dataType": "string", "required": true },
+            "active": { "dataType": "boolean", "required": true },
             "name": { "dataType": "string", "required": true },
             "description": { "dataType": "string" },
             "color": { "dataType": "string", "required": true },
+            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
         "additionalProperties": false,
     },
@@ -570,6 +669,7 @@ const models: TsoaRoute.Models = {
     "TagCreateRequest": {
         "dataType": "refObject",
         "properties": {
+            "active": { "dataType": "boolean", "required": true },
             "name": { "dataType": "string", "required": true },
             "description": { "dataType": "string" },
             "color": { "dataType": "string", "required": true },
@@ -588,7 +688,7 @@ export function RegisterRoutes(app: express.Express) {
     //      Please look into the "controllerPathGlobs" config option described in the readme: https://github.com/lukeautry/tsoa
     // ###########################################################################################################
     app.get('/api/v1/refs',
-        authenticateMiddleware([{ "jwt": [] }, { "aoiKey": [] }]),
+        authenticateMiddleware([{ "jwt": [] }, { "apiKey": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
             };
@@ -610,7 +710,7 @@ export function RegisterRoutes(app: express.Express) {
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     app.get('/api/v1/ref/:name',
-        authenticateMiddleware([{ "jwt": [] }, { "aoiKey": [] }]),
+        authenticateMiddleware([{ "jwt": [] }, { "apiKey": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
                 name: { "in": "path", "name": "name", "required": true, "dataType": "string" },
@@ -633,7 +733,7 @@ export function RegisterRoutes(app: express.Express) {
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     app.get('/api/v1/assets',
-        authenticateMiddleware([{ "jwt": [] }, { "aoiKey": [] }]),
+        authenticateMiddleware([{ "jwt": [] }, { "apiKey": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
             };
@@ -856,8 +956,123 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.get('/api/v1/business-periods',
+        authenticateMiddleware([{ "jwt": [] }, { "apiKey": [] }]),
+        function(request: any, response: any, next: any) {
+            const args = {
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new BusinessPeriodsController();
+
+
+            const promise = controller.getAll.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.get('/api/v1/business-period/:id',
+        authenticateMiddleware([{ "jwt": [] }, { "apiKey": [] }]),
+        function(request: any, response: any, next: any) {
+            const args = {
+                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new BusinessPeriodController();
+
+
+            const promise = controller.getOne.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.post('/api/v1/business-period',
+        authenticateMiddleware([{ "jwt": [] }]),
+        function(request: any, response: any, next: any) {
+            const args = {
+                request: { "in": "body", "name": "request", "required": true, "ref": "IBusinessPeriodCreateRequest" },
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new BusinessPeriodController();
+
+
+            const promise = controller.create.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.put('/api/v1/business-period/:id',
+        authenticateMiddleware([{ "jwt": [] }]),
+        function(request: any, response: any, next: any) {
+            const args = {
+                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
+                request: { "in": "body", "name": "request", "required": true, "ref": "IBusinessPeriodCreateRequest" },
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new BusinessPeriodController();
+
+
+            const promise = controller.update.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.delete('/api/v1/business-period/:id',
+        authenticateMiddleware([{ "jwt": [] }]),
+        function(request: any, response: any, next: any) {
+            const args = {
+                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new BusinessPeriodController();
+
+
+            const promise = controller.delete.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     app.get('/api/v1/root-nodes',
-        authenticateMiddleware([{ "jwt": [] }, { "aoiKey": [] }]),
+        authenticateMiddleware([{ "jwt": [] }, { "apiKey": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
             };
@@ -879,7 +1094,7 @@ export function RegisterRoutes(app: express.Express) {
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     app.get('/api/v1/nodes',
-        authenticateMiddleware([{ "jwt": [] }, { "aoiKey": [] }]),
+        authenticateMiddleware([{ "jwt": [] }, { "apiKey": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
             };
@@ -901,7 +1116,7 @@ export function RegisterRoutes(app: express.Express) {
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     app.get('/api/v1/nodes/:id',
-        authenticateMiddleware([{ "jwt": [] }, { "aoiKey": [] }]),
+        authenticateMiddleware([{ "jwt": [] }, { "apiKey": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
                 id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
@@ -924,7 +1139,7 @@ export function RegisterRoutes(app: express.Express) {
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     app.get('/api/v1/node/:id',
-        authenticateMiddleware([{ "jwt": [] }, { "aoiKey": [] }]),
+        authenticateMiddleware([{ "jwt": [] }, { "apiKey": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
                 id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
@@ -1017,7 +1232,7 @@ export function RegisterRoutes(app: express.Express) {
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     app.get('/api/v1/products',
-        authenticateMiddleware([{ "jwt": [] }, { "aoiKey": [] }]),
+        authenticateMiddleware([{ "jwt": [] }, { "apiKey": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
             };
@@ -1039,7 +1254,7 @@ export function RegisterRoutes(app: express.Express) {
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     app.get('/api/v1/product/:id',
-        authenticateMiddleware([{ "jwt": [] }, { "aoiKey": [] }]),
+        authenticateMiddleware([{ "jwt": [] }, { "apiKey": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
                 id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
@@ -1132,7 +1347,7 @@ export function RegisterRoutes(app: express.Express) {
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     app.get('/api/v1/product/:productId/assets',
-        authenticateMiddleware([{ "jwt": [] }, { "aoiKey": [] }]),
+        authenticateMiddleware([{ "jwt": [] }, { "apiKey": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
                 productId: { "in": "path", "name": "productId", "required": true, "dataType": "string" },
@@ -1203,9 +1418,10 @@ export function RegisterRoutes(app: express.Express) {
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     app.get('/api/v1/selectors',
-        authenticateMiddleware([{ "jwt": [] }, { "aoiKey": [] }]),
+        authenticateMiddleware([{ "jwt": [] }, { "apiKey": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
+                type: { "in": "query", "name": "type", "ref": "SelectorTypes" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -1225,7 +1441,7 @@ export function RegisterRoutes(app: express.Express) {
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     app.get('/api/v1/selector/:id',
-        authenticateMiddleware([{ "jwt": [] }, { "aoiKey": [] }]),
+        authenticateMiddleware([{ "jwt": [] }, { "apiKey": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
                 id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
@@ -1318,7 +1534,7 @@ export function RegisterRoutes(app: express.Express) {
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     app.get('/api/v1/tags',
-        authenticateMiddleware([{ "jwt": [] }, { "aoiKey": [] }]),
+        authenticateMiddleware([{ "jwt": [] }, { "apiKey": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
             };
@@ -1340,7 +1556,7 @@ export function RegisterRoutes(app: express.Express) {
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     app.get('/api/v1/tag/:id',
-        authenticateMiddleware([{ "jwt": [] }, { "aoiKey": [] }]),
+        authenticateMiddleware([{ "jwt": [] }, { "apiKey": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
                 id: { "in": "path", "name": "id", "required": true, "dataType": "string" },

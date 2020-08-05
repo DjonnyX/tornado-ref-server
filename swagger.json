@@ -114,6 +114,9 @@
 					"id": {
 						"type": "string"
 					},
+					"active": {
+						"type": "boolean"
+					},
 					"lastupdate": {
 						"type": "number",
 						"format": "double"
@@ -127,19 +130,30 @@
 					"path": {
 						"type": "string"
 					},
-					"thumnail": {
-						"type": "string"
-					},
-					"favicon": {
-						"type": "string"
+					"mipmap": {
+						"properties": {
+							"x32": {
+								"type": "string"
+							},
+							"x128": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"x32",
+							"x128"
+						],
+						"type": "object"
 					}
 				},
 				"required": [
 					"id",
+					"active",
 					"lastupdate",
 					"name",
 					"ext",
-					"path"
+					"path",
+					"mipmap"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -585,6 +599,215 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"IBusinessPeriodMeta": {
+				"properties": {
+					"ref": {
+						"properties": {
+							"lastUpdate": {
+								"type": "number",
+								"format": "double"
+							},
+							"version": {
+								"type": "number",
+								"format": "double"
+							},
+							"name": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"lastUpdate",
+							"version",
+							"name"
+						],
+						"type": "object"
+					}
+				},
+				"required": [
+					"ref"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ISchedule": {
+				"properties": {
+					"active": {
+						"type": "boolean"
+					},
+					"time": {
+						"properties": {
+							"end": {
+								"type": "number",
+								"format": "double"
+							},
+							"start": {
+								"type": "number",
+								"format": "double"
+							}
+						},
+						"required": [
+							"start"
+						],
+						"type": "object"
+					},
+					"weekDays": {
+						"items": {
+							"type": "number",
+							"format": "double"
+						},
+						"type": "array"
+					},
+					"extra": {
+						"properties": {},
+						"additionalProperties": {
+							"additionalProperties": true
+						},
+						"type": "object",
+						"nullable": true
+					}
+				},
+				"required": [
+					"active"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IBusinessPeriodItem": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"active": {
+						"type": "boolean"
+					},
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"schedule": {
+						"items": {
+							"$ref": "#/components/schemas/ISchedule"
+						},
+						"type": "array"
+					},
+					"extra": {
+						"properties": {},
+						"additionalProperties": {
+							"additionalProperties": true
+						},
+						"type": "object",
+						"nullable": true
+					}
+				},
+				"required": [
+					"active",
+					"name",
+					"schedule"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IBusinessPeriodsResponse": {
+				"properties": {
+					"meta": {
+						"$ref": "#/components/schemas/IBusinessPeriodMeta"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/IBusinessPeriodItem"
+						},
+						"type": "array"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IBusinessPeriodResponse": {
+				"properties": {
+					"meta": {
+						"$ref": "#/components/schemas/IBusinessPeriodMeta"
+					},
+					"data": {
+						"$ref": "#/components/schemas/IBusinessPeriodItem"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IBusinessPeriodCreateRequest": {
+				"properties": {
+					"active": {
+						"type": "boolean"
+					},
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"schedule": {
+						"items": {
+							"$ref": "#/components/schemas/ISchedule"
+						},
+						"type": "array"
+					},
+					"extra": {
+						"properties": {},
+						"additionalProperties": {
+							"additionalProperties": true
+						},
+						"type": "object",
+						"nullable": true
+					}
+				},
+				"required": [
+					"active",
+					"name",
+					"schedule"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"INodesMeta": {
 				"properties": {
 					"ref": {
@@ -640,10 +863,24 @@
 				],
 				"type": "string"
 			},
+			"ScenarioProductActionTypes": {
+				"enum": [
+					"up-limit",
+					"down-limit"
+				],
+				"type": "string"
+			},
+			"ScenarioSelectorActionTypes": {
+				"enum": [
+					"max-usage",
+					"default-products"
+				],
+				"type": "string"
+			},
 			"IScenario": {
 				"properties": {
-					"name": {
-						"type": "string"
+					"active": {
+						"type": "boolean"
 					},
 					"action": {
 						"anyOf": [
@@ -652,6 +889,12 @@
 							},
 							{
 								"$ref": "#/components/schemas/ScenarioCommonActionTypes"
+							},
+							{
+								"$ref": "#/components/schemas/ScenarioProductActionTypes"
+							},
+							{
+								"$ref": "#/components/schemas/ScenarioSelectorActionTypes"
 							}
 						]
 					},
@@ -663,11 +906,12 @@
 						"additionalProperties": {
 							"additionalProperties": true
 						},
-						"type": "object"
+						"type": "object",
+						"nullable": true
 					}
 				},
 				"required": [
-					"name",
+					"active",
 					"action"
 				],
 				"type": "object",
@@ -677,6 +921,9 @@
 				"properties": {
 					"id": {
 						"type": "string"
+					},
+					"active": {
+						"type": "boolean"
 					},
 					"type": {
 						"$ref": "#/components/schemas/NodeTypes"
@@ -698,15 +945,23 @@
 							"$ref": "#/components/schemas/IScenario"
 						},
 						"type": "array"
+					},
+					"extra": {
+						"properties": {},
+						"additionalProperties": {
+							"additionalProperties": true
+						},
+						"type": "object",
+						"nullable": true
 					}
 				},
 				"required": [
 					"id",
+					"active",
 					"type",
 					"parentId",
 					"contentId",
-					"children",
-					"scenarios"
+					"children"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -826,6 +1081,9 @@
 					"type": {
 						"$ref": "#/components/schemas/NodeTypes"
 					},
+					"active": {
+						"type": "boolean"
+					},
 					"parentId": {
 						"type": "string"
 					},
@@ -843,10 +1101,19 @@
 							"$ref": "#/components/schemas/IScenario"
 						},
 						"type": "array"
+					},
+					"extra": {
+						"properties": {},
+						"additionalProperties": {
+							"additionalProperties": true
+						},
+						"type": "object",
+						"nullable": true
 					}
 				},
 				"required": [
 					"type",
+					"active",
 					"parentId",
 					"contentId",
 					"children",
@@ -860,6 +1127,9 @@
 					"type": {
 						"$ref": "#/components/schemas/NodeTypes"
 					},
+					"active": {
+						"type": "boolean"
+					},
 					"parentId": {
 						"type": "string",
 						"nullable": true
@@ -879,10 +1149,19 @@
 							"$ref": "#/components/schemas/IScenario"
 						},
 						"type": "array"
+					},
+					"extra": {
+						"properties": {},
+						"additionalProperties": {
+							"additionalProperties": true
+						},
+						"type": "object",
+						"nullable": true
 					}
 				},
 				"required": [
 					"type",
+					"active",
 					"parentId",
 					"contentId",
 					"children",
@@ -1000,6 +1279,9 @@
 					"id": {
 						"type": "string"
 					},
+					"active": {
+						"type": "boolean"
+					},
 					"name": {
 						"type": "string"
 					},
@@ -1029,9 +1311,18 @@
 					},
 					"mainAsset": {
 						"type": "string"
+					},
+					"extra": {
+						"properties": {},
+						"additionalProperties": {
+							"additionalProperties": true
+						},
+						"type": "object",
+						"nullable": true
 					}
 				},
 				"required": [
+					"active",
 					"name",
 					"receipt",
 					"tags"
@@ -1109,6 +1400,9 @@
 					"name": {
 						"type": "string"
 					},
+					"active": {
+						"type": "boolean"
+					},
 					"description": {
 						"type": "string"
 					},
@@ -1139,6 +1433,7 @@
 				},
 				"required": [
 					"name",
+					"active",
 					"receipt",
 					"tags"
 				],
@@ -1149,6 +1444,9 @@
 				"properties": {
 					"id": {
 						"type": "string"
+					},
+					"active": {
+						"type": "boolean"
 					},
 					"lastupdate": {
 						"type": "number",
@@ -1163,19 +1461,30 @@
 					"path": {
 						"type": "string"
 					},
-					"thumnail": {
-						"type": "string"
-					},
-					"favicon": {
-						"type": "string"
+					"mipmap": {
+						"properties": {
+							"x32": {
+								"type": "string"
+							},
+							"x128": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"x32",
+							"x128"
+						],
+						"type": "object"
 					}
 				},
 				"required": [
 					"id",
+					"active",
 					"lastupdate",
 					"name",
 					"ext",
-					"path"
+					"path",
+					"mipmap"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -1376,10 +1685,23 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"SelectorTypes": {
+				"enum": [
+					"menu-category",
+					"schema-category"
+				],
+				"type": "string"
+			},
 			"ISelectorItem": {
 				"properties": {
 					"id": {
 						"type": "string"
+					},
+					"type": {
+						"$ref": "#/components/schemas/SelectorTypes"
+					},
+					"active": {
+						"type": "boolean"
 					},
 					"name": {
 						"type": "string"
@@ -1389,9 +1711,19 @@
 					},
 					"joint": {
 						"type": "string"
+					},
+					"extra": {
+						"properties": {},
+						"additionalProperties": {
+							"additionalProperties": true
+						},
+						"type": "object",
+						"nullable": true
 					}
 				},
 				"required": [
+					"type",
+					"active",
 					"name",
 					"joint"
 				],
@@ -1465,6 +1797,12 @@
 			},
 			"ISelectorCreateRequest": {
 				"properties": {
+					"active": {
+						"type": "boolean"
+					},
+					"type": {
+						"$ref": "#/components/schemas/SelectorTypes"
+					},
 					"name": {
 						"type": "string"
 					},
@@ -1473,6 +1811,8 @@
 					}
 				},
 				"required": [
+					"active",
+					"type",
 					"name"
 				],
 				"type": "object",
@@ -1513,6 +1853,9 @@
 					"id": {
 						"type": "string"
 					},
+					"active": {
+						"type": "boolean"
+					},
 					"name": {
 						"type": "string"
 					},
@@ -1521,10 +1864,19 @@
 					},
 					"color": {
 						"type": "string"
+					},
+					"extra": {
+						"properties": {},
+						"additionalProperties": {
+							"additionalProperties": true
+						},
+						"type": "object",
+						"nullable": true
 					}
 				},
 				"required": [
 					"id",
+					"active",
 					"name",
 					"color"
 				],
@@ -1598,6 +1950,9 @@
 			},
 			"TagCreateRequest": {
 				"properties": {
+					"active": {
+						"type": "boolean"
+					},
 					"name": {
 						"type": "string"
 					},
@@ -1609,6 +1964,7 @@
 					}
 				},
 				"required": [
+					"active",
 					"name",
 					"color"
 				],
@@ -1681,6 +2037,11 @@
 													"name": "tags",
 													"version": 5,
 													"lastUpdate": 1589885721
+												},
+												{
+													"name": "business-periods",
+													"version": 3,
+													"lastUpdate": 1589885721
 												}
 											]
 										}
@@ -1699,7 +2060,7 @@
 						"jwt": []
 					},
 					{
-						"aoiKey": []
+						"apiKey": []
 					}
 				],
 				"parameters": []
@@ -1739,7 +2100,7 @@
 						"jwt": []
 					},
 					{
-						"aoiKey": []
+						"apiKey": []
 					}
 				],
 				"parameters": [
@@ -1777,12 +2138,15 @@
 											"data": [
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
+													"active": true,
 													"lastupdate": 1589885721,
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"path": "assets/some_3d_model.fbx",
-													"thumbnail": "assets/some_3d_model_128x128.png",
-													"favicon": "assets/favicon.png"
+													"mipmap": {
+														"x128": "assets/some_3d_model_128x128.png",
+														"x32": "assets/favicon.png"
+													}
 												}
 											]
 										}
@@ -1801,7 +2165,7 @@
 						"jwt": []
 					},
 					{
-						"aoiKey": []
+						"apiKey": []
 					}
 				],
 				"parameters": []
@@ -1829,12 +2193,15 @@
 											},
 											"data": {
 												"id": "107c7f79bcf86cd7994f6c0e",
+												"active": true,
 												"lastupdate": 1589885721,
 												"name": "some_3d_model",
 												"ext": ".fbx",
 												"path": "assets/some_3d_model.fbx",
-												"thumbnail": "assets/some_3d_model_128x128.png",
-												"favicon": "assets/favicon.png"
+												"mipmap": {
+													"x128": "assets/some_3d_model_128x128.png",
+													"x32": "assets/favicon.png"
+												}
 											}
 										}
 									}
@@ -1877,12 +2244,15 @@
 											},
 											"data": {
 												"id": "107c7f79bcf86cd7994f6c0e",
+												"active": true,
 												"lastupdate": 1589885721,
 												"name": "some_3d_model",
 												"ext": ".fbx",
 												"path": "assets/some_3d_model.fbx",
-												"thumbnail": "assets/some_3d_model_128x128.png",
-												"favicon": "assets/favicon.png"
+												"mipmap": {
+													"x128": "assets/some_3d_model_128x128.png",
+													"x32": "assets/favicon.png"
+												}
 											}
 										}
 									}
@@ -2213,6 +2583,332 @@
 				}
 			}
 		},
+		"/business-periods": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IBusinessPeriodsResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "business-periods",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": [
+												{
+													"id": "507c7f79bcf86cd7994f6c0e",
+													"active": true,
+													"name": "Selectors on concert",
+													"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+													"schedule": [
+														{
+															"active": true,
+															"time": {},
+															"weekDays": [
+																0,
+																1,
+																2
+															]
+														}
+													],
+													"extra": {
+														"key": "value"
+													}
+												}
+											]
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Business Periods"
+				],
+				"security": [
+					{
+						"jwt": []
+					},
+					{
+						"apiKey": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/business-period/{id}": {
+			"get": {
+				"operationId": "GetOne",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IBusinessPeriodResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "business-periods",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": {
+												"id": "507c7f79bcf86cd7994f6c0e",
+												"active": true,
+												"name": "Selectors on concert",
+												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+												"schedule": [
+													{
+														"active": true,
+														"time": {},
+														"weekDays": [
+															0,
+															1,
+															2
+														]
+													}
+												],
+												"extra": {
+													"key": "value"
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Business Period"
+				],
+				"security": [
+					{
+						"jwt": []
+					},
+					{
+						"apiKey": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IBusinessPeriodResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "business-periods",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": {
+												"id": "507c7f79bcf86cd7994f6c0e",
+												"active": true,
+												"name": "Selectors on concert",
+												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+												"schedule": [
+													{
+														"active": true,
+														"time": {},
+														"weekDays": [
+															0,
+															1,
+															2
+														]
+													}
+												],
+												"extra": {
+													"key": "value"
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Business Period"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IBusinessPeriodCreateRequest"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "Delete",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IBusinessPeriodResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "business-periods",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Business Period"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/business-period": {
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IBusinessPeriodResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "business-periods",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": {
+												"id": "507c7f79bcf86cd7994f6c0e",
+												"active": true,
+												"name": "Selectors on concert",
+												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+												"schedule": [
+													{
+														"active": true,
+														"time": {},
+														"weekDays": [
+															0,
+															1,
+															2
+														]
+													}
+												],
+												"extra": {
+													"key": "value"
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Business Period"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IBusinessPeriodCreateRequest"
+							}
+						}
+					}
+				}
+			}
+		},
 		"/root-nodes": {
 			"get": {
 				"operationId": "GetRootNodes",
@@ -2236,6 +2932,7 @@
 											"data": [
 												{
 													"id": "507c7f79bcf86cd7994f6c0e",
+													"active": true,
 													"type": "kiosk-root",
 													"parentId": "107c7f79bcf86cd7994f6c0e",
 													"contentId": "407c7f79bcf86cd7994f6c0e",
@@ -2244,7 +2941,7 @@
 													],
 													"scenarios": [
 														{
-															"name": "scenario 1",
+															"active": true,
 															"action": "visible-by-business-period"
 														}
 													]
@@ -2266,7 +2963,7 @@
 						"jwt": []
 					},
 					{
-						"aoiKey": []
+						"apiKey": []
 					}
 				],
 				"parameters": []
@@ -2295,6 +2992,7 @@
 											"data": [
 												{
 													"id": "507c7f79bcf86cd7994f6c0e",
+													"active": true,
 													"type": "selector",
 													"parentId": "107c7f79bcf86cd7994f6c0e",
 													"contentId": "407c7f79bcf86cd7994f6c0e",
@@ -2303,7 +3001,7 @@
 													],
 													"scenarios": [
 														{
-															"name": "scenario 1",
+															"active": true,
 															"action": "visible-by-business-period"
 														}
 													]
@@ -2325,7 +3023,7 @@
 						"jwt": []
 					},
 					{
-						"aoiKey": []
+						"apiKey": []
 					}
 				],
 				"parameters": []
@@ -2354,6 +3052,7 @@
 											"data": [
 												{
 													"id": "507c7f79bcf86cd7994f6c0e",
+													"active": true,
 													"type": "selector",
 													"parentId": "107c7f79bcf86cd7994f6c0e",
 													"contentId": "407c7f79bcf86cd7994f6c0e",
@@ -2362,7 +3061,7 @@
 													],
 													"scenarios": [
 														{
-															"name": "scenario 1",
+															"active": true,
 															"action": "visible-by-business-period"
 														}
 													]
@@ -2384,7 +3083,7 @@
 						"jwt": []
 					},
 					{
-						"aoiKey": []
+						"apiKey": []
 					}
 				],
 				"parameters": [
@@ -2421,6 +3120,7 @@
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
+												"active": true,
 												"type": "selector",
 												"parentId": "107c7f79bcf86cd7994f6c0e",
 												"contentId": "407c7f79bcf86cd7994f6c0e",
@@ -2429,7 +3129,7 @@
 												],
 												"scenarios": [
 													{
-														"name": "scenario 1",
+														"active": true,
 														"action": "visible-by-business-period"
 													}
 												]
@@ -2450,7 +3150,7 @@
 						"jwt": []
 					},
 					{
-						"aoiKey": []
+						"apiKey": []
 					}
 				],
 				"parameters": [
@@ -2485,6 +3185,7 @@
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
+												"active": true,
 												"type": "selector",
 												"parentId": "107c7f79bcf86cd7994f6c0e",
 												"contentId": "407c7f79bcf86cd7994f6c0e",
@@ -2493,7 +3194,7 @@
 												],
 												"scenarios": [
 													{
-														"name": "scenario 1",
+														"active": true,
 														"action": "visible-by-business-period"
 													}
 												]
@@ -2604,6 +3305,7 @@
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
+												"active": true,
 												"type": "selector",
 												"parentId": "107c7f79bcf86cd7994f6c0e",
 												"contentId": "407c7f79bcf86cd7994f6c0e",
@@ -2612,7 +3314,7 @@
 												],
 												"scenarios": [
 													{
-														"name": "scenario 1",
+														"active": true,
 														"action": "visible-by-business-period"
 													}
 												]
@@ -2669,6 +3371,7 @@
 											"data": [
 												{
 													"id": "507c7f79bcf86cd7994f6c0e",
+													"active": true,
 													"name": "Products on concert",
 													"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
 													"receipt": [
@@ -2690,7 +3393,10 @@
 													],
 													"assets": [],
 													"mainAsset": "g8h07f79bcf86cd7994f9d7k",
-													"joint": "df3c7f79bcf86cd7994f9d8f"
+													"joint": "df3c7f79bcf86cd7994f9d8f",
+													"extra": {
+														"key": "value"
+													}
 												}
 											]
 										}
@@ -2709,7 +3415,7 @@
 						"jwt": []
 					},
 					{
-						"aoiKey": []
+						"apiKey": []
 					}
 				],
 				"parameters": []
@@ -2737,6 +3443,7 @@
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
+												"active": true,
 												"name": "Products on concert",
 												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
 												"receipt": [
@@ -2758,7 +3465,10 @@
 												],
 												"assets": [],
 												"mainAsset": "g8h07f79bcf86cd7994f9d7k",
-												"joint": "df3c7f79bcf86cd7994f9d8f"
+												"joint": "df3c7f79bcf86cd7994f9d8f",
+												"extra": {
+													"key": "value"
+												}
 											}
 										}
 									}
@@ -2776,7 +3486,7 @@
 						"jwt": []
 					},
 					{
-						"aoiKey": []
+						"apiKey": []
 					}
 				],
 				"parameters": [
@@ -2811,6 +3521,7 @@
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
+												"active": true,
 												"name": "Products on concert",
 												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
 												"receipt": [
@@ -2832,7 +3543,10 @@
 												],
 												"assets": [],
 												"mainAsset": "g8h07f79bcf86cd7994f9d7k",
-												"joint": "df3c7f79bcf86cd7994f9d8f"
+												"joint": "df3c7f79bcf86cd7994f9d8f",
+												"extra": {
+													"key": "value"
+												}
 											}
 										}
 									}
@@ -2940,6 +3654,7 @@
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
+												"active": true,
 												"name": "Products on concert",
 												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
 												"receipt": [
@@ -2961,7 +3676,10 @@
 												],
 												"assets": [],
 												"mainAsset": "g8h07f79bcf86cd7994f9d7k",
-												"joint": "df3c7f79bcf86cd7994f9d8f"
+												"joint": "df3c7f79bcf86cd7994f9d8f",
+												"extra": {
+													"key": "value"
+												}
 											}
 										}
 									}
@@ -3024,11 +3742,14 @@
 											"data": [
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
+													"active": true,
 													"lastupdate": 1589885721,
 													"name": "some_3d_model",
 													"ext": ".fbx",
-													"thumbnail": "assets/some_3d_model_128x128.png",
-													"favicon": "assets/favicon.png",
+													"mipmap": {
+														"x128": "assets/some_3d_model_128x128.png",
+														"x32": "assets/favicon.png"
+													},
 													"path": "assets/some_3d_model.fbx"
 												}
 											]
@@ -3048,7 +3769,7 @@
 						"jwt": []
 					},
 					{
-						"aoiKey": []
+						"apiKey": []
 					}
 				],
 				"parameters": [
@@ -3095,11 +3816,14 @@
 											"data": {
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
+													"active": true,
 													"lastupdate": 1589885721,
 													"name": "some_3d_model",
 													"ext": ".fbx",
-													"thumbnail": "assets/some_3d_model_128x128.png",
-													"favicon": "assets/favicon.png",
+													"mipmap": {
+														"x128": "assets/some_3d_model_128x128.png",
+														"x32": "assets/favicon.png"
+													},
 													"path": "assets/some_3d_model.fbx"
 												}
 											}
@@ -3219,9 +3943,14 @@
 											"data": [
 												{
 													"id": "507c7f79bcf86cd7994f6c0e",
+													"active": true,
+													"type": "menu-category",
 													"name": "Selectors on concert",
 													"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-													"joint": "890c7f79bcf86cd7994f3t8y"
+													"joint": "890c7f79bcf86cd7994f3t8y",
+													"extra": {
+														"key": "value"
+													}
 												}
 											]
 										}
@@ -3240,10 +3969,19 @@
 						"jwt": []
 					},
 					{
-						"aoiKey": []
+						"apiKey": []
 					}
 				],
-				"parameters": []
+				"parameters": [
+					{
+						"in": "query",
+						"name": "type",
+						"required": false,
+						"schema": {
+							"$ref": "#/components/schemas/SelectorTypes"
+						}
+					}
+				]
 			}
 		},
 		"/selector/{id}": {
@@ -3268,9 +4006,14 @@
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
+												"active": true,
+												"type": "menu-category",
 												"name": "Selectors on concert",
 												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-												"joint": "890c7f79bcf86cd7994f3t8y"
+												"joint": "890c7f79bcf86cd7994f3t8y",
+												"extra": {
+													"key": "value"
+												}
 											}
 										}
 									}
@@ -3288,7 +4031,7 @@
 						"jwt": []
 					},
 					{
-						"aoiKey": []
+						"apiKey": []
 					}
 				],
 				"parameters": [
@@ -3323,9 +4066,14 @@
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
+												"active": true,
+												"type": "menu-category",
 												"name": "Selectors on concert",
 												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-												"joint": "890c7f79bcf86cd7994f3t8y"
+												"joint": "890c7f79bcf86cd7994f3t8y",
+												"extra": {
+													"key": "value"
+												}
 											}
 										}
 									}
@@ -3433,9 +4181,14 @@
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
+												"active": true,
+												"type": "menu-category",
 												"name": "Selectors on concert",
 												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-												"joint": "890c7f79bcf86cd7994f3t8y"
+												"joint": "890c7f79bcf86cd7994f3t8y",
+												"extra": {
+													"key": "value"
+												}
 											}
 										}
 									}
@@ -3489,9 +4242,13 @@
 											"data": [
 												{
 													"id": "507c7f79bcf86cd7994f6c0e",
+													"active": true,
 													"name": "Morning Tag",
 													"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-													"color": "0x000fff"
+													"color": "0x000fff",
+													"extra": {
+														"key": "value"
+													}
 												}
 											]
 										}
@@ -3510,7 +4267,7 @@
 						"jwt": []
 					},
 					{
-						"aoiKey": []
+						"apiKey": []
 					}
 				],
 				"parameters": []
@@ -3538,9 +4295,13 @@
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
+												"active": true,
 												"name": "Morning Tag",
 												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-												"color": "0x000fff"
+												"color": "0x000fff",
+												"extra": {
+													"key": "value"
+												}
 											}
 										}
 									}
@@ -3558,7 +4319,7 @@
 						"jwt": []
 					},
 					{
-						"aoiKey": []
+						"apiKey": []
 					}
 				],
 				"parameters": [
@@ -3593,9 +4354,13 @@
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
+												"active": true,
 												"name": "Morning Tag",
 												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-												"color": "0x000fff"
+												"color": "0x000fff",
+												"extra": {
+													"key": "value"
+												}
 											}
 										}
 									}
@@ -3703,9 +4468,13 @@
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
+												"active": true,
 												"name": "Morning Tag",
 												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-												"color": "0x000fff"
+												"color": "0x000fff",
+												"extra": {
+													"key": "value"
+												}
 											}
 										}
 									}

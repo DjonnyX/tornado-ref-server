@@ -4,9 +4,11 @@ import { getRef, riseRefVersion } from "../db/refs";
 
 interface ITagItem {
     id: string;
+    active: boolean;
     name: string;
     description?: string;
     color: string;
+    extra?: { [key: string]: any } | null;
 }
 
 interface ITagsMeta {
@@ -36,6 +38,7 @@ interface TagResponse {
 }
 
 interface TagCreateRequest {
+    active: boolean;
     name: string;
     description?: string;
     color: string;
@@ -43,23 +46,27 @@ interface TagCreateRequest {
 
 const RESPONSE_TEMPLATE: ITagItem = {
     id: "507c7f79bcf86cd7994f6c0e",
+    active: true,
     name: "Morning Tag",
     description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-    color: "0x000fff"
+    color: "0x000fff",
+    extra: { key: "value" },
 };
 
 const formatModel = (model: ITag) => ({
     id: model._id,
+    active: model.active,
     name: model.name,
     description: model.description,
-    color: model.color
+    color: model.color,
+    extra: model.extra,
 });
 
 const META_TEMPLATE: ITagsMeta = {
     ref: {
         name: RefTypes.TAGS,
         version: 1,
-        lastUpdate: 1589885721
+        lastUpdate: 1589885721,
     }
 };
 
@@ -68,11 +75,11 @@ const META_TEMPLATE: ITagsMeta = {
 export class TagsController extends Controller {
     @Get()
     @Security("jwt")
-    @Security("aoiKey")
+    @Security("apiKey")
     @OperationId("GetAll")
     @Example<TagsResponse>({
         meta: META_TEMPLATE,
-        data: [RESPONSE_TEMPLATE]
+        data: [RESPONSE_TEMPLATE],
     })
     public async getAll(): Promise<TagsResponse> {
         try {
@@ -80,7 +87,7 @@ export class TagsController extends Controller {
             const ref = await getRef(RefTypes.TAGS);
             return {
                 meta: { ref },
-                data: items.map(v => formatModel(v))
+                data: items.map(v => formatModel(v)),
             };
         } catch (err) {
             this.setStatus(500);
@@ -101,11 +108,11 @@ export class TagsController extends Controller {
 export class TagController extends Controller {
     @Get("{id}")
     @Security("jwt")
-    @Security("aoiKey")
+    @Security("apiKey")
     @OperationId("GetOne")
     @Example<TagResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE
+        data: RESPONSE_TEMPLATE,
     })
     public async getOne(id: string): Promise<TagResponse> {
         try {
@@ -113,7 +120,7 @@ export class TagController extends Controller {
             const ref = await getRef(RefTypes.TAGS);
             return {
                 meta: { ref },
-                data: formatModel(item)
+                data: formatModel(item),
             };
         } catch (err) {
             this.setStatus(500);
@@ -133,7 +140,7 @@ export class TagController extends Controller {
     @OperationId("Create")
     @Example<TagResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE
+        data: RESPONSE_TEMPLATE,
     })
     public async create(@Body() request: TagCreateRequest): Promise<TagResponse> {
         try {
@@ -142,7 +149,7 @@ export class TagController extends Controller {
             const ref = await riseRefVersion(RefTypes.TAGS);
             return {
                 meta: { ref },
-                data: formatModel(savedItem)
+                data: formatModel(savedItem),
             };
         } catch (err) {
             this.setStatus(500);
@@ -162,22 +169,22 @@ export class TagController extends Controller {
     @OperationId("Update")
     @Example<TagResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE
+        data: RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() request: TagCreateRequest): Promise<TagResponse> {
         try {
             const item = await TagModel.findById(id);
-            
+
             for (const key in request) {
                 item[key] = request[key];
             }
-            
+
             await item.save();
 
             const ref = await riseRefVersion(RefTypes.TAGS);
             return {
                 meta: { ref },
-                data: formatModel(item)
+                data: formatModel(item),
             };
         } catch (err) {
             this.setStatus(500);
@@ -196,14 +203,14 @@ export class TagController extends Controller {
     @Security("jwt")
     @OperationId("Delete")
     @Example<TagResponse>({
-        meta: META_TEMPLATE
+        meta: META_TEMPLATE,
     })
     public async delete(id: string): Promise<TagResponse> {
         try {
             await TagModel.findOneAndDelete({ _id: id });
             const ref = await riseRefVersion(RefTypes.TAGS);
             return {
-                meta: { ref }
+                meta: { ref },
             };
         } catch (err) {
             this.setStatus(500);

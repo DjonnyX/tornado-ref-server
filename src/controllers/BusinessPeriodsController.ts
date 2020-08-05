@@ -1,22 +1,19 @@
-import { SelectorModel, ISelector, RefTypes, NodeModel } from "../models/index";
-import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Path, Query } from "tsoa";
+import { RefTypes, ISchedule, IBusinessPeriod, BusinessPeriodModel } from "../models";
+import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security } from "tsoa";
+import * as joi from "@hapi/joi";
 import { getRef, riseRefVersion } from "../db/refs";
-import { NodeTypes } from "../models/enums";
-import { deleteNodesChain } from "../utils/node";
-import { SelectorTypes } from "../models/enums/SelectorTypes";
-import { formatSelectorModel } from "../utils/selector";
+import { formatModel } from "../utils/businessPeriod";
 
-interface ISelectorItem {
+interface IBusinessPeriodItem {
     id?: string;
-    type: SelectorTypes;
     active: boolean;
     name: string;
     description?: string;
-    joint: string;
+    schedule: Array<ISchedule>;
     extra?: { [key: string]: any } | null;
 }
 
-interface ISelectorsMeta {
+interface IBusinessPeriodMeta {
     ref: {
         name: string;
         version: number;
@@ -24,71 +21,90 @@ interface ISelectorsMeta {
     };
 }
 
-interface ISelectorsResponse {
-    meta?: ISelectorsMeta;
-    data?: Array<ISelectorItem>;
+interface IBusinessPeriodsResponse {
+    meta?: IBusinessPeriodMeta;
+    data?: Array<IBusinessPeriodItem>;
     error?: Array<{
         code: number;
         message: string;
     }>;
 }
 
-interface ISelectorResponse {
-    meta?: ISelectorsMeta;
-    data?: ISelectorItem;
+interface IBusinessPeriodResponse {
+    meta?: IBusinessPeriodMeta;
+    data?: IBusinessPeriodItem;
     error?: Array<{
         code: number;
         message: string;
     }>;
 }
 
-interface ISelectorCreateRequest {
+interface IBusinessPeriodCreateRequest {
     active: boolean;
-    type: SelectorTypes;
     name: string;
     description?: string;
+    schedule: Array<ISchedule>;
+    extra?: { [key: string]: any } | null;
 }
 
-const RESPONSE_TEMPLATE: ISelectorItem = {
+const RESPONSE_TEMPLATE: IBusinessPeriodItem = {
     id: "507c7f79bcf86cd7994f6c0e",
     active: true,
-    type: SelectorTypes.MENU_CATEGORY,
     name: "Selectors on concert",
     description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-    joint: "890c7f79bcf86cd7994f3t8y",
-    extra: { key: "value" }
-};
-
-const META_TEMPLATE: ISelectorsMeta = {
-    ref: {
-        name: RefTypes.SELECTORS,
-        version: 1,
-        lastUpdate: 1589885721,
+    schedule: [
+        {
+            active: true,
+            time: {
+                start: Date.now(),
+                end: Date.now(),
+            },
+            weekDays: [0, 1, 2],
+        }
+    ],
+    extra: {
+        key: "value",
     }
 };
 
-@Route("/selectors")
-@Tags("Selector")
-export class SelectorsController extends Controller {
+const validateBP = (node: IBusinessPeriodCreateRequest): joi.ValidationResult => {
+    const schema = joi.object({
+        active: joi.boolean(),
+        name: joi.string(),
+        description: joi.optional(),
+        schedule: joi.optional(),
+        extra: joi.optional(),
+    });
+
+    return schema.validate(node);
+};
+
+const META_TEMPLATE: IBusinessPeriodMeta = {
+    ref: {
+        name: RefTypes.BUSINESS_PERIODS,
+        version: 1,
+        lastUpdate: 1589885721
+    }
+};
+
+@Route("/business-periods")
+@Tags("Business Periods")
+export class BusinessPeriodsController extends Controller {
     @Get()
     @Security("jwt")
     @Security("apiKey")
     @OperationId("GetAll")
-    @Example<ISelectorsResponse>({
+    @Example<IBusinessPeriodsResponse>({
         meta: META_TEMPLATE,
-        data: [RESPONSE_TEMPLATE],
+        data: [RESPONSE_TEMPLATE]
     })
-    public async getAll(@Query() type?: SelectorTypes): Promise<ISelectorsResponse> {
+    public async getAll(): Promise<IBusinessPeriodsResponse> {
         try {
-            const findParams: any = {};
-            if (!!type) {
-                findParams.type = type;
-            }
-            const items = await SelectorModel.find(findParams);
-            const ref = await getRef(RefTypes.SELECTORS);
+            const items = await BusinessPeriodModel.find({});
+            const ref = await getRef(RefTypes.BUSINESS_PERIODS);
             return {
                 meta: { ref },
-                data: items.map(v => formatSelectorModel(v)),
+                data: items.map(v => formatModel(v))
             };
         } catch (err) {
             this.setStatus(500);
@@ -104,24 +120,24 @@ export class SelectorsController extends Controller {
     }
 }
 
-@Route("/selector")
-@Tags("Selector")
-export class SelectorController extends Controller {
+@Route("/business-period")
+@Tags("Business Period")
+export class BusinessPeriodController extends Controller {
     @Get("{id}")
     @Security("jwt")
     @Security("apiKey")
     @OperationId("GetOne")
-    @Example<ISelectorResponse>({
+    @Example<IBusinessPeriodResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE,
+        data: RESPONSE_TEMPLATE
     })
-    public async getOne(id: string): Promise<ISelectorResponse> {
+    public async getOne(id: string): Promise<IBusinessPeriodResponse> {
         try {
-            const item = await SelectorModel.findById(id);
-            const ref = await getRef(RefTypes.SELECTORS);
+            const item = await BusinessPeriodModel.findById(id);
+            const ref = await getRef(RefTypes.BUSINESS_PERIODS);
             return {
                 meta: { ref },
-                data: formatSelectorModel(item),
+                data: formatModel(item),
             };
         } catch (err) {
             this.setStatus(500);
@@ -139,44 +155,31 @@ export class SelectorController extends Controller {
     @Post()
     @Security("jwt")
     @OperationId("Create")
-    @Example<ISelectorResponse>({
+    @Example<IBusinessPeriodResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
-    public async create(@Body() request: ISelectorCreateRequest): Promise<ISelectorResponse> {
-        let params: ISelectorItem;
-        try {
-
-            // создается корневой нод
-            const jointNode = new NodeModel({
-                active: true,
-                type: NodeTypes.SELECTOR_JOINT,
-                parentId: null,
-                contentId: null,
-                children: [],
-            });
-            const savedJointNode = await jointNode.save();
-
-            params = { ...request, joint: savedJointNode._id };
-        } catch (err) {
+    public async create(@Body() request: IBusinessPeriodCreateRequest): Promise<IBusinessPeriodResponse> {
+        const validation = validateBP(request);
+        if (validation.error) {
             this.setStatus(500);
             return {
                 error: [
                     {
                         code: 500,
-                        message: `Error in creation joint node. ${err}`,
+                        message: validation.error.message,
                     }
                 ]
             };
         }
 
         try {
-            const item = new SelectorModel(params);
+            const item = new BusinessPeriodModel(request);
             const savedItem = await item.save();
-            const ref = await riseRefVersion(RefTypes.SELECTORS);
+            const ref = await riseRefVersion(RefTypes.BUSINESS_PERIODS);
             return {
                 meta: { ref },
-                data: formatSelectorModel(savedItem),
+                data: formatModel(savedItem),
             };
         } catch (err) {
             this.setStatus(500);
@@ -194,24 +197,37 @@ export class SelectorController extends Controller {
     @Put("{id}")
     @Security("jwt")
     @OperationId("Update")
-    @Example<ISelectorResponse>({
+    @Example<IBusinessPeriodResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
-    public async update(id: string, @Body() request: ISelectorCreateRequest): Promise<ISelectorResponse> {
-        try {
-            const item = await SelectorModel.findById(id);
+    public async update(id: string, @Body() request: IBusinessPeriodCreateRequest): Promise<IBusinessPeriodResponse> {
+        const validation = validateBP(request);
+        if (validation.error) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: validation.error.message,
+                    }
+                ]
+            };
+        }
 
+        try {
+            const item = await BusinessPeriodModel.findById(id);
+            
             for (const key in request) {
                 item[key] = request[key];
             }
 
             await item.save();
 
-            const ref = await riseRefVersion(RefTypes.SELECTORS);
+            const ref = await riseRefVersion(RefTypes.BUSINESS_PERIODS);
             return {
                 meta: { ref },
-                data: formatSelectorModel(item),
+                data: formatModel(item),
             };
         } catch (err) {
             this.setStatus(500);
@@ -229,13 +245,13 @@ export class SelectorController extends Controller {
     @Delete("{id}")
     @Security("jwt")
     @OperationId("Delete")
-    @Example<ISelectorResponse>({
-        meta: META_TEMPLATE,
+    @Example<IBusinessPeriodResponse>({
+        meta: META_TEMPLATE
     })
-    public async delete(id: string): Promise<ISelectorResponse> {
-        let selector: ISelector;
+    public async delete(id: string): Promise<IBusinessPeriodResponse> {
+        let bp: IBusinessPeriod;
         try {
-            selector = await SelectorModel.findByIdAndDelete(id);
+            bp = await BusinessPeriodModel.findByIdAndDelete(id);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -249,21 +265,7 @@ export class SelectorController extends Controller {
         }
 
         try {
-            await deleteNodesChain(selector.joint);
-        } catch (err) {
-            this.setStatus(500);
-            return {
-                error: [
-                    {
-                        code: 500,
-                        message: `Error in delete joint node. ${err}`,
-                    }
-                ]
-            };
-        }
-
-        try {
-            const ref = await riseRefVersion(RefTypes.SELECTORS);
+            const ref = await riseRefVersion(RefTypes.BUSINESS_PERIODS);
             return {
                 meta: { ref },
             };

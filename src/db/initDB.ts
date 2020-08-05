@@ -7,10 +7,12 @@ const createRootNode = async () => {
     if (!existsRootNode) {
         // generate new root node
         const rootMenuNode = new NodeModel({
+            active: true,
             type: NodeTypes.KIOSK_ROOT,
             parentId: null,
             contentId: null,
             children: [],
+            extra: {},
         });
         await rootMenuNode.save();
     }
@@ -47,6 +49,10 @@ export const initRefs = async (): Promise<void> => {
             lastUpdate,
         }, {
             name: RefTypes.TAGS,
+            version: 1,
+            lastUpdate,
+        }, {
+            name: RefTypes.BUSINESS_PERIODS,
             version: 1,
             lastUpdate,
         },

@@ -8,11 +8,13 @@ import { getNodesChain, deleteNodesChain, checkOnRecursion } from "../utils/node
 
 interface INodeItem {
     id: string;
+    active: boolean,
     type: NodeTypes;
     parentId: string;
     contentId: string;
     children: Array<string>;
-    scenarios: Array<IScenario>;
+    scenarios?: Array<IScenario>;
+    extra?: { [key: string]: any } | null;
 }
 
 interface INodesMeta {
@@ -79,56 +81,72 @@ interface IDeleteNodeResponse {
 
 interface INodeCreateRequest {
     type: NodeTypes;
+    active: boolean;
     parentId: string;
     contentId: string;
     children: Array<string>;
     scenarios: Array<IScenario>;
+    extra?: { [key: string]: any } | null;
 }
 
 interface INodeUpdateRequest {
     type: NodeTypes;
+    active: boolean;
     parentId: string | null;
     contentId: string | null;
     children: Array<string>;
     scenarios: Array<IScenario>;
+    extra?: { [key: string]: any } | null;
 }
 
 const RESPONSE_TEMPLATE: INodeItem = {
     id: "507c7f79bcf86cd7994f6c0e",
+    active: true,
     type: NodeTypes.SELECTOR,
     parentId: "107c7f79bcf86cd7994f6c0e",
     contentId: "407c7f79bcf86cd7994f6c0e",
     children: ["123c7f79bcf86cd7994f6c0e"],
     scenarios: [{
-        name: "scenario 1",
+        active: true,
         action: ScenarioCommonActionTypes.VISIBLE_BY_BUSINESS_PERIOD,
     }]
 };
 
 const formatModel = (model: INode): INodeItem => ({
     id: model._id,
+    active: model.active,
     type: model.type,
     parentId: model.parentId,
     contentId: model.contentId,
     children: model.children || [],
-    scenarios: model.scenarios || [],
+    scenarios: model.scenarios.map(scenario => {
+        return {
+            active: scenario.active,
+            action: scenario.action,
+            value: scenario.value,
+            extra: scenario.extra,
+        }
+    }) || [],
+    extra: model.extra,
 });
 
 const META_TEMPLATE: INodesMeta = {
     ref: {
         name: RefTypes.NODES,
         version: 1,
-        lastUpdate: 1589885721
+        lastUpdate: 1589885721,
     }
 };
 
 const validateCreateNode = (node: INodeCreateRequest): joi.ValidationResult => {
     const schema = joi.object({
-        type: joi.string().pattern(new RegExp(`^(${NodeTypes.PRODUCT}|${NodeTypes.SELECTOR})$`)),
+        type: joi.string().pattern(new RegExp(`^(${NodeTypes.PRODUCT}|${NodeTypes.SELECTOR}|${NodeTypes.SELECTOR_NODE})$`)),
+        active: joi.boolean(),
         parentId: joi.string().required(),
         contentId: joi.string().required(),
         children: joi.required(),
         scenarios: joi.optional(),
+        extra: joi.optional(),
     });
 
     return schema.validate(node);
@@ -140,10 +158,12 @@ const validateUpdateNode = (node: INodeUpdateRequest): joi.ValidationResult => {
         type: joi.string()
             // включен полный список для сортировки
             .pattern(new RegExp(`^(${NodeTypes.PRODUCT}|${NodeTypes.SELECTOR}|${NodeTypes.KIOSK_PRESETS_ROOT}|${NodeTypes.KIOSK_ROOT}|${NodeTypes.SELECTOR_JOINT}|${NodeTypes.PRODUCT_JOINT}|${NodeTypes.SELECTOR_NODE})$`)),
+            active: joi.boolean(),
         parentId: joi.optional(), // для рутовых элементов
         contentId: joi.optional(), // для рутовых элементов
         children: joi.required(),
         scenarios: joi.optional(),
+        extra: joi.optional(),
     });
 
     return schema.validate(node);
@@ -154,18 +174,19 @@ const validateUpdateNode = (node: INodeUpdateRequest): joi.ValidationResult => {
 export class RootNodesController extends Controller {
     @Get()
     @Security("jwt")
-    @Security("aoiKey")
+    @Security("apiKey")
     @OperationId("GetRootNodes")
     @Example<INodesResponse>({
         meta: META_TEMPLATE,
         data: [{
             id: "507c7f79bcf86cd7994f6c0e",
+            active: true,
             type: NodeTypes.KIOSK_ROOT,
             parentId: "107c7f79bcf86cd7994f6c0e",
             contentId: "407c7f79bcf86cd7994f6c0e",
             children: ["123c7f79bcf86cd7994f6c0e"],
             scenarios: [{
-                name: "scenario 1",
+                active: true,
                 action: ScenarioCommonActionTypes.VISIBLE_BY_BUSINESS_PERIOD,
             }]
         }]
@@ -197,7 +218,7 @@ export class RootNodesController extends Controller {
 export class NodesController extends Controller {
     @Get()
     @Security("jwt")
-    @Security("aoiKey")
+    @Security("apiKey")
     @OperationId("GetAll")
     @Example<INodesResponse>({
         meta: META_TEMPLATE,
@@ -226,7 +247,7 @@ export class NodesController extends Controller {
 
     @Get("{id}")
     @Security("jwt")
-    @Security("aoiKey")
+    @Security("apiKey")
     @OperationId("GetAllById")
     @Example<INodesResponse>({
         meta: META_TEMPLATE,
@@ -259,7 +280,7 @@ export class NodesController extends Controller {
 export class NodeController extends Controller {
     @Get("{id}")
     @Security("jwt")
-    @Security("aoiKey")
+    @Security("apiKey")
     @OperationId("GetOne")
     @Example<INodeResponse>({
         meta: META_TEMPLATE,
@@ -442,9 +463,19 @@ export class NodeController extends Controller {
 
         try {
             const item = await NodeModel.findById(id);
-            
+
             for (const key in request) {
-                item[key] = request[key];
+                if (key === "scenarios") {
+                    const scenarios = request.scenarios.map(scenario => ({
+                        active: scenario.active,
+                        action: scenario.action,
+                        value: scenario.value,
+                        extra: scenario.extra,
+                    }));
+                    item["scenarios"] = scenarios;
+                } else {
+                    item[key] = request[key];
+                }
             }
 
             if (item.type === NodeTypes.SELECTOR_NODE && !!request.children && request.children.length > 0) {

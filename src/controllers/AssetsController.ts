@@ -13,12 +13,15 @@ import { IRefItem } from "./RefsController";
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IAssetItem {
     id: string;
+    active: boolean;
     lastupdate: number;
     name: string;
     ext: AssetExtensions;
     path: string;
-    thumnail?: string;
-    favicon?: string;
+    mipmap: {
+        x128: string;
+        x32: string;
+    };
 }
 
 interface IAssetMeta {
@@ -73,14 +76,17 @@ const META_TEMPLATE = {
     },
 };
 
-const RESPONSE_TEMPLATE = {
+const RESPONSE_TEMPLATE: IAssetItem = {
     id: "107c7f79bcf86cd7994f6c0e",
+    active: true,
     lastupdate: 1589885721,
     name: "some_3d_model",
     ext: AssetExtensions.FBX,
     path: "assets/some_3d_model.fbx",
-    thumbnail: "assets/some_3d_model_128x128.png",
-    favicon: "assets/favicon.png",
+    mipmap: {
+        x128: "assets/some_3d_model_128x128.png",
+        x32: "assets/favicon.png",
+    },
 };
 
 export const uploadAsset = async (request: express.Request, allowedExtensions: Array<AssetExtensions>): Promise<ICreateAssetsResponse> => {
@@ -88,7 +94,6 @@ export const uploadAsset = async (request: express.Request, allowedExtensions: A
     try {
         fileInfo = await assetsUploader("file", allowedExtensions, request);
     } catch (err) {
-        this.setStatus(500);
         return {
             error: [
                 {
@@ -106,7 +111,6 @@ export const uploadAsset = async (request: express.Request, allowedExtensions: A
         assetRef = await riseRefVersion(RefTypes.ASSETS);
         await asset.save();
     } catch (err) {
-        this.setStatus(500);
         return {
             error: [
                 {
@@ -148,7 +152,7 @@ export const deleteAsset = (assetPath: string): Promise<IAsset> => {
 export class AssetsController extends Controller {
     @Get()
     @Security("jwt")
-    @Security("aoiKey")
+    @Security("apiKey")
     @OperationId("GetAll")
     @Example<IGetAssetsResponse>({
         meta: META_TEMPLATE,
