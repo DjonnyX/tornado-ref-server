@@ -9,6 +9,7 @@ interface IReceiptItem {
 }
 
 interface IProduct extends Document {
+    active: boolean;
     name: string;
     description: string;
     receipt: Array<IReceiptItem>;
@@ -16,6 +17,7 @@ interface IProduct extends Document {
     joint: string;
     assets: Array<string>;
     mainAsset: string;
+    extra?: { [key: string]: any } | null;
 }
 
 const ReceiptSchema = new Schema({
@@ -26,6 +28,7 @@ const ReceiptSchema = new Schema({
 });
 
 const ProductSchema = new Schema({
+    active: { type: Schema.Types.Boolean, required: true },
     name: { type: Schema.Types.String, required: true },
     description: { type: Schema.Types.String, required: false },
     receipt: [ReceiptSchema],
@@ -33,6 +36,7 @@ const ProductSchema = new Schema({
     joint: { type: Schema.Types.ObjectId, required: true },
     assets: [{ type: Schema.Types.ObjectId, required: true }],
     mainAsset: { type: Schema.Types.ObjectId },
+    extra: { type: Schema.Types.Mixed, required: false },
 });
 
 const ProductModel = mongoose.model<IProduct>("Product", ProductSchema);

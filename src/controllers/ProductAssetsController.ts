@@ -74,13 +74,16 @@ const META_TEMPLATE = {
     },
 };
 
-const RESPONSE_TEMPLATE = {
+const RESPONSE_TEMPLATE: IAssetItem = {
     id: "107c7f79bcf86cd7994f6c0e",
+    active: true,
     lastupdate: 1589885721,
     name: "some_3d_model",
     ext: AssetExtensions.FBX,
-    thumbnail: "assets/some_3d_model_128x128.png",
-    favicon: "assets/favicon.png",
+    mipmap: {
+        x128: "assets/some_3d_model_128x128.png",
+        x32: "assets/favicon.png",
+    },
     path: "assets/some_3d_model.fbx",
 };
 

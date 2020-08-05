@@ -6,9 +6,11 @@ import { deleteNodesChain } from "../utils/node";
 
 interface ISelectorItem {
     id?: string;
+    active: boolean;
     name: string;
     description?: string;
     joint: string;
+    extra?: { [key: string]: any } | null;
 }
 
 interface ISelectorsMeta {
@@ -38,29 +40,34 @@ interface ISelectorResponse {
 }
 
 interface ISelectorCreateRequest {
+    active: boolean;
     name: string;
     description?: string;
 }
 
 const RESPONSE_TEMPLATE: ISelectorItem = {
     id: "507c7f79bcf86cd7994f6c0e",
+    active: true,
     name: "Selectors on concert",
     description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
     joint: "890c7f79bcf86cd7994f3t8y",
+    extra: { key: "value" }
 };
 
 const formatModel = (model: ISelector) => ({
     id: model._id,
+    active: model.active,
     name: model.name,
     description: model.description,
     joint: model.joint,
+    extra: model.extra,
 });
 
 const META_TEMPLATE: ISelectorsMeta = {
     ref: {
         name: RefTypes.SELECTORS,
         version: 1,
-        lastUpdate: 1589885721
+        lastUpdate: 1589885721,
     }
 };
 
@@ -73,7 +80,7 @@ export class SelectorsController extends Controller {
     @OperationId("GetAll")
     @Example<ISelectorsResponse>({
         meta: META_TEMPLATE,
-        data: [RESPONSE_TEMPLATE]
+        data: [RESPONSE_TEMPLATE],
     })
     public async getAll(): Promise<ISelectorsResponse> {
         try {
@@ -81,7 +88,7 @@ export class SelectorsController extends Controller {
             const ref = await getRef(RefTypes.SELECTORS);
             return {
                 meta: { ref },
-                data: items.map(v => formatModel(v))
+                data: items.map(v => formatModel(v)),
             };
         } catch (err) {
             this.setStatus(500);
@@ -106,7 +113,7 @@ export class SelectorController extends Controller {
     @OperationId("GetOne")
     @Example<ISelectorResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE
+        data: RESPONSE_TEMPLATE,
     })
     public async getOne(id: string): Promise<ISelectorResponse> {
         try {
@@ -114,7 +121,7 @@ export class SelectorController extends Controller {
             const ref = await getRef(RefTypes.SELECTORS);
             return {
                 meta: { ref },
-                data: formatModel(item)
+                data: formatModel(item),
             };
         } catch (err) {
             this.setStatus(500);
@@ -134,7 +141,7 @@ export class SelectorController extends Controller {
     @OperationId("Create")
     @Example<ISelectorResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE
+        data: RESPONSE_TEMPLATE,
     })
     public async create(@Body() request: ISelectorCreateRequest): Promise<ISelectorResponse> {
         let params: ISelectorItem;
@@ -142,6 +149,7 @@ export class SelectorController extends Controller {
 
             // создается корневой нод
             const jointNode = new NodeModel({
+                active: true,
                 type: NodeTypes.SELECTOR_JOINT,
                 parentId: null,
                 contentId: null,
@@ -168,7 +176,7 @@ export class SelectorController extends Controller {
             const ref = await riseRefVersion(RefTypes.SELECTORS);
             return {
                 meta: { ref },
-                data: formatModel(savedItem)
+                data: formatModel(savedItem),
             };
         } catch (err) {
             this.setStatus(500);
@@ -188,12 +196,12 @@ export class SelectorController extends Controller {
     @OperationId("Update")
     @Example<ISelectorResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE
+        data: RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() request: ISelectorCreateRequest): Promise<ISelectorResponse> {
         try {
             const item = await SelectorModel.findById(id);
-            
+
             for (const key in request) {
                 item[key] = request[key];
             }
@@ -203,7 +211,7 @@ export class SelectorController extends Controller {
             const ref = await riseRefVersion(RefTypes.SELECTORS);
             return {
                 meta: { ref },
-                data: formatModel(item)
+                data: formatModel(item),
             };
         } catch (err) {
             this.setStatus(500);
@@ -222,7 +230,7 @@ export class SelectorController extends Controller {
     @Security("jwt")
     @OperationId("Delete")
     @Example<ISelectorResponse>({
-        meta: META_TEMPLATE
+        meta: META_TEMPLATE,
     })
     public async delete(id: string): Promise<ISelectorResponse> {
         let selector: ISelector;
@@ -257,7 +265,7 @@ export class SelectorController extends Controller {
         try {
             const ref = await riseRefVersion(RefTypes.SELECTORS);
             return {
-                meta: { ref }
+                meta: { ref },
             };
         } catch (err) {
             this.setStatus(500);

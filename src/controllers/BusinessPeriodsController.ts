@@ -6,9 +6,11 @@ import { formatModel } from "../utils/businessPeriod";
 
 interface IBusinessPeriodItem {
     id?: string;
+    active: boolean;
     name: string;
     description?: string;
     schedule: Array<ISchedule>;
+    extra?: { [key: string]: any } | null;
 }
 
 interface IBusinessPeriodMeta {
@@ -38,17 +40,21 @@ interface IBusinessPeriodResponse {
 }
 
 interface IBusinessPeriodCreateRequest {
+    active: boolean;
     name: string;
     description?: string;
     schedule: Array<ISchedule>;
+    extra?: { [key: string]: any } | null;
 }
 
 const RESPONSE_TEMPLATE: IBusinessPeriodItem = {
     id: "507c7f79bcf86cd7994f6c0e",
+    active: true,
     name: "Selectors on concert",
     description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
     schedule: [
         {
+            active: true,
             time: {
                 start: Date.now(),
                 end: Date.now(),
@@ -56,13 +62,18 @@ const RESPONSE_TEMPLATE: IBusinessPeriodItem = {
             weekDays: [0, 1, 2],
         }
     ],
+    extra: {
+        key: "value",
+    }
 };
 
 const validateBP = (node: IBusinessPeriodCreateRequest): joi.ValidationResult => {
     const schema = joi.object({
+        active: joi.boolean(),
         name: joi.string(),
         description: joi.optional(),
         schedule: joi.optional(),
+        extra: joi.optional(),
     });
 
     return schema.validate(node);
@@ -126,7 +137,7 @@ export class BusinessPeriodController extends Controller {
             const ref = await getRef(RefTypes.BUSINESS_PERIODS);
             return {
                 meta: { ref },
-                data: formatModel(item)
+                data: formatModel(item),
             };
         } catch (err) {
             this.setStatus(500);
@@ -146,7 +157,7 @@ export class BusinessPeriodController extends Controller {
     @OperationId("Create")
     @Example<IBusinessPeriodResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE
+        data: RESPONSE_TEMPLATE,
     })
     public async create(@Body() request: IBusinessPeriodCreateRequest): Promise<IBusinessPeriodResponse> {
         const validation = validateBP(request);
@@ -168,7 +179,7 @@ export class BusinessPeriodController extends Controller {
             const ref = await riseRefVersion(RefTypes.BUSINESS_PERIODS);
             return {
                 meta: { ref },
-                data: formatModel(savedItem)
+                data: formatModel(savedItem),
             };
         } catch (err) {
             this.setStatus(500);
@@ -188,7 +199,7 @@ export class BusinessPeriodController extends Controller {
     @OperationId("Update")
     @Example<IBusinessPeriodResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE
+        data: RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() request: IBusinessPeriodCreateRequest): Promise<IBusinessPeriodResponse> {
         const validation = validateBP(request);
@@ -216,7 +227,7 @@ export class BusinessPeriodController extends Controller {
             const ref = await riseRefVersion(RefTypes.BUSINESS_PERIODS);
             return {
                 meta: { ref },
-                data: formatModel(item)
+                data: formatModel(item),
             };
         } catch (err) {
             this.setStatus(500);
@@ -256,7 +267,7 @@ export class BusinessPeriodController extends Controller {
         try {
             const ref = await riseRefVersion(RefTypes.BUSINESS_PERIODS);
             return {
-                meta: { ref }
+                meta: { ref },
             };
         } catch (err) {
             this.setStatus(500);

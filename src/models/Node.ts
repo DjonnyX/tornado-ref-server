@@ -3,12 +3,14 @@ import { Schema, Document } from "mongoose";
 import { NodeTypes, ScenarioIntroActionTypes, ScenarioCommonActionTypes, ScenarioProductActionTypes, ScenarioSelectorActionTypes } from "./enums";
 
 interface IScenario {
+    active: boolean;
     action: ScenarioIntroActionTypes | ScenarioCommonActionTypes | ScenarioProductActionTypes | ScenarioSelectorActionTypes;
     value?: any;
     extra?: { [key: string]: any } | null;
 }
 
 interface INode extends Document {
+    active: boolean;
     /**
      * Тип нода
      */
@@ -29,9 +31,11 @@ interface INode extends Document {
      * Сценарии
      */
     scenarios: Array<IScenario>;
+    extra?: { [key: string]: any } | null;
 }
 
 const ScenarioSchema = new Schema({
+    active: { type: Schema.Types.Boolean, required: true },
     action: {
         type: Schema.Types.String, enum: [
             // common
@@ -53,6 +57,7 @@ const ScenarioSchema = new Schema({
 });
 
 const NodeSchema = new Schema({
+    active: { type: Schema.Types.Boolean, required: true },
     type: {
         type: String, enum: [
             NodeTypes.SELECTOR,
@@ -68,6 +73,7 @@ const NodeSchema = new Schema({
     contentId: { type: Schema.Types.ObjectId },
     children: [{ type: Schema.Types.ObjectId }],
     scenarios: [ScenarioSchema],
+    extra: { type: Schema.Types.Mixed, required: false },
 });
 
 const NodeModel = mongoose.model<INode>("Node", NodeSchema);

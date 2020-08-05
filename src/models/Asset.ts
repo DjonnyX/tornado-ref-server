@@ -3,6 +3,7 @@ import { Schema, Document } from "mongoose";
 import { AssetExtensions } from "./enums";
 
 interface IAsset extends Document {
+    active: boolean;
     name: string;
     lastupdate: number;
     ext: AssetExtensions;
@@ -14,17 +15,18 @@ interface IAsset extends Document {
 }
 
 const AssetSchema = new Schema({
-    name: { type: String, required: true },
-    lastupdate: { type: Number, required: true },
+    active: { type: Schema.Types.Boolean, required: true },
+    name: { type: Schema.Types.String, required: true },
+    lastupdate: { type: Schema.Types.Number, required: true },
     ext: {
-        type: String, enum: [
+        type: Schema.Types.String, enum: [
             AssetExtensions.JPG,
             AssetExtensions.PNG,
             AssetExtensions.OBJ,
             AssetExtensions.FBX,
-            AssetExtensions.COLLADA
+            AssetExtensions.COLLADA,
         ],
-        required: true
+        required: true,
     },
     mipmap: {
         x128: { type: Schema.Types.String, required: false, },
