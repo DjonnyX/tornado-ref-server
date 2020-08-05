@@ -12,8 +12,8 @@ export interface IProductItem {
     description?: string;
     receipt: Array<IReceiptItem>;
     tags: Array<string>;
-    assets?: Array<string>;
     joint?: string;
+    assets?: Array<string>;
     mainAsset?: string;
     extra?: { [key: string]: any } | null;
 }
@@ -50,9 +50,10 @@ interface IProductCreateRequest {
     description?: string;
     receipt: Array<IReceiptItem>;
     tags: Array<string>;
-    assets?: Array<string>;
     joint?: string;
+    assets?: Array<string>;
     mainAsset?: string;
+    extra?: { [key: string]: any } | null;
 }
 
 export const RESPONSE_TEMPLATE: IProductItem = {
@@ -75,7 +76,7 @@ export const RESPONSE_TEMPLATE: IProductItem = {
         }
     ],
     tags: ["123c7f79bcf86cd7994f6c0e"],
-    assets: [],
+    assets: ["g8h07f79bcf86cd7994f9d7k",],
     mainAsset: "g8h07f79bcf86cd7994f9d7k",
     joint: "df3c7f79bcf86cd7994f9d8f",
     extra: { key: "value" },
