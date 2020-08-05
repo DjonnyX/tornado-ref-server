@@ -1,18 +1,20 @@
 import { SelectorModel, ISelector, RefTypes, NodeModel } from "../models/index";
-import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Path, Query } from "tsoa";
+import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Query } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { NodeTypes } from "../models/enums";
 import { deleteNodesChain } from "../utils/node";
 import { SelectorTypes } from "../models/enums/SelectorTypes";
 import { formatSelectorModel } from "../utils/selector";
 
-interface ISelectorItem {
+export interface ISelectorItem {
     id?: string;
     type: SelectorTypes;
     active: boolean;
     name: string;
     description?: string;
     joint: string;
+    assets?: Array<string>;
+    mainAsset?: string;
     extra?: { [key: string]: any } | null;
 }
 
@@ -47,15 +49,20 @@ interface ISelectorCreateRequest {
     type: SelectorTypes;
     name: string;
     description?: string;
+    assets?: Array<string>;
+    mainAsset?: string;
+    extra?: { [key: string]: any } | null;
 }
 
-const RESPONSE_TEMPLATE: ISelectorItem = {
+export const SELECTOR_RESPONSE_TEMPLATE: ISelectorItem = {
     id: "507c7f79bcf86cd7994f6c0e",
     active: true,
     type: SelectorTypes.MENU_CATEGORY,
     name: "Selectors on concert",
     description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
     joint: "890c7f79bcf86cd7994f3t8y",
+    assets: ["g8h07f79bcf86cd7994f9d7k"],
+    mainAsset: "g8h07f79bcf86cd7994f9d7k",
     extra: { key: "value" }
 };
 
@@ -76,7 +83,7 @@ export class SelectorsController extends Controller {
     @OperationId("GetAll")
     @Example<ISelectorsResponse>({
         meta: META_TEMPLATE,
-        data: [RESPONSE_TEMPLATE],
+        data: [SELECTOR_RESPONSE_TEMPLATE],
     })
     public async getAll(@Query() type?: SelectorTypes): Promise<ISelectorsResponse> {
         try {
@@ -113,7 +120,7 @@ export class SelectorController extends Controller {
     @OperationId("GetOne")
     @Example<ISelectorResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE,
+        data: SELECTOR_RESPONSE_TEMPLATE,
     })
     public async getOne(id: string): Promise<ISelectorResponse> {
         try {
@@ -141,7 +148,7 @@ export class SelectorController extends Controller {
     @OperationId("Create")
     @Example<ISelectorResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE,
+        data: SELECTOR_RESPONSE_TEMPLATE,
     })
     public async create(@Body() request: ISelectorCreateRequest): Promise<ISelectorResponse> {
         let params: ISelectorItem;
@@ -196,7 +203,7 @@ export class SelectorController extends Controller {
     @OperationId("Update")
     @Example<ISelectorResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE,
+        data: SELECTOR_RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() request: ISelectorCreateRequest): Promise<ISelectorResponse> {
         try {
