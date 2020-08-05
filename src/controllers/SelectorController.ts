@@ -1,11 +1,14 @@
 import { SelectorModel, ISelector, RefTypes, NodeModel } from "../models/index";
-import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security } from "tsoa";
+import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Path, Query } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { NodeTypes } from "../models/enums";
 import { deleteNodesChain } from "../utils/node";
+import { SelectorTypes } from "../models/enums/SelectorTypes";
+import { formatSelectorModel } from "../utils/selector";
 
 interface ISelectorItem {
     id?: string;
+    type: SelectorTypes;
     active: boolean;
     name: string;
     description?: string;
@@ -41,6 +44,7 @@ interface ISelectorResponse {
 
 interface ISelectorCreateRequest {
     active: boolean;
+    type: SelectorTypes;
     name: string;
     description?: string;
 }
@@ -48,20 +52,12 @@ interface ISelectorCreateRequest {
 const RESPONSE_TEMPLATE: ISelectorItem = {
     id: "507c7f79bcf86cd7994f6c0e",
     active: true,
+    type: SelectorTypes.MENU_CATEGORY,
     name: "Selectors on concert",
     description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
     joint: "890c7f79bcf86cd7994f3t8y",
     extra: { key: "value" }
 };
-
-const formatModel = (model: ISelector) => ({
-    id: model._id,
-    active: model.active,
-    name: model.name,
-    description: model.description,
-    joint: model.joint,
-    extra: model.extra,
-});
 
 const META_TEMPLATE: ISelectorsMeta = {
     ref: {
@@ -82,13 +78,17 @@ export class SelectorsController extends Controller {
         meta: META_TEMPLATE,
         data: [RESPONSE_TEMPLATE],
     })
-    public async getAll(): Promise<ISelectorsResponse> {
+    public async getAll(@Query() type?: SelectorTypes): Promise<ISelectorsResponse> {
         try {
-            const items = await SelectorModel.find({});
+            const findParams: any = {};
+            if (!!type) {
+                findParams.type = type;
+            }
+            const items = await SelectorModel.find(findParams);
             const ref = await getRef(RefTypes.SELECTORS);
             return {
                 meta: { ref },
-                data: items.map(v => formatModel(v)),
+                data: items.map(v => formatSelectorModel(v)),
             };
         } catch (err) {
             this.setStatus(500);
@@ -121,7 +121,7 @@ export class SelectorController extends Controller {
             const ref = await getRef(RefTypes.SELECTORS);
             return {
                 meta: { ref },
-                data: formatModel(item),
+                data: formatSelectorModel(item),
             };
         } catch (err) {
             this.setStatus(500);
@@ -176,7 +176,7 @@ export class SelectorController extends Controller {
             const ref = await riseRefVersion(RefTypes.SELECTORS);
             return {
                 meta: { ref },
-                data: formatModel(savedItem),
+                data: formatSelectorModel(savedItem),
             };
         } catch (err) {
             this.setStatus(500);
@@ -211,7 +211,7 @@ export class SelectorController extends Controller {
             const ref = await riseRefVersion(RefTypes.SELECTORS);
             return {
                 meta: { ref },
-                data: formatModel(item),
+                data: formatSelectorModel(item),
             };
         } catch (err) {
             this.setStatus(500);

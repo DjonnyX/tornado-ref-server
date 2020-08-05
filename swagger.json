@@ -1685,10 +1685,20 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"SelectorTypes": {
+				"enum": [
+					"menu-category",
+					"schema-category"
+				],
+				"type": "string"
+			},
 			"ISelectorItem": {
 				"properties": {
 					"id": {
 						"type": "string"
+					},
+					"type": {
+						"$ref": "#/components/schemas/SelectorTypes"
 					},
 					"active": {
 						"type": "boolean"
@@ -1712,6 +1722,7 @@
 					}
 				},
 				"required": [
+					"type",
 					"active",
 					"name",
 					"joint"
@@ -1789,6 +1800,9 @@
 					"active": {
 						"type": "boolean"
 					},
+					"type": {
+						"$ref": "#/components/schemas/SelectorTypes"
+					},
 					"name": {
 						"type": "string"
 					},
@@ -1798,6 +1812,7 @@
 				},
 				"required": [
 					"active",
+					"type",
 					"name"
 				],
 				"type": "object",
@@ -3929,6 +3944,7 @@
 												{
 													"id": "507c7f79bcf86cd7994f6c0e",
 													"active": true,
+													"type": "menu-category",
 													"name": "Selectors on concert",
 													"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
 													"joint": "890c7f79bcf86cd7994f3t8y",
@@ -3956,7 +3972,16 @@
 						"apiKey": []
 					}
 				],
-				"parameters": []
+				"parameters": [
+					{
+						"in": "query",
+						"name": "type",
+						"required": false,
+						"schema": {
+							"$ref": "#/components/schemas/SelectorTypes"
+						}
+					}
+				]
 			}
 		},
 		"/selector/{id}": {
@@ -3982,6 +4007,7 @@
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"active": true,
+												"type": "menu-category",
 												"name": "Selectors on concert",
 												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
 												"joint": "890c7f79bcf86cd7994f3t8y",
@@ -4041,6 +4067,7 @@
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"active": true,
+												"type": "menu-category",
 												"name": "Selectors on concert",
 												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
 												"joint": "890c7f79bcf86cd7994f3t8y",
@@ -4155,6 +4182,7 @@
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"active": true,
+												"type": "menu-category",
 												"name": "Selectors on concert",
 												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
 												"joint": "890c7f79bcf86cd7994f3t8y",
