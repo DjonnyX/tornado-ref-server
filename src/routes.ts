@@ -575,10 +575,16 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "SelectorTypes": {
+        "dataType": "refEnum",
+        "enums": ["menu-category", "schema-category"],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ISelectorItem": {
         "dataType": "refObject",
         "properties": {
             "id": { "dataType": "string" },
+            "type": { "ref": "SelectorTypes", "required": true },
             "active": { "dataType": "boolean", "required": true },
             "name": { "dataType": "string", "required": true },
             "description": { "dataType": "string" },
@@ -612,6 +618,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "active": { "dataType": "boolean", "required": true },
+            "type": { "ref": "SelectorTypes", "required": true },
             "name": { "dataType": "string", "required": true },
             "description": { "dataType": "string" },
         },
@@ -1414,6 +1421,7 @@ export function RegisterRoutes(app: express.Express) {
         authenticateMiddleware([{ "jwt": [] }, { "apiKey": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
+                type: { "in": "query", "name": "type", "ref": "SelectorTypes" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
