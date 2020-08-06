@@ -1,7 +1,7 @@
 import * as express from "express";
 import { ProductModel, IProduct, RefTypes } from "../models/index";
-import { Controller, Route, Post, Tags, OperationId, Example, Request, Security, Get, Delete } from "tsoa";
-import { riseRefVersion } from "../db/refs";
+import { Controller, Route, Post, Tags, OperationId, Example, Request, Security, Get, Delete, Body, Put } from "tsoa";
+import { riseRefVersion, getRef } from "../db/refs";
 import { AssetExtensions } from "../models/enums";
 import { IProductItem, RESPONSE_TEMPLATE as PRODUCT_RESPONSE_TEMPLATE } from "./ProductsController";
 import { formatProductModel } from "../utils/product";
@@ -55,6 +55,11 @@ interface IProductDeleteAssetsResponse {
         code: number;
         message: string;
     }>;
+}
+
+interface IProductAssetUpdateRequest {
+    active: boolean;
+    name: string;
 }
 
 const META_TEMPLATE = {
@@ -193,6 +198,85 @@ export class ProductAssetsController extends Controller {
                 asset: assetsInfo.data,
             }
         };
+    }
+    
+    @Put("{productId}/asset/{assetId}")
+    @Security("jwt")
+    @OperationId("Update")
+    @Example<IProductCreateAssetsResponse>({
+        meta: META_TEMPLATE,
+        data: {
+            asset: RESPONSE_TEMPLATE,
+            product: PRODUCT_RESPONSE_TEMPLATE,
+        }
+    })
+    public async update(productId: string, assetId: string, @Body() request: IProductAssetUpdateRequest): Promise<IProductCreateAssetsResponse> {
+
+        let product: IProduct;
+        try {
+            product = await ProductModel.findById(productId);
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Caught error. ${err}`,
+                    }
+                ]
+            };
+        }
+        
+        let productRef: IRefItem;
+        try {
+            productRef = await getRef(RefTypes.PRODUCTS);
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Get product ref error. ${err}`,
+                    }
+                ]
+            };
+        }
+        
+        try {
+            const item = await AssetModel.findById(assetId);
+
+            for (const key in request) {
+                item[key] = request[key];
+            }
+
+            await item.save();
+
+            const ref = await riseRefVersion(RefTypes.ASSETS);
+            return {
+                meta: { 
+                    asset: {
+                        ref,
+                    },
+                    product: {
+                        ref: productRef,
+                    },
+                 },
+                data: {
+                    asset: formatAssetModel(item),
+                    product: formatProductModel(product),
+                },
+            };
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Caught error. ${err}`,
+                    }
+                ]
+            };
+        }
     }
 
     @Delete("{productId}/asset/{assetId}")
