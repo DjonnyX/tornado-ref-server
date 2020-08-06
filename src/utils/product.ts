@@ -5,6 +5,7 @@ export const formatProductModel = (model: IProduct) => ({
     active: model.active,
     name: model.name,
     description: model.description,
+    prices: model.prices,
     receipt: model.receipt,
     tags: model.tags,
     joint: model.joint,

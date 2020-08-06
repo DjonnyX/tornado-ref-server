@@ -1,4 +1,4 @@
-import { ProductModel, IProduct, IReceiptItem } from "./Product";
+import { ProductModel, IProduct, IPrice, IReceiptItem } from "./Product";
 import { UserModel, IUser, hashPassword, checkIfUnencryptedPasswordIsValid } from "./User";
 import { TagModel, ITag } from "./Tag";
 import { RefModel, IRef } from "./Ref";
@@ -14,7 +14,7 @@ export {
     IScenario,
     SelectorModel, ISelector,
     IReceiptItem,
-    ProductModel, IProduct,
+    ProductModel, IProduct, IPrice,
     CurrencyModel, ICurrency,
     TagModel, ITag,
     IBusinessPeriod, BusinessPeriodModel, ISchedule,

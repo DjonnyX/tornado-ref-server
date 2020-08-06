@@ -1398,6 +1398,23 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"IPrice": {
+				"properties": {
+					"value": {
+						"type": "number",
+						"format": "double"
+					},
+					"currency": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"value",
+					"currency"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"IReceiptItem": {
 				"properties": {
 					"name": {
@@ -1438,6 +1455,12 @@
 					"description": {
 						"type": "string"
 					},
+					"prices": {
+						"items": {
+							"$ref": "#/components/schemas/IPrice"
+						},
+						"type": "array"
+					},
 					"receipt": {
 						"items": {
 							"$ref": "#/components/schemas/IReceiptItem"
@@ -1474,6 +1497,7 @@
 				"required": [
 					"active",
 					"name",
+					"prices",
 					"receipt",
 					"tags"
 				],
@@ -1556,6 +1580,12 @@
 					"description": {
 						"type": "string"
 					},
+					"prices": {
+						"items": {
+							"$ref": "#/components/schemas/IPrice"
+						},
+						"type": "array"
+					},
 					"receipt": {
 						"items": {
 							"$ref": "#/components/schemas/IReceiptItem"
@@ -1592,6 +1622,7 @@
 				"required": [
 					"name",
 					"active",
+					"prices",
 					"receipt",
 					"tags"
 				],
@@ -4087,6 +4118,12 @@
 													"active": true,
 													"name": "Products on concert",
 													"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+													"prices": [
+														{
+															"currency": "657c7f79bcf86cd7994f6c5h",
+															"value": 12000
+														}
+													],
 													"receipt": [
 														{
 															"name": "Bun",
@@ -4161,6 +4198,12 @@
 												"active": true,
 												"name": "Products on concert",
 												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+												"prices": [
+													{
+														"currency": "657c7f79bcf86cd7994f6c5h",
+														"value": 12000
+													}
+												],
 												"receipt": [
 													{
 														"name": "Bun",
@@ -4241,6 +4284,12 @@
 												"active": true,
 												"name": "Products on concert",
 												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+												"prices": [
+													{
+														"currency": "657c7f79bcf86cd7994f6c5h",
+														"value": 12000
+													}
+												],
 												"receipt": [
 													{
 														"name": "Bun",
@@ -4376,6 +4425,12 @@
 												"active": true,
 												"name": "Products on concert",
 												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+												"prices": [
+													{
+														"currency": "657c7f79bcf86cd7994f6c5h",
+														"value": 12000
+													}
+												],
 												"receipt": [
 													{
 														"name": "Bun",

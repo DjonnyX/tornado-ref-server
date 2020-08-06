@@ -517,6 +517,15 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IPrice": {
+        "dataType": "refObject",
+        "properties": {
+            "value": { "dataType": "double", "required": true },
+            "currency": { "dataType": "string", "required": true },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "IReceiptItem": {
         "dataType": "refObject",
         "properties": {
@@ -535,6 +544,7 @@ const models: TsoaRoute.Models = {
             "active": { "dataType": "boolean", "required": true },
             "name": { "dataType": "string", "required": true },
             "description": { "dataType": "string" },
+            "prices": { "dataType": "array", "array": { "ref": "IPrice" }, "required": true },
             "receipt": { "dataType": "array", "array": { "ref": "IReceiptItem" }, "required": true },
             "tags": { "dataType": "array", "array": { "dataType": "string" }, "required": true },
             "joint": { "dataType": "string" },
@@ -571,6 +581,7 @@ const models: TsoaRoute.Models = {
             "name": { "dataType": "string", "required": true },
             "active": { "dataType": "boolean", "required": true },
             "description": { "dataType": "string" },
+            "prices": { "dataType": "array", "array": { "ref": "IPrice" }, "required": true },
             "receipt": { "dataType": "array", "array": { "ref": "IReceiptItem" }, "required": true },
             "tags": { "dataType": "array", "array": { "dataType": "string" }, "required": true },
             "joint": { "dataType": "string" },
