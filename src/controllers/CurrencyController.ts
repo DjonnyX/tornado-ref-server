@@ -37,10 +37,10 @@ interface CurrencyResponse {
 }
 
 interface CurrencyCreateRequest {
-    active: boolean;
+    code: string;
     name: string;
-    description?: string;
-    color: string;
+    symbol: string;
+    extra?: { [key: string]: any } | null;
 }
 
 const RESPONSE_TEMPLATE: ICurrencyItem = {

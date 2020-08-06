@@ -374,10 +374,10 @@ const models: TsoaRoute.Models = {
     "CurrencyCreateRequest": {
         "dataType": "refObject",
         "properties": {
-            "active": { "dataType": "boolean", "required": true },
+            "code": { "dataType": "string", "required": true },
             "name": { "dataType": "string", "required": true },
-            "description": { "dataType": "string" },
-            "color": { "dataType": "string", "required": true },
+            "symbol": { "dataType": "string", "required": true },
+            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
         "additionalProperties": false,
     },

@@ -937,23 +937,28 @@
 			},
 			"CurrencyCreateRequest": {
 				"properties": {
-					"active": {
-						"type": "boolean"
+					"code": {
+						"type": "string"
 					},
 					"name": {
 						"type": "string"
 					},
-					"description": {
+					"symbol": {
 						"type": "string"
 					},
-					"color": {
-						"type": "string"
+					"extra": {
+						"properties": {},
+						"additionalProperties": {
+							"additionalProperties": true
+						},
+						"type": "object",
+						"nullable": true
 					}
 				},
 				"required": [
-					"active",
+					"code",
 					"name",
-					"color"
+					"symbol"
 				],
 				"type": "object",
 				"additionalProperties": false

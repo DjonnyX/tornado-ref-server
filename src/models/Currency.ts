@@ -9,7 +9,7 @@ interface ICurrency extends Document {
 }
 
 const CurrencySchema = new Schema({
-    code: { type: Schema.Types.String, required: true },
+    code: { type: Schema.Types.String, unique: true, required: true },
     name: { type: Schema.Types.String, required: true },
     symbol: { type: Schema.Types.String, required: true },
     extra: { type: Schema.Types.Mixed, required: false },
