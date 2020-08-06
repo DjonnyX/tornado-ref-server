@@ -3,6 +3,7 @@ export enum RefTypes {
     ASSETS = "assets",
     SELECTORS = "selectors",
     PRODUCTS = "products",
+    CURRENCIES = "currencies",
     NODES = "nodes",
     USERS = "users",
     TAGS = "tags",

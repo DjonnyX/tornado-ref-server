@@ -1,5 +1,6 @@
 import * as mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
+import { IProductItem } from "src/controllers/ProductsController";
 
 interface IReceiptItem {
     name: string;
@@ -11,7 +12,7 @@ interface IReceiptItem {
 interface IProduct extends Document {
     active: boolean;
     name: string;
-    description: string;
+    description: string;x
     receipt: Array<IReceiptItem>;
     tags: Array<string>;
     joint: string;
