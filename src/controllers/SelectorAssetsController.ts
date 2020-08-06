@@ -1,7 +1,7 @@
 import * as express from "express";
 import { RefTypes, ISelector, SelectorModel } from "../models/index";
-import { Controller, Route, Post, Tags, OperationId, Example, Request, Security, Get, Delete } from "tsoa";
-import { riseRefVersion } from "../db/refs";
+import { Controller, Route, Post, Tags, OperationId, Example, Request, Security, Get, Delete, Body, Put } from "tsoa";
+import { riseRefVersion, getRef } from "../db/refs";
 import { AssetExtensions } from "../models/enums";
 import { IRefItem } from "./RefsController";
 import { uploadAsset, deleteAsset, IAssetItem } from "./AssetsController";
@@ -55,6 +55,11 @@ interface ISelectorDeleteAssetsResponse {
         code: number;
         message: string;
     }>;
+}
+
+interface ISelectorUpdateAssetsRequest {
+    name: string;
+    active: boolean;
 }
 
 const META_TEMPLATE = {
@@ -193,6 +198,86 @@ export class SelectorAssetsController extends Controller {
                 asset: assetsInfo.data,
             }
         };
+    }
+
+    
+    @Put("{selectorId}/asset/{assetId}")
+    @Security("jwt")
+    @OperationId("Update")
+    @Example<ISelectorCreateAssetsResponse>({
+        meta: META_TEMPLATE,
+        data: {
+            asset: RESPONSE_TEMPLATE,
+            selector: SELECTOR_RESPONSE_TEMPLATE,
+        }
+    })
+    public async update(selectorId: string, assetId: string, @Body() request: ISelectorUpdateAssetsRequest): Promise<ISelectorCreateAssetsResponse> {
+
+        let selector: ISelector;
+        try {
+            selector = await SelectorModel.findById(selectorId);
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Caught error. ${err}`,
+                    }
+                ]
+            };
+        }
+        
+        let selectorRef: IRefItem;
+        try {
+            selectorRef = await getRef(RefTypes.SELECTORS);
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Get product ref error. ${err}`,
+                    }
+                ]
+            };
+        }
+        
+        try {
+            const item = await AssetModel.findById(assetId);
+
+            for (const key in request) {
+                item[key] = request[key];
+            }
+
+            await item.save();
+
+            const ref = await riseRefVersion(RefTypes.ASSETS);
+            return {
+                meta: { 
+                    asset: {
+                        ref,
+                    },
+                    selector: {
+                        ref: selectorRef,
+                    },
+                 },
+                data: {
+                    asset: formatAssetModel(item),
+                    selector: formatSelectorModel(selector),
+                },
+            };
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Caught error. ${err}`,
+                    }
+                ]
+            };
+        }
     }
 
     @Delete("{selectorId}/asset/{assetId}")
