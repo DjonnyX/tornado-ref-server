@@ -46,6 +46,8 @@ const ScenarioSchema = new Schema({
             // product
             ScenarioProductActionTypes.UP_LIMIT,
             ScenarioProductActionTypes.DOWN_LIMIT,
+            ScenarioProductActionTypes.ADDITIONAL_PRICE,
+            ScenarioProductActionTypes.FIXED_PRICE,
             // selector
             ScenarioSelectorActionTypes.MAX_USAGE,
             ScenarioSelectorActionTypes.DEFAULT_PRODUCTS,
