@@ -8,10 +8,16 @@ interface IReceiptItem {
     quantity: number;
 }
 
+export interface IPrice {
+    value: number;
+    currency: string;
+}
+
 interface IProduct extends Document {
     active: boolean;
     name: string;
     description: string;
+    prices: Array<IPrice>;
     receipt: Array<IReceiptItem>;
     tags: Array<string>;
     joint: string;
@@ -27,9 +33,15 @@ const ReceiptSchema = new Schema({
     quantity: { type: Schema.Types.Number, required: false },
 });
 
+const PriceSchema = new Schema({
+    value: { type: Schema.Types.Number, required: true },
+    currency: { type: Schema.Types.String, required: false },
+});
+
 const ProductSchema = new Schema({
     active: { type: Schema.Types.Boolean, required: true },
     name: { type: Schema.Types.String, required: true },
+    prices: [PriceSchema],
     description: { type: Schema.Types.String, required: false },
     receipt: [ReceiptSchema],
     tags: [{ type: Schema.Types.ObjectId }],
