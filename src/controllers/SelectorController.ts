@@ -11,6 +11,7 @@ export interface ISelectorItem {
     type: SelectorTypes;
     active: boolean;
     name: string;
+    color?: string;
     description?: string;
     joint: string;
     assets?: Array<string>;
@@ -52,6 +53,7 @@ interface ISelectorCreateRequest {
     active: boolean;
     type: SelectorTypes;
     name: string;
+    color?: string;
     description?: string;
     assets?: Array<string>;
     images?: {
@@ -66,6 +68,7 @@ interface ISelectorUpdateRequest {
     active?: boolean;
     type?: SelectorTypes;
     name?: string;
+    color?: string;
     description?: string;
     assets?: Array<string>;
     images?: {

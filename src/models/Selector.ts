@@ -6,6 +6,7 @@ interface ISelector extends Document {
     active: boolean;
     type: SelectorTypes;
     name: string;
+    color: string;
     description?: string;
     joint: string;
     assets: Array<string>;
@@ -27,6 +28,7 @@ const SelectorSchema = new Schema({
     },
     name: { type: Schema.Types.String, required: true },
     description: { type: Schema.Types.String, required: false },
+    color: { type: Schema.Types.String, required: true, default: "0x000000" },
     joint: { type: Schema.Types.ObjectId, required: true },
     assets: [{ type: Schema.Types.ObjectId, required: true }],
     images: {
