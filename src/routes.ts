@@ -407,7 +407,7 @@ const models: TsoaRoute.Models = {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ScenarioProductActionTypes": {
         "dataType": "refEnum",
-        "enums": ["up-limit", "down-limit"],
+        "enums": ["up-limit", "down-limit", "additional-price", "fixed-price"],
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ScenarioSelectorActionTypes": {
