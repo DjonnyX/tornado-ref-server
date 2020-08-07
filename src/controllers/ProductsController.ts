@@ -15,7 +15,11 @@ export interface IProductItem {
     tags: Array<string>;
     joint?: string;
     assets?: Array<string>;
-    mainAsset?: string;
+    images?: {
+        main?: string | null;
+        thumbnail?: string | null;
+        icon?: string | null;
+    };
     extra?: { [key: string]: any } | null;
 }
 
@@ -54,7 +58,28 @@ interface IProductCreateRequest {
     tags: Array<string>;
     joint?: string;
     assets?: Array<string>;
-    mainAsset?: string;
+    images?: {
+        main: string;
+        thumbnail: string;
+        icon: string;
+    };
+    extra?: { [key: string]: any } | null;
+}
+
+interface IProductUpdateRequest {
+    name?: string;
+    active?: boolean;
+    description?: string;
+    prices?: Array<IPrice>;
+    receipt?: Array<IReceiptItem>;
+    tags?: Array<string>;
+    joint?: string;
+    assets?: Array<string>;
+    images?: {
+        main: string | null;
+        thumbnail: string | null;
+        icon: string | null;
+    };
     extra?: { [key: string]: any } | null;
 }
 
@@ -85,7 +110,11 @@ export const RESPONSE_TEMPLATE: IProductItem = {
     ],
     tags: ["123c7f79bcf86cd7994f6c0e"],
     assets: ["g8h07f79bcf86cd7994f9d7k",],
-    mainAsset: "g8h07f79bcf86cd7994f9d7k",
+    images: {
+        main: "g8h07f79bcf86cd7994f9d7k",
+        thumbnail: "gt7h7f79bcf86cd7994f9d6u",
+        icon: "gt7h7f79bcf86cd7994f9d6u",
+    },
     joint: "df3c7f79bcf86cd7994f9d8f",
     extra: { key: "value" },
 };
@@ -225,7 +254,7 @@ export class ProductController extends Controller {
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
-    public async update(id: string, @Body() request: IProductCreateRequest): Promise<IProductResponse> {
+    public async update(id: string, @Body() request: IProductUpdateRequest): Promise<IProductResponse> {
         try {
             const item = await ProductModel.findById(id);
 
