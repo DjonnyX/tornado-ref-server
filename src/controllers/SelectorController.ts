@@ -14,7 +14,11 @@ export interface ISelectorItem {
     description?: string;
     joint: string;
     assets?: Array<string>;
-    mainAsset?: string;
+    images?: {
+        main: string | null;
+        thumbnail: string | null;
+        icon: string | null;
+    };
     extra?: { [key: string]: any } | null;
 }
 
@@ -50,7 +54,25 @@ interface ISelectorCreateRequest {
     name: string;
     description?: string;
     assets?: Array<string>;
-    mainAsset?: string;
+    images?: {
+        main: string | null;
+        thumbnail: string | null;
+        icon: string | null;
+    };
+    extra?: { [key: string]: any } | null;
+}
+
+interface ISelectorUpdateRequest {
+    active?: boolean;
+    type?: SelectorTypes;
+    name?: string;
+    description?: string;
+    assets?: Array<string>;
+    images?: {
+        main: string | null;
+        thumbnail: string | null;
+        icon: string | null;
+    };
     extra?: { [key: string]: any } | null;
 }
 
@@ -62,7 +84,11 @@ export const SELECTOR_RESPONSE_TEMPLATE: ISelectorItem = {
     description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
     joint: "890c7f79bcf86cd7994f3t8y",
     assets: ["g8h07f79bcf86cd7994f9d7k"],
-    mainAsset: "g8h07f79bcf86cd7994f9d7k",
+    images: {
+        main: "g8h07f79bcf86cd7994f9d7k",
+        thumbnail: "g8h07f79bcf86cd7994f9d7k",
+        icon: "k7h97f79bcf86cd7994f0i9e",
+    },
     extra: { key: "value" }
 };
 
@@ -205,7 +231,7 @@ export class SelectorController extends Controller {
         meta: META_TEMPLATE,
         data: SELECTOR_RESPONSE_TEMPLATE,
     })
-    public async update(id: string, @Body() request: ISelectorCreateRequest): Promise<ISelectorResponse> {
+    public async update(id: string, @Body() request: ISelectorUpdateRequest): Promise<ISelectorResponse> {
         try {
             const item = await SelectorModel.findById(id);
 

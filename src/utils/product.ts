@@ -13,6 +13,10 @@ export const formatProductModel = (model: IProduct) => ({
     tags: model.tags,
     joint: model.joint,
     assets: model.assets,
-    mainAsset: model.mainAsset,
+    images: model.images || {
+        main: null,
+        thumbnail: null,
+        icon: null,
+    },
     extra: model.extra,
 });
