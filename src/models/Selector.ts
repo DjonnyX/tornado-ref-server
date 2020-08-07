@@ -6,10 +6,15 @@ interface ISelector extends Document {
     active: boolean;
     type: SelectorTypes;
     name: string;
+    color: string;
     description?: string;
     joint: string;
     assets: Array<string>;
-    mainAsset: string;
+    images: {
+        main: string;
+        thumbnail: string;
+        icon: string;
+    };
     extra?: { [key: string]: any } | null;
 }
 
@@ -23,9 +28,14 @@ const SelectorSchema = new Schema({
     },
     name: { type: Schema.Types.String, required: true },
     description: { type: Schema.Types.String, required: false },
+    color: { type: Schema.Types.String, required: true, default: "0x000000" },
     joint: { type: Schema.Types.ObjectId, required: true },
     assets: [{ type: Schema.Types.ObjectId, required: true }],
-    mainAsset: { type: Schema.Types.ObjectId },
+    images: {
+        main: { type: Schema.Types.ObjectId, required: false },
+        thumbnail: { type: Schema.Types.ObjectId, required: false },
+        icon: { type: Schema.Types.ObjectId, required: false }
+    },
     extra: { type: Schema.Types.Mixed, required: false },
 });
 

@@ -17,12 +17,17 @@ interface IProduct extends Document {
     active: boolean;
     name: string;
     description: string;
+    color: string;
     prices: Array<IPrice>;
     receipt: Array<IReceiptItem>;
     tags: Array<string>;
     joint: string;
     assets: Array<string>;
-    mainAsset: string;
+    images: {
+        main: string;
+        thumbnail: string;
+        icon: string;
+    };
     extra?: { [key: string]: any } | null;
 }
 
@@ -43,11 +48,16 @@ const ProductSchema = new Schema({
     name: { type: Schema.Types.String, required: true },
     prices: [PriceSchema],
     description: { type: Schema.Types.String, required: false },
+    color: { type: Schema.Types.String, required: true, default: "0x000000" },
     receipt: [ReceiptSchema],
     tags: [{ type: Schema.Types.ObjectId }],
     joint: { type: Schema.Types.ObjectId, required: true },
     assets: [{ type: Schema.Types.ObjectId, required: true }],
-    mainAsset: { type: Schema.Types.ObjectId },
+    images: {
+        main: { type: Schema.Types.ObjectId, required: false },
+        thumbnail: { type: Schema.Types.ObjectId, required: false },
+        icon: { type: Schema.Types.ObjectId, required: false },
+    },
     extra: { type: Schema.Types.Mixed, required: false },
 });
 

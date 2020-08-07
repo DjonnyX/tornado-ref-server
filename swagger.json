@@ -1459,6 +1459,9 @@
 					"name": {
 						"type": "string"
 					},
+					"color": {
+						"type": "string"
+					},
 					"description": {
 						"type": "string"
 					},
@@ -1489,8 +1492,22 @@
 						},
 						"type": "array"
 					},
-					"mainAsset": {
-						"type": "string"
+					"images": {
+						"properties": {
+							"icon": {
+								"type": "string",
+								"nullable": true
+							},
+							"thumbnail": {
+								"type": "string",
+								"nullable": true
+							},
+							"main": {
+								"type": "string",
+								"nullable": true
+							}
+						},
+						"type": "object"
 					},
 					"extra": {
 						"properties": {},
@@ -1578,11 +1595,14 @@
 			},
 			"IProductCreateRequest": {
 				"properties": {
+					"active": {
+						"type": "boolean"
+					},
 					"name": {
 						"type": "string"
 					},
-					"active": {
-						"type": "boolean"
+					"color": {
+						"type": "string"
 					},
 					"description": {
 						"type": "string"
@@ -1614,8 +1634,24 @@
 						},
 						"type": "array"
 					},
-					"mainAsset": {
-						"type": "string"
+					"images": {
+						"properties": {
+							"icon": {
+								"type": "string"
+							},
+							"thumbnail": {
+								"type": "string"
+							},
+							"main": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"icon",
+							"thumbnail",
+							"main"
+						],
+						"type": "object"
 					},
 					"extra": {
 						"properties": {},
@@ -1627,12 +1663,87 @@
 					}
 				},
 				"required": [
-					"name",
 					"active",
+					"name",
 					"prices",
 					"receipt",
 					"tags"
 				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IProductUpdateRequest": {
+				"properties": {
+					"active": {
+						"type": "boolean"
+					},
+					"name": {
+						"type": "string"
+					},
+					"color": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"prices": {
+						"items": {
+							"$ref": "#/components/schemas/IPrice"
+						},
+						"type": "array"
+					},
+					"receipt": {
+						"items": {
+							"$ref": "#/components/schemas/IReceiptItem"
+						},
+						"type": "array"
+					},
+					"tags": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"joint": {
+						"type": "string"
+					},
+					"assets": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"images": {
+						"properties": {
+							"icon": {
+								"type": "string",
+								"nullable": true
+							},
+							"thumbnail": {
+								"type": "string",
+								"nullable": true
+							},
+							"main": {
+								"type": "string",
+								"nullable": true
+							}
+						},
+						"required": [
+							"icon",
+							"thumbnail",
+							"main"
+						],
+						"type": "object"
+					},
+					"extra": {
+						"properties": {},
+						"additionalProperties": {
+							"additionalProperties": true
+						},
+						"type": "object",
+						"nullable": true
+					}
+				},
 				"type": "object",
 				"additionalProperties": false
 			},
@@ -1918,6 +2029,9 @@
 					"name": {
 						"type": "string"
 					},
+					"color": {
+						"type": "string"
+					},
 					"description": {
 						"type": "string"
 					},
@@ -1930,8 +2044,27 @@
 						},
 						"type": "array"
 					},
-					"mainAsset": {
-						"type": "string"
+					"images": {
+						"properties": {
+							"icon": {
+								"type": "string",
+								"nullable": true
+							},
+							"thumbnail": {
+								"type": "string",
+								"nullable": true
+							},
+							"main": {
+								"type": "string",
+								"nullable": true
+							}
+						},
+						"required": [
+							"icon",
+							"thumbnail",
+							"main"
+						],
+						"type": "object"
 					},
 					"extra": {
 						"properties": {},
@@ -2027,6 +2160,9 @@
 					"name": {
 						"type": "string"
 					},
+					"color": {
+						"type": "string"
+					},
 					"description": {
 						"type": "string"
 					},
@@ -2036,8 +2172,27 @@
 						},
 						"type": "array"
 					},
-					"mainAsset": {
-						"type": "string"
+					"images": {
+						"properties": {
+							"icon": {
+								"type": "string",
+								"nullable": true
+							},
+							"thumbnail": {
+								"type": "string",
+								"nullable": true
+							},
+							"main": {
+								"type": "string",
+								"nullable": true
+							}
+						},
+						"required": [
+							"icon",
+							"thumbnail",
+							"main"
+						],
+						"type": "object"
 					},
 					"extra": {
 						"properties": {},
@@ -2053,6 +2208,63 @@
 					"type",
 					"name"
 				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ISelectorUpdateRequest": {
+				"properties": {
+					"active": {
+						"type": "boolean"
+					},
+					"type": {
+						"$ref": "#/components/schemas/SelectorTypes"
+					},
+					"name": {
+						"type": "string"
+					},
+					"color": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"assets": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"images": {
+						"properties": {
+							"icon": {
+								"type": "string",
+								"nullable": true
+							},
+							"thumbnail": {
+								"type": "string",
+								"nullable": true
+							},
+							"main": {
+								"type": "string",
+								"nullable": true
+							}
+						},
+						"required": [
+							"icon",
+							"thumbnail",
+							"main"
+						],
+						"type": "object"
+					},
+					"extra": {
+						"properties": {},
+						"additionalProperties": {
+							"additionalProperties": true
+						},
+						"type": "object",
+						"nullable": true
+					}
+				},
 				"type": "object",
 				"additionalProperties": false
 			},
@@ -4151,7 +4363,11 @@
 													"assets": [
 														"g8h07f79bcf86cd7994f9d7k"
 													],
-													"mainAsset": "g8h07f79bcf86cd7994f9d7k",
+													"images": {
+														"main": "g8h07f79bcf86cd7994f9d7k",
+														"thumbnail": "gt7h7f79bcf86cd7994f9d6u",
+														"icon": "gt7h7f79bcf86cd7994f9d6u"
+													},
 													"joint": "df3c7f79bcf86cd7994f9d8f",
 													"extra": {
 														"key": "value"
@@ -4231,7 +4447,11 @@
 												"assets": [
 													"g8h07f79bcf86cd7994f9d7k"
 												],
-												"mainAsset": "g8h07f79bcf86cd7994f9d7k",
+												"images": {
+													"main": "g8h07f79bcf86cd7994f9d7k",
+													"thumbnail": "gt7h7f79bcf86cd7994f9d6u",
+													"icon": "gt7h7f79bcf86cd7994f9d6u"
+												},
 												"joint": "df3c7f79bcf86cd7994f9d8f",
 												"extra": {
 													"key": "value"
@@ -4317,7 +4537,11 @@
 												"assets": [
 													"g8h07f79bcf86cd7994f9d7k"
 												],
-												"mainAsset": "g8h07f79bcf86cd7994f9d7k",
+												"images": {
+													"main": "g8h07f79bcf86cd7994f9d7k",
+													"thumbnail": "gt7h7f79bcf86cd7994f9d6u",
+													"icon": "gt7h7f79bcf86cd7994f9d6u"
+												},
 												"joint": "df3c7f79bcf86cd7994f9d8f",
 												"extra": {
 													"key": "value"
@@ -4354,7 +4578,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/IProductCreateRequest"
+								"$ref": "#/components/schemas/IProductUpdateRequest"
 							}
 						}
 					}
@@ -4458,7 +4682,11 @@
 												"assets": [
 													"g8h07f79bcf86cd7994f9d7k"
 												],
-												"mainAsset": "g8h07f79bcf86cd7994f9d7k",
+												"images": {
+													"main": "g8h07f79bcf86cd7994f9d7k",
+													"thumbnail": "gt7h7f79bcf86cd7994f9d6u",
+													"icon": "gt7h7f79bcf86cd7994f9d6u"
+												},
 												"joint": "df3c7f79bcf86cd7994f9d8f",
 												"extra": {
 													"key": "value"
@@ -4821,7 +5049,11 @@
 													"assets": [
 														"g8h07f79bcf86cd7994f9d7k"
 													],
-													"mainAsset": "g8h07f79bcf86cd7994f9d7k",
+													"images": {
+														"main": "g8h07f79bcf86cd7994f9d7k",
+														"thumbnail": "g8h07f79bcf86cd7994f9d7k",
+														"icon": "k7h97f79bcf86cd7994f0i9e"
+													},
 													"extra": {
 														"key": "value"
 													}
@@ -4888,7 +5120,11 @@
 												"assets": [
 													"g8h07f79bcf86cd7994f9d7k"
 												],
-												"mainAsset": "g8h07f79bcf86cd7994f9d7k",
+												"images": {
+													"main": "g8h07f79bcf86cd7994f9d7k",
+													"thumbnail": "g8h07f79bcf86cd7994f9d7k",
+													"icon": "k7h97f79bcf86cd7994f0i9e"
+												},
 												"extra": {
 													"key": "value"
 												}
@@ -4952,7 +5188,11 @@
 												"assets": [
 													"g8h07f79bcf86cd7994f9d7k"
 												],
-												"mainAsset": "g8h07f79bcf86cd7994f9d7k",
+												"images": {
+													"main": "g8h07f79bcf86cd7994f9d7k",
+													"thumbnail": "g8h07f79bcf86cd7994f9d7k",
+													"icon": "k7h97f79bcf86cd7994f0i9e"
+												},
 												"extra": {
 													"key": "value"
 												}
@@ -4988,7 +5228,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/ISelectorCreateRequest"
+								"$ref": "#/components/schemas/ISelectorUpdateRequest"
 							}
 						}
 					}
@@ -5071,7 +5311,11 @@
 												"assets": [
 													"g8h07f79bcf86cd7994f9d7k"
 												],
-												"mainAsset": "g8h07f79bcf86cd7994f9d7k",
+												"images": {
+													"main": "g8h07f79bcf86cd7994f9d7k",
+													"thumbnail": "g8h07f79bcf86cd7994f9d7k",
+													"icon": "k7h97f79bcf86cd7994f0i9e"
+												},
 												"extra": {
 													"key": "value"
 												}
