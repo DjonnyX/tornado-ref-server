@@ -5,7 +5,10 @@ export const formatProductModel = (model: IProduct) => ({
     active: model.active,
     name: model.name,
     description: model.description,
-    prices: model.prices,
+    prices: model.prices.map(price => ({
+        currency: price.currency,
+        value: price.value,
+    })),
     receipt: model.receipt,
     tags: model.tags,
     joint: model.joint,
