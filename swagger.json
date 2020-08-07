@@ -1021,7 +1021,9 @@
 			"ScenarioProductActionTypes": {
 				"enum": [
 					"up-limit",
-					"down-limit"
+					"down-limit",
+					"additional-price",
+					"fixed-price"
 				],
 				"type": "string"
 			},
