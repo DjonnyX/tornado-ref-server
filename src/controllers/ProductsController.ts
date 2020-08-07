@@ -9,6 +9,7 @@ export interface IProductItem {
     id?: string;
     active: boolean;
     name: string;
+    color?: string;
     description?: string;
     prices: Array<IPrice>;
     receipt: Array<IReceiptItem>;
@@ -50,8 +51,9 @@ interface IProductResponse {
 }
 
 interface IProductCreateRequest {
-    name: string;
     active: boolean;
+    name: string;
+    color?: string;
     description?: string;
     prices: Array<IPrice>;
     receipt: Array<IReceiptItem>;
@@ -67,8 +69,9 @@ interface IProductCreateRequest {
 }
 
 interface IProductUpdateRequest {
-    name?: string;
     active?: boolean;
+    name?: string;
+    color?: string;
     description?: string;
     prices?: Array<IPrice>;
     receipt?: Array<IReceiptItem>;

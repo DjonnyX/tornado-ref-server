@@ -1459,6 +1459,9 @@
 					"name": {
 						"type": "string"
 					},
+					"color": {
+						"type": "string"
+					},
 					"description": {
 						"type": "string"
 					},
@@ -1592,11 +1595,14 @@
 			},
 			"IProductCreateRequest": {
 				"properties": {
+					"active": {
+						"type": "boolean"
+					},
 					"name": {
 						"type": "string"
 					},
-					"active": {
-						"type": "boolean"
+					"color": {
+						"type": "string"
 					},
 					"description": {
 						"type": "string"
@@ -1657,8 +1663,8 @@
 					}
 				},
 				"required": [
-					"name",
 					"active",
+					"name",
 					"prices",
 					"receipt",
 					"tags"
@@ -1668,11 +1674,14 @@
 			},
 			"IProductUpdateRequest": {
 				"properties": {
+					"active": {
+						"type": "boolean"
+					},
 					"name": {
 						"type": "string"
 					},
-					"active": {
-						"type": "boolean"
+					"color": {
+						"type": "string"
 					},
 					"description": {
 						"type": "string"
@@ -2020,6 +2029,9 @@
 					"name": {
 						"type": "string"
 					},
+					"color": {
+						"type": "string"
+					},
 					"description": {
 						"type": "string"
 					},
@@ -2148,6 +2160,9 @@
 					"name": {
 						"type": "string"
 					},
+					"color": {
+						"type": "string"
+					},
 					"description": {
 						"type": "string"
 					},
@@ -2205,6 +2220,9 @@
 						"$ref": "#/components/schemas/SelectorTypes"
 					},
 					"name": {
+						"type": "string"
+					},
+					"color": {
 						"type": "string"
 					},
 					"description": {
