@@ -1,4 +1,4 @@
-import { ProductModel, IProduct, IReceiptItem, RefTypes, NodeModel } from "../models/index";
+import { ProductModel, IProduct, IReceiptItem, RefTypes, NodeModel, IPrice } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { NodeTypes } from "../models/enums";
@@ -10,6 +10,7 @@ export interface IProductItem {
     active: boolean;
     name: string;
     description?: string;
+    prices: Array<IPrice>;
     receipt: Array<IReceiptItem>;
     tags: Array<string>;
     joint?: string;
@@ -48,6 +49,7 @@ interface IProductCreateRequest {
     name: string;
     active: boolean;
     description?: string;
+    prices: Array<IPrice>;
     receipt: Array<IReceiptItem>;
     tags: Array<string>;
     joint?: string;
@@ -61,6 +63,12 @@ export const RESPONSE_TEMPLATE: IProductItem = {
     active: true,
     name: "Products on concert",
     description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+    prices: [
+        {
+            currency: "657c7f79bcf86cd7994f6c5h",
+            value: 12000,
+        }
+    ],
     receipt: [
         {
             name: "Bun",
