@@ -48,7 +48,7 @@ const ProductSchema = new Schema({
     name: { type: Schema.Types.String, required: true },
     prices: [PriceSchema],
     description: { type: Schema.Types.String, required: false },
-    color: { type: Schema.Types.String, required: true, default: "#000000" },
+    color: { type: Schema.Types.String, required: true, default: "rgba(255, 255, 255, 0)" },
     receipt: [ReceiptSchema],
     tags: [{ type: Schema.Types.ObjectId }],
     joint: { type: Schema.Types.ObjectId, required: true },

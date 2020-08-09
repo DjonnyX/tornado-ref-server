@@ -28,7 +28,7 @@ const SelectorSchema = new Schema({
     },
     name: { type: Schema.Types.String, required: true },
     description: { type: Schema.Types.String, required: false },
-    color: { type: Schema.Types.String, required: true, default: "#000000" },
+    color: { type: Schema.Types.String, required: true, default: "rgba(255, 255, 255, 0)" },
     joint: { type: Schema.Types.ObjectId, required: true },
     assets: [{ type: Schema.Types.ObjectId, required: true }],
     images: {
