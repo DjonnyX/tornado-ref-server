@@ -1,11 +1,16 @@
 import * as mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
 
-interface ITag extends Document {
+interface IOrderType extends Document {
     active: boolean;
     name: string;
     description?: string;
     color: string;
+    assets: Array<string>;
+    images: {
+        main: string;
+        icon: string;
+    },
     extra?: { [key: string]: any } | null;
 }
 
@@ -14,9 +19,14 @@ const TagSchema = new Schema({
     name: { type: Schema.Types.String, required: true },
     description: { type: Schema.Types.String },
     color: { type: Schema.Types.String, required: true, default: "#000000" },
+    assets: [{ type: Schema.Types.ObjectId, required: true }],
+    images: {
+        main: { type: Schema.Types.ObjectId, required: false },
+        icon: { type: Schema.Types.ObjectId, required: false },
+    },
     extra: { type: Schema.Types.Mixed, required: false },
 });
 
-const TagModel = mongoose.model<ITag>("Tag", TagSchema);
+const OrderTypeModel = mongoose.model<IOrderType>("OrderType", TagSchema);
 
-export { TagModel, ITag };
+export { OrderTypeModel, IOrderType };

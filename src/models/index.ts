@@ -7,6 +7,7 @@ import { ISelector, SelectorModel } from "./Selector";
 import { IBusinessPeriod, BusinessPeriodModel, ISchedule } from "./BusinessPeriod";
 import { RefTypes } from "./enums";
 import { ICurrency, CurrencyModel } from "./Currency";
+import { IOrderType, OrderTypeModel } from "./OrderTypes";
 
 export {
     UserModel, IUser, hashPassword, checkIfUnencryptedPasswordIsValid,
@@ -19,4 +20,5 @@ export {
     TagModel, ITag,
     IBusinessPeriod, BusinessPeriodModel, ISchedule,
     RefModel, IRef, RefTypes,
+    OrderTypeModel, IOrderType,
 };
