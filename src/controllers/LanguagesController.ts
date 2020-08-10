@@ -1,17 +1,23 @@
-import { TagModel, ITag, RefTypes } from "../models/index";
+import { RefTypes, ILanguage, LanguageModel } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 
-interface ITagItem {
+interface ILanguageItem {
     id: string;
     active: boolean;
     name: string;
     description?: string;
-    color: string;
+    color?: string;
+    assets?: Array<string>;
+    images?: {
+        original?: string | null;
+        icon?: string | null;
+    };
+    translation: string | null;
     extra?: { [key: string]: any } | null;
 }
 
-interface ITagsMeta {
+interface LanguageMeta {
     ref: {
         name: string;
         version: number;
@@ -19,73 +25,92 @@ interface ITagsMeta {
     };
 }
 
-interface TagsResponse {
-    meta?: ITagsMeta;
-    data?: Array<ITagItem>;
+interface LanguagesResponse {
+    meta?: LanguageMeta;
+    data?: Array<ILanguageItem>;
     error?: Array<{
         code: number;
         message: string;
     }>;
 }
 
-interface TagResponse {
-    meta?: ITagsMeta;
-    data?: ITagItem;
+interface LanguageResponse {
+    meta?: LanguageMeta;
+    data?: ILanguageItem;
     error?: Array<{
         code: number;
         message: string;
     }>;
 }
 
-interface TagCreateRequest {
-    active: boolean;
+interface LanguageCreateRequest {
+    active?: boolean;
     name: string;
     description?: string;
-    color: string;
+    color?: string;
+    assets?: Array<string>;
+    images?: {
+        main?: string | null;
+        icon?: string | null;
+    };
+    translation?: string | null;
     extra?: { [key: string]: any } | null;
 }
 
-const RESPONSE_TEMPLATE: ITagItem = {
+const RESPONSE_TEMPLATE: ILanguageItem = {
     id: "507c7f79bcf86cd7994f6c0e",
     active: true,
-    name: "Morning Tag",
-    description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-    color: "0x000fff",
+    name: "Rus",
+    description: "Русский",
+    color: "#000000",
+    assets: [
+        "g8h07f79bcf86cd7994f9d7k",
+    ],
+    images: {
+        original: "g8h07f79bcf86cd7994f9d7k",
+        icon: "g8h07f79bcf86cd7994f9d7k",
+    },
+    translation: "409c7f79bcf86cd7994f6g1t",
     extra: { key: "value" },
 };
 
-const formatModel = (model: ITag) => ({
+const formatModel = (model: ILanguage) => ({
     id: model._id,
     active: model.active,
     name: model.name,
     description: model.description,
-    color: model.color,
+    assets: model.assets,
+    images: model.images || {
+        original: null,
+        icon: null,
+    },
+    translation: model.translation,
     extra: model.extra,
 });
 
-const META_TEMPLATE: ITagsMeta = {
+const META_TEMPLATE: LanguageMeta = {
     ref: {
-        name: RefTypes.TAGS,
+        name: RefTypes.LANGUAGES,
         version: 1,
         lastUpdate: 1589885721,
     }
 };
 
-@Route("/tags")
-@Tags("Tag")
-export class TagsController extends Controller {
+@Route("/languages")
+@Tags("Language")
+export class LanguagesController extends Controller {
     @Get()
     @Security("jwt")
     @Security("apiKey")
     @OperationId("GetAll")
-    @Example<TagsResponse>({
+    @Example<LanguagesResponse>({
         meta: META_TEMPLATE,
         data: [RESPONSE_TEMPLATE],
     })
-    public async getAll(): Promise<TagsResponse> {
+    public async getAll(): Promise<LanguagesResponse> {
         try {
-            const items = await TagModel.find({});
-            const ref = await getRef(RefTypes.TAGS);
+            const items = await LanguageModel.find({});
+            const ref = await getRef(RefTypes.LANGUAGES);
             return {
                 meta: { ref },
                 data: items.map(v => formatModel(v)),
@@ -104,21 +129,21 @@ export class TagsController extends Controller {
     }
 }
 
-@Route("/tag")
-@Tags("Tag")
-export class TagController extends Controller {
+@Route("/language")
+@Tags("Language")
+export class LanguageController extends Controller {
     @Get("{id}")
     @Security("jwt")
     @Security("apiKey")
     @OperationId("GetOne")
-    @Example<TagResponse>({
+    @Example<LanguageResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
-    public async getOne(id: string): Promise<TagResponse> {
+    public async getOne(id: string): Promise<LanguageResponse> {
         try {
-            const item = await TagModel.findById(id);
-            const ref = await getRef(RefTypes.TAGS);
+            const item = await LanguageModel.findById(id);
+            const ref = await getRef(RefTypes.LANGUAGES);
             return {
                 meta: { ref },
                 data: formatModel(item),
@@ -139,15 +164,15 @@ export class TagController extends Controller {
     @Post()
     @Security("jwt")
     @OperationId("Create")
-    @Example<TagResponse>({
+    @Example<LanguageResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
-    public async create(@Body() request: TagCreateRequest): Promise<TagResponse> {
+    public async create(@Body() request: LanguageCreateRequest): Promise<LanguageResponse> {
         try {
-            const item = new TagModel(request);
+            const item = new LanguageModel(request);
             const savedItem = await item.save();
-            const ref = await riseRefVersion(RefTypes.TAGS);
+            const ref = await riseRefVersion(RefTypes.LANGUAGES);
             return {
                 meta: { ref },
                 data: formatModel(savedItem),
@@ -168,13 +193,13 @@ export class TagController extends Controller {
     @Put("{id}")
     @Security("jwt")
     @OperationId("Update")
-    @Example<TagResponse>({
+    @Example<LanguageResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
-    public async update(id: string, @Body() request: TagCreateRequest): Promise<TagResponse> {
+    public async update(id: string, @Body() request: LanguageCreateRequest): Promise<LanguageResponse> {
         try {
-            const item = await TagModel.findById(id);
+            const item = await LanguageModel.findById(id);
 
             for (const key in request) {
                 item[key] = request[key];
@@ -182,7 +207,7 @@ export class TagController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(RefTypes.TAGS);
+            const ref = await riseRefVersion(RefTypes.LANGUAGES);
             return {
                 meta: { ref },
                 data: formatModel(item),
@@ -203,13 +228,13 @@ export class TagController extends Controller {
     @Delete("{id}")
     @Security("jwt")
     @OperationId("Delete")
-    @Example<TagResponse>({
+    @Example<LanguageResponse>({
         meta: META_TEMPLATE,
     })
-    public async delete(id: string): Promise<TagResponse> {
+    public async delete(id: string): Promise<LanguageResponse> {
         try {
-            await TagModel.findOneAndDelete({ _id: id });
-            const ref = await riseRefVersion(RefTypes.TAGS);
+            await LanguageModel.findOneAndDelete({ _id: id });
+            const ref = await riseRefVersion(RefTypes.LANGUAGES);
             return {
                 meta: { ref },
             };

@@ -19,7 +19,7 @@ interface ISelector extends Document {
 }
 
 const SelectorSchema = new Schema({
-    active: { type: Schema.Types.Boolean, required: true },
+    active: { type: Schema.Types.Boolean, required: true, default: true },
     type: {
         type: Schema.Types.String, enum: [
             SelectorTypes.MENU_CATEGORY,
@@ -28,7 +28,7 @@ const SelectorSchema = new Schema({
     },
     name: { type: Schema.Types.String, required: true },
     description: { type: Schema.Types.String, required: false },
-    color: { type: Schema.Types.String, required: true, default: "0x000000" },
+    color: { type: Schema.Types.String, required: true, default: "rgba(255, 255, 255, 0)" },
     joint: { type: Schema.Types.ObjectId, required: true },
     assets: [{ type: Schema.Types.ObjectId, required: true }],
     images: {

@@ -1,17 +1,21 @@
-import { TagModel, ITag, RefTypes } from "../models/index";
+import { RefTypes, IOrderType, OrderTypeModel } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 
-interface ITagItem {
+interface IOrderTypeItem {
     id: string;
-    active: boolean;
     name: string;
     description?: string;
-    color: string;
+    color?: string;
+    assets?: Array<string>;
+    images?: {
+        original?: string | null;
+        icon?: string | null;
+    };
     extra?: { [key: string]: any } | null;
 }
 
-interface ITagsMeta {
+interface IOrderTypeMeta {
     ref: {
         name: string;
         version: number;
@@ -19,73 +23,88 @@ interface ITagsMeta {
     };
 }
 
-interface TagsResponse {
-    meta?: ITagsMeta;
-    data?: Array<ITagItem>;
+interface OrderTypesResponse {
+    meta?: IOrderTypeMeta;
+    data?: Array<IOrderTypeItem>;
     error?: Array<{
         code: number;
         message: string;
     }>;
 }
 
-interface TagResponse {
-    meta?: ITagsMeta;
-    data?: ITagItem;
+interface OrderTypeResponse {
+    meta?: IOrderTypeMeta;
+    data?: IOrderTypeItem;
     error?: Array<{
         code: number;
         message: string;
     }>;
 }
 
-interface TagCreateRequest {
-    active: boolean;
+interface OrderTypeCreateRequest {
     name: string;
-    description?: string;
-    color: string;
+    description: string;
+    color?: string;
+    assets?: string;
+    images?: {
+        original?: string | null;
+        icon?: string | null;
+    };
     extra?: { [key: string]: any } | null;
 }
 
-const RESPONSE_TEMPLATE: ITagItem = {
+const RESPONSE_TEMPLATE: IOrderTypeItem = {
     id: "507c7f79bcf86cd7994f6c0e",
-    active: true,
-    name: "Morning Tag",
-    description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-    color: "0x000fff",
+    name: "Take away",
+    description: "description",
+    color: "#000000",
+    assets: [
+        "gt7h7f79bcf86cd7994f9d6u",
+        "gt7h7f79bcf86cd7994f9d6u",
+    ],
+    images: {
+        original: "gt7h7f79bcf86cd7994f9d6u",
+        icon: "gt7h7f79bcf86cd7994f9d6u",
+    },
     extra: { key: "value" },
 };
 
-const formatModel = (model: ITag) => ({
+const formatModel = (model: IOrderType) => ({
     id: model._id,
-    active: model.active,
     name: model.name,
     description: model.description,
     color: model.color,
+    assets: model.assets,
+    images: model.images || {
+        original: null,
+        icon: null,
+    },
     extra: model.extra,
 });
 
-const META_TEMPLATE: ITagsMeta = {
+const META_TEMPLATE: IOrderTypeMeta = {
     ref: {
-        name: RefTypes.TAGS,
+        name: RefTypes.ORDER_TYPES,
         version: 1,
         lastUpdate: 1589885721,
     }
 };
 
-@Route("/tags")
-@Tags("Tag")
-export class TagsController extends Controller {
+@Route("/order-types")
+@Tags("OrderType")
+export class OrderTypesController extends Controller {
     @Get()
     @Security("jwt")
     @Security("apiKey")
     @OperationId("GetAll")
-    @Example<TagsResponse>({
+    @Example<OrderTypesResponse>({
         meta: META_TEMPLATE,
         data: [RESPONSE_TEMPLATE],
     })
-    public async getAll(): Promise<TagsResponse> {
+    public async getAll(): Promise<OrderTypesResponse> {
         try {
-            const items = await TagModel.find({});
-            const ref = await getRef(RefTypes.TAGS);
+            const items = await OrderTypeModel.find({});
+            const ref = await getRef(RefTypes.ORDER_TYPES);
             return {
                 meta: { ref },
                 data: items.map(v => formatModel(v)),
@@ -104,21 +123,21 @@ export class TagsController extends Controller {
     }
 }
 
-@Route("/tag")
-@Tags("Tag")
-export class TagController extends Controller {
+@Route("/order-type")
+@Tags("OrderType")
+export class OrderTypeController extends Controller {
     @Get("{id}")
     @Security("jwt")
     @Security("apiKey")
     @OperationId("GetOne")
-    @Example<TagResponse>({
+    @Example<OrderTypeResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
-    public async getOne(id: string): Promise<TagResponse> {
+    public async getOne(id: string): Promise<OrderTypeResponse> {
         try {
-            const item = await TagModel.findById(id);
-            const ref = await getRef(RefTypes.TAGS);
+            const item = await OrderTypeModel.findById(id);
+            const ref = await getRef(RefTypes.ORDER_TYPES);
             return {
                 meta: { ref },
                 data: formatModel(item),
@@ -139,15 +158,15 @@ export class TagController extends Controller {
     @Post()
     @Security("jwt")
     @OperationId("Create")
-    @Example<TagResponse>({
+    @Example<OrderTypeResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
-    public async create(@Body() request: TagCreateRequest): Promise<TagResponse> {
+    public async create(@Body() request: OrderTypeCreateRequest): Promise<OrderTypeResponse> {
         try {
-            const item = new TagModel(request);
+            const item = new OrderTypeModel(request);
             const savedItem = await item.save();
-            const ref = await riseRefVersion(RefTypes.TAGS);
+            const ref = await riseRefVersion(RefTypes.ORDER_TYPES);
             return {
                 meta: { ref },
                 data: formatModel(savedItem),
@@ -168,13 +187,13 @@ export class TagController extends Controller {
     @Put("{id}")
     @Security("jwt")
     @OperationId("Update")
-    @Example<TagResponse>({
+    @Example<OrderTypeResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
-    public async update(id: string, @Body() request: TagCreateRequest): Promise<TagResponse> {
+    public async update(id: string, @Body() request: OrderTypeCreateRequest): Promise<OrderTypeResponse> {
         try {
-            const item = await TagModel.findById(id);
+            const item = await OrderTypeModel.findById(id);
 
             for (const key in request) {
                 item[key] = request[key];
@@ -182,7 +201,7 @@ export class TagController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(RefTypes.TAGS);
+            const ref = await riseRefVersion(RefTypes.ORDER_TYPES);
             return {
                 meta: { ref },
                 data: formatModel(item),
@@ -203,13 +222,13 @@ export class TagController extends Controller {
     @Delete("{id}")
     @Security("jwt")
     @OperationId("Delete")
-    @Example<TagResponse>({
+    @Example<OrderTypeResponse>({
         meta: META_TEMPLATE,
     })
-    public async delete(id: string): Promise<TagResponse> {
+    public async delete(id: string): Promise<OrderTypeResponse> {
         try {
-            await TagModel.findOneAndDelete({ _id: id });
-            const ref = await riseRefVersion(RefTypes.TAGS);
+            await OrderTypeModel.findOneAndDelete({ _id: id });
+            const ref = await riseRefVersion(RefTypes.ORDER_TYPES);
             return {
                 meta: { ref },
             };
