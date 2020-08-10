@@ -4,6 +4,7 @@ import { getRef, riseRefVersion } from "../db/refs";
 
 interface IOrderTypeItem {
     id: string;
+    active: boolean;
     name: string;
     description?: string;
     color?: string;
@@ -43,9 +44,10 @@ interface OrderTypeResponse {
 
 interface OrderTypeCreateRequest {
     name: string;
+    active: boolean;
     description: string;
     color?: string;
-    assets?: string;
+    assets?: Array<string>;
     images?: {
         main?: string | null;
         icon?: string | null;
@@ -55,6 +57,7 @@ interface OrderTypeCreateRequest {
 
 const RESPONSE_TEMPLATE: IOrderTypeItem = {
     id: "507c7f79bcf86cd7994f6c0e",
+    active: true,
     name: "Take away",
     description: "description",
     color: "#000000",
@@ -71,6 +74,7 @@ const RESPONSE_TEMPLATE: IOrderTypeItem = {
 
 const formatModel = (model: IOrderType) => ({
     id: model._id,
+    active: model.active,
     name: model.name,
     description: model.description,
     color: model.color,

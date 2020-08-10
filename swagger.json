@@ -1802,6 +1802,9 @@
 					"id": {
 						"type": "string"
 					},
+					"active": {
+						"type": "boolean"
+					},
 					"name": {
 						"type": "string"
 					},
@@ -1841,6 +1844,7 @@
 				},
 				"required": [
 					"id",
+					"active",
 					"name"
 				],
 				"type": "object",
@@ -1916,6 +1920,9 @@
 					"name": {
 						"type": "string"
 					},
+					"active": {
+						"type": "boolean"
+					},
 					"description": {
 						"type": "string"
 					},
@@ -1923,7 +1930,10 @@
 						"type": "string"
 					},
 					"assets": {
-						"type": "string"
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
 					},
 					"images": {
 						"properties": {
@@ -1949,6 +1959,7 @@
 				},
 				"required": [
 					"name",
+					"active",
 					"description"
 				],
 				"type": "object",
@@ -5704,6 +5715,7 @@
 											"data": [
 												{
 													"id": "507c7f79bcf86cd7994f6c0e",
+													"active": true,
 													"name": "Take away",
 													"description": "description",
 													"color": "#000000",
@@ -5764,6 +5776,7 @@
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
+												"active": true,
 												"name": "Take away",
 												"description": "description",
 												"color": "#000000",
@@ -5830,6 +5843,7 @@
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
+												"active": true,
 												"name": "Take away",
 												"description": "description",
 												"color": "#000000",
@@ -5951,6 +5965,7 @@
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
+												"active": true,
 												"name": "Take away",
 												"description": "description",
 												"color": "#000000",
