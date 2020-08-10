@@ -37,14 +37,8 @@ interface TranslationResponse {
 
 interface TranslationCreateRequest {
     active?: boolean;
-    name: string;
-    description?: string;
-    color?: string;
-    assets?: Array<string>;
-    images?: {
-        original?: string | null;
-        icon?: string | null;
-    };
+    key: string;
+    value: string;
     extra?: { [key: string]: any } | null;
 }
 

@@ -10,7 +10,7 @@ interface IAdItem {
     color: string;
     assets?: Array<string>;
     images?: {
-        original?: string | null;
+        main?: string | null;
     };
     extra?: { [key: string]: any } | null;
 }
@@ -47,7 +47,7 @@ interface AdCreateRequest {
     description?: string;
     color: string;
     images?: {
-        original: string;
+        main: string;
     };
     extra?: { [key: string]: any } | null;
 }
@@ -60,7 +60,7 @@ const RESPONSE_TEMPLATE: IAdItem = {
     color: "0x000fff",
     assets: ["g8h07f79bcf86cd7994f9d7k"],
     images: {
-        original: "gt7h7f79bcf86cd7994f9d6u",
+        main: "gt7h7f79bcf86cd7994f9d6u",
     },
     extra: { key: "value" },
 };
@@ -73,7 +73,7 @@ const formatModel = (model: IAd) => ({
     color: model.color,
     assets: model.assets,
     images: model.images || {
-        original: null,
+        main: null,
     },
     extra: model.extra,
 });

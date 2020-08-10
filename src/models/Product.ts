@@ -24,7 +24,7 @@ interface IProduct extends Document {
     joint: string;
     assets: Array<string>;
     images: {
-        original: string;
+        main: string;
         thumbnail: string;
         icon: string;
     };
@@ -54,7 +54,7 @@ const ProductSchema = new Schema({
     joint: { type: Schema.Types.ObjectId, required: true },
     assets: [{ type: Schema.Types.ObjectId, required: true }],
     images: {
-        original: { type: Schema.Types.ObjectId, required: false },
+        main: { type: Schema.Types.ObjectId, required: false },
         thumbnail: { type: Schema.Types.ObjectId, required: false },
         icon: { type: Schema.Types.ObjectId, required: false },
     },

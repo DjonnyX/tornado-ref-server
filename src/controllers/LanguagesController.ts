@@ -10,7 +10,7 @@ interface ILanguageItem {
     color?: string;
     assets?: Array<string>;
     images?: {
-        original?: string | null;
+        main?: string | null;
         icon?: string | null;
     };
     translation: string | null;
@@ -50,7 +50,7 @@ interface LanguageCreateRequest {
     color?: string;
     assets?: Array<string>;
     images?: {
-        original?: string | null;
+        main?: string | null;
         icon?: string | null;
     };
     translation?: string | null;
@@ -67,7 +67,7 @@ const RESPONSE_TEMPLATE: ILanguageItem = {
         "g8h07f79bcf86cd7994f9d7k",
     ],
     images: {
-        original: "g8h07f79bcf86cd7994f9d7k",
+        main: "g8h07f79bcf86cd7994f9d7k",
         icon: "g8h07f79bcf86cd7994f9d7k",
     },
     translation: "409c7f79bcf86cd7994f6g1t",
@@ -81,7 +81,7 @@ const formatModel = (model: ILanguage) => ({
     description: model.description,
     assets: model.assets,
     images: model.images || {
-        original: null,
+        main: null,
         icon: null,
     },
     translation: model.translation,

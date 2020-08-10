@@ -142,7 +142,7 @@
 					},
 					"images": {
 						"properties": {
-							"original": {
+							"main": {
 								"type": "string",
 								"nullable": true
 							}
@@ -248,12 +248,12 @@
 					},
 					"images": {
 						"properties": {
-							"original": {
+							"main": {
 								"type": "string"
 							}
 						},
 						"required": [
-							"original"
+							"main"
 						],
 						"type": "object"
 					},
@@ -1209,7 +1209,7 @@
 								"type": "string",
 								"nullable": true
 							},
-							"original": {
+							"main": {
 								"type": "string",
 								"nullable": true
 							}
@@ -1823,7 +1823,7 @@
 								"type": "string",
 								"nullable": true
 							},
-							"original": {
+							"main": {
 								"type": "string",
 								"nullable": true
 							}
@@ -1931,7 +1931,7 @@
 								"type": "string",
 								"nullable": true
 							},
-							"original": {
+							"main": {
 								"type": "string",
 								"nullable": true
 							}
@@ -3367,33 +3367,11 @@
 					"active": {
 						"type": "boolean"
 					},
-					"name": {
+					"key": {
 						"type": "string"
 					},
-					"description": {
+					"value": {
 						"type": "string"
-					},
-					"color": {
-						"type": "string"
-					},
-					"assets": {
-						"items": {
-							"type": "string"
-						},
-						"type": "array"
-					},
-					"images": {
-						"properties": {
-							"icon": {
-								"type": "string",
-								"nullable": true
-							},
-							"main": {
-								"type": "string",
-								"nullable": true
-							}
-						},
-						"type": "object"
 					},
 					"extra": {
 						"properties": {},
@@ -3405,7 +3383,8 @@
 					}
 				},
 				"required": [
-					"name"
+					"key",
+					"value"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -3590,7 +3569,7 @@
 														"g8h07f79bcf86cd7994f9d7k"
 													],
 													"images": {
-														"original": "gt7h7f79bcf86cd7994f9d6u"
+														"main": "gt7h7f79bcf86cd7994f9d6u"
 													},
 													"extra": {
 														"key": "value"
@@ -3649,7 +3628,7 @@
 													"g8h07f79bcf86cd7994f9d7k"
 												],
 												"images": {
-													"original": "gt7h7f79bcf86cd7994f9d6u"
+													"main": "gt7h7f79bcf86cd7994f9d6u"
 												},
 												"extra": {
 													"key": "value"
@@ -3714,7 +3693,7 @@
 													"g8h07f79bcf86cd7994f9d7k"
 												],
 												"images": {
-													"original": "gt7h7f79bcf86cd7994f9d6u"
+													"main": "gt7h7f79bcf86cd7994f9d6u"
 												},
 												"extra": {
 													"key": "value"
@@ -3834,7 +3813,7 @@
 													"g8h07f79bcf86cd7994f9d7k"
 												],
 												"images": {
-													"original": "gt7h7f79bcf86cd7994f9d6u"
+													"main": "gt7h7f79bcf86cd7994f9d6u"
 												},
 												"extra": {
 													"key": "value"
@@ -4976,7 +4955,7 @@
 														"g8h07f79bcf86cd7994f9d7k"
 													],
 													"images": {
-														"original": "g8h07f79bcf86cd7994f9d7k",
+														"main": "g8h07f79bcf86cd7994f9d7k",
 														"icon": "g8h07f79bcf86cd7994f9d7k"
 													},
 													"translation": "409c7f79bcf86cd7994f6g1t",
@@ -5037,7 +5016,7 @@
 													"g8h07f79bcf86cd7994f9d7k"
 												],
 												"images": {
-													"original": "g8h07f79bcf86cd7994f9d7k",
+													"main": "g8h07f79bcf86cd7994f9d7k",
 													"icon": "g8h07f79bcf86cd7994f9d7k"
 												},
 												"translation": "409c7f79bcf86cd7994f6g1t",
@@ -5104,7 +5083,7 @@
 													"g8h07f79bcf86cd7994f9d7k"
 												],
 												"images": {
-													"original": "g8h07f79bcf86cd7994f9d7k",
+													"main": "g8h07f79bcf86cd7994f9d7k",
 													"icon": "g8h07f79bcf86cd7994f9d7k"
 												},
 												"translation": "409c7f79bcf86cd7994f6g1t",
@@ -5226,7 +5205,7 @@
 													"g8h07f79bcf86cd7994f9d7k"
 												],
 												"images": {
-													"original": "g8h07f79bcf86cd7994f9d7k",
+													"main": "g8h07f79bcf86cd7994f9d7k",
 													"icon": "g8h07f79bcf86cd7994f9d7k"
 												},
 												"translation": "409c7f79bcf86cd7994f6g1t",
@@ -5733,7 +5712,7 @@
 														"gt7h7f79bcf86cd7994f9d6u"
 													],
 													"images": {
-														"original": "gt7h7f79bcf86cd7994f9d6u",
+														"main": "gt7h7f79bcf86cd7994f9d6u",
 														"icon": "gt7h7f79bcf86cd7994f9d6u"
 													},
 													"extra": {
@@ -5793,7 +5772,7 @@
 													"gt7h7f79bcf86cd7994f9d6u"
 												],
 												"images": {
-													"original": "gt7h7f79bcf86cd7994f9d6u",
+													"main": "gt7h7f79bcf86cd7994f9d6u",
 													"icon": "gt7h7f79bcf86cd7994f9d6u"
 												},
 												"extra": {
@@ -5859,7 +5838,7 @@
 													"gt7h7f79bcf86cd7994f9d6u"
 												],
 												"images": {
-													"original": "gt7h7f79bcf86cd7994f9d6u",
+													"main": "gt7h7f79bcf86cd7994f9d6u",
 													"icon": "gt7h7f79bcf86cd7994f9d6u"
 												},
 												"extra": {
@@ -5980,7 +5959,7 @@
 													"gt7h7f79bcf86cd7994f9d6u"
 												],
 												"images": {
-													"original": "gt7h7f79bcf86cd7994f9d6u",
+													"main": "gt7h7f79bcf86cd7994f9d6u",
 													"icon": "gt7h7f79bcf86cd7994f9d6u"
 												},
 												"extra": {

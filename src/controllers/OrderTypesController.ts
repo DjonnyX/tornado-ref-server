@@ -9,7 +9,7 @@ interface IOrderTypeItem {
     color?: string;
     assets?: Array<string>;
     images?: {
-        original?: string | null;
+        main?: string | null;
         icon?: string | null;
     };
     extra?: { [key: string]: any } | null;
@@ -47,7 +47,7 @@ interface OrderTypeCreateRequest {
     color?: string;
     assets?: string;
     images?: {
-        original?: string | null;
+        main?: string | null;
         icon?: string | null;
     };
     extra?: { [key: string]: any } | null;
@@ -63,7 +63,7 @@ const RESPONSE_TEMPLATE: IOrderTypeItem = {
         "gt7h7f79bcf86cd7994f9d6u",
     ],
     images: {
-        original: "gt7h7f79bcf86cd7994f9d6u",
+        main: "gt7h7f79bcf86cd7994f9d6u",
         icon: "gt7h7f79bcf86cd7994f9d6u",
     },
     extra: { key: "value" },
@@ -76,7 +76,7 @@ const formatModel = (model: IOrderType) => ({
     color: model.color,
     assets: model.assets,
     images: model.images || {
-        original: null,
+        main: null,
         icon: null,
     },
     extra: model.extra,

@@ -10,7 +10,7 @@ export const formatSelectorModel = (model: ISelector) => ({
     joint: model.joint,
     assets: model.assets,
     images: model.images || {
-        original: null,
+        main: null,
         thumbnail: null,
         icon: null,
     },
