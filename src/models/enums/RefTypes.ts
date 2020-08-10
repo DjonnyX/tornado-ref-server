@@ -9,4 +9,5 @@ export enum RefTypes {
     TAGS = "tags",
     BUSINESS_PERIODS = "business-periods",
     LANGUAGES = "languages",
+    TRANSLATION = "translation",
 }

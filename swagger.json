@@ -2847,6 +2847,177 @@
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"TranslationMeta": {
+				"properties": {
+					"ref": {
+						"properties": {
+							"lastUpdate": {
+								"type": "number",
+								"format": "double"
+							},
+							"version": {
+								"type": "number",
+								"format": "double"
+							},
+							"name": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"lastUpdate",
+							"version",
+							"name"
+						],
+						"type": "object"
+					}
+				},
+				"required": [
+					"ref"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ITranslationItem": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"key": {
+						"type": "string"
+					},
+					"value": {
+						"type": "string"
+					},
+					"extra": {
+						"properties": {},
+						"additionalProperties": {
+							"additionalProperties": true
+						},
+						"type": "object",
+						"nullable": true
+					}
+				},
+				"required": [
+					"id",
+					"key",
+					"value"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"TranslationsResponse": {
+				"properties": {
+					"meta": {
+						"$ref": "#/components/schemas/TranslationMeta"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/ITranslationItem"
+						},
+						"type": "array"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"TranslationResponse": {
+				"properties": {
+					"meta": {
+						"$ref": "#/components/schemas/TranslationMeta"
+					},
+					"data": {
+						"$ref": "#/components/schemas/ITranslationItem"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"TranslationCreateRequest": {
+				"properties": {
+					"active": {
+						"type": "boolean"
+					},
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"color": {
+						"type": "string"
+					},
+					"assets": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"images": {
+						"properties": {
+							"icon": {
+								"type": "string",
+								"nullable": true
+							},
+							"main": {
+								"type": "string",
+								"nullable": true
+							}
+						},
+						"type": "object"
+					},
+					"extra": {
+						"properties": {},
+						"additionalProperties": {
+							"additionalProperties": true
+						},
+						"type": "object",
+						"nullable": true
+					}
+				},
+				"required": [
+					"name"
+				],
+				"type": "object",
+				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {
@@ -6436,6 +6607,284 @@
 						"application/json": {
 							"schema": {
 								"$ref": "#/components/schemas/TagCreateRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/translations": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/TranslationsResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "translation",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": [
+												{
+													"id": "507c7f79bcf86cd7994f6c0e",
+													"key": "take-away",
+													"value": "Взять с собой",
+													"extra": {
+														"key": "value"
+													}
+												}
+											]
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Translation"
+				],
+				"security": [
+					{
+						"jwt": []
+					},
+					{
+						"apiKey": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/translation/{id}": {
+			"get": {
+				"operationId": "GetOne",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/TranslationResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "translation",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": {
+												"id": "507c7f79bcf86cd7994f6c0e",
+												"key": "take-away",
+												"value": "Взять с собой",
+												"extra": {
+													"key": "value"
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Translation"
+				],
+				"security": [
+					{
+						"jwt": []
+					},
+					{
+						"apiKey": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/TranslationResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "translation",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": {
+												"id": "507c7f79bcf86cd7994f6c0e",
+												"key": "take-away",
+												"value": "Взять с собой",
+												"extra": {
+													"key": "value"
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Translation"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/TranslationCreateRequest"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "Delete",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/TranslationResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "translation",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Translation"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/translation": {
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/TranslationResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "translation",
+													"version": 1,
+													"lastUpdate": 1589885721
+												}
+											},
+											"data": {
+												"id": "507c7f79bcf86cd7994f6c0e",
+												"key": "take-away",
+												"value": "Взять с собой",
+												"extra": {
+													"key": "value"
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Translation"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/TranslationCreateRequest"
 							}
 						}
 					}
