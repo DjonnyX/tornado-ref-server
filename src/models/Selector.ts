@@ -19,7 +19,7 @@ interface ISelector extends Document {
 }
 
 const SelectorSchema = new Schema({
-    active: { type: Schema.Types.Boolean, required: true },
+    active: { type: Schema.Types.Boolean, required: true, default: true },
     type: {
         type: Schema.Types.String, enum: [
             SelectorTypes.MENU_CATEGORY,

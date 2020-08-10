@@ -33,7 +33,7 @@ const ScheduleSchema = new Schema({
 });
 
 const BusinessPeriodSchema = new Schema({
-    active: { type: Schema.Types.Boolean, required: true },
+    active: { type: Schema.Types.Boolean, required: true, default: true },
     name: { type: String, required: true },
     description: { type: String, required: false },
     schedule: [ScheduleSchema],
