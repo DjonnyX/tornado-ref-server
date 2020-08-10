@@ -11,6 +11,7 @@ interface ILanguage extends Document {
         main: string;
         icon: string;
     };
+    translation: string;
     extra?: { [key: string]: any } | null;
 }
 
@@ -23,6 +24,7 @@ const LanguageSchema = new Schema({
         main: { type: Schema.Types.ObjectId, required: false },
         icon: { type: Schema.Types.ObjectId, required: false },
     },
+    translation: { type: Schema.Types.ObjectId, required: true },
     extra: { type: Schema.Types.Mixed, required: false },
 });
 

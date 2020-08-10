@@ -13,6 +13,7 @@ interface ILanguageItem {
         main?: string | null;
         icon?: string | null;
     };
+    translation: string | null;
     extra?: { [key: string]: any } | null;
 }
 
@@ -52,6 +53,7 @@ interface LanguageCreateRequest {
         main?: string | null;
         icon?: string | null;
     };
+    translation?: string | null;
     extra?: { [key: string]: any } | null;
 }
 
@@ -68,6 +70,7 @@ const RESPONSE_TEMPLATE: ILanguageItem = {
         main: "g8h07f79bcf86cd7994f9d7k",
         icon: "g8h07f79bcf86cd7994f9d7k",
     },
+    translation: "409c7f79bcf86cd7994f6g1t",
     extra: { key: "value" },
 };
 
@@ -81,6 +84,7 @@ const formatModel = (model: ILanguage) => ({
         main: null,
         icon: null,
     },
+    translation: model.translation,
     extra: model.extra,
 });
 
