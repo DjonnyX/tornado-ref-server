@@ -8,6 +8,8 @@ import { IBusinessPeriod, BusinessPeriodModel, ISchedule } from "./BusinessPerio
 import { RefTypes } from "./enums";
 import { ICurrency, CurrencyModel } from "./Currency";
 import { IAd, AdModel } from "./Ad";
+import { ILanguage, LanguageModel } from "./Language";
+import { ITranslation, TranslationModel } from "./Translation";
 
 export {
     UserModel, IUser, hashPassword, checkIfUnencryptedPasswordIsValid,
@@ -21,4 +23,6 @@ export {
     IBusinessPeriod, BusinessPeriodModel, ISchedule,
     RefModel, IRef, RefTypes,
     IAd, AdModel,
+    ILanguage, LanguageModel,
+    ITranslation, TranslationModel,
 };

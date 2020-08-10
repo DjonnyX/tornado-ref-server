@@ -15,7 +15,7 @@ interface IAsset extends Document {
 }
 
 const AssetSchema = new Schema({
-    active: { type: Schema.Types.Boolean, required: true },
+    active: { type: Schema.Types.Boolean, required: true, default: true },
     name: { type: Schema.Types.String, required: true },
     lastupdate: { type: Schema.Types.Number, required: true },
     ext: {
