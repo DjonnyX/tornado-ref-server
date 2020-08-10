@@ -59,6 +59,10 @@ export const initRefs = async (): Promise<void> => {
             name: RefTypes.CURRENCIES,
             version: 1,
             lastUpdate,
+        }, {
+            name: RefTypes.ADS,
+            version: 1,
+            lastUpdate,
         },
     ];
 
