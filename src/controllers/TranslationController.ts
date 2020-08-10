@@ -1,17 +1,15 @@
-import { TagModel, ITag, RefTypes } from "../models/index";
+import { RefTypes, ITranslation, TranslationModel } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 
-interface ITagItem {
+interface ITranslationItem {
     id: string;
-    active: boolean;
-    name: string;
-    description?: string;
-    color: string;
+    key: string;
+    value: string;
     extra?: { [key: string]: any } | null;
 }
 
-interface ITagsMeta {
+interface TranslationMeta {
     ref: {
         name: string;
         version: number;
@@ -19,73 +17,74 @@ interface ITagsMeta {
     };
 }
 
-interface TagsResponse {
-    meta?: ITagsMeta;
-    data?: Array<ITagItem>;
+interface TranslationsResponse {
+    meta?: TranslationMeta;
+    data?: Array<ITranslationItem>;
     error?: Array<{
         code: number;
         message: string;
     }>;
 }
 
-interface TagResponse {
-    meta?: ITagsMeta;
-    data?: ITagItem;
+interface TranslationResponse {
+    meta?: TranslationMeta;
+    data?: ITranslationItem;
     error?: Array<{
         code: number;
         message: string;
     }>;
 }
 
-interface TagCreateRequest {
-    active: boolean;
+interface TranslationCreateRequest {
+    active?: boolean;
     name: string;
     description?: string;
-    color: string;
+    color?: string;
+    assets?: Array<string>;
+    images?: {
+        main?: string | null;
+        icon?: string | null;
+    };
     extra?: { [key: string]: any } | null;
 }
 
-const RESPONSE_TEMPLATE: ITagItem = {
+const RESPONSE_TEMPLATE: ITranslationItem = {
     id: "507c7f79bcf86cd7994f6c0e",
-    active: true,
-    name: "Morning Tag",
-    description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-    color: "0x000fff",
+    key: "take-away",
+    value: "Взять с собой",
     extra: { key: "value" },
 };
 
-const formatModel = (model: ITag) => ({
+const formatModel = (model: ITranslation) => ({
     id: model._id,
-    active: model.active,
-    name: model.name,
-    description: model.description,
-    color: model.color,
+    key: model.key,
+    value: model.value,
     extra: model.extra,
 });
 
-const META_TEMPLATE: ITagsMeta = {
+const META_TEMPLATE: TranslationMeta = {
     ref: {
-        name: RefTypes.TAGS,
+        name: RefTypes.TRANSLATION,
         version: 1,
         lastUpdate: 1589885721,
     }
 };
 
-@Route("/tags")
-@Tags("Tag")
-export class TagsController extends Controller {
+@Route("/translations")
+@Tags("Translation")
+export class TranslationsController extends Controller {
     @Get()
     @Security("jwt")
     @Security("apiKey")
     @OperationId("GetAll")
-    @Example<TagsResponse>({
+    @Example<TranslationsResponse>({
         meta: META_TEMPLATE,
         data: [RESPONSE_TEMPLATE],
     })
-    public async getAll(): Promise<TagsResponse> {
+    public async getAll(): Promise<TranslationsResponse> {
         try {
-            const items = await TagModel.find({});
-            const ref = await getRef(RefTypes.TAGS);
+            const items = await TranslationModel.find({});
+            const ref = await getRef(RefTypes.TRANSLATION);
             return {
                 meta: { ref },
                 data: items.map(v => formatModel(v)),
@@ -104,21 +103,21 @@ export class TagsController extends Controller {
     }
 }
 
-@Route("/tag")
-@Tags("Tag")
-export class TagController extends Controller {
+@Route("/translation")
+@Tags("Translation")
+export class TranslationController extends Controller {
     @Get("{id}")
     @Security("jwt")
     @Security("apiKey")
     @OperationId("GetOne")
-    @Example<TagResponse>({
+    @Example<TranslationResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
-    public async getOne(id: string): Promise<TagResponse> {
+    public async getOne(id: string): Promise<TranslationResponse> {
         try {
-            const item = await TagModel.findById(id);
-            const ref = await getRef(RefTypes.TAGS);
+            const item = await TranslationModel.findById(id);
+            const ref = await getRef(RefTypes.TRANSLATION);
             return {
                 meta: { ref },
                 data: formatModel(item),
@@ -139,15 +138,15 @@ export class TagController extends Controller {
     @Post()
     @Security("jwt")
     @OperationId("Create")
-    @Example<TagResponse>({
+    @Example<TranslationResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
-    public async create(@Body() request: TagCreateRequest): Promise<TagResponse> {
+    public async create(@Body() request: TranslationCreateRequest): Promise<TranslationResponse> {
         try {
-            const item = new TagModel(request);
+            const item = new TranslationModel(request);
             const savedItem = await item.save();
-            const ref = await riseRefVersion(RefTypes.TAGS);
+            const ref = await riseRefVersion(RefTypes.TRANSLATION);
             return {
                 meta: { ref },
                 data: formatModel(savedItem),
@@ -168,13 +167,13 @@ export class TagController extends Controller {
     @Put("{id}")
     @Security("jwt")
     @OperationId("Update")
-    @Example<TagResponse>({
+    @Example<TranslationResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
-    public async update(id: string, @Body() request: TagCreateRequest): Promise<TagResponse> {
+    public async update(id: string, @Body() request: TranslationCreateRequest): Promise<TranslationResponse> {
         try {
-            const item = await TagModel.findById(id);
+            const item = await TranslationModel.findById(id);
 
             for (const key in request) {
                 item[key] = request[key];
@@ -182,7 +181,7 @@ export class TagController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(RefTypes.TAGS);
+            const ref = await riseRefVersion(RefTypes.TRANSLATION);
             return {
                 meta: { ref },
                 data: formatModel(item),
@@ -203,13 +202,13 @@ export class TagController extends Controller {
     @Delete("{id}")
     @Security("jwt")
     @OperationId("Delete")
-    @Example<TagResponse>({
+    @Example<TranslationResponse>({
         meta: META_TEMPLATE,
     })
-    public async delete(id: string): Promise<TagResponse> {
+    public async delete(id: string): Promise<TranslationResponse> {
         try {
-            await TagModel.findOneAndDelete({ _id: id });
-            const ref = await riseRefVersion(RefTypes.TAGS);
+            await TranslationModel.findOneAndDelete({ _id: id });
+            const ref = await riseRefVersion(RefTypes.TRANSLATION);
             return {
                 meta: { ref },
             };
