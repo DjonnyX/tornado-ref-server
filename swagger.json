@@ -1209,12 +1209,16 @@
 								"type": "string",
 								"nullable": true
 							},
-							"main": {
+							"original": {
 								"type": "string",
 								"nullable": true
 							}
 						},
 						"type": "object"
+					},
+					"translation": {
+						"type": "string",
+						"nullable": true
 					},
 					"extra": {
 						"properties": {},
@@ -1228,7 +1232,8 @@
 				"required": [
 					"id",
 					"active",
-					"name"
+					"name",
+					"translation"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -1330,6 +1335,10 @@
 							}
 						},
 						"type": "object"
+					},
+					"translation": {
+						"type": "string",
+						"nullable": true
 					},
 					"extra": {
 						"properties": {},
@@ -1814,7 +1823,7 @@
 								"type": "string",
 								"nullable": true
 							},
-							"thumbnail": {
+							"original": {
 								"type": "string",
 								"nullable": true
 							}
@@ -1922,7 +1931,7 @@
 								"type": "string",
 								"nullable": true
 							},
-							"thumbnail": {
+							"original": {
 								"type": "string",
 								"nullable": true
 							}
@@ -4967,9 +4976,10 @@
 														"g8h07f79bcf86cd7994f9d7k"
 													],
 													"images": {
-														"main": "g8h07f79bcf86cd7994f9d7k",
+														"original": "g8h07f79bcf86cd7994f9d7k",
 														"icon": "g8h07f79bcf86cd7994f9d7k"
 													},
+													"translation": "409c7f79bcf86cd7994f6g1t",
 													"extra": {
 														"key": "value"
 													}
@@ -5027,9 +5037,10 @@
 													"g8h07f79bcf86cd7994f9d7k"
 												],
 												"images": {
-													"main": "g8h07f79bcf86cd7994f9d7k",
+													"original": "g8h07f79bcf86cd7994f9d7k",
 													"icon": "g8h07f79bcf86cd7994f9d7k"
 												},
+												"translation": "409c7f79bcf86cd7994f6g1t",
 												"extra": {
 													"key": "value"
 												}
@@ -5093,9 +5104,10 @@
 													"g8h07f79bcf86cd7994f9d7k"
 												],
 												"images": {
-													"main": "g8h07f79bcf86cd7994f9d7k",
+													"original": "g8h07f79bcf86cd7994f9d7k",
 													"icon": "g8h07f79bcf86cd7994f9d7k"
 												},
+												"translation": "409c7f79bcf86cd7994f6g1t",
 												"extra": {
 													"key": "value"
 												}
@@ -5214,9 +5226,10 @@
 													"g8h07f79bcf86cd7994f9d7k"
 												],
 												"images": {
-													"main": "g8h07f79bcf86cd7994f9d7k",
+													"original": "g8h07f79bcf86cd7994f9d7k",
 													"icon": "g8h07f79bcf86cd7994f9d7k"
 												},
+												"translation": "409c7f79bcf86cd7994f6g1t",
 												"extra": {
 													"key": "value"
 												}
@@ -5720,7 +5733,7 @@
 														"gt7h7f79bcf86cd7994f9d6u"
 													],
 													"images": {
-														"thumbnail": "gt7h7f79bcf86cd7994f9d6u",
+														"original": "gt7h7f79bcf86cd7994f9d6u",
 														"icon": "gt7h7f79bcf86cd7994f9d6u"
 													},
 													"extra": {
@@ -5780,7 +5793,7 @@
 													"gt7h7f79bcf86cd7994f9d6u"
 												],
 												"images": {
-													"thumbnail": "gt7h7f79bcf86cd7994f9d6u",
+													"original": "gt7h7f79bcf86cd7994f9d6u",
 													"icon": "gt7h7f79bcf86cd7994f9d6u"
 												},
 												"extra": {
@@ -5846,7 +5859,7 @@
 													"gt7h7f79bcf86cd7994f9d6u"
 												],
 												"images": {
-													"thumbnail": "gt7h7f79bcf86cd7994f9d6u",
+													"original": "gt7h7f79bcf86cd7994f9d6u",
 													"icon": "gt7h7f79bcf86cd7994f9d6u"
 												},
 												"extra": {
@@ -5967,7 +5980,7 @@
 													"gt7h7f79bcf86cd7994f9d6u"
 												],
 												"images": {
-													"thumbnail": "gt7h7f79bcf86cd7994f9d6u",
+													"original": "gt7h7f79bcf86cd7994f9d6u",
 													"icon": "gt7h7f79bcf86cd7994f9d6u"
 												},
 												"extra": {
