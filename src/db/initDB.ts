@@ -67,6 +67,10 @@ export const initRefs = async (): Promise<void> => {
             name: RefTypes.LANGUAGES,
             version: 1,
             lastUpdate,
+        }, {
+            name: RefTypes.ORDER_TYPES,
+            version: 1,
+            lastUpdate,
         },
     ];
 

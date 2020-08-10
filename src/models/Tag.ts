@@ -13,7 +13,7 @@ const TagSchema = new Schema({
     active: { type: Schema.Types.Boolean, required: true, default: true },
     name: { type: Schema.Types.String, required: true },
     description: { type: Schema.Types.String },
-    color: { type: Schema.Types.String, required: true, default: "0x000000" },
+    color: { type: Schema.Types.String, required: true, default: "rgba(255, 255, 255, 0)" },
     extra: { type: Schema.Types.Mixed, required: false },
 });
 
