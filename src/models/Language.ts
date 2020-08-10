@@ -19,7 +19,7 @@ const LanguageSchema = new Schema({
     active: { type: Schema.Types.Boolean, required: true, default: true },
     name: { type: Schema.Types.String, required: true },
     description: { type: Schema.Types.String },
-    color: { type: Schema.Types.String, required: true, default: "#000000" },
+    color: { type: Schema.Types.String, required: true, default: "rgba(255, 255, 255, 0)" },
     images: {
         original: { type: Schema.Types.ObjectId, required: false },
         icon: { type: Schema.Types.ObjectId, required: false },
