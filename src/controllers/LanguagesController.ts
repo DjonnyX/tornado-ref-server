@@ -50,7 +50,7 @@ interface LanguageCreateRequest {
     color?: string;
     assets?: Array<string>;
     images?: {
-        main?: string | null;
+        original?: string | null;
         icon?: string | null;
     };
     translation?: string | null;

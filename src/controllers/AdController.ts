@@ -72,7 +72,9 @@ const formatModel = (model: IAd) => ({
     description: model.description,
     color: model.color,
     assets: model.assets,
-    images: model.images,
+    images: model.images || {
+        original: null,
+    },
     extra: model.extra,
 });
 

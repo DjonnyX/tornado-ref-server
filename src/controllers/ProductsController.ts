@@ -17,7 +17,7 @@ export interface IProductItem {
     joint?: string;
     assets?: Array<string>;
     images?: {
-        main?: string | null;
+        original?: string | null;
         thumbnail?: string | null;
         icon?: string | null;
     };
@@ -61,7 +61,7 @@ interface IProductCreateRequest {
     joint?: string;
     assets?: Array<string>;
     images?: {
-        main: string;
+        original: string;
         thumbnail: string;
         icon: string;
     };
@@ -79,7 +79,7 @@ interface IProductUpdateRequest {
     joint?: string;
     assets?: Array<string>;
     images?: {
-        main: string | null;
+        original: string | null;
         thumbnail: string | null;
         icon: string | null;
     };
@@ -114,7 +114,7 @@ export const RESPONSE_TEMPLATE: IProductItem = {
     tags: ["123c7f79bcf86cd7994f6c0e"],
     assets: ["g8h07f79bcf86cd7994f9d7k",],
     images: {
-        main: "g8h07f79bcf86cd7994f9d7k",
+        original: "g8h07f79bcf86cd7994f9d7k",
         thumbnail: "gt7h7f79bcf86cd7994f9d6u",
         icon: "gt7h7f79bcf86cd7994f9d6u",
     },

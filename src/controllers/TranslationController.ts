@@ -42,7 +42,7 @@ interface TranslationCreateRequest {
     color?: string;
     assets?: Array<string>;
     images?: {
-        main?: string | null;
+        original?: string | null;
         icon?: string | null;
     };
     extra?: { [key: string]: any } | null;
