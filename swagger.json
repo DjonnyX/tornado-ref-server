@@ -1965,6 +1965,237 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"IOrderTypeAsset": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"active": {
+						"type": "boolean"
+					},
+					"lastupdate": {
+						"type": "number",
+						"format": "double"
+					},
+					"name": {
+						"type": "string"
+					},
+					"ext": {
+						"$ref": "#/components/schemas/AssetExtensions"
+					},
+					"path": {
+						"type": "string"
+					},
+					"mipmap": {
+						"properties": {
+							"x32": {
+								"type": "string"
+							},
+							"x128": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"x32",
+							"x128"
+						],
+						"type": "object"
+					}
+				},
+				"required": [
+					"id",
+					"active",
+					"lastupdate",
+					"name",
+					"ext",
+					"path",
+					"mipmap"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IOrderTypeGetAssetsResponse": {
+				"properties": {
+					"meta": {
+						"properties": {},
+						"type": "object"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/IOrderTypeAsset"
+						},
+						"type": "array"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IOrderTypeCreateAssetsResponse": {
+				"properties": {
+					"meta": {
+						"properties": {
+							"asset": {
+								"properties": {
+									"ref": {
+										"$ref": "#/components/schemas/IRefItem"
+									}
+								},
+								"required": [
+									"ref"
+								],
+								"type": "object"
+							},
+							"orderType": {
+								"properties": {
+									"ref": {
+										"$ref": "#/components/schemas/IRefItem"
+									}
+								},
+								"required": [
+									"ref"
+								],
+								"type": "object"
+							}
+						},
+						"required": [
+							"asset",
+							"orderType"
+						],
+						"type": "object"
+					},
+					"data": {
+						"properties": {
+							"orderType": {
+								"$ref": "#/components/schemas/IOrderTypeItem"
+							},
+							"asset": {
+								"$ref": "#/components/schemas/IOrderTypeAsset"
+							}
+						},
+						"required": [
+							"orderType",
+							"asset"
+						],
+						"type": "object"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IOrderTypeAssetUpdateRequest": {
+				"properties": {
+					"active": {
+						"type": "boolean"
+					},
+					"name": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"active",
+					"name"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IOrderTypeDeleteAssetsResponse": {
+				"properties": {
+					"meta": {
+						"properties": {
+							"asset": {
+								"properties": {
+									"ref": {
+										"$ref": "#/components/schemas/IRefItem"
+									}
+								},
+								"required": [
+									"ref"
+								],
+								"type": "object"
+							},
+							"orderType": {
+								"properties": {
+									"ref": {
+										"$ref": "#/components/schemas/IRefItem"
+									}
+								},
+								"required": [
+									"ref"
+								],
+								"type": "object"
+							}
+						},
+						"required": [
+							"asset",
+							"orderType"
+						],
+						"type": "object"
+					},
+					"data": {
+						"properties": {},
+						"type": "object"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
 			"IProductsMeta": {
 				"properties": {
 					"ref": {
@@ -6008,6 +6239,303 @@
 						}
 					}
 				}
+			}
+		},
+		"/orderType/{orderTypeId}/assets": {
+			"get": {
+				"operationId": "Get",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IOrderTypeGetAssetsResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"orderType": {
+													"ref": {
+														"name": "products",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												},
+												"asset": {
+													"ref": {
+														"name": "assets",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												}
+											},
+											"data": [
+												{
+													"id": "107c7f79bcf86cd7994f6c0e",
+													"active": true,
+													"lastupdate": 1589885721,
+													"name": "some_3d_model",
+													"ext": ".fbx",
+													"mipmap": {
+														"x128": "assets/some_3d_model_128x128.png",
+														"x32": "assets/favicon.png"
+													},
+													"path": "assets/some_3d_model.fbx"
+												}
+											]
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"OrderType assets"
+				],
+				"security": [
+					{
+						"jwt": []
+					},
+					{
+						"apiKey": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "orderTypeId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/orderType/{orderTypeId}/asset": {
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IOrderTypeCreateAssetsResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"orderType": {
+													"ref": {
+														"name": "products",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												},
+												"asset": {
+													"ref": {
+														"name": "assets",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												}
+											},
+											"data": {
+												"asset": {
+													"id": "107c7f79bcf86cd7994f6c0e",
+													"active": true,
+													"lastupdate": 1589885721,
+													"name": "some_3d_model",
+													"ext": ".fbx",
+													"mipmap": {
+														"x128": "assets/some_3d_model_128x128.png",
+														"x32": "assets/favicon.png"
+													},
+													"path": "assets/some_3d_model.fbx"
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"OrderType assets"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "orderTypeId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/orderType/{orderTypeId}/asset/{assetId}": {
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IOrderTypeCreateAssetsResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"orderType": {
+													"ref": {
+														"name": "products",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												},
+												"asset": {
+													"ref": {
+														"name": "assets",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												}
+											},
+											"data": {
+												"asset": {
+													"id": "107c7f79bcf86cd7994f6c0e",
+													"active": true,
+													"lastupdate": 1589885721,
+													"name": "some_3d_model",
+													"ext": ".fbx",
+													"mipmap": {
+														"x128": "assets/some_3d_model_128x128.png",
+														"x32": "assets/favicon.png"
+													},
+													"path": "assets/some_3d_model.fbx"
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"OrderType assets"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "orderTypeId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "assetId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IOrderTypeAssetUpdateRequest"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "Delete",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IOrderTypeDeleteAssetsResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"orderType": {
+													"ref": {
+														"name": "products",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												},
+												"asset": {
+													"ref": {
+														"name": "assets",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"OrderType assets"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "orderTypeId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "assetId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		},
 		"/products": {

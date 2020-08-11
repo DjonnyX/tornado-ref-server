@@ -1,8 +1,9 @@
 import { RefTypes, IOrderType, OrderTypeModel } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
+import { formatOrderTypeModel } from "../utils/orderType";
 
-interface IOrderTypeItem {
+export interface IOrderTypeItem {
     id: string;
     active: boolean;
     name: string;
@@ -55,7 +56,15 @@ interface OrderTypeCreateRequest {
     extra?: { [key: string]: any } | null;
 }
 
-const RESPONSE_TEMPLATE: IOrderTypeItem = {
+const META_TEMPLATE: IOrderTypeMeta = {
+    ref: {
+        name: RefTypes.ORDER_TYPES,
+        version: 1,
+        lastUpdate: 1589885721,
+    }
+};
+
+export const RESPONSE_TEMPLATE: IOrderTypeItem = {
     id: "507c7f79bcf86cd7994f6c0e",
     active: true,
     name: "Take away",
@@ -70,28 +79,6 @@ const RESPONSE_TEMPLATE: IOrderTypeItem = {
         icon: "gt7h7f79bcf86cd7994f9d6u",
     },
     extra: { key: "value" },
-};
-
-const formatModel = (model: IOrderType) => ({
-    id: model._id,
-    active: model.active,
-    name: model.name,
-    description: model.description,
-    color: model.color,
-    assets: model.assets,
-    images: model.images || {
-        main: null,
-        icon: null,
-    },
-    extra: model.extra,
-});
-
-const META_TEMPLATE: IOrderTypeMeta = {
-    ref: {
-        name: RefTypes.ORDER_TYPES,
-        version: 1,
-        lastUpdate: 1589885721,
-    }
 };
 
 @Route("/order-types")
@@ -111,7 +98,7 @@ export class OrderTypesController extends Controller {
             const ref = await getRef(RefTypes.ORDER_TYPES);
             return {
                 meta: { ref },
-                data: items.map(v => formatModel(v)),
+                data: items.map(v => formatOrderTypeModel(v)),
             };
         } catch (err) {
             this.setStatus(500);
@@ -144,7 +131,7 @@ export class OrderTypeController extends Controller {
             const ref = await getRef(RefTypes.ORDER_TYPES);
             return {
                 meta: { ref },
-                data: formatModel(item),
+                data: formatOrderTypeModel(item),
             };
         } catch (err) {
             this.setStatus(500);
@@ -173,7 +160,7 @@ export class OrderTypeController extends Controller {
             const ref = await riseRefVersion(RefTypes.ORDER_TYPES);
             return {
                 meta: { ref },
-                data: formatModel(savedItem),
+                data: formatOrderTypeModel(savedItem),
             };
         } catch (err) {
             this.setStatus(500);
@@ -208,7 +195,7 @@ export class OrderTypeController extends Controller {
             const ref = await riseRefVersion(RefTypes.ORDER_TYPES);
             return {
                 meta: { ref },
-                data: formatModel(item),
+                data: formatOrderTypeModel(item),
             };
         } catch (err) {
             this.setStatus(500);
