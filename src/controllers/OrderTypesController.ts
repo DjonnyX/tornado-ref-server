@@ -4,12 +4,13 @@ import { getRef, riseRefVersion } from "../db/refs";
 
 interface IOrderTypeItem {
     id: string;
+    active: boolean;
     name: string;
     description?: string;
     color?: string;
     assets?: Array<string>;
     images?: {
-        original?: string | null;
+        main?: string | null;
         icon?: string | null;
     };
     extra?: { [key: string]: any } | null;
@@ -43,11 +44,12 @@ interface OrderTypeResponse {
 
 interface OrderTypeCreateRequest {
     name: string;
+    active: boolean;
     description: string;
     color?: string;
-    assets?: string;
+    assets?: Array<string>;
     images?: {
-        original?: string | null;
+        main?: string | null;
         icon?: string | null;
     };
     extra?: { [key: string]: any } | null;
@@ -55,6 +57,7 @@ interface OrderTypeCreateRequest {
 
 const RESPONSE_TEMPLATE: IOrderTypeItem = {
     id: "507c7f79bcf86cd7994f6c0e",
+    active: true,
     name: "Take away",
     description: "description",
     color: "#000000",
@@ -63,7 +66,7 @@ const RESPONSE_TEMPLATE: IOrderTypeItem = {
         "gt7h7f79bcf86cd7994f9d6u",
     ],
     images: {
-        original: "gt7h7f79bcf86cd7994f9d6u",
+        main: "gt7h7f79bcf86cd7994f9d6u",
         icon: "gt7h7f79bcf86cd7994f9d6u",
     },
     extra: { key: "value" },
@@ -71,12 +74,13 @@ const RESPONSE_TEMPLATE: IOrderTypeItem = {
 
 const formatModel = (model: IOrderType) => ({
     id: model._id,
+    active: model.active,
     name: model.name,
     description: model.description,
     color: model.color,
     assets: model.assets,
     images: model.images || {
-        original: null,
+        main: null,
         icon: null,
     },
     extra: model.extra,
