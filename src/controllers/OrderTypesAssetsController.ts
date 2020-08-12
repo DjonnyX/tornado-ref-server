@@ -92,7 +92,7 @@ const RESPONSE_TEMPLATE: IAssetItem = {
     path: "assets/some_3d_model.fbx",
 };
 
-@Route("/orderType")
+@Route("/order-type")
 @Tags("OrderType assets")
 export class OrderTypeAssetsController extends Controller {
     @Get("{orderTypeId}/assets")
