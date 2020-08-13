@@ -4,7 +4,7 @@ import { getRef, riseRefVersion } from "../db/refs";
 import { IRefItem } from "./RefsController";
 import { formatLanguageModel } from "../utils/language";
 
-interface ILanguageItem {
+export interface ILanguageItem {
     id: string;
     active: boolean;
     name: string;
@@ -55,6 +55,7 @@ interface LanguageCreateRequest {
         main?: string | null;
         icon?: string | null;
     };
+    translation?: string | null;
     extra?: { [key: string]: any } | null;
 }
 
@@ -68,10 +69,11 @@ interface LanguageUpdateRequest {
         main?: string | null;
         icon?: string | null;
     };
+    translation?: string | null;
     extra?: { [key: string]: any } | null;
 }
 
-const RESPONSE_TEMPLATE: ILanguageItem = {
+export const LANGUAGE_RESPONSE_TEMPLATE: ILanguageItem = {
     id: "507c7f79bcf86cd7994f6c0e",
     active: true,
     name: "Rus",
@@ -105,7 +107,7 @@ export class LanguagesController extends Controller {
     @OperationId("GetAll")
     @Example<LanguagesResponse>({
         meta: META_TEMPLATE,
-        data: [RESPONSE_TEMPLATE],
+        data: [LANGUAGE_RESPONSE_TEMPLATE],
     })
     public async getAll(): Promise<LanguagesResponse> {
         try {
@@ -138,7 +140,7 @@ export class LanguageController extends Controller {
     @OperationId("GetOne")
     @Example<LanguageResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE,
+        data: LANGUAGE_RESPONSE_TEMPLATE,
     })
     public async getOne(id: string): Promise<LanguageResponse> {
         try {
@@ -166,7 +168,7 @@ export class LanguageController extends Controller {
     @OperationId("Create")
     @Example<LanguageResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE,
+        data: LANGUAGE_RESPONSE_TEMPLATE,
     })
     public async create(@Body() request: LanguageCreateRequest): Promise<LanguageResponse> {
         let item: ILanguage;
@@ -218,7 +220,7 @@ export class LanguageController extends Controller {
     @OperationId("Update")
     @Example<LanguageResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE,
+        data: LANGUAGE_RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() request: LanguageUpdateRequest): Promise<LanguageResponse> {
         try {

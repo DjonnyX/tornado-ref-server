@@ -1148,6 +1148,10 @@
 						},
 						"type": "object"
 					},
+					"translation": {
+						"type": "string",
+						"nullable": true
+					},
 					"extra": {
 						"properties": {},
 						"additionalProperties": {
@@ -1195,6 +1199,10 @@
 							}
 						},
 						"type": "object"
+					},
+					"translation": {
+						"type": "string",
+						"nullable": true
 					},
 					"extra": {
 						"properties": {},
