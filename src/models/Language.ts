@@ -20,6 +20,7 @@ const LanguageSchema = new Schema({
     name: { type: Schema.Types.String, required: true },
     description: { type: Schema.Types.String },
     color: { type: Schema.Types.String, required: true, default: "rgba(255, 255, 255, 0)" },
+    assets: [{ type: Schema.Types.ObjectId, required: true }],
     images: {
         original: { type: Schema.Types.ObjectId, required: false },
         icon: { type: Schema.Types.ObjectId, required: false },
