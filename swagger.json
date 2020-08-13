@@ -1030,6 +1030,9 @@
 					"id": {
 						"type": "string"
 					},
+					"active": {
+						"type": "boolean"
+					},
 					"code": {
 						"type": "string"
 					},
@@ -1050,6 +1053,7 @@
 				},
 				"required": [
 					"id",
+					"active",
 					"code",
 					"name",
 					"symbol"
@@ -1124,6 +1128,9 @@
 			},
 			"CurrencyCreateRequest": {
 				"properties": {
+					"active": {
+						"type": "boolean"
+					},
 					"code": {
 						"type": "string"
 					},
@@ -1143,10 +1150,37 @@
 					}
 				},
 				"required": [
+					"active",
 					"code",
 					"name",
 					"symbol"
 				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CurrencyUpdateRequest": {
+				"properties": {
+					"active": {
+						"type": "boolean"
+					},
+					"code": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"symbol": {
+						"type": "string"
+					},
+					"extra": {
+						"properties": {},
+						"additionalProperties": {
+							"additionalProperties": true
+						},
+						"type": "object",
+						"nullable": true
+					}
+				},
 				"type": "object",
 				"additionalProperties": false
 			},
@@ -4907,6 +4941,7 @@
 											"data": [
 												{
 													"id": "507c7f79bcf86cd7994f6c0e",
+													"active": true,
 													"code": "RUB",
 													"name": "Рубль",
 													"symbol": "₽",
@@ -4959,6 +4994,7 @@
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
+												"active": true,
 												"code": "RUB",
 												"name": "Рубль",
 												"symbol": "₽",
@@ -5017,6 +5053,7 @@
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
+												"active": true,
 												"code": "RUB",
 												"name": "Рубль",
 												"symbol": "₽",
@@ -5055,7 +5092,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/CurrencyCreateRequest"
+								"$ref": "#/components/schemas/CurrencyUpdateRequest"
 							}
 						}
 					}
@@ -5130,6 +5167,7 @@
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
+												"active": true,
 												"code": "RUB",
 												"name": "Рубль",
 												"symbol": "₽",

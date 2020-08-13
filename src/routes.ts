@@ -417,6 +417,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "id": { "dataType": "string", "required": true },
+            "active": { "dataType": "boolean", "required": true },
             "code": { "dataType": "string", "required": true },
             "name": { "dataType": "string", "required": true },
             "symbol": { "dataType": "string", "required": true },
@@ -448,9 +449,22 @@ const models: TsoaRoute.Models = {
     "CurrencyCreateRequest": {
         "dataType": "refObject",
         "properties": {
+            "active": { "dataType": "boolean", "required": true },
             "code": { "dataType": "string", "required": true },
             "name": { "dataType": "string", "required": true },
             "symbol": { "dataType": "string", "required": true },
+            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "CurrencyUpdateRequest": {
+        "dataType": "refObject",
+        "properties": {
+            "active": { "dataType": "boolean" },
+            "code": { "dataType": "string" },
+            "name": { "dataType": "string" },
+            "symbol": { "dataType": "string" },
             "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
         "additionalProperties": false,
@@ -1726,7 +1740,7 @@ export function RegisterRoutes(app: express.Express) {
         function(request: any, response: any, next: any) {
             const args = {
                 id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                request: { "in": "body", "name": "request", "required": true, "ref": "CurrencyCreateRequest" },
+                request: { "in": "body", "name": "request", "required": true, "ref": "CurrencyUpdateRequest" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

@@ -1,9 +1,11 @@
-import { RefTypes, ICurrency, CurrencyModel } from "../models/index";
+import { RefTypes, CurrencyModel } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
+import { formatCurrencyModel } from "../utils/currency";
 
 interface ICurrencyItem {
     id: string;
+    active: boolean;
     code: string;
     name: string;
     symbol: string;
@@ -37,27 +39,29 @@ interface CurrencyResponse {
 }
 
 interface CurrencyCreateRequest {
+    active: boolean;
     code: string;
     name: string;
     symbol: string;
     extra?: { [key: string]: any } | null;
 }
 
+interface CurrencyUpdateRequest {
+    active?: boolean;
+    code?: string;
+    name?: string;
+    symbol?: string;
+    extra?: { [key: string]: any } | null;
+}
+
 const RESPONSE_TEMPLATE: ICurrencyItem = {
     id: "507c7f79bcf86cd7994f6c0e",
+    active: true,
     code: "RUB",
     name: "Рубль",
     symbol: "₽",
     extra: { key: "value" },
 };
-
-const formatModel = (model: ICurrency) => ({
-    id: model._id,
-    code: model.code,
-    name: model.name,
-    symbol: model.symbol,
-    extra: model.extra,
-});
 
 const META_TEMPLATE: ICurrencyMeta = {
     ref: {
@@ -84,7 +88,7 @@ export class CurrenciesController extends Controller {
             const ref = await getRef(RefTypes.CURRENCIES);
             return {
                 meta: { ref },
-                data: items.map(v => formatModel(v)),
+                data: items.map(v => formatCurrencyModel(v)),
             };
         } catch (err) {
             this.setStatus(500);
@@ -117,7 +121,7 @@ export class CurrencyController extends Controller {
             const ref = await getRef(RefTypes.CURRENCIES);
             return {
                 meta: { ref },
-                data: formatModel(item),
+                data: formatCurrencyModel(item),
             };
         } catch (err) {
             this.setStatus(500);
@@ -146,7 +150,7 @@ export class CurrencyController extends Controller {
             const ref = await riseRefVersion(RefTypes.CURRENCIES);
             return {
                 meta: { ref },
-                data: formatModel(savedItem),
+                data: formatCurrencyModel(savedItem),
             };
         } catch (err) {
             this.setStatus(500);
@@ -168,7 +172,7 @@ export class CurrencyController extends Controller {
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
-    public async update(id: string, @Body() request: CurrencyCreateRequest): Promise<CurrencyResponse> {
+    public async update(id: string, @Body() request: CurrencyUpdateRequest): Promise<CurrencyResponse> {
         try {
             const item = await CurrencyModel.findById(id);
 
@@ -181,7 +185,7 @@ export class CurrencyController extends Controller {
             const ref = await riseRefVersion(RefTypes.CURRENCIES);
             return {
                 meta: { ref },
-                data: formatModel(item),
+                data: formatCurrencyModel(item),
             };
         } catch (err) {
             this.setStatus(500);
