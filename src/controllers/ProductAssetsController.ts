@@ -217,7 +217,7 @@ export class ProductAssetsController extends Controller {
         }
     })
     public async image(productId: string, imageType: ProductImageTypes, @Request() request: express.Request): Promise<IProductCreateAssetsResponse> {
-        const assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA]);
+        const assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA], false);
 
         let product: IProduct;
         let deletedAsset: string;
@@ -263,7 +263,7 @@ export class ProductAssetsController extends Controller {
         let productRef: IRefItem;
         try {
             product.images[imageType] = assetsInfo.data.id;
-            
+
             if (imageType === ProductImageTypes.MAIN) {
                 if (!product.images.thumbnail) {
                     product.images.thumbnail = product.images.main;
