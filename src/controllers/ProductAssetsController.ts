@@ -62,6 +62,12 @@ interface IProductAssetUpdateRequest {
     name: string;
 }
 
+export enum ProductImageTypes {
+    MAIN = "main",
+    THUMBNAIL = "thumbnail",
+    ICON = "icon",
+}
+
 const META_TEMPLATE = {
     product: {
         ref: {
@@ -171,6 +177,96 @@ export class ProductAssetsController extends Controller {
         try {
             product.assets.push(assetsInfo.data.id);
             productRef = await riseRefVersion(RefTypes.PRODUCTS);
+            await product.save();
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Save asset to product assets list error. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        return {
+            meta: {
+                product: {
+                    ref: productRef,
+                },
+                asset: {
+                    ref: assetsInfo.meta.ref,
+                }
+            },
+            data: {
+                product: formatProductModel(product),
+                asset: assetsInfo.data,
+            }
+        };
+    }
+
+    @Post("{productId}/image/{imageType}")
+    @Security("jwt")
+    @OperationId("Create")
+    @Example<IProductCreateAssetsResponse>({
+        meta: META_TEMPLATE,
+        data: {
+            asset: RESPONSE_TEMPLATE,
+            product: PRODUCT_RESPONSE_TEMPLATE,
+        }
+    })
+    public async image(productId: string, imageType: ProductImageTypes, @Request() request: express.Request): Promise<IProductCreateAssetsResponse> {
+        const assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA]);
+
+        let product: IProduct;
+        let deletedAsset: string;
+        try {
+            product = await ProductModel.findById(productId);
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Find product error. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        deletedAsset = product.images[imageType];
+        
+        const assetIndex = product.assets.indexOf(deletedAsset);
+        if (assetIndex > -1) {
+            try {
+                const asset = await AssetModel.findByIdAndDelete(deletedAsset);
+                await deleteAsset(asset.path);
+                await deleteAsset(asset.mipmap.x128);
+                await deleteAsset(asset.mipmap.x32);
+            } catch (err) {
+                this.setStatus(500);
+                return {
+                    error: [
+                        {
+                            code: 500,
+                            message: `Delete asset error. ${err}`,
+                        }
+                    ]
+                };
+            }
+        }
+
+        // удаление предыдущего ассета
+        product.assets = product.assets.filter(asset => asset.toString() !== deletedAsset.toString());
+
+        console.log(product.assets, deletedAsset)
+
+        let productRef: IRefItem;
+        try {
+            product.images[imageType] = assetsInfo.data.id;
+            product.assets.push(assetsInfo.data.id);
+            productRef = await riseRefVersion(RefTypes.ORDER_TYPES);
             await product.save();
         } catch (err) {
             this.setStatus(500);
