@@ -62,6 +62,12 @@ interface ISelectorUpdateAssetsRequest {
     active: boolean;
 }
 
+export enum SelectorImageTypes {
+    MAIN = "main",
+    THUMBNAIL = "thumbnail",
+    ICON = "icon",
+}
+
 const META_TEMPLATE = {
     selector: {
         ref: {
@@ -200,6 +206,95 @@ export class SelectorAssetsController extends Controller {
         };
     }
 
+    @Post("{selectorId}/image/{imageType}")
+    @Security("jwt")
+    @OperationId("Create")
+    @Example<ISelectorCreateAssetsResponse>({
+        meta: META_TEMPLATE,
+        data: {
+            asset: RESPONSE_TEMPLATE,
+            selector: SELECTOR_RESPONSE_TEMPLATE,
+        }
+    })
+    public async image(selectorId: string, imageType: SelectorImageTypes, @Request() request: express.Request): Promise<ISelectorCreateAssetsResponse> {
+        const assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA]);
+
+        let selector: ISelector;
+        let deletedAsset: string;
+        try {
+            selector = await SelectorModel.findById(selectorId);
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Find selector error. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        deletedAsset = selector.images[imageType];
+        
+        const assetIndex = selector.assets.indexOf(deletedAsset);
+        if (assetIndex > -1) {
+            try {
+                const asset = await AssetModel.findByIdAndDelete(deletedAsset);
+                await deleteAsset(asset.path);
+                await deleteAsset(asset.mipmap.x128);
+                await deleteAsset(asset.mipmap.x32);
+            } catch (err) {
+                this.setStatus(500);
+                return {
+                    error: [
+                        {
+                            code: 500,
+                            message: `Delete asset error. ${err}`,
+                        }
+                    ]
+                };
+            }
+        }
+
+        // удаление предыдущего ассета
+        selector.assets = selector.assets.filter(asset => asset.toString() !== deletedAsset.toString());
+
+        console.log(selector.assets, deletedAsset)
+
+        let selectorRef: IRefItem;
+        try {
+            selector.images[imageType] = assetsInfo.data.id;
+            selector.assets.push(assetsInfo.data.id);
+            selectorRef = await riseRefVersion(RefTypes.SELECTORS);
+            await selector.save();
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Save asset to selector assets list error. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        return {
+            meta: {
+                selector: {
+                    ref: selectorRef,
+                },
+                asset: {
+                    ref: assetsInfo.meta.ref,
+                }
+            },
+            data: {
+                selector: formatSelectorModel(selector),
+                asset: assetsInfo.data,
+            }
+        };
+    }
     
     @Put("{selectorId}/asset/{assetId}")
     @Security("jwt")

@@ -67,7 +67,6 @@ export enum OrderTypeImageTypes {
     ICON = "icon",
 }
 
-
 const META_TEMPLATE = {
     orderType: {
         ref: {
@@ -266,7 +265,7 @@ export class OrderTypeAssetsController extends Controller {
         try {
             orderType.images[imageType] = assetsInfo.data.id;
             orderType.assets.push(assetsInfo.data.id);
-            orderTypeRef = await riseRefVersion(RefTypes.LANGUAGES);
+            orderTypeRef = await riseRefVersion(RefTypes.ORDER_TYPES);
             await orderType.save();
         } catch (err) {
             this.setStatus(500);
