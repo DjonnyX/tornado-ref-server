@@ -3,7 +3,7 @@ import { OrderTypeModel, IOrderType, RefTypes } from "../models/index";
 import { Controller, Route, Post, Tags, OperationId, Example, Request, Security, Get, Delete, Body, Put } from "tsoa";
 import { riseRefVersion, getRef } from "../db/refs";
 import { AssetExtensions } from "../models/enums";
-import { IOrderTypeItem, RESPONSE_TEMPLATE as PRODUCT_RESPONSE_TEMPLATE } from "./OrderTypesController";
+import { IOrderTypeItem, RESPONSE_TEMPLATE as ORDER_TYPE_RESPONSE_TEMPLATE } from "./OrderTypesController";
 import { formatOrderTypeModel } from "../utils/orderType";
 import { IRefItem } from "./RefsController";
 import { uploadAsset, deleteAsset, IAssetItem } from "./AssetsController";
@@ -61,6 +61,12 @@ interface IOrderTypeAssetUpdateRequest {
     active: boolean;
     name: string;
 }
+
+export enum OrderTypeImageTypes {
+    MAIN = "main",
+    ICON = "icon",
+}
+
 
 const META_TEMPLATE = {
     orderType: {
@@ -146,7 +152,7 @@ export class OrderTypeAssetsController extends Controller {
         meta: META_TEMPLATE,
         data: {
             asset: RESPONSE_TEMPLATE,
-            orderType: PRODUCT_RESPONSE_TEMPLATE,
+            orderType: ORDER_TYPE_RESPONSE_TEMPLATE,
         }
     })
     public async create(orderTypeId: string, @Request() request: express.Request): Promise<IOrderTypeCreateAssetsResponse> {
@@ -199,6 +205,96 @@ export class OrderTypeAssetsController extends Controller {
             }
         };
     }
+
+    @Post("{orderTypeId}/image/{imageType}")
+    @Security("jwt")
+    @OperationId("Create")
+    @Example<IOrderTypeCreateAssetsResponse>({
+        meta: META_TEMPLATE,
+        data: {
+            asset: RESPONSE_TEMPLATE,
+            orderType: ORDER_TYPE_RESPONSE_TEMPLATE,
+        }
+    })
+    public async image(orderTypeId: string, imageType: OrderTypeImageTypes, @Request() request: express.Request): Promise<IOrderTypeCreateAssetsResponse> {
+        const assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA]);
+
+        let orderType: IOrderType;
+        let deletedAsset: string;
+        try {
+            orderType = await OrderTypeModel.findById(orderTypeId);
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Find orderType error. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        deletedAsset = orderType.images[imageType];
+        
+        const assetIndex = orderType.assets.indexOf(deletedAsset);
+        if (assetIndex > -1) {
+            try {
+                const asset = await AssetModel.findByIdAndDelete(deletedAsset);
+                await deleteAsset(asset.path);
+                await deleteAsset(asset.mipmap.x128);
+                await deleteAsset(asset.mipmap.x32);
+            } catch (err) {
+                this.setStatus(500);
+                return {
+                    error: [
+                        {
+                            code: 500,
+                            message: `Delete asset error. ${err}`,
+                        }
+                    ]
+                };
+            }
+        }
+
+        // удаление предыдущего ассета
+        orderType.assets = orderType.assets.filter(asset => asset.toString() !== deletedAsset.toString());
+
+        console.log(orderType.assets, deletedAsset)
+
+        let orderTypeRef: IRefItem;
+        try {
+            orderType.images[imageType] = assetsInfo.data.id;
+            orderType.assets.push(assetsInfo.data.id);
+            orderTypeRef = await riseRefVersion(RefTypes.LANGUAGES);
+            await orderType.save();
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Save asset to orderType assets list error. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        return {
+            meta: {
+                orderType: {
+                    ref: orderTypeRef,
+                },
+                asset: {
+                    ref: assetsInfo.meta.ref,
+                }
+            },
+            data: {
+                orderType: formatOrderTypeModel(orderType),
+                asset: assetsInfo.data,
+            }
+        };
+    }
     
     @Put("{orderTypeId}/asset/{assetId}")
     @Security("jwt")
@@ -207,7 +303,7 @@ export class OrderTypeAssetsController extends Controller {
         meta: META_TEMPLATE,
         data: {
             asset: RESPONSE_TEMPLATE,
-            orderType: PRODUCT_RESPONSE_TEMPLATE,
+            orderType: ORDER_TYPE_RESPONSE_TEMPLATE,
         }
     })
     public async update(orderTypeId: string, assetId: string, @Body() request: IOrderTypeAssetUpdateRequest): Promise<IOrderTypeCreateAssetsResponse> {

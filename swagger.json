@@ -2409,6 +2409,13 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"OrderTypeImageTypes": {
+				"enum": [
+					"main",
+					"icon"
+				],
+				"type": "string"
+			},
 			"IOrderTypeAssetUpdateRequest": {
 				"properties": {
 					"active": {
@@ -7048,6 +7055,85 @@
 						"required": true,
 						"schema": {
 							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/order-type/{orderTypeId}/image/{imageType}": {
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IOrderTypeCreateAssetsResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"orderType": {
+													"ref": {
+														"name": "products",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												},
+												"asset": {
+													"ref": {
+														"name": "assets",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												}
+											},
+											"data": {
+												"asset": {
+													"id": "107c7f79bcf86cd7994f6c0e",
+													"active": true,
+													"lastupdate": 1589885721,
+													"name": "some_3d_model",
+													"ext": ".fbx",
+													"mipmap": {
+														"x128": "assets/some_3d_model_128x128.png",
+														"x32": "assets/favicon.png"
+													},
+													"path": "assets/some_3d_model.fbx"
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"OrderType assets"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "orderTypeId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "imageType",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/OrderTypeImageTypes"
 						}
 					}
 				]
