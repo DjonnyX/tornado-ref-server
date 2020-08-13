@@ -1,15 +1,17 @@
 import { RefTypes, IOrderType, OrderTypeModel } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
+import { formatOrderTypeModel } from "../utils/orderType";
 
-interface IOrderTypeItem {
+export interface IOrderTypeItem {
     id: string;
+    active: boolean;
     name: string;
     description?: string;
     color?: string;
     assets?: Array<string>;
     images?: {
-        original?: string | null;
+        main?: string | null;
         icon?: string | null;
     };
     extra?: { [key: string]: any } | null;
@@ -43,18 +45,28 @@ interface OrderTypeResponse {
 
 interface OrderTypeCreateRequest {
     name: string;
+    active: boolean;
     description: string;
     color?: string;
-    assets?: string;
+    assets?: Array<string>;
     images?: {
-        original?: string | null;
+        main?: string | null;
         icon?: string | null;
     };
     extra?: { [key: string]: any } | null;
 }
 
-const RESPONSE_TEMPLATE: IOrderTypeItem = {
+const META_TEMPLATE: IOrderTypeMeta = {
+    ref: {
+        name: RefTypes.ORDER_TYPES,
+        version: 1,
+        lastUpdate: 1589885721,
+    }
+};
+
+export const RESPONSE_TEMPLATE: IOrderTypeItem = {
     id: "507c7f79bcf86cd7994f6c0e",
+    active: true,
     name: "Take away",
     description: "description",
     color: "#000000",
@@ -63,31 +75,10 @@ const RESPONSE_TEMPLATE: IOrderTypeItem = {
         "gt7h7f79bcf86cd7994f9d6u",
     ],
     images: {
-        original: "gt7h7f79bcf86cd7994f9d6u",
+        main: "gt7h7f79bcf86cd7994f9d6u",
         icon: "gt7h7f79bcf86cd7994f9d6u",
     },
     extra: { key: "value" },
-};
-
-const formatModel = (model: IOrderType) => ({
-    id: model._id,
-    name: model.name,
-    description: model.description,
-    color: model.color,
-    assets: model.assets,
-    images: model.images || {
-        original: null,
-        icon: null,
-    },
-    extra: model.extra,
-});
-
-const META_TEMPLATE: IOrderTypeMeta = {
-    ref: {
-        name: RefTypes.ORDER_TYPES,
-        version: 1,
-        lastUpdate: 1589885721,
-    }
 };
 
 @Route("/order-types")
@@ -107,7 +98,7 @@ export class OrderTypesController extends Controller {
             const ref = await getRef(RefTypes.ORDER_TYPES);
             return {
                 meta: { ref },
-                data: items.map(v => formatModel(v)),
+                data: items.map(v => formatOrderTypeModel(v)),
             };
         } catch (err) {
             this.setStatus(500);
@@ -140,7 +131,7 @@ export class OrderTypeController extends Controller {
             const ref = await getRef(RefTypes.ORDER_TYPES);
             return {
                 meta: { ref },
-                data: formatModel(item),
+                data: formatOrderTypeModel(item),
             };
         } catch (err) {
             this.setStatus(500);
@@ -169,7 +160,7 @@ export class OrderTypeController extends Controller {
             const ref = await riseRefVersion(RefTypes.ORDER_TYPES);
             return {
                 meta: { ref },
-                data: formatModel(savedItem),
+                data: formatOrderTypeModel(savedItem),
             };
         } catch (err) {
             this.setStatus(500);
@@ -204,7 +195,7 @@ export class OrderTypeController extends Controller {
             const ref = await riseRefVersion(RefTypes.ORDER_TYPES);
             return {
                 meta: { ref },
-                data: formatModel(item),
+                data: formatOrderTypeModel(item),
             };
         } catch (err) {
             this.setStatus(500);

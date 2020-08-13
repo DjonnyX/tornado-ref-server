@@ -8,7 +8,7 @@ interface IOrderType extends Document {
     color: string;
     assets: Array<string>;
     images: {
-        original: string;
+        main: string;
         icon: string;
     },
     extra?: { [key: string]: any } | null;
@@ -17,11 +17,11 @@ interface IOrderType extends Document {
 const TagSchema = new Schema({
     active: { type: Schema.Types.Boolean, required: true },
     name: { type: Schema.Types.String, required: true },
-    description: { type: Schema.Types.String },
+    description: { type: Schema.Types.String, required: false },
     color: { type: Schema.Types.String, required: true, default: "rgba(255, 255, 255, 0)" },
-    assets: [{ type: Schema.Types.ObjectId, required: true }],
+    assets: [{ type: Schema.Types.ObjectId, required: true, default: [] }],
     images: {
-        original: { type: Schema.Types.ObjectId, required: false },
+        main: { type: Schema.Types.ObjectId, required: false },
         icon: { type: Schema.Types.ObjectId, required: false },
     },
     extra: { type: Schema.Types.Mixed, required: false },

@@ -142,7 +142,7 @@
 					},
 					"images": {
 						"properties": {
-							"original": {
+							"main": {
 								"type": "string",
 								"nullable": true
 							}
@@ -248,12 +248,12 @@
 					},
 					"images": {
 						"properties": {
-							"original": {
+							"main": {
 								"type": "string"
 							}
 						},
 						"required": [
-							"original"
+							"main"
 						],
 						"type": "object"
 					},
@@ -1030,6 +1030,9 @@
 					"id": {
 						"type": "string"
 					},
+					"active": {
+						"type": "boolean"
+					},
 					"code": {
 						"type": "string"
 					},
@@ -1050,6 +1053,7 @@
 				},
 				"required": [
 					"id",
+					"active",
 					"code",
 					"name",
 					"symbol"
@@ -1124,6 +1128,9 @@
 			},
 			"CurrencyCreateRequest": {
 				"properties": {
+					"active": {
+						"type": "boolean"
+					},
 					"code": {
 						"type": "string"
 					},
@@ -1143,10 +1150,37 @@
 					}
 				},
 				"required": [
+					"active",
 					"code",
 					"name",
 					"symbol"
 				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CurrencyUpdateRequest": {
+				"properties": {
+					"active": {
+						"type": "boolean"
+					},
+					"code": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"symbol": {
+						"type": "string"
+					},
+					"extra": {
+						"properties": {},
+						"additionalProperties": {
+							"additionalProperties": true
+						},
+						"type": "object",
+						"nullable": true
+					}
+				},
 				"type": "object",
 				"additionalProperties": false
 			},
@@ -1216,6 +1250,10 @@
 						},
 						"type": "object"
 					},
+					"translation": {
+						"type": "string",
+						"nullable": true
+					},
 					"extra": {
 						"properties": {},
 						"additionalProperties": {
@@ -1228,7 +1266,8 @@
 				"required": [
 					"id",
 					"active",
-					"name"
+					"name",
+					"translation"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -1330,6 +1369,10 @@
 							}
 						},
 						"type": "object"
+					},
+					"translation": {
+						"type": "string",
+						"nullable": true
 					},
 					"extra": {
 						"properties": {},
@@ -1793,6 +1836,9 @@
 					"id": {
 						"type": "string"
 					},
+					"active": {
+						"type": "boolean"
+					},
 					"name": {
 						"type": "string"
 					},
@@ -1814,7 +1860,7 @@
 								"type": "string",
 								"nullable": true
 							},
-							"thumbnail": {
+							"main": {
 								"type": "string",
 								"nullable": true
 							}
@@ -1832,6 +1878,7 @@
 				},
 				"required": [
 					"id",
+					"active",
 					"name"
 				],
 				"type": "object",
@@ -1907,6 +1954,9 @@
 					"name": {
 						"type": "string"
 					},
+					"active": {
+						"type": "boolean"
+					},
 					"description": {
 						"type": "string"
 					},
@@ -1914,7 +1964,10 @@
 						"type": "string"
 					},
 					"assets": {
-						"type": "string"
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
 					},
 					"images": {
 						"properties": {
@@ -1922,7 +1975,7 @@
 								"type": "string",
 								"nullable": true
 							},
-							"thumbnail": {
+							"main": {
 								"type": "string",
 								"nullable": true
 							}
@@ -1940,8 +1993,240 @@
 				},
 				"required": [
 					"name",
+					"active",
 					"description"
 				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IOrderTypeAsset": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"active": {
+						"type": "boolean"
+					},
+					"lastupdate": {
+						"type": "number",
+						"format": "double"
+					},
+					"name": {
+						"type": "string"
+					},
+					"ext": {
+						"$ref": "#/components/schemas/AssetExtensions"
+					},
+					"path": {
+						"type": "string"
+					},
+					"mipmap": {
+						"properties": {
+							"x32": {
+								"type": "string"
+							},
+							"x128": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"x32",
+							"x128"
+						],
+						"type": "object"
+					}
+				},
+				"required": [
+					"id",
+					"active",
+					"lastupdate",
+					"name",
+					"ext",
+					"path",
+					"mipmap"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IOrderTypeGetAssetsResponse": {
+				"properties": {
+					"meta": {
+						"properties": {},
+						"type": "object"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/IOrderTypeAsset"
+						},
+						"type": "array"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IOrderTypeCreateAssetsResponse": {
+				"properties": {
+					"meta": {
+						"properties": {
+							"asset": {
+								"properties": {
+									"ref": {
+										"$ref": "#/components/schemas/IRefItem"
+									}
+								},
+								"required": [
+									"ref"
+								],
+								"type": "object"
+							},
+							"orderType": {
+								"properties": {
+									"ref": {
+										"$ref": "#/components/schemas/IRefItem"
+									}
+								},
+								"required": [
+									"ref"
+								],
+								"type": "object"
+							}
+						},
+						"required": [
+							"asset",
+							"orderType"
+						],
+						"type": "object"
+					},
+					"data": {
+						"properties": {
+							"orderType": {
+								"$ref": "#/components/schemas/IOrderTypeItem"
+							},
+							"asset": {
+								"$ref": "#/components/schemas/IOrderTypeAsset"
+							}
+						},
+						"required": [
+							"orderType",
+							"asset"
+						],
+						"type": "object"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IOrderTypeAssetUpdateRequest": {
+				"properties": {
+					"active": {
+						"type": "boolean"
+					},
+					"name": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"active",
+					"name"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IOrderTypeDeleteAssetsResponse": {
+				"properties": {
+					"meta": {
+						"properties": {
+							"asset": {
+								"properties": {
+									"ref": {
+										"$ref": "#/components/schemas/IRefItem"
+									}
+								},
+								"required": [
+									"ref"
+								],
+								"type": "object"
+							},
+							"orderType": {
+								"properties": {
+									"ref": {
+										"$ref": "#/components/schemas/IRefItem"
+									}
+								},
+								"required": [
+									"ref"
+								],
+								"type": "object"
+							}
+						},
+						"required": [
+							"asset",
+							"orderType"
+						],
+						"type": "object"
+					},
+					"data": {
+						"properties": {},
+						"type": "object"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
 				"type": "object",
 				"additionalProperties": false
 			},
@@ -3358,33 +3643,11 @@
 					"active": {
 						"type": "boolean"
 					},
-					"name": {
+					"key": {
 						"type": "string"
 					},
-					"description": {
+					"value": {
 						"type": "string"
-					},
-					"color": {
-						"type": "string"
-					},
-					"assets": {
-						"items": {
-							"type": "string"
-						},
-						"type": "array"
-					},
-					"images": {
-						"properties": {
-							"icon": {
-								"type": "string",
-								"nullable": true
-							},
-							"main": {
-								"type": "string",
-								"nullable": true
-							}
-						},
-						"type": "object"
 					},
 					"extra": {
 						"properties": {},
@@ -3396,7 +3659,8 @@
 					}
 				},
 				"required": [
-					"name"
+					"key",
+					"value"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -3581,7 +3845,7 @@
 														"g8h07f79bcf86cd7994f9d7k"
 													],
 													"images": {
-														"original": "gt7h7f79bcf86cd7994f9d6u"
+														"main": "gt7h7f79bcf86cd7994f9d6u"
 													},
 													"extra": {
 														"key": "value"
@@ -3640,7 +3904,7 @@
 													"g8h07f79bcf86cd7994f9d7k"
 												],
 												"images": {
-													"original": "gt7h7f79bcf86cd7994f9d6u"
+													"main": "gt7h7f79bcf86cd7994f9d6u"
 												},
 												"extra": {
 													"key": "value"
@@ -3705,7 +3969,7 @@
 													"g8h07f79bcf86cd7994f9d7k"
 												],
 												"images": {
-													"original": "gt7h7f79bcf86cd7994f9d6u"
+													"main": "gt7h7f79bcf86cd7994f9d6u"
 												},
 												"extra": {
 													"key": "value"
@@ -3825,7 +4089,7 @@
 													"g8h07f79bcf86cd7994f9d7k"
 												],
 												"images": {
-													"original": "gt7h7f79bcf86cd7994f9d6u"
+													"main": "gt7h7f79bcf86cd7994f9d6u"
 												},
 												"extra": {
 													"key": "value"
@@ -4677,6 +4941,7 @@
 											"data": [
 												{
 													"id": "507c7f79bcf86cd7994f6c0e",
+													"active": true,
 													"code": "RUB",
 													"name": "Рубль",
 													"symbol": "₽",
@@ -4729,6 +4994,7 @@
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
+												"active": true,
 												"code": "RUB",
 												"name": "Рубль",
 												"symbol": "₽",
@@ -4787,6 +5053,7 @@
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
+												"active": true,
 												"code": "RUB",
 												"name": "Рубль",
 												"symbol": "₽",
@@ -4825,7 +5092,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/CurrencyCreateRequest"
+								"$ref": "#/components/schemas/CurrencyUpdateRequest"
 							}
 						}
 					}
@@ -4900,6 +5167,7 @@
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
+												"active": true,
 												"code": "RUB",
 												"name": "Рубль",
 												"symbol": "₽",
@@ -4970,6 +5238,7 @@
 														"main": "g8h07f79bcf86cd7994f9d7k",
 														"icon": "g8h07f79bcf86cd7994f9d7k"
 													},
+													"translation": "409c7f79bcf86cd7994f6g1t",
 													"extra": {
 														"key": "value"
 													}
@@ -5030,6 +5299,7 @@
 													"main": "g8h07f79bcf86cd7994f9d7k",
 													"icon": "g8h07f79bcf86cd7994f9d7k"
 												},
+												"translation": "409c7f79bcf86cd7994f6g1t",
 												"extra": {
 													"key": "value"
 												}
@@ -5096,6 +5366,7 @@
 													"main": "g8h07f79bcf86cd7994f9d7k",
 													"icon": "g8h07f79bcf86cd7994f9d7k"
 												},
+												"translation": "409c7f79bcf86cd7994f6g1t",
 												"extra": {
 													"key": "value"
 												}
@@ -5217,6 +5488,7 @@
 													"main": "g8h07f79bcf86cd7994f9d7k",
 													"icon": "g8h07f79bcf86cd7994f9d7k"
 												},
+												"translation": "409c7f79bcf86cd7994f6g1t",
 												"extra": {
 													"key": "value"
 												}
@@ -5712,6 +5984,7 @@
 											"data": [
 												{
 													"id": "507c7f79bcf86cd7994f6c0e",
+													"active": true,
 													"name": "Take away",
 													"description": "description",
 													"color": "#000000",
@@ -5720,7 +5993,7 @@
 														"gt7h7f79bcf86cd7994f9d6u"
 													],
 													"images": {
-														"thumbnail": "gt7h7f79bcf86cd7994f9d6u",
+														"main": "gt7h7f79bcf86cd7994f9d6u",
 														"icon": "gt7h7f79bcf86cd7994f9d6u"
 													},
 													"extra": {
@@ -5772,6 +6045,7 @@
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
+												"active": true,
 												"name": "Take away",
 												"description": "description",
 												"color": "#000000",
@@ -5780,7 +6054,7 @@
 													"gt7h7f79bcf86cd7994f9d6u"
 												],
 												"images": {
-													"thumbnail": "gt7h7f79bcf86cd7994f9d6u",
+													"main": "gt7h7f79bcf86cd7994f9d6u",
 													"icon": "gt7h7f79bcf86cd7994f9d6u"
 												},
 												"extra": {
@@ -5838,6 +6112,7 @@
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
+												"active": true,
 												"name": "Take away",
 												"description": "description",
 												"color": "#000000",
@@ -5846,7 +6121,7 @@
 													"gt7h7f79bcf86cd7994f9d6u"
 												],
 												"images": {
-													"thumbnail": "gt7h7f79bcf86cd7994f9d6u",
+													"main": "gt7h7f79bcf86cd7994f9d6u",
 													"icon": "gt7h7f79bcf86cd7994f9d6u"
 												},
 												"extra": {
@@ -5959,6 +6234,7 @@
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
+												"active": true,
 												"name": "Take away",
 												"description": "description",
 												"color": "#000000",
@@ -5967,7 +6243,7 @@
 													"gt7h7f79bcf86cd7994f9d6u"
 												],
 												"images": {
-													"thumbnail": "gt7h7f79bcf86cd7994f9d6u",
+													"main": "gt7h7f79bcf86cd7994f9d6u",
 													"icon": "gt7h7f79bcf86cd7994f9d6u"
 												},
 												"extra": {
@@ -6001,6 +6277,303 @@
 						}
 					}
 				}
+			}
+		},
+		"/order-type/{orderTypeId}/assets": {
+			"get": {
+				"operationId": "Get",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IOrderTypeGetAssetsResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"orderType": {
+													"ref": {
+														"name": "products",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												},
+												"asset": {
+													"ref": {
+														"name": "assets",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												}
+											},
+											"data": [
+												{
+													"id": "107c7f79bcf86cd7994f6c0e",
+													"active": true,
+													"lastupdate": 1589885721,
+													"name": "some_3d_model",
+													"ext": ".fbx",
+													"mipmap": {
+														"x128": "assets/some_3d_model_128x128.png",
+														"x32": "assets/favicon.png"
+													},
+													"path": "assets/some_3d_model.fbx"
+												}
+											]
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"OrderType assets"
+				],
+				"security": [
+					{
+						"jwt": []
+					},
+					{
+						"apiKey": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "orderTypeId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/order-type/{orderTypeId}/asset": {
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IOrderTypeCreateAssetsResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"orderType": {
+													"ref": {
+														"name": "products",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												},
+												"asset": {
+													"ref": {
+														"name": "assets",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												}
+											},
+											"data": {
+												"asset": {
+													"id": "107c7f79bcf86cd7994f6c0e",
+													"active": true,
+													"lastupdate": 1589885721,
+													"name": "some_3d_model",
+													"ext": ".fbx",
+													"mipmap": {
+														"x128": "assets/some_3d_model_128x128.png",
+														"x32": "assets/favicon.png"
+													},
+													"path": "assets/some_3d_model.fbx"
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"OrderType assets"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "orderTypeId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/order-type/{orderTypeId}/asset/{assetId}": {
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IOrderTypeCreateAssetsResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"orderType": {
+													"ref": {
+														"name": "products",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												},
+												"asset": {
+													"ref": {
+														"name": "assets",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												}
+											},
+											"data": {
+												"asset": {
+													"id": "107c7f79bcf86cd7994f6c0e",
+													"active": true,
+													"lastupdate": 1589885721,
+													"name": "some_3d_model",
+													"ext": ".fbx",
+													"mipmap": {
+														"x128": "assets/some_3d_model_128x128.png",
+														"x32": "assets/favicon.png"
+													},
+													"path": "assets/some_3d_model.fbx"
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"OrderType assets"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "orderTypeId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "assetId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IOrderTypeAssetUpdateRequest"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "Delete",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IOrderTypeDeleteAssetsResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"orderType": {
+													"ref": {
+														"name": "products",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												},
+												"asset": {
+													"ref": {
+														"name": "assets",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"OrderType assets"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "orderTypeId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "assetId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		},
 		"/products": {

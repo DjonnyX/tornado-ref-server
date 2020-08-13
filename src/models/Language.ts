@@ -8,7 +8,7 @@ interface ILanguage extends Document {
     color: string;
     assets: Array<string>;
     images: {
-        original: string;
+        main: string;
         icon: string;
     };
     translation: string;
@@ -21,7 +21,7 @@ const LanguageSchema = new Schema({
     description: { type: Schema.Types.String },
     color: { type: Schema.Types.String, required: true, default: "rgba(255, 255, 255, 0)" },
     images: {
-        original: { type: Schema.Types.ObjectId, required: false },
+        main: { type: Schema.Types.ObjectId, required: false },
         icon: { type: Schema.Types.ObjectId, required: false },
     },
     translation: { type: Schema.Types.ObjectId, required: true },
