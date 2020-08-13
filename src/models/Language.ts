@@ -8,7 +8,6 @@ interface ILanguage extends Document {
     assets: Array<string>;
     images: {
         main: string;
-        icon: string;
     };
     translation: string;
     extra?: { [key: string]: any } | null;
@@ -21,7 +20,6 @@ const LanguageSchema = new Schema({
     assets: [{ type: Schema.Types.ObjectId, required: true }],
     images: {
         main: { type: Schema.Types.ObjectId, required: false },
-        icon: { type: Schema.Types.ObjectId, required: false },
     },
     translation: { type: Schema.Types.ObjectId, required: true },
     extra: { type: Schema.Types.Mixed, required: false },

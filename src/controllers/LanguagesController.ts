@@ -12,7 +12,6 @@ export interface ILanguageItem {
     assets?: Array<string>;
     images?: {
         main?: string | null;
-        icon?: string | null;
     };
     translation?: string | null;
     extra?: { [key: string]: any } | null;
@@ -51,7 +50,6 @@ interface LanguageCreateRequest {
     assets?: Array<string>;
     images?: {
         main?: string | null;
-        icon?: string | null;
     };
     translation?: string | null;
     extra?: { [key: string]: any } | null;
@@ -64,7 +62,6 @@ interface LanguageUpdateRequest {
     assets?: Array<string>;
     images?: {
         main?: string | null;
-        icon?: string | null;
     };
     translation?: string | null;
     extra?: { [key: string]: any } | null;
@@ -80,7 +77,6 @@ export const LANGUAGE_RESPONSE_TEMPLATE: ILanguageItem = {
     ],
     images: {
         main: "g8h07f79bcf86cd7994f9d7k",
-        icon: "g8h07f79bcf86cd7994f9d7k",
     },
     translation: "409c7f79bcf86cd7994f6g1t",
     extra: { key: "value" },
