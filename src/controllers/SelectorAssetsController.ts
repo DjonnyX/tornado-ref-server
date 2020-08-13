@@ -260,8 +260,6 @@ export class SelectorAssetsController extends Controller {
         // удаление предыдущего ассета
         selector.assets = selector.assets.filter(asset => asset.toString() !== deletedAsset.toString());
 
-        console.log(selector.assets, deletedAsset)
-
         let selectorRef: IRefItem;
         try {
             selector.images[imageType] = assetsInfo.data.id;

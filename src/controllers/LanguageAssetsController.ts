@@ -258,8 +258,6 @@ export class LanguageAssetsController extends Controller {
         // удаление предыдущего ассета
         language.assets = language.assets.filter(asset => asset.toString() !== deletedAsset.toString());
 
-        console.log(language.assets, deletedAsset)
-
         let languageRef: IRefItem;
         try {
             language.images[imageType] = assetsInfo.data.id;

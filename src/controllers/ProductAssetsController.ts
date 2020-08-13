@@ -260,8 +260,6 @@ export class ProductAssetsController extends Controller {
         // удаление предыдущего ассета
         product.assets = product.assets.filter(asset => asset.toString() !== deletedAsset.toString());
 
-        console.log(product.assets, deletedAsset)
-
         let productRef: IRefItem;
         try {
             product.images[imageType] = assetsInfo.data.id;

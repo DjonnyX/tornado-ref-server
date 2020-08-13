@@ -259,8 +259,6 @@ export class OrderTypeAssetsController extends Controller {
         // удаление предыдущего ассета
         orderType.assets = orderType.assets.filter(asset => asset.toString() !== deletedAsset.toString());
 
-        console.log(orderType.assets, deletedAsset)
-
         let orderTypeRef: IRefItem;
         try {
             orderType.images[imageType] = assetsInfo.data.id;
