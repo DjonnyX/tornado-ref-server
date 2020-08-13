@@ -89,7 +89,7 @@ const RESPONSE_TEMPLATE: IAssetItem = {
     },
 };
 
-export const uploadAsset = async (request: express.Request, allowedExtensions: Array<AssetExtensions>): Promise<ICreateAssetsResponse> => {
+export const uploadAsset = async (request: express.Request, allowedExtensions: Array<AssetExtensions>, active = true): Promise<ICreateAssetsResponse> => {
     let fileInfo: IFileInfo;
     try {
         fileInfo = await assetsUploader("file", allowedExtensions, request);
@@ -107,7 +107,7 @@ export const uploadAsset = async (request: express.Request, allowedExtensions: A
     let asset: IAsset;
     let assetRef: IRefItem;
     try {
-        asset = new AssetModel(fileInfo);
+        asset = new AssetModel({...fileInfo, active});
         assetRef = await riseRefVersion(RefTypes.ASSETS);
         await asset.save();
     } catch (err) {

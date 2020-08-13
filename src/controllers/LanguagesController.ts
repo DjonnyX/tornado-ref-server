@@ -8,11 +8,9 @@ export interface ILanguageItem {
     id: string;
     active: boolean;
     name: string;
-    color?: string;
     assets?: Array<string>;
     images?: {
         main?: string | null;
-        icon?: string | null;
     };
     translation?: string | null;
     extra?: { [key: string]: any } | null;
@@ -47,11 +45,9 @@ interface LanguageResponse {
 interface LanguageCreateRequest {
     active?: boolean;
     name: string;
-    color?: string;
     assets?: Array<string>;
     images?: {
         main?: string | null;
-        icon?: string | null;
     };
     translation?: string | null;
     extra?: { [key: string]: any } | null;
@@ -60,11 +56,9 @@ interface LanguageCreateRequest {
 interface LanguageUpdateRequest {
     active?: boolean;
     name?: string;
-    color?: string;
     assets?: Array<string>;
     images?: {
         main?: string | null;
-        icon?: string | null;
     };
     translation?: string | null;
     extra?: { [key: string]: any } | null;
@@ -74,13 +68,11 @@ export const LANGUAGE_RESPONSE_TEMPLATE: ILanguageItem = {
     id: "507c7f79bcf86cd7994f6c0e",
     active: true,
     name: "Rus",
-    color: "#000000",
     assets: [
         "g8h07f79bcf86cd7994f9d7k",
     ],
     images: {
         main: "g8h07f79bcf86cd7994f9d7k",
-        icon: "g8h07f79bcf86cd7994f9d7k",
     },
     translation: "409c7f79bcf86cd7994f6g1t",
     extra: { key: "value" },

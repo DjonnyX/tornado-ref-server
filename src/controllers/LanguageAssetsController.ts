@@ -62,6 +62,10 @@ interface ILanguageUpdateAssetsRequest {
     active: boolean;
 }
 
+export enum LanguageImageTypes {
+    MAIN = "main",
+}
+
 const META_TEMPLATE = {
     language: {
         ref: {
@@ -200,7 +204,94 @@ export class LanguageAssetsController extends Controller {
         };
     }
 
-    
+    @Post("{languageId}/image/{imageType}")
+    @Security("jwt")
+    @OperationId("Create")
+    @Example<ILanguageCreateAssetsResponse>({
+        meta: META_TEMPLATE,
+        data: {
+            asset: RESPONSE_TEMPLATE,
+            language: LANGUAGE_RESPONSE_TEMPLATE,
+        }
+    })
+    public async image(languageId: string, imageType: LanguageImageTypes, @Request() request: express.Request): Promise<ILanguageCreateAssetsResponse> {
+        const assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA], false);
+
+        let language: ILanguage;
+        let deletedAsset: string;
+        try {
+            language = await LanguageModel.findById(languageId);
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Find language error. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        deletedAsset = language.images[imageType];
+        
+        const assetIndex = language.assets.indexOf(deletedAsset);
+        if (assetIndex > -1) {
+            try {
+                const asset = await AssetModel.findByIdAndDelete(deletedAsset);
+                await deleteAsset(asset.path);
+                await deleteAsset(asset.mipmap.x128);
+                await deleteAsset(asset.mipmap.x32);
+            } catch (err) {
+                this.setStatus(500);
+                return {
+                    error: [
+                        {
+                            code: 500,
+                            message: `Delete asset error. ${err}`,
+                        }
+                    ]
+                };
+            }
+        }
+
+        // удаление предыдущего ассета
+        language.assets = language.assets.filter(asset => asset.toString() !== deletedAsset.toString());
+
+        let languageRef: IRefItem;
+        try {
+            language.images[imageType] = assetsInfo.data.id;
+            language.assets.push(assetsInfo.data.id);
+            languageRef = await riseRefVersion(RefTypes.LANGUAGES);
+            await language.save();
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Save asset to language assets list error. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        return {
+            meta: {
+                language: {
+                    ref: languageRef,
+                },
+                asset: {
+                    ref: assetsInfo.meta.ref,
+                }
+            },
+            data: {
+                language: formatLanguageModel(language),
+                asset: assetsInfo.data,
+            }
+        };
+    }
+
     @Put("{languageId}/asset/{assetId}")
     @Security("jwt")
     @OperationId("Update")
@@ -227,7 +318,7 @@ export class LanguageAssetsController extends Controller {
                 ]
             };
         }
-        
+
         let languageRef: IRefItem;
         try {
             languageRef = await getRef(RefTypes.LANGUAGES);
@@ -242,7 +333,7 @@ export class LanguageAssetsController extends Controller {
                 ]
             };
         }
-        
+
         try {
             const item = await AssetModel.findById(assetId);
 
@@ -254,14 +345,14 @@ export class LanguageAssetsController extends Controller {
 
             const ref = await riseRefVersion(RefTypes.ASSETS);
             return {
-                meta: { 
+                meta: {
                     asset: {
                         ref,
                     },
                     language: {
                         ref: languageRef,
                     },
-                 },
+                },
                 data: {
                     asset: formatAssetModel(item),
                     language: formatLanguageModel(language),

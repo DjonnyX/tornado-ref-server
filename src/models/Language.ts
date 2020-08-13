@@ -4,11 +4,9 @@ import { Schema, Document } from "mongoose";
 interface ILanguage extends Document {
     active: boolean;
     name: string;
-    color: string;
     assets: Array<string>;
     images: {
         main: string;
-        icon: string;
     };
     translation: string;
     extra?: { [key: string]: any } | null;
@@ -17,11 +15,9 @@ interface ILanguage extends Document {
 const LanguageSchema = new Schema({
     active: { type: Schema.Types.Boolean, required: true, default: true },
     name: { type: Schema.Types.String, required: true },
-    color: { type: Schema.Types.String, required: true, default: "rgba(255, 255, 255, 0)" },
     assets: [{ type: Schema.Types.ObjectId, required: true }],
     images: {
         main: { type: Schema.Types.ObjectId, required: false },
-        icon: { type: Schema.Types.ObjectId, required: false },
     },
     translation: { type: Schema.Types.ObjectId, required: true },
     extra: { type: Schema.Types.Mixed, required: false },
