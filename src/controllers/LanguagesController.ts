@@ -8,7 +8,6 @@ export interface ILanguageItem {
     id: string;
     active: boolean;
     name: string;
-    description?: string;
     color?: string;
     assets?: Array<string>;
     images?: {
@@ -48,7 +47,6 @@ interface LanguageResponse {
 interface LanguageCreateRequest {
     active?: boolean;
     name: string;
-    description?: string;
     color?: string;
     assets?: Array<string>;
     images?: {
@@ -62,7 +60,6 @@ interface LanguageCreateRequest {
 interface LanguageUpdateRequest {
     active?: boolean;
     name?: string;
-    description?: string;
     color?: string;
     assets?: Array<string>;
     images?: {
@@ -77,7 +74,6 @@ export const LANGUAGE_RESPONSE_TEMPLATE: ILanguageItem = {
     id: "507c7f79bcf86cd7994f6c0e",
     active: true,
     name: "Rus",
-    description: "Русский",
     color: "#000000",
     assets: [
         "g8h07f79bcf86cd7994f9d7k",

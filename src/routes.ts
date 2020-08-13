@@ -406,7 +406,6 @@ const models: TsoaRoute.Models = {
             "id": { "dataType": "string", "required": true },
             "active": { "dataType": "boolean", "required": true },
             "name": { "dataType": "string", "required": true },
-            "description": { "dataType": "string" },
             "color": { "dataType": "string" },
             "assets": { "dataType": "array", "array": { "dataType": "string" } },
             "images": { "dataType": "nestedObjectLiteral", "nestedProperties": { "icon": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }] }, "main": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }] } } },
@@ -441,7 +440,6 @@ const models: TsoaRoute.Models = {
         "properties": {
             "active": { "dataType": "boolean" },
             "name": { "dataType": "string", "required": true },
-            "description": { "dataType": "string" },
             "color": { "dataType": "string" },
             "assets": { "dataType": "array", "array": { "dataType": "string" } },
             "images": { "dataType": "nestedObjectLiteral", "nestedProperties": { "icon": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }] }, "main": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }] } } },
@@ -456,7 +454,6 @@ const models: TsoaRoute.Models = {
         "properties": {
             "active": { "dataType": "boolean" },
             "name": { "dataType": "string" },
-            "description": { "dataType": "string" },
             "color": { "dataType": "string" },
             "assets": { "dataType": "array", "array": { "dataType": "string" } },
             "images": { "dataType": "nestedObjectLiteral", "nestedProperties": { "icon": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }] }, "main": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }] } } },

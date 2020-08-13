@@ -1004,9 +1004,6 @@
 					"name": {
 						"type": "string"
 					},
-					"description": {
-						"type": "string"
-					},
 					"color": {
 						"type": "string"
 					},
@@ -1123,9 +1120,6 @@
 					"name": {
 						"type": "string"
 					},
-					"description": {
-						"type": "string"
-					},
 					"color": {
 						"type": "string"
 					},
@@ -1173,9 +1167,6 @@
 						"type": "boolean"
 					},
 					"name": {
-						"type": "string"
-					},
-					"description": {
 						"type": "string"
 					},
 					"color": {
@@ -4541,7 +4532,6 @@
 													"id": "507c7f79bcf86cd7994f6c0e",
 													"active": true,
 													"name": "Rus",
-													"description": "Русский",
 													"color": "#000000",
 													"assets": [
 														"g8h07f79bcf86cd7994f9d7k"
@@ -4602,7 +4592,6 @@
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"active": true,
 												"name": "Rus",
-												"description": "Русский",
 												"color": "#000000",
 												"assets": [
 													"g8h07f79bcf86cd7994f9d7k"
@@ -4669,7 +4658,6 @@
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"active": true,
 												"name": "Rus",
-												"description": "Русский",
 												"color": "#000000",
 												"assets": [
 													"g8h07f79bcf86cd7994f9d7k"
@@ -4791,7 +4779,6 @@
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"active": true,
 												"name": "Rus",
-												"description": "Русский",
 												"color": "#000000",
 												"assets": [
 													"g8h07f79bcf86cd7994f9d7k"
