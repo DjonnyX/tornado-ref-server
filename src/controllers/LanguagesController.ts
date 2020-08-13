@@ -12,7 +12,7 @@ export interface ILanguageItem {
     color?: string;
     assets?: Array<string>;
     images?: {
-        original?: string | null;
+        main?: string | null;
         icon?: string | null;
     };
     translation?: string | null;
@@ -83,7 +83,7 @@ export const LANGUAGE_RESPONSE_TEMPLATE: ILanguageItem = {
         "g8h07f79bcf86cd7994f9d7k",
     ],
     images: {
-        original: "g8h07f79bcf86cd7994f9d7k",
+        main: "g8h07f79bcf86cd7994f9d7k",
         icon: "g8h07f79bcf86cd7994f9d7k",
     },
     translation: "409c7f79bcf86cd7994f6g1t",
