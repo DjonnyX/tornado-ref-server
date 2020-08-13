@@ -52,6 +52,10 @@ const RESPONSE_TEMPLATE: Array<IRefItem> = [
         name: RefTypes.BUSINESS_PERIODS,
         version: 3,
         lastUpdate: 1589885721
+    }, {
+        name: RefTypes.ADS,
+        version: 3,
+        lastUpdate: 1589885721
     }
 ];
 

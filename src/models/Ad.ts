@@ -1,22 +1,30 @@
 import * as mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
 
-interface ITag extends Document {
+interface IAd extends Document {
     active: boolean;
     name: string;
     description?: string;
     color: string;
+    assets: Array<string>;
+    images: {
+        main: string;
+    }
     extra?: { [key: string]: any } | null;
 }
 
-const TagSchema = new Schema({
-    active: { type: Schema.Types.Boolean, required: true, default: true },
+const AdSchema = new Schema({
+    active: { type: Schema.Types.Boolean, required: true },
     name: { type: Schema.Types.String, required: true },
     description: { type: Schema.Types.String },
     color: { type: Schema.Types.String, required: true, default: "rgba(255, 255, 255, 0)" },
+    assets: [{ type: Schema.Types.ObjectId, required: true }],
+    images: {
+        main: { type: Schema.Types.ObjectId, required: false },
+    },
     extra: { type: Schema.Types.Mixed, required: false },
 });
 
-const TagModel = mongoose.model<ITag>("Tag", TagSchema);
+const AdModel = mongoose.model<IAd>("Ad", AdSchema);
 
-export { TagModel, ITag };
+export { AdModel, IAd };

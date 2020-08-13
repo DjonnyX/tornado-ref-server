@@ -7,6 +7,8 @@ import { ISelector, SelectorModel } from "./Selector";
 import { IBusinessPeriod, BusinessPeriodModel, ISchedule } from "./BusinessPeriod";
 import { RefTypes } from "./enums";
 import { ICurrency, CurrencyModel } from "./Currency";
+import { IOrderType, OrderTypeModel } from "./OrderTypes";
+import { IAd, AdModel } from "./Ad";
 import { ILanguage, LanguageModel } from "./Language";
 import { ITranslate, ITranslation, TranslationModel } from "./Translation";
 
@@ -21,6 +23,8 @@ export {
     TagModel, ITag,
     IBusinessPeriod, BusinessPeriodModel, ISchedule,
     RefModel, IRef, RefTypes,
+    OrderTypeModel, IOrderType,
+    IAd, AdModel,
     ILanguage, LanguageModel,
     ITranslate, ITranslation, TranslationModel,
 };

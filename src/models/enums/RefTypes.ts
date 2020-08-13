@@ -4,10 +4,12 @@ export enum RefTypes {
     SELECTORS = "selectors",
     PRODUCTS = "products",
     CURRENCIES = "currencies",
+    ORDER_TYPES = "order-types",
     NODES = "nodes",
     USERS = "users",
     TAGS = "tags",
     BUSINESS_PERIODS = "business-periods",
+    ADS = "ads",
     LANGUAGES = "languages",
     TRANSLATION = "translation",
 }
