@@ -1,11 +1,16 @@
-import { RefTypes, ITranslation, TranslationModel } from "../models/index";
+import { RefTypes, TranslationModel, ITranslate } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
+import { formatTranslationModel } from "../utils/translation";
+
+interface ITranslateItem {
+    key: string;
+    value?: string;
+}
 
 interface ITranslationItem {
     id: string;
-    key: string;
-    value: string;
+    items: Array<ITranslateItem>;
     extra?: { [key: string]: any } | null;
 }
 
@@ -35,32 +40,23 @@ interface TranslationResponse {
     }>;
 }
 
-interface TranslationCreateRequest {
-    active?: boolean;
-    name: string;
-    description?: string;
-    color?: string;
-    assets?: Array<string>;
-    images?: {
-        main?: string | null;
-        icon?: string | null;
-    };
+/*interface TranslationCreateRequest {
+    extra?: { [key: string]: any } | null;
+}*/
+
+interface TranslationUpdateRequest {
+    items?: Array<ITranslate>;
     extra?: { [key: string]: any } | null;
 }
 
 const RESPONSE_TEMPLATE: ITranslationItem = {
     id: "507c7f79bcf86cd7994f6c0e",
-    key: "take-away",
-    value: "Взять с собой",
+    items: [{
+        key: "take-away",
+        value: "Взять с собой",
+    }],
     extra: { key: "value" },
 };
-
-const formatModel = (model: ITranslation) => ({
-    id: model._id,
-    key: model.key,
-    value: model.value,
-    extra: model.extra,
-});
 
 const META_TEMPLATE: TranslationMeta = {
     ref: {
@@ -87,7 +83,7 @@ export class TranslationsController extends Controller {
             const ref = await getRef(RefTypes.TRANSLATION);
             return {
                 meta: { ref },
-                data: items.map(v => formatModel(v)),
+                data: items.map(v => formatTranslationModel(v)),
             };
         } catch (err) {
             this.setStatus(500);
@@ -120,7 +116,7 @@ export class TranslationController extends Controller {
             const ref = await getRef(RefTypes.TRANSLATION);
             return {
                 meta: { ref },
-                data: formatModel(item),
+                data: formatTranslationModel(item),
             };
         } catch (err) {
             this.setStatus(500);
@@ -135,7 +131,7 @@ export class TranslationController extends Controller {
         }
     }
 
-    @Post()
+    /*@Post()
     @Security("jwt")
     @OperationId("Create")
     @Example<TranslationResponse>({
@@ -149,7 +145,7 @@ export class TranslationController extends Controller {
             const ref = await riseRefVersion(RefTypes.TRANSLATION);
             return {
                 meta: { ref },
-                data: formatModel(savedItem),
+                data: formatTranslationModel(savedItem),
             };
         } catch (err) {
             this.setStatus(500);
@@ -162,7 +158,7 @@ export class TranslationController extends Controller {
                 ]
             };
         }
-    }
+    }*/
 
     @Put("{id}")
     @Security("jwt")
@@ -171,7 +167,7 @@ export class TranslationController extends Controller {
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
-    public async update(id: string, @Body() request: TranslationCreateRequest): Promise<TranslationResponse> {
+    public async update(id: string, @Body() request: TranslationUpdateRequest): Promise<TranslationResponse> {
         try {
             const item = await TranslationModel.findById(id);
 
@@ -184,7 +180,7 @@ export class TranslationController extends Controller {
             const ref = await riseRefVersion(RefTypes.TRANSLATION);
             return {
                 meta: { ref },
-                data: formatModel(item),
+                data: formatTranslationModel(item),
             };
         } catch (err) {
             this.setStatus(500);

@@ -1022,12 +1022,16 @@
 								"type": "string",
 								"nullable": true
 							},
-							"main": {
+							"original": {
 								"type": "string",
 								"nullable": true
 							}
 						},
 						"type": "object"
+					},
+					"translation": {
+						"type": "string",
+						"nullable": true
 					},
 					"extra": {
 						"properties": {},
@@ -1156,6 +1160,51 @@
 				"required": [
 					"name"
 				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"LanguageUpdateRequest": {
+				"properties": {
+					"active": {
+						"type": "boolean"
+					},
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"color": {
+						"type": "string"
+					},
+					"assets": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"images": {
+						"properties": {
+							"icon": {
+								"type": "string",
+								"nullable": true
+							},
+							"main": {
+								"type": "string",
+								"nullable": true
+							}
+						},
+						"type": "object"
+					},
+					"extra": {
+						"properties": {},
+						"additionalProperties": {
+							"additionalProperties": true
+						},
+						"type": "object",
+						"nullable": true
+					}
+				},
 				"type": "object",
 				"additionalProperties": false
 			},
@@ -2878,16 +2927,31 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"ITranslationItem": {
+			"ITranslateItem": {
 				"properties": {
-					"id": {
-						"type": "string"
-					},
 					"key": {
 						"type": "string"
 					},
 					"value": {
 						"type": "string"
+					}
+				},
+				"required": [
+					"key"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ITranslationItem": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"items": {
+						"items": {
+							"$ref": "#/components/schemas/ITranslateItem"
+						},
+						"type": "array"
 					},
 					"extra": {
 						"properties": {},
@@ -2900,8 +2964,7 @@
 				},
 				"required": [
 					"id",
-					"key",
-					"value"
+					"items"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -2971,38 +3034,16 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"TranslationCreateRequest": {
+			"ITranslate": {
+				"additionalProperties": true
+			},
+			"TranslationUpdateRequest": {
 				"properties": {
-					"active": {
-						"type": "boolean"
-					},
-					"name": {
-						"type": "string"
-					},
-					"description": {
-						"type": "string"
-					},
-					"color": {
-						"type": "string"
-					},
-					"assets": {
+					"items": {
 						"items": {
-							"type": "string"
+							"$ref": "#/components/schemas/ITranslate"
 						},
 						"type": "array"
-					},
-					"images": {
-						"properties": {
-							"icon": {
-								"type": "string",
-								"nullable": true
-							},
-							"main": {
-								"type": "string",
-								"nullable": true
-							}
-						},
-						"type": "object"
 					},
 					"extra": {
 						"properties": {},
@@ -3013,9 +3054,6 @@
 						"nullable": true
 					}
 				},
-				"required": [
-					"name"
-				],
 				"type": "object",
 				"additionalProperties": false
 			}
@@ -4270,9 +4308,10 @@
 														"g8h07f79bcf86cd7994f9d7k"
 													],
 													"images": {
-														"main": "g8h07f79bcf86cd7994f9d7k",
+														"original": "g8h07f79bcf86cd7994f9d7k",
 														"icon": "g8h07f79bcf86cd7994f9d7k"
 													},
+													"translation": "409c7f79bcf86cd7994f6g1t",
 													"extra": {
 														"key": "value"
 													}
@@ -4330,9 +4369,10 @@
 													"g8h07f79bcf86cd7994f9d7k"
 												],
 												"images": {
-													"main": "g8h07f79bcf86cd7994f9d7k",
+													"original": "g8h07f79bcf86cd7994f9d7k",
 													"icon": "g8h07f79bcf86cd7994f9d7k"
 												},
+												"translation": "409c7f79bcf86cd7994f6g1t",
 												"extra": {
 													"key": "value"
 												}
@@ -4396,9 +4436,10 @@
 													"g8h07f79bcf86cd7994f9d7k"
 												],
 												"images": {
-													"main": "g8h07f79bcf86cd7994f9d7k",
+													"original": "g8h07f79bcf86cd7994f9d7k",
 													"icon": "g8h07f79bcf86cd7994f9d7k"
 												},
+												"translation": "409c7f79bcf86cd7994f6g1t",
 												"extra": {
 													"key": "value"
 												}
@@ -4434,7 +4475,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/LanguageCreateRequest"
+								"$ref": "#/components/schemas/LanguageUpdateRequest"
 							}
 						}
 					}
@@ -4517,9 +4558,10 @@
 													"g8h07f79bcf86cd7994f9d7k"
 												],
 												"images": {
-													"main": "g8h07f79bcf86cd7994f9d7k",
+													"original": "g8h07f79bcf86cd7994f9d7k",
 													"icon": "g8h07f79bcf86cd7994f9d7k"
 												},
+												"translation": "409c7f79bcf86cd7994f6g1t",
 												"extra": {
 													"key": "value"
 												}
@@ -6636,8 +6678,12 @@
 											"data": [
 												{
 													"id": "507c7f79bcf86cd7994f6c0e",
-													"key": "take-away",
-													"value": "Взять с собой",
+													"items": [
+														{
+															"key": "take-away",
+															"value": "Взять с собой"
+														}
+													],
 													"extra": {
 														"key": "value"
 													}
@@ -6687,8 +6733,12 @@
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
-												"key": "take-away",
-												"value": "Взять с собой",
+												"items": [
+													{
+														"key": "take-away",
+														"value": "Взять с собой"
+													}
+												],
 												"extra": {
 													"key": "value"
 												}
@@ -6744,8 +6794,12 @@
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
-												"key": "take-away",
-												"value": "Взять с собой",
+												"items": [
+													{
+														"key": "take-away",
+														"value": "Взять с собой"
+													}
+												],
 												"extra": {
 													"key": "value"
 												}
@@ -6781,7 +6835,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/TranslationCreateRequest"
+								"$ref": "#/components/schemas/TranslationUpdateRequest"
 							}
 						}
 					}
@@ -6832,63 +6886,6 @@
 						}
 					}
 				]
-			}
-		},
-		"/translation": {
-			"post": {
-				"operationId": "Create",
-				"responses": {
-					"200": {
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/TranslationResponse"
-								},
-								"examples": {
-									"example": {
-										"value": {
-											"meta": {
-												"ref": {
-													"name": "translation",
-													"version": 1,
-													"lastUpdate": 1589885721
-												}
-											},
-											"data": {
-												"id": "507c7f79bcf86cd7994f6c0e",
-												"key": "take-away",
-												"value": "Взять с собой",
-												"extra": {
-													"key": "value"
-												}
-											}
-										}
-									}
-								}
-							}
-						},
-						"description": "Ok"
-					}
-				},
-				"tags": [
-					"Translation"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/TranslationCreateRequest"
-							}
-						}
-					}
-				}
 			}
 		}
 	},
