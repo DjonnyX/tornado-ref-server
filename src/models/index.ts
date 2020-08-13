@@ -10,7 +10,7 @@ import { ICurrency, CurrencyModel } from "./Currency";
 import { IOrderType, OrderTypeModel } from "./OrderTypes";
 import { IAd, AdModel } from "./Ad";
 import { ILanguage, LanguageModel } from "./Language";
-import { ITranslation, TranslationModel } from "./Translation";
+import { ITranslate, ITranslation, TranslationModel } from "./Translation";
 
 export {
     UserModel, IUser, hashPassword, checkIfUnencryptedPasswordIsValid,
@@ -26,5 +26,5 @@ export {
     OrderTypeModel, IOrderType,
     IAd, AdModel,
     ILanguage, LanguageModel,
-    ITranslation, TranslationModel,
+    ITranslate, ITranslation, TranslationModel,
 };

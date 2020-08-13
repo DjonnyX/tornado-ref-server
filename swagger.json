@@ -1225,12 +1225,6 @@
 					"name": {
 						"type": "string"
 					},
-					"description": {
-						"type": "string"
-					},
-					"color": {
-						"type": "string"
-					},
 					"assets": {
 						"items": {
 							"type": "string"
@@ -1239,10 +1233,6 @@
 					},
 					"images": {
 						"properties": {
-							"icon": {
-								"type": "string",
-								"nullable": true
-							},
 							"main": {
 								"type": "string",
 								"nullable": true
@@ -1266,8 +1256,7 @@
 				"required": [
 					"id",
 					"active",
-					"name",
-					"translation"
+					"name"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -1345,12 +1334,6 @@
 					"name": {
 						"type": "string"
 					},
-					"description": {
-						"type": "string"
-					},
-					"color": {
-						"type": "string"
-					},
 					"assets": {
 						"items": {
 							"type": "string"
@@ -1359,10 +1342,6 @@
 					},
 					"images": {
 						"properties": {
-							"icon": {
-								"type": "string",
-								"nullable": true
-							},
 							"main": {
 								"type": "string",
 								"nullable": true
@@ -1386,6 +1365,282 @@
 				"required": [
 					"name"
 				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"LanguageUpdateRequest": {
+				"properties": {
+					"active": {
+						"type": "boolean"
+					},
+					"name": {
+						"type": "string"
+					},
+					"assets": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"images": {
+						"properties": {
+							"main": {
+								"type": "string",
+								"nullable": true
+							}
+						},
+						"type": "object"
+					},
+					"translation": {
+						"type": "string",
+						"nullable": true
+					},
+					"extra": {
+						"properties": {},
+						"additionalProperties": {
+							"additionalProperties": true
+						},
+						"type": "object",
+						"nullable": true
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ILanguageAsset": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"active": {
+						"type": "boolean"
+					},
+					"lastupdate": {
+						"type": "number",
+						"format": "double"
+					},
+					"name": {
+						"type": "string"
+					},
+					"ext": {
+						"$ref": "#/components/schemas/AssetExtensions"
+					},
+					"path": {
+						"type": "string"
+					},
+					"mipmap": {
+						"properties": {
+							"x32": {
+								"type": "string"
+							},
+							"x128": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"x32",
+							"x128"
+						],
+						"type": "object"
+					}
+				},
+				"required": [
+					"id",
+					"active",
+					"lastupdate",
+					"name",
+					"ext",
+					"path",
+					"mipmap"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ILanguageGetAssetsResponse": {
+				"properties": {
+					"meta": {
+						"properties": {},
+						"type": "object"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/ILanguageAsset"
+						},
+						"type": "array"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ILanguageCreateAssetsResponse": {
+				"properties": {
+					"meta": {
+						"properties": {
+							"asset": {
+								"properties": {
+									"ref": {
+										"$ref": "#/components/schemas/IRefItem"
+									}
+								},
+								"required": [
+									"ref"
+								],
+								"type": "object"
+							},
+							"language": {
+								"properties": {
+									"ref": {
+										"$ref": "#/components/schemas/IRefItem"
+									}
+								},
+								"required": [
+									"ref"
+								],
+								"type": "object"
+							}
+						},
+						"required": [
+							"asset",
+							"language"
+						],
+						"type": "object"
+					},
+					"data": {
+						"properties": {
+							"language": {
+								"$ref": "#/components/schemas/ILanguageItem"
+							},
+							"asset": {
+								"$ref": "#/components/schemas/ILanguageAsset"
+							}
+						},
+						"required": [
+							"language",
+							"asset"
+						],
+						"type": "object"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"LanguageImageTypes": {
+				"enum": [
+					"main"
+				],
+				"type": "string"
+			},
+			"ILanguageUpdateAssetsRequest": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"active": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"name",
+					"active"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ILanguageDeleteAssetsResponse": {
+				"properties": {
+					"meta": {
+						"properties": {
+							"asset": {
+								"properties": {
+									"ref": {
+										"$ref": "#/components/schemas/IRefItem"
+									}
+								},
+								"required": [
+									"ref"
+								],
+								"type": "object"
+							},
+							"language": {
+								"properties": {
+									"ref": {
+										"$ref": "#/components/schemas/IRefItem"
+									}
+								},
+								"required": [
+									"ref"
+								],
+								"type": "object"
+							}
+						},
+						"required": [
+							"asset",
+							"language"
+						],
+						"type": "object"
+					},
+					"data": {
+						"properties": {},
+						"type": "object"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
 				"type": "object",
 				"additionalProperties": false
 			},
@@ -2154,6 +2409,13 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"OrderTypeImageTypes": {
+				"enum": [
+					"main",
+					"icon"
+				],
+				"type": "string"
+			},
 			"IOrderTypeAssetUpdateRequest": {
 				"properties": {
 					"active": {
@@ -2757,6 +3019,14 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"ProductImageTypes": {
+				"enum": [
+					"main",
+					"thumbnail",
+					"icon"
+				],
+				"type": "string"
+			},
 			"IProductAssetUpdateRequest": {
 				"properties": {
 					"active": {
@@ -3278,6 +3548,14 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"SelectorImageTypes": {
+				"enum": [
+					"main",
+					"thumbnail",
+					"icon"
+				],
+				"type": "string"
+			},
 			"ISelectorUpdateAssetsRequest": {
 				"properties": {
 					"name": {
@@ -3545,16 +3823,31 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"ITranslationItem": {
+			"ITranslateItem": {
 				"properties": {
-					"id": {
-						"type": "string"
-					},
 					"key": {
 						"type": "string"
 					},
 					"value": {
 						"type": "string"
+					}
+				},
+				"required": [
+					"key"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ITranslationItem": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"items": {
+						"items": {
+							"$ref": "#/components/schemas/ITranslateItem"
+						},
+						"type": "array"
 					},
 					"extra": {
 						"properties": {},
@@ -3567,8 +3860,7 @@
 				},
 				"required": [
 					"id",
-					"key",
-					"value"
+					"items"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -3638,16 +3930,16 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"TranslationCreateRequest": {
+			"ITranslate": {
+				"additionalProperties": true
+			},
+			"TranslationUpdateRequest": {
 				"properties": {
-					"active": {
-						"type": "boolean"
-					},
-					"key": {
-						"type": "string"
-					},
-					"value": {
-						"type": "string"
+					"items": {
+						"items": {
+							"$ref": "#/components/schemas/ITranslate"
+						},
+						"type": "array"
 					},
 					"extra": {
 						"properties": {},
@@ -3658,10 +3950,6 @@
 						"nullable": true
 					}
 				},
-				"required": [
-					"key",
-					"value"
-				],
 				"type": "object",
 				"additionalProperties": false
 			}
@@ -5229,14 +5517,11 @@
 													"id": "507c7f79bcf86cd7994f6c0e",
 													"active": true,
 													"name": "Rus",
-													"description": "Русский",
-													"color": "#000000",
 													"assets": [
 														"g8h07f79bcf86cd7994f9d7k"
 													],
 													"images": {
-														"main": "g8h07f79bcf86cd7994f9d7k",
-														"icon": "g8h07f79bcf86cd7994f9d7k"
+														"main": "g8h07f79bcf86cd7994f9d7k"
 													},
 													"translation": "409c7f79bcf86cd7994f6g1t",
 													"extra": {
@@ -5290,14 +5575,11 @@
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"active": true,
 												"name": "Rus",
-												"description": "Русский",
-												"color": "#000000",
 												"assets": [
 													"g8h07f79bcf86cd7994f9d7k"
 												],
 												"images": {
-													"main": "g8h07f79bcf86cd7994f9d7k",
-													"icon": "g8h07f79bcf86cd7994f9d7k"
+													"main": "g8h07f79bcf86cd7994f9d7k"
 												},
 												"translation": "409c7f79bcf86cd7994f6g1t",
 												"extra": {
@@ -5357,14 +5639,11 @@
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"active": true,
 												"name": "Rus",
-												"description": "Русский",
-												"color": "#000000",
 												"assets": [
 													"g8h07f79bcf86cd7994f9d7k"
 												],
 												"images": {
-													"main": "g8h07f79bcf86cd7994f9d7k",
-													"icon": "g8h07f79bcf86cd7994f9d7k"
+													"main": "g8h07f79bcf86cd7994f9d7k"
 												},
 												"translation": "409c7f79bcf86cd7994f6g1t",
 												"extra": {
@@ -5402,7 +5681,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/LanguageCreateRequest"
+								"$ref": "#/components/schemas/LanguageUpdateRequest"
 							}
 						}
 					}
@@ -5479,14 +5758,11 @@
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"active": true,
 												"name": "Rus",
-												"description": "Русский",
-												"color": "#000000",
 												"assets": [
 													"g8h07f79bcf86cd7994f9d7k"
 												],
 												"images": {
-													"main": "g8h07f79bcf86cd7994f9d7k",
-													"icon": "g8h07f79bcf86cd7994f9d7k"
+													"main": "g8h07f79bcf86cd7994f9d7k"
 												},
 												"translation": "409c7f79bcf86cd7994f6g1t",
 												"extra": {
@@ -5520,6 +5796,382 @@
 						}
 					}
 				}
+			}
+		},
+		"/language/{languageId}/assets": {
+			"get": {
+				"operationId": "Get",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ILanguageGetAssetsResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"language": {
+													"ref": {
+														"name": "languages",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												},
+												"asset": {
+													"ref": {
+														"name": "assets",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												}
+											},
+											"data": [
+												{
+													"id": "107c7f79bcf86cd7994f6c0e",
+													"active": true,
+													"lastupdate": 1589885721,
+													"name": "some_3d_model",
+													"ext": ".fbx",
+													"mipmap": {
+														"x128": "assets/some_3d_model_128x128.png",
+														"x32": "assets/favicon.png"
+													},
+													"path": "assets/some_3d_model.fbx"
+												}
+											]
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Language assets"
+				],
+				"security": [
+					{
+						"jwt": []
+					},
+					{
+						"apiKey": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "languageId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/language/{languageId}/asset": {
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ILanguageCreateAssetsResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"language": {
+													"ref": {
+														"name": "languages",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												},
+												"asset": {
+													"ref": {
+														"name": "assets",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												}
+											},
+											"data": {
+												"asset": {
+													"id": "107c7f79bcf86cd7994f6c0e",
+													"active": true,
+													"lastupdate": 1589885721,
+													"name": "some_3d_model",
+													"ext": ".fbx",
+													"mipmap": {
+														"x128": "assets/some_3d_model_128x128.png",
+														"x32": "assets/favicon.png"
+													},
+													"path": "assets/some_3d_model.fbx"
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Language assets"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "languageId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/language/{languageId}/image/{imageType}": {
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ILanguageCreateAssetsResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"language": {
+													"ref": {
+														"name": "languages",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												},
+												"asset": {
+													"ref": {
+														"name": "assets",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												}
+											},
+											"data": {
+												"asset": {
+													"id": "107c7f79bcf86cd7994f6c0e",
+													"active": true,
+													"lastupdate": 1589885721,
+													"name": "some_3d_model",
+													"ext": ".fbx",
+													"mipmap": {
+														"x128": "assets/some_3d_model_128x128.png",
+														"x32": "assets/favicon.png"
+													},
+													"path": "assets/some_3d_model.fbx"
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Language assets"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "languageId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "imageType",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/LanguageImageTypes"
+						}
+					}
+				]
+			}
+		},
+		"/language/{languageId}/asset/{assetId}": {
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ILanguageCreateAssetsResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"language": {
+													"ref": {
+														"name": "languages",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												},
+												"asset": {
+													"ref": {
+														"name": "assets",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												}
+											},
+											"data": {
+												"asset": {
+													"id": "107c7f79bcf86cd7994f6c0e",
+													"active": true,
+													"lastupdate": 1589885721,
+													"name": "some_3d_model",
+													"ext": ".fbx",
+													"mipmap": {
+														"x128": "assets/some_3d_model_128x128.png",
+														"x32": "assets/favicon.png"
+													},
+													"path": "assets/some_3d_model.fbx"
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Language assets"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "languageId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "assetId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ILanguageUpdateAssetsRequest"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "Delete",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ILanguageDeleteAssetsResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"language": {
+													"ref": {
+														"name": "languages",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												},
+												"asset": {
+													"ref": {
+														"name": "assets",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Language assets"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "languageId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "assetId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		},
 		"/root-nodes": {
@@ -6424,6 +7076,85 @@
 				]
 			}
 		},
+		"/order-type/{orderTypeId}/image/{imageType}": {
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IOrderTypeCreateAssetsResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"orderType": {
+													"ref": {
+														"name": "products",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												},
+												"asset": {
+													"ref": {
+														"name": "assets",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												}
+											},
+											"data": {
+												"asset": {
+													"id": "107c7f79bcf86cd7994f6c0e",
+													"active": true,
+													"lastupdate": 1589885721,
+													"name": "some_3d_model",
+													"ext": ".fbx",
+													"mipmap": {
+														"x128": "assets/some_3d_model_128x128.png",
+														"x32": "assets/favicon.png"
+													},
+													"path": "assets/some_3d_model.fbx"
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"OrderType assets"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "orderTypeId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "imageType",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/OrderTypeImageTypes"
+						}
+					}
+				]
+			}
+		},
 		"/order-type/{orderTypeId}/asset/{assetId}": {
 			"put": {
 				"operationId": "Update",
@@ -7131,6 +7862,85 @@
 				]
 			}
 		},
+		"/product/{productId}/image/{imageType}": {
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IProductCreateAssetsResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"product": {
+													"ref": {
+														"name": "products",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												},
+												"asset": {
+													"ref": {
+														"name": "assets",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												}
+											},
+											"data": {
+												"asset": {
+													"id": "107c7f79bcf86cd7994f6c0e",
+													"active": true,
+													"lastupdate": 1589885721,
+													"name": "some_3d_model",
+													"ext": ".fbx",
+													"mipmap": {
+														"x128": "assets/some_3d_model_128x128.png",
+														"x32": "assets/favicon.png"
+													},
+													"path": "assets/some_3d_model.fbx"
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Product assets"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "productId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "imageType",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/ProductImageTypes"
+						}
+					}
+				]
+			}
+		},
 		"/product/{productId}/asset/{assetId}": {
 			"put": {
 				"operationId": "Update",
@@ -7759,6 +8569,85 @@
 				]
 			}
 		},
+		"/selector/{selectorId}/image/{imageType}": {
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ISelectorCreateAssetsResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"selector": {
+													"ref": {
+														"name": "selectors",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												},
+												"asset": {
+													"ref": {
+														"name": "assets",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												}
+											},
+											"data": {
+												"asset": {
+													"id": "107c7f79bcf86cd7994f6c0e",
+													"active": true,
+													"lastupdate": 1589885721,
+													"name": "some_3d_model",
+													"ext": ".fbx",
+													"mipmap": {
+														"x128": "assets/some_3d_model_128x128.png",
+														"x32": "assets/favicon.png"
+													},
+													"path": "assets/some_3d_model.fbx"
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Selector assets"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "selectorId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "imageType",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/SelectorImageTypes"
+						}
+					}
+				]
+			}
+		},
 		"/selector/{selectorId}/asset/{assetId}": {
 			"put": {
 				"operationId": "Update",
@@ -8220,8 +9109,12 @@
 											"data": [
 												{
 													"id": "507c7f79bcf86cd7994f6c0e",
-													"key": "take-away",
-													"value": "Взять с собой",
+													"items": [
+														{
+															"key": "take-away",
+															"value": "Взять с собой"
+														}
+													],
 													"extra": {
 														"key": "value"
 													}
@@ -8271,8 +9164,12 @@
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
-												"key": "take-away",
-												"value": "Взять с собой",
+												"items": [
+													{
+														"key": "take-away",
+														"value": "Взять с собой"
+													}
+												],
 												"extra": {
 													"key": "value"
 												}
@@ -8328,8 +9225,12 @@
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
-												"key": "take-away",
-												"value": "Взять с собой",
+												"items": [
+													{
+														"key": "take-away",
+														"value": "Взять с собой"
+													}
+												],
 												"extra": {
 													"key": "value"
 												}
@@ -8365,7 +9266,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/TranslationCreateRequest"
+								"$ref": "#/components/schemas/TranslationUpdateRequest"
 							}
 						}
 					}
@@ -8416,63 +9317,6 @@
 						}
 					}
 				]
-			}
-		},
-		"/translation": {
-			"post": {
-				"operationId": "Create",
-				"responses": {
-					"200": {
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/TranslationResponse"
-								},
-								"examples": {
-									"example": {
-										"value": {
-											"meta": {
-												"ref": {
-													"name": "translation",
-													"version": 1,
-													"lastUpdate": 1589885721
-												}
-											},
-											"data": {
-												"id": "507c7f79bcf86cd7994f6c0e",
-												"key": "take-away",
-												"value": "Взять с собой",
-												"extra": {
-													"key": "value"
-												}
-											}
-										}
-									}
-								}
-							}
-						},
-						"description": "Ok"
-					}
-				},
-				"tags": [
-					"Translation"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/TranslationCreateRequest"
-							}
-						}
-					}
-				}
 			}
 		}
 	},

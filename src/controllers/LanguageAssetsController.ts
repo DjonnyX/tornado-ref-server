@@ -1,30 +1,30 @@
 import * as express from "express";
-import { ProductModel, IProduct, RefTypes } from "../models/index";
+import { RefTypes, ILanguage, LanguageModel } from "../models/index";
 import { Controller, Route, Post, Tags, OperationId, Example, Request, Security, Get, Delete, Body, Put } from "tsoa";
 import { riseRefVersion, getRef } from "../db/refs";
 import { AssetExtensions } from "../models/enums";
-import { IProductItem, RESPONSE_TEMPLATE as PRODUCT_RESPONSE_TEMPLATE } from "./ProductsController";
-import { formatProductModel } from "../utils/product";
 import { IRefItem } from "./RefsController";
 import { uploadAsset, deleteAsset, IAssetItem } from "./AssetsController";
 import { AssetModel } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
+import { ILanguageItem, LANGUAGE_RESPONSE_TEMPLATE } from "./LanguagesController";
+import { formatLanguageModel } from "../utils/language";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IProductAsset extends IAssetItem { }
+interface ILanguageAsset extends IAssetItem { }
 
-interface IProductGetAssetsResponse {
+interface ILanguageGetAssetsResponse {
     meta?: {};
-    data?: Array<IProductAsset>;
+    data?: Array<ILanguageAsset>;
     error?: Array<{
         code: number;
         message: string;
     }>;
 }
 
-interface IProductCreateAssetsResponse {
+interface ILanguageCreateAssetsResponse {
     meta?: {
-        product: {
+        language: {
             ref: IRefItem;
         };
         asset: {
@@ -32,8 +32,8 @@ interface IProductCreateAssetsResponse {
         };
     };
     data?: {
-        asset: IProductAsset;
-        product: IProductItem;
+        asset: ILanguageAsset;
+        language: ILanguageItem;
     };
     error?: Array<{
         code: number;
@@ -41,9 +41,9 @@ interface IProductCreateAssetsResponse {
     }>;
 }
 
-interface IProductDeleteAssetsResponse {
+interface ILanguageDeleteAssetsResponse {
     meta?: {
-        product: {
+        language: {
             ref: IRefItem;
         };
         asset: {
@@ -57,21 +57,19 @@ interface IProductDeleteAssetsResponse {
     }>;
 }
 
-interface IProductAssetUpdateRequest {
-    active: boolean;
+interface ILanguageUpdateAssetsRequest {
     name: string;
+    active: boolean;
 }
 
-export enum ProductImageTypes {
+export enum LanguageImageTypes {
     MAIN = "main",
-    THUMBNAIL = "thumbnail",
-    ICON = "icon",
 }
 
 const META_TEMPLATE = {
-    product: {
+    language: {
         ref: {
-            name: RefTypes.PRODUCTS,
+            name: RefTypes.LANGUAGES,
             version: 1,
             lastUpdate: 1589885721,
         },
@@ -98,35 +96,35 @@ const RESPONSE_TEMPLATE: IAssetItem = {
     path: "assets/some_3d_model.fbx",
 };
 
-@Route("/product")
-@Tags("Product assets")
-export class ProductAssetsController extends Controller {
-    @Get("{productId}/assets")
+@Route("/language")
+@Tags("Language assets")
+export class LanguageAssetsController extends Controller {
+    @Get("{languageId}/assets")
     @Security("jwt")
     @Security("apiKey")
     @OperationId("Get")
-    @Example<IProductGetAssetsResponse>({
+    @Example<ILanguageGetAssetsResponse>({
         meta: META_TEMPLATE,
         data: [RESPONSE_TEMPLATE],
     })
-    public async getAssets(productId: string): Promise<IProductGetAssetsResponse> {
-        let product: IProduct;
+    public async getAssets(languageId: string): Promise<ILanguageGetAssetsResponse> {
+        let language: ILanguage;
         try {
-            product = await ProductModel.findById(productId);
+            language = await LanguageModel.findById(languageId);
         } catch (err) {
             this.setStatus(500);
             return {
                 error: [
                     {
                         code: 500,
-                        message: `Product with id: "${productId}" not found. ${err}`,
+                        message: `Language with id: "${languageId}" not found. ${err}`,
                     }
                 ]
             };
         }
 
         try {
-            const assets = await AssetModel.find({ _id: product.assets, });
+            const assets = await AssetModel.find({ _id: language.assets, });
 
             return {
                 meta: {},
@@ -145,22 +143,22 @@ export class ProductAssetsController extends Controller {
         }
     }
 
-    @Post("{productId}/asset")
+    @Post("{languageId}/asset")
     @Security("jwt")
     @OperationId("Create")
-    @Example<IProductCreateAssetsResponse>({
+    @Example<ILanguageCreateAssetsResponse>({
         meta: META_TEMPLATE,
         data: {
             asset: RESPONSE_TEMPLATE,
-            product: PRODUCT_RESPONSE_TEMPLATE,
+            language: LANGUAGE_RESPONSE_TEMPLATE,
         }
     })
-    public async create(productId: string, @Request() request: express.Request): Promise<IProductCreateAssetsResponse> {
+    public async create(languageId: string, @Request() request: express.Request): Promise<ILanguageCreateAssetsResponse> {
         const assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA]);
 
-        let product: IProduct;
+        let language: ILanguage;
         try {
-            product = await ProductModel.findById(productId);
+            language = await LanguageModel.findById(languageId);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -173,18 +171,18 @@ export class ProductAssetsController extends Controller {
             };
         }
 
-        let productRef: IRefItem;
+        let languageRef: IRefItem;
         try {
-            product.assets.push(assetsInfo.data.id);
-            productRef = await riseRefVersion(RefTypes.PRODUCTS);
-            await product.save();
+            language.assets.push(assetsInfo.data.id);
+            languageRef = await riseRefVersion(RefTypes.LANGUAGES);
+            await language.save();
         } catch (err) {
             this.setStatus(500);
             return {
                 error: [
                     {
                         code: 500,
-                        message: `Save asset to product assets list error. ${err}`,
+                        message: `Save asset to language assets list error. ${err}`,
                     }
                 ]
             };
@@ -192,52 +190,52 @@ export class ProductAssetsController extends Controller {
 
         return {
             meta: {
-                product: {
-                    ref: productRef,
+                language: {
+                    ref: languageRef,
                 },
                 asset: {
                     ref: assetsInfo.meta.ref,
                 }
             },
             data: {
-                product: formatProductModel(product),
+                language: formatLanguageModel(language),
                 asset: assetsInfo.data,
             }
         };
     }
 
-    @Post("{productId}/image/{imageType}")
+    @Post("{languageId}/image/{imageType}")
     @Security("jwt")
     @OperationId("Create")
-    @Example<IProductCreateAssetsResponse>({
+    @Example<ILanguageCreateAssetsResponse>({
         meta: META_TEMPLATE,
         data: {
             asset: RESPONSE_TEMPLATE,
-            product: PRODUCT_RESPONSE_TEMPLATE,
+            language: LANGUAGE_RESPONSE_TEMPLATE,
         }
     })
-    public async image(productId: string, imageType: ProductImageTypes, @Request() request: express.Request): Promise<IProductCreateAssetsResponse> {
+    public async image(languageId: string, imageType: LanguageImageTypes, @Request() request: express.Request): Promise<ILanguageCreateAssetsResponse> {
         const assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA], false);
 
-        let product: IProduct;
+        let language: ILanguage;
         let deletedAsset: string;
         try {
-            product = await ProductModel.findById(productId);
+            language = await LanguageModel.findById(languageId);
         } catch (err) {
             this.setStatus(500);
             return {
                 error: [
                     {
                         code: 500,
-                        message: `Find product error. ${err}`,
+                        message: `Find language error. ${err}`,
                     }
                 ]
             };
         }
 
-        deletedAsset = product.images[imageType];
+        deletedAsset = language.images[imageType];
         
-        const assetIndex = product.assets.indexOf(deletedAsset);
+        const assetIndex = language.assets.indexOf(deletedAsset);
         if (assetIndex > -1) {
             try {
                 const asset = await AssetModel.findByIdAndDelete(deletedAsset);
@@ -258,31 +256,21 @@ export class ProductAssetsController extends Controller {
         }
 
         // удаление предыдущего ассета
-        product.assets = product.assets.filter(asset => asset.toString() !== deletedAsset.toString());
+        language.assets = language.assets.filter(asset => asset.toString() !== deletedAsset.toString());
 
-        let productRef: IRefItem;
+        let languageRef: IRefItem;
         try {
-            product.images[imageType] = assetsInfo.data.id;
-
-            if (imageType === ProductImageTypes.MAIN) {
-                if (!product.images.thumbnail) {
-                    product.images.thumbnail = product.images.main;
-                }
-                if (!product.images.icon) {
-                    product.images.icon = product.images.main;
-                }
-            }
-
-            product.assets.push(assetsInfo.data.id);
-            productRef = await riseRefVersion(RefTypes.ORDER_TYPES);
-            await product.save();
+            language.images[imageType] = assetsInfo.data.id;
+            language.assets.push(assetsInfo.data.id);
+            languageRef = await riseRefVersion(RefTypes.LANGUAGES);
+            await language.save();
         } catch (err) {
             this.setStatus(500);
             return {
                 error: [
                     {
                         code: 500,
-                        message: `Save asset to product assets list error. ${err}`,
+                        message: `Save asset to language assets list error. ${err}`,
                     }
                 ]
             };
@@ -290,35 +278,35 @@ export class ProductAssetsController extends Controller {
 
         return {
             meta: {
-                product: {
-                    ref: productRef,
+                language: {
+                    ref: languageRef,
                 },
                 asset: {
                     ref: assetsInfo.meta.ref,
                 }
             },
             data: {
-                product: formatProductModel(product),
+                language: formatLanguageModel(language),
                 asset: assetsInfo.data,
             }
         };
     }
-    
-    @Put("{productId}/asset/{assetId}")
+
+    @Put("{languageId}/asset/{assetId}")
     @Security("jwt")
     @OperationId("Update")
-    @Example<IProductCreateAssetsResponse>({
+    @Example<ILanguageCreateAssetsResponse>({
         meta: META_TEMPLATE,
         data: {
             asset: RESPONSE_TEMPLATE,
-            product: PRODUCT_RESPONSE_TEMPLATE,
+            language: LANGUAGE_RESPONSE_TEMPLATE,
         }
     })
-    public async update(productId: string, assetId: string, @Body() request: IProductAssetUpdateRequest): Promise<IProductCreateAssetsResponse> {
+    public async update(languageId: string, assetId: string, @Body() request: ILanguageUpdateAssetsRequest): Promise<ILanguageCreateAssetsResponse> {
 
-        let product: IProduct;
+        let language: ILanguage;
         try {
-            product = await ProductModel.findById(productId);
+            language = await LanguageModel.findById(languageId);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -330,10 +318,10 @@ export class ProductAssetsController extends Controller {
                 ]
             };
         }
-        
-        let productRef: IRefItem;
+
+        let languageRef: IRefItem;
         try {
-            productRef = await getRef(RefTypes.PRODUCTS);
+            languageRef = await getRef(RefTypes.LANGUAGES);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -345,7 +333,7 @@ export class ProductAssetsController extends Controller {
                 ]
             };
         }
-        
+
         try {
             const item = await AssetModel.findById(assetId);
 
@@ -357,17 +345,17 @@ export class ProductAssetsController extends Controller {
 
             const ref = await riseRefVersion(RefTypes.ASSETS);
             return {
-                meta: { 
+                meta: {
                     asset: {
                         ref,
                     },
-                    product: {
-                        ref: productRef,
+                    language: {
+                        ref: languageRef,
                     },
-                 },
+                },
                 data: {
                     asset: formatAssetModel(item),
-                    product: formatProductModel(product),
+                    language: formatLanguageModel(language),
                 },
             };
         } catch (err) {
@@ -383,16 +371,16 @@ export class ProductAssetsController extends Controller {
         }
     }
 
-    @Delete("{productId}/asset/{assetId}")
+    @Delete("{languageId}/asset/{assetId}")
     @Security("jwt")
     @OperationId("Delete")
-    @Example<IProductDeleteAssetsResponse>({
+    @Example<ILanguageDeleteAssetsResponse>({
         meta: META_TEMPLATE
     })
-    public async delete(productId: string, assetId: string): Promise<IProductDeleteAssetsResponse> {
-        let product: IProduct;
+    public async delete(languageId: string, assetId: string): Promise<ILanguageDeleteAssetsResponse> {
+        let language: ILanguage;
         try {
-            product = await ProductModel.findById(productId);
+            language = await LanguageModel.findById(languageId);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -406,7 +394,7 @@ export class ProductAssetsController extends Controller {
         }
 
         let assetRef: IRefItem;
-        const assetIndex = product.assets.indexOf(assetId);
+        const assetIndex = language.assets.indexOf(assetId);
         if (assetIndex > -1) {
             try {
                 const asset = await AssetModel.findByIdAndDelete(assetId);
@@ -427,15 +415,15 @@ export class ProductAssetsController extends Controller {
             }
         }
 
-        let productsRef: IRefItem;
+        let languagesRef: IRefItem;
         try {
-            product.assets.splice(assetIndex, 1);
-            await product.save();
-            productsRef = await riseRefVersion(RefTypes.PRODUCTS);
+            language.assets.splice(assetIndex, 1);
+            await language.save();
+            languagesRef = await riseRefVersion(RefTypes.LANGUAGES);
             return {
                 meta: {
-                    product: {
-                        ref: productsRef,
+                    language: {
+                        ref: languagesRef,
                     },
                     asset: {
                         ref: assetRef,

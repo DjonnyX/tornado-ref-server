@@ -1,19 +1,18 @@
-import { RefTypes, ILanguage, LanguageModel } from "../models/index";
+import { RefTypes, ILanguage, LanguageModel, TranslationModel, ITranslation } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
+import { IRefItem } from "./RefsController";
+import { formatLanguageModel } from "../utils/language";
 
-interface ILanguageItem {
+export interface ILanguageItem {
     id: string;
     active: boolean;
     name: string;
-    description?: string;
-    color?: string;
     assets?: Array<string>;
     images?: {
         main?: string | null;
-        icon?: string | null;
     };
-    translation: string | null;
+    translation?: string | null;
     extra?: { [key: string]: any } | null;
 }
 
@@ -46,47 +45,38 @@ interface LanguageResponse {
 interface LanguageCreateRequest {
     active?: boolean;
     name: string;
-    description?: string;
-    color?: string;
     assets?: Array<string>;
     images?: {
         main?: string | null;
-        icon?: string | null;
     };
     translation?: string | null;
     extra?: { [key: string]: any } | null;
 }
 
-const RESPONSE_TEMPLATE: ILanguageItem = {
+interface LanguageUpdateRequest {
+    active?: boolean;
+    name?: string;
+    assets?: Array<string>;
+    images?: {
+        main?: string | null;
+    };
+    translation?: string | null;
+    extra?: { [key: string]: any } | null;
+}
+
+export const LANGUAGE_RESPONSE_TEMPLATE: ILanguageItem = {
     id: "507c7f79bcf86cd7994f6c0e",
     active: true,
     name: "Rus",
-    description: "Русский",
-    color: "#000000",
     assets: [
         "g8h07f79bcf86cd7994f9d7k",
     ],
     images: {
         main: "g8h07f79bcf86cd7994f9d7k",
-        icon: "g8h07f79bcf86cd7994f9d7k",
     },
     translation: "409c7f79bcf86cd7994f6g1t",
     extra: { key: "value" },
 };
-
-const formatModel = (model: ILanguage) => ({
-    id: model._id,
-    active: model.active,
-    name: model.name,
-    description: model.description,
-    assets: model.assets,
-    images: model.images || {
-        main: null,
-        icon: null,
-    },
-    translation: model.translation,
-    extra: model.extra,
-});
 
 const META_TEMPLATE: LanguageMeta = {
     ref: {
@@ -105,7 +95,7 @@ export class LanguagesController extends Controller {
     @OperationId("GetAll")
     @Example<LanguagesResponse>({
         meta: META_TEMPLATE,
-        data: [RESPONSE_TEMPLATE],
+        data: [LANGUAGE_RESPONSE_TEMPLATE],
     })
     public async getAll(): Promise<LanguagesResponse> {
         try {
@@ -113,7 +103,7 @@ export class LanguagesController extends Controller {
             const ref = await getRef(RefTypes.LANGUAGES);
             return {
                 meta: { ref },
-                data: items.map(v => formatModel(v)),
+                data: items.map(v => formatLanguageModel(v)),
             };
         } catch (err) {
             this.setStatus(500);
@@ -138,7 +128,7 @@ export class LanguageController extends Controller {
     @OperationId("GetOne")
     @Example<LanguageResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE,
+        data: LANGUAGE_RESPONSE_TEMPLATE,
     })
     public async getOne(id: string): Promise<LanguageResponse> {
         try {
@@ -146,7 +136,7 @@ export class LanguageController extends Controller {
             const ref = await getRef(RefTypes.LANGUAGES);
             return {
                 meta: { ref },
-                data: formatModel(item),
+                data: formatLanguageModel(item),
             };
         } catch (err) {
             this.setStatus(500);
@@ -166,16 +156,39 @@ export class LanguageController extends Controller {
     @OperationId("Create")
     @Example<LanguageResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE,
+        data: LANGUAGE_RESPONSE_TEMPLATE,
     })
     public async create(@Body() request: LanguageCreateRequest): Promise<LanguageResponse> {
+        let item: ILanguage;
+        let savedItem: ILanguage;
+        let ref: IRefItem;
         try {
-            const item = new LanguageModel(request);
-            const savedItem = await item.save();
-            const ref = await riseRefVersion(RefTypes.LANGUAGES);
+            item = new LanguageModel(request);
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Caught error. ${err}`,
+                    }
+                ]
+            };
+        }
+        
+        try {
+            const translation = new TranslationModel();
+            const savedTranslationItem = await translation.save();
+            await riseRefVersion(RefTypes.TRANSLATION);
+
+            item.translation = savedTranslationItem._id;
+
+            savedItem = await item.save();
+            ref = await riseRefVersion(RefTypes.LANGUAGES);
+
             return {
                 meta: { ref },
-                data: formatModel(savedItem),
+                data: formatLanguageModel(savedItem),
             };
         } catch (err) {
             this.setStatus(500);
@@ -195,9 +208,9 @@ export class LanguageController extends Controller {
     @OperationId("Update")
     @Example<LanguageResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE,
+        data: LANGUAGE_RESPONSE_TEMPLATE,
     })
-    public async update(id: string, @Body() request: LanguageCreateRequest): Promise<LanguageResponse> {
+    public async update(id: string, @Body() request: LanguageUpdateRequest): Promise<LanguageResponse> {
         try {
             const item = await LanguageModel.findById(id);
 
@@ -210,7 +223,7 @@ export class LanguageController extends Controller {
             const ref = await riseRefVersion(RefTypes.LANGUAGES);
             return {
                 meta: { ref },
-                data: formatModel(item),
+                data: formatLanguageModel(item),
             };
         } catch (err) {
             this.setStatus(500);
