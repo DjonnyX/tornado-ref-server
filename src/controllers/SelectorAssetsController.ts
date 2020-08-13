@@ -263,6 +263,16 @@ export class SelectorAssetsController extends Controller {
         let selectorRef: IRefItem;
         try {
             selector.images[imageType] = assetsInfo.data.id;
+            
+            if (imageType === SelectorImageTypes.MAIN) {
+                if (!selector.images.thumbnail) {
+                    selector.images.thumbnail = selector.images.main;
+                }
+                if (!selector.images.icon) {
+                    selector.images.icon = selector.images.main;
+                }
+            }
+
             selector.assets.push(assetsInfo.data.id);
             selectorRef = await riseRefVersion(RefTypes.SELECTORS);
             await selector.save();

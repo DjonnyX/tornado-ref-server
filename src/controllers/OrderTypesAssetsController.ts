@@ -262,6 +262,13 @@ export class OrderTypeAssetsController extends Controller {
         let orderTypeRef: IRefItem;
         try {
             orderType.images[imageType] = assetsInfo.data.id;
+            
+            if (imageType === OrderTypeImageTypes.MAIN) {
+                if (!orderType.images.icon) {
+                    orderType.images.icon = orderType.images.main;
+                }
+            }
+
             orderType.assets.push(assetsInfo.data.id);
             orderTypeRef = await riseRefVersion(RefTypes.ORDER_TYPES);
             await orderType.save();

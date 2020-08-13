@@ -263,6 +263,16 @@ export class ProductAssetsController extends Controller {
         let productRef: IRefItem;
         try {
             product.images[imageType] = assetsInfo.data.id;
+            
+            if (imageType === ProductImageTypes.MAIN) {
+                if (!product.images.thumbnail) {
+                    product.images.thumbnail = product.images.main;
+                }
+                if (!product.images.icon) {
+                    product.images.icon = product.images.main;
+                }
+            }
+
             product.assets.push(assetsInfo.data.id);
             productRef = await riseRefVersion(RefTypes.ORDER_TYPES);
             await product.save();
