@@ -1,0 +1,23 @@
+{
+    "languages": [
+        {
+            "isDefault": "true",
+            "code": "RU",
+            "name": "Русский",
+            "translations": {
+                "back": "Назад",
+                "menu": "Меню",
+                "order": "Заказ"
+            }
+        },
+        {
+            "code": "ENG",
+            "name": "English",
+            "translations": {
+                "back": "back",
+                "menu": "Menu",
+                "order": "Order"
+            }
+        }
+    ]
+}

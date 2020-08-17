@@ -1,5 +1,9 @@
-import { RefModel, RefTypes, NodeModel } from "../models/index";
+import * as fs from "fs";
+import { RefModel, RefTypes, NodeModel, TranslationModel, LanguageModel, ILanguage } from "../models/index";
 import { NodeTypes } from "../models/enums";
+import { mergeTranslation, getTemplateLangs } from "../utils/translation";
+import { LOCALIZATION_TEMPLATE_PATH } from "../config";
+import { ITranslationTemplate } from "../interfaces/ITranslationTemplate";
 
 const createRootNode = async () => {
     const existsRootNode = await NodeModel.findOne({ type: NodeTypes.KIOSK_ROOT });
@@ -17,6 +21,50 @@ const createRootNode = async () => {
         await rootMenuNode.save();
     }
 };
+
+const mergeDefaultTranslations = async () => {
+    const template: ITranslationTemplate = JSON.parse(fs.readFileSync(LOCALIZATION_TEMPLATE_PATH).toString("utf-8"));
+    const availableLangs = getTemplateLangs(template);
+    
+    const dictionary: { [key: string]: ILanguage } = {};
+    const langs = await LanguageModel.find({});
+
+    langs.forEach(item => {
+        dictionary[item.code] = item;
+    });
+
+    const promises = new Array<Promise<any>>();
+    availableLangs.forEach(lang => {
+        if (!dictionary[lang.code]) {
+            const newTranslation = new TranslationModel({
+                language: lang.code,
+            });
+            const newLang = new LanguageModel({
+                name: lang.name,
+                code: lang.code,
+                translation: newTranslation._id,
+            });
+            promises.push(new Promise(async (resolve) => {
+                await newTranslation.save();
+                await newLang.save();
+                resolve();
+            }));
+        }
+    });
+
+    await Promise.all(promises);
+    
+    const translations = await TranslationModel.find({});
+
+    if (!!translations) {
+        const promises = new Array<Promise<any>>();
+        translations.forEach(translation => {
+            promises.push(mergeTranslation(translation));
+        });
+
+        return Promise.all(promises);
+    }
+}
 
 export const initRefs = async (): Promise<void> => {
 
@@ -90,6 +138,9 @@ export const initRefs = async (): Promise<void> => {
 
     // root node
     await createRootNode();
+
+    // translations
+    await mergeDefaultTranslations();
 
     console.info("Refs are initialized.");
 };

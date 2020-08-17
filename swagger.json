@@ -1222,6 +1222,9 @@
 					"active": {
 						"type": "boolean"
 					},
+					"code": {
+						"type": "string"
+					},
 					"name": {
 						"type": "string"
 					},
@@ -1256,6 +1259,7 @@
 				"required": [
 					"id",
 					"active",
+					"code",
 					"name"
 				],
 				"type": "object",
@@ -1331,6 +1335,9 @@
 					"active": {
 						"type": "boolean"
 					},
+					"code": {
+						"type": "string"
+					},
 					"name": {
 						"type": "string"
 					},
@@ -1363,6 +1370,7 @@
 					}
 				},
 				"required": [
+					"code",
 					"name"
 				],
 				"type": "object",
@@ -1372,6 +1380,9 @@
 				"properties": {
 					"active": {
 						"type": "boolean"
+					},
+					"code": {
+						"type": "string"
 					},
 					"name": {
 						"type": "string"
@@ -3843,6 +3854,9 @@
 					"id": {
 						"type": "string"
 					},
+					"language": {
+						"type": "string"
+					},
 					"items": {
 						"items": {
 							"$ref": "#/components/schemas/ITranslateItem"
@@ -3860,6 +3874,7 @@
 				},
 				"required": [
 					"id",
+					"language",
 					"items"
 				],
 				"type": "object",
@@ -3935,6 +3950,9 @@
 			},
 			"TranslationUpdateRequest": {
 				"properties": {
+					"language": {
+						"type": "string"
+					},
 					"items": {
 						"items": {
 							"$ref": "#/components/schemas/ITranslate"
@@ -3950,6 +3968,9 @@
 						"nullable": true
 					}
 				},
+				"required": [
+					"language"
+				],
 				"type": "object",
 				"additionalProperties": false
 			}
@@ -5516,7 +5537,8 @@
 												{
 													"id": "507c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"name": "Rus",
+													"code": "RU",
+													"name": "Русский",
 													"assets": [
 														"g8h07f79bcf86cd7994f9d7k"
 													],
@@ -5574,7 +5596,8 @@
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"active": true,
-												"name": "Rus",
+												"code": "RU",
+												"name": "Русский",
 												"assets": [
 													"g8h07f79bcf86cd7994f9d7k"
 												],
@@ -5638,7 +5661,8 @@
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"active": true,
-												"name": "Rus",
+												"code": "RU",
+												"name": "Русский",
 												"assets": [
 													"g8h07f79bcf86cd7994f9d7k"
 												],
@@ -5757,7 +5781,8 @@
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"active": true,
-												"name": "Rus",
+												"code": "RU",
+												"name": "Русский",
 												"assets": [
 													"g8h07f79bcf86cd7994f9d7k"
 												],
@@ -9109,6 +9134,7 @@
 											"data": [
 												{
 													"id": "507c7f79bcf86cd7994f6c0e",
+													"language": "RU",
 													"items": [
 														{
 															"key": "take-away",
@@ -9164,6 +9190,7 @@
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
+												"language": "RU",
 												"items": [
 													{
 														"key": "take-away",
@@ -9225,6 +9252,7 @@
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
+												"language": "RU",
 												"items": [
 													{
 														"key": "take-away",
@@ -9271,52 +9299,6 @@
 						}
 					}
 				}
-			},
-			"delete": {
-				"operationId": "Delete",
-				"responses": {
-					"200": {
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/TranslationResponse"
-								},
-								"examples": {
-									"example": {
-										"value": {
-											"meta": {
-												"ref": {
-													"name": "translation",
-													"version": 1,
-													"lastUpdate": 1589885721
-												}
-											}
-										}
-									}
-								}
-							}
-						},
-						"description": "Ok"
-					}
-				},
-				"tags": [
-					"Translation"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
 			}
 		}
 	},
