@@ -206,9 +206,9 @@ export class ProductAssetsController extends Controller {
         };
     }
 
-    @Post("{productId}/image/{imageType}")
+    @Post("{productId}/image/{lang}/{imageType}")
     @Security("jwt")
-    @OperationId("Create")
+    @OperationId("CreateImage")
     @Example<IProductCreateAssetsResponse>({
         meta: META_TEMPLATE,
         data: {
@@ -216,7 +216,7 @@ export class ProductAssetsController extends Controller {
             product: PRODUCT_RESPONSE_TEMPLATE,
         }
     })
-    public async image(productId: string, imageType: ProductImageTypes, @Request() request: express.Request): Promise<IProductCreateAssetsResponse> {
+    public async image(lang: string, productId: string, imageType: ProductImageTypes, @Request() request: express.Request): Promise<IProductCreateAssetsResponse> {
         const assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA], false);
 
         let product: IProduct;
@@ -235,9 +235,20 @@ export class ProductAssetsController extends Controller {
             };
         }
 
-        deletedAsset = product.images[imageType];
+        deletedAsset = !!product.content[lang] ? product.content[lang].images[imageType] : undefined;
+
+        // удаление связанных изображений, если lang является основным языком
+        for (const contentLang in product.content) {
+            if (contentLang === lang) {
+                continue;
+            }
+
+            if (product.content[contentLang][imageType] === deletedAsset) {
+                product.content[contentLang][imageType] = null;
+            }
+        }
         
-        const assetIndex = product.assets.indexOf(deletedAsset);
+        const assetIndex = deletedAsset ? product.assets.indexOf(deletedAsset) : -1;
         if (assetIndex > -1) {
             try {
                 const asset = await AssetModel.findByIdAndDelete(deletedAsset);
@@ -262,14 +273,26 @@ export class ProductAssetsController extends Controller {
 
         let productRef: IRefItem;
         try {
-            product.images[imageType] = assetsInfo.data.id;
+            if (!product.content[lang]) {
+                product.content[lang] = {
+                    name: "Some name",
+                    description: "Some description",
+                    images: {
+                        main: null,
+                        thumbnail: null,
+                        icon: null,
+                    },
+                }
+            }
+
+            product.content[lang].images[imageType] = assetsInfo.data.id;
 
             if (imageType === ProductImageTypes.MAIN) {
-                if (!product.images.thumbnail) {
-                    product.images.thumbnail = product.images.main;
+                if (!product.content[lang].images.thumbnail) {
+                    product.content[lang].images.thumbnail = product.content[lang].images.main;
                 }
-                if (!product.images.icon) {
-                    product.images.icon = product.images.main;
+                if (!product.content[lang].images.icon) {
+                    product.content[lang].images.icon = product.content[lang].images.main;
                 }
             }
 

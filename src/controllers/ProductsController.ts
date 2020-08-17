@@ -4,23 +4,20 @@ import { getRef, riseRefVersion } from "../db/refs";
 import { NodeTypes } from "../models/enums";
 import { deleteNodesChain } from "../utils/node";
 import { formatProductModel } from "../utils/product";
+import { IProductContent } from "src/models/Product";
 
 export interface IProductItem {
     id?: string;
     active: boolean;
-    name: string;
+    content: {
+        [lang: string]: IProductContent;
+    };
     color?: string;
-    description?: string;
     prices: Array<IPrice>;
     receipt: Array<IReceiptItem>;
     tags: Array<string>;
     joint?: string;
     assets?: Array<string>;
-    images?: {
-        main?: string | null;
-        thumbnail?: string | null;
-        icon?: string | null;
-    };
     extra?: { [key: string]: any } | null;
 }
 
@@ -52,19 +49,15 @@ interface IProductResponse {
 
 interface IProductCreateRequest {
     active: boolean;
-    name: string;
+    content: {
+        [lang: string]: IProductContent;
+    };
     color?: string;
-    description?: string;
     prices: Array<IPrice>;
     receipt: Array<IReceiptItem>;
     tags: Array<string>;
     joint?: string;
     assets?: Array<string>;
-    images?: {
-        main: string;
-        thumbnail: string;
-        icon: string;
-    };
     extra?: { [key: string]: any } | null;
 }
 
@@ -78,19 +71,23 @@ interface IProductUpdateRequest {
     tags?: Array<string>;
     joint?: string;
     assets?: Array<string>;
-    images?: {
-        main: string | null;
-        thumbnail: string | null;
-        icon: string | null;
-    };
     extra?: { [key: string]: any } | null;
 }
 
 export const RESPONSE_TEMPLATE: IProductItem = {
     id: "507c7f79bcf86cd7994f6c0e",
     active: true,
-    name: "Products on concert",
-    description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+    content: {
+        "RU": {
+            name: "Products on concert",
+            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+            images: {
+                main: "g8h07f79bcf86cd7994f9d7k",
+                thumbnail: "gt7h7f79bcf86cd7994f9d6u",
+                icon: "gt7h7f79bcf86cd7994f9d6u",
+            },
+        },
+    },
     prices: [
         {
             currency: "657c7f79bcf86cd7994f6c5h",
@@ -113,11 +110,6 @@ export const RESPONSE_TEMPLATE: IProductItem = {
     ],
     tags: ["123c7f79bcf86cd7994f6c0e"],
     assets: ["g8h07f79bcf86cd7994f9d7k",],
-    images: {
-        main: "g8h07f79bcf86cd7994f9d7k",
-        thumbnail: "gt7h7f79bcf86cd7994f9d6u",
-        icon: "gt7h7f79bcf86cd7994f9d6u",
-    },
     joint: "df3c7f79bcf86cd7994f9d8f",
     extra: { key: "value" },
 };

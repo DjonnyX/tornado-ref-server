@@ -2533,6 +2533,50 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"IProductContent": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"images": {
+						"properties": {
+							"icon": {
+								"type": "string"
+							},
+							"thumbnail": {
+								"type": "string"
+							},
+							"main": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"icon",
+							"thumbnail",
+							"main"
+						],
+						"type": "object"
+					},
+					"extra": {
+						"properties": {},
+						"additionalProperties": {
+							"additionalProperties": true
+						},
+						"type": "object",
+						"nullable": true
+					}
+				},
+				"required": [
+					"name",
+					"description",
+					"images"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"IPrice": {
 				"properties": {
 					"value": {
@@ -2541,6 +2585,14 @@
 					},
 					"currency": {
 						"type": "string"
+					},
+					"extra": {
+						"properties": {},
+						"additionalProperties": {
+							"additionalProperties": true
+						},
+						"type": "object",
+						"nullable": true
 					}
 				},
 				"required": [
@@ -2565,6 +2617,14 @@
 					"quantity": {
 						"type": "number",
 						"format": "double"
+					},
+					"extra": {
+						"properties": {},
+						"additionalProperties": {
+							"additionalProperties": true
+						},
+						"type": "object",
+						"nullable": true
 					}
 				},
 				"required": [
@@ -2584,13 +2644,14 @@
 					"active": {
 						"type": "boolean"
 					},
-					"name": {
-						"type": "string"
+					"content": {
+						"properties": {},
+						"additionalProperties": {
+							"$ref": "#/components/schemas/IProductContent"
+						},
+						"type": "object"
 					},
 					"color": {
-						"type": "string"
-					},
-					"description": {
 						"type": "string"
 					},
 					"prices": {
@@ -2620,23 +2681,6 @@
 						},
 						"type": "array"
 					},
-					"images": {
-						"properties": {
-							"icon": {
-								"type": "string",
-								"nullable": true
-							},
-							"thumbnail": {
-								"type": "string",
-								"nullable": true
-							},
-							"main": {
-								"type": "string",
-								"nullable": true
-							}
-						},
-						"type": "object"
-					},
 					"extra": {
 						"properties": {},
 						"additionalProperties": {
@@ -2648,7 +2692,7 @@
 				},
 				"required": [
 					"active",
-					"name",
+					"content",
 					"prices",
 					"receipt",
 					"tags"
@@ -2726,13 +2770,14 @@
 					"active": {
 						"type": "boolean"
 					},
-					"name": {
-						"type": "string"
+					"content": {
+						"properties": {},
+						"additionalProperties": {
+							"$ref": "#/components/schemas/IProductContent"
+						},
+						"type": "object"
 					},
 					"color": {
-						"type": "string"
-					},
-					"description": {
 						"type": "string"
 					},
 					"prices": {
@@ -2762,25 +2807,6 @@
 						},
 						"type": "array"
 					},
-					"images": {
-						"properties": {
-							"icon": {
-								"type": "string"
-							},
-							"thumbnail": {
-								"type": "string"
-							},
-							"main": {
-								"type": "string"
-							}
-						},
-						"required": [
-							"icon",
-							"thumbnail",
-							"main"
-						],
-						"type": "object"
-					},
 					"extra": {
 						"properties": {},
 						"additionalProperties": {
@@ -2792,7 +2818,7 @@
 				},
 				"required": [
 					"active",
-					"name",
+					"content",
 					"prices",
 					"receipt",
 					"tags"
@@ -2840,28 +2866,6 @@
 							"type": "string"
 						},
 						"type": "array"
-					},
-					"images": {
-						"properties": {
-							"icon": {
-								"type": "string",
-								"nullable": true
-							},
-							"thumbnail": {
-								"type": "string",
-								"nullable": true
-							},
-							"main": {
-								"type": "string",
-								"nullable": true
-							}
-						},
-						"required": [
-							"icon",
-							"thumbnail",
-							"main"
-						],
-						"type": "object"
 					},
 					"extra": {
 						"properties": {},
@@ -7356,8 +7360,17 @@
 												{
 													"id": "507c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"name": "Products on concert",
-													"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+													"content": {
+														"RU": {
+															"name": "Products on concert",
+															"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+															"images": {
+																"main": "g8h07f79bcf86cd7994f9d7k",
+																"thumbnail": "gt7h7f79bcf86cd7994f9d6u",
+																"icon": "gt7h7f79bcf86cd7994f9d6u"
+															}
+														}
+													},
 													"prices": [
 														{
 															"currency": "657c7f79bcf86cd7994f6c5h",
@@ -7384,11 +7397,6 @@
 													"assets": [
 														"g8h07f79bcf86cd7994f9d7k"
 													],
-													"images": {
-														"main": "g8h07f79bcf86cd7994f9d7k",
-														"thumbnail": "gt7h7f79bcf86cd7994f9d6u",
-														"icon": "gt7h7f79bcf86cd7994f9d6u"
-													},
 													"joint": "df3c7f79bcf86cd7994f9d8f",
 													"extra": {
 														"key": "value"
@@ -7440,8 +7448,17 @@
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"active": true,
-												"name": "Products on concert",
-												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+												"content": {
+													"RU": {
+														"name": "Products on concert",
+														"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+														"images": {
+															"main": "g8h07f79bcf86cd7994f9d7k",
+															"thumbnail": "gt7h7f79bcf86cd7994f9d6u",
+															"icon": "gt7h7f79bcf86cd7994f9d6u"
+														}
+													}
+												},
 												"prices": [
 													{
 														"currency": "657c7f79bcf86cd7994f6c5h",
@@ -7468,11 +7485,6 @@
 												"assets": [
 													"g8h07f79bcf86cd7994f9d7k"
 												],
-												"images": {
-													"main": "g8h07f79bcf86cd7994f9d7k",
-													"thumbnail": "gt7h7f79bcf86cd7994f9d6u",
-													"icon": "gt7h7f79bcf86cd7994f9d6u"
-												},
 												"joint": "df3c7f79bcf86cd7994f9d8f",
 												"extra": {
 													"key": "value"
@@ -7530,8 +7542,17 @@
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"active": true,
-												"name": "Products on concert",
-												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+												"content": {
+													"RU": {
+														"name": "Products on concert",
+														"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+														"images": {
+															"main": "g8h07f79bcf86cd7994f9d7k",
+															"thumbnail": "gt7h7f79bcf86cd7994f9d6u",
+															"icon": "gt7h7f79bcf86cd7994f9d6u"
+														}
+													}
+												},
 												"prices": [
 													{
 														"currency": "657c7f79bcf86cd7994f6c5h",
@@ -7558,11 +7579,6 @@
 												"assets": [
 													"g8h07f79bcf86cd7994f9d7k"
 												],
-												"images": {
-													"main": "g8h07f79bcf86cd7994f9d7k",
-													"thumbnail": "gt7h7f79bcf86cd7994f9d6u",
-													"icon": "gt7h7f79bcf86cd7994f9d6u"
-												},
 												"joint": "df3c7f79bcf86cd7994f9d8f",
 												"extra": {
 													"key": "value"
@@ -7675,8 +7691,17 @@
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"active": true,
-												"name": "Products on concert",
-												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+												"content": {
+													"RU": {
+														"name": "Products on concert",
+														"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+														"images": {
+															"main": "g8h07f79bcf86cd7994f9d7k",
+															"thumbnail": "gt7h7f79bcf86cd7994f9d6u",
+															"icon": "gt7h7f79bcf86cd7994f9d6u"
+														}
+													}
+												},
 												"prices": [
 													{
 														"currency": "657c7f79bcf86cd7994f6c5h",
@@ -7703,11 +7728,6 @@
 												"assets": [
 													"g8h07f79bcf86cd7994f9d7k"
 												],
-												"images": {
-													"main": "g8h07f79bcf86cd7994f9d7k",
-													"thumbnail": "gt7h7f79bcf86cd7994f9d6u",
-													"icon": "gt7h7f79bcf86cd7994f9d6u"
-												},
 												"joint": "df3c7f79bcf86cd7994f9d8f",
 												"extra": {
 													"key": "value"
@@ -7887,9 +7907,9 @@
 				]
 			}
 		},
-		"/product/{productId}/image/{imageType}": {
+		"/product/{productId}/image/{lang}/{imageType}": {
 			"post": {
-				"operationId": "Create",
+				"operationId": "CreateImage",
 				"responses": {
 					"200": {
 						"content": {
@@ -7947,6 +7967,14 @@
 					}
 				],
 				"parameters": [
+					{
+						"in": "path",
+						"name": "lang",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
 					{
 						"in": "path",
 						"name": "productId",
