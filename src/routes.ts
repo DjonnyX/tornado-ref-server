@@ -485,6 +485,7 @@ const models: TsoaRoute.Models = {
         "properties": {
             "id": { "dataType": "string", "required": true },
             "active": { "dataType": "boolean", "required": true },
+            "code": { "dataType": "string", "required": true },
             "name": { "dataType": "string", "required": true },
             "assets": { "dataType": "array", "array": { "dataType": "string" } },
             "images": { "dataType": "nestedObjectLiteral", "nestedProperties": { "main": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }] } } },
@@ -518,6 +519,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "active": { "dataType": "boolean" },
+            "code": { "dataType": "string", "required": true },
             "name": { "dataType": "string", "required": true },
             "assets": { "dataType": "array", "array": { "dataType": "string" } },
             "images": { "dataType": "nestedObjectLiteral", "nestedProperties": { "main": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }] } } },
@@ -531,6 +533,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "active": { "dataType": "boolean" },
+            "code": { "dataType": "string" },
             "name": { "dataType": "string" },
             "assets": { "dataType": "array", "array": { "dataType": "string" } },
             "images": { "dataType": "nestedObjectLiteral", "nestedProperties": { "main": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }] } } },
@@ -1213,6 +1216,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "id": { "dataType": "string", "required": true },
+            "language": { "dataType": "string", "required": true },
             "items": { "dataType": "array", "array": { "ref": "ITranslateItem" }, "required": true },
             "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
@@ -1247,6 +1251,7 @@ const models: TsoaRoute.Models = {
     "TranslationUpdateRequest": {
         "dataType": "refObject",
         "properties": {
+            "language": { "dataType": "string", "required": true },
             "items": { "dataType": "array", "array": { "dataType": "refAlias", "ref": "ITranslate" } },
             "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
@@ -3163,29 +3168,6 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.update.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
-        });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.delete('/api/v1/translation/:id',
-        authenticateMiddleware([{ "jwt": [] }]),
-        function(request: any, response: any, next: any) {
-            const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = getValidatedArgs(args, request);
-            } catch (err) {
-                return next(err);
-            }
-
-            const controller = new TranslationController();
-
-
-            const promise = controller.delete.apply(controller, validatedArgs as any);
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
