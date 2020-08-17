@@ -3,10 +3,12 @@ import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, 
 import { getRef, riseRefVersion } from "../db/refs";
 import { IRefItem } from "./RefsController";
 import { formatLanguageModel } from "../utils/language";
+import { mergeTranslation } from "../utils/translation";
 
 export interface ILanguageItem {
     id: string;
     active: boolean;
+    code: string;
     name: string;
     assets?: Array<string>;
     images?: {
@@ -44,6 +46,7 @@ interface LanguageResponse {
 
 interface LanguageCreateRequest {
     active?: boolean;
+    code: string;
     name: string;
     assets?: Array<string>;
     images?: {
@@ -55,6 +58,7 @@ interface LanguageCreateRequest {
 
 interface LanguageUpdateRequest {
     active?: boolean;
+    code?: string;
     name?: string;
     assets?: Array<string>;
     images?: {
@@ -67,7 +71,8 @@ interface LanguageUpdateRequest {
 export const LANGUAGE_RESPONSE_TEMPLATE: ILanguageItem = {
     id: "507c7f79bcf86cd7994f6c0e",
     active: true,
-    name: "Rus",
+    code: "RU",
+    name: "Русский",
     assets: [
         "g8h07f79bcf86cd7994f9d7k",
     ],
@@ -175,9 +180,14 @@ export class LanguageController extends Controller {
                 ]
             };
         }
-        
+
         try {
-            const translation = new TranslationModel();
+            const translation = new TranslationModel({
+                language: item.code,
+            });
+
+            mergeTranslation(translation, false);
+            
             const savedTranslationItem = await translation.save();
             await riseRefVersion(RefTypes.TRANSLATION);
 
@@ -214,11 +224,27 @@ export class LanguageController extends Controller {
         try {
             const item = await LanguageModel.findById(id);
 
+            let languageCode: string;
             for (const key in request) {
                 item[key] = request[key];
+
+                if (key === "code") {
+                    languageCode = request[key];
+                }
             }
 
             await item.save();
+
+            if (!!languageCode) {
+                const translation = await TranslationModel.findOne({ code: item.code });
+
+                if (!!translation) {
+                    translation.language = languageCode;
+
+                    await translation.save();
+                    await riseRefVersion(RefTypes.TRANSLATION);
+                }
+            }
 
             const ref = await riseRefVersion(RefTypes.LANGUAGES);
             return {
@@ -246,8 +272,12 @@ export class LanguageController extends Controller {
     })
     public async delete(id: string): Promise<LanguageResponse> {
         try {
-            await LanguageModel.findOneAndDelete({ _id: id });
+            const language = await LanguageModel.findOneAndDelete({ _id: id });
             const ref = await riseRefVersion(RefTypes.LANGUAGES);
+
+            await TranslationModel.findOneAndDelete({ _id: language.translation });
+            await riseRefVersion(RefTypes.TRANSLATION);
+
             return {
                 meta: { ref },
             };

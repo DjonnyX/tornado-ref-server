@@ -10,6 +10,7 @@ interface ITranslateItem {
 
 interface ITranslationItem {
     id: string;
+    language: string;
     items: Array<ITranslateItem>;
     extra?: { [key: string]: any } | null;
 }
@@ -45,12 +46,14 @@ interface TranslationResponse {
 }*/
 
 interface TranslationUpdateRequest {
+    language: string;
     items?: Array<ITranslate>;
     extra?: { [key: string]: any } | null;
 }
 
 const RESPONSE_TEMPLATE: ITranslationItem = {
     id: "507c7f79bcf86cd7994f6c0e",
+    language: "RU",
     items: [{
         key: "take-away",
         value: "Взять с собой",
@@ -194,7 +197,7 @@ export class TranslationController extends Controller {
             };
         }
     }
-
+/*
     @Delete("{id}")
     @Security("jwt")
     @OperationId("Delete")
@@ -219,5 +222,5 @@ export class TranslationController extends Controller {
                 ]
             };
         }
-    }
+    }*/
 }
