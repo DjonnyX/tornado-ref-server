@@ -2541,6 +2541,9 @@
 					"description": {
 						"type": "string"
 					},
+					"color": {
+						"type": "string"
+					},
 					"images": {
 						"properties": {
 							"icon": {
@@ -2560,6 +2563,12 @@
 						],
 						"type": "object"
 					},
+					"assets": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
 					"extra": {
 						"properties": {},
 						"additionalProperties": {
@@ -2572,7 +2581,9 @@
 				"required": [
 					"name",
 					"description",
-					"images"
+					"color",
+					"images",
+					"assets"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -2651,9 +2662,6 @@
 						},
 						"type": "object"
 					},
-					"color": {
-						"type": "string"
-					},
 					"prices": {
 						"items": {
 							"$ref": "#/components/schemas/IPrice"
@@ -2674,12 +2682,6 @@
 					},
 					"joint": {
 						"type": "string"
-					},
-					"assets": {
-						"items": {
-							"type": "string"
-						},
-						"type": "array"
 					},
 					"extra": {
 						"properties": {},
@@ -2777,9 +2779,6 @@
 						},
 						"type": "object"
 					},
-					"color": {
-						"type": "string"
-					},
 					"prices": {
 						"items": {
 							"$ref": "#/components/schemas/IPrice"
@@ -2800,12 +2799,6 @@
 					},
 					"joint": {
 						"type": "string"
-					},
-					"assets": {
-						"items": {
-							"type": "string"
-						},
-						"type": "array"
 					},
 					"extra": {
 						"properties": {},
@@ -2831,14 +2824,12 @@
 					"active": {
 						"type": "boolean"
 					},
-					"name": {
-						"type": "string"
-					},
-					"color": {
-						"type": "string"
-					},
-					"description": {
-						"type": "string"
+					"content": {
+						"properties": {},
+						"additionalProperties": {
+							"$ref": "#/components/schemas/IProductContent"
+						},
+						"type": "object"
 					},
 					"prices": {
 						"items": {
@@ -2860,12 +2851,6 @@
 					},
 					"joint": {
 						"type": "string"
-					},
-					"assets": {
-						"items": {
-							"type": "string"
-						},
-						"type": "array"
 					},
 					"extra": {
 						"properties": {},
@@ -3994,7 +3979,7 @@
 	},
 	"info": {
 		"title": "tornado-server",
-		"version": "0.0.1",
+		"version": "1.0.0",
 		"license": {
 			"name": "Commercial"
 		}
@@ -7364,11 +7349,15 @@
 														"RU": {
 															"name": "Products on concert",
 															"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+															"color": "#000000",
 															"images": {
 																"main": "g8h07f79bcf86cd7994f9d7k",
 																"thumbnail": "gt7h7f79bcf86cd7994f9d6u",
 																"icon": "gt7h7f79bcf86cd7994f9d6u"
-															}
+															},
+															"assets": [
+																"g8h07f79bcf86cd7994f9d7k"
+															]
 														}
 													},
 													"prices": [
@@ -7393,9 +7382,6 @@
 													],
 													"tags": [
 														"123c7f79bcf86cd7994f6c0e"
-													],
-													"assets": [
-														"g8h07f79bcf86cd7994f9d7k"
 													],
 													"joint": "df3c7f79bcf86cd7994f9d8f",
 													"extra": {
@@ -7452,11 +7438,15 @@
 													"RU": {
 														"name": "Products on concert",
 														"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+														"color": "#000000",
 														"images": {
 															"main": "g8h07f79bcf86cd7994f9d7k",
 															"thumbnail": "gt7h7f79bcf86cd7994f9d6u",
 															"icon": "gt7h7f79bcf86cd7994f9d6u"
-														}
+														},
+														"assets": [
+															"g8h07f79bcf86cd7994f9d7k"
+														]
 													}
 												},
 												"prices": [
@@ -7481,9 +7471,6 @@
 												],
 												"tags": [
 													"123c7f79bcf86cd7994f6c0e"
-												],
-												"assets": [
-													"g8h07f79bcf86cd7994f9d7k"
 												],
 												"joint": "df3c7f79bcf86cd7994f9d8f",
 												"extra": {
@@ -7546,11 +7533,15 @@
 													"RU": {
 														"name": "Products on concert",
 														"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+														"color": "#000000",
 														"images": {
 															"main": "g8h07f79bcf86cd7994f9d7k",
 															"thumbnail": "gt7h7f79bcf86cd7994f9d6u",
 															"icon": "gt7h7f79bcf86cd7994f9d6u"
-														}
+														},
+														"assets": [
+															"g8h07f79bcf86cd7994f9d7k"
+														]
 													}
 												},
 												"prices": [
@@ -7575,9 +7566,6 @@
 												],
 												"tags": [
 													"123c7f79bcf86cd7994f6c0e"
-												],
-												"assets": [
-													"g8h07f79bcf86cd7994f9d7k"
 												],
 												"joint": "df3c7f79bcf86cd7994f9d8f",
 												"extra": {
@@ -7695,11 +7683,15 @@
 													"RU": {
 														"name": "Products on concert",
 														"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+														"color": "#000000",
 														"images": {
 															"main": "g8h07f79bcf86cd7994f9d7k",
 															"thumbnail": "gt7h7f79bcf86cd7994f9d6u",
 															"icon": "gt7h7f79bcf86cd7994f9d6u"
-														}
+														},
+														"assets": [
+															"g8h07f79bcf86cd7994f9d7k"
+														]
 													}
 												},
 												"prices": [
@@ -7724,9 +7716,6 @@
 												],
 												"tags": [
 													"123c7f79bcf86cd7994f6c0e"
-												],
-												"assets": [
-													"g8h07f79bcf86cd7994f9d7k"
 												],
 												"joint": "df3c7f79bcf86cd7994f9d8f",
 												"extra": {
@@ -7762,7 +7751,7 @@
 				}
 			}
 		},
-		"/product/{productId}/assets": {
+		"/product/{productId}/assets/{langCode}": {
 			"get": {
 				"operationId": "Get",
 				"responses": {
@@ -7832,11 +7821,19 @@
 						"schema": {
 							"type": "string"
 						}
+					},
+					{
+						"in": "path",
+						"name": "langCode",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
 					}
 				]
 			}
 		},
-		"/product/{productId}/asset": {
+		"/product/{productId}/asset/{langCode}": {
 			"post": {
 				"operationId": "Create",
 				"responses": {
@@ -7903,11 +7900,19 @@
 						"schema": {
 							"type": "string"
 						}
+					},
+					{
+						"in": "path",
+						"name": "langCode",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
 					}
 				]
 			}
 		},
-		"/product/{productId}/image/{lang}/{imageType}": {
+		"/product/{productId}/image/{langCode}/{imageType}": {
 			"post": {
 				"operationId": "CreateImage",
 				"responses": {
@@ -7969,7 +7974,7 @@
 				"parameters": [
 					{
 						"in": "path",
-						"name": "lang",
+						"name": "langCode",
 						"required": true,
 						"schema": {
 							"type": "string"
@@ -8081,7 +8086,9 @@
 						}
 					}
 				}
-			},
+			}
+		},
+		"/product/{productId}/asset/{langCode}/{assetId}": {
 			"delete": {
 				"operationId": "Delete",
 				"responses": {
@@ -8130,6 +8137,14 @@
 					{
 						"in": "path",
 						"name": "productId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "langCode",
 						"required": true,
 						"schema": {
 							"type": "string"

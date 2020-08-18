@@ -12,12 +12,10 @@ export interface IProductItem {
     content: {
         [lang: string]: IProductContent;
     };
-    color?: string;
     prices: Array<IPrice>;
     receipt: Array<IReceiptItem>;
     tags: Array<string>;
     joint?: string;
-    assets?: Array<string>;
     extra?: { [key: string]: any } | null;
 }
 
@@ -52,25 +50,22 @@ interface IProductCreateRequest {
     content: {
         [lang: string]: IProductContent;
     };
-    color?: string;
     prices: Array<IPrice>;
     receipt: Array<IReceiptItem>;
     tags: Array<string>;
     joint?: string;
-    assets?: Array<string>;
     extra?: { [key: string]: any } | null;
 }
 
 interface IProductUpdateRequest {
     active?: boolean;
-    name?: string;
-    color?: string;
-    description?: string;
+    content?: {
+        [lang: string]: IProductContent;
+    };
     prices?: Array<IPrice>;
     receipt?: Array<IReceiptItem>;
     tags?: Array<string>;
     joint?: string;
-    assets?: Array<string>;
     extra?: { [key: string]: any } | null;
 }
 
@@ -81,11 +76,13 @@ export const RESPONSE_TEMPLATE: IProductItem = {
         "RU": {
             name: "Products on concert",
             description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+            color: "#000000",
             images: {
                 main: "g8h07f79bcf86cd7994f9d7k",
                 thumbnail: "gt7h7f79bcf86cd7994f9d6u",
                 icon: "gt7h7f79bcf86cd7994f9d6u",
             },
+            assets: ["g8h07f79bcf86cd7994f9d7k",],
         },
     },
     prices: [
@@ -109,7 +106,6 @@ export const RESPONSE_TEMPLATE: IProductItem = {
         }
     ],
     tags: ["123c7f79bcf86cd7994f6c0e"],
-    assets: ["g8h07f79bcf86cd7994f9d7k",],
     joint: "df3c7f79bcf86cd7994f9d8f",
     extra: { key: "value" },
 };

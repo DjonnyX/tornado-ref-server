@@ -5,13 +5,15 @@ export const formatProductModel = (model: IProduct) => {
     if (!!model.content) {
         for (const lang in model.content) {
             content[lang] = {
-                name: model.content.name,
-                description: model.content.description,
-                images: model.content.images || {
+                name: model.content[lang].name,
+                description: model.content[lang].description,
+                color: model.content[lang].color,
+                images: model.content[lang].images || {
                     main: null,
                     thumbnail: null,
                     icon: null,
                 },
+                assets: model.content[lang].assets,
             }
         }
     }
@@ -19,7 +21,6 @@ export const formatProductModel = (model: IProduct) => {
         id: model._id,
         active: model.active,
         content,
-        color: model.color,
         prices: model.prices.map(price => ({
             currency: price.currency,
             value: price.value,
@@ -27,7 +28,6 @@ export const formatProductModel = (model: IProduct) => {
         receipt: model.receipt,
         tags: model.tags,
         joint: model.joint,
-        assets: model.assets,
         extra: model.extra,
     };
 };

@@ -101,7 +101,7 @@ const RESPONSE_TEMPLATE: IAssetItem = {
 @Route("/product")
 @Tags("Product assets")
 export class ProductAssetsController extends Controller {
-    @Get("{productId}/assets")
+    @Get("{productId}/assets/{langCode}")
     @Security("jwt")
     @Security("apiKey")
     @OperationId("Get")
@@ -109,7 +109,7 @@ export class ProductAssetsController extends Controller {
         meta: META_TEMPLATE,
         data: [RESPONSE_TEMPLATE],
     })
-    public async getAssets(productId: string): Promise<IProductGetAssetsResponse> {
+    public async getAssets(productId: string, langCode: string): Promise<IProductGetAssetsResponse> {
         let product: IProduct;
         try {
             product = await ProductModel.findById(productId);
@@ -126,7 +126,7 @@ export class ProductAssetsController extends Controller {
         }
 
         try {
-            const assets = await AssetModel.find({ _id: product.assets, });
+            const assets = await AssetModel.find({ _id: product.content[langCode].assets, });
 
             return {
                 meta: {},
@@ -145,7 +145,7 @@ export class ProductAssetsController extends Controller {
         }
     }
 
-    @Post("{productId}/asset")
+    @Post("{productId}/asset/{langCode}")
     @Security("jwt")
     @OperationId("Create")
     @Example<IProductCreateAssetsResponse>({
@@ -155,7 +155,7 @@ export class ProductAssetsController extends Controller {
             product: PRODUCT_RESPONSE_TEMPLATE,
         }
     })
-    public async create(productId: string, @Request() request: express.Request): Promise<IProductCreateAssetsResponse> {
+    public async create(productId: string, langCode: string, @Request() request: express.Request): Promise<IProductCreateAssetsResponse> {
         const assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA]);
 
         let product: IProduct;
@@ -175,7 +175,7 @@ export class ProductAssetsController extends Controller {
 
         let productRef: IRefItem;
         try {
-            product.assets.push(assetsInfo.data.id);
+            product.content[langCode].assets.push(assetsInfo.data.id);
             productRef = await riseRefVersion(RefTypes.PRODUCTS);
             await product.save();
         } catch (err) {
@@ -206,7 +206,7 @@ export class ProductAssetsController extends Controller {
         };
     }
 
-    @Post("{productId}/image/{lang}/{imageType}")
+    @Post("{productId}/image/{langCode}/{imageType}")
     @Security("jwt")
     @OperationId("CreateImage")
     @Example<IProductCreateAssetsResponse>({
@@ -216,7 +216,7 @@ export class ProductAssetsController extends Controller {
             product: PRODUCT_RESPONSE_TEMPLATE,
         }
     })
-    public async image(lang: string, productId: string, imageType: ProductImageTypes, @Request() request: express.Request): Promise<IProductCreateAssetsResponse> {
+    public async image(langCode: string, productId: string, imageType: ProductImageTypes, @Request() request: express.Request): Promise<IProductCreateAssetsResponse> {
         const assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA], false);
 
         let product: IProduct;
@@ -235,11 +235,11 @@ export class ProductAssetsController extends Controller {
             };
         }
 
-        deletedAsset = !!product.content[lang] ? product.content[lang].images[imageType] : undefined;
+        deletedAsset = !!product.content[langCode] ? product.content[langCode].images[imageType] : undefined;
 
         // удаление связанных изображений, если lang является основным языком
         for (const contentLang in product.content) {
-            if (contentLang === lang) {
+            if (contentLang === langCode) {
                 continue;
             }
 
@@ -247,8 +247,22 @@ export class ProductAssetsController extends Controller {
                 product.content[contentLang][imageType] = null;
             }
         }
-        
-        const assetIndex = deletedAsset ? product.assets.indexOf(deletedAsset) : -1;
+
+        if (!product.content[langCode]) {
+            product.content[langCode] = {
+                name: "Product name",
+                description: "Product description",
+                color: "rgba(255,255,255,0)",
+                images: {
+                    main: null,
+                    thumbnail: null,
+                    icon: null,
+                },
+                assets: [],
+            }
+        }
+
+        const assetIndex = deletedAsset ? product.content[langCode].assets.indexOf(deletedAsset) : -1;
         if (assetIndex > -1) {
             try {
                 const asset = await AssetModel.findByIdAndDelete(deletedAsset);
@@ -269,34 +283,22 @@ export class ProductAssetsController extends Controller {
         }
 
         // удаление предыдущего ассета
-        product.assets = product.assets.filter(asset => asset.toString() !== deletedAsset.toString());
+        product.content[langCode].assets = product.content[langCode].assets.filter(asset => asset.toString() !== deletedAsset.toString());
 
         let productRef: IRefItem;
         try {
-            if (!product.content[lang]) {
-                product.content[lang] = {
-                    name: "Some name",
-                    description: "Some description",
-                    images: {
-                        main: null,
-                        thumbnail: null,
-                        icon: null,
-                    },
-                }
-            }
-
-            product.content[lang].images[imageType] = assetsInfo.data.id;
+            product.content[langCode].images[imageType] = assetsInfo.data.id;
 
             if (imageType === ProductImageTypes.MAIN) {
-                if (!product.content[lang].images.thumbnail) {
-                    product.content[lang].images.thumbnail = product.content[lang].images.main;
+                if (!product.content[langCode].images.thumbnail) {
+                    product.content[langCode].images.thumbnail = product.content[langCode].images.main;
                 }
-                if (!product.content[lang].images.icon) {
-                    product.content[lang].images.icon = product.content[lang].images.main;
+                if (!product.content[langCode].images.icon) {
+                    product.content[langCode].images.icon = product.content[langCode].images.main;
                 }
             }
 
-            product.assets.push(assetsInfo.data.id);
+            product.content[langCode].assets.push(assetsInfo.data.id);
             productRef = await riseRefVersion(RefTypes.ORDER_TYPES);
             await product.save();
         } catch (err) {
@@ -326,7 +328,7 @@ export class ProductAssetsController extends Controller {
             }
         };
     }
-    
+
     @Put("{productId}/asset/{assetId}")
     @Security("jwt")
     @OperationId("Update")
@@ -353,7 +355,7 @@ export class ProductAssetsController extends Controller {
                 ]
             };
         }
-        
+
         let productRef: IRefItem;
         try {
             productRef = await getRef(RefTypes.PRODUCTS);
@@ -368,7 +370,7 @@ export class ProductAssetsController extends Controller {
                 ]
             };
         }
-        
+
         try {
             const item = await AssetModel.findById(assetId);
 
@@ -380,14 +382,14 @@ export class ProductAssetsController extends Controller {
 
             const ref = await riseRefVersion(RefTypes.ASSETS);
             return {
-                meta: { 
+                meta: {
                     asset: {
                         ref,
                     },
                     product: {
                         ref: productRef,
                     },
-                 },
+                },
                 data: {
                     asset: formatAssetModel(item),
                     product: formatProductModel(product),
@@ -406,13 +408,13 @@ export class ProductAssetsController extends Controller {
         }
     }
 
-    @Delete("{productId}/asset/{assetId}")
+    @Delete("{productId}/asset/{langCode}/{assetId}")
     @Security("jwt")
     @OperationId("Delete")
     @Example<IProductDeleteAssetsResponse>({
         meta: META_TEMPLATE
     })
-    public async delete(productId: string, assetId: string): Promise<IProductDeleteAssetsResponse> {
+    public async delete(productId: string, langCode: string, assetId: string): Promise<IProductDeleteAssetsResponse> {
         let product: IProduct;
         try {
             product = await ProductModel.findById(productId);
@@ -429,7 +431,7 @@ export class ProductAssetsController extends Controller {
         }
 
         let assetRef: IRefItem;
-        const assetIndex = product.assets.indexOf(assetId);
+        const assetIndex = !!product.content[langCode] ? product.content[langCode].assets.indexOf(assetId) : -1;
         if (assetIndex > -1) {
             try {
                 const asset = await AssetModel.findByIdAndDelete(assetId);
@@ -452,8 +454,12 @@ export class ProductAssetsController extends Controller {
 
         let productsRef: IRefItem;
         try {
-            product.assets.splice(assetIndex, 1);
+            if (!!product.content[langCode]) {
+                product.content[langCode].assets.splice(assetIndex, 1);
+            }
+
             await product.save();
+            
             productsRef = await riseRefVersion(RefTypes.PRODUCTS);
             return {
                 meta: {
