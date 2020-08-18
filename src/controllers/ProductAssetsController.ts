@@ -7,11 +7,22 @@ import { IProductItem, RESPONSE_TEMPLATE as PRODUCT_RESPONSE_TEMPLATE } from "./
 import { formatProductModel } from "../utils/product";
 import { IRefItem } from "./RefsController";
 import { uploadAsset, deleteAsset, IAssetItem } from "./AssetsController";
-import { AssetModel } from "../models/Asset";
+import { AssetModel, IAsset } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProductAsset extends IAssetItem { }
+
+interface IProductGetAllAssetsResponse {
+    meta?: {};
+    data?: {
+        [lang: string]: Array<IProductAsset>,
+    };
+    error?: Array<{
+        code: number;
+        message: string;
+    }>;
+}
 
 interface IProductGetAssetsResponse {
     meta?: {};
@@ -101,6 +112,68 @@ const RESPONSE_TEMPLATE: IAssetItem = {
 @Route("/product")
 @Tags("Product assets")
 export class ProductAssetsController extends Controller {
+    @Get("{productId}/assets")
+    @Security("jwt")
+    @Security("apiKey")
+    @OperationId("GetAll")
+    @Example<IProductGetAllAssetsResponse>({
+        meta: META_TEMPLATE,
+        data: {
+            "RU": [RESPONSE_TEMPLATE],
+        },
+    })
+    public async getAllAssets(productId: string): Promise<IProductGetAllAssetsResponse> {
+        let product: IProduct;
+        try {
+            product = await ProductModel.findById(productId);
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Product with id: "${productId}" not found. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        const promises = new Array<Promise<{ assets: Array<IAsset>, langCode: string }>>();
+
+        for (const langCode in product.content) {
+            promises.push(new Promise(async (resolve) => {
+                const assets = await AssetModel.find({ _id: product.content[langCode].assets });
+                resolve({ assets, langCode });
+            }));
+        }
+
+        try {
+            const assetsInfo = await Promise.all(promises);
+
+            const result: {
+                [lang: string]: Array<IProductAsset>,
+            } = {};
+            assetsInfo.forEach(assetInfo => {
+                result[assetInfo.langCode] = assetInfo.assets.map(asset => formatAssetModel(asset));
+            });
+
+            return {
+                meta: {},
+                data: result,
+            };
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Caught error. ${err}`,
+                    }
+                ]
+            };
+        }
+    }
+
     @Get("{productId}/assets/{langCode}")
     @Security("jwt")
     @Security("apiKey")
@@ -459,7 +532,7 @@ export class ProductAssetsController extends Controller {
             }
 
             await product.save();
-            
+
             productsRef = await riseRefVersion(RefTypes.PRODUCTS);
             return {
                 meta: {
