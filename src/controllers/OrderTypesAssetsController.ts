@@ -427,7 +427,7 @@ export class OrderTypeAssetsController extends Controller {
         try {
             orderType.assets.splice(assetIndex, 1);
             await orderType.save();
-            orderTypesRef = await riseRefVersion(RefTypes.PRODUCTS);
+            orderTypesRef = await riseRefVersion(RefTypes.ORDER_TYPES);
             return {
                 meta: {
                     orderType: {
