@@ -15,24 +15,28 @@ export interface IPrice {
     extra?: { [key: string]: any } | null;
 }
 
-export interface IProductContent {
+export interface IProductContentsItem {
     name: string;
-    description: string;
-    color: string;
+    description?: string;
+    color?: string;
     images: {
-        main: string;
-        thumbnail: string;
-        icon: string;
+        main: string | null;
+        thumbnail: string | null;
+        icon: string | null;
     };
-    assets: Array<string>;
+    assets?: Array<string>;
     extra?: { [key: string]: any } | null;
+}
+
+interface ProductContentsItem extends IProductContentsItem {}
+
+export interface ProductContents {
+    [lang: string]: ProductContentsItem | any;
 }
 
 interface IProduct extends Document {
     active: boolean;
-    content: {
-        [lang: string]: IProductContent;
-    };
+    contents: ProductContents;
     prices: Array<IPrice>;
     receipt: Array<IReceiptItem>;
     tags: Array<string>;
@@ -57,7 +61,7 @@ const PriceSchema = new Schema({
 const ContentSchema = new Schema({
     name: { type: Schema.Types.String, required: true },
     description: { type: Schema.Types.String, required: false },
-    color: { type: Schema.Types.String, required: true, default: "rgba(255, 255, 255, 0)" },
+    color: { type: Schema.Types.String, required: true },
     images: {
         main: { type: Schema.Types.ObjectId, required: false },
         thumbnail: { type: Schema.Types.ObjectId, required: false },
@@ -69,12 +73,12 @@ const ContentSchema = new Schema({
 
 const ProductSchema = new Schema({
     active: { type: Schema.Types.Boolean, required: true, default: true },
-    content: { type: Schema.Types.Map, of: ContentSchema },
+    contents: { type: Schema.Types.Mixed, default: {} },
     prices: [PriceSchema],
     receipt: [ReceiptSchema],
     tags: [{ type: Schema.Types.ObjectId }],
     joint: { type: Schema.Types.ObjectId, required: true },
-    extra: { type: Schema.Types.Mixed, required: false },
+    extra: { type: Schema.Types.Mixed, required: false, default: {} },
 });
 
 const ProductModel = mongoose.model<IProduct>("Product", ProductSchema);

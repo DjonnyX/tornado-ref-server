@@ -851,17 +851,24 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IProductContent": {
+    "ProductContentsItem": {
         "dataType": "refObject",
         "properties": {
             "name": { "dataType": "string", "required": true },
-            "description": { "dataType": "string", "required": true },
-            "color": { "dataType": "string", "required": true },
-            "images": { "dataType": "nestedObjectLiteral", "nestedProperties": { "icon": { "dataType": "string", "required": true }, "thumbnail": { "dataType": "string", "required": true }, "main": { "dataType": "string", "required": true } }, "required": true },
-            "assets": { "dataType": "array", "array": { "dataType": "string" }, "required": true },
+            "description": { "dataType": "string" },
+            "color": { "dataType": "string" },
+            "images": { "dataType": "nestedObjectLiteral", "nestedProperties": { "icon": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }], "required": true }, "thumbnail": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }], "required": true }, "main": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }], "required": true } }, "required": true },
+            "assets": { "dataType": "array", "array": { "dataType": "string" } },
             "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
         "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ProductContents": {
+        "dataType": "refObject",
+        "properties": {
+        },
+        "additionalProperties": { "dataType": "union", "subSchemas": [{ "ref": "ProductContentsItem" }, { "dataType": "any" }] },
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "IPrice": {
@@ -891,7 +898,7 @@ const models: TsoaRoute.Models = {
         "properties": {
             "id": { "dataType": "string" },
             "active": { "dataType": "boolean", "required": true },
-            "content": { "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "ref": "IProductContent" }, "required": true },
+            "contents": { "ref": "ProductContents", "required": true },
             "prices": { "dataType": "array", "array": { "ref": "IPrice" }, "required": true },
             "receipt": { "dataType": "array", "array": { "ref": "IReceiptItem" }, "required": true },
             "tags": { "dataType": "array", "array": { "dataType": "string" }, "required": true },
@@ -925,7 +932,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "active": { "dataType": "boolean", "required": true },
-            "content": { "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "ref": "IProductContent" }, "required": true },
+            "contents": { "ref": "ProductContents" },
             "prices": { "dataType": "array", "array": { "ref": "IPrice" }, "required": true },
             "receipt": { "dataType": "array", "array": { "ref": "IReceiptItem" }, "required": true },
             "tags": { "dataType": "array", "array": { "dataType": "string" }, "required": true },
@@ -939,7 +946,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "active": { "dataType": "boolean" },
-            "content": { "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "ref": "IProductContent" } },
+            "contents": { "ref": "ProductContents" },
             "prices": { "dataType": "array", "array": { "ref": "IPrice" } },
             "receipt": { "dataType": "array", "array": { "ref": "IReceiptItem" } },
             "tags": { "dataType": "array", "array": { "dataType": "string" } },
@@ -2718,8 +2725,8 @@ export function RegisterRoutes(app: express.Express) {
         authenticateMiddleware([{ "jwt": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
-                langCode: { "in": "path", "name": "langCode", "required": true, "dataType": "string" },
                 productId: { "in": "path", "name": "productId", "required": true, "dataType": "string" },
+                langCode: { "in": "path", "name": "langCode", "required": true, "dataType": "string" },
                 imageType: { "in": "path", "name": "imageType", "required": true, "ref": "ProductImageTypes" },
                 request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
             };

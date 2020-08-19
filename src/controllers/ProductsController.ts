@@ -4,14 +4,12 @@ import { getRef, riseRefVersion } from "../db/refs";
 import { NodeTypes } from "../models/enums";
 import { deleteNodesChain } from "../utils/node";
 import { formatProductModel } from "../utils/product";
-import { IProductContent } from "src/models/Product";
+import { ProductContents } from "../models/Product";
 
 export interface IProductItem {
     id?: string;
     active: boolean;
-    content: {
-        [lang: string]: IProductContent;
-    };
+    contents: ProductContents;
     prices: Array<IPrice>;
     receipt: Array<IReceiptItem>;
     tags: Array<string>;
@@ -47,9 +45,7 @@ interface IProductResponse {
 
 interface IProductCreateRequest {
     active: boolean;
-    content: {
-        [lang: string]: IProductContent;
-    };
+    contents?: ProductContents;
     prices: Array<IPrice>;
     receipt: Array<IReceiptItem>;
     tags: Array<string>;
@@ -59,9 +55,7 @@ interface IProductCreateRequest {
 
 interface IProductUpdateRequest {
     active?: boolean;
-    content?: {
-        [lang: string]: IProductContent;
-    };
+    contents?: ProductContents;
     prices?: Array<IPrice>;
     receipt?: Array<IReceiptItem>;
     tags?: Array<string>;
@@ -72,7 +66,7 @@ interface IProductUpdateRequest {
 export const RESPONSE_TEMPLATE: IProductItem = {
     id: "507c7f79bcf86cd7994f6c0e",
     active: true,
-    content: {
+    contents: {
         "RU": {
             name: "Products on concert",
             description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
@@ -204,7 +198,7 @@ export class ProductController extends Controller {
             });
             const jointRootNode = await jointNode.save();
 
-            params = { ...request, joint: jointRootNode._id };
+            params = { ...request, joint: jointRootNode._id } as any;
         } catch (err) {
             this.setStatus(500);
             return {
@@ -251,6 +245,9 @@ export class ProductController extends Controller {
 
             for (const key in request) {
                 item[key] = request[key];
+                if (key === "extra" || key === "content") {
+                    item.markModified(key);
+                }
             }
 
             await item.save();

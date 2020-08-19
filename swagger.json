@@ -2533,7 +2533,7 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"IProductContent": {
+			"ProductContentsItem": {
 				"properties": {
 					"name": {
 						"type": "string"
@@ -2547,13 +2547,16 @@
 					"images": {
 						"properties": {
 							"icon": {
-								"type": "string"
+								"type": "string",
+								"nullable": true
 							},
 							"thumbnail": {
-								"type": "string"
+								"type": "string",
+								"nullable": true
 							},
 							"main": {
-								"type": "string"
+								"type": "string",
+								"nullable": true
 							}
 						},
 						"required": [
@@ -2580,13 +2583,24 @@
 				},
 				"required": [
 					"name",
-					"description",
-					"color",
-					"images",
-					"assets"
+					"images"
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"ProductContents": {
+				"properties": {},
+				"type": "object",
+				"additionalProperties": {
+					"anyOf": [
+						{
+							"$ref": "#/components/schemas/ProductContentsItem"
+						},
+						{
+							"additionalProperties": true
+						}
+					]
+				}
 			},
 			"IPrice": {
 				"properties": {
@@ -2655,12 +2669,8 @@
 					"active": {
 						"type": "boolean"
 					},
-					"content": {
-						"properties": {},
-						"additionalProperties": {
-							"$ref": "#/components/schemas/IProductContent"
-						},
-						"type": "object"
+					"contents": {
+						"$ref": "#/components/schemas/ProductContents"
 					},
 					"prices": {
 						"items": {
@@ -2694,7 +2704,7 @@
 				},
 				"required": [
 					"active",
-					"content",
+					"contents",
 					"prices",
 					"receipt",
 					"tags"
@@ -2772,12 +2782,8 @@
 					"active": {
 						"type": "boolean"
 					},
-					"content": {
-						"properties": {},
-						"additionalProperties": {
-							"$ref": "#/components/schemas/IProductContent"
-						},
-						"type": "object"
+					"contents": {
+						"$ref": "#/components/schemas/ProductContents"
 					},
 					"prices": {
 						"items": {
@@ -2811,7 +2817,6 @@
 				},
 				"required": [
 					"active",
-					"content",
 					"prices",
 					"receipt",
 					"tags"
@@ -2824,12 +2829,8 @@
 					"active": {
 						"type": "boolean"
 					},
-					"content": {
-						"properties": {},
-						"additionalProperties": {
-							"$ref": "#/components/schemas/IProductContent"
-						},
-						"type": "object"
+					"contents": {
+						"$ref": "#/components/schemas/ProductContents"
 					},
 					"prices": {
 						"items": {
@@ -7384,7 +7385,7 @@
 												{
 													"id": "507c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"content": {
+													"contents": {
 														"RU": {
 															"name": "Products on concert",
 															"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
@@ -7473,7 +7474,7 @@
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"active": true,
-												"content": {
+												"contents": {
 													"RU": {
 														"name": "Products on concert",
 														"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
@@ -7568,7 +7569,7 @@
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"active": true,
-												"content": {
+												"contents": {
 													"RU": {
 														"name": "Products on concert",
 														"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
@@ -7718,7 +7719,7 @@
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"active": true,
-												"content": {
+												"contents": {
 													"RU": {
 														"name": "Products on concert",
 														"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
@@ -8089,7 +8090,7 @@
 				"parameters": [
 					{
 						"in": "path",
-						"name": "langCode",
+						"name": "productId",
 						"required": true,
 						"schema": {
 							"type": "string"
@@ -8097,7 +8098,7 @@
 					},
 					{
 						"in": "path",
-						"name": "productId",
+						"name": "langCode",
 						"required": true,
 						"schema": {
 							"type": "string"
