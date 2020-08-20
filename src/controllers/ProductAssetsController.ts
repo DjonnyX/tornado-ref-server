@@ -315,10 +315,6 @@ export class ProductAssetsController extends Controller {
             contents[langCode] = {};
         }
 
-        if (!contents[langCode].color) {
-            contents[langCode].color = "rgba(255,255,255,0)";
-        }
-
         if (!contents[langCode].images) {
             contents[langCode].images = {
                 main: null,
