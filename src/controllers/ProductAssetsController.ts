@@ -346,8 +346,10 @@ export class ProductAssetsController extends Controller {
                 continue;
             }
 
-            if (!!contents[contentLang].images[imageType] && contents[contentLang].images[imageType] === deletedAsset) {
-                isAssetExistsInOtherProps ++;
+            if (contents[contentLang].images) {
+                if (!!contents[contentLang].images[imageType] && contents[contentLang].images[imageType] === deletedAsset) {
+                    isAssetExistsInOtherProps++;
+                }
             }
         }
 
