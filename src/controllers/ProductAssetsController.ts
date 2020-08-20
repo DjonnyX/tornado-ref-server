@@ -315,14 +315,6 @@ export class ProductAssetsController extends Controller {
             contents[langCode] = {};
         }
 
-        if (!contents[langCode].name) {
-            contents[langCode].name = "";
-        }
-
-        if (!contents[langCode].description) {
-            contents[langCode].description = "";
-        }
-
         if (!contents[langCode].color) {
             contents[langCode].color = "rgba(255,255,255,0)";
         }
