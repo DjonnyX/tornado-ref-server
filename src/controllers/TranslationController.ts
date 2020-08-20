@@ -176,6 +176,9 @@ export class TranslationController extends Controller {
 
             for (const key in request) {
                 item[key] = request[key];
+                if (key === "extra") {
+                    item.markModified(key);
+                }
             }
 
             await item.save();

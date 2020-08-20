@@ -7,7 +7,8 @@
             "translations": {
                 "back": "Назад",
                 "menu": "Меню",
-                "order": "Заказ"
+                "order": "Заказ",
+                "pay": "Оплата"
             }
         },
         {
@@ -16,7 +17,8 @@
             "translations": {
                 "back": "back",
                 "menu": "Menu",
-                "order": "Order"
+                "order": "Order",
+                "pay": "Pay"
             }
         }
     ]

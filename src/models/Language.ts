@@ -3,6 +3,7 @@ import { Schema, Document } from "mongoose";
 
 interface ILanguage extends Document {
     active: boolean;
+    isDefault: boolean;
     code: string;
     name: string;
     assets: Array<string>;
@@ -15,6 +16,7 @@ interface ILanguage extends Document {
 
 const LanguageSchema = new Schema({
     active: { type: Schema.Types.Boolean, required: true, default: true },
+    isDefault: { type: Schema.Types.Boolean, required: true, default: true },
     code: { type: Schema.Types.String, unique: true, required: true },
     name: { type: Schema.Types.String, required: true },
     assets: [{ type: Schema.Types.ObjectId, required: true }],

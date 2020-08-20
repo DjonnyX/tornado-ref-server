@@ -7,11 +7,23 @@ import { IProductItem, RESPONSE_TEMPLATE as PRODUCT_RESPONSE_TEMPLATE } from "./
 import { formatProductModel } from "../utils/product";
 import { IRefItem } from "./RefsController";
 import { uploadAsset, deleteAsset, IAssetItem } from "./AssetsController";
-import { AssetModel } from "../models/Asset";
+import { AssetModel, IAsset } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
+import { ProductContents } from "src/models/Product";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProductAsset extends IAssetItem { }
+
+interface IProductGetAllAssetsResponse {
+    meta?: {};
+    data?: {
+        [lang: string]: Array<IProductAsset>,
+    };
+    error?: Array<{
+        code: number;
+        message: string;
+    }>;
+}
 
 interface IProductGetAssetsResponse {
     meta?: {};
@@ -104,12 +116,74 @@ export class ProductAssetsController extends Controller {
     @Get("{productId}/assets")
     @Security("jwt")
     @Security("apiKey")
+    @OperationId("GetAll")
+    @Example<IProductGetAllAssetsResponse>({
+        meta: META_TEMPLATE,
+        data: {
+            "RU": [RESPONSE_TEMPLATE],
+        },
+    })
+    public async getAllAssets(productId: string): Promise<IProductGetAllAssetsResponse> {
+        let product: IProduct;
+        try {
+            product = await ProductModel.findById(productId);
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Product with id: "${productId}" not found. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        const promises = new Array<Promise<{ assets: Array<IAsset>, langCode: string }>>();
+
+        for (const langCode in product.contents) {
+            promises.push(new Promise(async (resolve) => {
+                const assets = await AssetModel.find({ _id: product.contents[langCode].assets });
+                resolve({ assets, langCode });
+            }));
+        }
+
+        try {
+            const assetsInfo = await Promise.all(promises);
+
+            const result: {
+                [lang: string]: Array<IProductAsset>,
+            } = {};
+            assetsInfo.forEach(assetInfo => {
+                result[assetInfo.langCode] = assetInfo.assets.map(asset => formatAssetModel(asset));
+            });
+
+            return {
+                meta: {},
+                data: result,
+            };
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Caught error. ${err}`,
+                    }
+                ]
+            };
+        }
+    }
+
+    @Get("{productId}/assets/{langCode}")
+    @Security("jwt")
+    @Security("apiKey")
     @OperationId("Get")
     @Example<IProductGetAssetsResponse>({
         meta: META_TEMPLATE,
         data: [RESPONSE_TEMPLATE],
     })
-    public async getAssets(productId: string): Promise<IProductGetAssetsResponse> {
+    public async getAssets(productId: string, langCode: string): Promise<IProductGetAssetsResponse> {
         let product: IProduct;
         try {
             product = await ProductModel.findById(productId);
@@ -126,7 +200,7 @@ export class ProductAssetsController extends Controller {
         }
 
         try {
-            const assets = await AssetModel.find({ _id: product.assets, });
+            const assets = await AssetModel.find({ _id: product.contents[langCode].assets, });
 
             return {
                 meta: {},
@@ -145,7 +219,7 @@ export class ProductAssetsController extends Controller {
         }
     }
 
-    @Post("{productId}/asset")
+    @Post("{productId}/asset/{langCode}")
     @Security("jwt")
     @OperationId("Create")
     @Example<IProductCreateAssetsResponse>({
@@ -155,7 +229,7 @@ export class ProductAssetsController extends Controller {
             product: PRODUCT_RESPONSE_TEMPLATE,
         }
     })
-    public async create(productId: string, @Request() request: express.Request): Promise<IProductCreateAssetsResponse> {
+    public async create(productId: string, langCode: string, @Request() request: express.Request): Promise<IProductCreateAssetsResponse> {
         const assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA]);
 
         let product: IProduct;
@@ -175,7 +249,7 @@ export class ProductAssetsController extends Controller {
 
         let productRef: IRefItem;
         try {
-            product.assets.push(assetsInfo.data.id);
+            product.contents[langCode].assets.push(assetsInfo.data.id);
             productRef = await riseRefVersion(RefTypes.PRODUCTS);
             await product.save();
         } catch (err) {
@@ -206,9 +280,9 @@ export class ProductAssetsController extends Controller {
         };
     }
 
-    @Post("{productId}/image/{imageType}")
+    @Post("{productId}/image/{langCode}/{imageType}")
     @Security("jwt")
-    @OperationId("Create")
+    @OperationId("CreateImage")
     @Example<IProductCreateAssetsResponse>({
         meta: META_TEMPLATE,
         data: {
@@ -216,7 +290,7 @@ export class ProductAssetsController extends Controller {
             product: PRODUCT_RESPONSE_TEMPLATE,
         }
     })
-    public async image(productId: string, imageType: ProductImageTypes, @Request() request: express.Request): Promise<IProductCreateAssetsResponse> {
+    public async image(productId: string, langCode: string, imageType: ProductImageTypes, @Request() request: express.Request): Promise<IProductCreateAssetsResponse> {
         const assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA], false);
 
         let product: IProduct;
@@ -235,9 +309,44 @@ export class ProductAssetsController extends Controller {
             };
         }
 
-        deletedAsset = product.images[imageType];
-        
-        const assetIndex = product.assets.indexOf(deletedAsset);
+        let contents: ProductContents = product.contents;
+
+        if (!contents[langCode]) {
+            contents[langCode] = {};
+        }
+
+        if (!contents[langCode].images) {
+            contents[langCode].images = {
+                main: null,
+                thumbnail: null,
+                icon: null,
+            };
+        }
+
+        if (!contents[langCode].assets) {
+            contents[langCode].assets = [];
+        }
+
+        // удаление связанных изображений, если lang является основным языком
+        let isAssetExistsInOtherProps = 0;
+        for (const contentLang in contents) {
+            if (contentLang === langCode) {
+                continue;
+            }
+
+            if (contents[contentLang].images) {
+                if (!!contents[contentLang].images[imageType] && contents[contentLang].images[imageType] === deletedAsset) {
+                    isAssetExistsInOtherProps++;
+                }
+            }
+        }
+
+        // Удаление ассета только если он не используется в разных свойствах
+        if (isAssetExistsInOtherProps === 1) {
+            deletedAsset = !!contents[langCode] ? contents[langCode].images[imageType] : undefined;
+        }
+
+        const assetIndex = !!deletedAsset ? contents[langCode].assets.indexOf(deletedAsset) : -1;
         if (assetIndex > -1) {
             try {
                 const asset = await AssetModel.findByIdAndDelete(deletedAsset);
@@ -258,24 +367,33 @@ export class ProductAssetsController extends Controller {
         }
 
         // удаление предыдущего ассета
-        product.assets = product.assets.filter(asset => asset.toString() !== deletedAsset.toString());
+        if (!!deletedAsset) {
+            contents[langCode].assets = contents[langCode].assets.filter(asset => {
+                return asset.toString() !== deletedAsset.toString();
+            });
+        }
 
         let productRef: IRefItem;
+        let savedProduct: IProduct;
         try {
-            product.images[imageType] = assetsInfo.data.id;
+            contents[langCode].images[imageType] = assetsInfo.data.id.toString();
+            contents[langCode].assets.push(assetsInfo.data.id.toString());
 
             if (imageType === ProductImageTypes.MAIN) {
-                if (!product.images.thumbnail) {
-                    product.images.thumbnail = product.images.main;
+                if (!contents[langCode].images.thumbnail) {
+                    contents[langCode].images.thumbnail = contents[langCode].images.main;
                 }
-                if (!product.images.icon) {
-                    product.images.icon = product.images.main;
+                if (!contents[langCode].images.icon) {
+                    contents[langCode].images.icon = contents[langCode].images.main;
                 }
             }
 
-            product.assets.push(assetsInfo.data.id);
-            productRef = await riseRefVersion(RefTypes.ORDER_TYPES);
-            await product.save();
+            product.contents = contents;
+            product.markModified("contents");
+
+            savedProduct = await product.save();
+
+            productRef = await riseRefVersion(RefTypes.PRODUCTS);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -298,12 +416,12 @@ export class ProductAssetsController extends Controller {
                 }
             },
             data: {
-                product: formatProductModel(product),
+                product: formatProductModel(savedProduct),
                 asset: assetsInfo.data,
             }
         };
     }
-    
+
     @Put("{productId}/asset/{assetId}")
     @Security("jwt")
     @OperationId("Update")
@@ -330,7 +448,7 @@ export class ProductAssetsController extends Controller {
                 ]
             };
         }
-        
+
         let productRef: IRefItem;
         try {
             productRef = await getRef(RefTypes.PRODUCTS);
@@ -345,7 +463,7 @@ export class ProductAssetsController extends Controller {
                 ]
             };
         }
-        
+
         try {
             const item = await AssetModel.findById(assetId);
 
@@ -357,14 +475,14 @@ export class ProductAssetsController extends Controller {
 
             const ref = await riseRefVersion(RefTypes.ASSETS);
             return {
-                meta: { 
+                meta: {
                     asset: {
                         ref,
                     },
                     product: {
                         ref: productRef,
                     },
-                 },
+                },
                 data: {
                     asset: formatAssetModel(item),
                     product: formatProductModel(product),
@@ -383,13 +501,13 @@ export class ProductAssetsController extends Controller {
         }
     }
 
-    @Delete("{productId}/asset/{assetId}")
+    @Delete("{productId}/asset/{langCode}/{assetId}")
     @Security("jwt")
     @OperationId("Delete")
     @Example<IProductDeleteAssetsResponse>({
         meta: META_TEMPLATE
     })
-    public async delete(productId: string, assetId: string): Promise<IProductDeleteAssetsResponse> {
+    public async delete(productId: string, langCode: string, assetId: string): Promise<IProductDeleteAssetsResponse> {
         let product: IProduct;
         try {
             product = await ProductModel.findById(productId);
@@ -399,14 +517,14 @@ export class ProductAssetsController extends Controller {
                 error: [
                     {
                         code: 500,
-                        message: `Caught error. ${err}`,
+                        message: `Find product error. ${err}`,
                     }
                 ]
             };
         }
 
         let assetRef: IRefItem;
-        const assetIndex = product.assets.indexOf(assetId);
+        const assetIndex = !!product.contents[langCode] ? product.contents[langCode].assets.indexOf(assetId) : -1;
         if (assetIndex > -1) {
             try {
                 const asset = await AssetModel.findByIdAndDelete(assetId);
@@ -420,7 +538,7 @@ export class ProductAssetsController extends Controller {
                     error: [
                         {
                             code: 500,
-                            message: `Caught error. ${err}`,
+                            message: `Delete assets error. ${err}`,
                         }
                     ]
                 };
@@ -429,8 +547,12 @@ export class ProductAssetsController extends Controller {
 
         let productsRef: IRefItem;
         try {
-            product.assets.splice(assetIndex, 1);
+            if (!!product.contents[langCode]) {
+                product.contents[langCode].assets.splice(assetIndex, 1);
+            }
+
             await product.save();
+
             productsRef = await riseRefVersion(RefTypes.PRODUCTS);
             return {
                 meta: {
@@ -448,7 +570,7 @@ export class ProductAssetsController extends Controller {
                 error: [
                     {
                         code: 500,
-                        message: `Caught error. ${err}`,
+                        message: `Save product error. ${err}`,
                     }
                 ]
             };

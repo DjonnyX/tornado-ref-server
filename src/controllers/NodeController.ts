@@ -465,6 +465,10 @@ export class NodeController extends Controller {
             const item = await NodeModel.findById(id);
 
             for (const key in request) {
+                if (key === "extra") {
+                    item[key] = request[key];
+                    item.markModified(key);
+                } else
                 if (key === "scenarios") {
                     const scenarios = request.scenarios.map(scenario => ({
                         active: scenario.active,

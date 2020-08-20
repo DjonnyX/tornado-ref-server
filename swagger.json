@@ -2533,6 +2533,75 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"ProductContentsItem": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"color": {
+						"type": "string"
+					},
+					"images": {
+						"properties": {
+							"icon": {
+								"type": "string",
+								"nullable": true
+							},
+							"thumbnail": {
+								"type": "string",
+								"nullable": true
+							},
+							"main": {
+								"type": "string",
+								"nullable": true
+							}
+						},
+						"required": [
+							"icon",
+							"thumbnail",
+							"main"
+						],
+						"type": "object"
+					},
+					"assets": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"extra": {
+						"properties": {},
+						"additionalProperties": {
+							"additionalProperties": true
+						},
+						"type": "object",
+						"nullable": true
+					}
+				},
+				"required": [
+					"name",
+					"images"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ProductContents": {
+				"properties": {},
+				"type": "object",
+				"additionalProperties": {
+					"anyOf": [
+						{
+							"$ref": "#/components/schemas/ProductContentsItem"
+						},
+						{
+							"additionalProperties": true
+						}
+					]
+				}
+			},
 			"IPrice": {
 				"properties": {
 					"value": {
@@ -2541,6 +2610,14 @@
 					},
 					"currency": {
 						"type": "string"
+					},
+					"extra": {
+						"properties": {},
+						"additionalProperties": {
+							"additionalProperties": true
+						},
+						"type": "object",
+						"nullable": true
 					}
 				},
 				"required": [
@@ -2565,6 +2642,14 @@
 					"quantity": {
 						"type": "number",
 						"format": "double"
+					},
+					"extra": {
+						"properties": {},
+						"additionalProperties": {
+							"additionalProperties": true
+						},
+						"type": "object",
+						"nullable": true
 					}
 				},
 				"required": [
@@ -2584,14 +2669,8 @@
 					"active": {
 						"type": "boolean"
 					},
-					"name": {
-						"type": "string"
-					},
-					"color": {
-						"type": "string"
-					},
-					"description": {
-						"type": "string"
+					"contents": {
+						"$ref": "#/components/schemas/ProductContents"
 					},
 					"prices": {
 						"items": {
@@ -2614,29 +2693,6 @@
 					"joint": {
 						"type": "string"
 					},
-					"assets": {
-						"items": {
-							"type": "string"
-						},
-						"type": "array"
-					},
-					"images": {
-						"properties": {
-							"icon": {
-								"type": "string",
-								"nullable": true
-							},
-							"thumbnail": {
-								"type": "string",
-								"nullable": true
-							},
-							"main": {
-								"type": "string",
-								"nullable": true
-							}
-						},
-						"type": "object"
-					},
 					"extra": {
 						"properties": {},
 						"additionalProperties": {
@@ -2648,7 +2704,7 @@
 				},
 				"required": [
 					"active",
-					"name",
+					"contents",
 					"prices",
 					"receipt",
 					"tags"
@@ -2726,14 +2782,8 @@
 					"active": {
 						"type": "boolean"
 					},
-					"name": {
-						"type": "string"
-					},
-					"color": {
-						"type": "string"
-					},
-					"description": {
-						"type": "string"
+					"contents": {
+						"$ref": "#/components/schemas/ProductContents"
 					},
 					"prices": {
 						"items": {
@@ -2755,31 +2805,6 @@
 					},
 					"joint": {
 						"type": "string"
-					},
-					"assets": {
-						"items": {
-							"type": "string"
-						},
-						"type": "array"
-					},
-					"images": {
-						"properties": {
-							"icon": {
-								"type": "string"
-							},
-							"thumbnail": {
-								"type": "string"
-							},
-							"main": {
-								"type": "string"
-							}
-						},
-						"required": [
-							"icon",
-							"thumbnail",
-							"main"
-						],
-						"type": "object"
 					},
 					"extra": {
 						"properties": {},
@@ -2792,7 +2817,6 @@
 				},
 				"required": [
 					"active",
-					"name",
 					"prices",
 					"receipt",
 					"tags"
@@ -2805,14 +2829,8 @@
 					"active": {
 						"type": "boolean"
 					},
-					"name": {
-						"type": "string"
-					},
-					"color": {
-						"type": "string"
-					},
-					"description": {
-						"type": "string"
+					"contents": {
+						"$ref": "#/components/schemas/ProductContents"
 					},
 					"prices": {
 						"items": {
@@ -2834,34 +2852,6 @@
 					},
 					"joint": {
 						"type": "string"
-					},
-					"assets": {
-						"items": {
-							"type": "string"
-						},
-						"type": "array"
-					},
-					"images": {
-						"properties": {
-							"icon": {
-								"type": "string",
-								"nullable": true
-							},
-							"thumbnail": {
-								"type": "string",
-								"nullable": true
-							},
-							"main": {
-								"type": "string",
-								"nullable": true
-							}
-						},
-						"required": [
-							"icon",
-							"thumbnail",
-							"main"
-						],
-						"type": "object"
 					},
 					"extra": {
 						"properties": {},
@@ -2921,6 +2911,45 @@
 					"path",
 					"mipmap"
 				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IProductGetAllAssetsResponse": {
+				"properties": {
+					"meta": {
+						"properties": {},
+						"type": "object"
+					},
+					"data": {
+						"properties": {},
+						"additionalProperties": {
+							"items": {
+								"$ref": "#/components/schemas/IProductAsset"
+							},
+							"type": "array"
+						},
+						"type": "object"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
 				"type": "object",
 				"additionalProperties": false
 			},
@@ -3990,7 +4019,7 @@
 	},
 	"info": {
 		"title": "tornado-server",
-		"version": "0.0.1",
+		"version": "1.0.0",
 		"license": {
 			"name": "Commercial"
 		}
@@ -7356,8 +7385,21 @@
 												{
 													"id": "507c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"name": "Products on concert",
-													"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+													"contents": {
+														"RU": {
+															"name": "Products on concert",
+															"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+															"color": "#000000",
+															"images": {
+																"main": "g8h07f79bcf86cd7994f9d7k",
+																"thumbnail": "gt7h7f79bcf86cd7994f9d6u",
+																"icon": "gt7h7f79bcf86cd7994f9d6u"
+															},
+															"assets": [
+																"g8h07f79bcf86cd7994f9d7k"
+															]
+														}
+													},
 													"prices": [
 														{
 															"currency": "657c7f79bcf86cd7994f6c5h",
@@ -7381,14 +7423,6 @@
 													"tags": [
 														"123c7f79bcf86cd7994f6c0e"
 													],
-													"assets": [
-														"g8h07f79bcf86cd7994f9d7k"
-													],
-													"images": {
-														"main": "g8h07f79bcf86cd7994f9d7k",
-														"thumbnail": "gt7h7f79bcf86cd7994f9d6u",
-														"icon": "gt7h7f79bcf86cd7994f9d6u"
-													},
 													"joint": "df3c7f79bcf86cd7994f9d8f",
 													"extra": {
 														"key": "value"
@@ -7440,8 +7474,21 @@
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"active": true,
-												"name": "Products on concert",
-												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+												"contents": {
+													"RU": {
+														"name": "Products on concert",
+														"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+														"color": "#000000",
+														"images": {
+															"main": "g8h07f79bcf86cd7994f9d7k",
+															"thumbnail": "gt7h7f79bcf86cd7994f9d6u",
+															"icon": "gt7h7f79bcf86cd7994f9d6u"
+														},
+														"assets": [
+															"g8h07f79bcf86cd7994f9d7k"
+														]
+													}
+												},
 												"prices": [
 													{
 														"currency": "657c7f79bcf86cd7994f6c5h",
@@ -7465,14 +7512,6 @@
 												"tags": [
 													"123c7f79bcf86cd7994f6c0e"
 												],
-												"assets": [
-													"g8h07f79bcf86cd7994f9d7k"
-												],
-												"images": {
-													"main": "g8h07f79bcf86cd7994f9d7k",
-													"thumbnail": "gt7h7f79bcf86cd7994f9d6u",
-													"icon": "gt7h7f79bcf86cd7994f9d6u"
-												},
 												"joint": "df3c7f79bcf86cd7994f9d8f",
 												"extra": {
 													"key": "value"
@@ -7530,8 +7569,21 @@
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"active": true,
-												"name": "Products on concert",
-												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+												"contents": {
+													"RU": {
+														"name": "Products on concert",
+														"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+														"color": "#000000",
+														"images": {
+															"main": "g8h07f79bcf86cd7994f9d7k",
+															"thumbnail": "gt7h7f79bcf86cd7994f9d6u",
+															"icon": "gt7h7f79bcf86cd7994f9d6u"
+														},
+														"assets": [
+															"g8h07f79bcf86cd7994f9d7k"
+														]
+													}
+												},
 												"prices": [
 													{
 														"currency": "657c7f79bcf86cd7994f6c5h",
@@ -7555,14 +7607,6 @@
 												"tags": [
 													"123c7f79bcf86cd7994f6c0e"
 												],
-												"assets": [
-													"g8h07f79bcf86cd7994f9d7k"
-												],
-												"images": {
-													"main": "g8h07f79bcf86cd7994f9d7k",
-													"thumbnail": "gt7h7f79bcf86cd7994f9d6u",
-													"icon": "gt7h7f79bcf86cd7994f9d6u"
-												},
 												"joint": "df3c7f79bcf86cd7994f9d8f",
 												"extra": {
 													"key": "value"
@@ -7675,8 +7719,21 @@
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"active": true,
-												"name": "Products on concert",
-												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+												"contents": {
+													"RU": {
+														"name": "Products on concert",
+														"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+														"color": "#000000",
+														"images": {
+															"main": "g8h07f79bcf86cd7994f9d7k",
+															"thumbnail": "gt7h7f79bcf86cd7994f9d6u",
+															"icon": "gt7h7f79bcf86cd7994f9d6u"
+														},
+														"assets": [
+															"g8h07f79bcf86cd7994f9d7k"
+														]
+													}
+												},
 												"prices": [
 													{
 														"currency": "657c7f79bcf86cd7994f6c5h",
@@ -7700,14 +7757,6 @@
 												"tags": [
 													"123c7f79bcf86cd7994f6c0e"
 												],
-												"assets": [
-													"g8h07f79bcf86cd7994f9d7k"
-												],
-												"images": {
-													"main": "g8h07f79bcf86cd7994f9d7k",
-													"thumbnail": "gt7h7f79bcf86cd7994f9d6u",
-													"icon": "gt7h7f79bcf86cd7994f9d6u"
-												},
 												"joint": "df3c7f79bcf86cd7994f9d8f",
 												"extra": {
 													"key": "value"
@@ -7743,6 +7792,82 @@
 			}
 		},
 		"/product/{productId}/assets": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IProductGetAllAssetsResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"product": {
+													"ref": {
+														"name": "products",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												},
+												"asset": {
+													"ref": {
+														"name": "assets",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												}
+											},
+											"data": {
+												"RU": [
+													{
+														"id": "107c7f79bcf86cd7994f6c0e",
+														"active": true,
+														"lastupdate": 1589885721,
+														"name": "some_3d_model",
+														"ext": ".fbx",
+														"mipmap": {
+															"x128": "assets/some_3d_model_128x128.png",
+															"x32": "assets/favicon.png"
+														},
+														"path": "assets/some_3d_model.fbx"
+													}
+												]
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Product assets"
+				],
+				"security": [
+					{
+						"jwt": []
+					},
+					{
+						"apiKey": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "productId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/product/{productId}/assets/{langCode}": {
 			"get": {
 				"operationId": "Get",
 				"responses": {
@@ -7812,11 +7937,19 @@
 						"schema": {
 							"type": "string"
 						}
+					},
+					{
+						"in": "path",
+						"name": "langCode",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
 					}
 				]
 			}
 		},
-		"/product/{productId}/asset": {
+		"/product/{productId}/asset/{langCode}": {
 			"post": {
 				"operationId": "Create",
 				"responses": {
@@ -7883,13 +8016,21 @@
 						"schema": {
 							"type": "string"
 						}
+					},
+					{
+						"in": "path",
+						"name": "langCode",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
 					}
 				]
 			}
 		},
-		"/product/{productId}/image/{imageType}": {
+		"/product/{productId}/image/{langCode}/{imageType}": {
 			"post": {
-				"operationId": "Create",
+				"operationId": "CreateImage",
 				"responses": {
 					"200": {
 						"content": {
@@ -7950,6 +8091,14 @@
 					{
 						"in": "path",
 						"name": "productId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "langCode",
 						"required": true,
 						"schema": {
 							"type": "string"
@@ -8053,7 +8202,9 @@
 						}
 					}
 				}
-			},
+			}
+		},
+		"/product/{productId}/asset/{langCode}/{assetId}": {
 			"delete": {
 				"operationId": "Delete",
 				"responses": {
@@ -8102,6 +8253,14 @@
 					{
 						"in": "path",
 						"name": "productId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "langCode",
 						"required": true,
 						"schema": {
 							"type": "string"

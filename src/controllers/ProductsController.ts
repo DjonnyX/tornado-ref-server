@@ -4,23 +4,16 @@ import { getRef, riseRefVersion } from "../db/refs";
 import { NodeTypes } from "../models/enums";
 import { deleteNodesChain } from "../utils/node";
 import { formatProductModel } from "../utils/product";
+import { ProductContents } from "../models/Product";
 
 export interface IProductItem {
     id?: string;
     active: boolean;
-    name: string;
-    color?: string;
-    description?: string;
+    contents: ProductContents;
     prices: Array<IPrice>;
     receipt: Array<IReceiptItem>;
     tags: Array<string>;
     joint?: string;
-    assets?: Array<string>;
-    images?: {
-        main?: string | null;
-        thumbnail?: string | null;
-        icon?: string | null;
-    };
     extra?: { [key: string]: any } | null;
 }
 
@@ -52,45 +45,40 @@ interface IProductResponse {
 
 interface IProductCreateRequest {
     active: boolean;
-    name: string;
-    color?: string;
-    description?: string;
+    contents?: ProductContents;
     prices: Array<IPrice>;
     receipt: Array<IReceiptItem>;
     tags: Array<string>;
     joint?: string;
-    assets?: Array<string>;
-    images?: {
-        main: string;
-        thumbnail: string;
-        icon: string;
-    };
     extra?: { [key: string]: any } | null;
 }
 
 interface IProductUpdateRequest {
     active?: boolean;
-    name?: string;
-    color?: string;
-    description?: string;
+    contents?: ProductContents;
     prices?: Array<IPrice>;
     receipt?: Array<IReceiptItem>;
     tags?: Array<string>;
     joint?: string;
-    assets?: Array<string>;
-    images?: {
-        main: string | null;
-        thumbnail: string | null;
-        icon: string | null;
-    };
     extra?: { [key: string]: any } | null;
 }
 
 export const RESPONSE_TEMPLATE: IProductItem = {
     id: "507c7f79bcf86cd7994f6c0e",
     active: true,
-    name: "Products on concert",
-    description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+    contents: {
+        "RU": {
+            name: "Products on concert",
+            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+            color: "#000000",
+            images: {
+                main: "g8h07f79bcf86cd7994f9d7k",
+                thumbnail: "gt7h7f79bcf86cd7994f9d6u",
+                icon: "gt7h7f79bcf86cd7994f9d6u",
+            },
+            assets: ["g8h07f79bcf86cd7994f9d7k",],
+        },
+    },
     prices: [
         {
             currency: "657c7f79bcf86cd7994f6c5h",
@@ -112,12 +100,6 @@ export const RESPONSE_TEMPLATE: IProductItem = {
         }
     ],
     tags: ["123c7f79bcf86cd7994f6c0e"],
-    assets: ["g8h07f79bcf86cd7994f9d7k",],
-    images: {
-        main: "g8h07f79bcf86cd7994f9d7k",
-        thumbnail: "gt7h7f79bcf86cd7994f9d6u",
-        icon: "gt7h7f79bcf86cd7994f9d6u",
-    },
     joint: "df3c7f79bcf86cd7994f9d8f",
     extra: { key: "value" },
 };
@@ -216,7 +198,7 @@ export class ProductController extends Controller {
             });
             const jointRootNode = await jointNode.save();
 
-            params = { ...request, joint: jointRootNode._id };
+            params = { ...request, joint: jointRootNode._id } as any;
         } catch (err) {
             this.setStatus(500);
             return {
@@ -263,6 +245,9 @@ export class ProductController extends Controller {
 
             for (const key in request) {
                 item[key] = request[key];
+                if (key === "extra" || key === "content") {
+                    item.markModified(key);
+                }
             }
 
             await item.save();
