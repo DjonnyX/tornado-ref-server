@@ -292,6 +292,8 @@ export class ProductController extends Controller {
             };
         }
 
+        // нужно удалять ассеты
+
         try {
             await deleteNodesChain(product.joint);
         } catch (err) {
