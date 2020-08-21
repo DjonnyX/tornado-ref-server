@@ -82,7 +82,7 @@ export enum ProductImageTypes {
 
 const contentsToDefault = (contents: ProductContents, langCode: string) => {
     let result = { ...contents };
-    if (!!result) {
+    if (!result) {
         result = {};
     }
 
@@ -436,7 +436,7 @@ export class ProductAssetsController extends Controller {
         };
     }
 
-    @Put("{productId}/asset/{assetId}")
+    @Put("{productId}/asset/{langCode}/{assetId}")
     @Security("jwt")
     @OperationId("Update")
     @Example<IProductCreateAssetsResponse>({
@@ -446,7 +446,7 @@ export class ProductAssetsController extends Controller {
             product: PRODUCT_RESPONSE_TEMPLATE,
         }
     })
-    public async update(productId: string, assetId: string, @Body() request: IProductAssetUpdateRequest): Promise<IProductCreateAssetsResponse> {
+    public async update(productId: string, langCode: string, assetId: string, @Body() request: IProductAssetUpdateRequest): Promise<IProductCreateAssetsResponse> {
 
         let product: IProduct;
         try {
@@ -457,7 +457,7 @@ export class ProductAssetsController extends Controller {
                 error: [
                     {
                         code: 500,
-                        message: `Caught error. ${err}`,
+                        message: `Can not found product error. ${err}`,
                     }
                 ]
             };
@@ -563,7 +563,7 @@ export class ProductAssetsController extends Controller {
 
         let productsRef: IRefItem;
         try {
-            contents.assets.splice(assetIndex, 1);
+            contents[langCode].assets.splice(assetIndex, 1);
 
             product.contents = contents;
             product.markModified("contents");
