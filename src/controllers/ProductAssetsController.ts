@@ -327,23 +327,23 @@ export class ProductAssetsController extends Controller {
             contents[langCode].assets = [];
         }
 
-        // удаление связанных изображений, если lang является основным языком
+        deletedAsset = !!contents[langCode] ? contents[langCode].images[imageType] : undefined;
+
+        // детект количества повторяющихся изображений
         let isAssetExistsInOtherProps = 0;
         for (const contentLang in contents) {
-            if (contentLang === langCode) {
-                continue;
-            }
-
-            if (contents[contentLang].images) {
-                if (!!contents[contentLang].images[imageType] && contents[contentLang].images[imageType] === deletedAsset) {
-                    isAssetExistsInOtherProps++;
+            if (!!contents[contentLang].images) {
+                for (const img in contents[contentLang].images) {
+                    if (!!contents[contentLang].images[img] && contents[contentLang].images[img] === deletedAsset) {
+                        isAssetExistsInOtherProps++;
+                    }
                 }
             }
         }
 
         // Удаление ассета только если он не используется в разных свойствах
-        if (isAssetExistsInOtherProps === 1) {
-            deletedAsset = !!contents[langCode] ? contents[langCode].images[imageType] : undefined;
+        if (isAssetExistsInOtherProps !== 1) {
+            deletedAsset = undefined;
         }
 
         const assetIndex = !!deletedAsset ? contents[langCode].assets.indexOf(deletedAsset) : -1;
