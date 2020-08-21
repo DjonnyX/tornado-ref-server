@@ -81,24 +81,28 @@ export enum ProductImageTypes {
 }
 
 const contentsToDefault = (contents: ProductContents, langCode: string) => {
-    
-    if (!contents[langCode]) {
-        contents[langCode] = {};
+    let result = { ...contents };
+    if (!!result) {
+        result = {};
     }
 
-    if (!contents[langCode].images) {
-        contents[langCode].images = {
+    if (!result[langCode]) {
+        result[langCode] = {};
+    }
+
+    if (!result[langCode].images) {
+        result[langCode].images = {
             main: null,
             thumbnail: null,
             icon: null,
         };
     }
 
-    if (!contents[langCode].assets) {
-        contents[langCode].assets = [];
+    if (!result[langCode].assets) {
+        result[langCode].assets = [];
     }
 
-    return contents;
+    return result;
 }
 
 const META_TEMPLATE = {
@@ -267,10 +271,15 @@ export class ProductAssetsController extends Controller {
                 ]
             };
         }
+        const contents: ProductContents = contentsToDefault(product.contents, langCode);
 
         let productRef: IRefItem;
         try {
-            product.contents[langCode].assets.push(assetsInfo.data.id);
+            contents[langCode].assets.push(assetsInfo.data.id);
+
+            product.contents = contents;
+            product.markModified("contents");
+
             productRef = await riseRefVersion(RefTypes.PRODUCTS);
             await product.save();
         } catch (err) {
@@ -528,8 +537,10 @@ export class ProductAssetsController extends Controller {
             };
         }
 
+        let contents: ProductContents = contentsToDefault(product.contents, langCode);
+
         let assetRef: IRefItem;
-        const assetIndex = !!product.contents[langCode] ? product.contents[langCode].assets.indexOf(assetId) : -1;
+        const assetIndex = contents[langCode].assets.indexOf(assetId);
         if (assetIndex > -1) {
             try {
                 const asset = await AssetModel.findByIdAndDelete(assetId);
@@ -552,9 +563,10 @@ export class ProductAssetsController extends Controller {
 
         let productsRef: IRefItem;
         try {
-            if (!!product.contents[langCode]) {
-                product.contents[langCode].assets.splice(assetIndex, 1);
-            }
+            contents.assets.splice(assetIndex, 1);
+
+            product.contents = contents;
+            product.markModified("contents");
 
             await product.save();
 
