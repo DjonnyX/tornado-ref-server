@@ -80,6 +80,27 @@ export enum ProductImageTypes {
     ICON = "icon",
 }
 
+const contentsToDefault = (contents: ProductContents, langCode: string) => {
+    
+    if (!contents[langCode]) {
+        contents[langCode] = {};
+    }
+
+    if (!contents[langCode].images) {
+        contents[langCode].images = {
+            main: null,
+            thumbnail: null,
+            icon: null,
+        };
+    }
+
+    if (!contents[langCode].assets) {
+        contents[langCode].assets = [];
+    }
+
+    return contents;
+}
+
 const META_TEMPLATE = {
     product: {
         ref: {
@@ -309,23 +330,7 @@ export class ProductAssetsController extends Controller {
             };
         }
 
-        let contents: ProductContents = product.contents;
-
-        if (!contents[langCode]) {
-            contents[langCode] = {};
-        }
-
-        if (!contents[langCode].images) {
-            contents[langCode].images = {
-                main: null,
-                thumbnail: null,
-                icon: null,
-            };
-        }
-
-        if (!contents[langCode].assets) {
-            contents[langCode].assets = [];
-        }
+        let contents: ProductContents = contentsToDefault(product.contents, langCode);
 
         deletedAsset = !!contents[langCode] ? contents[langCode].images[imageType] : undefined;
 
