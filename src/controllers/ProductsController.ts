@@ -3,8 +3,9 @@ import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, 
 import { getRef, riseRefVersion } from "../db/refs";
 import { NodeTypes } from "../models/enums";
 import { deleteNodesChain } from "../utils/node";
-import { formatProductModel } from "../utils/product";
+import { formatProductModel, getProductAssets, getProductAssetsFromContent, getDeletedAssetsFromDifferense } from "../utils/product";
 import { ProductContents } from "../models/Product";
+import { AssetModel } from "../models/Asset";
 
 export interface IProductItem {
     id?: string;
@@ -243,10 +244,27 @@ export class ProductController extends Controller {
         try {
             const item = await ProductModel.findById(id);
 
+            let lastContents: ProductContents;
             for (const key in request) {
+                if (key === "contents") {
+                    lastContents = item.contents;
+                }
                 item[key] = request[key];
-                if (key === "extra" || key === "content") {
+                if (key === "extra") {
                     item.markModified(key);
+                }
+            }
+
+            // выставление ассетов от предыдущего состояния
+            // ассеты неьзя перезаписывать напрямую!
+            if (!!lastContents) {
+                for (const lang in lastContents) {
+                    if (!item.contents[lang]) {
+                        item.contents[lang] = {};
+                    }
+                    if (lastContents[lang]) {
+                        item.contents[lang].assets = lastContents[lang].assets;
+                    }
                 }
             }
 
@@ -286,13 +304,37 @@ export class ProductController extends Controller {
                 error: [
                     {
                         code: 500,
-                        message: `Caught error. ${err}`,
+                        message: `Find and delete product error. ${err}`,
                     }
                 ]
             };
         }
 
         // нужно удалять ассеты
+        const assetsList = getProductAssets(product);
+
+        const promises = new Array<Promise<any>>();
+
+        try {
+            assetsList.forEach(assetId => {
+                promises.push(new Promise(async (resolve, reject) => {
+                    await AssetModel.findByIdAndDelete(assetId);
+                    resolve();
+                }));
+            });
+
+            await Promise.all(promises);
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Error in delete assets. ${err}`,
+                    }
+                ]
+            }
+        }
 
         try {
             await deleteNodesChain(product.joint);
