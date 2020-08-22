@@ -3,7 +3,7 @@ import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, 
 import { getRef, riseRefVersion } from "../db/refs";
 import { NodeTypes } from "../models/enums";
 import { deleteNodesChain } from "../utils/node";
-import { formatProductModel, getProductAssets, getProductAssetsFromContent, getDeletedAssetsFromDifferense } from "../utils/product";
+import { formatProductModel, getProductAssets, getDeletedImagesFromDifferense } from "../utils/product";
 import { ProductContents } from "../models/Product";
 import { AssetModel } from "../models/Asset";
 
@@ -254,6 +254,31 @@ export class ProductController extends Controller {
                     item.markModified(key);
                 }
             }
+
+            // удаление ассетов из разности images
+            const deletedAssetsFromImages = getDeletedImagesFromDifferense(lastContents, item.contents);
+            const promises = new Array<Promise<any>>();
+            deletedAssetsFromImages.forEach(assetId => {
+                promises.push(new Promise(async (resolve, reject) => {
+                    // удаление из списка assets
+                    if (item.contents) {
+                        for (const lang in item.contents) {
+                            const content = item.contents[lang];
+                            if (!!content && !!content.assets) {
+                                const index = content.assets.indexOf(assetId);
+                                if (index !== -1) {
+                                    content.assets.splice(index, 1);
+                                }
+                            }
+                        }
+                    }
+
+                    // физическое удаление asset'а
+                    await AssetModel.findByIdAndDelete(assetId);
+                    resolve();
+                }));
+            });
+            await Promise.all(promises);
 
             // выставление ассетов от предыдущего состояния
             // ассеты неьзя перезаписывать напрямую!

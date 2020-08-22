@@ -1,6 +1,5 @@
 import { IProduct } from "@models";
-import { IAsset } from "../models/Asset";
-import { ProductContents } from "../models/Product";
+import { ProductContents, IProductContentsItem } from "../models/Product";
 
 export const formatProductModel = (model: IProduct) => ({
     id: model._id,
@@ -16,17 +15,35 @@ export const formatProductModel = (model: IProduct) => ({
     extra: model.extra,
 });
 
-export const getDeletedAssetsFromDifferense = (lastContents: ProductContents, newContents: ProductContents) => {
+export const getDeletedImagesFromDifferense = (lastContents: ProductContents, newContents: ProductContents) => {
     const result = new Array<string>();
 
-    const lastAssets = getProductAssetsFromContent(lastContents);
-    const newAssets = getProductAssetsFromContent(newContents);
+    const langs = getLangsFromContents(lastContents, newContents);
+
+    langs.forEach(lang => {
+        const lastAssets = getProductAssetsFromContentImages(lastContents[lang]);
+        const newAssets = getProductAssetsFromContentImages(newContents[lang]);
     
-    lastAssets.forEach(asset => {
-        if (newAssets.indexOf(asset) === -1) {
-            result.push(asset);
-        }
+        lastAssets.forEach((asset, index) => {
+            if (newAssets[index] !== asset) {
+                result.push(asset);
+            }
+        });
     });
+
+    return result;
+}
+
+export const getLangsFromContents = (lastContents: ProductContents, newContents: ProductContents) => {
+    const result = new Array<string>();
+    for (const lang in lastContents) {
+        result.push(lang);
+    }
+    for (const lang in newContents) {
+        if (result.indexOf(lang) === -1) {
+            result.push(lang);
+        }
+    }
 
     return result;
 }
@@ -43,6 +60,17 @@ export const getProductAssetsFromContent = (contents: ProductContents) => {
     }
 
     return result;
+}
+
+export const getProductAssetsFromContentImages = (content: IProductContentsItem) => {
+    if (!!content) {
+        const images = content.images;
+        if (!!images) {
+            return [images.main || null, images.thumbnail || null, images.icon || null];
+        }
+    }
+
+    return [null, null, null];
 }
 
 export const getProductAssets = (product: IProduct) => {
