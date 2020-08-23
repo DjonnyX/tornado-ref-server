@@ -259,7 +259,6 @@ export class ProductController extends Controller {
 
             // удаление ассетов из разности images
             const deletedAssetsFromImages = getDeletedImagesFromDifferense(lastContents, item.contents);
-            console.log(deletedAssetsFromImages)
             const promises = new Array<Promise<any>>();
             deletedAssetsFromImages.forEach(assetId => {
                 promises.push(new Promise(async (resolve, reject) => {
