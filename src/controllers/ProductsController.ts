@@ -363,7 +363,7 @@ export class ProductController extends Controller {
 
         try {
             assetsList.forEach(assetId => {
-                promises.push(new Promise(async (resolve, reject) => {
+                promises.push(new Promise(async (resolve) => {
                     const asset = await AssetModel.findByIdAndDelete(assetId);
                     await deleteAsset(asset.path);
                     await deleteAsset(asset.mipmap.x128);
