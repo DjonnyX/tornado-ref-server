@@ -25,7 +25,7 @@ export const getDeletedImagesFromDifferense = (lastContents: ProductContents, ne
         const newAssets = getProductAssetsFromContentImages(newContents[lang]);
     
         lastAssets.forEach((asset, index) => {
-            if (newAssets[index] !== asset) {
+            if (newAssets.filter(item => item === asset).length === 0) {
                 result.push(asset);
             }
         });
