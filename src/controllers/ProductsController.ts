@@ -1,9 +1,9 @@
-import { ProductModel, IProduct, IReceiptItem, RefTypes, NodeModel, IPrice } from "../models/index";
+import { ProductModel, IProduct, IReceiptItem, RefTypes, NodeModel, IPrice, ILanguage, LanguageModel } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { NodeTypes } from "../models/enums";
 import { deleteNodesChain } from "../utils/node";
-import { formatProductModel, getProductAssets, getDeletedImagesFromDifferense } from "../utils/product";
+import { formatProductModel, getProductAssets, getDeletedImagesFromDifferense, normalizeProductContents } from "../utils/product";
 import { ProductContents } from "../models/Product";
 import { AssetModel } from "../models/Asset";
 
@@ -241,6 +241,21 @@ export class ProductController extends Controller {
         data: RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() request: IProductUpdateRequest): Promise<IProductResponse> {
+        let defaultLanguage: ILanguage;
+        try {
+            defaultLanguage = await LanguageModel.findOne({ isDefault: true });
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Default language error. ${err}`,
+                    }
+                ]
+            };
+        }
+
         try {
             const item = await ProductModel.findById(id);
 
@@ -253,6 +268,9 @@ export class ProductController extends Controller {
                 item[key] = request[key];
 
                 if (key === "extra" || key === "contents") {
+                    if (key === "contents") {
+                        normalizeProductContents(item.contents, defaultLanguage.code);
+                    }
                     item.markModified(key);
                 }
             }

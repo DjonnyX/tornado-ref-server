@@ -1,15 +1,16 @@
 import * as express from "express";
-import { ProductModel, IProduct, RefTypes } from "../models/index";
+import { ProductModel, IProduct, RefTypes, ILanguage, LanguageModel } from "../models/index";
 import { Controller, Route, Post, Tags, OperationId, Example, Request, Security, Get, Delete, Body, Put } from "tsoa";
 import { riseRefVersion, getRef } from "../db/refs";
 import { AssetExtensions } from "../models/enums";
 import { IProductItem, RESPONSE_TEMPLATE as PRODUCT_RESPONSE_TEMPLATE } from "./ProductsController";
-import { formatProductModel } from "../utils/product";
+import { formatProductModel, normalizeProductContents } from "../utils/product";
 import { IRefItem } from "./RefsController";
 import { uploadAsset, deleteAsset, IAssetItem, ICreateAssetsResponse } from "./AssetsController";
 import { AssetModel, IAsset } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
 import { ProductContents } from "../models/Product";
+import { ILanguageItem } from "./LanguagesController";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProductAsset extends IAssetItem { }
@@ -365,6 +366,21 @@ export class ProductAssetsController extends Controller {
             };
         }
 
+        let defaultLanguage: ILanguage;
+        try {
+            defaultLanguage = await LanguageModel.findOne({ isDefault: true });
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Default language error. ${err}`,
+                    }
+                ]
+            };
+        }
+
         let contents: ProductContents = contentsToDefault(product.contents, langCode);
 
         deletedAsset = !!contents[langCode] ? contents[langCode].images[imageType] : undefined;
@@ -418,15 +434,8 @@ export class ProductAssetsController extends Controller {
         try {
             contents[langCode].images[imageType] = assetsInfo.data.id.toString();
             contents[langCode].assets.push(assetsInfo.data.id.toString());
-
-            if (imageType === ProductImageTypes.MAIN) {
-                if (!contents[langCode].images.thumbnail) {
-                    contents[langCode].images.thumbnail = contents[langCode].images.main;
-                }
-                if (!contents[langCode].images.icon) {
-                    contents[langCode].images.icon = contents[langCode].images.main;
-                }
-            }
+            
+            normalizeProductContents(contents, defaultLanguage.code);
 
             product.contents = contents;
             product.markModified("contents");
