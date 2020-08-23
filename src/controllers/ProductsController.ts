@@ -6,6 +6,7 @@ import { deleteNodesChain } from "../utils/node";
 import { formatProductModel, getProductAssets, getDeletedImagesFromDifferense, normalizeProductContents } from "../utils/product";
 import { ProductContents } from "../models/Product";
 import { AssetModel } from "../models/Asset";
+import { deleteAsset } from "./AssetsController";
 
 export interface IProductItem {
     id?: string;
@@ -363,12 +364,19 @@ export class ProductController extends Controller {
         try {
             assetsList.forEach(assetId => {
                 promises.push(new Promise(async (resolve, reject) => {
-                    await AssetModel.findByIdAndDelete(assetId);
+                    const asset = await AssetModel.findByIdAndDelete(assetId);
+                    await deleteAsset(asset.path);
+                    await deleteAsset(asset.mipmap.x128);
+                    await deleteAsset(asset.mipmap.x32);
                     resolve();
                 }));
             });
 
             await Promise.all(promises);
+
+            if (promises.length > 0) {
+                await riseRefVersion(RefTypes.ASSETS);
+            }
         } catch (err) {
             this.setStatus(500);
             return {
