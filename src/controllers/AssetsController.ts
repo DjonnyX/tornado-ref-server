@@ -37,7 +37,7 @@ interface IGetAssetsResponse {
     }>;
 }
 
-interface ICreateAssetsResponse {
+export interface ICreateAssetsResponse {
     meta?: IAssetMeta;
     data?: IAssetItem;
     error?: Array<{

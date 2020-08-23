@@ -6,10 +6,10 @@ import { AssetExtensions } from "../models/enums";
 import { IProductItem, RESPONSE_TEMPLATE as PRODUCT_RESPONSE_TEMPLATE } from "./ProductsController";
 import { formatProductModel } from "../utils/product";
 import { IRefItem } from "./RefsController";
-import { uploadAsset, deleteAsset, IAssetItem } from "./AssetsController";
+import { uploadAsset, deleteAsset, IAssetItem, ICreateAssetsResponse } from "./AssetsController";
 import { AssetModel, IAsset } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
-import { ProductContents } from "src/models/Product";
+import { ProductContents } from "../models/Product";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProductAsset extends IAssetItem { }
@@ -255,7 +255,20 @@ export class ProductAssetsController extends Controller {
         }
     })
     public async create(productId: string, langCode: string, @Request() request: express.Request): Promise<IProductCreateAssetsResponse> {
-        const assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA]);
+        let assetsInfo: ICreateAssetsResponse;
+        try {
+            assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA]);
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Upload asset error. ${err}`,
+                    }
+                ]
+            };
+        }
 
         let product: IProduct;
         try {
@@ -275,7 +288,7 @@ export class ProductAssetsController extends Controller {
 
         let productRef: IRefItem;
         try {
-            contents[langCode].assets.push(assetsInfo.data.id);
+            contents[langCode].assets.push(assetsInfo.data.id.toString());
 
             product.contents = contents;
             product.markModified("contents");
@@ -321,7 +334,20 @@ export class ProductAssetsController extends Controller {
         }
     })
     public async image(productId: string, langCode: string, imageType: ProductImageTypes, @Request() request: express.Request): Promise<IProductCreateAssetsResponse> {
-        const assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA], false);
+        let assetsInfo: ICreateAssetsResponse;
+        try {
+            assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA], false);
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Upload asset error. ${err}`,
+                    }
+                ]
+            };
+        }
 
         let product: IProduct;
         let deletedAsset: string;
