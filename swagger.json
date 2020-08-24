@@ -2572,6 +2572,12 @@
 						},
 						"type": "array"
 					},
+					"gallery": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
 					"extra": {
 						"properties": {},
 						"additionalProperties": {

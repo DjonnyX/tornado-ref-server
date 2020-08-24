@@ -103,6 +103,10 @@ const contentsToDefault = (contents: ProductContents, langCode: string) => {
         result[langCode].assets = [];
     }
 
+    if (!result[langCode].gallery) {
+        result[langCode].gallery = [];
+    }
+
     return result;
 }
 
@@ -280,16 +284,19 @@ export class ProductAssetsController extends Controller {
                 error: [
                     {
                         code: 500,
-                        message: `Caught error. ${err}`,
+                        message: `Find product error. ${err}`,
                     }
                 ]
             };
         }
+
         const contents: ProductContents = contentsToDefault(product.contents, langCode);
 
         let productRef: IRefItem;
         try {
-            contents[langCode].assets.push(assetsInfo.data.id.toString());
+            const assetId = assetsInfo.data.id.toString();
+            contents[langCode].assets.push(assetId);
+            contents[langCode].gallsery.push(assetId);
 
             product.contents = contents;
             product.markModified("contents");
@@ -599,6 +606,7 @@ export class ProductAssetsController extends Controller {
         let productsRef: IRefItem;
         try {
             contents[langCode].assets.splice(assetIndex, 1);
+            contents[langCode].gallery.splice(assetIndex, 1);
 
             product.contents = contents;
             product.markModified("contents");
