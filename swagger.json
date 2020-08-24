@@ -2572,6 +2572,12 @@
 						},
 						"type": "array"
 					},
+					"gallery": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
 					"extra": {
 						"properties": {},
 						"additionalProperties": {
@@ -2588,7 +2594,7 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"ProductContents": {
+			"IProductContents": {
 				"properties": {},
 				"type": "object",
 				"additionalProperties": {
@@ -2670,7 +2676,7 @@
 						"type": "boolean"
 					},
 					"contents": {
-						"$ref": "#/components/schemas/ProductContents"
+						"$ref": "#/components/schemas/IProductContents"
 					},
 					"prices": {
 						"items": {
@@ -2783,7 +2789,7 @@
 						"type": "boolean"
 					},
 					"contents": {
-						"$ref": "#/components/schemas/ProductContents"
+						"$ref": "#/components/schemas/IProductContents"
 					},
 					"prices": {
 						"items": {
@@ -2830,7 +2836,7 @@
 						"type": "boolean"
 					},
 					"contents": {
-						"$ref": "#/components/schemas/ProductContents"
+						"$ref": "#/components/schemas/IProductContents"
 					},
 					"prices": {
 						"items": {
@@ -8115,7 +8121,7 @@
 				]
 			}
 		},
-		"/product/{productId}/asset/{assetId}": {
+		"/product/{productId}/asset/{langCode}/{assetId}": {
 			"put": {
 				"operationId": "Update",
 				"responses": {
@@ -8185,6 +8191,14 @@
 					},
 					{
 						"in": "path",
+						"name": "langCode",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
 						"name": "assetId",
 						"required": true,
 						"schema": {
@@ -8202,9 +8216,7 @@
 						}
 					}
 				}
-			}
-		},
-		"/product/{productId}/asset/{langCode}/{assetId}": {
+			},
 			"delete": {
 				"operationId": "Delete",
 				"responses": {

@@ -25,18 +25,19 @@ export interface IProductContentsItem {
         icon: string | null;
     };
     assets?: Array<string>;
+    gallery?: Array<string>;
     extra?: { [key: string]: any } | null;
 }
 
 interface ProductContentsItem extends IProductContentsItem {}
 
-export interface ProductContents {
+export interface IProductContents {
     [lang: string]: ProductContentsItem | any;
 }
 
 interface IProduct extends Document {
     active: boolean;
-    contents: ProductContents;
+    contents: IProductContents;
     prices: Array<IPrice>;
     receipt: Array<IReceiptItem>;
     tags: Array<string>;
@@ -55,19 +56,6 @@ const ReceiptSchema = new Schema({
 const PriceSchema = new Schema({
     value: { type: Schema.Types.Number, required: true },
     currency: { type: Schema.Types.String, required: false },
-    extra: { type: Schema.Types.Mixed, required: false },
-});
-
-const ContentSchema = new Schema({
-    name: { type: Schema.Types.String, required: true },
-    description: { type: Schema.Types.String, required: false },
-    color: { type: Schema.Types.String, required: true },
-    images: {
-        main: { type: Schema.Types.ObjectId, required: false },
-        thumbnail: { type: Schema.Types.ObjectId, required: false },
-        icon: { type: Schema.Types.ObjectId, required: false },
-    },
-    assets: [{ type: Schema.Types.ObjectId, required: true }],
     extra: { type: Schema.Types.Mixed, required: false },
 });
 

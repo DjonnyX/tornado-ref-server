@@ -37,7 +37,7 @@ interface IGetAssetsResponse {
     }>;
 }
 
-interface ICreateAssetsResponse {
+export interface ICreateAssetsResponse {
     meta?: IAssetMeta;
     data?: IAssetItem;
     error?: Array<{
@@ -133,6 +133,7 @@ export const uploadAsset = async (request: express.Request, allowedExtensions: A
  * Возвращает удаленный asset
  */
 export const deleteAsset = (assetPath: string): Promise<IAsset> => {
+    console.log("delete asset", assetPath)
     return new Promise((resolve, reject) => {
         fs.unlink(path.normalize(assetPath), (err) => {
             if (!!err && err.code === "ENOENT") {

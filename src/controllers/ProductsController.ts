@@ -1,15 +1,17 @@
-import { ProductModel, IProduct, IReceiptItem, RefTypes, NodeModel, IPrice } from "../models/index";
+import { ProductModel, IProduct, IReceiptItem, RefTypes, NodeModel, IPrice, ILanguage, LanguageModel } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { NodeTypes } from "../models/enums";
 import { deleteNodesChain } from "../utils/node";
-import { formatProductModel } from "../utils/product";
-import { ProductContents } from "../models/Product";
+import { formatProductModel, getProductAssets, getDeletedImagesFromDifferense, normalizeProductContents } from "../utils/product";
+import { IProductContents } from "../models/Product";
+import { AssetModel } from "../models/Asset";
+import { deleteAsset } from "./AssetsController";
 
 export interface IProductItem {
     id?: string;
     active: boolean;
-    contents: ProductContents;
+    contents: IProductContents;
     prices: Array<IPrice>;
     receipt: Array<IReceiptItem>;
     tags: Array<string>;
@@ -45,7 +47,7 @@ interface IProductResponse {
 
 interface IProductCreateRequest {
     active: boolean;
-    contents?: ProductContents;
+    contents?: IProductContents;
     prices: Array<IPrice>;
     receipt: Array<IReceiptItem>;
     tags: Array<string>;
@@ -55,7 +57,7 @@ interface IProductCreateRequest {
 
 interface IProductUpdateRequest {
     active?: boolean;
-    contents?: ProductContents;
+    contents?: IProductContents;
     prices?: Array<IPrice>;
     receipt?: Array<IReceiptItem>;
     tags?: Array<string>;
@@ -240,13 +242,75 @@ export class ProductController extends Controller {
         data: RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() request: IProductUpdateRequest): Promise<IProductResponse> {
+        let defaultLanguage: ILanguage;
+        try {
+            defaultLanguage = await LanguageModel.findOne({ isDefault: true });
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Default language error. ${err}`,
+                    }
+                ]
+            };
+        }
+
         try {
             const item = await ProductModel.findById(id);
 
+            let lastContents: IProductContents;
             for (const key in request) {
+                if (key === "contents") {
+                    lastContents = item.contents;
+                }
+
                 item[key] = request[key];
-                if (key === "extra" || key === "content") {
+
+                if (key === "extra" || key === "contents") {
+                    if (key === "contents") {
+                        normalizeProductContents(item.contents, defaultLanguage.code);
+                    }
                     item.markModified(key);
+                }
+            }
+
+            // удаление ассетов из разности images
+            const deletedAssetsFromImages = getDeletedImagesFromDifferense(lastContents, item.contents);
+            const promises = new Array<Promise<any>>();
+            deletedAssetsFromImages.forEach(assetId => {
+                promises.push(new Promise(async (resolve, reject) => {
+                    // удаление из списка assets
+                    if (item.contents) {
+                        for (const lang in item.contents) {
+                            const content = item.contents[lang];
+                            if (!!content && !!content.assets) {
+                                const index = content.assets.indexOf(assetId);
+                                if (index !== -1) {
+                                    content.assets.splice(index, 1);
+                                }
+                            }
+                        }
+                    }
+
+                    // физическое удаление asset'а
+                    await AssetModel.findByIdAndDelete(assetId);
+                    resolve();
+                }));
+            });
+            await Promise.all(promises);
+
+            // выставление ассетов от предыдущего состояния
+            // ассеты неьзя перезаписывать напрямую!
+            if (!!lastContents) {
+                for (const lang in lastContents) {
+                    if (!item.contents[lang]) {
+                        item.contents[lang] = {};
+                    }
+                    if (lastContents[lang]) {
+                        item.contents[lang].assets = lastContents[lang].assets;
+                    }
                 }
             }
 
@@ -286,10 +350,43 @@ export class ProductController extends Controller {
                 error: [
                     {
                         code: 500,
-                        message: `Caught error. ${err}`,
+                        message: `Find and delete product error. ${err}`,
                     }
                 ]
             };
+        }
+
+        // нужно удалять ассеты
+        const assetsList = getProductAssets(product);
+
+        const promises = new Array<Promise<any>>();
+
+        try {
+            assetsList.forEach(assetId => {
+                promises.push(new Promise(async (resolve) => {
+                    const asset = await AssetModel.findByIdAndDelete(assetId);
+                    await deleteAsset(asset.path);
+                    await deleteAsset(asset.mipmap.x128);
+                    await deleteAsset(asset.mipmap.x32);
+                    resolve();
+                }));
+            });
+
+            await Promise.all(promises);
+
+            if (promises.length > 0) {
+                await riseRefVersion(RefTypes.ASSETS);
+            }
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Error in delete assets. ${err}`,
+                    }
+                ]
+            }
         }
 
         try {

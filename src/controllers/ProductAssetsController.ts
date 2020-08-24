@@ -1,15 +1,16 @@
 import * as express from "express";
-import { ProductModel, IProduct, RefTypes } from "../models/index";
+import { ProductModel, IProduct, RefTypes, ILanguage, LanguageModel } from "../models/index";
 import { Controller, Route, Post, Tags, OperationId, Example, Request, Security, Get, Delete, Body, Put } from "tsoa";
 import { riseRefVersion, getRef } from "../db/refs";
 import { AssetExtensions } from "../models/enums";
 import { IProductItem, RESPONSE_TEMPLATE as PRODUCT_RESPONSE_TEMPLATE } from "./ProductsController";
-import { formatProductModel } from "../utils/product";
+import { formatProductModel, normalizeProductContents } from "../utils/product";
 import { IRefItem } from "./RefsController";
-import { uploadAsset, deleteAsset, IAssetItem } from "./AssetsController";
+import { uploadAsset, deleteAsset, IAssetItem, ICreateAssetsResponse } from "./AssetsController";
 import { AssetModel, IAsset } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
-import { ProductContents } from "src/models/Product";
+import { IProductContents } from "../models/Product";
+import { ILanguageItem } from "./LanguagesController";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProductAsset extends IAssetItem { }
@@ -78,6 +79,35 @@ export enum ProductImageTypes {
     MAIN = "main",
     THUMBNAIL = "thumbnail",
     ICON = "icon",
+}
+
+const contentsToDefault = (contents: IProductContents, langCode: string) => {
+    let result = { ...contents };
+    if (!result) {
+        result = {};
+    }
+
+    if (!result[langCode]) {
+        result[langCode] = {};
+    }
+
+    if (!result[langCode].images) {
+        result[langCode].images = {
+            main: null,
+            thumbnail: null,
+            icon: null,
+        };
+    }
+
+    if (!result[langCode].assets) {
+        result[langCode].assets = [];
+    }
+
+    if (!result[langCode].gallery) {
+        result[langCode].gallery = [];
+    }
+
+    return result;
 }
 
 const META_TEMPLATE = {
@@ -230,7 +260,20 @@ export class ProductAssetsController extends Controller {
         }
     })
     public async create(productId: string, langCode: string, @Request() request: express.Request): Promise<IProductCreateAssetsResponse> {
-        const assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA]);
+        let assetsInfo: ICreateAssetsResponse;
+        try {
+            assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA]);
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Upload asset error. ${err}`,
+                    }
+                ]
+            };
+        }
 
         let product: IProduct;
         try {
@@ -241,15 +284,23 @@ export class ProductAssetsController extends Controller {
                 error: [
                     {
                         code: 500,
-                        message: `Caught error. ${err}`,
+                        message: `Find product error. ${err}`,
                     }
                 ]
             };
         }
 
+        const contents: IProductContents = contentsToDefault(product.contents, langCode);
+
         let productRef: IRefItem;
         try {
-            product.contents[langCode].assets.push(assetsInfo.data.id);
+            const assetId = assetsInfo.data.id.toString();
+            contents[langCode].assets.push(assetId);
+            contents[langCode].gallsery.push(assetId);
+
+            product.contents = contents;
+            product.markModified("contents");
+
             productRef = await riseRefVersion(RefTypes.PRODUCTS);
             await product.save();
         } catch (err) {
@@ -291,7 +342,20 @@ export class ProductAssetsController extends Controller {
         }
     })
     public async image(productId: string, langCode: string, imageType: ProductImageTypes, @Request() request: express.Request): Promise<IProductCreateAssetsResponse> {
-        const assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA], false);
+        let assetsInfo: ICreateAssetsResponse;
+        try {
+            assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA], false);
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Upload asset error. ${err}`,
+                    }
+                ]
+            };
+        }
 
         let product: IProduct;
         let deletedAsset: string;
@@ -309,41 +373,40 @@ export class ProductAssetsController extends Controller {
             };
         }
 
-        let contents: ProductContents = product.contents;
-
-        if (!contents[langCode]) {
-            contents[langCode] = {};
-        }
-
-        if (!contents[langCode].images) {
-            contents[langCode].images = {
-                main: null,
-                thumbnail: null,
-                icon: null,
+        let defaultLanguage: ILanguage;
+        try {
+            defaultLanguage = await LanguageModel.findOne({ isDefault: true });
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Default language error. ${err}`,
+                    }
+                ]
             };
         }
 
-        if (!contents[langCode].assets) {
-            contents[langCode].assets = [];
-        }
+        let contents: IProductContents = contentsToDefault(product.contents, langCode);
 
-        // удаление связанных изображений, если lang является основным языком
+        deletedAsset = !!contents[langCode] ? contents[langCode].images[imageType] : undefined;
+
+        // детект количества повторяющихся изображений
         let isAssetExistsInOtherProps = 0;
         for (const contentLang in contents) {
-            if (contentLang === langCode) {
-                continue;
-            }
-
-            if (contents[contentLang].images) {
-                if (!!contents[contentLang].images[imageType] && contents[contentLang].images[imageType] === deletedAsset) {
-                    isAssetExistsInOtherProps++;
+            if (!!contents[contentLang].images) {
+                for (const img in contents[contentLang].images) {
+                    if (!!contents[contentLang].images[img] && contents[contentLang].images[img] === deletedAsset) {
+                        isAssetExistsInOtherProps++;
+                    }
                 }
             }
         }
 
         // Удаление ассета только если он не используется в разных свойствах
-        if (isAssetExistsInOtherProps === 1) {
-            deletedAsset = !!contents[langCode] ? contents[langCode].images[imageType] : undefined;
+        if (isAssetExistsInOtherProps !== 1) {
+            deletedAsset = undefined;
         }
 
         const assetIndex = !!deletedAsset ? contents[langCode].assets.indexOf(deletedAsset) : -1;
@@ -378,15 +441,8 @@ export class ProductAssetsController extends Controller {
         try {
             contents[langCode].images[imageType] = assetsInfo.data.id.toString();
             contents[langCode].assets.push(assetsInfo.data.id.toString());
-
-            if (imageType === ProductImageTypes.MAIN) {
-                if (!contents[langCode].images.thumbnail) {
-                    contents[langCode].images.thumbnail = contents[langCode].images.main;
-                }
-                if (!contents[langCode].images.icon) {
-                    contents[langCode].images.icon = contents[langCode].images.main;
-                }
-            }
+            
+            normalizeProductContents(contents, defaultLanguage.code);
 
             product.contents = contents;
             product.markModified("contents");
@@ -422,7 +478,7 @@ export class ProductAssetsController extends Controller {
         };
     }
 
-    @Put("{productId}/asset/{assetId}")
+    @Put("{productId}/asset/{langCode}/{assetId}")
     @Security("jwt")
     @OperationId("Update")
     @Example<IProductCreateAssetsResponse>({
@@ -432,7 +488,7 @@ export class ProductAssetsController extends Controller {
             product: PRODUCT_RESPONSE_TEMPLATE,
         }
     })
-    public async update(productId: string, assetId: string, @Body() request: IProductAssetUpdateRequest): Promise<IProductCreateAssetsResponse> {
+    public async update(productId: string, langCode: string, assetId: string, @Body() request: IProductAssetUpdateRequest): Promise<IProductCreateAssetsResponse> {
 
         let product: IProduct;
         try {
@@ -443,7 +499,7 @@ export class ProductAssetsController extends Controller {
                 error: [
                     {
                         code: 500,
-                        message: `Caught error. ${err}`,
+                        message: `Can not found product error. ${err}`,
                     }
                 ]
             };
@@ -523,8 +579,10 @@ export class ProductAssetsController extends Controller {
             };
         }
 
+        let contents: IProductContents = contentsToDefault(product.contents, langCode);
+
         let assetRef: IRefItem;
-        const assetIndex = !!product.contents[langCode] ? product.contents[langCode].assets.indexOf(assetId) : -1;
+        const assetIndex = contents[langCode].assets.indexOf(assetId);
         if (assetIndex > -1) {
             try {
                 const asset = await AssetModel.findByIdAndDelete(assetId);
@@ -547,9 +605,11 @@ export class ProductAssetsController extends Controller {
 
         let productsRef: IRefItem;
         try {
-            if (!!product.contents[langCode]) {
-                product.contents[langCode].assets.splice(assetIndex, 1);
-            }
+            contents[langCode].assets.splice(assetIndex, 1);
+            contents[langCode].gallery.splice(assetIndex, 1);
+
+            product.contents = contents;
+            product.markModified("contents");
 
             await product.save();
 

@@ -859,12 +859,13 @@ const models: TsoaRoute.Models = {
             "color": { "dataType": "string" },
             "images": { "dataType": "nestedObjectLiteral", "nestedProperties": { "icon": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }], "required": true }, "thumbnail": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }], "required": true }, "main": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }], "required": true } }, "required": true },
             "assets": { "dataType": "array", "array": { "dataType": "string" } },
+            "gallery": { "dataType": "array", "array": { "dataType": "string" } },
             "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ProductContents": {
+    "IProductContents": {
         "dataType": "refObject",
         "properties": {
         },
@@ -898,7 +899,7 @@ const models: TsoaRoute.Models = {
         "properties": {
             "id": { "dataType": "string" },
             "active": { "dataType": "boolean", "required": true },
-            "contents": { "ref": "ProductContents", "required": true },
+            "contents": { "ref": "IProductContents", "required": true },
             "prices": { "dataType": "array", "array": { "ref": "IPrice" }, "required": true },
             "receipt": { "dataType": "array", "array": { "ref": "IReceiptItem" }, "required": true },
             "tags": { "dataType": "array", "array": { "dataType": "string" }, "required": true },
@@ -932,7 +933,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "active": { "dataType": "boolean", "required": true },
-            "contents": { "ref": "ProductContents" },
+            "contents": { "ref": "IProductContents" },
             "prices": { "dataType": "array", "array": { "ref": "IPrice" }, "required": true },
             "receipt": { "dataType": "array", "array": { "ref": "IReceiptItem" }, "required": true },
             "tags": { "dataType": "array", "array": { "dataType": "string" }, "required": true },
@@ -946,7 +947,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "active": { "dataType": "boolean" },
-            "contents": { "ref": "ProductContents" },
+            "contents": { "ref": "IProductContents" },
             "prices": { "dataType": "array", "array": { "ref": "IPrice" } },
             "receipt": { "dataType": "array", "array": { "ref": "IReceiptItem" } },
             "tags": { "dataType": "array", "array": { "dataType": "string" } },
@@ -2747,11 +2748,12 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.put('/api/v1/product/:productId/asset/:assetId',
+    app.put('/api/v1/product/:productId/asset/:langCode/:assetId',
         authenticateMiddleware([{ "jwt": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
                 productId: { "in": "path", "name": "productId", "required": true, "dataType": "string" },
+                langCode: { "in": "path", "name": "langCode", "required": true, "dataType": "string" },
                 assetId: { "in": "path", "name": "assetId", "required": true, "dataType": "string" },
                 request: { "in": "body", "name": "request", "required": true, "ref": "IProductAssetUpdateRequest" },
             };
