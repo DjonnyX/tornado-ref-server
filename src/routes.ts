@@ -865,7 +865,7 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ProductContents": {
+    "IProductContents": {
         "dataType": "refObject",
         "properties": {
         },
@@ -899,7 +899,7 @@ const models: TsoaRoute.Models = {
         "properties": {
             "id": { "dataType": "string" },
             "active": { "dataType": "boolean", "required": true },
-            "contents": { "ref": "ProductContents", "required": true },
+            "contents": { "ref": "IProductContents", "required": true },
             "prices": { "dataType": "array", "array": { "ref": "IPrice" }, "required": true },
             "receipt": { "dataType": "array", "array": { "ref": "IReceiptItem" }, "required": true },
             "tags": { "dataType": "array", "array": { "dataType": "string" }, "required": true },
@@ -933,7 +933,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "active": { "dataType": "boolean", "required": true },
-            "contents": { "ref": "ProductContents" },
+            "contents": { "ref": "IProductContents" },
             "prices": { "dataType": "array", "array": { "ref": "IPrice" }, "required": true },
             "receipt": { "dataType": "array", "array": { "ref": "IReceiptItem" }, "required": true },
             "tags": { "dataType": "array", "array": { "dataType": "string" }, "required": true },
@@ -947,7 +947,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "active": { "dataType": "boolean" },
-            "contents": { "ref": "ProductContents" },
+            "contents": { "ref": "IProductContents" },
             "prices": { "dataType": "array", "array": { "ref": "IPrice" } },
             "receipt": { "dataType": "array", "array": { "ref": "IReceiptItem" } },
             "tags": { "dataType": "array", "array": { "dataType": "string" } },

@@ -9,7 +9,7 @@ import { IRefItem } from "./RefsController";
 import { uploadAsset, deleteAsset, IAssetItem, ICreateAssetsResponse } from "./AssetsController";
 import { AssetModel, IAsset } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
-import { ProductContents } from "../models/Product";
+import { IProductContents } from "../models/Product";
 import { ILanguageItem } from "./LanguagesController";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -81,7 +81,7 @@ export enum ProductImageTypes {
     ICON = "icon",
 }
 
-const contentsToDefault = (contents: ProductContents, langCode: string) => {
+const contentsToDefault = (contents: IProductContents, langCode: string) => {
     let result = { ...contents };
     if (!result) {
         result = {};
@@ -290,7 +290,7 @@ export class ProductAssetsController extends Controller {
             };
         }
 
-        const contents: ProductContents = contentsToDefault(product.contents, langCode);
+        const contents: IProductContents = contentsToDefault(product.contents, langCode);
 
         let productRef: IRefItem;
         try {
@@ -388,7 +388,7 @@ export class ProductAssetsController extends Controller {
             };
         }
 
-        let contents: ProductContents = contentsToDefault(product.contents, langCode);
+        let contents: IProductContents = contentsToDefault(product.contents, langCode);
 
         deletedAsset = !!contents[langCode] ? contents[langCode].images[imageType] : undefined;
 
@@ -579,7 +579,7 @@ export class ProductAssetsController extends Controller {
             };
         }
 
-        let contents: ProductContents = contentsToDefault(product.contents, langCode);
+        let contents: IProductContents = contentsToDefault(product.contents, langCode);
 
         let assetRef: IRefItem;
         const assetIndex = contents[langCode].assets.indexOf(assetId);

@@ -2594,7 +2594,7 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"ProductContents": {
+			"IProductContents": {
 				"properties": {},
 				"type": "object",
 				"additionalProperties": {
@@ -2676,7 +2676,7 @@
 						"type": "boolean"
 					},
 					"contents": {
-						"$ref": "#/components/schemas/ProductContents"
+						"$ref": "#/components/schemas/IProductContents"
 					},
 					"prices": {
 						"items": {
@@ -2789,7 +2789,7 @@
 						"type": "boolean"
 					},
 					"contents": {
-						"$ref": "#/components/schemas/ProductContents"
+						"$ref": "#/components/schemas/IProductContents"
 					},
 					"prices": {
 						"items": {
@@ -2836,7 +2836,7 @@
 						"type": "boolean"
 					},
 					"contents": {
-						"$ref": "#/components/schemas/ProductContents"
+						"$ref": "#/components/schemas/IProductContents"
 					},
 					"prices": {
 						"items": {

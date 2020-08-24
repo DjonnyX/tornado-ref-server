@@ -31,13 +31,13 @@ export interface IProductContentsItem {
 
 interface ProductContentsItem extends IProductContentsItem {}
 
-export interface ProductContents {
+export interface IProductContents {
     [lang: string]: ProductContentsItem | any;
 }
 
 interface IProduct extends Document {
     active: boolean;
-    contents: ProductContents;
+    contents: IProductContents;
     prices: Array<IPrice>;
     receipt: Array<IReceiptItem>;
     tags: Array<string>;

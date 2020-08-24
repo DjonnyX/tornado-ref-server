@@ -1,5 +1,5 @@
 import { IProduct } from "@models";
-import { ProductContents, IProductContentsItem } from "../models/Product";
+import { IProductContents, IProductContentsItem } from "../models/Product";
 import { ProductImageTypes } from "../controllers/ProductAssetsController";
 
 export const formatProductModel = (model: IProduct) => ({
@@ -16,7 +16,7 @@ export const formatProductModel = (model: IProduct) => ({
     extra: model.extra,
 });
 
-export const normalizeProductContents = (contents: ProductContents, defaultLang: string) => {
+export const normalizeProductContents = (contents: IProductContents, defaultLang: string) => {
     if (!contents) {
         return;
     }
@@ -57,7 +57,7 @@ export const equalFromImages = (content: IProductContentsItem, image: string): b
     return false;
 };
 
-export const getDeletedImagesFromDifferense = (lastContents: ProductContents, newContents: ProductContents) => {
+export const getDeletedImagesFromDifferense = (lastContents: IProductContents, newContents: IProductContents) => {
     const result = new Array<string>();
 
     const langs = getLangsFromContents(lastContents, newContents);
@@ -76,7 +76,7 @@ export const getDeletedImagesFromDifferense = (lastContents: ProductContents, ne
     return result;
 };
 
-export const getLangsFromContents = (lastContents: ProductContents, newContents: ProductContents) => {
+export const getLangsFromContents = (lastContents: IProductContents, newContents: IProductContents) => {
     const result = new Array<string>();
     for (const lang in lastContents) {
         result.push(lang);
@@ -90,7 +90,7 @@ export const getLangsFromContents = (lastContents: ProductContents, newContents:
     return result;
 };
 
-export const getProductAssetsFromContent = (contents: ProductContents) => {
+export const getProductAssetsFromContent = (contents: IProductContents) => {
     const result = new Array<string>();
 
     if (!!contents) {

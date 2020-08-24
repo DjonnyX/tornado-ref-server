@@ -4,14 +4,14 @@ import { getRef, riseRefVersion } from "../db/refs";
 import { NodeTypes } from "../models/enums";
 import { deleteNodesChain } from "../utils/node";
 import { formatProductModel, getProductAssets, getDeletedImagesFromDifferense, normalizeProductContents } from "../utils/product";
-import { ProductContents } from "../models/Product";
+import { IProductContents } from "../models/Product";
 import { AssetModel } from "../models/Asset";
 import { deleteAsset } from "./AssetsController";
 
 export interface IProductItem {
     id?: string;
     active: boolean;
-    contents: ProductContents;
+    contents: IProductContents;
     prices: Array<IPrice>;
     receipt: Array<IReceiptItem>;
     tags: Array<string>;
@@ -47,7 +47,7 @@ interface IProductResponse {
 
 interface IProductCreateRequest {
     active: boolean;
-    contents?: ProductContents;
+    contents?: IProductContents;
     prices: Array<IPrice>;
     receipt: Array<IReceiptItem>;
     tags: Array<string>;
@@ -57,7 +57,7 @@ interface IProductCreateRequest {
 
 interface IProductUpdateRequest {
     active?: boolean;
-    contents?: ProductContents;
+    contents?: IProductContents;
     prices?: Array<IPrice>;
     receipt?: Array<IReceiptItem>;
     tags?: Array<string>;
@@ -260,7 +260,7 @@ export class ProductController extends Controller {
         try {
             const item = await ProductModel.findById(id);
 
-            let lastContents: ProductContents;
+            let lastContents: IProductContents;
             for (const key in request) {
                 if (key === "contents") {
                     lastContents = item.contents;
