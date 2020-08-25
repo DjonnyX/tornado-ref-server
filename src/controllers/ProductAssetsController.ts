@@ -11,7 +11,6 @@ import { uploadAsset, deleteAsset, IAssetItem, ICreateAssetsResponse } from "./A
 import { AssetModel, IAsset } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
 import { IProductContents } from "../models/Product";
-import { ILanguageItem } from "./LanguagesController";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProductAsset extends IAssetItem { }

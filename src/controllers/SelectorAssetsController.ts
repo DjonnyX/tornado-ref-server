@@ -1,17 +1,30 @@
 import * as express from "express";
-import { RefTypes, ISelector, SelectorModel } from "../models/index";
+import { SelectorModel, ISelector, RefTypes, ILanguage, LanguageModel } from "../models/index";
 import { Controller, Route, Post, Tags, OperationId, Example, Request, Security, Get, Delete, Body, Put } from "tsoa";
 import { riseRefVersion, getRef } from "../db/refs";
 import { AssetExtensions } from "../models/enums";
-import { IRefItem } from "./RefsController";
-import { uploadAsset, deleteAsset, IAssetItem } from "./AssetsController";
-import { AssetModel } from "../models/Asset";
-import { formatAssetModel } from "../utils/asset";
-import { ISelectorItem, SELECTOR_RESPONSE_TEMPLATE } from "./SelectorController";
+import { ISelectorItem, RESPONSE_TEMPLATE as SELECTOR_RESPONSE_TEMPLATE } from "./SelectorController";
 import { formatSelectorModel } from "../utils/selector";
+import { normalizeContents } from "../utils/entity";
+import { IRefItem } from "./RefsController";
+import { uploadAsset, deleteAsset, IAssetItem, ICreateAssetsResponse } from "./AssetsController";
+import { AssetModel, IAsset } from "../models/Asset";
+import { formatAssetModel } from "../utils/asset";
+import { ISelectorContents } from "../models/Selector";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface ISelectorAsset extends IAssetItem { }
+
+interface ISelectorGetAllAssetsResponse {
+    meta?: {};
+    data?: {
+        [lang: string]: Array<ISelectorAsset>,
+    };
+    error?: Array<{
+        code: number;
+        message: string;
+    }>;
+}
 
 interface ISelectorGetAssetsResponse {
     meta?: {};
@@ -57,15 +70,40 @@ interface ISelectorDeleteAssetsResponse {
     }>;
 }
 
-interface ISelectorUpdateAssetsRequest {
-    name: string;
+interface ISelectorAssetUpdateRequest {
     active: boolean;
+    name: string;
 }
 
 export enum SelectorImageTypes {
     MAIN = "main",
     THUMBNAIL = "thumbnail",
     ICON = "icon",
+}
+
+const contentsToDefault = (contents: ISelectorContents, langCode: string) => {
+    let result = { ...contents };
+    if (!result) {
+        result = {};
+    }
+
+    if (!result[langCode]) {
+        result[langCode] = {};
+    }
+
+    if (!result[langCode].images) {
+        result[langCode].images = {
+            main: null,
+            thumbnail: null,
+            icon: null,
+        };
+    }
+
+    if (!result[langCode].assets) {
+        result[langCode].assets = [];
+    }
+
+    return result;
 }
 
 const META_TEMPLATE = {
@@ -104,12 +142,74 @@ export class SelectorAssetsController extends Controller {
     @Get("{selectorId}/assets")
     @Security("jwt")
     @Security("apiKey")
+    @OperationId("GetAll")
+    @Example<ISelectorGetAllAssetsResponse>({
+        meta: META_TEMPLATE,
+        data: {
+            "RU": [RESPONSE_TEMPLATE],
+        },
+    })
+    public async getAllAssets(selectorId: string): Promise<ISelectorGetAllAssetsResponse> {
+        let selector: ISelector;
+        try {
+            selector = await SelectorModel.findById(selectorId);
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Selector with id: "${selectorId}" not found. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        const promises = new Array<Promise<{ assets: Array<IAsset>, langCode: string }>>();
+
+        for (const langCode in selector.contents) {
+            promises.push(new Promise(async (resolve) => {
+                const assets = await AssetModel.find({ _id: selector.contents[langCode].assets });
+                resolve({ assets, langCode });
+            }));
+        }
+
+        try {
+            const assetsInfo = await Promise.all(promises);
+
+            const result: {
+                [lang: string]: Array<ISelectorAsset>,
+            } = {};
+            assetsInfo.forEach(assetInfo => {
+                result[assetInfo.langCode] = assetInfo.assets.map(asset => formatAssetModel(asset));
+            });
+
+            return {
+                meta: {},
+                data: result,
+            };
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Caught error. ${err}`,
+                    }
+                ]
+            };
+        }
+    }
+
+    @Get("{selectorId}/assets/{langCode}")
+    @Security("jwt")
+    @Security("apiKey")
     @OperationId("Get")
     @Example<ISelectorGetAssetsResponse>({
         meta: META_TEMPLATE,
         data: [RESPONSE_TEMPLATE],
     })
-    public async getAssets(selectorId: string): Promise<ISelectorGetAssetsResponse> {
+    public async getAssets(selectorId: string, langCode: string): Promise<ISelectorGetAssetsResponse> {
         let selector: ISelector;
         try {
             selector = await SelectorModel.findById(selectorId);
@@ -126,7 +226,7 @@ export class SelectorAssetsController extends Controller {
         }
 
         try {
-            const assets = await AssetModel.find({ _id: selector.assets, });
+            const assets = await AssetModel.find({ _id: selector.contents[langCode].assets, });
 
             return {
                 meta: {},
@@ -145,7 +245,7 @@ export class SelectorAssetsController extends Controller {
         }
     }
 
-    @Post("{selectorId}/asset")
+    /*@Post("{selectorId}/asset/{langCode}")
     @Security("jwt")
     @OperationId("Create")
     @Example<ISelectorCreateAssetsResponse>({
@@ -155,8 +255,21 @@ export class SelectorAssetsController extends Controller {
             selector: SELECTOR_RESPONSE_TEMPLATE,
         }
     })
-    public async create(selectorId: string, @Request() request: express.Request): Promise<ISelectorCreateAssetsResponse> {
-        const assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA]);
+    public async create(selectorId: string, langCode: string, @Request() request: express.Request): Promise<ISelectorCreateAssetsResponse> {
+        let assetsInfo: ICreateAssetsResponse;
+        try {
+            assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA]);
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Upload asset error. ${err}`,
+                    }
+                ]
+            };
+        }
 
         let selector: ISelector;
         try {
@@ -167,15 +280,22 @@ export class SelectorAssetsController extends Controller {
                 error: [
                     {
                         code: 500,
-                        message: `Caught error. ${err}`,
+                        message: `Find selector error. ${err}`,
                     }
                 ]
             };
         }
 
+        const contents: ISelectorContents = contentsToDefault(selector.contents, langCode);
+
         let selectorRef: IRefItem;
         try {
-            selector.assets.push(assetsInfo.data.id);
+            const assetId = assetsInfo.data.id.toString();
+            contents[langCode].assets.push(assetId);
+
+            selector.contents = contents;
+            selector.markModified("contents");
+
             selectorRef = await riseRefVersion(RefTypes.SELECTORS);
             await selector.save();
         } catch (err) {
@@ -204,11 +324,11 @@ export class SelectorAssetsController extends Controller {
                 asset: assetsInfo.data,
             }
         };
-    }
+    }*/
 
-    @Post("{selectorId}/image/{imageType}")
+    @Post("{selectorId}/image/{langCode}/{imageType}")
     @Security("jwt")
-    @OperationId("Create")
+    @OperationId("CreateImage")
     @Example<ISelectorCreateAssetsResponse>({
         meta: META_TEMPLATE,
         data: {
@@ -216,8 +336,21 @@ export class SelectorAssetsController extends Controller {
             selector: SELECTOR_RESPONSE_TEMPLATE,
         }
     })
-    public async image(selectorId: string, imageType: SelectorImageTypes, @Request() request: express.Request): Promise<ISelectorCreateAssetsResponse> {
-        const assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA], false);
+    public async image(selectorId: string, langCode: string, imageType: SelectorImageTypes, @Request() request: express.Request): Promise<ISelectorCreateAssetsResponse> {
+        let assetsInfo: ICreateAssetsResponse;
+        try {
+            assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA], false);
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Upload asset error. ${err}`,
+                    }
+                ]
+            };
+        }
 
         let selector: ISelector;
         let deletedAsset: string;
@@ -235,15 +368,52 @@ export class SelectorAssetsController extends Controller {
             };
         }
 
-        deletedAsset = selector.images[imageType];
-        
-        const assetIndex = selector.assets.indexOf(deletedAsset);
+        let defaultLanguage: ILanguage;
+        try {
+            defaultLanguage = await LanguageModel.findOne({ isDefault: true });
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Default language error. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        let contents: ISelectorContents = contentsToDefault(selector.contents, langCode);
+
+        deletedAsset = !!contents[langCode] ? contents[langCode].images[imageType] : undefined;
+
+        // детект количества повторяющихся изображений
+        let isAssetExistsInOtherProps = 0;
+        for (const contentLang in contents) {
+            if (!!contents[contentLang].images) {
+                for (const img in contents[contentLang].images) {
+                    if (!!contents[contentLang].images[img] && contents[contentLang].images[img] === deletedAsset) {
+                        isAssetExistsInOtherProps++;
+                    }
+                }
+            }
+        }
+
+        // Удаление ассета только если он не используется в разных свойствах
+        if (isAssetExistsInOtherProps !== 1) {
+            deletedAsset = undefined;
+        }
+
+        const assetIndex = !!deletedAsset ? contents[langCode].assets.indexOf(deletedAsset) : -1;
         if (assetIndex > -1) {
             try {
                 const asset = await AssetModel.findByIdAndDelete(deletedAsset);
-                await deleteAsset(asset.path);
-                await deleteAsset(asset.mipmap.x128);
-                await deleteAsset(asset.mipmap.x32);
+                if (!!asset) {
+                    await deleteAsset(asset.path);
+                    await deleteAsset(asset.mipmap.x128);
+                    await deleteAsset(asset.mipmap.x32);
+                    await riseRefVersion(RefTypes.ASSETS);
+                }
             } catch (err) {
                 this.setStatus(500);
                 return {
@@ -258,24 +428,27 @@ export class SelectorAssetsController extends Controller {
         }
 
         // удаление предыдущего ассета
-        selector.assets = selector.assets.filter(asset => asset.toString() !== deletedAsset.toString());
+        if (!!deletedAsset) {
+            contents[langCode].assets = contents[langCode].assets.filter(asset => {
+                return asset.toString() !== deletedAsset.toString();
+            });
+        }
 
         let selectorRef: IRefItem;
+        let savedSelector: ISelector;
         try {
-            selector.images[imageType] = assetsInfo.data.id;
-            
-            if (imageType === SelectorImageTypes.MAIN) {
-                if (!selector.images.thumbnail) {
-                    selector.images.thumbnail = selector.images.main;
-                }
-                if (!selector.images.icon) {
-                    selector.images.icon = selector.images.main;
-                }
-            }
+            const assetId = assetsInfo.data.id.toString();
+            contents[langCode].images[imageType] = assetId;
+            contents[langCode].assets.push(assetId);
 
-            selector.assets.push(assetsInfo.data.id);
+            normalizeContents(contents, defaultLanguage.code);
+
+            selector.contents = contents;
+            selector.markModified("contents");
+
+            savedSelector = await selector.save();
+
             selectorRef = await riseRefVersion(RefTypes.SELECTORS);
-            await selector.save();
         } catch (err) {
             this.setStatus(500);
             return {
@@ -298,13 +471,13 @@ export class SelectorAssetsController extends Controller {
                 }
             },
             data: {
-                selector: formatSelectorModel(selector),
+                selector: formatSelectorModel(savedSelector),
                 asset: assetsInfo.data,
             }
         };
     }
-    
-    @Put("{selectorId}/asset/{assetId}")
+
+    @Put("{selectorId}/asset/{langCode}/{assetId}")
     @Security("jwt")
     @OperationId("Update")
     @Example<ISelectorCreateAssetsResponse>({
@@ -314,7 +487,7 @@ export class SelectorAssetsController extends Controller {
             selector: SELECTOR_RESPONSE_TEMPLATE,
         }
     })
-    public async update(selectorId: string, assetId: string, @Body() request: ISelectorUpdateAssetsRequest): Promise<ISelectorCreateAssetsResponse> {
+    public async update(selectorId: string, langCode: string, assetId: string, @Body() request: ISelectorAssetUpdateRequest): Promise<ISelectorCreateAssetsResponse> {
 
         let selector: ISelector;
         try {
@@ -325,12 +498,12 @@ export class SelectorAssetsController extends Controller {
                 error: [
                     {
                         code: 500,
-                        message: `Caught error. ${err}`,
+                        message: `Can not found selector error. ${err}`,
                     }
                 ]
             };
         }
-        
+
         let selectorRef: IRefItem;
         try {
             selectorRef = await getRef(RefTypes.SELECTORS);
@@ -340,12 +513,12 @@ export class SelectorAssetsController extends Controller {
                 error: [
                     {
                         code: 500,
-                        message: `Get product ref error. ${err}`,
+                        message: `Get selector ref error. ${err}`,
                     }
                 ]
             };
         }
-        
+
         try {
             const item = await AssetModel.findById(assetId);
 
@@ -357,14 +530,14 @@ export class SelectorAssetsController extends Controller {
 
             const ref = await riseRefVersion(RefTypes.ASSETS);
             return {
-                meta: { 
+                meta: {
                     asset: {
                         ref,
                     },
                     selector: {
                         ref: selectorRef,
                     },
-                 },
+                },
                 data: {
                     asset: formatAssetModel(item),
                     selector: formatSelectorModel(selector),
@@ -383,13 +556,13 @@ export class SelectorAssetsController extends Controller {
         }
     }
 
-    @Delete("{selectorId}/asset/{assetId}")
+    @Delete("{selectorId}/asset/{langCode}/{assetId}")
     @Security("jwt")
     @OperationId("Delete")
     @Example<ISelectorDeleteAssetsResponse>({
         meta: META_TEMPLATE
     })
-    public async delete(selectorId: string, assetId: string): Promise<ISelectorDeleteAssetsResponse> {
+    public async delete(selectorId: string, langCode: string, assetId: string): Promise<ISelectorDeleteAssetsResponse> {
         let selector: ISelector;
         try {
             selector = await SelectorModel.findById(selectorId);
@@ -399,28 +572,32 @@ export class SelectorAssetsController extends Controller {
                 error: [
                     {
                         code: 500,
-                        message: `Caught error. ${err}`,
+                        message: `Find selector error. ${err}`,
                     }
                 ]
             };
         }
 
+        let contents: ISelectorContents = contentsToDefault(selector.contents, langCode);
+
         let assetRef: IRefItem;
-        const assetIndex = selector.assets.indexOf(assetId);
+        const assetIndex = contents[langCode].assets.indexOf(assetId);
         if (assetIndex > -1) {
             try {
                 const asset = await AssetModel.findByIdAndDelete(assetId);
-                await deleteAsset(asset.path);
-                await deleteAsset(asset.mipmap.x128);
-                await deleteAsset(asset.mipmap.x32);
-                assetRef = await riseRefVersion(RefTypes.ASSETS);
+                if (!!asset) {
+                    await deleteAsset(asset.path);
+                    await deleteAsset(asset.mipmap.x128);
+                    await deleteAsset(asset.mipmap.x32);
+                    assetRef = await riseRefVersion(RefTypes.ASSETS);
+                }
             } catch (err) {
                 this.setStatus(500);
                 return {
                     error: [
                         {
                             code: 500,
-                            message: `Caught error. ${err}`,
+                            message: `Delete assets error. ${err}`,
                         }
                     ]
                 };
@@ -429,8 +606,13 @@ export class SelectorAssetsController extends Controller {
 
         let selectorsRef: IRefItem;
         try {
-            selector.assets.splice(assetIndex, 1);
+            contents[langCode].assets.splice(assetIndex, 1);
+
+            selector.contents = contents;
+            selector.markModified("contents");
+
             await selector.save();
+
             selectorsRef = await riseRefVersion(RefTypes.SELECTORS);
             return {
                 meta: {
@@ -448,7 +630,7 @@ export class SelectorAssetsController extends Controller {
                 error: [
                     {
                         code: 500,
-                        message: `Caught error. ${err}`,
+                        message: `Save selector error. ${err}`,
                     }
                 ]
             };

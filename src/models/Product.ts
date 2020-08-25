@@ -29,10 +29,8 @@ export interface IProductContentsItem {
     extra?: { [key: string]: any } | null;
 }
 
-interface ProductContentsItem extends IProductContentsItem {}
-
 export interface IProductContents {
-    [lang: string]: ProductContentsItem | any;
+    [lang: string]: IProductContentsItem | any;
 }
 
 interface IProduct extends Document {
