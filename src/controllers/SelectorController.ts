@@ -305,7 +305,7 @@ export class SelectorController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(RefTypes.PRODUCTS);
+            const ref = await riseRefVersion(RefTypes.SELECTORS);
             return {
                 meta: { ref },
                 data: formatSelectorModel(item),
