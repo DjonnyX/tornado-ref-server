@@ -296,7 +296,7 @@ export class ProductAssetsController extends Controller {
         try {
             const assetId = assetsInfo.data.id.toString();
             contents[langCode].assets.push(assetId);
-            contents[langCode].gallsery.push(assetId);
+            contents[langCode].gallery.push(assetId);
 
             product.contents = contents;
             product.markModified("contents");
@@ -413,9 +413,12 @@ export class ProductAssetsController extends Controller {
         if (assetIndex > -1) {
             try {
                 const asset = await AssetModel.findByIdAndDelete(deletedAsset);
-                await deleteAsset(asset.path);
-                await deleteAsset(asset.mipmap.x128);
-                await deleteAsset(asset.mipmap.x32);
+                if (!!asset) {
+                    await deleteAsset(asset.path);
+                    await deleteAsset(asset.mipmap.x128);
+                    await deleteAsset(asset.mipmap.x32);
+                    await riseRefVersion(RefTypes.ASSETS);
+                }
             } catch (err) {
                 this.setStatus(500);
                 return {
@@ -439,9 +442,11 @@ export class ProductAssetsController extends Controller {
         let productRef: IRefItem;
         let savedProduct: IProduct;
         try {
-            contents[langCode].images[imageType] = assetsInfo.data.id.toString();
-            contents[langCode].assets.push(assetsInfo.data.id.toString());
-            
+            const assetId = assetsInfo.data.id.toString();
+            contents[langCode].images[imageType] = assetId;
+            contents[langCode].assets.push(assetId);
+            contents[langCode].gallery.push(assetId);
+
             normalizeProductContents(contents, defaultLanguage.code);
 
             product.contents = contents;
@@ -586,10 +591,12 @@ export class ProductAssetsController extends Controller {
         if (assetIndex > -1) {
             try {
                 const asset = await AssetModel.findByIdAndDelete(assetId);
-                await deleteAsset(asset.path);
-                await deleteAsset(asset.mipmap.x128);
-                await deleteAsset(asset.mipmap.x32);
-                assetRef = await riseRefVersion(RefTypes.ASSETS);
+                if (!!asset) {
+                    await deleteAsset(asset.path);
+                    await deleteAsset(asset.mipmap.x128);
+                    await deleteAsset(asset.mipmap.x32);
+                    assetRef = await riseRefVersion(RefTypes.ASSETS);
+                }
             } catch (err) {
                 this.setStatus(500);
                 return {

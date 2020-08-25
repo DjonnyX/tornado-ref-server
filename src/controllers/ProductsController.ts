@@ -279,6 +279,7 @@ export class ProductController extends Controller {
             // удаление ассетов из разности images
             const deletedAssetsFromImages = getDeletedImagesFromDifferense(lastContents, item.contents);
             const promises = new Array<Promise<any>>();
+            let isAssetsChanged = false;
             deletedAssetsFromImages.forEach(assetId => {
                 promises.push(new Promise(async (resolve, reject) => {
                     // удаление из списка assets
@@ -295,11 +296,21 @@ export class ProductController extends Controller {
                     }
 
                     // физическое удаление asset'а
-                    await AssetModel.findByIdAndDelete(assetId);
+                    const asset = await AssetModel.findByIdAndDelete(assetId);
+                    if (!!asset) {
+                        await deleteAsset(asset.path);
+                        await deleteAsset(asset.mipmap.x128);
+                        await deleteAsset(asset.mipmap.x32);
+                        isAssetsChanged = true;
+                    }
                     resolve();
                 }));
             });
             await Promise.all(promises);
+
+            if (isAssetsChanged) {
+                await riseRefVersion(RefTypes.ASSETS);
+            }
 
             // выставление ассетов от предыдущего состояния
             // ассеты неьзя перезаписывать напрямую!
@@ -362,19 +373,23 @@ export class ProductController extends Controller {
         const promises = new Array<Promise<any>>();
 
         try {
+            let isAssetsChanged = false;
             assetsList.forEach(assetId => {
                 promises.push(new Promise(async (resolve) => {
                     const asset = await AssetModel.findByIdAndDelete(assetId);
-                    await deleteAsset(asset.path);
-                    await deleteAsset(asset.mipmap.x128);
-                    await deleteAsset(asset.mipmap.x32);
+                    if (!!asset) {
+                        await deleteAsset(asset.path);
+                        await deleteAsset(asset.mipmap.x128);
+                        await deleteAsset(asset.mipmap.x32);
+                        isAssetsChanged = true;
+                    }
                     resolve();
                 }));
             });
 
             await Promise.all(promises);
 
-            if (promises.length > 0) {
+            if (!!isAssetsChanged) {
                 await riseRefVersion(RefTypes.ASSETS);
             }
         } catch (err) {

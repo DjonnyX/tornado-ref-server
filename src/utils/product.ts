@@ -61,16 +61,19 @@ export const getDeletedImagesFromDifferense = (lastContents: IProductContents, n
     const result = new Array<string>();
 
     const langs = getLangsFromContents(lastContents, newContents);
-
+    const lastAssets = [];
+    const newAssets = [];
     langs.forEach(lang => {
-        const lastAssets = getProductAssetsFromContentImages(lastContents[lang]);
-        const newAssets = getProductAssetsFromContentImages(newContents[lang]);
+        lastAssets.push(...getProductAssetsFromContentImages(lastContents[lang]));
+        newAssets.push(...getProductAssetsFromContentImages(newContents[lang]));
+    });
 
-        lastAssets.forEach((asset, index) => {
+    lastAssets.forEach((asset, index) => {
+        if (!!asset) {
             if (newAssets.filter(item => item === asset).length === 0) {
                 result.push(asset);
             }
-        });
+        }
     });
 
     return result;
