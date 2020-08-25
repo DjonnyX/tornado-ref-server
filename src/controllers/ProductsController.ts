@@ -1,26 +1,22 @@
-import { ProductModel, IProduct, IReceiptItem, RefTypes, NodeModel, IPrice } from "../models/index";
+import { ProductModel, IProduct, IReceiptItem, RefTypes, NodeModel, IPrice, ILanguage, LanguageModel } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { NodeTypes } from "../models/enums";
 import { deleteNodesChain } from "../utils/node";
 import { formatProductModel } from "../utils/product";
+import { getEntityAssets, getDeletedImagesFromDifferense, normalizeContents } from "../utils/entity";
+import { IProductContents } from "../models/Product";
+import { AssetModel } from "../models/Asset";
+import { deleteAsset } from "./AssetsController";
 
 export interface IProductItem {
     id?: string;
     active: boolean;
-    name: string;
-    color?: string;
-    description?: string;
+    contents: IProductContents;
     prices: Array<IPrice>;
     receipt: Array<IReceiptItem>;
     tags: Array<string>;
     joint?: string;
-    assets?: Array<string>;
-    images?: {
-        main?: string | null;
-        thumbnail?: string | null;
-        icon?: string | null;
-    };
     extra?: { [key: string]: any } | null;
 }
 
@@ -52,45 +48,40 @@ interface IProductResponse {
 
 interface IProductCreateRequest {
     active: boolean;
-    name: string;
-    color?: string;
-    description?: string;
+    contents?: IProductContents;
     prices: Array<IPrice>;
     receipt: Array<IReceiptItem>;
     tags: Array<string>;
     joint?: string;
-    assets?: Array<string>;
-    images?: {
-        main: string;
-        thumbnail: string;
-        icon: string;
-    };
     extra?: { [key: string]: any } | null;
 }
 
 interface IProductUpdateRequest {
     active?: boolean;
-    name?: string;
-    color?: string;
-    description?: string;
+    contents?: IProductContents;
     prices?: Array<IPrice>;
     receipt?: Array<IReceiptItem>;
     tags?: Array<string>;
     joint?: string;
-    assets?: Array<string>;
-    images?: {
-        main: string | null;
-        thumbnail: string | null;
-        icon: string | null;
-    };
     extra?: { [key: string]: any } | null;
 }
 
 export const RESPONSE_TEMPLATE: IProductItem = {
     id: "507c7f79bcf86cd7994f6c0e",
     active: true,
-    name: "Products on concert",
-    description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+    contents: {
+        "RU": {
+            name: "Products on concert",
+            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+            color: "#000000",
+            images: {
+                main: "g8h07f79bcf86cd7994f9d7k",
+                thumbnail: "gt7h7f79bcf86cd7994f9d6u",
+                icon: "gt7h7f79bcf86cd7994f9d6u",
+            },
+            assets: ["g8h07f79bcf86cd7994f9d7k",],
+        },
+    },
     prices: [
         {
             currency: "657c7f79bcf86cd7994f6c5h",
@@ -112,12 +103,6 @@ export const RESPONSE_TEMPLATE: IProductItem = {
         }
     ],
     tags: ["123c7f79bcf86cd7994f6c0e"],
-    assets: ["g8h07f79bcf86cd7994f9d7k",],
-    images: {
-        main: "g8h07f79bcf86cd7994f9d7k",
-        thumbnail: "gt7h7f79bcf86cd7994f9d6u",
-        icon: "gt7h7f79bcf86cd7994f9d6u",
-    },
     joint: "df3c7f79bcf86cd7994f9d8f",
     extra: { key: "value" },
 };
@@ -216,7 +201,7 @@ export class ProductController extends Controller {
             });
             const jointRootNode = await jointNode.save();
 
-            params = { ...request, joint: jointRootNode._id };
+            params = { ...request, joint: jointRootNode._id } as any;
         } catch (err) {
             this.setStatus(500);
             return {
@@ -258,11 +243,87 @@ export class ProductController extends Controller {
         data: RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() request: IProductUpdateRequest): Promise<IProductResponse> {
+        let defaultLanguage: ILanguage;
+        try {
+            defaultLanguage = await LanguageModel.findOne({ isDefault: true });
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Default language error. ${err}`,
+                    }
+                ]
+            };
+        }
+
         try {
             const item = await ProductModel.findById(id);
 
+            let lastContents: IProductContents;
             for (const key in request) {
+                if (key === "contents") {
+                    lastContents = item.contents;
+                }
+
                 item[key] = request[key];
+
+                if (key === "extra" || key === "contents") {
+                    if (key === "contents") {
+                        normalizeContents(item.contents, defaultLanguage.code);
+                    }
+                    item.markModified(key);
+                }
+            }
+
+            // удаление ассетов из разности images
+            const deletedAssetsFromImages = getDeletedImagesFromDifferense(lastContents, item.contents);
+            const promises = new Array<Promise<any>>();
+            let isAssetsChanged = false;
+            deletedAssetsFromImages.forEach(assetId => {
+                promises.push(new Promise(async (resolve, reject) => {
+                    // удаление из списка assets
+                    if (item.contents) {
+                        for (const lang in item.contents) {
+                            const content = item.contents[lang];
+                            if (!!content && !!content.assets) {
+                                const index = content.assets.indexOf(assetId);
+                                if (index !== -1) {
+                                    content.assets.splice(index, 1);
+                                }
+                            }
+                        }
+                    }
+
+                    // физическое удаление asset'а
+                    const asset = await AssetModel.findByIdAndDelete(assetId);
+                    if (!!asset) {
+                        await deleteAsset(asset.path);
+                        await deleteAsset(asset.mipmap.x128);
+                        await deleteAsset(asset.mipmap.x32);
+                        isAssetsChanged = true;
+                    }
+                    resolve();
+                }));
+            });
+            await Promise.all(promises);
+
+            if (isAssetsChanged) {
+                await riseRefVersion(RefTypes.ASSETS);
+            }
+
+            // выставление ассетов от предыдущего состояния
+            // ассеты неьзя перезаписывать напрямую!
+            if (!!lastContents) {
+                for (const lang in lastContents) {
+                    if (!item.contents[lang]) {
+                        item.contents[lang] = {};
+                    }
+                    if (lastContents[lang]) {
+                        item.contents[lang].assets = lastContents[lang].assets;
+                    }
+                }
             }
 
             await item.save();
@@ -301,10 +362,47 @@ export class ProductController extends Controller {
                 error: [
                     {
                         code: 500,
-                        message: `Caught error. ${err}`,
+                        message: `Find and delete product error. ${err}`,
                     }
                 ]
             };
+        }
+
+        // нужно удалять ассеты
+        const assetsList = getEntityAssets(product);
+
+        const promises = new Array<Promise<any>>();
+
+        try {
+            let isAssetsChanged = false;
+            assetsList.forEach(assetId => {
+                promises.push(new Promise(async (resolve) => {
+                    const asset = await AssetModel.findByIdAndDelete(assetId);
+                    if (!!asset) {
+                        await deleteAsset(asset.path);
+                        await deleteAsset(asset.mipmap.x128);
+                        await deleteAsset(asset.mipmap.x32);
+                        isAssetsChanged = true;
+                    }
+                    resolve();
+                }));
+            });
+
+            await Promise.all(promises);
+
+            if (!!isAssetsChanged) {
+                await riseRefVersion(RefTypes.ASSETS);
+            }
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Error in delete assets. ${err}`,
+                    }
+                ]
+            }
         }
 
         try {

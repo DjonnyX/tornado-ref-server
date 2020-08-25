@@ -240,6 +240,9 @@ export class SelectorController extends Controller {
 
             for (const key in request) {
                 item[key] = request[key];
+                if (key === "extra" || key === "content") {
+                    item.markModified(key);
+                }
             }
 
             await item.save();

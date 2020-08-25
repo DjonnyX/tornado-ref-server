@@ -231,6 +231,10 @@ export class LanguageController extends Controller {
                 if (key === "code") {
                     languageCode = request[key];
                 }
+                
+                if (key === "extra" || key === "content") {
+                    item.markModified(key);
+                }
             }
 
             await item.save();
