@@ -4,7 +4,8 @@ import { Controller, Route, Post, Tags, OperationId, Example, Request, Security,
 import { riseRefVersion, getRef } from "../db/refs";
 import { AssetExtensions } from "../models/enums";
 import { IProductItem, RESPONSE_TEMPLATE as PRODUCT_RESPONSE_TEMPLATE } from "./ProductsController";
-import { formatProductModel, normalizeProductContents } from "../utils/product";
+import { formatProductModel } from "../utils/product";
+import { normalizeContents } from "../utils/entity";
 import { IRefItem } from "./RefsController";
 import { uploadAsset, deleteAsset, IAssetItem, ICreateAssetsResponse } from "./AssetsController";
 import { AssetModel, IAsset } from "../models/Asset";
@@ -447,7 +448,7 @@ export class ProductAssetsController extends Controller {
             contents[langCode].assets.push(assetId);
             contents[langCode].gallery.push(assetId);
 
-            normalizeProductContents(contents, defaultLanguage.code);
+            normalizeContents(contents, defaultLanguage.code);
 
             product.contents = contents;
             product.markModified("contents");

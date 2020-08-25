@@ -3,7 +3,8 @@ import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, 
 import { getRef, riseRefVersion } from "../db/refs";
 import { NodeTypes } from "../models/enums";
 import { deleteNodesChain } from "../utils/node";
-import { formatProductModel, getProductAssets, getDeletedImagesFromDifferense, normalizeProductContents } from "../utils/product";
+import { formatProductModel } from "../utils/product";
+import { getEntityAssets, getDeletedImagesFromDifferense, normalizeContents } from "../utils/entity";
 import { IProductContents } from "../models/Product";
 import { AssetModel } from "../models/Asset";
 import { deleteAsset } from "./AssetsController";
@@ -270,7 +271,7 @@ export class ProductController extends Controller {
 
                 if (key === "extra" || key === "contents") {
                     if (key === "contents") {
-                        normalizeProductContents(item.contents, defaultLanguage.code);
+                        normalizeContents(item.contents, defaultLanguage.code);
                     }
                     item.markModified(key);
                 }
@@ -368,7 +369,7 @@ export class ProductController extends Controller {
         }
 
         // нужно удалять ассеты
-        const assetsList = getProductAssets(product);
+        const assetsList = getEntityAssets(product);
 
         const promises = new Array<Promise<any>>();
 
