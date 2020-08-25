@@ -2533,7 +2533,7 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"ProductContentsItem": {
+			"IProductContentsItem": {
 				"properties": {
 					"name": {
 						"type": "string"
@@ -2600,7 +2600,7 @@
 				"additionalProperties": {
 					"anyOf": [
 						{
-							"$ref": "#/components/schemas/ProductContentsItem"
+							"$ref": "#/components/schemas/IProductContentsItem"
 						},
 						{
 							"additionalProperties": true
@@ -3186,34 +3186,16 @@
 				],
 				"type": "string"
 			},
-			"ISelectorItem": {
+			"ISelectorContentsItem": {
 				"properties": {
-					"id": {
-						"type": "string"
-					},
-					"type": {
-						"$ref": "#/components/schemas/SelectorTypes"
-					},
-					"active": {
-						"type": "boolean"
-					},
 					"name": {
-						"type": "string"
-					},
-					"color": {
 						"type": "string"
 					},
 					"description": {
 						"type": "string"
 					},
-					"joint": {
+					"color": {
 						"type": "string"
-					},
-					"assets": {
-						"items": {
-							"type": "string"
-						},
-						"type": "array"
 					},
 					"images": {
 						"properties": {
@@ -3237,6 +3219,59 @@
 						],
 						"type": "object"
 					},
+					"assets": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"extra": {
+						"properties": {},
+						"additionalProperties": {
+							"additionalProperties": true
+						},
+						"type": "object",
+						"nullable": true
+					}
+				},
+				"required": [
+					"name",
+					"images"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ISelectorContents": {
+				"properties": {},
+				"type": "object",
+				"additionalProperties": {
+					"anyOf": [
+						{
+							"$ref": "#/components/schemas/ISelectorContentsItem"
+						},
+						{
+							"additionalProperties": true
+						}
+					]
+				}
+			},
+			"ISelectorItem": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"type": {
+						"$ref": "#/components/schemas/SelectorTypes"
+					},
+					"active": {
+						"type": "boolean"
+					},
+					"contents": {
+						"$ref": "#/components/schemas/ISelectorContents"
+					},
+					"joint": {
+						"type": "string"
+					},
 					"extra": {
 						"properties": {},
 						"additionalProperties": {
@@ -3249,7 +3284,7 @@
 				"required": [
 					"type",
 					"active",
-					"name",
+					"contents",
 					"joint"
 				],
 				"type": "object",
@@ -3328,42 +3363,8 @@
 					"type": {
 						"$ref": "#/components/schemas/SelectorTypes"
 					},
-					"name": {
-						"type": "string"
-					},
-					"color": {
-						"type": "string"
-					},
-					"description": {
-						"type": "string"
-					},
-					"assets": {
-						"items": {
-							"type": "string"
-						},
-						"type": "array"
-					},
-					"images": {
-						"properties": {
-							"icon": {
-								"type": "string",
-								"nullable": true
-							},
-							"thumbnail": {
-								"type": "string",
-								"nullable": true
-							},
-							"main": {
-								"type": "string",
-								"nullable": true
-							}
-						},
-						"required": [
-							"icon",
-							"thumbnail",
-							"main"
-						],
-						"type": "object"
+					"contents": {
+						"$ref": "#/components/schemas/ISelectorContents"
 					},
 					"extra": {
 						"properties": {},
@@ -3376,8 +3377,7 @@
 				},
 				"required": [
 					"active",
-					"type",
-					"name"
+					"type"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -3390,42 +3390,8 @@
 					"type": {
 						"$ref": "#/components/schemas/SelectorTypes"
 					},
-					"name": {
-						"type": "string"
-					},
-					"color": {
-						"type": "string"
-					},
-					"description": {
-						"type": "string"
-					},
-					"assets": {
-						"items": {
-							"type": "string"
-						},
-						"type": "array"
-					},
-					"images": {
-						"properties": {
-							"icon": {
-								"type": "string",
-								"nullable": true
-							},
-							"thumbnail": {
-								"type": "string",
-								"nullable": true
-							},
-							"main": {
-								"type": "string",
-								"nullable": true
-							}
-						},
-						"required": [
-							"icon",
-							"thumbnail",
-							"main"
-						],
-						"type": "object"
+					"contents": {
+						"$ref": "#/components/schemas/ISelectorContents"
 					},
 					"extra": {
 						"properties": {},
@@ -3485,6 +3451,45 @@
 					"path",
 					"mipmap"
 				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ISelectorGetAllAssetsResponse": {
+				"properties": {
+					"meta": {
+						"properties": {},
+						"type": "object"
+					},
+					"data": {
+						"properties": {},
+						"additionalProperties": {
+							"items": {
+								"$ref": "#/components/schemas/ISelectorAsset"
+							},
+							"type": "array"
+						},
+						"type": "object"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
 				"type": "object",
 				"additionalProperties": false
 			},
@@ -3602,18 +3607,18 @@
 				],
 				"type": "string"
 			},
-			"ISelectorUpdateAssetsRequest": {
+			"ISelectorAssetUpdateRequest": {
 				"properties": {
-					"name": {
-						"type": "string"
-					},
 					"active": {
 						"type": "boolean"
+					},
+					"name": {
+						"type": "string"
 					}
 				},
 				"required": [
-					"name",
-					"active"
+					"active",
+					"name"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -8314,17 +8319,22 @@
 													"id": "507c7f79bcf86cd7994f6c0e",
 													"active": true,
 													"type": "menu-category",
-													"name": "Selectors on concert",
-													"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-													"joint": "890c7f79bcf86cd7994f3t8y",
-													"assets": [
-														"g8h07f79bcf86cd7994f9d7k"
-													],
-													"images": {
-														"main": "g8h07f79bcf86cd7994f9d7k",
-														"thumbnail": "g8h07f79bcf86cd7994f9d7k",
-														"icon": "k7h97f79bcf86cd7994f0i9e"
+													"contents": {
+														"RU": {
+															"name": "Selectors on concert",
+															"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+															"color": "#000000",
+															"images": {
+																"main": "g8h07f79bcf86cd7994f9d7k",
+																"thumbnail": "g8h07f79bcf86cd7994f9d7k",
+																"icon": "k7h97f79bcf86cd7994f0i9e"
+															},
+															"assets": [
+																"g8h07f79bcf86cd7994f9d7k"
+															]
+														}
 													},
+													"joint": "890c7f79bcf86cd7994f3t8y",
 													"extra": {
 														"key": "value"
 													}
@@ -8385,17 +8395,22 @@
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"active": true,
 												"type": "menu-category",
-												"name": "Selectors on concert",
-												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-												"joint": "890c7f79bcf86cd7994f3t8y",
-												"assets": [
-													"g8h07f79bcf86cd7994f9d7k"
-												],
-												"images": {
-													"main": "g8h07f79bcf86cd7994f9d7k",
-													"thumbnail": "g8h07f79bcf86cd7994f9d7k",
-													"icon": "k7h97f79bcf86cd7994f0i9e"
+												"contents": {
+													"RU": {
+														"name": "Selectors on concert",
+														"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+														"color": "#000000",
+														"images": {
+															"main": "g8h07f79bcf86cd7994f9d7k",
+															"thumbnail": "g8h07f79bcf86cd7994f9d7k",
+															"icon": "k7h97f79bcf86cd7994f0i9e"
+														},
+														"assets": [
+															"g8h07f79bcf86cd7994f9d7k"
+														]
+													}
 												},
+												"joint": "890c7f79bcf86cd7994f3t8y",
 												"extra": {
 													"key": "value"
 												}
@@ -8453,17 +8468,22 @@
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"active": true,
 												"type": "menu-category",
-												"name": "Selectors on concert",
-												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-												"joint": "890c7f79bcf86cd7994f3t8y",
-												"assets": [
-													"g8h07f79bcf86cd7994f9d7k"
-												],
-												"images": {
-													"main": "g8h07f79bcf86cd7994f9d7k",
-													"thumbnail": "g8h07f79bcf86cd7994f9d7k",
-													"icon": "k7h97f79bcf86cd7994f0i9e"
+												"contents": {
+													"RU": {
+														"name": "Selectors on concert",
+														"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+														"color": "#000000",
+														"images": {
+															"main": "g8h07f79bcf86cd7994f9d7k",
+															"thumbnail": "g8h07f79bcf86cd7994f9d7k",
+															"icon": "k7h97f79bcf86cd7994f0i9e"
+														},
+														"assets": [
+															"g8h07f79bcf86cd7994f9d7k"
+														]
+													}
 												},
+												"joint": "890c7f79bcf86cd7994f3t8y",
 												"extra": {
 													"key": "value"
 												}
@@ -8576,17 +8596,22 @@
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"active": true,
 												"type": "menu-category",
-												"name": "Selectors on concert",
-												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-												"joint": "890c7f79bcf86cd7994f3t8y",
-												"assets": [
-													"g8h07f79bcf86cd7994f9d7k"
-												],
-												"images": {
-													"main": "g8h07f79bcf86cd7994f9d7k",
-													"thumbnail": "g8h07f79bcf86cd7994f9d7k",
-													"icon": "k7h97f79bcf86cd7994f0i9e"
+												"contents": {
+													"RU": {
+														"name": "Selectors on concert",
+														"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+														"color": "#000000",
+														"images": {
+															"main": "g8h07f79bcf86cd7994f9d7k",
+															"thumbnail": "g8h07f79bcf86cd7994f9d7k",
+															"icon": "k7h97f79bcf86cd7994f0i9e"
+														},
+														"assets": [
+															"g8h07f79bcf86cd7994f9d7k"
+														]
+													}
 												},
+												"joint": "890c7f79bcf86cd7994f3t8y",
 												"extra": {
 													"key": "value"
 												}
@@ -8621,6 +8646,82 @@
 			}
 		},
 		"/selector/{selectorId}/assets": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ISelectorGetAllAssetsResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"selector": {
+													"ref": {
+														"name": "selectors",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												},
+												"asset": {
+													"ref": {
+														"name": "assets",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												}
+											},
+											"data": {
+												"RU": [
+													{
+														"id": "107c7f79bcf86cd7994f6c0e",
+														"active": true,
+														"lastupdate": 1589885721,
+														"name": "some_3d_model",
+														"ext": ".fbx",
+														"mipmap": {
+															"x128": "assets/some_3d_model_128x128.png",
+															"x32": "assets/favicon.png"
+														},
+														"path": "assets/some_3d_model.fbx"
+													}
+												]
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Selector assets"
+				],
+				"security": [
+					{
+						"jwt": []
+					},
+					{
+						"apiKey": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "selectorId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/selector/{selectorId}/assets/{langCode}": {
 			"get": {
 				"operationId": "Get",
 				"responses": {
@@ -8690,73 +8791,10 @@
 						"schema": {
 							"type": "string"
 						}
-					}
-				]
-			}
-		},
-		"/selector/{selectorId}/asset": {
-			"post": {
-				"operationId": "Create",
-				"responses": {
-					"200": {
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ISelectorCreateAssetsResponse"
-								},
-								"examples": {
-									"example": {
-										"value": {
-											"meta": {
-												"selector": {
-													"ref": {
-														"name": "selectors",
-														"version": 1,
-														"lastUpdate": 1589885721
-													}
-												},
-												"asset": {
-													"ref": {
-														"name": "assets",
-														"version": 1,
-														"lastUpdate": 1589885721
-													}
-												}
-											},
-											"data": {
-												"asset": {
-													"id": "107c7f79bcf86cd7994f6c0e",
-													"active": true,
-													"lastupdate": 1589885721,
-													"name": "some_3d_model",
-													"ext": ".fbx",
-													"mipmap": {
-														"x128": "assets/some_3d_model_128x128.png",
-														"x32": "assets/favicon.png"
-													},
-													"path": "assets/some_3d_model.fbx"
-												}
-											}
-										}
-									}
-								}
-							}
-						},
-						"description": "Ok"
-					}
-				},
-				"tags": [
-					"Selector assets"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
+					},
 					{
 						"in": "path",
-						"name": "selectorId",
+						"name": "langCode",
 						"required": true,
 						"schema": {
 							"type": "string"
@@ -8765,9 +8803,9 @@
 				]
 			}
 		},
-		"/selector/{selectorId}/image/{imageType}": {
+		"/selector/{selectorId}/image/{langCode}/{imageType}": {
 			"post": {
-				"operationId": "Create",
+				"operationId": "CreateImage",
 				"responses": {
 					"200": {
 						"content": {
@@ -8835,6 +8873,14 @@
 					},
 					{
 						"in": "path",
+						"name": "langCode",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
 						"name": "imageType",
 						"required": true,
 						"schema": {
@@ -8844,7 +8890,7 @@
 				]
 			}
 		},
-		"/selector/{selectorId}/asset/{assetId}": {
+		"/selector/{selectorId}/asset/{langCode}/{assetId}": {
 			"put": {
 				"operationId": "Update",
 				"responses": {
@@ -8914,6 +8960,14 @@
 					},
 					{
 						"in": "path",
+						"name": "langCode",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
 						"name": "assetId",
 						"required": true,
 						"schema": {
@@ -8926,7 +8980,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/ISelectorUpdateAssetsRequest"
+								"$ref": "#/components/schemas/ISelectorAssetUpdateRequest"
 							}
 						}
 					}
@@ -8980,6 +9034,14 @@
 					{
 						"in": "path",
 						"name": "selectorId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "langCode",
 						"required": true,
 						"schema": {
 							"type": "string"

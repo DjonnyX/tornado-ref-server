@@ -1,25 +1,21 @@
-import { SelectorModel, ISelector, RefTypes, NodeModel } from "../models/index";
+import { SelectorModel, ISelector, RefTypes, NodeModel, ILanguage, LanguageModel } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Query } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { NodeTypes } from "../models/enums";
 import { deleteNodesChain } from "../utils/node";
 import { SelectorTypes } from "../models/enums/SelectorTypes";
 import { formatSelectorModel } from "../utils/selector";
+import { ISelectorContents } from "../models/Selector";
+import { normalizeContents, getDeletedImagesFromDifferense, getEntityAssets } from "../utils/entity";
+import { AssetModel } from "../models/Asset";
+import { deleteAsset } from "./AssetsController";
 
 export interface ISelectorItem {
     id?: string;
     type: SelectorTypes;
     active: boolean;
-    name: string;
-    color?: string;
-    description?: string;
+    contents: ISelectorContents;
     joint: string;
-    assets?: Array<string>;
-    images?: {
-        main: string | null;
-        thumbnail: string | null;
-        icon: string | null;
-    };
     extra?: { [key: string]: any } | null;
 }
 
@@ -52,46 +48,35 @@ interface ISelectorResponse {
 interface ISelectorCreateRequest {
     active: boolean;
     type: SelectorTypes;
-    name: string;
-    color?: string;
-    description?: string;
-    assets?: Array<string>;
-    images?: {
-        main: string | null;
-        thumbnail: string | null;
-        icon: string | null;
-    };
+    contents?: ISelectorContents;
     extra?: { [key: string]: any } | null;
 }
 
 interface ISelectorUpdateRequest {
     active?: boolean;
     type?: SelectorTypes;
-    name?: string;
-    color?: string;
-    description?: string;
-    assets?: Array<string>;
-    images?: {
-        main: string | null;
-        thumbnail: string | null;
-        icon: string | null;
-    };
+    contents?: ISelectorContents;
     extra?: { [key: string]: any } | null;
 }
 
-export const SELECTOR_RESPONSE_TEMPLATE: ISelectorItem = {
+export const RESPONSE_TEMPLATE: ISelectorItem = {
     id: "507c7f79bcf86cd7994f6c0e",
     active: true,
     type: SelectorTypes.MENU_CATEGORY,
-    name: "Selectors on concert",
-    description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-    joint: "890c7f79bcf86cd7994f3t8y",
-    assets: ["g8h07f79bcf86cd7994f9d7k"],
-    images: {
-        main: "g8h07f79bcf86cd7994f9d7k",
-        thumbnail: "g8h07f79bcf86cd7994f9d7k",
-        icon: "k7h97f79bcf86cd7994f0i9e",
+    contents: {
+        "RU": {
+            name: "Selectors on concert",
+            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+            color: "#000000",
+            images: {
+                main: "g8h07f79bcf86cd7994f9d7k",
+                thumbnail: "g8h07f79bcf86cd7994f9d7k",
+                icon: "k7h97f79bcf86cd7994f0i9e",
+            },
+            assets: ["g8h07f79bcf86cd7994f9d7k"],
+        }
     },
+    joint: "890c7f79bcf86cd7994f3t8y",
     extra: { key: "value" }
 };
 
@@ -112,7 +97,7 @@ export class SelectorsController extends Controller {
     @OperationId("GetAll")
     @Example<ISelectorsResponse>({
         meta: META_TEMPLATE,
-        data: [SELECTOR_RESPONSE_TEMPLATE],
+        data: [RESPONSE_TEMPLATE],
     })
     public async getAll(@Query() type?: SelectorTypes): Promise<ISelectorsResponse> {
         try {
@@ -149,7 +134,7 @@ export class SelectorController extends Controller {
     @OperationId("GetOne")
     @Example<ISelectorResponse>({
         meta: META_TEMPLATE,
-        data: SELECTOR_RESPONSE_TEMPLATE,
+        data: RESPONSE_TEMPLATE,
     })
     public async getOne(id: string): Promise<ISelectorResponse> {
         try {
@@ -177,7 +162,7 @@ export class SelectorController extends Controller {
     @OperationId("Create")
     @Example<ISelectorResponse>({
         meta: META_TEMPLATE,
-        data: SELECTOR_RESPONSE_TEMPLATE,
+        data: RESPONSE_TEMPLATE,
     })
     public async create(@Body() request: ISelectorCreateRequest): Promise<ISelectorResponse> {
         let params: ISelectorItem;
@@ -193,7 +178,7 @@ export class SelectorController extends Controller {
             });
             const savedJointNode = await jointNode.save();
 
-            params = { ...request, joint: savedJointNode._id };
+            params = { ...request, joint: savedJointNode._id } as any;
         } catch (err) {
             this.setStatus(500);
             return {
@@ -232,16 +217,89 @@ export class SelectorController extends Controller {
     @OperationId("Update")
     @Example<ISelectorResponse>({
         meta: META_TEMPLATE,
-        data: SELECTOR_RESPONSE_TEMPLATE,
+        data: RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() request: ISelectorUpdateRequest): Promise<ISelectorResponse> {
+        let defaultLanguage: ILanguage;
+        try {
+            defaultLanguage = await LanguageModel.findOne({ isDefault: true });
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Default language error. ${err}`,
+                    }
+                ]
+            };
+        }
+
         try {
             const item = await SelectorModel.findById(id);
 
+            let lastContents: ISelectorContents;
             for (const key in request) {
+                if (key === "contents") {
+                    lastContents = item.contents;
+                }
+
                 item[key] = request[key];
-                if (key === "extra" || key === "content") {
+
+                if (key === "extra" || key === "contents") {
+                    if (key === "contents") {
+                        normalizeContents(item.contents, defaultLanguage.code);
+                    }
                     item.markModified(key);
+                }
+            }
+
+            // удаление ассетов из разности images
+            const deletedAssetsFromImages = getDeletedImagesFromDifferense(lastContents, item.contents);
+            const promises = new Array<Promise<any>>();
+            let isAssetsChanged = false;
+            deletedAssetsFromImages.forEach(assetId => {
+                promises.push(new Promise(async (resolve, reject) => {
+                    // удаление из списка assets
+                    if (item.contents) {
+                        for (const lang in item.contents) {
+                            const content = item.contents[lang];
+                            if (!!content && !!content.assets) {
+                                const index = content.assets.indexOf(assetId);
+                                if (index !== -1) {
+                                    content.assets.splice(index, 1);
+                                }
+                            }
+                        }
+                    }
+
+                    // физическое удаление asset'а
+                    const asset = await AssetModel.findByIdAndDelete(assetId);
+                    if (!!asset) {
+                        await deleteAsset(asset.path);
+                        await deleteAsset(asset.mipmap.x128);
+                        await deleteAsset(asset.mipmap.x32);
+                        isAssetsChanged = true;
+                    }
+                    resolve();
+                }));
+            });
+            await Promise.all(promises);
+
+            if (isAssetsChanged) {
+                await riseRefVersion(RefTypes.ASSETS);
+            }
+
+            // выставление ассетов от предыдущего состояния
+            // ассеты неьзя перезаписывать напрямую!
+            if (!!lastContents) {
+                for (const lang in lastContents) {
+                    if (!item.contents[lang]) {
+                        item.contents[lang] = {};
+                    }
+                    if (lastContents[lang]) {
+                        item.contents[lang].assets = lastContents[lang].assets;
+                    }
                 }
             }
 
@@ -285,6 +343,43 @@ export class SelectorController extends Controller {
                     }
                 ]
             };
+        }
+
+        // нужно удалять ассеты
+        const assetsList = getEntityAssets(selector);
+
+        const promises = new Array<Promise<any>>();
+
+        try {
+            let isAssetsChanged = false;
+            assetsList.forEach(assetId => {
+                promises.push(new Promise(async (resolve) => {
+                    const asset = await AssetModel.findByIdAndDelete(assetId);
+                    if (!!asset) {
+                        await deleteAsset(asset.path);
+                        await deleteAsset(asset.mipmap.x128);
+                        await deleteAsset(asset.mipmap.x32);
+                        isAssetsChanged = true;
+                    }
+                    resolve();
+                }));
+            });
+
+            await Promise.all(promises);
+
+            if (!!isAssetsChanged) {
+                await riseRefVersion(RefTypes.ASSETS);
+            }
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Error in delete assets. ${err}`,
+                    }
+                ]
+            }
         }
 
         try {
