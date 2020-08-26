@@ -1,19 +1,16 @@
-import { RefTypes, IOrderType, OrderTypeModel } from "../models/index";
+import { RefTypes, OrderTypeModel, LanguageModel, ILanguage } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatOrderTypeModel } from "../utils/orderType";
+import { IOrderTypeContents } from "../models/OrderTypes";
+import { AssetModel } from "../models/Asset";
+import { deleteAsset } from "./AssetsController";
+import { normalizeContents, getDeletedImagesFromDifferense } from "../utils/entity";
 
 export interface IOrderTypeItem {
     id: string;
     active: boolean;
-    name: string;
-    description?: string;
-    color?: string;
-    assets?: Array<string>;
-    images?: {
-        main?: string | null;
-        icon?: string | null;
-    };
+    contents: IOrderTypeContents;
     extra?: { [key: string]: any } | null;
 }
 
@@ -44,15 +41,8 @@ interface OrderTypeResponse {
 }
 
 interface OrderTypeCreateRequest {
-    name: string;
     active: boolean;
-    description: string;
-    color?: string;
-    assets?: Array<string>;
-    images?: {
-        main?: string | null;
-        icon?: string | null;
-    };
+    contents?: IOrderTypeContents;
     extra?: { [key: string]: any } | null;
 }
 
@@ -67,16 +57,20 @@ const META_TEMPLATE: IOrderTypeMeta = {
 export const RESPONSE_TEMPLATE: IOrderTypeItem = {
     id: "507c7f79bcf86cd7994f6c0e",
     active: true,
-    name: "Take away",
-    description: "description",
-    color: "#000000",
-    assets: [
-        "gt7h7f79bcf86cd7994f9d6u",
-        "gt7h7f79bcf86cd7994f9d6u",
-    ],
-    images: {
-        main: "gt7h7f79bcf86cd7994f9d6u",
-        icon: "gt7h7f79bcf86cd7994f9d6u",
+    contents: {
+        "RU": {
+            name: "Take away",
+            description: "description",
+            color: "#000000",
+            assets: [
+                "gt7h7f79bcf86cd7994f9d6u",
+                "gt7h7f79bcf86cd7994f9d6u",
+            ],
+            images: {
+                main: "gt7h7f79bcf86cd7994f9d6u",
+                icon: "gt7h7f79bcf86cd7994f9d6u",
+            },
+        }
     },
     extra: { key: "value" },
 };
@@ -183,19 +177,92 @@ export class OrderTypeController extends Controller {
         data: RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() request: OrderTypeCreateRequest): Promise<OrderTypeResponse> {
+        let defaultLanguage: ILanguage;
+        try {
+            defaultLanguage = await LanguageModel.findOne({ isDefault: true });
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Default language error. ${err}`,
+                    }
+                ]
+            };
+        }
+
         try {
             const item = await OrderTypeModel.findById(id);
 
+            let lastContents: IOrderTypeContents;
             for (const key in request) {
+                if (key === "contents") {
+                    lastContents = item.contents;
+                }
+
                 item[key] = request[key];
-                if (key === "extra" || key === "content") {
+
+                if (key === "extra" || key === "contents") {
+                    if (key === "contents") {
+                        normalizeContents(item.contents, defaultLanguage.code);
+                    }
                     item.markModified(key);
+                }
+            }
+
+            // удаление ассетов из разности images
+            const deletedAssetsFromImages = getDeletedImagesFromDifferense(lastContents, item.contents);
+            const promises = new Array<Promise<any>>();
+            let isAssetsChanged = false;
+            deletedAssetsFromImages.forEach(assetId => {
+                promises.push(new Promise(async (resolve, reject) => {
+                    // удаление из списка assets
+                    if (item.contents) {
+                        for (const lang in item.contents) {
+                            const content = item.contents[lang];
+                            if (!!content && !!content.assets) {
+                                const index = content.assets.indexOf(assetId);
+                                if (index !== -1) {
+                                    content.assets.splice(index, 1);
+                                }
+                            }
+                        }
+                    }
+
+                    // физическое удаление asset'а
+                    const asset = await AssetModel.findByIdAndDelete(assetId);
+                    if (!!asset) {
+                        await deleteAsset(asset.path);
+                        await deleteAsset(asset.mipmap.x128);
+                        await deleteAsset(asset.mipmap.x32);
+                        isAssetsChanged = true;
+                    }
+                    resolve();
+                }));
+            });
+            await Promise.all(promises);
+
+            if (isAssetsChanged) {
+                await riseRefVersion(RefTypes.ASSETS);
+            }
+
+            // выставление ассетов от предыдущего состояния
+            // ассеты неьзя перезаписывать напрямую!
+            if (!!lastContents) {
+                for (const lang in lastContents) {
+                    if (!item.contents[lang]) {
+                        item.contents[lang] = {};
+                    }
+                    if (lastContents[lang]) {
+                        item.contents[lang].assets = lastContents[lang].assets;
+                    }
                 }
             }
 
             await item.save();
 
-            const ref = await riseRefVersion(RefTypes.ORDER_TYPES);
+            const ref = await riseRefVersion(RefTypes.SELECTORS);
             return {
                 meta: { ref },
                 data: formatOrderTypeModel(item),

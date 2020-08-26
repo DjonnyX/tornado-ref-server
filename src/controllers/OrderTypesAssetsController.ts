@@ -1,17 +1,30 @@
 import * as express from "express";
-import { OrderTypeModel, IOrderType, RefTypes } from "../models/index";
+import { OrderTypeModel, IOrderType, RefTypes, ILanguage, LanguageModel } from "../models/index";
 import { Controller, Route, Post, Tags, OperationId, Example, Request, Security, Get, Delete, Body, Put } from "tsoa";
 import { riseRefVersion, getRef } from "../db/refs";
 import { AssetExtensions } from "../models/enums";
-import { IOrderTypeItem, RESPONSE_TEMPLATE as ORDER_TYPE_RESPONSE_TEMPLATE } from "./OrderTypesController";
-import { formatOrderTypeModel } from "../utils/orderType";
+import { IOrderTypeItem, RESPONSE_TEMPLATE as SELECTOR_RESPONSE_TEMPLATE } from "./OrderTypesController";
+import { formatOrderTypeModel } from "../utils/ordertype";
+import { normalizeContents } from "../utils/entity";
 import { IRefItem } from "./RefsController";
-import { uploadAsset, deleteAsset, IAssetItem } from "./AssetsController";
-import { AssetModel } from "../models/Asset";
+import { uploadAsset, deleteAsset, IAssetItem, ICreateAssetsResponse } from "./AssetsController";
+import { AssetModel, IAsset } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
+import { IOrderTypeContents } from "../models/OrderTypes";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IOrderTypeAsset extends IAssetItem { }
+
+interface IOrderTypeGetAllAssetsResponse {
+    meta?: {};
+    data?: {
+        [lang: string]: Array<IOrderTypeAsset>,
+    };
+    error?: Array<{
+        code: number;
+        message: string;
+    }>;
+}
 
 interface IOrderTypeGetAssetsResponse {
     meta?: {};
@@ -64,13 +77,39 @@ interface IOrderTypeAssetUpdateRequest {
 
 export enum OrderTypeImageTypes {
     MAIN = "main",
+    THUMBNAIL = "thumbnail",
     ICON = "icon",
+}
+
+const contentsToDefault = (contents: IOrderTypeContents, langCode: string) => {
+    let result = { ...contents };
+    if (!result) {
+        result = {};
+    }
+
+    if (!result[langCode]) {
+        result[langCode] = {};
+    }
+
+    if (!result[langCode].images) {
+        result[langCode].images = {
+            main: null,
+            thumbnail: null,
+            icon: null,
+        };
+    }
+
+    if (!result[langCode].assets) {
+        result[langCode].assets = [];
+    }
+
+    return result;
 }
 
 const META_TEMPLATE = {
     orderType: {
         ref: {
-            name: RefTypes.PRODUCTS,
+            name: RefTypes.SELECTORS,
             version: 1,
             lastUpdate: 1589885721,
         },
@@ -103,12 +142,74 @@ export class OrderTypeAssetsController extends Controller {
     @Get("{orderTypeId}/assets")
     @Security("jwt")
     @Security("apiKey")
+    @OperationId("GetAll")
+    @Example<IOrderTypeGetAllAssetsResponse>({
+        meta: META_TEMPLATE,
+        data: {
+            "RU": [RESPONSE_TEMPLATE],
+        },
+    })
+    public async getAllAssets(orderTypeId: string): Promise<IOrderTypeGetAllAssetsResponse> {
+        let orderType: IOrderType;
+        try {
+            orderType = await OrderTypeModel.findById(orderTypeId);
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `OrderType with id: "${orderTypeId}" not found. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        const promises = new Array<Promise<{ assets: Array<IAsset>, langCode: string }>>();
+
+        for (const langCode in orderType.contents) {
+            promises.push(new Promise(async (resolve) => {
+                const assets = await AssetModel.find({ _id: orderType.contents[langCode].assets });
+                resolve({ assets, langCode });
+            }));
+        }
+
+        try {
+            const assetsInfo = await Promise.all(promises);
+
+            const result: {
+                [lang: string]: Array<IOrderTypeAsset>,
+            } = {};
+            assetsInfo.forEach(assetInfo => {
+                result[assetInfo.langCode] = assetInfo.assets.map(asset => formatAssetModel(asset));
+            });
+
+            return {
+                meta: {},
+                data: result,
+            };
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Caught error. ${err}`,
+                    }
+                ]
+            };
+        }
+    }
+
+    @Get("{orderTypeId}/assets/{langCode}")
+    @Security("jwt")
+    @Security("apiKey")
     @OperationId("Get")
     @Example<IOrderTypeGetAssetsResponse>({
         meta: META_TEMPLATE,
         data: [RESPONSE_TEMPLATE],
     })
-    public async getAssets(orderTypeId: string): Promise<IOrderTypeGetAssetsResponse> {
+    public async getAssets(orderTypeId: string, langCode: string): Promise<IOrderTypeGetAssetsResponse> {
         let orderType: IOrderType;
         try {
             orderType = await OrderTypeModel.findById(orderTypeId);
@@ -125,7 +226,7 @@ export class OrderTypeAssetsController extends Controller {
         }
 
         try {
-            const assets = await AssetModel.find({ _id: orderType.assets, });
+            const assets = await AssetModel.find({ _id: orderType.contents[langCode].assets, });
 
             return {
                 meta: {},
@@ -144,18 +245,31 @@ export class OrderTypeAssetsController extends Controller {
         }
     }
 
-    @Post("{orderTypeId}/asset")
+    /*@Post("{orderTypeId}/asset/{langCode}")
     @Security("jwt")
     @OperationId("Create")
     @Example<IOrderTypeCreateAssetsResponse>({
         meta: META_TEMPLATE,
         data: {
             asset: RESPONSE_TEMPLATE,
-            orderType: ORDER_TYPE_RESPONSE_TEMPLATE,
+            orderType: SELECTOR_RESPONSE_TEMPLATE,
         }
     })
-    public async create(orderTypeId: string, @Request() request: express.Request): Promise<IOrderTypeCreateAssetsResponse> {
-        const assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA]);
+    public async create(orderTypeId: string, langCode: string, @Request() request: express.Request): Promise<IOrderTypeCreateAssetsResponse> {
+        let assetsInfo: ICreateAssetsResponse;
+        try {
+            assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA]);
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Upload asset error. ${err}`,
+                    }
+                ]
+            };
+        }
 
         let orderType: IOrderType;
         try {
@@ -166,16 +280,23 @@ export class OrderTypeAssetsController extends Controller {
                 error: [
                     {
                         code: 500,
-                        message: `Caught error. ${err}`,
+                        message: `Find orderType error. ${err}`,
                     }
                 ]
             };
         }
 
+        const contents: IOrderTypeContents = contentsToDefault(orderType.contents, langCode);
+
         let orderTypeRef: IRefItem;
         try {
-            orderType.assets.push(assetsInfo.data.id);
-            orderTypeRef = await riseRefVersion(RefTypes.PRODUCTS);
+            const assetId = assetsInfo.data.id.toString();
+            contents[langCode].assets.push(assetId);
+
+            orderType.contents = contents;
+            orderType.markModified("contents");
+
+            orderTypeRef = await riseRefVersion(RefTypes.SELECTORS);
             await orderType.save();
         } catch (err) {
             this.setStatus(500);
@@ -203,20 +324,33 @@ export class OrderTypeAssetsController extends Controller {
                 asset: assetsInfo.data,
             }
         };
-    }
+    }*/
 
-    @Post("{orderTypeId}/image/{imageType}")
+    @Post("{orderTypeId}/image/{langCode}/{imageType}")
     @Security("jwt")
-    @OperationId("Create")
+    @OperationId("CreateImage")
     @Example<IOrderTypeCreateAssetsResponse>({
         meta: META_TEMPLATE,
         data: {
             asset: RESPONSE_TEMPLATE,
-            orderType: ORDER_TYPE_RESPONSE_TEMPLATE,
+            orderType: SELECTOR_RESPONSE_TEMPLATE,
         }
     })
-    public async image(orderTypeId: string, imageType: OrderTypeImageTypes, @Request() request: express.Request): Promise<IOrderTypeCreateAssetsResponse> {
-        const assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA], false);
+    public async image(orderTypeId: string, langCode: string, imageType: OrderTypeImageTypes, @Request() request: express.Request): Promise<IOrderTypeCreateAssetsResponse> {
+        let assetsInfo: ICreateAssetsResponse;
+        try {
+            assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA], false);
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Upload asset error. ${err}`,
+                    }
+                ]
+            };
+        }
 
         let orderType: IOrderType;
         let deletedAsset: string;
@@ -234,15 +368,52 @@ export class OrderTypeAssetsController extends Controller {
             };
         }
 
-        deletedAsset = orderType.images[imageType];
-        
-        const assetIndex = orderType.assets.indexOf(deletedAsset);
+        let defaultLanguage: ILanguage;
+        try {
+            defaultLanguage = await LanguageModel.findOne({ isDefault: true });
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Default language error. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        let contents: IOrderTypeContents = contentsToDefault(orderType.contents, langCode);
+
+        deletedAsset = !!contents[langCode] ? contents[langCode].images[imageType] : undefined;
+
+        // детект количества повторяющихся изображений
+        let isAssetExistsInOtherProps = 0;
+        for (const contentLang in contents) {
+            if (!!contents[contentLang].images) {
+                for (const img in contents[contentLang].images) {
+                    if (!!contents[contentLang].images[img] && contents[contentLang].images[img] === deletedAsset) {
+                        isAssetExistsInOtherProps++;
+                    }
+                }
+            }
+        }
+
+        // Удаление ассета только если он не используется в разных свойствах
+        if (isAssetExistsInOtherProps !== 1) {
+            deletedAsset = undefined;
+        }
+
+        const assetIndex = !!deletedAsset ? contents[langCode].assets.indexOf(deletedAsset) : -1;
         if (assetIndex > -1) {
             try {
                 const asset = await AssetModel.findByIdAndDelete(deletedAsset);
-                await deleteAsset(asset.path);
-                await deleteAsset(asset.mipmap.x128);
-                await deleteAsset(asset.mipmap.x32);
+                if (!!asset) {
+                    await deleteAsset(asset.path);
+                    await deleteAsset(asset.mipmap.x128);
+                    await deleteAsset(asset.mipmap.x32);
+                    await riseRefVersion(RefTypes.ASSETS);
+                }
             } catch (err) {
                 this.setStatus(500);
                 return {
@@ -257,21 +428,27 @@ export class OrderTypeAssetsController extends Controller {
         }
 
         // удаление предыдущего ассета
-        orderType.assets = orderType.assets.filter(asset => asset.toString() !== deletedAsset.toString());
+        if (!!deletedAsset) {
+            contents[langCode].assets = contents[langCode].assets.filter(asset => {
+                return asset.toString() !== deletedAsset.toString();
+            });
+        }
 
         let orderTypeRef: IRefItem;
+        let savedOrderType: IOrderType;
         try {
-            orderType.images[imageType] = assetsInfo.data.id;
-            
-            if (imageType === OrderTypeImageTypes.MAIN) {
-                if (!orderType.images.icon) {
-                    orderType.images.icon = orderType.images.main;
-                }
-            }
+            const assetId = assetsInfo.data.id.toString();
+            contents[langCode].images[imageType] = assetId;
+            contents[langCode].assets.push(assetId);
 
-            orderType.assets.push(assetsInfo.data.id);
-            orderTypeRef = await riseRefVersion(RefTypes.ORDER_TYPES);
-            await orderType.save();
+            normalizeContents(contents, defaultLanguage.code);
+
+            orderType.contents = contents;
+            orderType.markModified("contents");
+
+            savedOrderType = await orderType.save();
+
+            orderTypeRef = await riseRefVersion(RefTypes.SELECTORS);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -294,23 +471,23 @@ export class OrderTypeAssetsController extends Controller {
                 }
             },
             data: {
-                orderType: formatOrderTypeModel(orderType),
+                orderType: formatOrderTypeModel(savedOrderType),
                 asset: assetsInfo.data,
             }
         };
     }
-    
-    @Put("{orderTypeId}/asset/{assetId}")
+
+    @Put("{orderTypeId}/asset/{langCode}/{assetId}")
     @Security("jwt")
     @OperationId("Update")
     @Example<IOrderTypeCreateAssetsResponse>({
         meta: META_TEMPLATE,
         data: {
             asset: RESPONSE_TEMPLATE,
-            orderType: ORDER_TYPE_RESPONSE_TEMPLATE,
+            orderType: SELECTOR_RESPONSE_TEMPLATE,
         }
     })
-    public async update(orderTypeId: string, assetId: string, @Body() request: IOrderTypeAssetUpdateRequest): Promise<IOrderTypeCreateAssetsResponse> {
+    public async update(orderTypeId: string, langCode: string, assetId: string, @Body() request: IOrderTypeAssetUpdateRequest): Promise<IOrderTypeCreateAssetsResponse> {
 
         let orderType: IOrderType;
         try {
@@ -321,15 +498,15 @@ export class OrderTypeAssetsController extends Controller {
                 error: [
                     {
                         code: 500,
-                        message: `Caught error. ${err}`,
+                        message: `Can not found orderType error. ${err}`,
                     }
                 ]
             };
         }
-        
+
         let orderTypeRef: IRefItem;
         try {
-            orderTypeRef = await getRef(RefTypes.PRODUCTS);
+            orderTypeRef = await getRef(RefTypes.SELECTORS);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -341,7 +518,7 @@ export class OrderTypeAssetsController extends Controller {
                 ]
             };
         }
-        
+
         try {
             const item = await AssetModel.findById(assetId);
 
@@ -353,14 +530,14 @@ export class OrderTypeAssetsController extends Controller {
 
             const ref = await riseRefVersion(RefTypes.ASSETS);
             return {
-                meta: { 
+                meta: {
                     asset: {
                         ref,
                     },
                     orderType: {
                         ref: orderTypeRef,
                     },
-                 },
+                },
                 data: {
                     asset: formatAssetModel(item),
                     orderType: formatOrderTypeModel(orderType),
@@ -379,13 +556,13 @@ export class OrderTypeAssetsController extends Controller {
         }
     }
 
-    @Delete("{orderTypeId}/asset/{assetId}")
+    @Delete("{orderTypeId}/asset/{langCode}/{assetId}")
     @Security("jwt")
     @OperationId("Delete")
     @Example<IOrderTypeDeleteAssetsResponse>({
         meta: META_TEMPLATE
     })
-    public async delete(orderTypeId: string, assetId: string): Promise<IOrderTypeDeleteAssetsResponse> {
+    public async delete(orderTypeId: string, langCode: string, assetId: string): Promise<IOrderTypeDeleteAssetsResponse> {
         let orderType: IOrderType;
         try {
             orderType = await OrderTypeModel.findById(orderTypeId);
@@ -395,28 +572,32 @@ export class OrderTypeAssetsController extends Controller {
                 error: [
                     {
                         code: 500,
-                        message: `Caught error. ${err}`,
+                        message: `Find orderType error. ${err}`,
                     }
                 ]
             };
         }
 
+        let contents: IOrderTypeContents = contentsToDefault(orderType.contents, langCode);
+
         let assetRef: IRefItem;
-        const assetIndex = orderType.assets.indexOf(assetId);
+        const assetIndex = contents[langCode].assets.indexOf(assetId);
         if (assetIndex > -1) {
             try {
                 const asset = await AssetModel.findByIdAndDelete(assetId);
-                await deleteAsset(asset.path);
-                await deleteAsset(asset.mipmap.x128);
-                await deleteAsset(asset.mipmap.x32);
-                assetRef = await riseRefVersion(RefTypes.ASSETS);
+                if (!!asset) {
+                    await deleteAsset(asset.path);
+                    await deleteAsset(asset.mipmap.x128);
+                    await deleteAsset(asset.mipmap.x32);
+                    assetRef = await riseRefVersion(RefTypes.ASSETS);
+                }
             } catch (err) {
                 this.setStatus(500);
                 return {
                     error: [
                         {
                             code: 500,
-                            message: `Caught error. ${err}`,
+                            message: `Delete assets error. ${err}`,
                         }
                     ]
                 };
@@ -425,9 +606,14 @@ export class OrderTypeAssetsController extends Controller {
 
         let orderTypesRef: IRefItem;
         try {
-            orderType.assets.splice(assetIndex, 1);
+            contents[langCode].assets.splice(assetIndex, 1);
+
+            orderType.contents = contents;
+            orderType.markModified("contents");
+
             await orderType.save();
-            orderTypesRef = await riseRefVersion(RefTypes.ORDER_TYPES);
+
+            orderTypesRef = await riseRefVersion(RefTypes.SELECTORS);
             return {
                 meta: {
                     orderType: {
@@ -444,7 +630,7 @@ export class OrderTypeAssetsController extends Controller {
                 error: [
                     {
                         code: 500,
-                        message: `Caught error. ${err}`,
+                        message: `Save orderType error. ${err}`,
                     }
                 ]
             };
