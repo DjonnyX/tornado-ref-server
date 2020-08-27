@@ -9,7 +9,7 @@ import { RefTypes } from "./enums";
 import { ICurrency, CurrencyModel } from "./Currency";
 import { IOrderType, OrderTypeModel } from "./OrderTypes";
 import { IAd, AdModel } from "./Ad";
-import { ILanguage, LanguageModel } from "./Language";
+import { ILanguage, LanguageModel, ILanguageContents, ILanguageContentsItem } from "./Language";
 import { ITranslate, ITranslation, TranslationModel } from "./Translation";
 
 export {
@@ -25,6 +25,6 @@ export {
     RefModel, IRef, RefTypes,
     OrderTypeModel, IOrderType,
     IAd, AdModel,
-    ILanguage, LanguageModel,
+    ILanguage, LanguageModel, ILanguageContents, ILanguageContentsItem,
     ITranslate, ITranslation, TranslationModel,
 };

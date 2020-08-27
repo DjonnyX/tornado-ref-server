@@ -1,17 +1,30 @@
 import * as express from "express";
-import { RefTypes, ILanguage, LanguageModel } from "../models/index";
+import { LanguageModel, ILanguage, RefTypes } from "../models";
 import { Controller, Route, Post, Tags, OperationId, Example, Request, Security, Get, Delete, Body, Put } from "tsoa";
 import { riseRefVersion, getRef } from "../db/refs";
 import { AssetExtensions } from "../models/enums";
-import { IRefItem } from "./RefsController";
-import { uploadAsset, deleteAsset, IAssetItem } from "./AssetsController";
-import { AssetModel } from "../models/Asset";
-import { formatAssetModel } from "../utils/asset";
-import { ILanguageItem, LANGUAGE_RESPONSE_TEMPLATE } from "./LanguagesController";
+import { ILanguageItem, RESPONSE_TEMPLATE as SELECTOR_RESPONSE_TEMPLATE } from "./LanguagesController";
 import { formatLanguageModel } from "../utils/language";
+import { normalizeContents } from "../utils/entity";
+import { IRefItem } from "./RefsController";
+import { uploadAsset, deleteAsset, IAssetItem, ICreateAssetsResponse } from "./AssetsController";
+import { AssetModel, IAsset } from "../models/Asset";
+import { formatAssetModel } from "../utils/asset";
+import { ILanguageContents } from "../models/Language";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface ILanguageAsset extends IAssetItem { }
+
+interface ILanguageGetAllAssetsResponse {
+    meta?: {};
+    data?: {
+        [lang: string]: Array<ILanguageAsset>,
+    };
+    error?: Array<{
+        code: number;
+        message: string;
+    }>;
+}
 
 interface ILanguageGetAssetsResponse {
     meta?: {};
@@ -57,13 +70,38 @@ interface ILanguageDeleteAssetsResponse {
     }>;
 }
 
-interface ILanguageUpdateAssetsRequest {
-    name: string;
+interface ILanguageAssetUpdateRequest {
     active: boolean;
+    name: string;
 }
 
 export enum LanguageImageTypes {
     MAIN = "main",
+    ICON = "icon",
+}
+
+const contentsToDefault = (contents: ILanguageContents, langCode: string) => {
+    let result = { ...contents };
+    if (!result) {
+        result = {};
+    }
+
+    if (!result[langCode]) {
+        result[langCode] = {};
+    }
+
+    if (!result[langCode].images) {
+        result[langCode].images = {
+            main: null,
+            icon: null,
+        };
+    }
+
+    if (!result[langCode].assets) {
+        result[langCode].assets = [];
+    }
+
+    return result;
 }
 
 const META_TEMPLATE = {
@@ -96,10 +134,72 @@ const RESPONSE_TEMPLATE: IAssetItem = {
     path: "assets/some_3d_model.fbx",
 };
 
-@Route("/language")
+@Route("/order-type")
 @Tags("Language assets")
 export class LanguageAssetsController extends Controller {
     @Get("{languageId}/assets")
+    @Security("jwt")
+    @Security("apiKey")
+    @OperationId("GetAll")
+    @Example<ILanguageGetAllAssetsResponse>({
+        meta: META_TEMPLATE,
+        data: {
+            "RU": [RESPONSE_TEMPLATE],
+        },
+    })
+    public async getAllAssets(languageId: string): Promise<ILanguageGetAllAssetsResponse> {
+        let language: ILanguage;
+        try {
+            language = await LanguageModel.findById(languageId);
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Language with id: "${languageId}" not found. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        const promises = new Array<Promise<{ assets: Array<IAsset>, langCode: string }>>();
+
+        for (const langCode in language.contents) {
+            promises.push(new Promise(async (resolve) => {
+                const assets = await AssetModel.find({ _id: language.contents[langCode].assets });
+                resolve({ assets, langCode });
+            }));
+        }
+
+        try {
+            const assetsInfo = await Promise.all(promises);
+
+            const result: {
+                [lang: string]: Array<ILanguageAsset>,
+            } = {};
+            assetsInfo.forEach(assetInfo => {
+                result[assetInfo.langCode] = assetInfo.assets.map(asset => formatAssetModel(asset));
+            });
+
+            return {
+                meta: {},
+                data: result,
+            };
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Caught error. ${err}`,
+                    }
+                ]
+            };
+        }
+    }
+
+    @Get("{languageId}/assets/{langCode}")
     @Security("jwt")
     @Security("apiKey")
     @OperationId("Get")
@@ -107,7 +207,7 @@ export class LanguageAssetsController extends Controller {
         meta: META_TEMPLATE,
         data: [RESPONSE_TEMPLATE],
     })
-    public async getAssets(languageId: string): Promise<ILanguageGetAssetsResponse> {
+    public async getAssets(languageId: string, langCode: string): Promise<ILanguageGetAssetsResponse> {
         let language: ILanguage;
         try {
             language = await LanguageModel.findById(languageId);
@@ -124,7 +224,7 @@ export class LanguageAssetsController extends Controller {
         }
 
         try {
-            const assets = await AssetModel.find({ _id: language.assets, });
+            const assets = await AssetModel.find({ _id: language.contents[langCode].assets, });
 
             return {
                 meta: {},
@@ -143,18 +243,31 @@ export class LanguageAssetsController extends Controller {
         }
     }
 
-    @Post("{languageId}/asset")
+    /*@Post("{languageId}/asset/{langCode}")
     @Security("jwt")
     @OperationId("Create")
     @Example<ILanguageCreateAssetsResponse>({
         meta: META_TEMPLATE,
         data: {
             asset: RESPONSE_TEMPLATE,
-            language: LANGUAGE_RESPONSE_TEMPLATE,
+            language: SELECTOR_RESPONSE_TEMPLATE,
         }
     })
-    public async create(languageId: string, @Request() request: express.Request): Promise<ILanguageCreateAssetsResponse> {
-        const assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA]);
+    public async create(languageId: string, langCode: string, @Request() request: express.Request): Promise<ILanguageCreateAssetsResponse> {
+        let assetsInfo: ICreateAssetsResponse;
+        try {
+            assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA]);
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Upload asset error. ${err}`,
+                    }
+                ]
+            };
+        }
 
         let language: ILanguage;
         try {
@@ -165,16 +278,23 @@ export class LanguageAssetsController extends Controller {
                 error: [
                     {
                         code: 500,
-                        message: `Caught error. ${err}`,
+                        message: `Find language error. ${err}`,
                     }
                 ]
             };
         }
 
+        const contents: ILanguageContents = contentsToDefault(language.contents, langCode);
+
         let languageRef: IRefItem;
         try {
-            language.assets.push(assetsInfo.data.id);
-            languageRef = await riseRefVersion(RefTypes.LANGUAGES);
+            const assetId = assetsInfo.data.id.toString();
+            contents[langCode].assets.push(assetId);
+
+            language.contents = contents;
+            language.markModified("contents");
+
+            languageRef = await riseRefVersion(RefTypes.SELECTORS);
             await language.save();
         } catch (err) {
             this.setStatus(500);
@@ -202,20 +322,33 @@ export class LanguageAssetsController extends Controller {
                 asset: assetsInfo.data,
             }
         };
-    }
+    }*/
 
-    @Post("{languageId}/image/{imageType}")
+    @Post("{languageId}/image/{langCode}/{imageType}")
     @Security("jwt")
-    @OperationId("Create")
+    @OperationId("CreateImage")
     @Example<ILanguageCreateAssetsResponse>({
         meta: META_TEMPLATE,
         data: {
             asset: RESPONSE_TEMPLATE,
-            language: LANGUAGE_RESPONSE_TEMPLATE,
+            language: SELECTOR_RESPONSE_TEMPLATE,
         }
     })
-    public async image(languageId: string, imageType: LanguageImageTypes, @Request() request: express.Request): Promise<ILanguageCreateAssetsResponse> {
-        const assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA], false);
+    public async image(languageId: string, langCode: string, imageType: LanguageImageTypes, @Request() request: express.Request): Promise<ILanguageCreateAssetsResponse> {
+        let assetsInfo: ICreateAssetsResponse;
+        try {
+            assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA], false);
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Upload asset error. ${err}`,
+                    }
+                ]
+            };
+        }
 
         let language: ILanguage;
         let deletedAsset: string;
@@ -233,15 +366,52 @@ export class LanguageAssetsController extends Controller {
             };
         }
 
-        deletedAsset = language.images[imageType];
-        
-        const assetIndex = language.assets.indexOf(deletedAsset);
+        let defaultLanguage: ILanguage;
+        try {
+            defaultLanguage = await LanguageModel.findOne({ isDefault: true });
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Default language error. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        let contents: ILanguageContents = contentsToDefault(language.contents, langCode);
+
+        deletedAsset = !!contents[langCode] ? contents[langCode].images[imageType] : undefined;
+
+        // детект количества повторяющихся изображений
+        let isAssetExistsInOtherProps = 0;
+        for (const contentLang in contents) {
+            if (!!contents[contentLang].images) {
+                for (const img in contents[contentLang].images) {
+                    if (!!contents[contentLang].images[img] && contents[contentLang].images[img] === deletedAsset) {
+                        isAssetExistsInOtherProps++;
+                    }
+                }
+            }
+        }
+
+        // Удаление ассета только если он не используется в разных свойствах
+        if (isAssetExistsInOtherProps !== 1) {
+            deletedAsset = undefined;
+        }
+
+        const assetIndex = !!deletedAsset ? contents[langCode].assets.indexOf(deletedAsset) : -1;
         if (assetIndex > -1) {
             try {
                 const asset = await AssetModel.findByIdAndDelete(deletedAsset);
-                await deleteAsset(asset.path);
-                await deleteAsset(asset.mipmap.x128);
-                await deleteAsset(asset.mipmap.x32);
+                if (!!asset) {
+                    await deleteAsset(asset.path);
+                    await deleteAsset(asset.mipmap.x128);
+                    await deleteAsset(asset.mipmap.x32);
+                    await riseRefVersion(RefTypes.ASSETS);
+                }
             } catch (err) {
                 this.setStatus(500);
                 return {
@@ -256,14 +426,27 @@ export class LanguageAssetsController extends Controller {
         }
 
         // удаление предыдущего ассета
-        language.assets = language.assets.filter(asset => asset.toString() !== deletedAsset.toString());
+        if (!!deletedAsset) {
+            contents[langCode].assets = contents[langCode].assets.filter(asset => {
+                return asset.toString() !== deletedAsset.toString();
+            });
+        }
 
         let languageRef: IRefItem;
+        let savedLanguage: ILanguage;
         try {
-            language.images[imageType] = assetsInfo.data.id;
-            language.assets.push(assetsInfo.data.id);
-            languageRef = await riseRefVersion(RefTypes.LANGUAGES);
-            await language.save();
+            const assetId = assetsInfo.data.id.toString();
+            contents[langCode].images[imageType] = assetId;
+            contents[langCode].assets.push(assetId);
+
+            normalizeContents(contents, defaultLanguage.code);
+
+            language.contents = contents;
+            language.markModified("contents");
+
+            savedLanguage = await language.save();
+
+            languageRef = await riseRefVersion(RefTypes.SELECTORS);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -286,23 +469,23 @@ export class LanguageAssetsController extends Controller {
                 }
             },
             data: {
-                language: formatLanguageModel(language),
+                language: formatLanguageModel(savedLanguage),
                 asset: assetsInfo.data,
             }
         };
     }
 
-    @Put("{languageId}/asset/{assetId}")
+    @Put("{languageId}/asset/{langCode}/{assetId}")
     @Security("jwt")
     @OperationId("Update")
     @Example<ILanguageCreateAssetsResponse>({
         meta: META_TEMPLATE,
         data: {
             asset: RESPONSE_TEMPLATE,
-            language: LANGUAGE_RESPONSE_TEMPLATE,
+            language: SELECTOR_RESPONSE_TEMPLATE,
         }
     })
-    public async update(languageId: string, assetId: string, @Body() request: ILanguageUpdateAssetsRequest): Promise<ILanguageCreateAssetsResponse> {
+    public async update(languageId: string, langCode: string, assetId: string, @Body() request: ILanguageAssetUpdateRequest): Promise<ILanguageCreateAssetsResponse> {
 
         let language: ILanguage;
         try {
@@ -313,7 +496,7 @@ export class LanguageAssetsController extends Controller {
                 error: [
                     {
                         code: 500,
-                        message: `Caught error. ${err}`,
+                        message: `Can not found language error. ${err}`,
                     }
                 ]
             };
@@ -321,14 +504,14 @@ export class LanguageAssetsController extends Controller {
 
         let languageRef: IRefItem;
         try {
-            languageRef = await getRef(RefTypes.LANGUAGES);
+            languageRef = await getRef(RefTypes.SELECTORS);
         } catch (err) {
             this.setStatus(500);
             return {
                 error: [
                     {
                         code: 500,
-                        message: `Get product ref error. ${err}`,
+                        message: `Get language ref error. ${err}`,
                     }
                 ]
             };
@@ -371,13 +554,13 @@ export class LanguageAssetsController extends Controller {
         }
     }
 
-    @Delete("{languageId}/asset/{assetId}")
+    @Delete("{languageId}/asset/{langCode}/{assetId}")
     @Security("jwt")
     @OperationId("Delete")
     @Example<ILanguageDeleteAssetsResponse>({
         meta: META_TEMPLATE
     })
-    public async delete(languageId: string, assetId: string): Promise<ILanguageDeleteAssetsResponse> {
+    public async delete(languageId: string, langCode: string, assetId: string): Promise<ILanguageDeleteAssetsResponse> {
         let language: ILanguage;
         try {
             language = await LanguageModel.findById(languageId);
@@ -387,28 +570,32 @@ export class LanguageAssetsController extends Controller {
                 error: [
                     {
                         code: 500,
-                        message: `Caught error. ${err}`,
+                        message: `Find language error. ${err}`,
                     }
                 ]
             };
         }
 
+        let contents: ILanguageContents = contentsToDefault(language.contents, langCode);
+
         let assetRef: IRefItem;
-        const assetIndex = language.assets.indexOf(assetId);
+        const assetIndex = contents[langCode].assets.indexOf(assetId);
         if (assetIndex > -1) {
             try {
                 const asset = await AssetModel.findByIdAndDelete(assetId);
-                await deleteAsset(asset.path);
-                await deleteAsset(asset.mipmap.x128);
-                await deleteAsset(asset.mipmap.x32);
-                assetRef = await riseRefVersion(RefTypes.ASSETS);
+                if (!!asset) {
+                    await deleteAsset(asset.path);
+                    await deleteAsset(asset.mipmap.x128);
+                    await deleteAsset(asset.mipmap.x32);
+                    assetRef = await riseRefVersion(RefTypes.ASSETS);
+                }
             } catch (err) {
                 this.setStatus(500);
                 return {
                     error: [
                         {
                             code: 500,
-                            message: `Caught error. ${err}`,
+                            message: `Delete assets error. ${err}`,
                         }
                     ]
                 };
@@ -417,9 +604,14 @@ export class LanguageAssetsController extends Controller {
 
         let languagesRef: IRefItem;
         try {
-            language.assets.splice(assetIndex, 1);
+            contents[langCode].assets.splice(assetIndex, 1);
+
+            language.contents = contents;
+            language.markModified("contents");
+
             await language.save();
-            languagesRef = await riseRefVersion(RefTypes.LANGUAGES);
+
+            languagesRef = await riseRefVersion(RefTypes.SELECTORS);
             return {
                 meta: {
                     language: {
@@ -436,7 +628,7 @@ export class LanguageAssetsController extends Controller {
                 error: [
                     {
                         code: 500,
-                        message: `Caught error. ${err}`,
+                        message: `Save language error. ${err}`,
                     }
                 ]
             };

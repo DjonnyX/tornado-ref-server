@@ -2,10 +2,10 @@ import { RefTypes, TagModel, LanguageModel, ILanguage, ProductModel, IProduct } 
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatTagModel } from "../utils/tag";
-import { ITagContents } from "../models/Tag";
+import { ITagContents, ITag } from "../models/Tag";
 import { AssetModel } from "../models/Asset";
 import { deleteAsset } from "./AssetsController";
-import { normalizeContents, getDeletedImagesFromDifferense } from "../utils/entity";
+import { normalizeContents, getDeletedImagesFromDifferense, getEntityAssets } from "../utils/entity";
 
 export interface ITagItem {
     id: string;
@@ -321,11 +321,63 @@ export class TagController extends Controller {
             console.warn(`Save products error. ${err}`);
         }
 
+        
+        let tag: ITag;
         try {
-            await TagModel.findOneAndDelete({ _id: id });
+            tag = await TagModel.findByIdAndDelete(id);
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Find and delete tag error. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        // нужно удалять ассеты
+        const assetsList = getEntityAssets(tag);
+
+        const assetsPromises = new Array<Promise<any>>();
+
+        try {
+            let isAssetsChanged = false;
+            assetsList.forEach(assetId => {
+                assetsPromises.push(new Promise(async (resolve) => {
+                    const asset = await AssetModel.findByIdAndDelete(assetId);
+                    if (!!asset) {
+                        await deleteAsset(asset.path);
+                        await deleteAsset(asset.mipmap.x128);
+                        await deleteAsset(asset.mipmap.x32);
+                        isAssetsChanged = true;
+                    }
+                    resolve();
+                }));
+            });
+
+            await Promise.all(assetsPromises);
+
+            if (!!isAssetsChanged) {
+                await riseRefVersion(RefTypes.ASSETS);
+            }
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Error in delete assets. ${err}`,
+                    }
+                ]
+            }
+        }
+
+        try {
             const ref = await riseRefVersion(RefTypes.TAGS);
             return {
-                meta: { ref },
+                meta: { ref }
             };
         } catch (err) {
             this.setStatus(500);

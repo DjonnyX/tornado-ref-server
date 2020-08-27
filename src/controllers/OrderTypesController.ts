@@ -2,10 +2,10 @@ import { RefTypes, OrderTypeModel, LanguageModel, ILanguage } from "../models/in
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatOrderTypeModel } from "../utils/orderType";
-import { IOrderTypeContents } from "../models/OrderTypes";
+import { IOrderTypeContents, IOrderType } from "../models/OrderTypes";
 import { AssetModel } from "../models/Asset";
 import { deleteAsset } from "./AssetsController";
-import { normalizeContents, getDeletedImagesFromDifferense } from "../utils/entity";
+import { normalizeContents, getDeletedImagesFromDifferense, getEntityAssets } from "../utils/entity";
 
 export interface IOrderTypeItem {
     id: string;
@@ -287,11 +287,62 @@ export class OrderTypeController extends Controller {
         meta: META_TEMPLATE,
     })
     public async delete(id: string): Promise<OrderTypeResponse> {
+        let orderType: IOrderType;
         try {
-            await OrderTypeModel.findOneAndDelete({ _id: id });
+            orderType = await OrderTypeModel.findByIdAndDelete(id);
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Find and delete orderType error. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        // нужно удалять ассеты
+        const assetsList = getEntityAssets(orderType);
+
+        const promises = new Array<Promise<any>>();
+
+        try {
+            let isAssetsChanged = false;
+            assetsList.forEach(assetId => {
+                promises.push(new Promise(async (resolve) => {
+                    const asset = await AssetModel.findByIdAndDelete(assetId);
+                    if (!!asset) {
+                        await deleteAsset(asset.path);
+                        await deleteAsset(asset.mipmap.x128);
+                        await deleteAsset(asset.mipmap.x32);
+                        isAssetsChanged = true;
+                    }
+                    resolve();
+                }));
+            });
+
+            await Promise.all(promises);
+
+            if (!!isAssetsChanged) {
+                await riseRefVersion(RefTypes.ASSETS);
+            }
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Error in delete assets. ${err}`,
+                    }
+                ]
+            }
+        }
+
+        try {
             const ref = await riseRefVersion(RefTypes.ORDER_TYPES);
             return {
-                meta: { ref },
+                meta: { ref }
             };
         } catch (err) {
             this.setStatus(500);

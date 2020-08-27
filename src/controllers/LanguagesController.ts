@@ -1,19 +1,19 @@
-import { RefTypes, ILanguage, LanguageModel, TranslationModel, ITranslation } from "../models/index";
+import { RefTypes, ILanguage, LanguageModel, TranslationModel } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { IRefItem } from "./RefsController";
 import { formatLanguageModel } from "../utils/language";
 import { mergeTranslation } from "../utils/translation";
+import { ILanguageContents } from "../models/Language";
+import { getEntityAssets, normalizeContents, getDeletedImagesFromDifferense } from "../utils/entity";
+import { AssetModel } from "../models/Asset";
+import { deleteAsset } from "./AssetsController";
 
 export interface ILanguageItem {
     id: string;
     active: boolean;
     code: string;
-    name: string;
-    assets?: Array<string>;
-    images?: {
-        main?: string | null;
-    };
+    contents: ILanguageContents;
     translation?: string | null;
     extra?: { [key: string]: any } | null;
 }
@@ -47,11 +47,7 @@ interface LanguageResponse {
 interface LanguageCreateRequest {
     active?: boolean;
     code: string;
-    name: string;
-    assets?: Array<string>;
-    images?: {
-        main?: string | null;
-    };
+    contents?: ILanguageContents;
     translation?: string | null;
     extra?: { [key: string]: any } | null;
 }
@@ -59,25 +55,25 @@ interface LanguageCreateRequest {
 interface LanguageUpdateRequest {
     active?: boolean;
     code?: string;
-    name?: string;
-    assets?: Array<string>;
-    images?: {
-        main?: string | null;
-    };
+    contents?: ILanguageContents;
     translation?: string | null;
     extra?: { [key: string]: any } | null;
 }
 
-export const LANGUAGE_RESPONSE_TEMPLATE: ILanguageItem = {
+export const RESPONSE_TEMPLATE: ILanguageItem = {
     id: "507c7f79bcf86cd7994f6c0e",
     active: true,
     code: "RU",
-    name: "Русский",
-    assets: [
-        "g8h07f79bcf86cd7994f9d7k",
-    ],
-    images: {
-        main: "g8h07f79bcf86cd7994f9d7k",
+    contents: {
+        "RU": {
+            name: "Русский",
+            assets: [
+                "g8h07f79bcf86cd7994f9d7k",
+            ],
+            images: {
+                main: "g8h07f79bcf86cd7994f9d7k",
+            },
+        }
     },
     translation: "409c7f79bcf86cd7994f6g1t",
     extra: { key: "value" },
@@ -100,7 +96,7 @@ export class LanguagesController extends Controller {
     @OperationId("GetAll")
     @Example<LanguagesResponse>({
         meta: META_TEMPLATE,
-        data: [LANGUAGE_RESPONSE_TEMPLATE],
+        data: [RESPONSE_TEMPLATE],
     })
     public async getAll(): Promise<LanguagesResponse> {
         try {
@@ -133,7 +129,7 @@ export class LanguageController extends Controller {
     @OperationId("GetOne")
     @Example<LanguageResponse>({
         meta: META_TEMPLATE,
-        data: LANGUAGE_RESPONSE_TEMPLATE,
+        data: RESPONSE_TEMPLATE,
     })
     public async getOne(id: string): Promise<LanguageResponse> {
         try {
@@ -161,7 +157,7 @@ export class LanguageController extends Controller {
     @OperationId("Create")
     @Example<LanguageResponse>({
         meta: META_TEMPLATE,
-        data: LANGUAGE_RESPONSE_TEMPLATE,
+        data: RESPONSE_TEMPLATE,
     })
     public async create(@Body() request: LanguageCreateRequest): Promise<LanguageResponse> {
         let item: ILanguage;
@@ -187,7 +183,7 @@ export class LanguageController extends Controller {
             });
 
             mergeTranslation(translation, false);
-            
+
             const savedTranslationItem = await translation.save();
             await riseRefVersion(RefTypes.TRANSLATION);
 
@@ -218,39 +214,96 @@ export class LanguageController extends Controller {
     @OperationId("Update")
     @Example<LanguageResponse>({
         meta: META_TEMPLATE,
-        data: LANGUAGE_RESPONSE_TEMPLATE,
+        data: RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() request: LanguageUpdateRequest): Promise<LanguageResponse> {
+        
+        let defaultLanguage: ILanguage;
+        try {
+            defaultLanguage = await LanguageModel.findOne({ isDefault: true });
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Default language error. ${err}`,
+                    }
+                ]
+            };
+        }
+
         try {
             const item = await LanguageModel.findById(id);
 
-            let languageCode: string;
+            let lastContents: ILanguageContents;
             for (const key in request) {
+                if (key === "contents") {
+                    lastContents = item.contents;
+                }
+
                 item[key] = request[key];
 
-                if (key === "code") {
-                    languageCode = request[key];
-                }
-                
-                if (key === "extra" || key === "content") {
+                if (key === "extra" || key === "contents") {
+                    if (key === "contents") {
+                        normalizeContents(item.contents, defaultLanguage.code);
+                    }
                     item.markModified(key);
+                }
+            }
+
+            // удаление ассетов из разности images
+            const deletedAssetsFromImages = getDeletedImagesFromDifferense(lastContents, item.contents);
+            const promises = new Array<Promise<any>>();
+            let isAssetsChanged = false;
+            deletedAssetsFromImages.forEach(assetId => {
+                promises.push(new Promise(async (resolve, reject) => {
+                    // удаление из списка assets
+                    if (item.contents) {
+                        for (const lang in item.contents) {
+                            const content = item.contents[lang];
+                            if (!!content && !!content.assets) {
+                                const index = content.assets.indexOf(assetId);
+                                if (index !== -1) {
+                                    content.assets.splice(index, 1);
+                                }
+                            }
+                        }
+                    }
+
+                    // физическое удаление asset'а
+                    const asset = await AssetModel.findByIdAndDelete(assetId);
+                    if (!!asset) {
+                        await deleteAsset(asset.path);
+                        await deleteAsset(asset.mipmap.x128);
+                        await deleteAsset(asset.mipmap.x32);
+                        isAssetsChanged = true;
+                    }
+                    resolve();
+                }));
+            });
+            await Promise.all(promises);
+
+            if (isAssetsChanged) {
+                await riseRefVersion(RefTypes.ASSETS);
+            }
+
+            // выставление ассетов от предыдущего состояния
+            // ассеты неьзя перезаписывать напрямую!
+            if (!!lastContents) {
+                for (const lang in lastContents) {
+                    if (!item.contents[lang]) {
+                        item.contents[lang] = {};
+                    }
+                    if (lastContents[lang]) {
+                        item.contents[lang].assets = lastContents[lang].assets;
+                    }
                 }
             }
 
             await item.save();
 
-            if (!!languageCode) {
-                const translation = await TranslationModel.findOne({ code: item.code });
-
-                if (!!translation) {
-                    translation.language = languageCode;
-
-                    await translation.save();
-                    await riseRefVersion(RefTypes.TRANSLATION);
-                }
-            }
-
-            const ref = await riseRefVersion(RefTypes.LANGUAGES);
+            const ref = await riseRefVersion(RefTypes.SELECTORS);
             return {
                 meta: { ref },
                 data: formatLanguageModel(item),
@@ -275,15 +328,62 @@ export class LanguageController extends Controller {
         meta: META_TEMPLATE,
     })
     public async delete(id: string): Promise<LanguageResponse> {
+        let language: ILanguage;
         try {
-            const language = await LanguageModel.findOneAndDelete({ _id: id });
-            const ref = await riseRefVersion(RefTypes.LANGUAGES);
-
-            await TranslationModel.findOneAndDelete({ _id: language.translation });
-            await riseRefVersion(RefTypes.TRANSLATION);
-
+            language = await LanguageModel.findByIdAndDelete(id);
+        } catch (err) {
+            this.setStatus(500);
             return {
-                meta: { ref },
+                error: [
+                    {
+                        code: 500,
+                        message: `Find and delete language error. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        // нужно удалять ассеты
+        const assetsList = getEntityAssets(language);
+
+        const promises = new Array<Promise<any>>();
+
+        try {
+            let isAssetsChanged = false;
+            assetsList.forEach(assetId => {
+                promises.push(new Promise(async (resolve) => {
+                    const asset = await AssetModel.findByIdAndDelete(assetId);
+                    if (!!asset) {
+                        await deleteAsset(asset.path);
+                        await deleteAsset(asset.mipmap.x128);
+                        await deleteAsset(asset.mipmap.x32);
+                        isAssetsChanged = true;
+                    }
+                    resolve();
+                }));
+            });
+
+            await Promise.all(promises);
+
+            if (!!isAssetsChanged) {
+                await riseRefVersion(RefTypes.ASSETS);
+            }
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Error in delete assets. ${err}`,
+                    }
+                ]
+            }
+        }
+
+        try {
+            const ref = await riseRefVersion(RefTypes.LANGUAGES);
+            return {
+                meta: { ref }
             };
         } catch (err) {
             this.setStatus(500);

@@ -5,11 +5,7 @@ export const formatLanguageModel = (model: ILanguage) => ({
     active: model.active,
     isDefault: model.isDefault,
     code: model.code,
-    name: model.name,
-    assets: model.assets,
-    images: model.images || {
-        main: null,
-    },
+    contents: model.contents,
     translation: model.translation,
     extra: model.extra,
 });
