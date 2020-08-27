@@ -2474,7 +2474,6 @@
 			"OrderTypeImageTypes": {
 				"enum": [
 					"main",
-					"thumbnail",
 					"icon"
 				],
 				"type": "string"
@@ -3735,7 +3734,7 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"ITagsMeta": {
+			"ITagMeta": {
 				"properties": {
 					"ref": {
 						"properties": {
@@ -3765,14 +3764,8 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"ITagItem": {
+			"ITagContentsItem": {
 				"properties": {
-					"id": {
-						"type": "string"
-					},
-					"active": {
-						"type": "boolean"
-					},
 					"name": {
 						"type": "string"
 					},
@@ -3781,6 +3774,70 @@
 					},
 					"color": {
 						"type": "string"
+					},
+					"images": {
+						"properties": {
+							"icon": {
+								"type": "string",
+								"nullable": true
+							},
+							"main": {
+								"type": "string",
+								"nullable": true
+							}
+						},
+						"required": [
+							"icon",
+							"main"
+						],
+						"type": "object"
+					},
+					"assets": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"extra": {
+						"properties": {},
+						"additionalProperties": {
+							"additionalProperties": true
+						},
+						"type": "object",
+						"nullable": true
+					}
+				},
+				"required": [
+					"name",
+					"images"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ITagContents": {
+				"properties": {},
+				"type": "object",
+				"additionalProperties": {
+					"anyOf": [
+						{
+							"$ref": "#/components/schemas/ITagContentsItem"
+						},
+						{
+							"additionalProperties": true
+						}
+					]
+				}
+			},
+			"ITagItem": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"active": {
+						"type": "boolean"
+					},
+					"contents": {
+						"$ref": "#/components/schemas/ITagContents"
 					},
 					"extra": {
 						"properties": {},
@@ -3794,8 +3851,7 @@
 				"required": [
 					"id",
 					"active",
-					"name",
-					"color"
+					"contents"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -3803,7 +3859,7 @@
 			"TagsResponse": {
 				"properties": {
 					"meta": {
-						"$ref": "#/components/schemas/ITagsMeta"
+						"$ref": "#/components/schemas/ITagMeta"
 					},
 					"data": {
 						"items": {
@@ -3837,7 +3893,7 @@
 			"TagResponse": {
 				"properties": {
 					"meta": {
-						"$ref": "#/components/schemas/ITagsMeta"
+						"$ref": "#/components/schemas/ITagMeta"
 					},
 					"data": {
 						"$ref": "#/components/schemas/ITagItem"
@@ -3870,14 +3926,8 @@
 					"active": {
 						"type": "boolean"
 					},
-					"name": {
-						"type": "string"
-					},
-					"description": {
-						"type": "string"
-					},
-					"color": {
-						"type": "string"
+					"contents": {
+						"$ref": "#/components/schemas/ITagContents"
 					},
 					"extra": {
 						"properties": {},
@@ -3889,10 +3939,285 @@
 					}
 				},
 				"required": [
-					"active",
-					"name",
-					"color"
+					"active"
 				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ITagAsset": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"active": {
+						"type": "boolean"
+					},
+					"lastupdate": {
+						"type": "number",
+						"format": "double"
+					},
+					"name": {
+						"type": "string"
+					},
+					"ext": {
+						"$ref": "#/components/schemas/AssetExtensions"
+					},
+					"path": {
+						"type": "string"
+					},
+					"mipmap": {
+						"properties": {
+							"x32": {
+								"type": "string"
+							},
+							"x128": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"x32",
+							"x128"
+						],
+						"type": "object"
+					}
+				},
+				"required": [
+					"id",
+					"active",
+					"lastupdate",
+					"name",
+					"ext",
+					"path",
+					"mipmap"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ITagGetAllAssetsResponse": {
+				"properties": {
+					"meta": {
+						"properties": {},
+						"type": "object"
+					},
+					"data": {
+						"properties": {},
+						"additionalProperties": {
+							"items": {
+								"$ref": "#/components/schemas/ITagAsset"
+							},
+							"type": "array"
+						},
+						"type": "object"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ITagGetAssetsResponse": {
+				"properties": {
+					"meta": {
+						"properties": {},
+						"type": "object"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/ITagAsset"
+						},
+						"type": "array"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ITagCreateAssetsResponse": {
+				"properties": {
+					"meta": {
+						"properties": {
+							"asset": {
+								"properties": {
+									"ref": {
+										"$ref": "#/components/schemas/IRefItem"
+									}
+								},
+								"required": [
+									"ref"
+								],
+								"type": "object"
+							},
+							"tag": {
+								"properties": {
+									"ref": {
+										"$ref": "#/components/schemas/IRefItem"
+									}
+								},
+								"required": [
+									"ref"
+								],
+								"type": "object"
+							}
+						},
+						"required": [
+							"asset",
+							"tag"
+						],
+						"type": "object"
+					},
+					"data": {
+						"properties": {
+							"tag": {
+								"$ref": "#/components/schemas/ITagItem"
+							},
+							"asset": {
+								"$ref": "#/components/schemas/ITagAsset"
+							}
+						},
+						"required": [
+							"tag",
+							"asset"
+						],
+						"type": "object"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"TagImageTypes": {
+				"enum": [
+					"main",
+					"icon"
+				],
+				"type": "string"
+			},
+			"ITagAssetUpdateRequest": {
+				"properties": {
+					"active": {
+						"type": "boolean"
+					},
+					"name": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"active",
+					"name"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ITagDeleteAssetsResponse": {
+				"properties": {
+					"meta": {
+						"properties": {
+							"asset": {
+								"properties": {
+									"ref": {
+										"$ref": "#/components/schemas/IRefItem"
+									}
+								},
+								"required": [
+									"ref"
+								],
+								"type": "object"
+							},
+							"tag": {
+								"properties": {
+									"ref": {
+										"$ref": "#/components/schemas/IRefItem"
+									}
+								},
+								"required": [
+									"ref"
+								],
+								"type": "object"
+							}
+						},
+						"required": [
+							"asset",
+							"tag"
+						],
+						"type": "object"
+					},
+					"data": {
+						"properties": {},
+						"type": "object"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
 				"type": "object",
 				"additionalProperties": false
 			},
@@ -9187,9 +9512,20 @@
 												{
 													"id": "507c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"name": "Morning Tag",
-													"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-													"color": "0x000fff",
+													"contents": {
+														"RU": {
+															"name": "Cold",
+															"description": "description",
+															"color": "#000000",
+															"assets": [
+																"gt7h7f79bcf86cd7994f9d6u"
+															],
+															"images": {
+																"main": "gt7h7f79bcf86cd7994f9d6u",
+																"icon": "gt7h7f79bcf86cd7994f9d6u"
+															}
+														}
+													},
 													"extra": {
 														"key": "value"
 													}
@@ -9240,9 +9576,20 @@
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"active": true,
-												"name": "Morning Tag",
-												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-												"color": "0x000fff",
+												"contents": {
+													"RU": {
+														"name": "Cold",
+														"description": "description",
+														"color": "#000000",
+														"assets": [
+															"gt7h7f79bcf86cd7994f9d6u"
+														],
+														"images": {
+															"main": "gt7h7f79bcf86cd7994f9d6u",
+															"icon": "gt7h7f79bcf86cd7994f9d6u"
+														}
+													}
+												},
 												"extra": {
 													"key": "value"
 												}
@@ -9299,9 +9646,20 @@
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"active": true,
-												"name": "Morning Tag",
-												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-												"color": "0x000fff",
+												"contents": {
+													"RU": {
+														"name": "Cold",
+														"description": "description",
+														"color": "#000000",
+														"assets": [
+															"gt7h7f79bcf86cd7994f9d6u"
+														],
+														"images": {
+															"main": "gt7h7f79bcf86cd7994f9d6u",
+															"icon": "gt7h7f79bcf86cd7994f9d6u"
+														}
+													}
+												},
 												"extra": {
 													"key": "value"
 												}
@@ -9413,9 +9771,20 @@
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"active": true,
-												"name": "Morning Tag",
-												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-												"color": "0x000fff",
+												"contents": {
+													"RU": {
+														"name": "Cold",
+														"description": "description",
+														"color": "#000000",
+														"assets": [
+															"gt7h7f79bcf86cd7994f9d6u"
+														],
+														"images": {
+															"main": "gt7h7f79bcf86cd7994f9d6u",
+															"icon": "gt7h7f79bcf86cd7994f9d6u"
+														}
+													}
+												},
 												"extra": {
 													"key": "value"
 												}
@@ -9447,6 +9816,419 @@
 						}
 					}
 				}
+			}
+		},
+		"/tag/{tagId}/assets": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ITagGetAllAssetsResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"tag": {
+													"ref": {
+														"name": "selectors",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												},
+												"asset": {
+													"ref": {
+														"name": "assets",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												}
+											},
+											"data": {
+												"RU": [
+													{
+														"id": "107c7f79bcf86cd7994f6c0e",
+														"active": true,
+														"lastupdate": 1589885721,
+														"name": "some_3d_model",
+														"ext": ".fbx",
+														"mipmap": {
+															"x128": "assets/some_3d_model_128x128.png",
+															"x32": "assets/favicon.png"
+														},
+														"path": "assets/some_3d_model.fbx"
+													}
+												]
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Tag assets"
+				],
+				"security": [
+					{
+						"jwt": []
+					},
+					{
+						"apiKey": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "tagId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/tag/{tagId}/assets/{langCode}": {
+			"get": {
+				"operationId": "Get",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ITagGetAssetsResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"tag": {
+													"ref": {
+														"name": "selectors",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												},
+												"asset": {
+													"ref": {
+														"name": "assets",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												}
+											},
+											"data": [
+												{
+													"id": "107c7f79bcf86cd7994f6c0e",
+													"active": true,
+													"lastupdate": 1589885721,
+													"name": "some_3d_model",
+													"ext": ".fbx",
+													"mipmap": {
+														"x128": "assets/some_3d_model_128x128.png",
+														"x32": "assets/favicon.png"
+													},
+													"path": "assets/some_3d_model.fbx"
+												}
+											]
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Tag assets"
+				],
+				"security": [
+					{
+						"jwt": []
+					},
+					{
+						"apiKey": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "tagId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "langCode",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/tag/{tagId}/image/{langCode}/{imageType}": {
+			"post": {
+				"operationId": "CreateImage",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ITagCreateAssetsResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"tag": {
+													"ref": {
+														"name": "selectors",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												},
+												"asset": {
+													"ref": {
+														"name": "assets",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												}
+											},
+											"data": {
+												"asset": {
+													"id": "107c7f79bcf86cd7994f6c0e",
+													"active": true,
+													"lastupdate": 1589885721,
+													"name": "some_3d_model",
+													"ext": ".fbx",
+													"mipmap": {
+														"x128": "assets/some_3d_model_128x128.png",
+														"x32": "assets/favicon.png"
+													},
+													"path": "assets/some_3d_model.fbx"
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Tag assets"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "tagId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "langCode",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "imageType",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/TagImageTypes"
+						}
+					}
+				]
+			}
+		},
+		"/tag/{tagId}/asset/{langCode}/{assetId}": {
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ITagCreateAssetsResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"tag": {
+													"ref": {
+														"name": "selectors",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												},
+												"asset": {
+													"ref": {
+														"name": "assets",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												}
+											},
+											"data": {
+												"asset": {
+													"id": "107c7f79bcf86cd7994f6c0e",
+													"active": true,
+													"lastupdate": 1589885721,
+													"name": "some_3d_model",
+													"ext": ".fbx",
+													"mipmap": {
+														"x128": "assets/some_3d_model_128x128.png",
+														"x32": "assets/favicon.png"
+													},
+													"path": "assets/some_3d_model.fbx"
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Tag assets"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "tagId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "langCode",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "assetId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ITagAssetUpdateRequest"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "Delete",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ITagDeleteAssetsResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"tag": {
+													"ref": {
+														"name": "selectors",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												},
+												"asset": {
+													"ref": {
+														"name": "assets",
+														"version": 1,
+														"lastUpdate": 1589885721
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Tag assets"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "tagId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "langCode",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "assetId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		},
 		"/translations": {

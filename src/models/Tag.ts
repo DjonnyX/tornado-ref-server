@@ -1,19 +1,31 @@
 import * as mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
 
-interface ITag extends Document {
-    active: boolean;
+export interface ITagContentsItem {
     name: string;
     description?: string;
-    color: string;
+    color?: string;
+    images: {
+        main: string | null;
+        icon: string | null;
+    };
+    assets?: Array<string>;
+    extra?: { [key: string]: any } | null;
+}
+
+export interface ITagContents {
+    [lang: string]: ITagContentsItem | any;
+}
+
+interface ITag extends Document {
+    active: boolean;
+    contents: ITagContents;
     extra?: { [key: string]: any } | null;
 }
 
 const TagSchema = new Schema({
     active: { type: Schema.Types.Boolean, required: true, default: true },
-    name: { type: Schema.Types.String, required: true },
-    description: { type: Schema.Types.String },
-    color: { type: Schema.Types.String, required: true, default: "rgba(255, 255, 255, 0)" },
+    contents: { type: Schema.Types.Mixed, default: {} },
     extra: { type: Schema.Types.Mixed, required: false },
 });
 
