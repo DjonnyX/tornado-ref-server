@@ -1,17 +1,20 @@
-import { TagModel, ITag, RefTypes } from "../models/index";
+import { RefTypes, TagModel, LanguageModel, ILanguage, ProductModel, IProduct } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
+import { formatTagModel } from "../utils/tag";
+import { ITagContents } from "../models/Tag";
+import { AssetModel } from "../models/Asset";
+import { deleteAsset } from "./AssetsController";
+import { normalizeContents, getDeletedImagesFromDifferense } from "../utils/entity";
 
-interface ITagItem {
+export interface ITagItem {
     id: string;
     active: boolean;
-    name: string;
-    description?: string;
-    color: string;
+    contents: ITagContents;
     extra?: { [key: string]: any } | null;
 }
 
-interface ITagsMeta {
+interface ITagMeta {
     ref: {
         name: string;
         version: number;
@@ -20,7 +23,7 @@ interface ITagsMeta {
 }
 
 interface TagsResponse {
-    meta?: ITagsMeta;
+    meta?: ITagMeta;
     data?: Array<ITagItem>;
     error?: Array<{
         code: number;
@@ -29,7 +32,7 @@ interface TagsResponse {
 }
 
 interface TagResponse {
-    meta?: ITagsMeta;
+    meta?: ITagMeta;
     data?: ITagItem;
     error?: Array<{
         code: number;
@@ -39,36 +42,36 @@ interface TagResponse {
 
 interface TagCreateRequest {
     active: boolean;
-    name: string;
-    description?: string;
-    color: string;
+    contents?: ITagContents;
     extra?: { [key: string]: any } | null;
 }
 
-const RESPONSE_TEMPLATE: ITagItem = {
-    id: "507c7f79bcf86cd7994f6c0e",
-    active: true,
-    name: "Morning Tag",
-    description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-    color: "0x000fff",
-    extra: { key: "value" },
-};
-
-const formatModel = (model: ITag) => ({
-    id: model._id,
-    active: model.active,
-    name: model.name,
-    description: model.description,
-    color: model.color,
-    extra: model.extra,
-});
-
-const META_TEMPLATE: ITagsMeta = {
+const META_TEMPLATE: ITagMeta = {
     ref: {
         name: RefTypes.TAGS,
         version: 1,
         lastUpdate: 1589885721,
     }
+};
+
+export const RESPONSE_TEMPLATE: ITagItem = {
+    id: "507c7f79bcf86cd7994f6c0e",
+    active: true,
+    contents: {
+        "RU": {
+            name: "Cold",
+            description: "description",
+            color: "#000000",
+            assets: [
+                "gt7h7f79bcf86cd7994f9d6u",
+            ],
+            images: {
+                main: "gt7h7f79bcf86cd7994f9d6u",
+                icon: "gt7h7f79bcf86cd7994f9d6u",
+            },
+        }
+    },
+    extra: { key: "value" },
 };
 
 @Route("/tags")
@@ -88,7 +91,7 @@ export class TagsController extends Controller {
             const ref = await getRef(RefTypes.TAGS);
             return {
                 meta: { ref },
-                data: items.map(v => formatModel(v)),
+                data: items.map(v => formatTagModel(v)),
             };
         } catch (err) {
             this.setStatus(500);
@@ -121,7 +124,7 @@ export class TagController extends Controller {
             const ref = await getRef(RefTypes.TAGS);
             return {
                 meta: { ref },
-                data: formatModel(item),
+                data: formatTagModel(item),
             };
         } catch (err) {
             this.setStatus(500);
@@ -150,7 +153,7 @@ export class TagController extends Controller {
             const ref = await riseRefVersion(RefTypes.TAGS);
             return {
                 meta: { ref },
-                data: formatModel(savedItem),
+                data: formatTagModel(savedItem),
             };
         } catch (err) {
             this.setStatus(500);
@@ -173,22 +176,95 @@ export class TagController extends Controller {
         data: RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() request: TagCreateRequest): Promise<TagResponse> {
+        let defaultLanguage: ILanguage;
+        try {
+            defaultLanguage = await LanguageModel.findOne({ isDefault: true });
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Default language error. ${err}`,
+                    }
+                ]
+            };
+        }
+
         try {
             const item = await TagModel.findById(id);
 
+            let lastContents: ITagContents;
             for (const key in request) {
+                if (key === "contents") {
+                    lastContents = item.contents;
+                }
+
                 item[key] = request[key];
-                if (key === "extra") {
+
+                if (key === "extra" || key === "contents") {
+                    if (key === "contents") {
+                        normalizeContents(item.contents, defaultLanguage.code);
+                    }
                     item.markModified(key);
+                }
+            }
+
+            // удаление ассетов из разности images
+            const deletedAssetsFromImages = getDeletedImagesFromDifferense(lastContents, item.contents);
+            const promises = new Array<Promise<any>>();
+            let isAssetsChanged = false;
+            deletedAssetsFromImages.forEach(assetId => {
+                promises.push(new Promise(async (resolve, reject) => {
+                    // удаление из списка assets
+                    if (item.contents) {
+                        for (const lang in item.contents) {
+                            const content = item.contents[lang];
+                            if (!!content && !!content.assets) {
+                                const index = content.assets.indexOf(assetId);
+                                if (index !== -1) {
+                                    content.assets.splice(index, 1);
+                                }
+                            }
+                        }
+                    }
+
+                    // физическое удаление asset'а
+                    const asset = await AssetModel.findByIdAndDelete(assetId);
+                    if (!!asset) {
+                        await deleteAsset(asset.path);
+                        await deleteAsset(asset.mipmap.x128);
+                        await deleteAsset(asset.mipmap.x32);
+                        isAssetsChanged = true;
+                    }
+                    resolve();
+                }));
+            });
+            await Promise.all(promises);
+
+            if (isAssetsChanged) {
+                await riseRefVersion(RefTypes.ASSETS);
+            }
+
+            // выставление ассетов от предыдущего состояния
+            // ассеты неьзя перезаписывать напрямую!
+            if (!!lastContents) {
+                for (const lang in lastContents) {
+                    if (!item.contents[lang]) {
+                        item.contents[lang] = {};
+                    }
+                    if (lastContents[lang]) {
+                        item.contents[lang].assets = lastContents[lang].assets;
+                    }
                 }
             }
 
             await item.save();
 
-            const ref = await riseRefVersion(RefTypes.TAGS);
+            const ref = await riseRefVersion(RefTypes.SELECTORS);
             return {
                 meta: { ref },
-                data: formatModel(item),
+                data: formatTagModel(item),
             };
         } catch (err) {
             this.setStatus(500);
@@ -210,6 +286,41 @@ export class TagController extends Controller {
         meta: META_TEMPLATE,
     })
     public async delete(id: string): Promise<TagResponse> {
+        let products: Array<IProduct>;
+        try {
+            products = await ProductModel.find({ tags: [id] });
+        } catch (err) {
+            console.warn(`Products with contains tag ${id} found error. ${err}`);
+        }
+
+        const promises = new Array<Promise<any>>();
+        if (!!products) {
+            products.forEach(product => {
+                if (!!product.tags) {
+                    const index = product.tags.indexOf(id);
+                    if (index > -1) {
+                        product.tags.splice(index, 1);
+                        promises.push(new Promise(async (resolve, reject) => {
+                            try {
+                                await product.save();
+                            } catch (err) {
+                                reject();
+                                return;
+                            }
+                            resolve();
+                        }));
+                    }
+                }
+            });
+        }
+
+        try {
+            await Promise.all(promises);
+            await riseRefVersion(RefTypes.PRODUCTS);
+        } catch (err) {
+            console.warn(`Save products error. ${err}`);
+        }
+
         try {
             await TagModel.findOneAndDelete({ _id: id });
             const ref = await riseRefVersion(RefTypes.TAGS);

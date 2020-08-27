@@ -1,24 +1,24 @@
 import * as express from "express";
-import { OrderTypeModel, IOrderType, RefTypes, ILanguage, LanguageModel } from "../models/index";
+import { TagModel, ITag, RefTypes, ILanguage, LanguageModel } from "../models/index";
 import { Controller, Route, Post, Tags, OperationId, Example, Request, Security, Get, Delete, Body, Put } from "tsoa";
 import { riseRefVersion, getRef } from "../db/refs";
 import { AssetExtensions } from "../models/enums";
-import { IOrderTypeItem, RESPONSE_TEMPLATE as SELECTOR_RESPONSE_TEMPLATE } from "./OrderTypesController";
-import { formatOrderTypeModel } from "../utils/ordertype";
+import { ITagItem, RESPONSE_TEMPLATE as SELECTOR_RESPONSE_TEMPLATE } from "./TagsController";
+import { formatTagModel } from "../utils/tag";
 import { normalizeContents } from "../utils/entity";
 import { IRefItem } from "./RefsController";
 import { uploadAsset, deleteAsset, IAssetItem, ICreateAssetsResponse } from "./AssetsController";
 import { AssetModel, IAsset } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
-import { IOrderTypeContents } from "../models/OrderTypes";
+import { ITagContents } from "../models/Tag";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IOrderTypeAsset extends IAssetItem { }
+interface ITagAsset extends IAssetItem { }
 
-interface IOrderTypeGetAllAssetsResponse {
+interface ITagGetAllAssetsResponse {
     meta?: {};
     data?: {
-        [lang: string]: Array<IOrderTypeAsset>,
+        [lang: string]: Array<ITagAsset>,
     };
     error?: Array<{
         code: number;
@@ -26,18 +26,18 @@ interface IOrderTypeGetAllAssetsResponse {
     }>;
 }
 
-interface IOrderTypeGetAssetsResponse {
+interface ITagGetAssetsResponse {
     meta?: {};
-    data?: Array<IOrderTypeAsset>;
+    data?: Array<ITagAsset>;
     error?: Array<{
         code: number;
         message: string;
     }>;
 }
 
-interface IOrderTypeCreateAssetsResponse {
+interface ITagCreateAssetsResponse {
     meta?: {
-        orderType: {
+        tag: {
             ref: IRefItem;
         };
         asset: {
@@ -45,8 +45,8 @@ interface IOrderTypeCreateAssetsResponse {
         };
     };
     data?: {
-        asset: IOrderTypeAsset;
-        orderType: IOrderTypeItem;
+        asset: ITagAsset;
+        tag: ITagItem;
     };
     error?: Array<{
         code: number;
@@ -54,9 +54,9 @@ interface IOrderTypeCreateAssetsResponse {
     }>;
 }
 
-interface IOrderTypeDeleteAssetsResponse {
+interface ITagDeleteAssetsResponse {
     meta?: {
-        orderType: {
+        tag: {
             ref: IRefItem;
         };
         asset: {
@@ -70,17 +70,17 @@ interface IOrderTypeDeleteAssetsResponse {
     }>;
 }
 
-interface IOrderTypeAssetUpdateRequest {
+interface ITagAssetUpdateRequest {
     active: boolean;
     name: string;
 }
 
-export enum OrderTypeImageTypes {
+export enum TagImageTypes {
     MAIN = "main",
     ICON = "icon",
 }
 
-const contentsToDefault = (contents: IOrderTypeContents, langCode: string) => {
+const contentsToDefault = (contents: ITagContents, langCode: string) => {
     let result = { ...contents };
     if (!result) {
         result = {};
@@ -105,7 +105,7 @@ const contentsToDefault = (contents: IOrderTypeContents, langCode: string) => {
 }
 
 const META_TEMPLATE = {
-    orderType: {
+    tag: {
         ref: {
             name: RefTypes.SELECTORS,
             version: 1,
@@ -134,30 +134,30 @@ const RESPONSE_TEMPLATE: IAssetItem = {
     path: "assets/some_3d_model.fbx",
 };
 
-@Route("/order-type")
-@Tags("OrderType assets")
-export class OrderTypeAssetsController extends Controller {
-    @Get("{orderTypeId}/assets")
+@Route("/tag")
+@Tags("Tag assets")
+export class TagAssetsController extends Controller {
+    @Get("{tagId}/assets")
     @Security("jwt")
     @Security("apiKey")
     @OperationId("GetAll")
-    @Example<IOrderTypeGetAllAssetsResponse>({
+    @Example<ITagGetAllAssetsResponse>({
         meta: META_TEMPLATE,
         data: {
             "RU": [RESPONSE_TEMPLATE],
         },
     })
-    public async getAllAssets(orderTypeId: string): Promise<IOrderTypeGetAllAssetsResponse> {
-        let orderType: IOrderType;
+    public async getAllAssets(tagId: string): Promise<ITagGetAllAssetsResponse> {
+        let tag: ITag;
         try {
-            orderType = await OrderTypeModel.findById(orderTypeId);
+            tag = await TagModel.findById(tagId);
         } catch (err) {
             this.setStatus(500);
             return {
                 error: [
                     {
                         code: 500,
-                        message: `OrderType with id: "${orderTypeId}" not found. ${err}`,
+                        message: `Tag with id: "${tagId}" not found. ${err}`,
                     }
                 ]
             };
@@ -165,9 +165,9 @@ export class OrderTypeAssetsController extends Controller {
 
         const promises = new Array<Promise<{ assets: Array<IAsset>, langCode: string }>>();
 
-        for (const langCode in orderType.contents) {
+        for (const langCode in tag.contents) {
             promises.push(new Promise(async (resolve) => {
-                const assets = await AssetModel.find({ _id: orderType.contents[langCode].assets });
+                const assets = await AssetModel.find({ _id: tag.contents[langCode].assets });
                 resolve({ assets, langCode });
             }));
         }
@@ -176,7 +176,7 @@ export class OrderTypeAssetsController extends Controller {
             const assetsInfo = await Promise.all(promises);
 
             const result: {
-                [lang: string]: Array<IOrderTypeAsset>,
+                [lang: string]: Array<ITagAsset>,
             } = {};
             assetsInfo.forEach(assetInfo => {
                 result[assetInfo.langCode] = assetInfo.assets.map(asset => formatAssetModel(asset));
@@ -199,32 +199,32 @@ export class OrderTypeAssetsController extends Controller {
         }
     }
 
-    @Get("{orderTypeId}/assets/{langCode}")
+    @Get("{tagId}/assets/{langCode}")
     @Security("jwt")
     @Security("apiKey")
     @OperationId("Get")
-    @Example<IOrderTypeGetAssetsResponse>({
+    @Example<ITagGetAssetsResponse>({
         meta: META_TEMPLATE,
         data: [RESPONSE_TEMPLATE],
     })
-    public async getAssets(orderTypeId: string, langCode: string): Promise<IOrderTypeGetAssetsResponse> {
-        let orderType: IOrderType;
+    public async getAssets(tagId: string, langCode: string): Promise<ITagGetAssetsResponse> {
+        let tag: ITag;
         try {
-            orderType = await OrderTypeModel.findById(orderTypeId);
+            tag = await TagModel.findById(tagId);
         } catch (err) {
             this.setStatus(500);
             return {
                 error: [
                     {
                         code: 500,
-                        message: `OrderType with id: "${orderTypeId}" not found. ${err}`,
+                        message: `Tag with id: "${tagId}" not found. ${err}`,
                     }
                 ]
             };
         }
 
         try {
-            const assets = await AssetModel.find({ _id: orderType.contents[langCode].assets, });
+            const assets = await AssetModel.find({ _id: tag.contents[langCode].assets, });
 
             return {
                 meta: {},
@@ -243,17 +243,17 @@ export class OrderTypeAssetsController extends Controller {
         }
     }
 
-    /*@Post("{orderTypeId}/asset/{langCode}")
+    /*@Post("{tagId}/asset/{langCode}")
     @Security("jwt")
     @OperationId("Create")
-    @Example<IOrderTypeCreateAssetsResponse>({
+    @Example<ITagCreateAssetsResponse>({
         meta: META_TEMPLATE,
         data: {
             asset: RESPONSE_TEMPLATE,
-            orderType: SELECTOR_RESPONSE_TEMPLATE,
+            tag: SELECTOR_RESPONSE_TEMPLATE,
         }
     })
-    public async create(orderTypeId: string, langCode: string, @Request() request: express.Request): Promise<IOrderTypeCreateAssetsResponse> {
+    public async create(tagId: string, langCode: string, @Request() request: express.Request): Promise<ITagCreateAssetsResponse> {
         let assetsInfo: ICreateAssetsResponse;
         try {
             assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA]);
@@ -269,40 +269,40 @@ export class OrderTypeAssetsController extends Controller {
             };
         }
 
-        let orderType: IOrderType;
+        let tag: ITag;
         try {
-            orderType = await OrderTypeModel.findById(orderTypeId);
+            tag = await TagModel.findById(tagId);
         } catch (err) {
             this.setStatus(500);
             return {
                 error: [
                     {
                         code: 500,
-                        message: `Find orderType error. ${err}`,
+                        message: `Find tag error. ${err}`,
                     }
                 ]
             };
         }
 
-        const contents: IOrderTypeContents = contentsToDefault(orderType.contents, langCode);
+        const contents: ITagContents = contentsToDefault(tag.contents, langCode);
 
-        let orderTypeRef: IRefItem;
+        let tagRef: IRefItem;
         try {
             const assetId = assetsInfo.data.id.toString();
             contents[langCode].assets.push(assetId);
 
-            orderType.contents = contents;
-            orderType.markModified("contents");
+            tag.contents = contents;
+            tag.markModified("contents");
 
-            orderTypeRef = await riseRefVersion(RefTypes.SELECTORS);
-            await orderType.save();
+            tagRef = await riseRefVersion(RefTypes.SELECTORS);
+            await tag.save();
         } catch (err) {
             this.setStatus(500);
             return {
                 error: [
                     {
                         code: 500,
-                        message: `Save asset to orderType assets list error. ${err}`,
+                        message: `Save asset to tag assets list error. ${err}`,
                     }
                 ]
             };
@@ -310,31 +310,31 @@ export class OrderTypeAssetsController extends Controller {
 
         return {
             meta: {
-                orderType: {
-                    ref: orderTypeRef,
+                tag: {
+                    ref: tagRef,
                 },
                 asset: {
                     ref: assetsInfo.meta.ref,
                 }
             },
             data: {
-                orderType: formatOrderTypeModel(orderType),
+                tag: formatTagModel(tag),
                 asset: assetsInfo.data,
             }
         };
     }*/
 
-    @Post("{orderTypeId}/image/{langCode}/{imageType}")
+    @Post("{tagId}/image/{langCode}/{imageType}")
     @Security("jwt")
     @OperationId("CreateImage")
-    @Example<IOrderTypeCreateAssetsResponse>({
+    @Example<ITagCreateAssetsResponse>({
         meta: META_TEMPLATE,
         data: {
             asset: RESPONSE_TEMPLATE,
-            orderType: SELECTOR_RESPONSE_TEMPLATE,
+            tag: SELECTOR_RESPONSE_TEMPLATE,
         }
     })
-    public async image(orderTypeId: string, langCode: string, imageType: OrderTypeImageTypes, @Request() request: express.Request): Promise<IOrderTypeCreateAssetsResponse> {
+    public async image(tagId: string, langCode: string, imageType: TagImageTypes, @Request() request: express.Request): Promise<ITagCreateAssetsResponse> {
         let assetsInfo: ICreateAssetsResponse;
         try {
             assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA], false);
@@ -350,17 +350,17 @@ export class OrderTypeAssetsController extends Controller {
             };
         }
 
-        let orderType: IOrderType;
+        let tag: ITag;
         let deletedAsset: string;
         try {
-            orderType = await OrderTypeModel.findById(orderTypeId);
+            tag = await TagModel.findById(tagId);
         } catch (err) {
             this.setStatus(500);
             return {
                 error: [
                     {
                         code: 500,
-                        message: `Find orderType error. ${err}`,
+                        message: `Find tag error. ${err}`,
                     }
                 ]
             };
@@ -381,7 +381,7 @@ export class OrderTypeAssetsController extends Controller {
             };
         }
 
-        let contents: IOrderTypeContents = contentsToDefault(orderType.contents, langCode);
+        let contents: ITagContents = contentsToDefault(tag.contents, langCode);
 
         deletedAsset = !!contents[langCode] ? contents[langCode].images[imageType] : undefined;
 
@@ -432,8 +432,8 @@ export class OrderTypeAssetsController extends Controller {
             });
         }
 
-        let orderTypeRef: IRefItem;
-        let savedOrderType: IOrderType;
+        let tagRef: IRefItem;
+        let savedTag: ITag;
         try {
             const assetId = assetsInfo.data.id.toString();
             contents[langCode].images[imageType] = assetId;
@@ -441,19 +441,19 @@ export class OrderTypeAssetsController extends Controller {
 
             normalizeContents(contents, defaultLanguage.code);
 
-            orderType.contents = contents;
-            orderType.markModified("contents");
+            tag.contents = contents;
+            tag.markModified("contents");
 
-            savedOrderType = await orderType.save();
+            savedTag = await tag.save();
 
-            orderTypeRef = await riseRefVersion(RefTypes.SELECTORS);
+            tagRef = await riseRefVersion(RefTypes.SELECTORS);
         } catch (err) {
             this.setStatus(500);
             return {
                 error: [
                     {
                         code: 500,
-                        message: `Save asset to orderType assets list error. ${err}`,
+                        message: `Save asset to tag assets list error. ${err}`,
                     }
                 ]
             };
@@ -461,57 +461,57 @@ export class OrderTypeAssetsController extends Controller {
 
         return {
             meta: {
-                orderType: {
-                    ref: orderTypeRef,
+                tag: {
+                    ref: tagRef,
                 },
                 asset: {
                     ref: assetsInfo.meta.ref,
                 }
             },
             data: {
-                orderType: formatOrderTypeModel(savedOrderType),
+                tag: formatTagModel(savedTag),
                 asset: assetsInfo.data,
             }
         };
     }
 
-    @Put("{orderTypeId}/asset/{langCode}/{assetId}")
+    @Put("{tagId}/asset/{langCode}/{assetId}")
     @Security("jwt")
     @OperationId("Update")
-    @Example<IOrderTypeCreateAssetsResponse>({
+    @Example<ITagCreateAssetsResponse>({
         meta: META_TEMPLATE,
         data: {
             asset: RESPONSE_TEMPLATE,
-            orderType: SELECTOR_RESPONSE_TEMPLATE,
+            tag: SELECTOR_RESPONSE_TEMPLATE,
         }
     })
-    public async update(orderTypeId: string, langCode: string, assetId: string, @Body() request: IOrderTypeAssetUpdateRequest): Promise<IOrderTypeCreateAssetsResponse> {
+    public async update(tagId: string, langCode: string, assetId: string, @Body() request: ITagAssetUpdateRequest): Promise<ITagCreateAssetsResponse> {
 
-        let orderType: IOrderType;
+        let tag: ITag;
         try {
-            orderType = await OrderTypeModel.findById(orderTypeId);
+            tag = await TagModel.findById(tagId);
         } catch (err) {
             this.setStatus(500);
             return {
                 error: [
                     {
                         code: 500,
-                        message: `Can not found orderType error. ${err}`,
+                        message: `Can not found tag error. ${err}`,
                     }
                 ]
             };
         }
 
-        let orderTypeRef: IRefItem;
+        let tagRef: IRefItem;
         try {
-            orderTypeRef = await getRef(RefTypes.SELECTORS);
+            tagRef = await getRef(RefTypes.SELECTORS);
         } catch (err) {
             this.setStatus(500);
             return {
                 error: [
                     {
                         code: 500,
-                        message: `Get orderType ref error. ${err}`,
+                        message: `Get tag ref error. ${err}`,
                     }
                 ]
             };
@@ -532,13 +532,13 @@ export class OrderTypeAssetsController extends Controller {
                     asset: {
                         ref,
                     },
-                    orderType: {
-                        ref: orderTypeRef,
+                    tag: {
+                        ref: tagRef,
                     },
                 },
                 data: {
                     asset: formatAssetModel(item),
-                    orderType: formatOrderTypeModel(orderType),
+                    tag: formatTagModel(tag),
                 },
             };
         } catch (err) {
@@ -554,29 +554,29 @@ export class OrderTypeAssetsController extends Controller {
         }
     }
 
-    @Delete("{orderTypeId}/asset/{langCode}/{assetId}")
+    @Delete("{tagId}/asset/{langCode}/{assetId}")
     @Security("jwt")
     @OperationId("Delete")
-    @Example<IOrderTypeDeleteAssetsResponse>({
+    @Example<ITagDeleteAssetsResponse>({
         meta: META_TEMPLATE
     })
-    public async delete(orderTypeId: string, langCode: string, assetId: string): Promise<IOrderTypeDeleteAssetsResponse> {
-        let orderType: IOrderType;
+    public async delete(tagId: string, langCode: string, assetId: string): Promise<ITagDeleteAssetsResponse> {
+        let tag: ITag;
         try {
-            orderType = await OrderTypeModel.findById(orderTypeId);
+            tag = await TagModel.findById(tagId);
         } catch (err) {
             this.setStatus(500);
             return {
                 error: [
                     {
                         code: 500,
-                        message: `Find orderType error. ${err}`,
+                        message: `Find tag error. ${err}`,
                     }
                 ]
             };
         }
 
-        let contents: IOrderTypeContents = contentsToDefault(orderType.contents, langCode);
+        let contents: ITagContents = contentsToDefault(tag.contents, langCode);
 
         let assetRef: IRefItem;
         const assetIndex = contents[langCode].assets.indexOf(assetId);
@@ -602,20 +602,20 @@ export class OrderTypeAssetsController extends Controller {
             }
         }
 
-        let orderTypesRef: IRefItem;
+        let tagsRef: IRefItem;
         try {
             contents[langCode].assets.splice(assetIndex, 1);
 
-            orderType.contents = contents;
-            orderType.markModified("contents");
+            tag.contents = contents;
+            tag.markModified("contents");
 
-            await orderType.save();
+            await tag.save();
 
-            orderTypesRef = await riseRefVersion(RefTypes.SELECTORS);
+            tagsRef = await riseRefVersion(RefTypes.SELECTORS);
             return {
                 meta: {
-                    orderType: {
-                        ref: orderTypesRef,
+                    tag: {
+                        ref: tagsRef,
                     },
                     asset: {
                         ref: assetRef,
@@ -628,7 +628,7 @@ export class OrderTypeAssetsController extends Controller {
                 error: [
                     {
                         code: 500,
-                        message: `Save orderType error. ${err}`,
+                        message: `Save tag error. ${err}`,
                     }
                 ]
             };
