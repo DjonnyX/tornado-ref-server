@@ -134,7 +134,7 @@ const RESPONSE_TEMPLATE: IAssetItem = {
     path: "assets/some_3d_model.fbx",
 };
 
-@Route("/order-type")
+@Route("/language")
 @Tags("Language assets")
 export class LanguageAssetsController extends Controller {
     @Get("{languageId}/assets")

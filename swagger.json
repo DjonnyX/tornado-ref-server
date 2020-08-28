@@ -6306,7 +6306,7 @@
 				}
 			}
 		},
-		"/order-type/{languageId}/assets": {
+		"/language/{languageId}/assets": {
 			"get": {
 				"operationId": "GetAll",
 				"responses": {
@@ -6382,7 +6382,7 @@
 				]
 			}
 		},
-		"/order-type/{languageId}/assets/{langCode}": {
+		"/language/{languageId}/assets/{langCode}": {
 			"get": {
 				"operationId": "Get",
 				"responses": {
@@ -6464,7 +6464,7 @@
 				]
 			}
 		},
-		"/order-type/{languageId}/image/{langCode}/{imageType}": {
+		"/language/{languageId}/image/{langCode}/{imageType}": {
 			"post": {
 				"operationId": "CreateImage",
 				"responses": {
@@ -6551,7 +6551,7 @@
 				]
 			}
 		},
-		"/order-type/{languageId}/asset/{langCode}/{assetId}": {
+		"/language/{languageId}/asset/{langCode}/{assetId}": {
 			"put": {
 				"operationId": "Update",
 				"responses": {
