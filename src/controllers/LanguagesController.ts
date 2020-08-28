@@ -217,7 +217,7 @@ export class LanguageController extends Controller {
         data: RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() request: LanguageUpdateRequest): Promise<LanguageResponse> {
-        
+
         let defaultLanguage: ILanguage;
         try {
             defaultLanguage = await LanguageModel.findOne({ isDefault: true });
@@ -378,6 +378,23 @@ export class LanguageController extends Controller {
                     }
                 ]
             }
+        }
+
+        try {
+            const language = await LanguageModel.findOneAndDelete({ _id: id });
+
+            await TranslationModel.findOneAndDelete({ _id: language.translation });
+            await riseRefVersion(RefTypes.TRANSLATION);
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Translation delete error. ${err}`,
+                    }
+                ]
+            };
         }
 
         try {
