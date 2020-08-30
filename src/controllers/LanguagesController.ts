@@ -4,9 +4,12 @@ import { getRef, riseRefVersion } from "../db/refs";
 import { IRefItem } from "./RefsController";
 import { formatLanguageModel } from "../utils/language";
 import { mergeTranslation } from "../utils/translation";
+import { AssetModel } from "../models/Asset";
+import { deleteAsset } from "./AssetsController";
 
 export interface ILanguageItem {
     id: string;
+    isDefault?: boolean;
     active: boolean;
     code: string;
     name: string;
@@ -46,6 +49,7 @@ interface LanguageResponse {
 
 interface LanguageCreateRequest {
     active?: boolean;
+    isDefault?: boolean;
     code: string;
     name: string;
     assets?: Array<string>;
@@ -58,6 +62,7 @@ interface LanguageCreateRequest {
 
 interface LanguageUpdateRequest {
     active?: boolean;
+    isDefault?: boolean;
     code?: string;
     name?: string;
     assets?: Array<string>;
@@ -168,6 +173,7 @@ export class LanguageController extends Controller {
         let savedItem: ILanguage;
         let ref: IRefItem;
         try {
+            request.isDefault = false;
             item = new LanguageModel(request);
         } catch (err) {
             this.setStatus(500);
@@ -187,7 +193,7 @@ export class LanguageController extends Controller {
             });
 
             mergeTranslation(translation, false);
-            
+
             const savedTranslationItem = await translation.save();
             await riseRefVersion(RefTypes.TRANSLATION);
 
@@ -221,22 +227,104 @@ export class LanguageController extends Controller {
         data: LANGUAGE_RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() request: LanguageUpdateRequest): Promise<LanguageResponse> {
-        try {
-            const item = await LanguageModel.findById(id);
+        let item: ILanguage;
 
-            let languageCode: string;
+        let isDefault: boolean;
+
+        let languageCode: string;
+
+        try {
+            item = await LanguageModel.findById(id);
             for (const key in request) {
                 item[key] = request[key];
 
                 if (key === "code") {
                     languageCode = request[key];
                 }
-                
-                if (key === "extra" || key === "content") {
+
+                if (key === "extra") {
                     item.markModified(key);
                 }
             }
+            isDefault = item.isDefault;
 
+            await item.save();
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Language save error. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        try {
+            const langs: Array<ILanguage> = await LanguageModel.find({});
+
+            const promises = new Array<Promise<any>>();
+
+            if (isDefault) {
+                langs.forEach(lang => {
+                    if (lang.code !== languageCode) {
+                        if (!!lang.isDefault) {
+                            lang.isDefault = false;
+                            promises.push(new Promise(async (resolve, reject) => {
+                                try {
+                                    await lang.save();
+                                } catch (err) {
+                                    reject(err);
+                                }
+                                resolve();
+                            }));
+                        }
+                    }
+                });
+            } else {
+                let needSetupDefault = true;
+                let firstLang: ILanguage;
+
+                langs.forEach(lang => {
+                    if (!firstLang) {
+                        firstLang = lang;
+                    }
+
+                    if (lang.isDefault) {
+                        needSetupDefault = false;
+                    }
+                });
+
+                if (needSetupDefault && firstLang) {
+                    firstLang.isDefault = true;
+
+                    promises.push(new Promise(async (resolve, reject) => {
+                        try {
+                            await firstLang.save();
+                        } catch (err) {
+                            reject(err);
+                        }
+                        resolve();
+                    }));
+                }
+            }
+
+            await Promise.all(promises);
+
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Set default language error. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        try {
             await item.save();
 
             if (!!languageCode) {
@@ -275,15 +363,79 @@ export class LanguageController extends Controller {
         meta: META_TEMPLATE,
     })
     public async delete(id: string): Promise<LanguageResponse> {
+        let language: ILanguage;
+        try {
+            language = await LanguageModel.findByIdAndDelete(id);
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Find and delete language error. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        // нужно удалять ассеты
+        const assetsList = language.assets;
+
+        const promises = new Array<Promise<any>>();
+
+        try {
+            let isAssetsChanged = false;
+            assetsList.forEach(assetId => {
+                promises.push(new Promise(async (resolve) => {
+                    const asset = await AssetModel.findByIdAndDelete(assetId);
+                    if (!!asset) {
+                        await deleteAsset(asset.path);
+                        await deleteAsset(asset.mipmap.x128);
+                        await deleteAsset(asset.mipmap.x32);
+                        isAssetsChanged = true;
+                    }
+                    resolve();
+                }));
+            });
+
+            await Promise.all(promises);
+
+            if (!!isAssetsChanged) {
+                await riseRefVersion(RefTypes.ASSETS);
+            }
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Error in delete assets. ${err}`,
+                    }
+                ]
+            }
+        }
+
         try {
             const language = await LanguageModel.findOneAndDelete({ _id: id });
-            const ref = await riseRefVersion(RefTypes.LANGUAGES);
 
             await TranslationModel.findOneAndDelete({ _id: language.translation });
             await riseRefVersion(RefTypes.TRANSLATION);
-
+        } catch (err) {
+            this.setStatus(500);
             return {
-                meta: { ref },
+                error: [
+                    {
+                        code: 500,
+                        message: `Translation delete error. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        try {
+            const ref = await riseRefVersion(RefTypes.LANGUAGES);
+            return {
+                meta: { ref }
             };
         } catch (err) {
             this.setStatus(500);
