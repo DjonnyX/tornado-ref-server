@@ -1219,6 +1219,9 @@
 					"id": {
 						"type": "string"
 					},
+					"isDefault": {
+						"type": "boolean"
+					},
 					"active": {
 						"type": "boolean"
 					},
@@ -1335,6 +1338,9 @@
 					"active": {
 						"type": "boolean"
 					},
+					"isDefault": {
+						"type": "boolean"
+					},
 					"code": {
 						"type": "string"
 					},
@@ -1379,6 +1385,9 @@
 			"LanguageUpdateRequest": {
 				"properties": {
 					"active": {
+						"type": "boolean"
+					},
+					"isDefault": {
 						"type": "boolean"
 					},
 					"code": {
