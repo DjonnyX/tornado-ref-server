@@ -238,11 +238,6 @@ export class LanguageController extends Controller {
             for (const key in request) {
                 item[key] = request[key];
 
-                if (key === "isDefault") {
-                    isDefault = item[key];
-                    continue;
-                }
-
                 if (key === "code") {
                     languageCode = request[key];
                 }
@@ -251,13 +246,16 @@ export class LanguageController extends Controller {
                     item.markModified(key);
                 }
             }
+            isDefault = item.isDefault;
+
+            await item.save();
         } catch (err) {
             this.setStatus(500);
             return {
                 error: [
                     {
                         code: 500,
-                        message: `Language found error. ${err}`,
+                        message: `Language save error. ${err}`,
                     }
                 ]
             };
