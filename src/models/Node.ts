@@ -1,6 +1,6 @@
 import * as mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
-import { NodeTypes, ScenarioIntroActionTypes, ScenarioCommonActionTypes, ScenarioProductActionTypes, ScenarioSelectorActionTypes } from "./enums";
+import { NodeTypes, ScenarioIntroActionTypes, ScenarioCommonActionTypes, ScenarioProductActionTypes, ScenarioSelectorActionTypes, ScenarioProgrammActionTypes } from "./enums";
 
 interface IScenario {
     active: boolean;
@@ -38,6 +38,8 @@ const ScenarioSchema = new Schema({
     active: { type: Schema.Types.Boolean, required: true, default: true },
     action: {
         type: Schema.Types.String, enum: [
+            // program
+            ScenarioProgrammActionTypes.SWITCH,
             // common
             ScenarioCommonActionTypes.VISIBLE_BY_BUSINESS_PERIOD,
             ScenarioCommonActionTypes.VISIBLE_BY_POINT_OF_SALE,

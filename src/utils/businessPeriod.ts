@@ -20,8 +20,7 @@ const formatSchedule = (model: Array<ISchedule>) => {
 export const formatModel = (model: IBusinessPeriod) => ({
     id: model._id,
     active: model.active,
-    name: model.name,
-    description: model.description,
+    contents: model.contents,
     schedule: formatSchedule(model.schedule),
     extra: model.extra,
 });
