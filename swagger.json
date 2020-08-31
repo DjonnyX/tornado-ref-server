@@ -1771,6 +1771,83 @@
 				],
 				"type": "string"
 			},
+			"ScenarioProgrammActionTypes": {
+				"enum": [
+					"switch"
+				],
+				"type": "string"
+			},
+			"IScenarioPriceValue": {
+				"properties": {
+					"currency": {
+						"type": "string"
+					},
+					"value": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"currency",
+					"value"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ScenarioEntityTypes": {
+				"enum": [
+					"business-period",
+					"product",
+					"selector",
+					"order-type",
+					"currency"
+				],
+				"type": "string"
+			},
+			"IPropertyAccessor": {
+				"properties": {
+					"entity": {
+						"$ref": "#/components/schemas/ScenarioEntityTypes"
+					},
+					"prop": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"entity",
+					"prop"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ProgramOperations": {
+				"enum": [
+					"or",
+					"xor",
+					"and"
+				],
+				"type": "string"
+			},
+			"IScenarioExpression": {
+				"properties": {
+					"prop1": {
+						"$ref": "#/components/schemas/IPropertyAccessor"
+					},
+					"prop2": {
+						"$ref": "#/components/schemas/IPropertyAccessor"
+					},
+					"operation": {
+						"$ref": "#/components/schemas/ProgramOperations"
+					}
+				},
+				"required": [
+					"prop1",
+					"prop2",
+					"operation"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"IScenario": {
 				"properties": {
 					"active": {
@@ -1789,11 +1866,48 @@
 							},
 							{
 								"$ref": "#/components/schemas/ScenarioSelectorActionTypes"
+							},
+							{
+								"$ref": "#/components/schemas/ScenarioProgrammActionTypes"
 							}
 						]
 					},
 					"value": {
-						"additionalProperties": true
+						"anyOf": [
+							{
+								"type": "number",
+								"format": "double"
+							},
+							{
+								"type": "string"
+							},
+							{
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							},
+							{
+								"items": {
+									"type": "number",
+									"format": "double"
+								},
+								"type": "array"
+							},
+							{
+								"$ref": "#/components/schemas/IScenarioPriceValue"
+							},
+							{
+								"$ref": "#/components/schemas/IScenarioSwitch"
+							},
+							{
+								"type": "number",
+								"enum": [
+									null
+								],
+								"nullable": true
+							}
+						]
 					},
 					"extra": {
 						"properties": {},
@@ -1807,6 +1921,29 @@
 				"required": [
 					"active",
 					"action"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IScenarioSwitch": {
+				"properties": {
+					"condition": {
+						"items": {
+							"$ref": "#/components/schemas/IScenarioExpression"
+						},
+						"type": "array"
+					},
+					"expressionPositive": {
+						"$ref": "#/components/schemas/IScenario"
+					},
+					"expressionNegative": {
+						"$ref": "#/components/schemas/IScenario"
+					}
+				},
+				"required": [
+					"condition",
+					"expressionPositive",
+					"expressionNegative"
 				],
 				"type": "object",
 				"additionalProperties": false

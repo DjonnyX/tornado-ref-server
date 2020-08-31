@@ -655,13 +655,66 @@ const models: TsoaRoute.Models = {
         "enums": ["max-usage", "default-products"],
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ScenarioProgrammActionTypes": {
+        "dataType": "refEnum",
+        "enums": ["switch"],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IScenarioPriceValue": {
+        "dataType": "refObject",
+        "properties": {
+            "currency": { "dataType": "string", "required": true },
+            "value": { "dataType": "double", "required": true },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ScenarioEntityTypes": {
+        "dataType": "refEnum",
+        "enums": ["business-period", "product", "selector", "order-type", "currency"],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IPropertyAccessor": {
+        "dataType": "refObject",
+        "properties": {
+            "entity": { "ref": "ScenarioEntityTypes", "required": true },
+            "prop": { "dataType": "string", "required": true },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ProgramOperations": {
+        "dataType": "refEnum",
+        "enums": ["or", "xor", "and"],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IScenarioExpression": {
+        "dataType": "refObject",
+        "properties": {
+            "prop1": { "ref": "IPropertyAccessor", "required": true },
+            "prop2": { "ref": "IPropertyAccessor", "required": true },
+            "operation": { "ref": "ProgramOperations", "required": true },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "IScenario": {
         "dataType": "refObject",
         "properties": {
             "active": { "dataType": "boolean", "required": true },
-            "action": { "dataType": "union", "subSchemas": [{ "ref": "ScenarioIntroActionTypes" }, { "ref": "ScenarioCommonActionTypes" }, { "ref": "ScenarioProductActionTypes" }, { "ref": "ScenarioSelectorActionTypes" }], "required": true },
-            "value": { "dataType": "any" },
+            "action": { "dataType": "union", "subSchemas": [{ "ref": "ScenarioIntroActionTypes" }, { "ref": "ScenarioCommonActionTypes" }, { "ref": "ScenarioProductActionTypes" }, { "ref": "ScenarioSelectorActionTypes" }, { "ref": "ScenarioProgrammActionTypes" }], "required": true },
+            "value": { "dataType": "union", "subSchemas": [{ "dataType": "double" }, { "dataType": "string" }, { "dataType": "array", "array": { "dataType": "string" } }, { "dataType": "array", "array": { "dataType": "double" } }, { "ref": "IScenarioPriceValue" }, { "ref": "IScenarioSwitch" }, { "dataType": "enum", "enums": [null] }] },
             "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IScenarioSwitch": {
+        "dataType": "refObject",
+        "properties": {
+            "condition": { "dataType": "array", "array": { "ref": "IScenarioExpression" }, "required": true },
+            "expressionPositive": { "ref": "IScenario", "required": true },
+            "expressionNegative": { "ref": "IScenario", "required": true },
         },
         "additionalProperties": false,
     },
