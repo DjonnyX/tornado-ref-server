@@ -3,12 +3,12 @@ import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, 
 import * as joi from "@hapi/joi";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatModel } from "../utils/businessPeriod";
+import { IBusinessPeriodContents } from "src/models/BusinessPeriod";
 
 interface IBusinessPeriodItem {
     id?: string;
     active: boolean;
-    name: string;
-    description?: string;
+    contents: IBusinessPeriodContents;
     schedule: Array<ISchedule>;
     extra?: { [key: string]: any } | null;
 }
@@ -41,8 +41,7 @@ interface IBusinessPeriodResponse {
 
 interface IBusinessPeriodCreateRequest {
     active: boolean;
-    name: string;
-    description?: string;
+    contents: IBusinessPeriodContents;
     schedule: Array<ISchedule>;
     extra?: { [key: string]: any } | null;
 }
@@ -50,8 +49,12 @@ interface IBusinessPeriodCreateRequest {
 const RESPONSE_TEMPLATE: IBusinessPeriodItem = {
     id: "507c7f79bcf86cd7994f6c0e",
     active: true,
-    name: "Selectors on concert",
-    description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+    contents: {
+        "RU": {
+            name: "Business period",
+            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+        }
+    },
     schedule: [
         {
             active: true,
@@ -217,10 +220,10 @@ export class BusinessPeriodController extends Controller {
 
         try {
             const item = await BusinessPeriodModel.findById(id);
-            
+
             for (const key in request) {
                 item[key] = request[key];
-                if (key === "extra") {
+                if (key === "extra" || key === "contents") {
                     item.markModified(key);
                 }
             }

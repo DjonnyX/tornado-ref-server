@@ -816,6 +816,49 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"IBusinessPeriodContentsItem": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"assets": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"extra": {
+						"properties": {},
+						"additionalProperties": {
+							"additionalProperties": true
+						},
+						"type": "object",
+						"nullable": true
+					}
+				},
+				"required": [
+					"name"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IBusinessPeriodContents": {
+				"properties": {},
+				"type": "object",
+				"additionalProperties": {
+					"anyOf": [
+						{
+							"$ref": "#/components/schemas/IBusinessPeriodContentsItem"
+						},
+						{
+							"additionalProperties": true
+						}
+					]
+				}
+			},
 			"ISchedule": {
 				"properties": {
 					"active": {
@@ -867,11 +910,8 @@
 					"active": {
 						"type": "boolean"
 					},
-					"name": {
-						"type": "string"
-					},
-					"description": {
-						"type": "string"
+					"contents": {
+						"$ref": "#/components/schemas/IBusinessPeriodContents"
 					},
 					"schedule": {
 						"items": {
@@ -890,7 +930,7 @@
 				},
 				"required": [
 					"active",
-					"name",
+					"contents",
 					"schedule"
 				],
 				"type": "object",
@@ -966,11 +1006,8 @@
 					"active": {
 						"type": "boolean"
 					},
-					"name": {
-						"type": "string"
-					},
-					"description": {
-						"type": "string"
+					"contents": {
+						"$ref": "#/components/schemas/IBusinessPeriodContents"
 					},
 					"schedule": {
 						"items": {
@@ -989,7 +1026,7 @@
 				},
 				"required": [
 					"active",
-					"name",
+					"contents",
 					"schedule"
 				],
 				"type": "object",
@@ -5351,8 +5388,12 @@
 												{
 													"id": "507c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"name": "Selectors on concert",
-													"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+													"contents": {
+														"RU": {
+															"name": "Business period",
+															"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+														}
+													},
 													"schedule": [
 														{
 															"active": true,
@@ -5414,8 +5455,12 @@
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"active": true,
-												"name": "Selectors on concert",
-												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+												"contents": {
+													"RU": {
+														"name": "Business period",
+														"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+													}
+												},
 												"schedule": [
 													{
 														"active": true,
@@ -5483,8 +5528,12 @@
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"active": true,
-												"name": "Selectors on concert",
-												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+												"contents": {
+													"RU": {
+														"name": "Business period",
+														"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+													}
+												},
 												"schedule": [
 													{
 														"active": true,
@@ -5607,8 +5656,12 @@
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"active": true,
-												"name": "Selectors on concert",
-												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+												"contents": {
+													"RU": {
+														"name": "Business period",
+														"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+													}
+												},
 												"schedule": [
 													{
 														"active": true,
