@@ -5,6 +5,7 @@ import { ScenarioIntroActionTypes } from "./ScenarioIntroActionTypes";
 import { ScenarioCommonActionTypes } from "./ScenarioCommonActionTypes";
 import { ScenarioProductActionTypes } from "./ScenarioProductActionTypes";
 import { ScenarioSelectorActionTypes } from "./ScenarioSelectorActionTypes";
+import { ScenarioProgrammActionTypes } from "./ScenarioProgrammActionTypes";
 
 export {
     NodeTypes,
@@ -14,4 +15,5 @@ export {
     ScenarioCommonActionTypes,
     ScenarioProductActionTypes,
     ScenarioSelectorActionTypes,
+    ScenarioProgrammActionTypes,
 };

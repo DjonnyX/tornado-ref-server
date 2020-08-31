@@ -169,11 +169,27 @@ export class LanguageController extends Controller {
         data: LANGUAGE_RESPONSE_TEMPLATE,
     })
     public async create(@Body() request: LanguageCreateRequest): Promise<LanguageResponse> {
+        let langs: Array<ILanguage>;
+
+        try {
+            langs = await LanguageModel.find({});
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Get languages error. ${err}`,
+                    }
+                ]
+            };
+        }
+
         let item: ILanguage;
         let savedItem: ILanguage;
         let ref: IRefItem;
         try {
-            request.isDefault = false;
+            request.isDefault = langs.length === 0;
             item = new LanguageModel(request);
         } catch (err) {
             this.setStatus(500);
