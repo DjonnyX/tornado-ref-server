@@ -41,7 +41,7 @@ interface IBusinessPeriodResponse {
 
 interface IBusinessPeriodCreateRequest {
     active: boolean;
-    contents: IBusinessPeriodContents;
+    contents?: IBusinessPeriodContents;
     schedule: Array<ISchedule>;
     extra?: { [key: string]: any } | null;
 }
@@ -73,8 +73,7 @@ const RESPONSE_TEMPLATE: IBusinessPeriodItem = {
 const validateBP = (node: IBusinessPeriodCreateRequest): joi.ValidationResult => {
     const schema = joi.object({
         active: joi.boolean(),
-        name: joi.string(),
-        description: joi.optional(),
+        contents: joi.optional(),
         schedule: joi.optional(),
         extra: joi.optional(),
     });

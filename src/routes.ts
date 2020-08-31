@@ -418,7 +418,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "active": { "dataType": "boolean", "required": true },
-            "contents": { "ref": "IBusinessPeriodContents", "required": true },
+            "contents": { "ref": "IBusinessPeriodContents" },
             "schedule": { "dataType": "array", "array": { "ref": "ISchedule" }, "required": true },
             "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },

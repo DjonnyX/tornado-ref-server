@@ -46,7 +46,7 @@ const BusinessPeriodSchema = new Schema({
     active: { type: Schema.Types.Boolean, required: true, default: true },
     contents: { type: Schema.Types.Mixed, default: {} },
     schedule: [ScheduleSchema],
-    extra: { type: Schema.Types.Mixed, required: false },
+    extra: { type: Schema.Types.Mixed, required: false, default: {} },
 });
 
 const BusinessPeriodModel = mongoose.model<IBusinessPeriod>("BusinessPeriod", BusinessPeriodSchema);
