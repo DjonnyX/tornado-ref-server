@@ -4,7 +4,7 @@ import { Schema, Document } from "mongoose";
 export interface IAdContentsItem {
     name: string;
     color?: string;
-    images: {
+    resources: {
         main: string | null;
     };
     assets?: Array<string>;

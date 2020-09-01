@@ -91,8 +91,8 @@ const contentsToDefault = (contents: ISelectorContents, langCode: string) => {
         result[langCode] = {};
     }
 
-    if (!result[langCode].images) {
-        result[langCode].images = {
+    if (!result[langCode].resources) {
+        result[langCode].resources = {
             main: null,
             thumbnail: null,
             icon: null,
@@ -326,7 +326,7 @@ export class SelectorAssetsController extends Controller {
         };
     }*/
 
-    @Post("{selectorId}/image/{langCode}/{imageType}")
+    @Post("{selectorId}/resource/{langCode}/{resourceType}")
     @Security("jwt")
     @OperationId("CreateImage")
     @Example<ISelectorCreateAssetsResponse>({
@@ -336,7 +336,7 @@ export class SelectorAssetsController extends Controller {
             selector: SELECTOR_RESPONSE_TEMPLATE,
         }
     })
-    public async image(selectorId: string, langCode: string, imageType: SelectorImageTypes, @Request() request: express.Request): Promise<ISelectorCreateAssetsResponse> {
+    public async resource(selectorId: string, langCode: string, resourceType: SelectorImageTypes, @Request() request: express.Request): Promise<ISelectorCreateAssetsResponse> {
         let assetsInfo: ICreateAssetsResponse;
         try {
             assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA], false);
@@ -385,14 +385,14 @@ export class SelectorAssetsController extends Controller {
 
         let contents: ISelectorContents = contentsToDefault(selector.contents, langCode);
 
-        deletedAsset = !!contents[langCode] ? contents[langCode].images[imageType] : undefined;
+        deletedAsset = !!contents[langCode] ? contents[langCode].resources[resourceType] : undefined;
 
         // детект количества повторяющихся изображений
         let isAssetExistsInOtherProps = 0;
         for (const contentLang in contents) {
-            if (!!contents[contentLang].images) {
-                for (const img in contents[contentLang].images) {
-                    if (!!contents[contentLang].images[img] && contents[contentLang].images[img] === deletedAsset) {
+            if (!!contents[contentLang].resources) {
+                for (const img in contents[contentLang].resources) {
+                    if (!!contents[contentLang].resources[img] && contents[contentLang].resources[img] === deletedAsset) {
                         isAssetExistsInOtherProps++;
                     }
                 }
@@ -438,7 +438,7 @@ export class SelectorAssetsController extends Controller {
         let savedSelector: ISelector;
         try {
             const assetId = assetsInfo.data.id.toString();
-            contents[langCode].images[imageType] = assetId;
+            contents[langCode].resources[resourceType] = assetId;
             contents[langCode].assets.push(assetId);
 
             normalizeContents(contents, defaultLanguage.code);

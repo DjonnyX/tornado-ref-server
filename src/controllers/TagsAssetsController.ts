@@ -90,8 +90,8 @@ const contentsToDefault = (contents: ITagContents, langCode: string) => {
         result[langCode] = {};
     }
 
-    if (!result[langCode].images) {
-        result[langCode].images = {
+    if (!result[langCode].resources) {
+        result[langCode].resources = {
             main: null,
             icon: null,
         };
@@ -324,7 +324,7 @@ export class TagAssetsController extends Controller {
         };
     }*/
 
-    @Post("{tagId}/image/{langCode}/{imageType}")
+    @Post("{tagId}/resource/{langCode}/{resourceType}")
     @Security("jwt")
     @OperationId("CreateImage")
     @Example<ITagCreateAssetsResponse>({
@@ -334,7 +334,7 @@ export class TagAssetsController extends Controller {
             tag: SELECTOR_RESPONSE_TEMPLATE,
         }
     })
-    public async image(tagId: string, langCode: string, imageType: TagImageTypes, @Request() request: express.Request): Promise<ITagCreateAssetsResponse> {
+    public async resource(tagId: string, langCode: string, resourceType: TagImageTypes, @Request() request: express.Request): Promise<ITagCreateAssetsResponse> {
         let assetsInfo: ICreateAssetsResponse;
         try {
             assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA], false);
@@ -383,14 +383,14 @@ export class TagAssetsController extends Controller {
 
         let contents: ITagContents = contentsToDefault(tag.contents, langCode);
 
-        deletedAsset = !!contents[langCode] ? contents[langCode].images[imageType] : undefined;
+        deletedAsset = !!contents[langCode] ? contents[langCode].resources[resourceType] : undefined;
 
         // детект количества повторяющихся изображений
         let isAssetExistsInOtherProps = 0;
         for (const contentLang in contents) {
-            if (!!contents[contentLang].images) {
-                for (const img in contents[contentLang].images) {
-                    if (!!contents[contentLang].images[img] && contents[contentLang].images[img] === deletedAsset) {
+            if (!!contents[contentLang].resources) {
+                for (const img in contents[contentLang].resources) {
+                    if (!!contents[contentLang].resources[img] && contents[contentLang].resources[img] === deletedAsset) {
                         isAssetExistsInOtherProps++;
                     }
                 }
@@ -436,7 +436,7 @@ export class TagAssetsController extends Controller {
         let savedTag: ITag;
         try {
             const assetId = assetsInfo.data.id.toString();
-            contents[langCode].images[imageType] = assetId;
+            contents[langCode].resources[resourceType] = assetId;
             contents[langCode].assets.push(assetId);
 
             normalizeContents(contents, defaultLanguage.code);

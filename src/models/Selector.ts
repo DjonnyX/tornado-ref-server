@@ -6,7 +6,7 @@ export interface ISelectorContentsItem {
     name: string;
     description?: string;
     color?: string;
-    images: {
+    resources: {
         main: string | null;
         thumbnail: string | null;
         icon: string | null;

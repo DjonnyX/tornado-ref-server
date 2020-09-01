@@ -5,7 +5,7 @@ export interface ITagContentsItem {
     name: string;
     description?: string;
     color?: string;
-    images: {
+    resources: {
         main: string | null;
         icon: string | null;
     };

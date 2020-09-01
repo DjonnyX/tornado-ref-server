@@ -125,7 +125,7 @@
 					"color": {
 						"type": "string"
 					},
-					"images": {
+					"resources": {
 						"properties": {
 							"main": {
 								"type": "string",
@@ -154,7 +154,7 @@
 				},
 				"required": [
 					"name",
-					"images"
+					"resources"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -280,7 +280,7 @@
 					"color": {
 						"type": "string"
 					},
-					"images": {
+					"resources": {
 						"properties": {
 							"main": {
 								"type": "string"
@@ -1307,7 +1307,7 @@
 						},
 						"type": "array"
 					},
-					"images": {
+					"resources": {
 						"properties": {
 							"main": {
 								"type": "string",
@@ -1423,7 +1423,7 @@
 						},
 						"type": "array"
 					},
-					"images": {
+					"resources": {
 						"properties": {
 							"main": {
 								"type": "string",
@@ -1472,7 +1472,7 @@
 						},
 						"type": "array"
 					},
-					"images": {
+					"resources": {
 						"properties": {
 							"main": {
 								"type": "string",
@@ -2331,7 +2331,7 @@
 					"color": {
 						"type": "string"
 					},
-					"images": {
+					"resources": {
 						"properties": {
 							"icon": {
 								"type": "string",
@@ -2365,7 +2365,7 @@
 				},
 				"required": [
 					"name",
-					"images"
+					"resources"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -2818,7 +2818,7 @@
 					"color": {
 						"type": "string"
 					},
-					"images": {
+					"resources": {
 						"properties": {
 							"icon": {
 								"type": "string",
@@ -2863,7 +2863,7 @@
 				},
 				"required": [
 					"name",
-					"images"
+					"resources"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -3471,7 +3471,7 @@
 					"color": {
 						"type": "string"
 					},
-					"images": {
+					"resources": {
 						"properties": {
 							"icon": {
 								"type": "string",
@@ -3510,7 +3510,7 @@
 				},
 				"required": [
 					"name",
-					"images"
+					"resources"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -3998,7 +3998,7 @@
 					"color": {
 						"type": "string"
 					},
-					"images": {
+					"resources": {
 						"properties": {
 							"icon": {
 								"type": "string",
@@ -4032,7 +4032,7 @@
 				},
 				"required": [
 					"name",
-					"images"
+					"resources"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -4630,7 +4630,7 @@
 	},
 	"info": {
 		"title": "tornado-server",
-		"version": "1.0.0",
+		"version": "1.1.0",
 		"license": {
 			"name": "Commercial"
 		}
@@ -4794,7 +4794,7 @@
 															"assets": [
 																"gt7h7f79bcf86cd7994f9d6u"
 															],
-															"images": {
+															"resources": {
 																"main": "gt7h7f79bcf86cd7994f9d6u"
 															}
 														}
@@ -4856,7 +4856,7 @@
 														"assets": [
 															"gt7h7f79bcf86cd7994f9d6u"
 														],
-														"images": {
+														"resources": {
 															"main": "gt7h7f79bcf86cd7994f9d6u"
 														}
 													}
@@ -4924,7 +4924,7 @@
 														"assets": [
 															"gt7h7f79bcf86cd7994f9d6u"
 														],
-														"images": {
+														"resources": {
 															"main": "gt7h7f79bcf86cd7994f9d6u"
 														}
 													}
@@ -5047,7 +5047,7 @@
 														"assets": [
 															"gt7h7f79bcf86cd7994f9d6u"
 														],
-														"images": {
+														"resources": {
 															"main": "gt7h7f79bcf86cd7994f9d6u"
 														}
 													}
@@ -6210,7 +6210,7 @@
 													"assets": [
 														"g8h07f79bcf86cd7994f9d7k"
 													],
-													"images": {
+													"resources": {
 														"main": "g8h07f79bcf86cd7994f9d7k"
 													},
 													"translation": "409c7f79bcf86cd7994f6g1t",
@@ -6269,7 +6269,7 @@
 												"assets": [
 													"g8h07f79bcf86cd7994f9d7k"
 												],
-												"images": {
+												"resources": {
 													"main": "g8h07f79bcf86cd7994f9d7k"
 												},
 												"translation": "409c7f79bcf86cd7994f6g1t",
@@ -6334,7 +6334,7 @@
 												"assets": [
 													"g8h07f79bcf86cd7994f9d7k"
 												],
-												"images": {
+												"resources": {
 													"main": "g8h07f79bcf86cd7994f9d7k"
 												},
 												"translation": "409c7f79bcf86cd7994f6g1t",
@@ -6454,7 +6454,7 @@
 												"assets": [
 													"g8h07f79bcf86cd7994f9d7k"
 												],
-												"images": {
+												"resources": {
 													"main": "g8h07f79bcf86cd7994f9d7k"
 												},
 												"translation": "409c7f79bcf86cd7994f6g1t",
@@ -6636,7 +6636,7 @@
 				]
 			}
 		},
-		"/language/{languageId}/image/{imageType}": {
+		"/language/{languageId}/resource/{resourceType}": {
 			"post": {
 				"operationId": "Create",
 				"responses": {
@@ -6706,7 +6706,7 @@
 					},
 					{
 						"in": "path",
-						"name": "imageType",
+						"name": "resourceType",
 						"required": true,
 						"schema": {
 							"$ref": "#/components/schemas/LanguageImageTypes"
@@ -7339,7 +7339,7 @@
 																"gt7h7f79bcf86cd7994f9d6u",
 																"gt7h7f79bcf86cd7994f9d6u"
 															],
-															"images": {
+															"resources": {
 																"main": "gt7h7f79bcf86cd7994f9d6u",
 																"icon": "gt7h7f79bcf86cd7994f9d6u"
 															}
@@ -7404,7 +7404,7 @@
 															"gt7h7f79bcf86cd7994f9d6u",
 															"gt7h7f79bcf86cd7994f9d6u"
 														],
-														"images": {
+														"resources": {
 															"main": "gt7h7f79bcf86cd7994f9d6u",
 															"icon": "gt7h7f79bcf86cd7994f9d6u"
 														}
@@ -7475,7 +7475,7 @@
 															"gt7h7f79bcf86cd7994f9d6u",
 															"gt7h7f79bcf86cd7994f9d6u"
 														],
-														"images": {
+														"resources": {
 															"main": "gt7h7f79bcf86cd7994f9d6u",
 															"icon": "gt7h7f79bcf86cd7994f9d6u"
 														}
@@ -7601,7 +7601,7 @@
 															"gt7h7f79bcf86cd7994f9d6u",
 															"gt7h7f79bcf86cd7994f9d6u"
 														],
-														"images": {
+														"resources": {
 															"main": "gt7h7f79bcf86cd7994f9d6u",
 															"icon": "gt7h7f79bcf86cd7994f9d6u"
 														}
@@ -7798,7 +7798,7 @@
 				]
 			}
 		},
-		"/order-type/{orderTypeId}/image/{langCode}/{imageType}": {
+		"/order-type/{orderTypeId}/resource/{langCode}/{resourceType}": {
 			"post": {
 				"operationId": "CreateImage",
 				"responses": {
@@ -7876,7 +7876,7 @@
 					},
 					{
 						"in": "path",
-						"name": "imageType",
+						"name": "resourceType",
 						"required": true,
 						"schema": {
 							"$ref": "#/components/schemas/OrderTypeImageTypes"
@@ -8082,7 +8082,7 @@
 															"name": "Products on concert",
 															"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
 															"color": "#000000",
-															"images": {
+															"resources": {
 																"main": "g8h07f79bcf86cd7994f9d7k",
 																"thumbnail": "gt7h7f79bcf86cd7994f9d6u",
 																"icon": "gt7h7f79bcf86cd7994f9d6u"
@@ -8171,7 +8171,7 @@
 														"name": "Products on concert",
 														"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
 														"color": "#000000",
-														"images": {
+														"resources": {
 															"main": "g8h07f79bcf86cd7994f9d7k",
 															"thumbnail": "gt7h7f79bcf86cd7994f9d6u",
 															"icon": "gt7h7f79bcf86cd7994f9d6u"
@@ -8266,7 +8266,7 @@
 														"name": "Products on concert",
 														"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
 														"color": "#000000",
-														"images": {
+														"resources": {
 															"main": "g8h07f79bcf86cd7994f9d7k",
 															"thumbnail": "gt7h7f79bcf86cd7994f9d6u",
 															"icon": "gt7h7f79bcf86cd7994f9d6u"
@@ -8416,7 +8416,7 @@
 														"name": "Products on concert",
 														"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
 														"color": "#000000",
-														"images": {
+														"resources": {
 															"main": "g8h07f79bcf86cd7994f9d7k",
 															"thumbnail": "gt7h7f79bcf86cd7994f9d6u",
 															"icon": "gt7h7f79bcf86cd7994f9d6u"
@@ -8720,7 +8720,7 @@
 				]
 			}
 		},
-		"/product/{productId}/image/{langCode}/{imageType}": {
+		"/product/{productId}/resource/{langCode}/{resourceType}": {
 			"post": {
 				"operationId": "CreateImage",
 				"responses": {
@@ -8798,7 +8798,7 @@
 					},
 					{
 						"in": "path",
-						"name": "imageType",
+						"name": "resourceType",
 						"required": true,
 						"schema": {
 							"$ref": "#/components/schemas/ProductImageTypes"
@@ -9005,7 +9005,7 @@
 															"name": "Selectors on concert",
 															"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
 															"color": "#000000",
-															"images": {
+															"resources": {
 																"main": "g8h07f79bcf86cd7994f9d7k",
 																"thumbnail": "g8h07f79bcf86cd7994f9d7k",
 																"icon": "k7h97f79bcf86cd7994f0i9e"
@@ -9081,7 +9081,7 @@
 														"name": "Selectors on concert",
 														"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
 														"color": "#000000",
-														"images": {
+														"resources": {
 															"main": "g8h07f79bcf86cd7994f9d7k",
 															"thumbnail": "g8h07f79bcf86cd7994f9d7k",
 															"icon": "k7h97f79bcf86cd7994f0i9e"
@@ -9154,7 +9154,7 @@
 														"name": "Selectors on concert",
 														"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
 														"color": "#000000",
-														"images": {
+														"resources": {
 															"main": "g8h07f79bcf86cd7994f9d7k",
 															"thumbnail": "g8h07f79bcf86cd7994f9d7k",
 															"icon": "k7h97f79bcf86cd7994f0i9e"
@@ -9282,7 +9282,7 @@
 														"name": "Selectors on concert",
 														"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
 														"color": "#000000",
-														"images": {
+														"resources": {
 															"main": "g8h07f79bcf86cd7994f9d7k",
 															"thumbnail": "g8h07f79bcf86cd7994f9d7k",
 															"icon": "k7h97f79bcf86cd7994f0i9e"
@@ -9484,7 +9484,7 @@
 				]
 			}
 		},
-		"/selector/{selectorId}/image/{langCode}/{imageType}": {
+		"/selector/{selectorId}/resource/{langCode}/{resourceType}": {
 			"post": {
 				"operationId": "CreateImage",
 				"responses": {
@@ -9562,7 +9562,7 @@
 					},
 					{
 						"in": "path",
-						"name": "imageType",
+						"name": "resourceType",
 						"required": true,
 						"schema": {
 							"$ref": "#/components/schemas/SelectorImageTypes"
@@ -9771,7 +9771,7 @@
 															"assets": [
 																"gt7h7f79bcf86cd7994f9d6u"
 															],
-															"images": {
+															"resources": {
 																"main": "gt7h7f79bcf86cd7994f9d6u",
 																"icon": "gt7h7f79bcf86cd7994f9d6u"
 															}
@@ -9835,7 +9835,7 @@
 														"assets": [
 															"gt7h7f79bcf86cd7994f9d6u"
 														],
-														"images": {
+														"resources": {
 															"main": "gt7h7f79bcf86cd7994f9d6u",
 															"icon": "gt7h7f79bcf86cd7994f9d6u"
 														}
@@ -9905,7 +9905,7 @@
 														"assets": [
 															"gt7h7f79bcf86cd7994f9d6u"
 														],
-														"images": {
+														"resources": {
 															"main": "gt7h7f79bcf86cd7994f9d6u",
 															"icon": "gt7h7f79bcf86cd7994f9d6u"
 														}
@@ -10030,7 +10030,7 @@
 														"assets": [
 															"gt7h7f79bcf86cd7994f9d6u"
 														],
-														"images": {
+														"resources": {
 															"main": "gt7h7f79bcf86cd7994f9d6u",
 															"icon": "gt7h7f79bcf86cd7994f9d6u"
 														}
@@ -10227,7 +10227,7 @@
 				]
 			}
 		},
-		"/tag/{tagId}/image/{langCode}/{imageType}": {
+		"/tag/{tagId}/resource/{langCode}/{resourceType}": {
 			"post": {
 				"operationId": "CreateImage",
 				"responses": {
@@ -10305,7 +10305,7 @@
 					},
 					{
 						"in": "path",
-						"name": "imageType",
+						"name": "resourceType",
 						"required": true,
 						"schema": {
 							"$ref": "#/components/schemas/TagImageTypes"

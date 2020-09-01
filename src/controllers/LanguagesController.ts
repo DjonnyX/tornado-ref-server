@@ -14,7 +14,7 @@ export interface ILanguageItem {
     code: string;
     name: string;
     assets?: Array<string>;
-    images?: {
+    resources?: {
         main?: string | null;
     };
     translation?: string | null;
@@ -53,7 +53,7 @@ interface LanguageCreateRequest {
     code: string;
     name: string;
     assets?: Array<string>;
-    images?: {
+    resources?: {
         main?: string | null;
     };
     translation?: string | null;
@@ -66,7 +66,7 @@ interface LanguageUpdateRequest {
     code?: string;
     name?: string;
     assets?: Array<string>;
-    images?: {
+    resources?: {
         main?: string | null;
     };
     translation?: string | null;
@@ -81,7 +81,7 @@ export const LANGUAGE_RESPONSE_TEMPLATE: ILanguageItem = {
     assets: [
         "g8h07f79bcf86cd7994f9d7k",
     ],
-    images: {
+    resources: {
         main: "g8h07f79bcf86cd7994f9d7k",
     },
     translation: "409c7f79bcf86cd7994f6g1t",

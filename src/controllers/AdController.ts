@@ -42,7 +42,7 @@ interface AdCreateRequest {
     name: string;
     description?: string;
     color: string;
-    images?: {
+    resources?: {
         main: string;
     };
     extra?: { [key: string]: any } | null;
@@ -56,7 +56,7 @@ const RESPONSE_TEMPLATE: IAdItem = {
             name: "Ad",
             color: "0x000fff",
             assets: ["gt7h7f79bcf86cd7994f9d6u"],
-            images: {
+            resources: {
                 main: "gt7h7f79bcf86cd7994f9d6u",
             },
         }
