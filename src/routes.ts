@@ -116,16 +116,31 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IAdContentsItem": {
+        "dataType": "refObject",
+        "properties": {
+            "name": { "dataType": "string", "required": true },
+            "color": { "dataType": "string" },
+            "images": { "dataType": "nestedObjectLiteral", "nestedProperties": { "main": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }], "required": true } }, "required": true },
+            "assets": { "dataType": "array", "array": { "dataType": "string" } },
+            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IAdContents": {
+        "dataType": "refObject",
+        "properties": {
+        },
+        "additionalProperties": { "dataType": "union", "subSchemas": [{ "ref": "IAdContentsItem" }, { "dataType": "any" }] },
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "IAdItem": {
         "dataType": "refObject",
         "properties": {
             "id": { "dataType": "string", "required": true },
             "active": { "dataType": "boolean", "required": true },
-            "name": { "dataType": "string", "required": true },
-            "description": { "dataType": "string" },
-            "color": { "dataType": "string", "required": true },
-            "assets": { "dataType": "array", "array": { "dataType": "string" } },
-            "images": { "dataType": "nestedObjectLiteral", "nestedProperties": { "main": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }] } } },
+            "contents": { "ref": "IAdContents", "required": true },
             "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
         "additionalProperties": false,

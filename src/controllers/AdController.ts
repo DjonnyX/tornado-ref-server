@@ -1,17 +1,13 @@
-import { AdModel, IAd, RefTypes } from "../models/index";
+import { AdModel, RefTypes } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
+import { formatAdModel } from "../utils/ad";
+import { IAdContents } from "../models/Ad";
 
 interface IAdItem {
     id: string;
     active: boolean;
-    name: string;
-    description?: string;
-    color: string;
-    assets?: Array<string>;
-    images?: {
-        main?: string | null;
-    };
+    contents: IAdContents;
     extra?: { [key: string]: any } | null;
 }
 
@@ -55,28 +51,18 @@ interface AdCreateRequest {
 const RESPONSE_TEMPLATE: IAdItem = {
     id: "507c7f79bcf86cd7994f6c0e",
     active: true,
-    name: "Morning Ad",
-    description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-    color: "0x000fff",
-    assets: ["g8h07f79bcf86cd7994f9d7k"],
-    images: {
-        main: "gt7h7f79bcf86cd7994f9d6u",
+    contents: {
+        "RU": {
+            name: "Ad",
+            color: "0x000fff",
+            assets: ["gt7h7f79bcf86cd7994f9d6u"],
+            images: {
+                main: "gt7h7f79bcf86cd7994f9d6u",
+            },
+        }
     },
     extra: { key: "value" },
 };
-
-const formatModel = (model: IAd) => ({
-    id: model._id,
-    active: model.active,
-    name: model.name,
-    description: model.description,
-    color: model.color,
-    assets: model.assets,
-    images: model.images || {
-        main: null,
-    },
-    extra: model.extra,
-});
 
 const META_TEMPLATE: IAdsMeta = {
     ref: {
@@ -103,7 +89,7 @@ export class AdsController extends Controller {
             const ref = await getRef(RefTypes.ADS);
             return {
                 meta: { ref },
-                data: items.map(v => formatModel(v)),
+                data: items.map(v => formatAdModel(v)),
             };
         } catch (err) {
             this.setStatus(500);
@@ -136,7 +122,7 @@ export class AdController extends Controller {
             const ref = await getRef(RefTypes.ADS);
             return {
                 meta: { ref },
-                data: formatModel(item),
+                data: formatAdModel(item),
             };
         } catch (err) {
             this.setStatus(500);
@@ -165,7 +151,7 @@ export class AdController extends Controller {
             const ref = await riseRefVersion(RefTypes.ADS);
             return {
                 meta: { ref },
-                data: formatModel(savedItem),
+                data: formatAdModel(savedItem),
             };
         } catch (err) {
             this.setStatus(500);
@@ -203,7 +189,7 @@ export class AdController extends Controller {
             const ref = await riseRefVersion(RefTypes.ADS);
             return {
                 meta: { ref },
-                data: formatModel(item),
+                data: formatAdModel(item),
             };
         } catch (err) {
             this.setStatus(500);

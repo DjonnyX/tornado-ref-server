@@ -117,28 +117,13 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"IAdItem": {
+			"IAdContentsItem": {
 				"properties": {
-					"id": {
-						"type": "string"
-					},
-					"active": {
-						"type": "boolean"
-					},
 					"name": {
-						"type": "string"
-					},
-					"description": {
 						"type": "string"
 					},
 					"color": {
 						"type": "string"
-					},
-					"assets": {
-						"items": {
-							"type": "string"
-						},
-						"type": "array"
 					},
 					"images": {
 						"properties": {
@@ -147,7 +132,57 @@
 								"nullable": true
 							}
 						},
+						"required": [
+							"main"
+						],
 						"type": "object"
+					},
+					"assets": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"extra": {
+						"properties": {},
+						"additionalProperties": {
+							"additionalProperties": true
+						},
+						"type": "object",
+						"nullable": true
+					}
+				},
+				"required": [
+					"name",
+					"images"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IAdContents": {
+				"properties": {},
+				"type": "object",
+				"additionalProperties": {
+					"anyOf": [
+						{
+							"$ref": "#/components/schemas/IAdContentsItem"
+						},
+						{
+							"additionalProperties": true
+						}
+					]
+				}
+			},
+			"IAdItem": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"active": {
+						"type": "boolean"
+					},
+					"contents": {
+						"$ref": "#/components/schemas/IAdContents"
 					},
 					"extra": {
 						"properties": {},
@@ -161,8 +196,7 @@
 				"required": [
 					"id",
 					"active",
-					"name",
-					"color"
+					"contents"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -4753,14 +4787,17 @@
 												{
 													"id": "507c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"name": "Morning Ad",
-													"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-													"color": "0x000fff",
-													"assets": [
-														"g8h07f79bcf86cd7994f9d7k"
-													],
-													"images": {
-														"main": "gt7h7f79bcf86cd7994f9d6u"
+													"contents": {
+														"RU": {
+															"name": "Ad",
+															"color": "0x000fff",
+															"assets": [
+																"gt7h7f79bcf86cd7994f9d6u"
+															],
+															"images": {
+																"main": "gt7h7f79bcf86cd7994f9d6u"
+															}
+														}
 													},
 													"extra": {
 														"key": "value"
@@ -4812,14 +4849,17 @@
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"active": true,
-												"name": "Morning Ad",
-												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-												"color": "0x000fff",
-												"assets": [
-													"g8h07f79bcf86cd7994f9d7k"
-												],
-												"images": {
-													"main": "gt7h7f79bcf86cd7994f9d6u"
+												"contents": {
+													"RU": {
+														"name": "Ad",
+														"color": "0x000fff",
+														"assets": [
+															"gt7h7f79bcf86cd7994f9d6u"
+														],
+														"images": {
+															"main": "gt7h7f79bcf86cd7994f9d6u"
+														}
+													}
 												},
 												"extra": {
 													"key": "value"
@@ -4877,14 +4917,17 @@
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"active": true,
-												"name": "Morning Ad",
-												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-												"color": "0x000fff",
-												"assets": [
-													"g8h07f79bcf86cd7994f9d7k"
-												],
-												"images": {
-													"main": "gt7h7f79bcf86cd7994f9d6u"
+												"contents": {
+													"RU": {
+														"name": "Ad",
+														"color": "0x000fff",
+														"assets": [
+															"gt7h7f79bcf86cd7994f9d6u"
+														],
+														"images": {
+															"main": "gt7h7f79bcf86cd7994f9d6u"
+														}
+													}
 												},
 												"extra": {
 													"key": "value"
@@ -4997,14 +5040,17 @@
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"active": true,
-												"name": "Morning Ad",
-												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-												"color": "0x000fff",
-												"assets": [
-													"g8h07f79bcf86cd7994f9d7k"
-												],
-												"images": {
-													"main": "gt7h7f79bcf86cd7994f9d6u"
+												"contents": {
+													"RU": {
+														"name": "Ad",
+														"color": "0x000fff",
+														"assets": [
+															"gt7h7f79bcf86cd7994f9d6u"
+														],
+														"images": {
+															"main": "gt7h7f79bcf86cd7994f9d6u"
+														}
+													}
 												},
 												"extra": {
 													"key": "value"

@@ -1,28 +1,30 @@
 import * as mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
 
+export interface IAdContentsItem {
+    name: string;
+    color?: string;
+    images: {
+        main: string | null;
+    };
+    assets?: Array<string>;
+    extra?: { [key: string]: any } | null;
+}
+
+export interface IAdContents {
+    [lang: string]: IAdContentsItem | any;
+}
+
 interface IAd extends Document {
     active: boolean;
-    name: string;
-    description?: string;
-    color: string;
-    assets: Array<string>;
-    images: {
-        main: string;
-    }
+    contents: IAdContents;
     extra?: { [key: string]: any } | null;
 }
 
 const AdSchema = new Schema({
     active: { type: Schema.Types.Boolean, required: true },
-    name: { type: Schema.Types.String, required: true },
-    description: { type: Schema.Types.String },
-    color: { type: Schema.Types.String, required: true, default: "rgba(255, 255, 255, 0)" },
-    assets: [{ type: Schema.Types.ObjectId, required: true }],
-    images: {
-        main: { type: Schema.Types.ObjectId, required: false },
-    },
-    extra: { type: Schema.Types.Mixed, required: false },
+    contents: { type: Schema.Types.Mixed, default: {} },
+    extra: { type: Schema.Types.Mixed, required: false, default: {} },
 });
 
 const AdModel = mongoose.model<IAd>("Ad", AdSchema);
