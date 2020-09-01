@@ -1773,26 +1773,10 @@
 			},
 			"ScenarioProgrammActionTypes": {
 				"enum": [
-					"switch"
+					"switch",
+					"expression"
 				],
 				"type": "string"
-			},
-			"IScenarioPriceValue": {
-				"properties": {
-					"currency": {
-						"type": "string"
-					},
-					"value": {
-						"type": "number",
-						"format": "double"
-					}
-				},
-				"required": [
-					"currency",
-					"value"
-				],
-				"type": "object",
-				"additionalProperties": false
 			},
 			"ScenarioEntityTypes": {
 				"enum": [
@@ -1848,6 +1832,23 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"IScenarioPriceValue": {
+				"properties": {
+					"currency": {
+						"type": "string"
+					},
+					"value": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"currency",
+					"value"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"IScenario": {
 				"properties": {
 					"active": {
@@ -1891,6 +1892,12 @@
 								"items": {
 									"type": "number",
 									"format": "double"
+								},
+								"type": "array"
+							},
+							{
+								"items": {
+									"$ref": "#/components/schemas/IScenarioExpression"
 								},
 								"type": "array"
 							},

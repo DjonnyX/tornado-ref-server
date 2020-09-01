@@ -41,7 +41,7 @@ interface IScenarioPriceValue {
 interface IScenario {
     active: boolean;
     action: ScenarioIntroActionTypes | ScenarioCommonActionTypes | ScenarioProductActionTypes | ScenarioSelectorActionTypes | ScenarioProgrammActionTypes;
-    value?: number | string | Array<string> | Array<number> | IScenarioPriceValue | IScenarioSwitch | null;
+    value?: number | string | Array<string> | Array<number> | Array<IScenarioExpression> | IScenarioPriceValue | IScenarioSwitch | null;
     extra?: { [key: string]: any } | null;
 }
 
