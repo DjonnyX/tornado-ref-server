@@ -1,7 +1,7 @@
 {
     "languages": [
         {
-            "isDefault": "true",
+            "isDefault": true,
             "code": "RU",
             "name": "Русский",
             "translations": {
