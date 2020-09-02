@@ -432,8 +432,6 @@ export class LanguageController extends Controller {
         }
 
         try {
-            const language = await LanguageModel.findOneAndDelete({ _id: id });
-
             await TranslationModel.findOneAndDelete({ _id: language.translation });
             await riseRefVersion(RefTypes.TRANSLATION);
         } catch (err) {
