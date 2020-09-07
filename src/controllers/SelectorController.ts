@@ -13,6 +13,7 @@ import { IRefItem } from "./RefsController";
 
 export interface ISelectorItem {
     id?: string;
+    name?: string;
     type: SelectorTypes;
     active: boolean;
     contents: ISelectorContents;
@@ -44,6 +45,7 @@ interface ISelectorResponse {
 
 interface ISelectorCreateRequest {
     active: boolean;
+    name?: string;
     type: SelectorTypes;
     contents?: ISelectorContents;
     extra?: { [key: string]: any } | null;
@@ -51,6 +53,7 @@ interface ISelectorCreateRequest {
 
 interface ISelectorUpdateRequest {
     active?: boolean;
+    name?: string;
     type?: SelectorTypes;
     contents?: ISelectorContents;
     extra?: { [key: string]: any } | null;

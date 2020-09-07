@@ -8,6 +8,7 @@ import { IRefItem } from "./RefsController";
 
 interface IBusinessPeriodItem {
     id?: string;
+    name?: string;
     active: boolean;
     contents: IBusinessPeriodContents;
     schedule: Array<ISchedule>;
@@ -38,6 +39,7 @@ interface IBusinessPeriodResponse {
 
 interface IBusinessPeriodCreateRequest {
     active: boolean;
+    name?: string;
     contents?: IBusinessPeriodContents;
     schedule: Array<ISchedule>;
     extra?: { [key: string]: any } | null;
@@ -70,6 +72,7 @@ const RESPONSE_TEMPLATE: IBusinessPeriodItem = {
 const validateBP = (node: IBusinessPeriodCreateRequest): joi.ValidationResult => {
     const schema = joi.object({
         active: joi.boolean(),
+        name: joi.optional(),
         contents: joi.optional(),
         schedule: joi.optional(),
         extra: joi.optional(),

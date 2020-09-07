@@ -7,6 +7,7 @@ import { IRefItem } from "./RefsController";
 
 interface IAdItem {
     id: string;
+    name?: string;
     active: boolean;
     contents: IAdContents;
     extra?: { [key: string]: any } | null;

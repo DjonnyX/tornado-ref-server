@@ -17,12 +17,14 @@ export interface IAdContents {
 
 interface IAd extends Document {
     active: boolean;
+    name: string;
     contents: IAdContents;
     extra?: { [key: string]: any } | null;
 }
 
 const AdSchema = new Schema({
     active: { type: Schema.Types.Boolean, required: true },
+    name: { type: String, required: false },
     contents: { type: Schema.Types.Mixed, default: {} },
     extra: { type: Schema.Types.Mixed, required: false, default: {} },
 });

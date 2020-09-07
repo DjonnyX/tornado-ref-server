@@ -11,6 +11,7 @@ import { IRefItem } from "./RefsController";
 export interface IOrderTypeItem {
     id: string;
     active: boolean;
+    name?: string;
     contents: IOrderTypeContents;
     extra?: { [key: string]: any } | null;
 }
@@ -39,6 +40,7 @@ interface OrderTypeResponse {
 
 interface OrderTypeCreateRequest {
     active: boolean;
+    name?: string;
     contents?: IOrderTypeContents;
     extra?: { [key: string]: any } | null;
 }
