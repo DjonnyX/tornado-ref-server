@@ -12,6 +12,7 @@ import { IRefItem } from "./RefsController";
 
 export interface IProductItem {
     id?: string;
+    name?: string;
     active: boolean;
     contents: IProductContents;
     prices: Array<IPrice>;
@@ -45,6 +46,7 @@ interface IProductResponse {
 
 interface IProductCreateRequest {
     active: boolean;
+    name?: string;
     contents?: IProductContents;
     prices: Array<IPrice>;
     receipt: Array<IReceiptItem>;
@@ -55,6 +57,7 @@ interface IProductCreateRequest {
 
 interface IProductUpdateRequest {
     active?: boolean;
+    name?: string;
     contents?: IProductContents;
     prices?: Array<IPrice>;
     receipt?: Array<IReceiptItem>;
@@ -260,6 +263,10 @@ export class ProductController extends Controller {
 
             let lastContents: IProductContents;
             for (const key in request) {
+                if (key === "joint") {
+                    continue;
+                }
+                
                 if (key === "contents") {
                     lastContents = item.contents;
                 }

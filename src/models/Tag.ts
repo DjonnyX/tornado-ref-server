@@ -24,7 +24,8 @@ interface ITag extends Document {
 }
 
 const TagSchema = new Schema({
-    active: { type: Schema.Types.Boolean, required: true, default: true },
+    active: { type: Boolean, required: true, default: true },
+    name: { type: String, required: false },
     contents: { type: Schema.Types.Mixed, default: {} },
     extra: { type: Schema.Types.Mixed, required: false },
 });
