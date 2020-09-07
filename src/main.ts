@@ -5,7 +5,7 @@ import { initRefs } from "./db/initDB";
 import * as config from "./config";
 
 const PORT = config.PORT;
-const MONGO_URI = `${config.DB_URI}ta-admin`;
+const MONGO_URI = `${config.DB_URI}/${config.DB_NAME}`;
 const server = http.createServer(app);
 server.listen(PORT);
 server.on("listening", () => {
