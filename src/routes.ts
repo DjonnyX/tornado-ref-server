@@ -7,13 +7,15 @@ import { RefsController } from './controllers/RefsController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { RefController } from './controllers/RefsController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { AssetsController } from './controllers/AssetsController';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { AssetController } from './controllers/AssetsController';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { AdsController } from './controllers/AdController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { AdController } from './controllers/AdController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { AssetsController } from './controllers/AssetsController';
-// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { AssetController } from './controllers/AssetsController';
+import { AdAssetsController } from './controllers/AdAssetsController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { SignupController } from './controllers/AuthController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -108,77 +110,6 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IAdsMeta": {
-        "dataType": "refObject",
-        "properties": {
-            "ref": { "ref": "IRefItem", "required": true },
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IAdContentsItem": {
-        "dataType": "refObject",
-        "properties": {
-            "name": { "dataType": "string", "required": true },
-            "color": { "dataType": "string" },
-            "resources": { "dataType": "nestedObjectLiteral", "nestedProperties": { "main": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }], "required": true } }, "required": true },
-            "assets": { "dataType": "array", "array": { "dataType": "string" } },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IAdContents": {
-        "dataType": "refObject",
-        "properties": {
-        },
-        "additionalProperties": { "dataType": "union", "subSchemas": [{ "ref": "IAdContentsItem" }, { "dataType": "any" }] },
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IAdItem": {
-        "dataType": "refObject",
-        "properties": {
-            "id": { "dataType": "string", "required": true },
-            "active": { "dataType": "boolean", "required": true },
-            "contents": { "ref": "IAdContents", "required": true },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "AdsResponse": {
-        "dataType": "refObject",
-        "properties": {
-            "meta": { "ref": "IAdsMeta" },
-            "data": { "dataType": "array", "array": { "ref": "IAdItem" } },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "AdResponse": {
-        "dataType": "refObject",
-        "properties": {
-            "meta": { "ref": "IAdsMeta" },
-            "data": { "ref": "IAdItem" },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "AdCreateRequest": {
-        "dataType": "refObject",
-        "properties": {
-            "active": { "dataType": "boolean", "required": true },
-            "name": { "dataType": "string", "required": true },
-            "description": { "dataType": "string" },
-            "color": { "dataType": "string", "required": true },
-            "resources": { "dataType": "nestedObjectLiteral", "nestedProperties": { "main": { "dataType": "string", "required": true } } },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "IAssetMeta": {
         "dataType": "refObject",
         "properties": {
@@ -248,6 +179,163 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "meta": { "ref": "IAssetMeta" },
+            "data": { "dataType": "nestedObjectLiteral", "nestedProperties": {} },
+            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IAdsMeta": {
+        "dataType": "refObject",
+        "properties": {
+            "ref": { "ref": "IRefItem", "required": true },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "AdTypes": {
+        "dataType": "refEnum",
+        "enums": ["intro", "banner"],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IAdContentsItem": {
+        "dataType": "refObject",
+        "properties": {
+            "name": { "dataType": "string", "required": true },
+            "color": { "dataType": "string" },
+            "resources": { "dataType": "nestedObjectLiteral", "nestedProperties": { "main": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }], "required": true } }, "required": true },
+            "assets": { "dataType": "array", "array": { "dataType": "string" } },
+            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IAdContents": {
+        "dataType": "refObject",
+        "properties": {
+        },
+        "additionalProperties": { "dataType": "union", "subSchemas": [{ "ref": "IAdContentsItem" }, { "dataType": "any" }] },
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IAdItem": {
+        "dataType": "refObject",
+        "properties": {
+            "id": { "dataType": "string" },
+            "name": { "dataType": "string" },
+            "type": { "ref": "AdTypes", "required": true },
+            "active": { "dataType": "boolean", "required": true },
+            "contents": { "ref": "IAdContents", "required": true },
+            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IAdsResponse": {
+        "dataType": "refObject",
+        "properties": {
+            "meta": { "ref": "IAdsMeta" },
+            "data": { "dataType": "array", "array": { "ref": "IAdItem" } },
+            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IAdResponse": {
+        "dataType": "refObject",
+        "properties": {
+            "meta": { "ref": "IAdsMeta" },
+            "data": { "ref": "IAdItem" },
+            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IAdCreateRequest": {
+        "dataType": "refObject",
+        "properties": {
+            "active": { "dataType": "boolean", "required": true },
+            "name": { "dataType": "string" },
+            "type": { "ref": "AdTypes", "required": true },
+            "contents": { "ref": "IAdContents" },
+            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IAdUpdateRequest": {
+        "dataType": "refObject",
+        "properties": {
+            "active": { "dataType": "boolean" },
+            "name": { "dataType": "string" },
+            "type": { "ref": "AdTypes" },
+            "contents": { "ref": "IAdContents" },
+            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IAdAsset": {
+        "dataType": "refObject",
+        "properties": {
+            "id": { "dataType": "string", "required": true },
+            "active": { "dataType": "boolean", "required": true },
+            "lastupdate": { "dataType": "datetime", "required": true },
+            "name": { "dataType": "string", "required": true },
+            "ext": { "ref": "AssetExtensions", "required": true },
+            "path": { "dataType": "string", "required": true },
+            "mipmap": { "dataType": "nestedObjectLiteral", "nestedProperties": { "x32": { "dataType": "string", "required": true }, "x128": { "dataType": "string", "required": true } }, "required": true },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IAdGetAllAssetsResponse": {
+        "dataType": "refObject",
+        "properties": {
+            "meta": { "dataType": "nestedObjectLiteral", "nestedProperties": {} },
+            "data": { "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "array", "array": { "ref": "IAdAsset" } } },
+            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IAdGetAssetsResponse": {
+        "dataType": "refObject",
+        "properties": {
+            "meta": { "dataType": "nestedObjectLiteral", "nestedProperties": {} },
+            "data": { "dataType": "array", "array": { "ref": "IAdAsset" } },
+            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IAdCreateAssetsResponse": {
+        "dataType": "refObject",
+        "properties": {
+            "meta": { "dataType": "nestedObjectLiteral", "nestedProperties": { "asset": { "dataType": "nestedObjectLiteral", "nestedProperties": { "ref": { "ref": "IRefItem", "required": true } }, "required": true }, "ad": { "dataType": "nestedObjectLiteral", "nestedProperties": { "ref": { "ref": "IRefItem", "required": true } }, "required": true } } },
+            "data": { "dataType": "nestedObjectLiteral", "nestedProperties": { "ad": { "ref": "IAdItem", "required": true }, "asset": { "ref": "IAdAsset", "required": true } } },
+            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "AdImageTypes": {
+        "dataType": "refEnum",
+        "enums": ["main", "thumbnail", "icon"],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IAdAssetUpdateRequest": {
+        "dataType": "refObject",
+        "properties": {
+            "active": { "dataType": "boolean", "required": true },
+            "name": { "dataType": "string", "required": true },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IAdDeleteAssetsResponse": {
+        "dataType": "refObject",
+        "properties": {
+            "meta": { "dataType": "nestedObjectLiteral", "nestedProperties": { "asset": { "dataType": "nestedObjectLiteral", "nestedProperties": { "ref": { "ref": "IRefItem", "required": true } }, "required": true }, "ad": { "dataType": "nestedObjectLiteral", "nestedProperties": { "ref": { "ref": "IRefItem", "required": true } }, "required": true } } },
             "data": { "dataType": "nestedObjectLiteral", "nestedProperties": {} },
             "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
         },
@@ -401,6 +489,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "id": { "dataType": "string" },
+            "name": { "dataType": "string" },
             "active": { "dataType": "boolean", "required": true },
             "contents": { "ref": "IBusinessPeriodContents", "required": true },
             "schedule": { "dataType": "array", "array": { "ref": "ISchedule" }, "required": true },
@@ -433,6 +522,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "active": { "dataType": "boolean", "required": true },
+            "name": { "dataType": "string" },
             "contents": { "ref": "IBusinessPeriodContents" },
             "schedule": { "dataType": "array", "array": { "ref": "ISchedule" }, "required": true },
             "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
@@ -850,6 +940,7 @@ const models: TsoaRoute.Models = {
         "properties": {
             "id": { "dataType": "string", "required": true },
             "active": { "dataType": "boolean", "required": true },
+            "name": { "dataType": "string" },
             "contents": { "ref": "IOrderTypeContents", "required": true },
             "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
@@ -880,6 +971,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "active": { "dataType": "boolean", "required": true },
+            "name": { "dataType": "string" },
             "contents": { "ref": "IOrderTypeContents" },
             "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
@@ -1009,6 +1101,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "id": { "dataType": "string" },
+            "name": { "dataType": "string" },
             "active": { "dataType": "boolean", "required": true },
             "contents": { "ref": "IProductContents", "required": true },
             "prices": { "dataType": "array", "array": { "ref": "IPrice" }, "required": true },
@@ -1044,6 +1137,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "active": { "dataType": "boolean", "required": true },
+            "name": { "dataType": "string" },
             "contents": { "ref": "IProductContents" },
             "prices": { "dataType": "array", "array": { "ref": "IPrice" }, "required": true },
             "receipt": { "dataType": "array", "array": { "ref": "IReceiptItem" }, "required": true },
@@ -1058,6 +1152,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "active": { "dataType": "boolean" },
+            "name": { "dataType": "string" },
             "contents": { "ref": "IProductContents" },
             "prices": { "dataType": "array", "array": { "ref": "IPrice" } },
             "receipt": { "dataType": "array", "array": { "ref": "IReceiptItem" } },
@@ -1173,6 +1268,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "id": { "dataType": "string" },
+            "name": { "dataType": "string" },
             "type": { "ref": "SelectorTypes", "required": true },
             "active": { "dataType": "boolean", "required": true },
             "contents": { "ref": "ISelectorContents", "required": true },
@@ -1206,6 +1302,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "active": { "dataType": "boolean", "required": true },
+            "name": { "dataType": "string" },
             "type": { "ref": "SelectorTypes", "required": true },
             "contents": { "ref": "ISelectorContents" },
             "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
@@ -1217,6 +1314,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "active": { "dataType": "boolean" },
+            "name": { "dataType": "string" },
             "type": { "ref": "SelectorTypes" },
             "contents": { "ref": "ISelectorContents" },
             "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
@@ -1325,6 +1423,7 @@ const models: TsoaRoute.Models = {
         "properties": {
             "id": { "dataType": "string", "required": true },
             "active": { "dataType": "boolean", "required": true },
+            "name": { "dataType": "string" },
             "contents": { "ref": "ITagContents", "required": true },
             "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
@@ -1355,6 +1454,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "active": { "dataType": "boolean", "required": true },
+            "name": { "dataType": "string" },
             "contents": { "ref": "ITagContents" },
             "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
@@ -1547,121 +1647,6 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/ads',
-        authenticateMiddleware([{ "jwt": [] }, { "apiKey": [] }]),
-        function(request: any, response: any, next: any) {
-            const args = {
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = getValidatedArgs(args, request);
-            } catch (err) {
-                return next(err);
-            }
-
-            const controller = new AdsController();
-
-
-            const promise = controller.getAll.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
-        });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/ad/:id',
-        authenticateMiddleware([{ "jwt": [] }, { "apiKey": [] }]),
-        function(request: any, response: any, next: any) {
-            const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = getValidatedArgs(args, request);
-            } catch (err) {
-                return next(err);
-            }
-
-            const controller = new AdController();
-
-
-            const promise = controller.getOne.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
-        });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/v1/ad',
-        authenticateMiddleware([{ "jwt": [] }]),
-        function(request: any, response: any, next: any) {
-            const args = {
-                request: { "in": "body", "name": "request", "required": true, "ref": "AdCreateRequest" },
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = getValidatedArgs(args, request);
-            } catch (err) {
-                return next(err);
-            }
-
-            const controller = new AdController();
-
-
-            const promise = controller.create.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
-        });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.put('/api/v1/ad/:id',
-        authenticateMiddleware([{ "jwt": [] }]),
-        function(request: any, response: any, next: any) {
-            const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                request: { "in": "body", "name": "request", "required": true, "ref": "AdCreateRequest" },
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = getValidatedArgs(args, request);
-            } catch (err) {
-                return next(err);
-            }
-
-            const controller = new AdController();
-
-
-            const promise = controller.update.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
-        });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.delete('/api/v1/ad/:id',
-        authenticateMiddleware([{ "jwt": [] }]),
-        function(request: any, response: any, next: any) {
-            const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = getValidatedArgs(args, request);
-            } catch (err) {
-                return next(err);
-            }
-
-            const controller = new AdController();
-
-
-            const promise = controller.delete.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
-        });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     app.get('/api/v1/assets',
         authenticateMiddleware([{ "jwt": [] }, { "apiKey": [] }]),
         function(request: any, response: any, next: any) {
@@ -1748,6 +1733,246 @@ export function RegisterRoutes(app: express.Express) {
             }
 
             const controller = new AssetController();
+
+
+            const promise = controller.delete.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.get('/api/v1/ads',
+        authenticateMiddleware([{ "jwt": [] }, { "apiKey": [] }]),
+        function(request: any, response: any, next: any) {
+            const args = {
+                type: { "in": "query", "name": "type", "ref": "AdTypes" },
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new AdsController();
+
+
+            const promise = controller.getAll.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.get('/api/v1/ad/:id',
+        authenticateMiddleware([{ "jwt": [] }, { "apiKey": [] }]),
+        function(request: any, response: any, next: any) {
+            const args = {
+                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new AdController();
+
+
+            const promise = controller.getOne.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.post('/api/v1/ad',
+        authenticateMiddleware([{ "jwt": [] }]),
+        function(request: any, response: any, next: any) {
+            const args = {
+                request: { "in": "body", "name": "request", "required": true, "ref": "IAdCreateRequest" },
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new AdController();
+
+
+            const promise = controller.create.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.put('/api/v1/ad/:id',
+        authenticateMiddleware([{ "jwt": [] }]),
+        function(request: any, response: any, next: any) {
+            const args = {
+                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
+                request: { "in": "body", "name": "request", "required": true, "ref": "IAdUpdateRequest" },
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new AdController();
+
+
+            const promise = controller.update.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.delete('/api/v1/ad/:id',
+        authenticateMiddleware([{ "jwt": [] }]),
+        function(request: any, response: any, next: any) {
+            const args = {
+                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new AdController();
+
+
+            const promise = controller.delete.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.get('/api/v1/ad/:adId/assets',
+        authenticateMiddleware([{ "jwt": [] }, { "apiKey": [] }]),
+        function(request: any, response: any, next: any) {
+            const args = {
+                adId: { "in": "path", "name": "adId", "required": true, "dataType": "string" },
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new AdAssetsController();
+
+
+            const promise = controller.getAllAssets.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.get('/api/v1/ad/:adId/assets/:langCode',
+        authenticateMiddleware([{ "jwt": [] }, { "apiKey": [] }]),
+        function(request: any, response: any, next: any) {
+            const args = {
+                adId: { "in": "path", "name": "adId", "required": true, "dataType": "string" },
+                langCode: { "in": "path", "name": "langCode", "required": true, "dataType": "string" },
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new AdAssetsController();
+
+
+            const promise = controller.getAssets.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.post('/api/v1/ad/:adId/resource/:langCode/:resourceType',
+        authenticateMiddleware([{ "jwt": [] }]),
+        function(request: any, response: any, next: any) {
+            const args = {
+                adId: { "in": "path", "name": "adId", "required": true, "dataType": "string" },
+                langCode: { "in": "path", "name": "langCode", "required": true, "dataType": "string" },
+                resourceType: { "in": "path", "name": "resourceType", "required": true, "ref": "AdImageTypes" },
+                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new AdAssetsController();
+
+
+            const promise = controller.resource.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.put('/api/v1/ad/:adId/asset/:langCode/:assetId',
+        authenticateMiddleware([{ "jwt": [] }]),
+        function(request: any, response: any, next: any) {
+            const args = {
+                adId: { "in": "path", "name": "adId", "required": true, "dataType": "string" },
+                langCode: { "in": "path", "name": "langCode", "required": true, "dataType": "string" },
+                assetId: { "in": "path", "name": "assetId", "required": true, "dataType": "string" },
+                request: { "in": "body", "name": "request", "required": true, "ref": "IAdAssetUpdateRequest" },
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new AdAssetsController();
+
+
+            const promise = controller.update.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.delete('/api/v1/ad/:adId/asset/:langCode/:assetId',
+        authenticateMiddleware([{ "jwt": [] }]),
+        function(request: any, response: any, next: any) {
+            const args = {
+                adId: { "in": "path", "name": "adId", "required": true, "dataType": "string" },
+                langCode: { "in": "path", "name": "langCode", "required": true, "dataType": "string" },
+                assetId: { "in": "path", "name": "assetId", "required": true, "dataType": "string" },
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new AdAssetsController();
 
 
             const promise = controller.delete.apply(controller, validatedArgs as any);

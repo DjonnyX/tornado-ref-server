@@ -19,12 +19,14 @@ export interface IOrderTypeContents {
 
 interface IOrderType extends Document {
     active: boolean;
+    name: string,
     contents: IOrderTypeContents;
     extra?: { [key: string]: any } | null;
 }
 
 const OrderTypeSchema = new Schema({
     active: { type: Schema.Types.Boolean, required: true },
+    name: { type: String, required: false },
     contents: { type: Schema.Types.Mixed, default: {} },
     extra: { type: Schema.Types.Mixed, required: false },
 });

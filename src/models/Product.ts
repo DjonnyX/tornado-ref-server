@@ -35,6 +35,7 @@ export interface IProductContents {
 
 interface IProduct extends Document {
     active: boolean;
+    name: string;
     contents: IProductContents;
     prices: Array<IPrice>;
     receipt: Array<IReceiptItem>;
@@ -59,6 +60,7 @@ const PriceSchema = new Schema({
 
 const ProductSchema = new Schema({
     active: { type: Schema.Types.Boolean, required: true, default: true },
+    name: { type: String, required: false },
     contents: { type: Schema.Types.Mixed, default: {} },
     prices: [PriceSchema],
     receipt: [ReceiptSchema],

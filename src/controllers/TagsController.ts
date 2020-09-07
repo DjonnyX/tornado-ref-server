@@ -11,6 +11,7 @@ import { IRefItem } from "./RefsController";
 export interface ITagItem {
     id: string;
     active: boolean;
+    name?: string;
     contents: ITagContents;
     extra?: { [key: string]: any } | null;
 }
@@ -39,6 +40,7 @@ interface TagResponse {
 
 interface TagCreateRequest {
     active: boolean;
+    name?: string;
     contents?: ITagContents;
     extra?: { [key: string]: any } | null;
 }

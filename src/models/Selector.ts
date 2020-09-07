@@ -21,6 +21,7 @@ export interface ISelectorContents {
 
 interface ISelector extends Document {
     active: boolean;
+    name: string;
     type: SelectorTypes;
     contents: ISelectorContents;
     joint: string;
@@ -29,6 +30,7 @@ interface ISelector extends Document {
 
 const SelectorSchema = new Schema({
     active: { type: Schema.Types.Boolean, required: true, default: true },
+    name: { type: String, required: false },
     type: {
         type: Schema.Types.String, enum: [
             SelectorTypes.MENU_CATEGORY,
