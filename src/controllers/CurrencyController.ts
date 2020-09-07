@@ -2,6 +2,7 @@ import { RefTypes, CurrencyModel } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatCurrencyModel } from "../utils/currency";
+import { IRefItem } from "./RefsController";
 
 interface ICurrencyItem {
     id: string;
@@ -13,11 +14,7 @@ interface ICurrencyItem {
 }
 
 interface ICurrencyMeta {
-    ref: {
-        name: string;
-        version: number;
-        lastUpdate: number;
-    };
+    ref: IRefItem;
 }
 
 interface CurrenciesResponse {
@@ -67,7 +64,7 @@ const META_TEMPLATE: ICurrencyMeta = {
     ref: {
         name: RefTypes.CURRENCIES,
         version: 1,
-        lastUpdate: 1589885721,
+        lastUpdate: new Date(),
     }
 };
 

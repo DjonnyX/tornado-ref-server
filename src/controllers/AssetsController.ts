@@ -14,7 +14,7 @@ import { IRefItem } from "./RefsController";
 export interface IAssetItem {
     id: string;
     active: boolean;
-    lastupdate: number;
+    lastupdate: Date;
     name: string;
     ext: AssetExtensions;
     path: string;
@@ -72,14 +72,14 @@ const META_TEMPLATE = {
     ref: {
         name: RefTypes.ASSETS,
         version: 1,
-        lastUpdate: 1589885721,
+        lastUpdate: new Date(),
     },
 };
 
 const RESPONSE_TEMPLATE: IAssetItem = {
     id: "107c7f79bcf86cd7994f6c0e",
     active: true,
-    lastupdate: 1589885721,
+    lastupdate: new Date(),
     name: "some_3d_model",
     ext: AssetExtensions.FBX,
     path: "assets/some_3d_model.fbx",
@@ -204,7 +204,7 @@ export class AssetController extends Controller {
     public async update(id: string, @Body() request: IAssetUpdateRequest): Promise<IUpdateAssetsResponse> {
         try {
             const item = await AssetModel.findById(id);
-            item.lastupdate = Date.now();
+            item.lastupdate = new Date(Date.now());
             if (request.name !== undefined) {
                 item.name = request.name;
             }

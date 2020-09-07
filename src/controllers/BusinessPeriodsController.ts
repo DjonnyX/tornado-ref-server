@@ -4,6 +4,7 @@ import * as joi from "@hapi/joi";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatModel } from "../utils/businessPeriod";
 import { IBusinessPeriodContents } from "src/models/BusinessPeriod";
+import { IRefItem } from "./RefsController";
 
 interface IBusinessPeriodItem {
     id?: string;
@@ -14,11 +15,7 @@ interface IBusinessPeriodItem {
 }
 
 interface IBusinessPeriodMeta {
-    ref: {
-        name: string;
-        version: number;
-        lastUpdate: number;
-    };
+    ref: IRefItem;
 }
 
 interface IBusinessPeriodsResponse {
@@ -85,7 +82,7 @@ const META_TEMPLATE: IBusinessPeriodMeta = {
     ref: {
         name: RefTypes.BUSINESS_PERIODS,
         version: 1,
-        lastUpdate: 1589885721
+        lastUpdate: new Date(),
     }
 };
 

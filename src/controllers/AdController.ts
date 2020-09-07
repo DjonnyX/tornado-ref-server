@@ -3,6 +3,7 @@ import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, 
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatAdModel } from "../utils/ad";
 import { IAdContents } from "../models/Ad";
+import { IRefItem } from "./RefsController";
 
 interface IAdItem {
     id: string;
@@ -12,11 +13,7 @@ interface IAdItem {
 }
 
 interface IAdsMeta {
-    ref: {
-        name: string;
-        version: number;
-        lastUpdate: number;
-    };
+    ref: IRefItem;
 }
 
 interface AdsResponse {
@@ -68,7 +65,7 @@ const META_TEMPLATE: IAdsMeta = {
     ref: {
         name: RefTypes.ADS,
         version: 1,
-        lastUpdate: 1589885721,
+        lastUpdate: new Date(),
     }
 };
 

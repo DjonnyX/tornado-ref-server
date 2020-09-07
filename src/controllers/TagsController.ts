@@ -6,6 +6,7 @@ import { ITagContents, ITag } from "../models/Tag";
 import { AssetModel } from "../models/Asset";
 import { deleteAsset } from "./AssetsController";
 import { normalizeContents, getDeletedImagesFromDifferense, getEntityAssets } from "../utils/entity";
+import { IRefItem } from "./RefsController";
 
 export interface ITagItem {
     id: string;
@@ -15,11 +16,7 @@ export interface ITagItem {
 }
 
 interface ITagMeta {
-    ref: {
-        name: string;
-        version: number;
-        lastUpdate: number;
-    };
+    ref: IRefItem;
 }
 
 interface TagsResponse {
@@ -50,7 +47,7 @@ const META_TEMPLATE: ITagMeta = {
     ref: {
         name: RefTypes.TAGS,
         version: 1,
-        lastUpdate: 1589885721,
+        lastUpdate: new Date(),
     }
 };
 

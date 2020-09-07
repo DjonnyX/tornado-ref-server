@@ -4,13 +4,13 @@ import { Schema, Document } from "mongoose";
 interface IRef extends Document {
     name: string;
     version: number;
-    lastUpdate: number;
+    lastUpdate: Date;
 }
 
 const RefSchema = new Schema({
     name: { type: String, required: true },
     version: { type: Number, required: true },
-    lastUpdate: { type: Number, required: true },
+    lastUpdate: { type: Date, required: true },
 });
 
 const RefModel = mongoose.model<IRef>("Ref", RefSchema);
