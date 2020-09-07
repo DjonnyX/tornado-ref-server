@@ -8,6 +8,7 @@ import { getEntityAssets, getDeletedImagesFromDifferense, normalizeContents } fr
 import { IProductContents } from "../models/Product";
 import { AssetModel } from "../models/Asset";
 import { deleteAsset } from "./AssetsController";
+import { IRefItem } from "./RefsController";
 
 export interface IProductItem {
     id?: string;
@@ -21,11 +22,7 @@ export interface IProductItem {
 }
 
 export interface IProductsMeta {
-    ref: {
-        name: string;
-        version: number;
-        lastUpdate: number;
-    };
+    ref: IRefItem;
 }
 
 interface IProductsResponse {
@@ -111,7 +108,7 @@ const META_TEMPLATE: IProductsMeta = {
     ref: {
         name: RefTypes.PRODUCTS,
         version: 1,
-        lastUpdate: 1589885721,
+        lastUpdate: new Date(),
     }
 };
 

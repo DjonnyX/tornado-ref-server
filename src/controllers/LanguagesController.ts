@@ -22,11 +22,7 @@ export interface ILanguageItem {
 }
 
 interface LanguageMeta {
-    ref: {
-        name: string;
-        version: number;
-        lastUpdate: number;
-    };
+    ref: IRefItem;
 }
 
 interface LanguagesResponse {
@@ -92,7 +88,7 @@ const META_TEMPLATE: LanguageMeta = {
     ref: {
         name: RefTypes.LANGUAGES,
         version: 1,
-        lastUpdate: 1589885721,
+        lastUpdate: new Date(),
     }
 };
 

@@ -9,6 +9,7 @@ import { ISelectorContents } from "../models/Selector";
 import { normalizeContents, getDeletedImagesFromDifferense, getEntityAssets } from "../utils/entity";
 import { AssetModel } from "../models/Asset";
 import { deleteAsset } from "./AssetsController";
+import { IRefItem } from "./RefsController";
 
 export interface ISelectorItem {
     id?: string;
@@ -20,11 +21,7 @@ export interface ISelectorItem {
 }
 
 interface ISelectorsMeta {
-    ref: {
-        name: string;
-        version: number;
-        lastUpdate: number;
-    };
+    ref: IRefItem;
 }
 
 interface ISelectorsResponse {
@@ -84,7 +81,7 @@ const META_TEMPLATE: ISelectorsMeta = {
     ref: {
         name: RefTypes.SELECTORS,
         version: 1,
-        lastUpdate: 1589885721,
+        lastUpdate: new Date(),
     }
 };
 

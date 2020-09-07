@@ -5,7 +5,7 @@ import { AssetExtensions } from "./enums";
 interface IAsset extends Document {
     active: boolean;
     name: string;
-    lastupdate: number;
+    lastupdate: Date;
     ext: AssetExtensions;
     mipmap: {
         x128: string;
@@ -15,11 +15,11 @@ interface IAsset extends Document {
 }
 
 const AssetSchema = new Schema({
-    active: { type: Schema.Types.Boolean, required: true, default: true },
-    name: { type: Schema.Types.String, required: true },
-    lastupdate: { type: Schema.Types.Number, required: true },
+    active: { type: Boolean, required: true, default: true },
+    name: { type: String, required: true },
+    lastupdate: { type: Date, required: true },
     ext: {
-        type: Schema.Types.String, enum: [
+        type: String, enum: [
             AssetExtensions.JPG,
             AssetExtensions.PNG,
             AssetExtensions.OBJ,
@@ -29,8 +29,8 @@ const AssetSchema = new Schema({
         required: true,
     },
     mipmap: {
-        x128: { type: Schema.Types.String, required: false, },
-        x32: { type: Schema.Types.String, required: false, },
+        x128: { type: String, required: false, },
+        x32: { type: String, required: false, },
     },
     path: { type: String, required: true },
 });
