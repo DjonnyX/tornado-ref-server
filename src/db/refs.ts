@@ -23,7 +23,7 @@ export const riseRefVersion = async (name: string): Promise<IRefItem> => {
         throw Error("Error in getting reference.");
     }
     ref.version++;
-    ref.lastUpdate = Date.now();
+    ref.lastUpdate = new Date(Date.now());
     try {
         await ref.save();
     } catch (e) {

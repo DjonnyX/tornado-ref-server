@@ -6,6 +6,7 @@ import { IOrderTypeContents, IOrderType } from "../models/OrderTypes";
 import { AssetModel } from "../models/Asset";
 import { deleteAsset } from "./AssetsController";
 import { normalizeContents, getDeletedImagesFromDifferense, getEntityAssets } from "../utils/entity";
+import { IRefItem } from "./RefsController";
 
 export interface IOrderTypeItem {
     id: string;
@@ -15,11 +16,7 @@ export interface IOrderTypeItem {
 }
 
 interface IOrderTypeMeta {
-    ref: {
-        name: string;
-        version: number;
-        lastUpdate: number;
-    };
+    ref: IRefItem;
 }
 
 interface OrderTypesResponse {
@@ -50,7 +47,7 @@ const META_TEMPLATE: IOrderTypeMeta = {
     ref: {
         name: RefTypes.ORDER_TYPES,
         version: 1,
-        lastUpdate: 1589885721,
+        lastUpdate: new Date(),
     }
 };
 

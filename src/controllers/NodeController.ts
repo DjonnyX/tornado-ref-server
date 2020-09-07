@@ -18,11 +18,7 @@ interface INodeItem {
 }
 
 interface INodesMeta {
-    ref: {
-        name: string;
-        version: number;
-        lastUpdate: number;
-    };
+    ref: IRefItem;
 }
 
 interface INodesResponse {
@@ -134,7 +130,7 @@ const META_TEMPLATE: INodesMeta = {
     ref: {
         name: RefTypes.NODES,
         version: 1,
-        lastUpdate: 1589885721,
+        lastUpdate: new Date(),
     }
 };
 

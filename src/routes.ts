@@ -85,7 +85,7 @@ const models: TsoaRoute.Models = {
         "properties": {
             "name": { "dataType": "string", "required": true },
             "version": { "dataType": "double", "required": true },
-            "lastUpdate": { "dataType": "double", "required": true },
+            "lastUpdate": { "dataType": "datetime", "required": true },
         },
         "additionalProperties": false,
     },
@@ -111,7 +111,7 @@ const models: TsoaRoute.Models = {
     "IAdsMeta": {
         "dataType": "refObject",
         "properties": {
-            "ref": { "dataType": "nestedObjectLiteral", "nestedProperties": { "lastUpdate": { "dataType": "double", "required": true }, "version": { "dataType": "double", "required": true }, "name": { "dataType": "string", "required": true } }, "required": true },
+            "ref": { "ref": "IRefItem", "required": true },
         },
         "additionalProperties": false,
     },
@@ -197,7 +197,7 @@ const models: TsoaRoute.Models = {
         "properties": {
             "id": { "dataType": "string", "required": true },
             "active": { "dataType": "boolean", "required": true },
-            "lastupdate": { "dataType": "double", "required": true },
+            "lastupdate": { "dataType": "datetime", "required": true },
             "name": { "dataType": "string", "required": true },
             "ext": { "ref": "AssetExtensions", "required": true },
             "path": { "dataType": "string", "required": true },
@@ -363,7 +363,7 @@ const models: TsoaRoute.Models = {
     "IBusinessPeriodMeta": {
         "dataType": "refObject",
         "properties": {
-            "ref": { "dataType": "nestedObjectLiteral", "nestedProperties": { "lastUpdate": { "dataType": "double", "required": true }, "version": { "dataType": "double", "required": true }, "name": { "dataType": "string", "required": true } }, "required": true },
+            "ref": { "ref": "IRefItem", "required": true },
         },
         "additionalProperties": false,
     },
@@ -443,7 +443,7 @@ const models: TsoaRoute.Models = {
     "ICurrencyMeta": {
         "dataType": "refObject",
         "properties": {
-            "ref": { "dataType": "nestedObjectLiteral", "nestedProperties": { "lastUpdate": { "dataType": "double", "required": true }, "version": { "dataType": "double", "required": true }, "name": { "dataType": "string", "required": true } }, "required": true },
+            "ref": { "ref": "IRefItem", "required": true },
         },
         "additionalProperties": false,
     },
@@ -508,7 +508,7 @@ const models: TsoaRoute.Models = {
     "LanguageMeta": {
         "dataType": "refObject",
         "properties": {
-            "ref": { "dataType": "nestedObjectLiteral", "nestedProperties": { "lastUpdate": { "dataType": "double", "required": true }, "version": { "dataType": "double", "required": true }, "name": { "dataType": "string", "required": true } }, "required": true },
+            "ref": { "ref": "IRefItem", "required": true },
         },
         "additionalProperties": false,
     },
@@ -584,7 +584,7 @@ const models: TsoaRoute.Models = {
         "properties": {
             "id": { "dataType": "string", "required": true },
             "active": { "dataType": "boolean", "required": true },
-            "lastupdate": { "dataType": "double", "required": true },
+            "lastupdate": { "dataType": "datetime", "required": true },
             "name": { "dataType": "string", "required": true },
             "ext": { "ref": "AssetExtensions", "required": true },
             "path": { "dataType": "string", "required": true },
@@ -640,7 +640,7 @@ const models: TsoaRoute.Models = {
     "INodesMeta": {
         "dataType": "refObject",
         "properties": {
-            "ref": { "dataType": "nestedObjectLiteral", "nestedProperties": { "lastUpdate": { "dataType": "double", "required": true }, "version": { "dataType": "double", "required": true }, "name": { "dataType": "string", "required": true } }, "required": true },
+            "ref": { "ref": "IRefItem", "required": true },
         },
         "additionalProperties": false,
     },
@@ -820,7 +820,7 @@ const models: TsoaRoute.Models = {
     "IOrderTypeMeta": {
         "dataType": "refObject",
         "properties": {
-            "ref": { "dataType": "nestedObjectLiteral", "nestedProperties": { "lastUpdate": { "dataType": "double", "required": true }, "version": { "dataType": "double", "required": true }, "name": { "dataType": "string", "required": true } }, "required": true },
+            "ref": { "ref": "IRefItem", "required": true },
         },
         "additionalProperties": false,
     },
@@ -891,7 +891,7 @@ const models: TsoaRoute.Models = {
         "properties": {
             "id": { "dataType": "string", "required": true },
             "active": { "dataType": "boolean", "required": true },
-            "lastupdate": { "dataType": "double", "required": true },
+            "lastupdate": { "dataType": "datetime", "required": true },
             "name": { "dataType": "string", "required": true },
             "ext": { "ref": "AssetExtensions", "required": true },
             "path": { "dataType": "string", "required": true },
@@ -957,7 +957,7 @@ const models: TsoaRoute.Models = {
     "IProductsMeta": {
         "dataType": "refObject",
         "properties": {
-            "ref": { "dataType": "nestedObjectLiteral", "nestedProperties": { "lastUpdate": { "dataType": "double", "required": true }, "version": { "dataType": "double", "required": true }, "name": { "dataType": "string", "required": true } }, "required": true },
+            "ref": { "ref": "IRefItem", "required": true },
         },
         "additionalProperties": false,
     },
@@ -1073,7 +1073,7 @@ const models: TsoaRoute.Models = {
         "properties": {
             "id": { "dataType": "string", "required": true },
             "active": { "dataType": "boolean", "required": true },
-            "lastupdate": { "dataType": "double", "required": true },
+            "lastupdate": { "dataType": "datetime", "required": true },
             "name": { "dataType": "string", "required": true },
             "ext": { "ref": "AssetExtensions", "required": true },
             "path": { "dataType": "string", "required": true },
@@ -1139,7 +1139,7 @@ const models: TsoaRoute.Models = {
     "ISelectorsMeta": {
         "dataType": "refObject",
         "properties": {
-            "ref": { "dataType": "nestedObjectLiteral", "nestedProperties": { "lastUpdate": { "dataType": "double", "required": true }, "version": { "dataType": "double", "required": true }, "name": { "dataType": "string", "required": true } }, "required": true },
+            "ref": { "ref": "IRefItem", "required": true },
         },
         "additionalProperties": false,
     },
@@ -1229,7 +1229,7 @@ const models: TsoaRoute.Models = {
         "properties": {
             "id": { "dataType": "string", "required": true },
             "active": { "dataType": "boolean", "required": true },
-            "lastupdate": { "dataType": "double", "required": true },
+            "lastupdate": { "dataType": "datetime", "required": true },
             "name": { "dataType": "string", "required": true },
             "ext": { "ref": "AssetExtensions", "required": true },
             "path": { "dataType": "string", "required": true },
@@ -1295,7 +1295,7 @@ const models: TsoaRoute.Models = {
     "ITagMeta": {
         "dataType": "refObject",
         "properties": {
-            "ref": { "dataType": "nestedObjectLiteral", "nestedProperties": { "lastUpdate": { "dataType": "double", "required": true }, "version": { "dataType": "double", "required": true }, "name": { "dataType": "string", "required": true } }, "required": true },
+            "ref": { "ref": "IRefItem", "required": true },
         },
         "additionalProperties": false,
     },
@@ -1366,7 +1366,7 @@ const models: TsoaRoute.Models = {
         "properties": {
             "id": { "dataType": "string", "required": true },
             "active": { "dataType": "boolean", "required": true },
-            "lastupdate": { "dataType": "double", "required": true },
+            "lastupdate": { "dataType": "datetime", "required": true },
             "name": { "dataType": "string", "required": true },
             "ext": { "ref": "AssetExtensions", "required": true },
             "path": { "dataType": "string", "required": true },
@@ -1432,7 +1432,7 @@ const models: TsoaRoute.Models = {
     "TranslationMeta": {
         "dataType": "refObject",
         "properties": {
-            "ref": { "dataType": "nestedObjectLiteral", "nestedProperties": { "lastUpdate": { "dataType": "double", "required": true }, "version": { "dataType": "double", "required": true }, "name": { "dataType": "string", "required": true } }, "required": true },
+            "ref": { "ref": "IRefItem", "required": true },
         },
         "additionalProperties": false,
     },

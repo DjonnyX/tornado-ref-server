@@ -2,6 +2,7 @@ import { RefTypes, TranslationModel, ITranslate } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatTranslationModel } from "../utils/translation";
+import { IRefItem } from "./RefsController";
 
 interface ITranslateItem {
     key: string;
@@ -16,11 +17,7 @@ interface ITranslationItem {
 }
 
 interface TranslationMeta {
-    ref: {
-        name: string;
-        version: number;
-        lastUpdate: number;
-    };
+    ref: IRefItem;
 }
 
 interface TranslationsResponse {
@@ -65,7 +62,7 @@ const META_TEMPLATE: TranslationMeta = {
     ref: {
         name: RefTypes.TRANSLATION,
         version: 1,
-        lastUpdate: 1589885721,
+        lastUpdate: new Date(),
     }
 };
 
