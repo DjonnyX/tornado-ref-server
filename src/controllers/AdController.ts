@@ -1,8 +1,6 @@
-import { AdModel, IAd, RefTypes, NodeModel, ILanguage, LanguageModel } from "../models/index";
+import { AdModel, IAd, RefTypes, ILanguage, LanguageModel } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Query } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
-import { NodeTypes } from "../models/enums";
-import { deleteNodesChain } from "../utils/node";
 import { AdTypes } from "../models/enums/AdTypes";
 import { formatAdModel } from "../utils/ad";
 import { IAdContents } from "../models/Ad";

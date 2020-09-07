@@ -574,7 +574,7 @@ const models: TsoaRoute.Models = {
     "CurrencyCreateRequest": {
         "dataType": "refObject",
         "properties": {
-            "active": { "dataType": "boolean", "required": true },
+            "active": { "dataType": "boolean" },
             "code": { "dataType": "string", "required": true },
             "name": { "dataType": "string", "required": true },
             "symbol": { "dataType": "string", "required": true },
