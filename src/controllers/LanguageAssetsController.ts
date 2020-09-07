@@ -204,7 +204,7 @@ export class LanguageAssetsController extends Controller {
         };
     }
 
-    @Post("{languageId}/image/{imageType}")
+    @Post("{languageId}/resource/{resourceType}")
     @Security("jwt")
     @OperationId("Create")
     @Example<ILanguageCreateAssetsResponse>({
@@ -214,7 +214,7 @@ export class LanguageAssetsController extends Controller {
             language: LANGUAGE_RESPONSE_TEMPLATE,
         }
     })
-    public async image(languageId: string, imageType: LanguageImageTypes, @Request() request: express.Request): Promise<ILanguageCreateAssetsResponse> {
+    public async resource(languageId: string, resourceType: LanguageImageTypes, @Request() request: express.Request): Promise<ILanguageCreateAssetsResponse> {
         const assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA], false);
 
         let language: ILanguage;
@@ -233,7 +233,7 @@ export class LanguageAssetsController extends Controller {
             };
         }
 
-        deletedAsset = language.images[imageType];
+        deletedAsset = language.resources[resourceType];
         
         const assetIndex = language.assets.indexOf(deletedAsset);
         if (assetIndex > -1) {
@@ -260,7 +260,7 @@ export class LanguageAssetsController extends Controller {
 
         let languageRef: IRefItem;
         try {
-            language.images[imageType] = assetsInfo.data.id;
+            language.resources[resourceType] = assetsInfo.data.id;
             language.assets.push(assetsInfo.data.id);
             languageRef = await riseRefVersion(RefTypes.LANGUAGES);
             await language.save();

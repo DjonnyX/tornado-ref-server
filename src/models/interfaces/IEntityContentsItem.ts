@@ -1,5 +1,5 @@
 export interface IEntityContentsItem {
-    images: {
+    resources: {
         [x: string]: string;
     };
     assets?: Array<string>;

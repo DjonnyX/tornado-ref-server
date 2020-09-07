@@ -16,24 +16,24 @@ export const normalizeContents = (contents: IEntityContents, defaultLang: string
     }
 
     for (const lang in contents) {
-        if (!!contents[lang].images) {
+        if (!!contents[lang].resources) {
             const content = contents[lang];
-            for (const imageType in content.images) {
-                const isEqualtFromDefault = equalFromImages(defaultContent, content.images[imageType]);
-                if (imageType !== "main" && !!content.images.main && (!content.images[imageType] || (isEqualtFromDefault && lang !== defaultLang))) {
-                    content.images[imageType] = content.images.main;
-                } else if (lang !== defaultLang && (!content.images[imageType] || isEqualtFromDefault) && !!defaultContent?.images?.[imageType]) {
-                    content.images[imageType] = defaultContent.images[imageType] || defaultContent.images.main;
+            for (const resourceType in content.resources) {
+                const isEqualtFromDefault = equalFromImages(defaultContent, content.resources[resourceType]);
+                if (resourceType !== "main" && !!content.resources.main && (!content.resources[resourceType] || (isEqualtFromDefault && lang !== defaultLang))) {
+                    content.resources[resourceType] = content.resources.main;
+                } else if (lang !== defaultLang && (!content.resources[resourceType] || isEqualtFromDefault) && !!defaultContent?.resources?.[resourceType]) {
+                    content.resources[resourceType] = defaultContent.resources[resourceType] || defaultContent.resources.main;
                 }
             }
         }
     }
 };
 
-export const equalFromImages = (content: IEntityContentsItem, image: string): boolean => {
-    if (!!content && !!content.images) {
-        for (const imageType in content) {
-            if (image == content[imageType]) {
+export const equalFromImages = (content: IEntityContentsItem, resource: string): boolean => {
+    if (!!content && !!content.resources) {
+        for (const resourceType in content) {
+            if (resource == content[resourceType]) {
                 return true;
             }
         }
@@ -94,10 +94,10 @@ export const getEntityAssetsFromContent = (contents: IEntityContents) => {
 export const getEntityAssetsFromContentImages = (content: IEntityContentsItem) => {
     const result = new Array<string>();
     if (!!content) {
-        const images = content.images;
-        if (!!images) {
-            for (const imageType in images) {
-                result.push(imageType);
+        const resources = content.resources;
+        if (!!resources) {
+            for (const resourceType in resources) {
+                result.push(resourceType);
             }
         }
     }

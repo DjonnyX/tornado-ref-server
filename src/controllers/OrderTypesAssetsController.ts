@@ -90,8 +90,8 @@ const contentsToDefault = (contents: IOrderTypeContents, langCode: string) => {
         result[langCode] = {};
     }
 
-    if (!result[langCode].images) {
-        result[langCode].images = {
+    if (!result[langCode].resources) {
+        result[langCode].resources = {
             main: null,
             icon: null,
         };
@@ -324,7 +324,7 @@ export class OrderTypeAssetsController extends Controller {
         };
     }*/
 
-    @Post("{orderTypeId}/image/{langCode}/{imageType}")
+    @Post("{orderTypeId}/resource/{langCode}/{resourceType}")
     @Security("jwt")
     @OperationId("CreateImage")
     @Example<IOrderTypeCreateAssetsResponse>({
@@ -334,7 +334,7 @@ export class OrderTypeAssetsController extends Controller {
             orderType: SELECTOR_RESPONSE_TEMPLATE,
         }
     })
-    public async image(orderTypeId: string, langCode: string, imageType: OrderTypeImageTypes, @Request() request: express.Request): Promise<IOrderTypeCreateAssetsResponse> {
+    public async resource(orderTypeId: string, langCode: string, resourceType: OrderTypeImageTypes, @Request() request: express.Request): Promise<IOrderTypeCreateAssetsResponse> {
         let assetsInfo: ICreateAssetsResponse;
         try {
             assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA], false);
@@ -383,14 +383,14 @@ export class OrderTypeAssetsController extends Controller {
 
         let contents: IOrderTypeContents = contentsToDefault(orderType.contents, langCode);
 
-        deletedAsset = !!contents[langCode] ? contents[langCode].images[imageType] : undefined;
+        deletedAsset = !!contents[langCode] ? contents[langCode].resources[resourceType] : undefined;
 
         // детект количества повторяющихся изображений
         let isAssetExistsInOtherProps = 0;
         for (const contentLang in contents) {
-            if (!!contents[contentLang].images) {
-                for (const img in contents[contentLang].images) {
-                    if (!!contents[contentLang].images[img] && contents[contentLang].images[img] === deletedAsset) {
+            if (!!contents[contentLang].resources) {
+                for (const img in contents[contentLang].resources) {
+                    if (!!contents[contentLang].resources[img] && contents[contentLang].resources[img] === deletedAsset) {
                         isAssetExistsInOtherProps++;
                     }
                 }
@@ -436,7 +436,7 @@ export class OrderTypeAssetsController extends Controller {
         let savedOrderType: IOrderType;
         try {
             const assetId = assetsInfo.data.id.toString();
-            contents[langCode].images[imageType] = assetId;
+            contents[langCode].resources[resourceType] = assetId;
             contents[langCode].assets.push(assetId);
 
             normalizeContents(contents, defaultLanguage.code);

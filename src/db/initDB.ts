@@ -40,7 +40,7 @@ const mergeDefaultTranslations = async () => {
                 language: lang.code,
             });
             const newLang = new LanguageModel({
-                isDefault: lang.isDefault,
+                isDefault: lang.isDefault || false,
                 name: lang.name,
                 code: lang.code,
                 translation: newTranslation._id,
