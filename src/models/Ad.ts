@@ -1,5 +1,7 @@
 import * as mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
+import { AdTypes } from "./enums";
+import { string } from "@hapi/joi";
 
 export interface IAdContentsItem {
     name: string;
@@ -17,6 +19,7 @@ export interface IAdContents {
 
 interface IAd extends Document {
     active: boolean;
+    type: AdTypes;
     name: string;
     contents: IAdContents;
     extra?: { [key: string]: any } | null;
@@ -25,6 +28,13 @@ interface IAd extends Document {
 const AdSchema = new Schema({
     active: { type: Schema.Types.Boolean, required: true },
     name: { type: String, required: false },
+    type: {
+        type: String,
+        enum: [
+            AdTypes.BANNER,
+            AdTypes.INTRO,
+        ],
+    },
     contents: { type: Schema.Types.Mixed, default: {} },
     extra: { type: Schema.Types.Mixed, required: false, default: {} },
 });

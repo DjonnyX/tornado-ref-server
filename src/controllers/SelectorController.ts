@@ -240,6 +240,10 @@ export class SelectorController extends Controller {
 
             let lastContents: ISelectorContents;
             for (const key in request) {
+                if (key === "joint") {
+                    continue;
+                }
+
                 if (key === "contents") {
                     lastContents = item.contents;
                 }

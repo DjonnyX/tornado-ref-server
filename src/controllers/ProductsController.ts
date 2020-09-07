@@ -263,6 +263,10 @@ export class ProductController extends Controller {
 
             let lastContents: IProductContents;
             for (const key in request) {
+                if (key === "joint") {
+                    continue;
+                }
+                
                 if (key === "contents") {
                     lastContents = item.contents;
                 }
