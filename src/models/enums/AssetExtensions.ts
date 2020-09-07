@@ -1,5 +1,5 @@
 export enum AssetExtensions {
-    // images
+    // resources
     JPG = ".jpg",
     PNG = ".png",
     // 3d models

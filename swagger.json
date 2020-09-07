@@ -117,6 +117,62 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"IAdContentsItem": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"color": {
+						"type": "string"
+					},
+					"resources": {
+						"properties": {
+							"main": {
+								"type": "string",
+								"nullable": true
+							}
+						},
+						"required": [
+							"main"
+						],
+						"type": "object"
+					},
+					"assets": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"extra": {
+						"properties": {},
+						"additionalProperties": {
+							"additionalProperties": true
+						},
+						"type": "object",
+						"nullable": true
+					}
+				},
+				"required": [
+					"name",
+					"resources"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IAdContents": {
+				"properties": {},
+				"type": "object",
+				"additionalProperties": {
+					"anyOf": [
+						{
+							"$ref": "#/components/schemas/IAdContentsItem"
+						},
+						{
+							"additionalProperties": true
+						}
+					]
+				}
+			},
 			"IAdItem": {
 				"properties": {
 					"id": {
@@ -125,29 +181,8 @@
 					"active": {
 						"type": "boolean"
 					},
-					"name": {
-						"type": "string"
-					},
-					"description": {
-						"type": "string"
-					},
-					"color": {
-						"type": "string"
-					},
-					"assets": {
-						"items": {
-							"type": "string"
-						},
-						"type": "array"
-					},
-					"images": {
-						"properties": {
-							"main": {
-								"type": "string",
-								"nullable": true
-							}
-						},
-						"type": "object"
+					"contents": {
+						"$ref": "#/components/schemas/IAdContents"
 					},
 					"extra": {
 						"properties": {},
@@ -161,8 +196,7 @@
 				"required": [
 					"id",
 					"active",
-					"name",
-					"color"
+					"contents"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -246,7 +280,7 @@
 					"color": {
 						"type": "string"
 					},
-					"images": {
+					"resources": {
 						"properties": {
 							"main": {
 								"type": "string"
@@ -1273,7 +1307,7 @@
 						},
 						"type": "array"
 					},
-					"images": {
+					"resources": {
 						"properties": {
 							"main": {
 								"type": "string",
@@ -1389,7 +1423,7 @@
 						},
 						"type": "array"
 					},
-					"images": {
+					"resources": {
 						"properties": {
 							"main": {
 								"type": "string",
@@ -1438,7 +1472,7 @@
 						},
 						"type": "array"
 					},
-					"images": {
+					"resources": {
 						"properties": {
 							"main": {
 								"type": "string",
@@ -1771,6 +1805,84 @@
 				],
 				"type": "string"
 			},
+			"ScenarioProgrammActionTypes": {
+				"enum": [
+					"switch",
+					"expression"
+				],
+				"type": "string"
+			},
+			"ScenarioEntityTypes": {
+				"enum": [
+					"business-period",
+					"product",
+					"selector",
+					"order-type",
+					"currency"
+				],
+				"type": "string"
+			},
+			"IPropertyAccessor": {
+				"properties": {
+					"entity": {
+						"$ref": "#/components/schemas/ScenarioEntityTypes"
+					},
+					"prop": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"entity",
+					"prop"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ProgramOperations": {
+				"enum": [
+					"or",
+					"xor",
+					"and"
+				],
+				"type": "string"
+			},
+			"IScenarioExpression": {
+				"properties": {
+					"prop1": {
+						"$ref": "#/components/schemas/IPropertyAccessor"
+					},
+					"prop2": {
+						"$ref": "#/components/schemas/IPropertyAccessor"
+					},
+					"operation": {
+						"$ref": "#/components/schemas/ProgramOperations"
+					}
+				},
+				"required": [
+					"prop1",
+					"prop2",
+					"operation"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IScenarioPriceValue": {
+				"properties": {
+					"currency": {
+						"type": "string"
+					},
+					"value": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"currency",
+					"value"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"IScenario": {
 				"properties": {
 					"active": {
@@ -1789,11 +1901,54 @@
 							},
 							{
 								"$ref": "#/components/schemas/ScenarioSelectorActionTypes"
+							},
+							{
+								"$ref": "#/components/schemas/ScenarioProgrammActionTypes"
 							}
 						]
 					},
 					"value": {
-						"additionalProperties": true
+						"anyOf": [
+							{
+								"type": "number",
+								"format": "double"
+							},
+							{
+								"type": "string"
+							},
+							{
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							},
+							{
+								"items": {
+									"type": "number",
+									"format": "double"
+								},
+								"type": "array"
+							},
+							{
+								"items": {
+									"$ref": "#/components/schemas/IScenarioExpression"
+								},
+								"type": "array"
+							},
+							{
+								"$ref": "#/components/schemas/IScenarioPriceValue"
+							},
+							{
+								"$ref": "#/components/schemas/IScenarioSwitch"
+							},
+							{
+								"type": "number",
+								"enum": [
+									null
+								],
+								"nullable": true
+							}
+						]
 					},
 					"extra": {
 						"properties": {},
@@ -1807,6 +1962,29 @@
 				"required": [
 					"active",
 					"action"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IScenarioSwitch": {
+				"properties": {
+					"condition": {
+						"items": {
+							"$ref": "#/components/schemas/IScenarioExpression"
+						},
+						"type": "array"
+					},
+					"expressionPositive": {
+						"$ref": "#/components/schemas/IScenario"
+					},
+					"expressionNegative": {
+						"$ref": "#/components/schemas/IScenario"
+					}
+				},
+				"required": [
+					"condition",
+					"expressionPositive",
+					"expressionNegative"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -2153,7 +2331,7 @@
 					"color": {
 						"type": "string"
 					},
-					"images": {
+					"resources": {
 						"properties": {
 							"icon": {
 								"type": "string",
@@ -2187,7 +2365,7 @@
 				},
 				"required": [
 					"name",
-					"images"
+					"resources"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -2640,7 +2818,7 @@
 					"color": {
 						"type": "string"
 					},
-					"images": {
+					"resources": {
 						"properties": {
 							"icon": {
 								"type": "string",
@@ -2685,7 +2863,7 @@
 				},
 				"required": [
 					"name",
-					"images"
+					"resources"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -3293,7 +3471,7 @@
 					"color": {
 						"type": "string"
 					},
-					"images": {
+					"resources": {
 						"properties": {
 							"icon": {
 								"type": "string",
@@ -3332,7 +3510,7 @@
 				},
 				"required": [
 					"name",
-					"images"
+					"resources"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -3820,7 +3998,7 @@
 					"color": {
 						"type": "string"
 					},
-					"images": {
+					"resources": {
 						"properties": {
 							"icon": {
 								"type": "string",
@@ -3854,7 +4032,7 @@
 				},
 				"required": [
 					"name",
-					"images"
+					"resources"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -4452,7 +4630,7 @@
 	},
 	"info": {
 		"title": "tornado-server",
-		"version": "1.0.0",
+		"version": "1.1.0",
 		"license": {
 			"name": "Commercial"
 		}
@@ -4609,14 +4787,17 @@
 												{
 													"id": "507c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"name": "Morning Ad",
-													"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-													"color": "0x000fff",
-													"assets": [
-														"g8h07f79bcf86cd7994f9d7k"
-													],
-													"images": {
-														"main": "gt7h7f79bcf86cd7994f9d6u"
+													"contents": {
+														"RU": {
+															"name": "Ad",
+															"color": "0x000fff",
+															"assets": [
+																"gt7h7f79bcf86cd7994f9d6u"
+															],
+															"resources": {
+																"main": "gt7h7f79bcf86cd7994f9d6u"
+															}
+														}
 													},
 													"extra": {
 														"key": "value"
@@ -4668,14 +4849,17 @@
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"active": true,
-												"name": "Morning Ad",
-												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-												"color": "0x000fff",
-												"assets": [
-													"g8h07f79bcf86cd7994f9d7k"
-												],
-												"images": {
-													"main": "gt7h7f79bcf86cd7994f9d6u"
+												"contents": {
+													"RU": {
+														"name": "Ad",
+														"color": "0x000fff",
+														"assets": [
+															"gt7h7f79bcf86cd7994f9d6u"
+														],
+														"resources": {
+															"main": "gt7h7f79bcf86cd7994f9d6u"
+														}
+													}
 												},
 												"extra": {
 													"key": "value"
@@ -4733,14 +4917,17 @@
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"active": true,
-												"name": "Morning Ad",
-												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-												"color": "0x000fff",
-												"assets": [
-													"g8h07f79bcf86cd7994f9d7k"
-												],
-												"images": {
-													"main": "gt7h7f79bcf86cd7994f9d6u"
+												"contents": {
+													"RU": {
+														"name": "Ad",
+														"color": "0x000fff",
+														"assets": [
+															"gt7h7f79bcf86cd7994f9d6u"
+														],
+														"resources": {
+															"main": "gt7h7f79bcf86cd7994f9d6u"
+														}
+													}
 												},
 												"extra": {
 													"key": "value"
@@ -4853,14 +5040,17 @@
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"active": true,
-												"name": "Morning Ad",
-												"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-												"color": "0x000fff",
-												"assets": [
-													"g8h07f79bcf86cd7994f9d7k"
-												],
-												"images": {
-													"main": "gt7h7f79bcf86cd7994f9d6u"
+												"contents": {
+													"RU": {
+														"name": "Ad",
+														"color": "0x000fff",
+														"assets": [
+															"gt7h7f79bcf86cd7994f9d6u"
+														],
+														"resources": {
+															"main": "gt7h7f79bcf86cd7994f9d6u"
+														}
+													}
 												},
 												"extra": {
 													"key": "value"
@@ -6020,7 +6210,7 @@
 													"assets": [
 														"g8h07f79bcf86cd7994f9d7k"
 													],
-													"images": {
+													"resources": {
 														"main": "g8h07f79bcf86cd7994f9d7k"
 													},
 													"translation": "409c7f79bcf86cd7994f6g1t",
@@ -6079,7 +6269,7 @@
 												"assets": [
 													"g8h07f79bcf86cd7994f9d7k"
 												],
-												"images": {
+												"resources": {
 													"main": "g8h07f79bcf86cd7994f9d7k"
 												},
 												"translation": "409c7f79bcf86cd7994f6g1t",
@@ -6144,7 +6334,7 @@
 												"assets": [
 													"g8h07f79bcf86cd7994f9d7k"
 												],
-												"images": {
+												"resources": {
 													"main": "g8h07f79bcf86cd7994f9d7k"
 												},
 												"translation": "409c7f79bcf86cd7994f6g1t",
@@ -6264,7 +6454,7 @@
 												"assets": [
 													"g8h07f79bcf86cd7994f9d7k"
 												],
-												"images": {
+												"resources": {
 													"main": "g8h07f79bcf86cd7994f9d7k"
 												},
 												"translation": "409c7f79bcf86cd7994f6g1t",
@@ -6446,7 +6636,7 @@
 				]
 			}
 		},
-		"/language/{languageId}/image/{imageType}": {
+		"/language/{languageId}/resource/{resourceType}": {
 			"post": {
 				"operationId": "Create",
 				"responses": {
@@ -6516,7 +6706,7 @@
 					},
 					{
 						"in": "path",
-						"name": "imageType",
+						"name": "resourceType",
 						"required": true,
 						"schema": {
 							"$ref": "#/components/schemas/LanguageImageTypes"
@@ -7149,7 +7339,7 @@
 																"gt7h7f79bcf86cd7994f9d6u",
 																"gt7h7f79bcf86cd7994f9d6u"
 															],
-															"images": {
+															"resources": {
 																"main": "gt7h7f79bcf86cd7994f9d6u",
 																"icon": "gt7h7f79bcf86cd7994f9d6u"
 															}
@@ -7214,7 +7404,7 @@
 															"gt7h7f79bcf86cd7994f9d6u",
 															"gt7h7f79bcf86cd7994f9d6u"
 														],
-														"images": {
+														"resources": {
 															"main": "gt7h7f79bcf86cd7994f9d6u",
 															"icon": "gt7h7f79bcf86cd7994f9d6u"
 														}
@@ -7285,7 +7475,7 @@
 															"gt7h7f79bcf86cd7994f9d6u",
 															"gt7h7f79bcf86cd7994f9d6u"
 														],
-														"images": {
+														"resources": {
 															"main": "gt7h7f79bcf86cd7994f9d6u",
 															"icon": "gt7h7f79bcf86cd7994f9d6u"
 														}
@@ -7411,7 +7601,7 @@
 															"gt7h7f79bcf86cd7994f9d6u",
 															"gt7h7f79bcf86cd7994f9d6u"
 														],
-														"images": {
+														"resources": {
 															"main": "gt7h7f79bcf86cd7994f9d6u",
 															"icon": "gt7h7f79bcf86cd7994f9d6u"
 														}
@@ -7608,7 +7798,7 @@
 				]
 			}
 		},
-		"/order-type/{orderTypeId}/image/{langCode}/{imageType}": {
+		"/order-type/{orderTypeId}/resource/{langCode}/{resourceType}": {
 			"post": {
 				"operationId": "CreateImage",
 				"responses": {
@@ -7686,7 +7876,7 @@
 					},
 					{
 						"in": "path",
-						"name": "imageType",
+						"name": "resourceType",
 						"required": true,
 						"schema": {
 							"$ref": "#/components/schemas/OrderTypeImageTypes"
@@ -7892,7 +8082,7 @@
 															"name": "Products on concert",
 															"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
 															"color": "#000000",
-															"images": {
+															"resources": {
 																"main": "g8h07f79bcf86cd7994f9d7k",
 																"thumbnail": "gt7h7f79bcf86cd7994f9d6u",
 																"icon": "gt7h7f79bcf86cd7994f9d6u"
@@ -7981,7 +8171,7 @@
 														"name": "Products on concert",
 														"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
 														"color": "#000000",
-														"images": {
+														"resources": {
 															"main": "g8h07f79bcf86cd7994f9d7k",
 															"thumbnail": "gt7h7f79bcf86cd7994f9d6u",
 															"icon": "gt7h7f79bcf86cd7994f9d6u"
@@ -8076,7 +8266,7 @@
 														"name": "Products on concert",
 														"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
 														"color": "#000000",
-														"images": {
+														"resources": {
 															"main": "g8h07f79bcf86cd7994f9d7k",
 															"thumbnail": "gt7h7f79bcf86cd7994f9d6u",
 															"icon": "gt7h7f79bcf86cd7994f9d6u"
@@ -8226,7 +8416,7 @@
 														"name": "Products on concert",
 														"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
 														"color": "#000000",
-														"images": {
+														"resources": {
 															"main": "g8h07f79bcf86cd7994f9d7k",
 															"thumbnail": "gt7h7f79bcf86cd7994f9d6u",
 															"icon": "gt7h7f79bcf86cd7994f9d6u"
@@ -8530,7 +8720,7 @@
 				]
 			}
 		},
-		"/product/{productId}/image/{langCode}/{imageType}": {
+		"/product/{productId}/resource/{langCode}/{resourceType}": {
 			"post": {
 				"operationId": "CreateImage",
 				"responses": {
@@ -8608,7 +8798,7 @@
 					},
 					{
 						"in": "path",
-						"name": "imageType",
+						"name": "resourceType",
 						"required": true,
 						"schema": {
 							"$ref": "#/components/schemas/ProductImageTypes"
@@ -8815,7 +9005,7 @@
 															"name": "Selectors on concert",
 															"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
 															"color": "#000000",
-															"images": {
+															"resources": {
 																"main": "g8h07f79bcf86cd7994f9d7k",
 																"thumbnail": "g8h07f79bcf86cd7994f9d7k",
 																"icon": "k7h97f79bcf86cd7994f0i9e"
@@ -8891,7 +9081,7 @@
 														"name": "Selectors on concert",
 														"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
 														"color": "#000000",
-														"images": {
+														"resources": {
 															"main": "g8h07f79bcf86cd7994f9d7k",
 															"thumbnail": "g8h07f79bcf86cd7994f9d7k",
 															"icon": "k7h97f79bcf86cd7994f0i9e"
@@ -8964,7 +9154,7 @@
 														"name": "Selectors on concert",
 														"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
 														"color": "#000000",
-														"images": {
+														"resources": {
 															"main": "g8h07f79bcf86cd7994f9d7k",
 															"thumbnail": "g8h07f79bcf86cd7994f9d7k",
 															"icon": "k7h97f79bcf86cd7994f0i9e"
@@ -9092,7 +9282,7 @@
 														"name": "Selectors on concert",
 														"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
 														"color": "#000000",
-														"images": {
+														"resources": {
 															"main": "g8h07f79bcf86cd7994f9d7k",
 															"thumbnail": "g8h07f79bcf86cd7994f9d7k",
 															"icon": "k7h97f79bcf86cd7994f0i9e"
@@ -9294,7 +9484,7 @@
 				]
 			}
 		},
-		"/selector/{selectorId}/image/{langCode}/{imageType}": {
+		"/selector/{selectorId}/resource/{langCode}/{resourceType}": {
 			"post": {
 				"operationId": "CreateImage",
 				"responses": {
@@ -9372,7 +9562,7 @@
 					},
 					{
 						"in": "path",
-						"name": "imageType",
+						"name": "resourceType",
 						"required": true,
 						"schema": {
 							"$ref": "#/components/schemas/SelectorImageTypes"
@@ -9581,7 +9771,7 @@
 															"assets": [
 																"gt7h7f79bcf86cd7994f9d6u"
 															],
-															"images": {
+															"resources": {
 																"main": "gt7h7f79bcf86cd7994f9d6u",
 																"icon": "gt7h7f79bcf86cd7994f9d6u"
 															}
@@ -9645,7 +9835,7 @@
 														"assets": [
 															"gt7h7f79bcf86cd7994f9d6u"
 														],
-														"images": {
+														"resources": {
 															"main": "gt7h7f79bcf86cd7994f9d6u",
 															"icon": "gt7h7f79bcf86cd7994f9d6u"
 														}
@@ -9715,7 +9905,7 @@
 														"assets": [
 															"gt7h7f79bcf86cd7994f9d6u"
 														],
-														"images": {
+														"resources": {
 															"main": "gt7h7f79bcf86cd7994f9d6u",
 															"icon": "gt7h7f79bcf86cd7994f9d6u"
 														}
@@ -9840,7 +10030,7 @@
 														"assets": [
 															"gt7h7f79bcf86cd7994f9d6u"
 														],
-														"images": {
+														"resources": {
 															"main": "gt7h7f79bcf86cd7994f9d6u",
 															"icon": "gt7h7f79bcf86cd7994f9d6u"
 														}
@@ -10037,7 +10227,7 @@
 				]
 			}
 		},
-		"/tag/{tagId}/image/{langCode}/{imageType}": {
+		"/tag/{tagId}/resource/{langCode}/{resourceType}": {
 			"post": {
 				"operationId": "CreateImage",
 				"responses": {
@@ -10115,7 +10305,7 @@
 					},
 					{
 						"in": "path",
-						"name": "imageType",
+						"name": "resourceType",
 						"required": true,
 						"schema": {
 							"$ref": "#/components/schemas/TagImageTypes"

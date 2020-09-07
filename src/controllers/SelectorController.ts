@@ -68,7 +68,7 @@ export const RESPONSE_TEMPLATE: ISelectorItem = {
             name: "Selectors on concert",
             description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             color: "#000000",
-            images: {
+            resources: {
                 main: "g8h07f79bcf86cd7994f9d7k",
                 thumbnail: "g8h07f79bcf86cd7994f9d7k",
                 icon: "k7h97f79bcf86cd7994f0i9e",
@@ -254,7 +254,7 @@ export class SelectorController extends Controller {
                 }
             }
 
-            // удаление ассетов из разности images
+            // удаление ассетов из разности resources
             const deletedAssetsFromImages = getDeletedImagesFromDifferense(lastContents, item.contents);
             const promises = new Array<Promise<any>>();
             let isAssetsChanged = false;

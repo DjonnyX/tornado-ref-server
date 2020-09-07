@@ -2,9 +2,10 @@ import { app } from "./app";
 import * as http from "http";
 import * as mongoose from "mongoose";
 import { initRefs } from "./db/initDB";
+import * as config from "./config";
 
-const PORT = 8080;
-const MONGO_URI = "mongodb://127.0.0.1:27017/ts";
+const PORT = config.PORT;
+const MONGO_URI = `${config.DB_URI}ta-admin`;
 const server = http.createServer(app);
 server.listen(PORT);
 server.on("listening", () => {

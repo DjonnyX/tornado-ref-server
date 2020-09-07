@@ -74,7 +74,7 @@ export const RESPONSE_TEMPLATE: IProductItem = {
             name: "Products on concert",
             description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             color: "#000000",
-            images: {
+            resources: {
                 main: "g8h07f79bcf86cd7994f9d7k",
                 thumbnail: "gt7h7f79bcf86cd7994f9d6u",
                 icon: "gt7h7f79bcf86cd7994f9d6u",
@@ -277,7 +277,7 @@ export class ProductController extends Controller {
                 }
             }
 
-            // удаление ассетов из разности images
+            // удаление ассетов из разности resources
             const deletedAssetsFromImages = getDeletedImagesFromDifferense(lastContents, item.contents);
             const promises = new Array<Promise<any>>();
             let isAssetsChanged = false;

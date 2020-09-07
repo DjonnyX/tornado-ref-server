@@ -65,7 +65,7 @@ export const RESPONSE_TEMPLATE: ITagItem = {
             assets: [
                 "gt7h7f79bcf86cd7994f9d6u",
             ],
-            images: {
+            resources: {
                 main: "gt7h7f79bcf86cd7994f9d6u",
                 icon: "gt7h7f79bcf86cd7994f9d6u",
             },
@@ -210,7 +210,7 @@ export class TagController extends Controller {
                 }
             }
 
-            // удаление ассетов из разности images
+            // удаление ассетов из разности resources
             const deletedAssetsFromImages = getDeletedImagesFromDifferense(lastContents, item.contents);
             const promises = new Array<Promise<any>>();
             let isAssetsChanged = false;

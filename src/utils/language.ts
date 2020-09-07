@@ -7,7 +7,7 @@ export const formatLanguageModel = (model: ILanguage) => ({
     code: model.code,
     name: model.name,
     assets: model.assets,
-    images: model.images || {
+    resources: model.resources || {
         main: null,
     },
     translation: model.translation,

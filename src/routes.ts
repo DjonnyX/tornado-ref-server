@@ -116,16 +116,31 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IAdContentsItem": {
+        "dataType": "refObject",
+        "properties": {
+            "name": { "dataType": "string", "required": true },
+            "color": { "dataType": "string" },
+            "resources": { "dataType": "nestedObjectLiteral", "nestedProperties": { "main": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }], "required": true } }, "required": true },
+            "assets": { "dataType": "array", "array": { "dataType": "string" } },
+            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IAdContents": {
+        "dataType": "refObject",
+        "properties": {
+        },
+        "additionalProperties": { "dataType": "union", "subSchemas": [{ "ref": "IAdContentsItem" }, { "dataType": "any" }] },
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "IAdItem": {
         "dataType": "refObject",
         "properties": {
             "id": { "dataType": "string", "required": true },
             "active": { "dataType": "boolean", "required": true },
-            "name": { "dataType": "string", "required": true },
-            "description": { "dataType": "string" },
-            "color": { "dataType": "string", "required": true },
-            "assets": { "dataType": "array", "array": { "dataType": "string" } },
-            "images": { "dataType": "nestedObjectLiteral", "nestedProperties": { "main": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }] } } },
+            "contents": { "ref": "IAdContents", "required": true },
             "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
         "additionalProperties": false,
@@ -158,7 +173,7 @@ const models: TsoaRoute.Models = {
             "name": { "dataType": "string", "required": true },
             "description": { "dataType": "string" },
             "color": { "dataType": "string", "required": true },
-            "images": { "dataType": "nestedObjectLiteral", "nestedProperties": { "main": { "dataType": "string", "required": true } } },
+            "resources": { "dataType": "nestedObjectLiteral", "nestedProperties": { "main": { "dataType": "string", "required": true } } },
             "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
         "additionalProperties": false,
@@ -507,7 +522,7 @@ const models: TsoaRoute.Models = {
             "code": { "dataType": "string", "required": true },
             "name": { "dataType": "string", "required": true },
             "assets": { "dataType": "array", "array": { "dataType": "string" } },
-            "images": { "dataType": "nestedObjectLiteral", "nestedProperties": { "main": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }] } } },
+            "resources": { "dataType": "nestedObjectLiteral", "nestedProperties": { "main": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }] } } },
             "translation": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }] },
             "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
@@ -542,7 +557,7 @@ const models: TsoaRoute.Models = {
             "code": { "dataType": "string", "required": true },
             "name": { "dataType": "string", "required": true },
             "assets": { "dataType": "array", "array": { "dataType": "string" } },
-            "images": { "dataType": "nestedObjectLiteral", "nestedProperties": { "main": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }] } } },
+            "resources": { "dataType": "nestedObjectLiteral", "nestedProperties": { "main": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }] } } },
             "translation": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }] },
             "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
@@ -557,7 +572,7 @@ const models: TsoaRoute.Models = {
             "code": { "dataType": "string" },
             "name": { "dataType": "string" },
             "assets": { "dataType": "array", "array": { "dataType": "string" } },
-            "images": { "dataType": "nestedObjectLiteral", "nestedProperties": { "main": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }] } } },
+            "resources": { "dataType": "nestedObjectLiteral", "nestedProperties": { "main": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }] } } },
             "translation": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }] },
             "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
@@ -655,13 +670,66 @@ const models: TsoaRoute.Models = {
         "enums": ["max-usage", "default-products"],
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ScenarioProgrammActionTypes": {
+        "dataType": "refEnum",
+        "enums": ["switch", "expression"],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ScenarioEntityTypes": {
+        "dataType": "refEnum",
+        "enums": ["business-period", "product", "selector", "order-type", "currency"],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IPropertyAccessor": {
+        "dataType": "refObject",
+        "properties": {
+            "entity": { "ref": "ScenarioEntityTypes", "required": true },
+            "prop": { "dataType": "string", "required": true },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ProgramOperations": {
+        "dataType": "refEnum",
+        "enums": ["or", "xor", "and"],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IScenarioExpression": {
+        "dataType": "refObject",
+        "properties": {
+            "prop1": { "ref": "IPropertyAccessor", "required": true },
+            "prop2": { "ref": "IPropertyAccessor", "required": true },
+            "operation": { "ref": "ProgramOperations", "required": true },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IScenarioPriceValue": {
+        "dataType": "refObject",
+        "properties": {
+            "currency": { "dataType": "string", "required": true },
+            "value": { "dataType": "double", "required": true },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "IScenario": {
         "dataType": "refObject",
         "properties": {
             "active": { "dataType": "boolean", "required": true },
-            "action": { "dataType": "union", "subSchemas": [{ "ref": "ScenarioIntroActionTypes" }, { "ref": "ScenarioCommonActionTypes" }, { "ref": "ScenarioProductActionTypes" }, { "ref": "ScenarioSelectorActionTypes" }], "required": true },
-            "value": { "dataType": "any" },
+            "action": { "dataType": "union", "subSchemas": [{ "ref": "ScenarioIntroActionTypes" }, { "ref": "ScenarioCommonActionTypes" }, { "ref": "ScenarioProductActionTypes" }, { "ref": "ScenarioSelectorActionTypes" }, { "ref": "ScenarioProgrammActionTypes" }], "required": true },
+            "value": { "dataType": "union", "subSchemas": [{ "dataType": "double" }, { "dataType": "string" }, { "dataType": "array", "array": { "dataType": "string" } }, { "dataType": "array", "array": { "dataType": "double" } }, { "dataType": "array", "array": { "ref": "IScenarioExpression" } }, { "ref": "IScenarioPriceValue" }, { "ref": "IScenarioSwitch" }, { "dataType": "enum", "enums": [null] }] },
             "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IScenarioSwitch": {
+        "dataType": "refObject",
+        "properties": {
+            "condition": { "dataType": "array", "array": { "ref": "IScenarioExpression" }, "required": true },
+            "expressionPositive": { "ref": "IScenario", "required": true },
+            "expressionNegative": { "ref": "IScenario", "required": true },
         },
         "additionalProperties": false,
     },
@@ -763,7 +831,7 @@ const models: TsoaRoute.Models = {
             "name": { "dataType": "string", "required": true },
             "description": { "dataType": "string" },
             "color": { "dataType": "string" },
-            "images": { "dataType": "nestedObjectLiteral", "nestedProperties": { "icon": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }], "required": true }, "main": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }], "required": true } }, "required": true },
+            "resources": { "dataType": "nestedObjectLiteral", "nestedProperties": { "icon": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }], "required": true }, "main": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }], "required": true } }, "required": true },
             "assets": { "dataType": "array", "array": { "dataType": "string" } },
             "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
@@ -900,7 +968,7 @@ const models: TsoaRoute.Models = {
             "name": { "dataType": "string", "required": true },
             "description": { "dataType": "string" },
             "color": { "dataType": "string" },
-            "images": { "dataType": "nestedObjectLiteral", "nestedProperties": { "icon": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }], "required": true }, "thumbnail": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }], "required": true }, "main": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }], "required": true } }, "required": true },
+            "resources": { "dataType": "nestedObjectLiteral", "nestedProperties": { "icon": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }], "required": true }, "thumbnail": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }], "required": true }, "main": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }], "required": true } }, "required": true },
             "assets": { "dataType": "array", "array": { "dataType": "string" } },
             "gallery": { "dataType": "array", "array": { "dataType": "string" } },
             "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
@@ -1087,7 +1155,7 @@ const models: TsoaRoute.Models = {
             "name": { "dataType": "string", "required": true },
             "description": { "dataType": "string" },
             "color": { "dataType": "string" },
-            "images": { "dataType": "nestedObjectLiteral", "nestedProperties": { "icon": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }], "required": true }, "thumbnail": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }], "required": true }, "main": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }], "required": true } }, "required": true },
+            "resources": { "dataType": "nestedObjectLiteral", "nestedProperties": { "icon": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }], "required": true }, "thumbnail": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }], "required": true }, "main": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }], "required": true } }, "required": true },
             "assets": { "dataType": "array", "array": { "dataType": "string" } },
             "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
@@ -1238,7 +1306,7 @@ const models: TsoaRoute.Models = {
             "name": { "dataType": "string", "required": true },
             "description": { "dataType": "string" },
             "color": { "dataType": "string" },
-            "images": { "dataType": "nestedObjectLiteral", "nestedProperties": { "icon": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }], "required": true }, "main": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }], "required": true } }, "required": true },
+            "resources": { "dataType": "nestedObjectLiteral", "nestedProperties": { "icon": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }], "required": true }, "main": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }], "required": true } }, "required": true },
             "assets": { "dataType": "array", "array": { "dataType": "string" } },
             "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
@@ -2210,12 +2278,12 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/v1/language/:languageId/image/:imageType',
+    app.post('/api/v1/language/:languageId/resource/:resourceType',
         authenticateMiddleware([{ "jwt": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
                 languageId: { "in": "path", "name": "languageId", "required": true, "dataType": "string" },
-                imageType: { "in": "path", "name": "imageType", "required": true, "ref": "LanguageImageTypes" },
+                resourceType: { "in": "path", "name": "resourceType", "required": true, "ref": "LanguageImageTypes" },
                 request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
             };
 
@@ -2231,7 +2299,7 @@ export function RegisterRoutes(app: express.Express) {
             const controller = new LanguageAssetsController();
 
 
-            const promise = controller.image.apply(controller, validatedArgs as any);
+            const promise = controller.resource.apply(controller, validatedArgs as any);
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -2606,13 +2674,13 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/v1/order-type/:orderTypeId/image/:langCode/:imageType',
+    app.post('/api/v1/order-type/:orderTypeId/resource/:langCode/:resourceType',
         authenticateMiddleware([{ "jwt": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
                 orderTypeId: { "in": "path", "name": "orderTypeId", "required": true, "dataType": "string" },
                 langCode: { "in": "path", "name": "langCode", "required": true, "dataType": "string" },
-                imageType: { "in": "path", "name": "imageType", "required": true, "ref": "OrderTypeImageTypes" },
+                resourceType: { "in": "path", "name": "resourceType", "required": true, "ref": "OrderTypeImageTypes" },
                 request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
             };
 
@@ -2628,7 +2696,7 @@ export function RegisterRoutes(app: express.Express) {
             const controller = new OrderTypeAssetsController();
 
 
-            const promise = controller.image.apply(controller, validatedArgs as any);
+            const promise = controller.resource.apply(controller, validatedArgs as any);
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -2870,13 +2938,13 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/v1/product/:productId/image/:langCode/:imageType',
+    app.post('/api/v1/product/:productId/resource/:langCode/:resourceType',
         authenticateMiddleware([{ "jwt": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
                 productId: { "in": "path", "name": "productId", "required": true, "dataType": "string" },
                 langCode: { "in": "path", "name": "langCode", "required": true, "dataType": "string" },
-                imageType: { "in": "path", "name": "imageType", "required": true, "ref": "ProductImageTypes" },
+                resourceType: { "in": "path", "name": "resourceType", "required": true, "ref": "ProductImageTypes" },
                 request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
             };
 
@@ -2892,7 +2960,7 @@ export function RegisterRoutes(app: express.Express) {
             const controller = new ProductAssetsController();
 
 
-            const promise = controller.image.apply(controller, validatedArgs as any);
+            const promise = controller.resource.apply(controller, validatedArgs as any);
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -3110,13 +3178,13 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/v1/selector/:selectorId/image/:langCode/:imageType',
+    app.post('/api/v1/selector/:selectorId/resource/:langCode/:resourceType',
         authenticateMiddleware([{ "jwt": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
                 selectorId: { "in": "path", "name": "selectorId", "required": true, "dataType": "string" },
                 langCode: { "in": "path", "name": "langCode", "required": true, "dataType": "string" },
-                imageType: { "in": "path", "name": "imageType", "required": true, "ref": "SelectorImageTypes" },
+                resourceType: { "in": "path", "name": "resourceType", "required": true, "ref": "SelectorImageTypes" },
                 request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
             };
 
@@ -3132,7 +3200,7 @@ export function RegisterRoutes(app: express.Express) {
             const controller = new SelectorAssetsController();
 
 
-            const promise = controller.image.apply(controller, validatedArgs as any);
+            const promise = controller.resource.apply(controller, validatedArgs as any);
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -3349,13 +3417,13 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/v1/tag/:tagId/image/:langCode/:imageType',
+    app.post('/api/v1/tag/:tagId/resource/:langCode/:resourceType',
         authenticateMiddleware([{ "jwt": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
                 tagId: { "in": "path", "name": "tagId", "required": true, "dataType": "string" },
                 langCode: { "in": "path", "name": "langCode", "required": true, "dataType": "string" },
-                imageType: { "in": "path", "name": "imageType", "required": true, "ref": "TagImageTypes" },
+                resourceType: { "in": "path", "name": "resourceType", "required": true, "ref": "TagImageTypes" },
                 request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
             };
 
@@ -3371,7 +3439,7 @@ export function RegisterRoutes(app: express.Express) {
             const controller = new TagAssetsController();
 
 
-            const promise = controller.image.apply(controller, validatedArgs as any);
+            const promise = controller.resource.apply(controller, validatedArgs as any);
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
