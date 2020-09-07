@@ -36,7 +36,7 @@ interface CurrencyResponse {
 }
 
 interface CurrencyCreateRequest {
-    active: boolean;
+    active?: boolean;
     code: string;
     name: string;
     symbol: string;
