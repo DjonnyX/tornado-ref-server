@@ -1,7 +1,6 @@
 import * as mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
 import { AdTypes } from "./enums";
-import { string } from "@hapi/joi";
 
 export interface IAdContentsItem {
     name: string;
