@@ -326,7 +326,7 @@ export class TagAssetsController extends Controller {
 
     @Post("{tagId}/resource/{langCode}/{resourceType}")
     @Security("jwt")
-    @OperationId("CreateImage")
+    @OperationId("CreateResource")
     @Example<ITagCreateAssetsResponse>({
         meta: META_TEMPLATE,
         data: {

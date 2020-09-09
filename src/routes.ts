@@ -120,7 +120,7 @@ const models: TsoaRoute.Models = {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "AssetExtensions": {
         "dataType": "refEnum",
-        "enums": [".jpg", ".png", ".fbx", ".obj", ".dae"],
+        "enums": [".jpg", ".png", ".mp4", ".fbx", ".obj", ".dae"],
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "IAssetItem": {
