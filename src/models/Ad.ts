@@ -5,6 +5,7 @@ import { AdTypes } from "./enums";
 export interface IAdContentsItem {
     name: string;
     color?: string;
+    duration: number;
     resources: {
         main: string | null;
     };
