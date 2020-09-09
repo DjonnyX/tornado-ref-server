@@ -97,12 +97,12 @@ export const getEntityAssetsFromContentImages = (content: IEntityContentsItem) =
         const resources = content.resources;
         if (!!resources) {
             for (const resourceType in resources) {
-                result.push(resourceType);
+                result.push(resources[resourceType]);
             }
         }
     }
 
-    return [];
+    return result;
 };
 
 export const getEntityAssets = (entity: IEntity) => {
