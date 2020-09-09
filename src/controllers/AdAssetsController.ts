@@ -94,8 +94,6 @@ const contentsToDefault = (contents: IAdContents, langCode: string) => {
     if (!result[langCode].resources) {
         result[langCode].resources = {
             main: null,
-            thumbnail: null,
-            icon: null,
         };
     }
 
