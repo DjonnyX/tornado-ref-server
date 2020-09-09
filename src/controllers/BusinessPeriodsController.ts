@@ -90,7 +90,7 @@ const META_TEMPLATE: IBusinessPeriodMeta = {
 };
 
 @Route("/business-periods")
-@Tags("Business Periods")
+@Tags("Business Period")
 export class BusinessPeriodsController extends Controller {
     @Get()
     @Security("jwt")
