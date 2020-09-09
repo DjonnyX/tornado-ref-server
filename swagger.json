@@ -4153,6 +4153,176 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"IStoreMeta": {
+				"properties": {
+					"ref": {
+						"$ref": "#/components/schemas/IRefItem"
+					}
+				},
+				"required": [
+					"ref"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IStoreItem": {
+				"properties": {
+					"active": {
+						"type": "boolean"
+					},
+					"name": {
+						"type": "string"
+					},
+					"address": {
+						"type": "string",
+						"nullable": true
+					},
+					"terminals": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"employes": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"extra": {
+						"properties": {},
+						"additionalProperties": {
+							"additionalProperties": true
+						},
+						"type": "object",
+						"nullable": true
+					}
+				},
+				"required": [
+					"active",
+					"name",
+					"address"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IStoresResponse": {
+				"properties": {
+					"meta": {
+						"$ref": "#/components/schemas/IStoreMeta"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/IStoreItem"
+						},
+						"type": "array"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IStoreResponse": {
+				"properties": {
+					"meta": {
+						"$ref": "#/components/schemas/IStoreMeta"
+					},
+					"data": {
+						"$ref": "#/components/schemas/IStoreItem"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IStoreCreateRequest": {
+				"properties": {
+					"active": {
+						"type": "boolean"
+					},
+					"name": {
+						"type": "string"
+					},
+					"address": {
+						"type": "string",
+						"nullable": true
+					},
+					"extra": {
+						"properties": {},
+						"additionalProperties": {
+							"additionalProperties": true
+						},
+						"type": "object",
+						"nullable": true
+					}
+				},
+				"required": [
+					"active",
+					"name",
+					"address"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IStoreUpdateRequest": {
+				"properties": {
+					"active": {
+						"type": "boolean"
+					},
+					"name": {
+						"type": "string"
+					},
+					"address": {
+						"type": "string"
+					},
+					"extra": {
+						"properties": {},
+						"additionalProperties": {
+							"additionalProperties": true
+						},
+						"type": "object",
+						"nullable": true
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
 			"ITagMeta": {
 				"properties": {
 					"ref": {
@@ -4820,42 +4990,42 @@
 												{
 													"name": "users",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.509Z"
+													"lastUpdate": "2020-09-09T19:50:07.395Z"
 												},
 												{
 													"name": "roles",
 													"version": 2,
-													"lastUpdate": "2020-09-09T12:49:41.509Z"
+													"lastUpdate": "2020-09-09T19:50:07.395Z"
 												},
 												{
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.509Z"
+													"lastUpdate": "2020-09-09T19:50:07.395Z"
 												},
 												{
 													"name": "products",
 													"version": 3,
-													"lastUpdate": "2020-09-09T12:49:41.510Z"
+													"lastUpdate": "2020-09-09T19:50:07.396Z"
 												},
 												{
 													"name": "selectors",
 													"version": 4,
-													"lastUpdate": "2020-09-09T12:49:41.510Z"
+													"lastUpdate": "2020-09-09T19:50:07.396Z"
 												},
 												{
 													"name": "tags",
 													"version": 5,
-													"lastUpdate": "2020-09-09T12:49:41.510Z"
+													"lastUpdate": "2020-09-09T19:50:07.396Z"
 												},
 												{
 													"name": "business-periods",
 													"version": 3,
-													"lastUpdate": "2020-09-09T12:49:41.510Z"
+													"lastUpdate": "2020-09-09T19:50:07.396Z"
 												},
 												{
 													"name": "ads",
 													"version": 3,
-													"lastUpdate": "2020-09-09T12:49:41.510Z"
+													"lastUpdate": "2020-09-09T19:50:07.396Z"
 												}
 											]
 										}
@@ -4896,7 +5066,7 @@
 											"data": {
 												"name": "products",
 												"version": 1,
-												"lastUpdate": "2020-09-09T12:49:41.514Z"
+												"lastUpdate": "2020-09-09T19:50:07.401Z"
 											}
 										}
 									}
@@ -4946,14 +5116,14 @@
 												"ref": {
 													"name": "assets",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.524Z"
+													"lastUpdate": "2020-09-09T19:50:07.414Z"
 												}
 											},
 											"data": [
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-09-09T12:49:41.524Z",
+													"lastupdate": "2020-09-09T19:50:07.414Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"path": "assets/some_3d_model.fbx",
@@ -5002,13 +5172,13 @@
 												"ref": {
 													"name": "assets",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.529Z"
+													"lastUpdate": "2020-09-09T19:50:07.418Z"
 												}
 											},
 											"data": {
 												"id": "107c7f79bcf86cd7994f6c0e",
 												"active": true,
-												"lastupdate": "2020-09-09T12:49:41.529Z",
+												"lastupdate": "2020-09-09T19:50:07.418Z",
 												"name": "some_3d_model",
 												"ext": ".fbx",
 												"path": "assets/some_3d_model.fbx",
@@ -5053,13 +5223,13 @@
 												"ref": {
 													"name": "assets",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.532Z"
+													"lastUpdate": "2020-09-09T19:50:07.425Z"
 												}
 											},
 											"data": {
 												"id": "107c7f79bcf86cd7994f6c0e",
 												"active": true,
-												"lastupdate": "2020-09-09T12:49:41.532Z",
+												"lastupdate": "2020-09-09T19:50:07.425Z",
 												"name": "some_3d_model",
 												"ext": ".fbx",
 												"path": "assets/some_3d_model.fbx",
@@ -5121,7 +5291,7 @@
 												"ref": {
 													"name": "assets",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.536Z"
+													"lastUpdate": "2020-09-09T19:50:07.429Z"
 												}
 											},
 											"data": {}
@@ -5170,7 +5340,7 @@
 												"ref": {
 													"name": "ads",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.549Z"
+													"lastUpdate": "2020-09-09T19:50:07.444Z"
 												}
 											},
 											"data": [
@@ -5246,7 +5416,7 @@
 												"ref": {
 													"name": "ads",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.554Z"
+													"lastUpdate": "2020-09-09T19:50:07.449Z"
 												}
 											},
 											"data": {
@@ -5318,7 +5488,7 @@
 												"ref": {
 													"name": "ads",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.559Z"
+													"lastUpdate": "2020-09-09T19:50:07.456Z"
 												}
 											},
 											"data": {
@@ -5397,7 +5567,7 @@
 												"ref": {
 													"name": "ads",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.565Z"
+													"lastUpdate": "2020-09-09T19:50:07.461Z"
 												}
 											}
 										}
@@ -5445,7 +5615,7 @@
 												"ref": {
 													"name": "ads",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.555Z"
+													"lastUpdate": "2020-09-09T19:50:07.450Z"
 												}
 											},
 											"data": {
@@ -5518,14 +5688,14 @@
 													"ref": {
 														"name": "ads",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.571Z"
+														"lastUpdate": "2020-09-09T19:50:07.467Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.571Z"
+														"lastUpdate": "2020-09-09T19:50:07.467Z"
 													}
 												}
 											},
@@ -5534,7 +5704,7 @@
 													{
 														"id": "107c7f79bcf86cd7994f6c0e",
 														"active": true,
-														"lastupdate": "2020-09-09T12:49:41.571Z",
+														"lastupdate": "2020-09-09T19:50:07.467Z",
 														"name": "some_3d_model",
 														"ext": ".fbx",
 														"mipmap": {
@@ -5594,14 +5764,14 @@
 													"ref": {
 														"name": "ads",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.575Z"
+														"lastUpdate": "2020-09-09T19:50:07.473Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.575Z"
+														"lastUpdate": "2020-09-09T19:50:07.473Z"
 													}
 												}
 											},
@@ -5609,7 +5779,7 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-09-09T12:49:41.575Z",
+													"lastupdate": "2020-09-09T19:50:07.473Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -5676,14 +5846,14 @@
 													"ref": {
 														"name": "ads",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.580Z"
+														"lastUpdate": "2020-09-09T19:50:07.479Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.580Z"
+														"lastUpdate": "2020-09-09T19:50:07.479Z"
 													}
 												}
 											},
@@ -5691,7 +5861,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-09-09T12:49:41.580Z",
+													"lastupdate": "2020-09-09T19:50:07.479Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -5763,14 +5933,14 @@
 													"ref": {
 														"name": "ads",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.583Z"
+														"lastUpdate": "2020-09-09T19:50:07.481Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.583Z"
+														"lastUpdate": "2020-09-09T19:50:07.481Z"
 													}
 												}
 											},
@@ -5778,7 +5948,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-09-09T12:49:41.583Z",
+													"lastupdate": "2020-09-09T19:50:07.481Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -5858,14 +6028,14 @@
 													"ref": {
 														"name": "ads",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.587Z"
+														"lastUpdate": "2020-09-09T19:50:07.487Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.587Z"
+														"lastUpdate": "2020-09-09T19:50:07.487Z"
 													}
 												}
 											}
@@ -6174,7 +6344,7 @@
 												"ref": {
 													"name": "business-periods",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.621Z"
+													"lastUpdate": "2020-09-09T19:50:07.534Z"
 												}
 											},
 											"data": [
@@ -6242,7 +6412,7 @@
 												"ref": {
 													"name": "business-periods",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.624Z"
+													"lastUpdate": "2020-09-09T19:50:07.541Z"
 												}
 											},
 											"data": {
@@ -6315,7 +6485,7 @@
 												"ref": {
 													"name": "business-periods",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.630Z"
+													"lastUpdate": "2020-09-09T19:50:07.545Z"
 												}
 											},
 											"data": {
@@ -6395,7 +6565,7 @@
 												"ref": {
 													"name": "business-periods",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.631Z"
+													"lastUpdate": "2020-09-09T19:50:07.547Z"
 												}
 											}
 										}
@@ -6443,7 +6613,7 @@
 												"ref": {
 													"name": "business-periods",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.625Z"
+													"lastUpdate": "2020-09-09T19:50:07.542Z"
 												}
 											},
 											"data": {
@@ -6516,7 +6686,7 @@
 												"ref": {
 													"name": "currencies",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.636Z"
+													"lastUpdate": "2020-09-09T19:50:07.555Z"
 												}
 											},
 											"data": [
@@ -6570,7 +6740,7 @@
 												"ref": {
 													"name": "currencies",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.639Z"
+													"lastUpdate": "2020-09-09T19:50:07.559Z"
 												}
 											},
 											"data": {
@@ -6629,7 +6799,7 @@
 												"ref": {
 													"name": "currencies",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.643Z"
+													"lastUpdate": "2020-09-09T19:50:07.563Z"
 												}
 											},
 											"data": {
@@ -6695,7 +6865,7 @@
 												"ref": {
 													"name": "currencies",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.646Z"
+													"lastUpdate": "2020-09-09T19:50:07.565Z"
 												}
 											}
 										}
@@ -6743,7 +6913,7 @@
 												"ref": {
 													"name": "currencies",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.641Z"
+													"lastUpdate": "2020-09-09T19:50:07.560Z"
 												}
 											},
 											"data": {
@@ -6802,7 +6972,7 @@
 												"ref": {
 													"name": "languages",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.651Z"
+													"lastUpdate": "2020-09-09T19:50:07.573Z"
 												}
 											},
 											"data": [
@@ -6862,7 +7032,7 @@
 												"ref": {
 													"name": "languages",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.654Z"
+													"lastUpdate": "2020-09-09T19:50:07.577Z"
 												}
 											},
 											"data": {
@@ -6927,7 +7097,7 @@
 												"ref": {
 													"name": "languages",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.658Z"
+													"lastUpdate": "2020-09-09T19:50:07.580Z"
 												}
 											},
 											"data": {
@@ -6999,7 +7169,7 @@
 												"ref": {
 													"name": "languages",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.661Z"
+													"lastUpdate": "2020-09-09T19:50:07.583Z"
 												}
 											}
 										}
@@ -7047,7 +7217,7 @@
 												"ref": {
 													"name": "languages",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.655Z"
+													"lastUpdate": "2020-09-09T19:50:07.578Z"
 												}
 											},
 											"data": {
@@ -7113,14 +7283,14 @@
 													"ref": {
 														"name": "languages",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.666Z"
+														"lastUpdate": "2020-09-09T19:50:07.591Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.666Z"
+														"lastUpdate": "2020-09-09T19:50:07.591Z"
 													}
 												}
 											},
@@ -7128,7 +7298,7 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-09-09T12:49:41.666Z",
+													"lastupdate": "2020-09-09T19:50:07.591Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -7187,14 +7357,14 @@
 													"ref": {
 														"name": "languages",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.670Z"
+														"lastUpdate": "2020-09-09T19:50:07.596Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.670Z"
+														"lastUpdate": "2020-09-09T19:50:07.596Z"
 													}
 												}
 											},
@@ -7202,7 +7372,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-09-09T12:49:41.670Z",
+													"lastupdate": "2020-09-09T19:50:07.596Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -7258,14 +7428,14 @@
 													"ref": {
 														"name": "languages",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.672Z"
+														"lastUpdate": "2020-09-09T19:50:07.597Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.672Z"
+														"lastUpdate": "2020-09-09T19:50:07.597Z"
 													}
 												}
 											},
@@ -7273,7 +7443,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-09-09T12:49:41.672Z",
+													"lastupdate": "2020-09-09T19:50:07.598Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -7337,14 +7507,14 @@
 													"ref": {
 														"name": "languages",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.676Z"
+														"lastUpdate": "2020-09-09T19:50:07.599Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.676Z"
+														"lastUpdate": "2020-09-09T19:50:07.599Z"
 													}
 												}
 											},
@@ -7352,7 +7522,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-09-09T12:49:41.676Z",
+													"lastupdate": "2020-09-09T19:50:07.599Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -7424,14 +7594,14 @@
 													"ref": {
 														"name": "languages",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.683Z"
+														"lastUpdate": "2020-09-09T19:50:07.606Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.683Z"
+														"lastUpdate": "2020-09-09T19:50:07.606Z"
 													}
 												}
 											}
@@ -7488,7 +7658,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.713Z"
+													"lastUpdate": "2020-09-09T19:50:07.632Z"
 												}
 											},
 											"data": [
@@ -7548,7 +7718,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.715Z"
+													"lastUpdate": "2020-09-09T19:50:07.634Z"
 												}
 											},
 											"data": [
@@ -7608,7 +7778,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.717Z"
+													"lastUpdate": "2020-09-09T19:50:07.635Z"
 												}
 											},
 											"data": [
@@ -7677,7 +7847,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.720Z"
+													"lastUpdate": "2020-09-09T19:50:07.639Z"
 												}
 											},
 											"data": {
@@ -7742,7 +7912,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.728Z"
+													"lastUpdate": "2020-09-09T19:50:07.647Z"
 												}
 											},
 											"data": {
@@ -7814,7 +7984,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.736Z"
+													"lastUpdate": "2020-09-09T19:50:07.653Z"
 												}
 											}
 										}
@@ -7862,7 +8032,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.723Z"
+													"lastUpdate": "2020-09-09T19:50:07.644Z"
 												}
 											},
 											"data": {
@@ -7927,7 +8097,7 @@
 												"ref": {
 													"name": "order-types",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.745Z"
+													"lastUpdate": "2020-09-09T19:50:07.664Z"
 												}
 											},
 											"data": [
@@ -7993,7 +8163,7 @@
 												"ref": {
 													"name": "order-types",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.748Z"
+													"lastUpdate": "2020-09-09T19:50:07.668Z"
 												}
 											},
 											"data": {
@@ -8064,7 +8234,7 @@
 												"ref": {
 													"name": "order-types",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.752Z"
+													"lastUpdate": "2020-09-09T19:50:07.672Z"
 												}
 											},
 											"data": {
@@ -8142,7 +8312,7 @@
 												"ref": {
 													"name": "order-types",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.754Z"
+													"lastUpdate": "2020-09-09T19:50:07.673Z"
 												}
 											}
 										}
@@ -8190,7 +8360,7 @@
 												"ref": {
 													"name": "order-types",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.749Z"
+													"lastUpdate": "2020-09-09T19:50:07.669Z"
 												}
 											},
 											"data": {
@@ -8262,14 +8432,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.759Z"
+														"lastUpdate": "2020-09-09T19:50:07.679Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.759Z"
+														"lastUpdate": "2020-09-09T19:50:07.680Z"
 													}
 												}
 											},
@@ -8278,7 +8448,7 @@
 													{
 														"id": "107c7f79bcf86cd7994f6c0e",
 														"active": true,
-														"lastupdate": "2020-09-09T12:49:41.759Z",
+														"lastupdate": "2020-09-09T19:50:07.680Z",
 														"name": "some_3d_model",
 														"ext": ".fbx",
 														"mipmap": {
@@ -8338,14 +8508,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.762Z"
+														"lastUpdate": "2020-09-09T19:50:07.682Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.762Z"
+														"lastUpdate": "2020-09-09T19:50:07.682Z"
 													}
 												}
 											},
@@ -8353,7 +8523,7 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-09-09T12:49:41.762Z",
+													"lastupdate": "2020-09-09T19:50:07.682Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -8420,14 +8590,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.766Z"
+														"lastUpdate": "2020-09-09T19:50:07.686Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.766Z"
+														"lastUpdate": "2020-09-09T19:50:07.686Z"
 													}
 												}
 											},
@@ -8435,7 +8605,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-09-09T12:49:41.766Z",
+													"lastupdate": "2020-09-09T19:50:07.686Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -8507,14 +8677,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.769Z"
+														"lastUpdate": "2020-09-09T19:50:07.688Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.769Z"
+														"lastUpdate": "2020-09-09T19:50:07.688Z"
 													}
 												}
 											},
@@ -8522,7 +8692,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-09-09T12:49:41.769Z",
+													"lastupdate": "2020-09-09T19:50:07.688Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -8602,14 +8772,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.773Z"
+														"lastUpdate": "2020-09-09T19:50:07.693Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.773Z"
+														"lastUpdate": "2020-09-09T19:50:07.693Z"
 													}
 												}
 											}
@@ -8674,7 +8844,7 @@
 												"ref": {
 													"name": "products",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.798Z"
+													"lastUpdate": "2020-09-09T19:50:07.704Z"
 												}
 											},
 											"data": [
@@ -8764,7 +8934,7 @@
 												"ref": {
 													"name": "products",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.801Z"
+													"lastUpdate": "2020-09-09T19:50:07.707Z"
 												}
 											},
 											"data": {
@@ -8859,7 +9029,7 @@
 												"ref": {
 													"name": "products",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.806Z"
+													"lastUpdate": "2020-09-09T19:50:07.712Z"
 												}
 											},
 											"data": {
@@ -8961,7 +9131,7 @@
 												"ref": {
 													"name": "products",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.810Z"
+													"lastUpdate": "2020-09-09T19:50:07.716Z"
 												}
 											}
 										}
@@ -9009,7 +9179,7 @@
 												"ref": {
 													"name": "products",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.802Z"
+													"lastUpdate": "2020-09-09T19:50:07.708Z"
 												}
 											},
 											"data": {
@@ -9105,14 +9275,14 @@
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.815Z"
+														"lastUpdate": "2020-09-09T19:50:07.720Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.815Z"
+														"lastUpdate": "2020-09-09T19:50:07.720Z"
 													}
 												}
 											},
@@ -9121,7 +9291,7 @@
 													{
 														"id": "107c7f79bcf86cd7994f6c0e",
 														"active": true,
-														"lastupdate": "2020-09-09T12:49:41.815Z",
+														"lastupdate": "2020-09-09T19:50:07.721Z",
 														"name": "some_3d_model",
 														"ext": ".fbx",
 														"mipmap": {
@@ -9181,14 +9351,14 @@
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.818Z"
+														"lastUpdate": "2020-09-09T19:50:07.724Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.818Z"
+														"lastUpdate": "2020-09-09T19:50:07.724Z"
 													}
 												}
 											},
@@ -9196,7 +9366,7 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-09-09T12:49:41.818Z",
+													"lastupdate": "2020-09-09T19:50:07.724Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -9263,14 +9433,14 @@
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.822Z"
+														"lastUpdate": "2020-09-09T19:50:07.729Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.822Z"
+														"lastUpdate": "2020-09-09T19:50:07.729Z"
 													}
 												}
 											},
@@ -9278,7 +9448,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-09-09T12:49:41.822Z",
+													"lastupdate": "2020-09-09T19:50:07.729Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -9342,14 +9512,14 @@
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.823Z"
+														"lastUpdate": "2020-09-09T19:50:07.730Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.823Z"
+														"lastUpdate": "2020-09-09T19:50:07.730Z"
 													}
 												}
 											},
@@ -9357,7 +9527,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-09-09T12:49:41.823Z",
+													"lastupdate": "2020-09-09T19:50:07.730Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -9429,14 +9599,14 @@
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.825Z"
+														"lastUpdate": "2020-09-09T19:50:07.732Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.825Z"
+														"lastUpdate": "2020-09-09T19:50:07.732Z"
 													}
 												}
 											},
@@ -9444,7 +9614,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-09-09T12:49:41.826Z",
+													"lastupdate": "2020-09-09T19:50:07.732Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -9524,14 +9694,14 @@
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.832Z"
+														"lastUpdate": "2020-09-09T19:50:07.737Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.832Z"
+														"lastUpdate": "2020-09-09T19:50:07.737Z"
 													}
 												}
 											}
@@ -9596,7 +9766,7 @@
 												"ref": {
 													"name": "selectors",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.842Z"
+													"lastUpdate": "2020-09-09T19:50:07.748Z"
 												}
 											},
 											"data": [
@@ -9673,7 +9843,7 @@
 												"ref": {
 													"name": "selectors",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.846Z"
+													"lastUpdate": "2020-09-09T19:50:07.751Z"
 												}
 											},
 											"data": {
@@ -9746,7 +9916,7 @@
 												"ref": {
 													"name": "selectors",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.851Z"
+													"lastUpdate": "2020-09-09T19:50:07.756Z"
 												}
 											},
 											"data": {
@@ -9826,7 +9996,7 @@
 												"ref": {
 													"name": "selectors",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.854Z"
+													"lastUpdate": "2020-09-09T19:50:07.759Z"
 												}
 											}
 										}
@@ -9874,7 +10044,7 @@
 												"ref": {
 													"name": "selectors",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.847Z"
+													"lastUpdate": "2020-09-09T19:50:07.752Z"
 												}
 											},
 											"data": {
@@ -9948,14 +10118,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.860Z"
+														"lastUpdate": "2020-09-09T19:50:07.763Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.860Z"
+														"lastUpdate": "2020-09-09T19:50:07.763Z"
 													}
 												}
 											},
@@ -9964,7 +10134,7 @@
 													{
 														"id": "107c7f79bcf86cd7994f6c0e",
 														"active": true,
-														"lastupdate": "2020-09-09T12:49:41.860Z",
+														"lastupdate": "2020-09-09T19:50:07.763Z",
 														"name": "some_3d_model",
 														"ext": ".fbx",
 														"mipmap": {
@@ -10024,14 +10194,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.863Z"
+														"lastUpdate": "2020-09-09T19:50:07.766Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.863Z"
+														"lastUpdate": "2020-09-09T19:50:07.766Z"
 													}
 												}
 											},
@@ -10039,7 +10209,7 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-09-09T12:49:41.863Z",
+													"lastupdate": "2020-09-09T19:50:07.766Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -10106,14 +10276,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.867Z"
+														"lastUpdate": "2020-09-09T19:50:07.769Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.867Z"
+														"lastUpdate": "2020-09-09T19:50:07.769Z"
 													}
 												}
 											},
@@ -10121,7 +10291,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-09-09T12:49:41.867Z",
+													"lastupdate": "2020-09-09T19:50:07.769Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -10193,14 +10363,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.870Z"
+														"lastUpdate": "2020-09-09T19:50:07.771Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.870Z"
+														"lastUpdate": "2020-09-09T19:50:07.771Z"
 													}
 												}
 											},
@@ -10208,7 +10378,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-09-09T12:49:41.870Z",
+													"lastupdate": "2020-09-09T19:50:07.772Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -10288,14 +10458,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.873Z"
+														"lastUpdate": "2020-09-09T19:50:07.775Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.873Z"
+														"lastUpdate": "2020-09-09T19:50:07.775Z"
 													}
 												}
 											}
@@ -10343,6 +10513,316 @@
 				]
 			}
 		},
+		"/stores": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IStoresResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "stores",
+													"version": 1,
+													"lastUpdate": "2020-09-09T19:50:07.784Z"
+												}
+											},
+											"data": [
+												{
+													"active": true,
+													"name": "My store",
+													"address": "Moscow",
+													"terminals": [
+														"a0830860-d869-4d31-837f-122097f75f4a",
+														"2aff85fb-2316-4554-869c-df2ecd9126e9"
+													],
+													"employes": [
+														"a0830860-d869-4d31-837f-122097f75f4a",
+														"2aff85fb-2316-4554-869c-df2ecd9126e9"
+													],
+													"extra": {
+														"key": "value"
+													}
+												}
+											]
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Store"
+				],
+				"security": [
+					{
+						"jwt": []
+					},
+					{
+						"apiKey": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/store/{id}": {
+			"get": {
+				"operationId": "GetOne",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IStoreResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "stores",
+													"version": 1,
+													"lastUpdate": "2020-09-09T19:50:07.787Z"
+												}
+											},
+											"data": {
+												"active": true,
+												"name": "My store",
+												"address": "Moscow",
+												"terminals": [
+													"a0830860-d869-4d31-837f-122097f75f4a",
+													"2aff85fb-2316-4554-869c-df2ecd9126e9"
+												],
+												"employes": [
+													"a0830860-d869-4d31-837f-122097f75f4a",
+													"2aff85fb-2316-4554-869c-df2ecd9126e9"
+												],
+												"extra": {
+													"key": "value"
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Store"
+				],
+				"security": [
+					{
+						"jwt": []
+					},
+					{
+						"apiKey": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IStoreResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "stores",
+													"version": 1,
+													"lastUpdate": "2020-09-09T19:50:07.790Z"
+												}
+											},
+											"data": {
+												"active": true,
+												"name": "My store",
+												"address": "Moscow",
+												"terminals": [
+													"a0830860-d869-4d31-837f-122097f75f4a",
+													"2aff85fb-2316-4554-869c-df2ecd9126e9"
+												],
+												"employes": [
+													"a0830860-d869-4d31-837f-122097f75f4a",
+													"2aff85fb-2316-4554-869c-df2ecd9126e9"
+												],
+												"extra": {
+													"key": "value"
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Store"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IStoreUpdateRequest"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "Delete",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IStoreResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "stores",
+													"version": 1,
+													"lastUpdate": "2020-09-09T19:50:07.793Z"
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Store"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/store": {
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IStoreResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "stores",
+													"version": 1,
+													"lastUpdate": "2020-09-09T19:50:07.788Z"
+												}
+											},
+											"data": {
+												"active": true,
+												"name": "My store",
+												"address": "Moscow",
+												"terminals": [
+													"a0830860-d869-4d31-837f-122097f75f4a",
+													"2aff85fb-2316-4554-869c-df2ecd9126e9"
+												],
+												"employes": [
+													"a0830860-d869-4d31-837f-122097f75f4a",
+													"2aff85fb-2316-4554-869c-df2ecd9126e9"
+												],
+												"extra": {
+													"key": "value"
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"Store"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IStoreCreateRequest"
+							}
+						}
+					}
+				}
+			}
+		},
 		"/tags": {
 			"get": {
 				"operationId": "GetAll",
@@ -10360,7 +10840,7 @@
 												"ref": {
 													"name": "tags",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.884Z"
+													"lastUpdate": "2020-09-09T19:50:07.802Z"
 												}
 											},
 											"data": [
@@ -10425,7 +10905,7 @@
 												"ref": {
 													"name": "tags",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.887Z"
+													"lastUpdate": "2020-09-09T19:50:07.806Z"
 												}
 											},
 											"data": {
@@ -10495,7 +10975,7 @@
 												"ref": {
 													"name": "tags",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.890Z"
+													"lastUpdate": "2020-09-09T19:50:07.810Z"
 												}
 											},
 											"data": {
@@ -10572,7 +11052,7 @@
 												"ref": {
 													"name": "tags",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.894Z"
+													"lastUpdate": "2020-09-09T19:50:07.811Z"
 												}
 											}
 										}
@@ -10620,7 +11100,7 @@
 												"ref": {
 													"name": "tags",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.888Z"
+													"lastUpdate": "2020-09-09T19:50:07.806Z"
 												}
 											},
 											"data": {
@@ -10691,14 +11171,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.899Z"
+														"lastUpdate": "2020-09-09T19:50:07.815Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.900Z"
+														"lastUpdate": "2020-09-09T19:50:07.816Z"
 													}
 												}
 											},
@@ -10707,7 +11187,7 @@
 													{
 														"id": "107c7f79bcf86cd7994f6c0e",
 														"active": true,
-														"lastupdate": "2020-09-09T12:49:41.900Z",
+														"lastupdate": "2020-09-09T19:50:07.816Z",
 														"name": "some_3d_model",
 														"ext": ".fbx",
 														"mipmap": {
@@ -10767,14 +11247,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.903Z"
+														"lastUpdate": "2020-09-09T19:50:07.818Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.903Z"
+														"lastUpdate": "2020-09-09T19:50:07.818Z"
 													}
 												}
 											},
@@ -10782,7 +11262,7 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-09-09T12:49:41.903Z",
+													"lastupdate": "2020-09-09T19:50:07.818Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -10849,14 +11329,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.909Z"
+														"lastUpdate": "2020-09-09T19:50:07.822Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.909Z"
+														"lastUpdate": "2020-09-09T19:50:07.822Z"
 													}
 												}
 											},
@@ -10864,7 +11344,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-09-09T12:49:41.909Z",
+													"lastupdate": "2020-09-09T19:50:07.822Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -10936,14 +11416,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.912Z"
+														"lastUpdate": "2020-09-09T19:50:07.824Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.912Z"
+														"lastUpdate": "2020-09-09T19:50:07.824Z"
 													}
 												}
 											},
@@ -10951,7 +11431,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-09-09T12:49:41.912Z",
+													"lastupdate": "2020-09-09T19:50:07.824Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -11031,14 +11511,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.916Z"
+														"lastUpdate": "2020-09-09T19:50:07.828Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-09-09T12:49:41.916Z"
+														"lastUpdate": "2020-09-09T19:50:07.828Z"
 													}
 												}
 											}
@@ -11103,7 +11583,7 @@
 												"ref": {
 													"name": "translation",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.922Z"
+													"lastUpdate": "2020-09-09T19:50:07.835Z"
 												}
 											},
 											"data": [
@@ -11160,7 +11640,7 @@
 												"ref": {
 													"name": "translation",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.925Z"
+													"lastUpdate": "2020-09-09T19:50:07.839Z"
 												}
 											},
 											"data": {
@@ -11222,7 +11702,7 @@
 												"ref": {
 													"name": "translation",
 													"version": 1,
-													"lastUpdate": "2020-09-09T12:49:41.926Z"
+													"lastUpdate": "2020-09-09T19:50:07.839Z"
 												}
 											},
 											"data": {
