@@ -333,7 +333,7 @@ export class ProductAssetsController extends Controller {
 
     @Post("{productId}/resource/{langCode}/{resourceType}")
     @Security("jwt")
-    @OperationId("CreateImage")
+    @OperationId("CreateResource")
     @Example<IProductCreateAssetsResponse>({
         meta: META_TEMPLATE,
         data: {

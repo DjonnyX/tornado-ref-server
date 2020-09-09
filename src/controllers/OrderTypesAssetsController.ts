@@ -326,7 +326,7 @@ export class OrderTypeAssetsController extends Controller {
 
     @Post("{orderTypeId}/resource/{langCode}/{resourceType}")
     @Security("jwt")
-    @OperationId("CreateImage")
+    @OperationId("CreateResource")
     @Example<IOrderTypeCreateAssetsResponse>({
         meta: META_TEMPLATE,
         data: {

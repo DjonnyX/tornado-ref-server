@@ -22,6 +22,7 @@ const AssetSchema = new Schema({
         type: String, enum: [
             AssetExtensions.JPG,
             AssetExtensions.PNG,
+            AssetExtensions.MP4,
             AssetExtensions.OBJ,
             AssetExtensions.FBX,
             AssetExtensions.COLLADA,
