@@ -328,7 +328,7 @@ export class SelectorAssetsController extends Controller {
 
     @Post("{selectorId}/resource/{langCode}/{resourceType}")
     @Security("jwt")
-    @OperationId("CreateImage")
+    @OperationId("CreateResource")
     @Example<ISelectorCreateAssetsResponse>({
         meta: META_TEMPLATE,
         data: {

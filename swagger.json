@@ -5654,7 +5654,7 @@
 		},
 		"/ad/{adId}/resource/{langCode}/{resourceType}": {
 			"post": {
-				"operationId": "CreateImage",
+				"operationId": "CreateResource",
 				"responses": {
 					"200": {
 						"content": {
@@ -8398,7 +8398,7 @@
 		},
 		"/order-type/{orderTypeId}/resource/{langCode}/{resourceType}": {
 			"post": {
-				"operationId": "CreateImage",
+				"operationId": "CreateResource",
 				"responses": {
 					"200": {
 						"content": {
@@ -9320,7 +9320,7 @@
 		},
 		"/product/{productId}/resource/{langCode}/{resourceType}": {
 			"post": {
-				"operationId": "CreateImage",
+				"operationId": "CreateResource",
 				"responses": {
 					"200": {
 						"content": {
@@ -10084,7 +10084,7 @@
 		},
 		"/selector/{selectorId}/resource/{langCode}/{resourceType}": {
 			"post": {
-				"operationId": "CreateImage",
+				"operationId": "CreateResource",
 				"responses": {
 					"200": {
 						"content": {
@@ -10827,7 +10827,7 @@
 		},
 		"/tag/{tagId}/resource/{langCode}/{resourceType}": {
 			"post": {
-				"operationId": "CreateImage",
+				"operationId": "CreateResource",
 				"responses": {
 					"200": {
 						"content": {

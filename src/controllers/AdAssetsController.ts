@@ -328,7 +328,7 @@ export class AdAssetsController extends Controller {
 
     @Post("{adId}/resource/{langCode}/{resourceType}")
     @Security("jwt")
-    @OperationId("CreateImage")
+    @OperationId("CreateResource")
     @Example<IAdCreateAssetsResponse>({
         meta: META_TEMPLATE,
         data: {
@@ -339,7 +339,7 @@ export class AdAssetsController extends Controller {
     public async resource(adId: string, langCode: string, resourceType: AdImageTypes, @Request() request: express.Request): Promise<IAdCreateAssetsResponse> {
         let assetsInfo: ICreateAssetsResponse;
         try {
-            assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA], false);
+            assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.MP4, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA], false);
         } catch (err) {
             this.setStatus(500);
             return {
