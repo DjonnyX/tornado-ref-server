@@ -203,6 +203,7 @@ const models: TsoaRoute.Models = {
         "properties": {
             "name": { "dataType": "string", "required": true },
             "color": { "dataType": "string" },
+            "duration": { "dataType": "double", "required": true },
             "resources": { "dataType": "nestedObjectLiteral", "nestedProperties": { "main": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }], "required": true } }, "required": true },
             "assets": { "dataType": "array", "array": { "dataType": "string" } },
             "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
