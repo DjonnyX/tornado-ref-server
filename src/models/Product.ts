@@ -21,7 +21,6 @@ export interface IProductContentsItem {
     color?: string;
     resources: {
         main: string | null;
-        thumbnail: string | null;
         icon: string | null;
     };
     assets?: Array<string>;

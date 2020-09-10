@@ -77,8 +77,6 @@ interface IAdAssetUpdateRequest {
 
 export enum AdImageTypes {
     MAIN = "main",
-    THUMBNAIL = "thumbnail",
-    ICON = "icon",
 }
 
 const contentsToDefault = (contents: IAdContents, langCode: string) => {
