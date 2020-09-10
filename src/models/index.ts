@@ -12,6 +12,7 @@ import { IAd, AdModel } from "./Ad";
 import { ILanguage, LanguageModel } from "./Language";
 import { ITranslate, ITranslation, TranslationModel } from "./Translation";
 import { IStoreDocument, IStore, StoreModel } from "./Store";
+import { ITerminalDocument, ITerminal, TerminalModel } from "./Terminal";
 
 export {
     UserModel, IUser, hashPassword, checkIfUnencryptedPasswordIsValid,
@@ -29,4 +30,5 @@ export {
     ILanguage, LanguageModel,
     ITranslate, ITranslation, TranslationModel,
     IStoreDocument, IStore, StoreModel,
+    ITerminalDocument, ITerminal, TerminalModel,
 };

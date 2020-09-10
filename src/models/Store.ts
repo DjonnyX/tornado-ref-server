@@ -12,7 +12,7 @@ interface IStore {
 
 interface IStoreDocument extends Document, IStore {}
 
-const AdSchema = new Schema({
+const StoreSchema = new Schema({
     active: { type: Boolean, required: true, default: true },
     name: { type: String, required: true },
     address: { type: String, required: false },
@@ -21,6 +21,6 @@ const AdSchema = new Schema({
     extra: { type: Schema.Types.Mixed, required: false, default: {} },
 });
 
-const StoreModel = mongoose.model<IStoreDocument>("Store", AdSchema);
+const StoreModel = mongoose.model<IStoreDocument>("Store", StoreSchema);
 
 export { StoreModel, IStoreDocument, IStore };
