@@ -4,7 +4,7 @@ import { Controller, Route, Get, Tags, OperationId, Example, Security } from "ts
 export interface IRefItem {
     name: string;
     version: number;
-    lastUpdate: Date;
+    lastupdate: Date;
 }
 
 interface RefsResponse {
@@ -29,48 +29,48 @@ const RESPONSE_TEMPLATE: Array<IRefItem> = [
     {
         name: RefTypes.USERS,
         version: 1,
-        lastUpdate: date,
+        lastupdate: date,
     }, {
         name: RefTypes.ROLES,
         version: 2,
-        lastUpdate: date,
+        lastupdate: date,
     }, {
         name: RefTypes.NODES,
         version: 1,
-        lastUpdate: date,
+        lastupdate: date,
     }, {
         name: RefTypes.PRODUCTS,
         version: 3,
-        lastUpdate: date,
+        lastupdate: date,
     }, {
         name: RefTypes.SELECTORS,
         version: 4,
-        lastUpdate: date,
+        lastupdate: date,
     }, {
         name: RefTypes.TAGS,
         version: 5,
-        lastUpdate: date,
+        lastupdate: date,
     }, {
         name: RefTypes.BUSINESS_PERIODS,
         version: 3,
-        lastUpdate: date,
+        lastupdate: date,
     }, {
         name: RefTypes.ADS,
         version: 3,
-        lastUpdate: date,
+        lastupdate: date,
     }
 ];
 
 const RESPONSE_SINGLE_TEMPLATE: IRefItem = {
     name: RefTypes.PRODUCTS,
     version: 1,
-    lastUpdate: date,
+    lastupdate: date,
 };
 
 const formatModel = (model: IRef): IRefItem => ({
     name: model.name,
     version: model.version,
-    lastUpdate: model.lastUpdate
+    lastupdate: model.lastupdate
 });
 
 @Route("/refs")

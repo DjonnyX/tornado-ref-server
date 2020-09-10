@@ -49,7 +49,7 @@ const META_TEMPLATE: IOrderTypeMeta = {
     ref: {
         name: RefTypes.ORDER_TYPES,
         version: 1,
-        lastUpdate: new Date(),
+        lastupdate: new Date(),
     }
 };
 

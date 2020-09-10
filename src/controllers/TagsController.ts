@@ -49,7 +49,7 @@ const META_TEMPLATE: ITagMeta = {
     ref: {
         name: RefTypes.TAGS,
         version: 1,
-        lastUpdate: new Date(),
+        lastupdate: new Date(),
     }
 };
 
