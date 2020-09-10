@@ -78,7 +78,7 @@ const ScenarioSchema = new Schema({
             ScenarioProgrammActionTypes.SWITCH,
             // common
             ScenarioCommonActionTypes.VISIBLE_BY_BUSINESS_PERIOD,
-            ScenarioCommonActionTypes.VISIBLE_BY_POINT_OF_SALE,
+            ScenarioCommonActionTypes.VISIBLE_BY_STORE,
             // intro
             ScenarioIntroActionTypes.DURATION,
             // product
