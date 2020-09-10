@@ -29,9 +29,11 @@ interface IStoreResponse {
 }
 
 interface IStoreCreateRequest {
-    active: boolean;
+    active?: boolean;
     name: string;
     address: string | null;
+    terminals: Array<string> | null;
+    employes: Array<string> | null;
     extra?: { [key: string]: any } | null;
 }
 
@@ -39,6 +41,8 @@ interface IStoreUpdateRequest {
     active?: boolean;
     name?: string;
     address?: string;
+    terminals: Array<string> | null;
+    employes: Array<string> | null;
     extra?: { [key: string]: any } | null;
 }
 

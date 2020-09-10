@@ -1399,9 +1399,11 @@ const models: TsoaRoute.Models = {
     "IStoreCreateRequest": {
         "dataType": "refObject",
         "properties": {
-            "active": { "dataType": "boolean", "required": true },
+            "active": { "dataType": "boolean" },
             "name": { "dataType": "string", "required": true },
             "address": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }], "required": true },
+            "terminals": { "dataType": "union", "subSchemas": [{ "dataType": "array", "array": { "dataType": "string" } }, { "dataType": "enum", "enums": [null] }], "required": true },
+            "employes": { "dataType": "union", "subSchemas": [{ "dataType": "array", "array": { "dataType": "string" } }, { "dataType": "enum", "enums": [null] }], "required": true },
             "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
         "additionalProperties": false,
@@ -1413,6 +1415,8 @@ const models: TsoaRoute.Models = {
             "active": { "dataType": "boolean" },
             "name": { "dataType": "string" },
             "address": { "dataType": "string" },
+            "terminals": { "dataType": "union", "subSchemas": [{ "dataType": "array", "array": { "dataType": "string" } }, { "dataType": "enum", "enums": [null] }], "required": true },
+            "employes": { "dataType": "union", "subSchemas": [{ "dataType": "array", "array": { "dataType": "string" } }, { "dataType": "enum", "enums": [null] }], "required": true },
             "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
         "additionalProperties": false,
