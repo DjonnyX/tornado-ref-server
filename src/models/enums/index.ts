@@ -7,6 +7,8 @@ import { ScenarioCommonActionTypes } from "./ScenarioCommonActionTypes";
 import { ScenarioProductActionTypes } from "./ScenarioProductActionTypes";
 import { ScenarioSelectorActionTypes } from "./ScenarioSelectorActionTypes";
 import { ScenarioProgrammActionTypes } from "./ScenarioProgrammActionTypes";
+import { TerminalStatusTypes } from "./TerminalStatusTypes";
+import { TerminalTypes } from "./TerminalTypes";
 
 export {
     NodeTypes,
@@ -18,4 +20,6 @@ export {
     ScenarioProductActionTypes,
     ScenarioSelectorActionTypes,
     ScenarioProgrammActionTypes,
+    TerminalStatusTypes,
+    TerminalTypes,
 };
