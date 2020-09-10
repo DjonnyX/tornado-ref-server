@@ -1,6 +1,6 @@
 import { RefTypes, ITerminal, TerminalModel } from "../models";
-import { Controller, Route, Get, Tags, OperationId, Example, Security } from "tsoa";
-import { getRef } from "../db/refs";
+import { Controller, Route, Get, Tags, OperationId, Example, Security, Put, Body, Delete } from "tsoa";
+import { getRef, riseRefVersion } from "../db/refs";
 import { formatTerminalModel } from "../utils/terminal";
 import { IRefItem } from "./RefsController";
 import { TerminalTypes, TerminalStatusTypes } from "../models/enums";
@@ -36,7 +36,7 @@ interface ITerminalResponse {
     terminals: Array<string> | null;
     employes: Array<string> | null;
     extra?: { [key: string]: any } | null;
-}
+}*/
 
 interface ITerminalUpdateRequest {
     active?: boolean;
@@ -45,7 +45,7 @@ interface ITerminalUpdateRequest {
     terminals: Array<string> | null;
     employes: Array<string> | null;
     extra?: { [key: string]: any } | null;
-}*/
+}
 
 const RESPONSE_TEMPLATE: ITerminalItem = {
     status: TerminalStatusTypes.ONLINE,
@@ -158,7 +158,7 @@ export class TerminalController extends Controller {
                 ]
             };
         }
-    }
+    }*/
 
     @Put("{id}")
     @Security("jwt")
@@ -236,5 +236,5 @@ export class TerminalController extends Controller {
                 ]
             };
         }
-    }*/
+    }
 }
