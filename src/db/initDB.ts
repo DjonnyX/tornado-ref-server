@@ -128,6 +128,10 @@ export const initRefs = async (): Promise<void> => {
             name: RefTypes.STORES,
             version: 1,
             lastUpdate,
+        }, {
+            name: RefTypes.TERMINALS,
+            version: 1,
+            lastUpdate,
         },
     ];
 
