@@ -148,7 +148,7 @@ export const deleteAsset = (assetPath: string): Promise<IAsset> => {
 };
 
 @Route("/assets")
-@Tags("Assets")
+@Tags("Asset")
 export class AssetsController extends Controller {
     @Get()
     @Security("jwt")
@@ -180,7 +180,7 @@ export class AssetsController extends Controller {
     }
 }
 
-@Route("/asset")
+/*@Route("/asset")
 @Tags("Asset")
 export class AssetController extends Controller {
     @Post()
@@ -267,3 +267,4 @@ export class AssetController extends Controller {
         };
     }
 }
+*/

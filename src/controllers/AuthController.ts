@@ -151,7 +151,7 @@ const validateForgotPasswordParams = (params: IForgotPasswordParams): joi.Valida
 };
 
 @Route("/auth/signup")
-@Tags("Signup")
+@Tags("Auth")
 export class SignupController extends Controller {
     @Post()
     @Example<SignupResponse>({
@@ -228,7 +228,7 @@ export class SignupController extends Controller {
 }
 
 @Route("/auth/signin")
-@Tags("Signin")
+@Tags("Auth")
 export class SigninController extends Controller {
     @Post()
     @Example<SigninResponse>({
@@ -310,7 +310,7 @@ export class SigninController extends Controller {
 }
 
 @Route("/auth/signout")
-@Tags("Signout")
+@Tags("Auth")
 export class SignoutController extends Controller {
     @Post()
     @Example<SignoutResponse>({
@@ -330,7 +330,7 @@ export class SignoutController extends Controller {
 }
 
 @Route("/auth/reset-password")
-@Tags("Reset password")
+@Tags("Auth")
 export class ResetPasswordController extends Controller {
     @Post()
     @Example<ResetPasswordResponse>({
@@ -442,7 +442,7 @@ export class ResetPasswordController extends Controller {
 }
 
 @Route("/auth/forgot-password")
-@Tags("Forgot password")
+@Tags("Auth")
 export class ForgotPasswordController extends Controller {
     @Post()
     @Example<ForgotPasswordResponse>({
@@ -555,7 +555,7 @@ export class ForgotPasswordController extends Controller {
 }
 
 @Route("/auth/verify-reset-password-token")
-@Tags("Verify reset password token")
+@Tags("Auth")
 export class VerifyResetPasswordTokenController extends Controller {
     @Post()
     @Example<VerifyResetPasswordTokenResponse>({

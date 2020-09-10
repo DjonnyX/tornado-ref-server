@@ -97,7 +97,7 @@ const ScenarioSchema = new Schema({
 });
 
 const NodeSchema = new Schema({
-    active: { type: Schema.Types.Boolean, required: true },
+    active: { type: Schema.Types.Boolean, required: true, default: true },
     type: {
         type: String, enum: [
             NodeTypes.SELECTOR,

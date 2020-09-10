@@ -26,7 +26,7 @@ interface IAd extends Document {
 }
 
 const AdSchema = new Schema({
-    active: { type: Schema.Types.Boolean, required: true },
+    active: { type: Boolean, required: true, default: true },
     name: { type: String, required: false },
     type: {
         type: String,

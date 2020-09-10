@@ -166,7 +166,7 @@ const validateUpdateNode = (node: INodeUpdateRequest): joi.ValidationResult => {
 };
 
 @Route("/root-nodes")
-@Tags("Root nodes")
+@Tags("Node")
 export class RootNodesController extends Controller {
     @Get()
     @Security("jwt")
