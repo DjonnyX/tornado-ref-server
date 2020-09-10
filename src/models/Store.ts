@@ -13,7 +13,7 @@ interface IStore {
 interface IStoreDocument extends Document, IStore {}
 
 const AdSchema = new Schema({
-    active: { type: Boolean, required: true },
+    active: { type: Boolean, required: true, default: true },
     name: { type: String, required: false },
     terminals: [{ type: Schema.Types.ObjectId }],
     employes: [{ type: Schema.Types.ObjectId }],
