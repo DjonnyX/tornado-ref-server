@@ -67,7 +67,6 @@ export const RESPONSE_TEMPLATE: IAdItem = {
             color: "#000000",
             resources: {
                 main: "g8h07f79bcf86cd7994f9d7k",
-                thumbnail: "g8h07f79bcf86cd7994f9d7k",
                 icon: "k7h97f79bcf86cd7994f0i9e",
             },
             assets: ["g8h07f79bcf86cd7994f9d7k"],

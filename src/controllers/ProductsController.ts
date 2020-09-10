@@ -76,7 +76,6 @@ export const RESPONSE_TEMPLATE: IProductItem = {
             color: "#000000",
             resources: {
                 main: "g8h07f79bcf86cd7994f9d7k",
-                thumbnail: "gt7h7f79bcf86cd7994f9d6u",
                 icon: "gt7h7f79bcf86cd7994f9d6u",
             },
             assets: ["g8h07f79bcf86cd7994f9d7k",],

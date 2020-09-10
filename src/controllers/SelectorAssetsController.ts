@@ -77,7 +77,6 @@ interface ISelectorAssetUpdateRequest {
 
 export enum SelectorImageTypes {
     MAIN = "main",
-    THUMBNAIL = "thumbnail",
     ICON = "icon",
 }
 
@@ -94,7 +93,6 @@ const contentsToDefault = (contents: ISelectorContents, langCode: string) => {
     if (!result[langCode].resources) {
         result[langCode].resources = {
             main: null,
-            thumbnail: null,
             icon: null,
         };
     }

@@ -77,7 +77,6 @@ interface IProductAssetUpdateRequest {
 
 export enum ProductImageTypes {
     MAIN = "main",
-    THUMBNAIL = "thumbnail",
     ICON = "icon",
 }
 
@@ -94,7 +93,6 @@ const contentsToDefault = (contents: IProductContents, langCode: string) => {
     if (!result[langCode].resources) {
         result[langCode].resources = {
             main: null,
-            thumbnail: null,
             icon: null,
         };
     }
