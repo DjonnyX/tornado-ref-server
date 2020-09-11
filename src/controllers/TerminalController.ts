@@ -5,7 +5,9 @@ import { formatTerminalModel } from "../utils/terminal";
 import { IRefItem } from "./RefsController";
 import { TerminalTypes, TerminalStatusTypes } from "../models/enums";
 
-interface ITerminalItem extends ITerminal {}
+interface ITerminalItem extends ITerminal {
+    id?: string;
+}
 
 interface ITerminalMeta {
     ref: IRefItem;
