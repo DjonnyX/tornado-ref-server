@@ -121,7 +121,7 @@ export const initRefs = async (): Promise<void> => {
             version: 1,
             lastupdate,
         }, {
-            name: RefTypes.TRANSLATION,
+            name: RefTypes.TRANSLATIONS,
             version: 1,
             lastupdate,
         }, {
