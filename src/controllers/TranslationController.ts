@@ -60,7 +60,7 @@ const RESPONSE_TEMPLATE: ITranslationItem = {
 
 const META_TEMPLATE: TranslationMeta = {
     ref: {
-        name: RefTypes.TRANSLATION,
+        name: RefTypes.TRANSLATIONS,
         version: 1,
         lastupdate: new Date(),
     }
