@@ -261,7 +261,7 @@ export class OrderTypeController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(RefTypes.SELECTORS);
+            const ref = await riseRefVersion(RefTypes.ORDER_TYPES);
             return {
                 meta: { ref },
                 data: formatOrderTypeModel(item),
