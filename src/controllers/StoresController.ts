@@ -4,7 +4,9 @@ import { getRef, riseRefVersion } from "../db/refs";
 import { formatStoreModel } from "../utils/store";
 import { IRefItem } from "./RefsController";
 
-interface IStoreItem extends IStore {}
+interface IStoreItem extends IStore {
+    id?: string;
+}
 
 interface IStoreMeta {
     ref: IRefItem;
@@ -67,7 +69,7 @@ const META_TEMPLATE: IStoreMeta = {
     ref: {
         name: RefTypes.STORES,
         version: 1,
-        lastUpdate: new Date(),
+        lastupdate: new Date(),
     }
 };
 

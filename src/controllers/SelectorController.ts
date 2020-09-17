@@ -83,7 +83,7 @@ const META_TEMPLATE: ISelectorsMeta = {
     ref: {
         name: RefTypes.SELECTORS,
         version: 1,
-        lastUpdate: new Date(),
+        lastupdate: new Date(),
     }
 };
 

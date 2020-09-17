@@ -113,14 +113,14 @@ const META_TEMPLATE = {
         ref: {
             name: RefTypes.PRODUCTS,
             version: 1,
-            lastUpdate: new Date(),
+            lastupdate: new Date(),
         },
     },
     asset: {
         ref: {
             name: RefTypes.ASSETS,
             version: 1,
-            lastUpdate: new Date(),
+            lastupdate: new Date(),
         },
     },
 };

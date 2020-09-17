@@ -72,7 +72,7 @@ const META_TEMPLATE = {
     ref: {
         name: RefTypes.ASSETS,
         version: 1,
-        lastUpdate: new Date(),
+        lastupdate: new Date(),
     },
 };
 

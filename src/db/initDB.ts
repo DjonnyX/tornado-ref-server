@@ -69,69 +69,69 @@ const mergeDefaultTranslations = async () => {
 
 export const initRefs = async (): Promise<void> => {
 
-    const lastUpdate = Date.now();
+    const lastupdate = Date.now();
 
     const INITIAL_STATE = [
         {
             name: RefTypes.ROLES,
             version: 1,
-            lastUpdate,
+            lastupdate,
         }, {
             name: RefTypes.USERS,
             version: 1,
-            lastUpdate,
+            lastupdate,
         }, {
             name: RefTypes.NODES,
             version: 1,
-            lastUpdate,
+            lastupdate,
         }, {
             name: RefTypes.PRODUCTS,
             version: 1,
-            lastUpdate,
+            lastupdate,
         }, {
             name: RefTypes.SELECTORS,
             version: 1,
-            lastUpdate,
+            lastupdate,
         }, {
             name: RefTypes.ASSETS,
             version: 1,
-            lastUpdate,
+            lastupdate,
         }, {
             name: RefTypes.TAGS,
             version: 1,
-            lastUpdate,
+            lastupdate,
         }, {
             name: RefTypes.BUSINESS_PERIODS,
             version: 1,
-            lastUpdate,
+            lastupdate,
         }, {
             name: RefTypes.CURRENCIES,
             version: 1,
-            lastUpdate,
+            lastupdate,
         }, {
             name: RefTypes.ADS,
             version: 1,
-            lastUpdate,
+            lastupdate,
         }, {
             name: RefTypes.LANGUAGES,
             version: 1,
-            lastUpdate,
+            lastupdate,
         }, {
             name: RefTypes.ORDER_TYPES,
             version: 1,
-            lastUpdate,
+            lastupdate,
         }, {
-            name: RefTypes.TRANSLATION,
+            name: RefTypes.TRANSLATIONS,
             version: 1,
-            lastUpdate,
+            lastupdate,
         }, {
             name: RefTypes.STORES,
             version: 1,
-            lastUpdate,
+            lastupdate,
         }, {
             name: RefTypes.TERMINALS,
             version: 1,
-            lastUpdate,
+            lastupdate,
         },
     ];
 

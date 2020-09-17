@@ -63,11 +63,10 @@ export const RESPONSE_TEMPLATE: IAdItem = {
     contents: {
         "RU": {
             name: "Ads on concert",
-            description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+            duration: 10,
             color: "#000000",
             resources: {
                 main: "g8h07f79bcf86cd7994f9d7k",
-                icon: "k7h97f79bcf86cd7994f0i9e",
             },
             assets: ["g8h07f79bcf86cd7994f9d7k"],
         }
@@ -79,7 +78,7 @@ const META_TEMPLATE: IAdsMeta = {
     ref: {
         name: RefTypes.ADS,
         version: 1,
-        lastUpdate: new Date(),
+        lastupdate: new Date(),
     }
 };
 

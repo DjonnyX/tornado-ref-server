@@ -88,7 +88,7 @@ const META_TEMPLATE: LanguageMeta = {
     ref: {
         name: RefTypes.LANGUAGES,
         version: 1,
-        lastUpdate: new Date(),
+        lastupdate: new Date(),
     }
 };
 
@@ -207,7 +207,7 @@ export class LanguageController extends Controller {
             mergeTranslation(translation, false);
 
             const savedTranslationItem = await translation.save();
-            await riseRefVersion(RefTypes.TRANSLATION);
+            await riseRefVersion(RefTypes.TRANSLATIONS);
 
             item.translation = savedTranslationItem._id;
 
@@ -346,7 +346,7 @@ export class LanguageController extends Controller {
                     translation.language = languageCode;
 
                     await translation.save();
-                    await riseRefVersion(RefTypes.TRANSLATION);
+                    await riseRefVersion(RefTypes.TRANSLATIONS);
                 }
             }
 
@@ -429,7 +429,7 @@ export class LanguageController extends Controller {
 
         try {
             await TranslationModel.findOneAndDelete({ _id: language.translation });
-            await riseRefVersion(RefTypes.TRANSLATION);
+            await riseRefVersion(RefTypes.TRANSLATIONS);
         } catch (err) {
             this.setStatus(500);
             return {
