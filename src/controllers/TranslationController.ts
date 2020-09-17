@@ -60,9 +60,9 @@ const RESPONSE_TEMPLATE: ITranslationItem = {
 
 const META_TEMPLATE: TranslationMeta = {
     ref: {
-        name: RefTypes.TRANSLATION,
+        name: RefTypes.TRANSLATIONS,
         version: 1,
-        lastUpdate: new Date(),
+        lastupdate: new Date(),
     }
 };
 
@@ -80,7 +80,7 @@ export class TranslationsController extends Controller {
     public async getAll(): Promise<TranslationsResponse> {
         try {
             const items = await TranslationModel.find({});
-            const ref = await getRef(RefTypes.TRANSLATION);
+            const ref = await getRef(RefTypes.TRANSLATIONS);
             return {
                 meta: { ref },
                 data: items.map(v => formatTranslationModel(v)),
@@ -113,7 +113,7 @@ export class TranslationController extends Controller {
     public async getOne(id: string): Promise<TranslationResponse> {
         try {
             const item = await TranslationModel.findById(id);
-            const ref = await getRef(RefTypes.TRANSLATION);
+            const ref = await getRef(RefTypes.TRANSLATIONS);
             return {
                 meta: { ref },
                 data: formatTranslationModel(item),
@@ -142,7 +142,7 @@ export class TranslationController extends Controller {
         try {
             const item = new TranslationModel(request);
             const savedItem = await item.save();
-            const ref = await riseRefVersion(RefTypes.TRANSLATION);
+            const ref = await riseRefVersion(RefTypes.TRANSLATIONS);
             return {
                 meta: { ref },
                 data: formatTranslationModel(savedItem),
@@ -180,7 +180,7 @@ export class TranslationController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(RefTypes.TRANSLATION);
+            const ref = await riseRefVersion(RefTypes.TRANSLATIONS);
             return {
                 meta: { ref },
                 data: formatTranslationModel(item),
@@ -207,7 +207,7 @@ export class TranslationController extends Controller {
     public async delete(id: string): Promise<TranslationResponse> {
         try {
             await TranslationModel.findOneAndDelete({ _id: id });
-            const ref = await riseRefVersion(RefTypes.TRANSLATION);
+            const ref = await riseRefVersion(RefTypes.TRANSLATIONS);
             return {
                 meta: { ref },
             };

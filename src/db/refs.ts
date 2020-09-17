@@ -11,7 +11,7 @@ export const getRef = async (name: string): Promise<IRefItem> => {
     return {
         name: ref.name,
         version: ref.version,
-        lastUpdate: ref.lastUpdate
+        lastupdate: ref.lastupdate
     };
 };
 
@@ -23,7 +23,7 @@ export const riseRefVersion = async (name: string): Promise<IRefItem> => {
         throw Error("Error in getting reference.");
     }
     ref.version++;
-    ref.lastUpdate = new Date(Date.now());
+    ref.lastupdate = new Date(Date.now());
     try {
         await ref.save();
     } catch (e) {
@@ -32,6 +32,6 @@ export const riseRefVersion = async (name: string): Promise<IRefItem> => {
     return {
         name: ref.name,
         version: ref.version,
-        lastUpdate: ref.lastUpdate
+        lastupdate: ref.lastupdate
     };
 };

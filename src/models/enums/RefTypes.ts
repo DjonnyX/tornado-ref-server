@@ -11,7 +11,7 @@ export enum RefTypes {
     BUSINESS_PERIODS = "business-periods",
     ADS = "ads",
     LANGUAGES = "languages",
-    TRANSLATION = "translation",
+    TRANSLATIONS = "translations",
     STORES = "stores",
     TERMINALS = "terminals",
 }

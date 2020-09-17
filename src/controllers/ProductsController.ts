@@ -110,7 +110,7 @@ const META_TEMPLATE: IProductsMeta = {
     ref: {
         name: RefTypes.PRODUCTS,
         version: 1,
-        lastUpdate: new Date(),
+        lastupdate: new Date(),
     }
 };
 
