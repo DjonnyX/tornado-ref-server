@@ -1,4 +1,4 @@
-import { RefTypes, CurrencyModel } from "../models/index";
+import { RefTypes, CurrencyModel, ICurrency } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatCurrencyModel } from "../utils/currency";
@@ -6,6 +6,7 @@ import { IRefItem } from "./RefsController";
 
 interface ICurrencyItem {
     id: string;
+    isDefault: boolean;
     active: boolean;
     code: string;
     name: string;
@@ -37,6 +38,7 @@ interface CurrencyResponse {
 
 interface CurrencyCreateRequest {
     active?: boolean;
+    isDefault: boolean;
     code: string;
     name: string;
     symbol: string;
@@ -45,6 +47,7 @@ interface CurrencyCreateRequest {
 
 interface CurrencyUpdateRequest {
     active?: boolean;
+    isDefault: boolean;
     code?: string;
     name?: string;
     symbol?: string;
@@ -53,6 +56,7 @@ interface CurrencyUpdateRequest {
 
 const RESPONSE_TEMPLATE: ICurrencyItem = {
     id: "507c7f79bcf86cd7994f6c0e",
+    isDefault: true,
     active: true,
     code: "RUB",
     name: "Рубль",
@@ -141,7 +145,24 @@ export class CurrencyController extends Controller {
         data: RESPONSE_TEMPLATE,
     })
     public async create(@Body() request: CurrencyCreateRequest): Promise<CurrencyResponse> {
+        let currencies: Array<ICurrency>;
+
         try {
+            currencies = await CurrencyModel.find({});
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Get currencies error. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        try {
+            request.isDefault = currencies.length === 0;
             const item = new CurrencyModel(request);
             const savedItem = await item.save();
             const ref = await riseRefVersion(RefTypes.CURRENCIES);
@@ -170,16 +191,105 @@ export class CurrencyController extends Controller {
         data: RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() request: CurrencyUpdateRequest): Promise<CurrencyResponse> {
+        let item: ICurrency;
+
+        let isDefault: boolean;
+
+        let currencyCode: string;
+
         try {
-            const item = await CurrencyModel.findById(id);
+            item = await CurrencyModel.findById(id);
 
             for (const key in request) {
                 item[key] = request[key];
+
+                if (key === "code") {
+                    currencyCode = request[key];
+                }
+
                 if (key === "extra") {
                     item.markModified(key);
                 }
             }
+            isDefault = item.isDefault;
 
+            await item.save();
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Caught error. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        try {
+            const currencies: Array<ICurrency> = await CurrencyModel.find({});
+
+            const promises = new Array<Promise<any>>();
+
+            if (isDefault) {
+                currencies.forEach(currency => {
+                    if (currency.code !== currencyCode) {
+                        if (!!currency.isDefault) {
+                            currency.isDefault = false;
+                            promises.push(new Promise(async (resolve, reject) => {
+                                try {
+                                    await currency.save();
+                                } catch (err) {
+                                    reject(err);
+                                }
+                                resolve();
+                            }));
+                        }
+                    }
+                });
+            } else {
+                let needSetupDefault = true;
+                let firstCurrency: ICurrency;
+
+                currencies.forEach(currency => {
+                    if (!firstCurrency) {
+                        firstCurrency = currency;
+                    }
+
+                    if (currency.isDefault) {
+                        needSetupDefault = false;
+                    }
+                });
+
+                if (needSetupDefault && firstCurrency) {
+                    firstCurrency.isDefault = true;
+
+                    promises.push(new Promise(async (resolve, reject) => {
+                        try {
+                            await firstCurrency.save();
+                        } catch (err) {
+                            reject(err);
+                        }
+                        resolve();
+                    }));
+                }
+            }
+
+            await Promise.all(promises);
+
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Set default language error. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        try {
             await item.save();
 
             const ref = await riseRefVersion(RefTypes.CURRENCIES);

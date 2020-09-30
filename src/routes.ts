@@ -511,6 +511,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "id": { "dataType": "string", "required": true },
+            "isDefault": { "dataType": "boolean", "required": true },
             "active": { "dataType": "boolean", "required": true },
             "code": { "dataType": "string", "required": true },
             "name": { "dataType": "string", "required": true },
@@ -544,6 +545,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "active": { "dataType": "boolean" },
+            "isDefault": { "dataType": "boolean", "required": true },
             "code": { "dataType": "string", "required": true },
             "name": { "dataType": "string", "required": true },
             "symbol": { "dataType": "string", "required": true },
@@ -556,6 +558,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "active": { "dataType": "boolean" },
+            "isDefault": { "dataType": "boolean", "required": true },
             "code": { "dataType": "string" },
             "name": { "dataType": "string" },
             "symbol": { "dataType": "string" },
