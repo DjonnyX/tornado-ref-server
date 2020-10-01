@@ -19,6 +19,7 @@ export interface IOrderTypeContents {
 
 interface IOrderType extends Document {
     active: boolean;
+    isDefault: boolean;
     name: string,
     contents: IOrderTypeContents;
     extra?: { [key: string]: any } | null;
@@ -26,6 +27,7 @@ interface IOrderType extends Document {
 
 const OrderTypeSchema = new Schema({
     active: { type: Schema.Types.Boolean, required: true, default: true },
+    isDefault: { type: Schema.Types.Boolean, required: true, default: true },
     name: { type: String, required: false },
     contents: { type: Schema.Types.Mixed, default: {} },
     extra: { type: Schema.Types.Mixed, required: false },
