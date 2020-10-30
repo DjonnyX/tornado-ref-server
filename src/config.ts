@@ -14,7 +14,8 @@ export const DB_NAME = process.env["DB_NAME"];
 export const DB_URI = process.env["DB_URI"];
 export const PORT = Number.parseInt(process.env["PORT"]);
 export const SWAGGER_ROUTE = process.env["SWAGGER_ROUTE"];
-export const LOCALIZATION_TEMPLATE_PATH = path.normalize("translate/template.json");
+export const LOCALIZATION_TEMPLATE_PATH = path.normalize("template/localization.json");
+export const CURRENCY_TEMPLATE_PATH = path.normalize("template/currency.json");
 
 if (!AUTH_PRIVATE_KEY) {
     logger.error("No client secret. Set AUTH_PRIVATE_KEY environment variable.");
