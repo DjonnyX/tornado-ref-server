@@ -1,9 +1,12 @@
 import * as fs from "fs";
-import { RefModel, RefTypes, NodeModel, TranslationModel, LanguageModel, ILanguage } from "../models/index";
+import { RefModel, RefTypes, NodeModel, TranslationModel, LanguageModel, ILanguage, CurrencyModel, ICurrency } from "../models/index";
 import { NodeTypes } from "../models/enums";
 import { mergeTranslation, getTemplateLangs } from "../utils/translation";
-import { LOCALIZATION_TEMPLATE_PATH } from "../config";
+import { LOCALIZATION_TEMPLATE_PATH, CURRENCY_TEMPLATE_PATH } from "../config";
 import { ITranslationTemplate } from "../interfaces/ITranslationTemplate";
+import { ICurrencyTemplate } from "../interfaces";
+import { riseRefVersion } from "./refs";
+
 
 const createRootNode = async () => {
     const existsRootNode = await NodeModel.findOne({ type: NodeTypes.KIOSK_ROOT });
@@ -64,6 +67,37 @@ const mergeDefaultTranslations = async () => {
         });
 
         return Promise.all(promises);
+    }
+}
+
+const createDefaultCurrencyFromTemplate = async () => {
+    const template: ICurrencyTemplate = JSON.parse(fs.readFileSync(CURRENCY_TEMPLATE_PATH).toString("utf-8"));
+    
+    const currencies = await CurrencyModel.find({});
+    let isDefaultSetted = false;
+    let isTemplateCurrencyExists = false;
+
+    currencies.forEach(item => {
+        if (item.isDefault) {
+            isDefaultSetted = true;
+        }
+        if (item.code === template.code) {
+            isTemplateCurrencyExists = true;
+        }
+    });
+
+    if (!isTemplateCurrencyExists) {
+        const templateCurrency = new CurrencyModel({
+            isDefault: !isDefaultSetted,
+            active: true,
+            name: template.name,
+            code: template.code,
+            symbol: template.symbol,
+        });
+
+        await templateCurrency.save();
+
+        await riseRefVersion(RefTypes.CURRENCIES);
     }
 }
 
@@ -150,6 +184,9 @@ export const initRefs = async (): Promise<void> => {
 
     // translations
     await mergeDefaultTranslations();
+
+    // default currency
+    await createDefaultCurrencyFromTemplate();
 
     console.info("Refs are initialized.");
 };
