@@ -1,5 +1,5 @@
 import { ProductModel, IProduct, IReceiptItem, RefTypes, NodeModel, IPrice, ILanguage, LanguageModel } from "../models/index";
-import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security } from "tsoa";
+import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Request } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { NodeTypes } from "../models/enums";
 import { deleteNodesChain } from "../utils/node";
@@ -9,6 +9,7 @@ import { IProductContents } from "../models/Product";
 import { AssetModel } from "../models/Asset";
 import { deleteAsset } from "./AssetsController";
 import { IRefItem } from "./RefsController";
+import { IAuthRequest } from "../interfaces";
 
 export interface IProductItem {
     id?: string;
@@ -125,10 +126,10 @@ export class ProductsController extends Controller {
         meta: META_TEMPLATE,
         data: [RESPONSE_TEMPLATE],
     })
-    public async getAll(): Promise<IProductsResponse> {
+    public async getAll(@Request() request: IAuthRequest): Promise<IProductsResponse> {
         try {
-            const items = await ProductModel.find({});
-            const ref = await getRef(RefTypes.PRODUCTS);
+            const items = await ProductModel.find({ $client: request.client });
+            const ref = await getRef(request.client, RefTypes.PRODUCTS);
             return {
                 meta: { ref },
                 data: items.map(v => formatProductModel(v)),
@@ -158,10 +159,10 @@ export class ProductController extends Controller {
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
-    public async getOne(id: string): Promise<IProductResponse> {
+    public async getOne(id: string, @Request() request: IAuthRequest): Promise<IProductResponse> {
         try {
             const item = await ProductModel.findById(id);
-            const ref = await getRef(RefTypes.PRODUCTS);
+            const ref = await getRef(request.client, RefTypes.PRODUCTS);
             return {
                 meta: { ref },
                 data: formatProductModel(item),
@@ -186,12 +187,13 @@ export class ProductController extends Controller {
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
-    public async create(@Body() request: IProductCreateRequest): Promise<IProductResponse> {
+    public async create(@Body() body: IProductCreateRequest, @Request() request: IAuthRequest): Promise<IProductResponse> {
         let params: IProductItem;
         try {
 
             // создается корневой нод
             const jointNode = new NodeModel({
+                $client: request.client,
                 active: true,
                 type: NodeTypes.PRODUCT_JOINT,
                 parentId: null,
@@ -200,7 +202,7 @@ export class ProductController extends Controller {
             });
             const jointRootNode = await jointNode.save();
 
-            params = { ...request, joint: jointRootNode._id } as any;
+            params = { ...body, joint: jointRootNode._id } as any;
         } catch (err) {
             this.setStatus(500);
             return {
@@ -216,7 +218,7 @@ export class ProductController extends Controller {
         try {
             const item = new ProductModel(params);
             const savedItem = await item.save();
-            const ref = await riseRefVersion(RefTypes.PRODUCTS);
+            const ref = await riseRefVersion(request.client, RefTypes.PRODUCTS);
             return {
                 meta: { ref },
                 data: formatProductModel(savedItem),
@@ -241,10 +243,10 @@ export class ProductController extends Controller {
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
-    public async update(id: string, @Body() request: IProductUpdateRequest): Promise<IProductResponse> {
+    public async update(id: string, @Body() body: IProductUpdateRequest, @Request() request: IAuthRequest): Promise<IProductResponse> {
         let defaultLanguage: ILanguage;
         try {
-            defaultLanguage = await LanguageModel.findOne({ isDefault: true });
+            defaultLanguage = await LanguageModel.findOne({ $client: request.client, isDefault: true });
         } catch (err) {
             this.setStatus(500);
             return {
@@ -261,16 +263,16 @@ export class ProductController extends Controller {
             const item = await ProductModel.findById(id);
 
             let lastContents: IProductContents;
-            for (const key in request) {
+            for (const key in body) {
                 if (key === "joint") {
                     continue;
                 }
-                
+
                 if (key === "contents") {
                     lastContents = item.contents;
                 }
 
-                item[key] = request[key];
+                item[key] = body[key];
 
                 if (key === "extra" || key === "contents") {
                     if (key === "contents") {
@@ -313,7 +315,7 @@ export class ProductController extends Controller {
             await Promise.all(promises);
 
             if (isAssetsChanged) {
-                await riseRefVersion(RefTypes.ASSETS);
+                await riseRefVersion(request.client, RefTypes.ASSETS);
             }
 
             // выставление ассетов от предыдущего состояния
@@ -331,7 +333,7 @@ export class ProductController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(RefTypes.PRODUCTS);
+            const ref = await riseRefVersion(request.client, RefTypes.PRODUCTS);
             return {
                 meta: { ref },
                 data: formatProductModel(item),
@@ -355,7 +357,7 @@ export class ProductController extends Controller {
     @Example<IProductResponse>({
         meta: META_TEMPLATE,
     })
-    public async delete(id: string): Promise<IProductResponse> {
+    public async delete(id: string, @Request() request: IAuthRequest): Promise<IProductResponse> {
         let product: IProduct;
         try {
             product = await ProductModel.findByIdAndDelete(id);
@@ -394,7 +396,7 @@ export class ProductController extends Controller {
             await Promise.all(promises);
 
             if (!!isAssetsChanged) {
-                await riseRefVersion(RefTypes.ASSETS);
+                await riseRefVersion(request.client, RefTypes.ASSETS);
             }
         } catch (err) {
             this.setStatus(500);
@@ -423,7 +425,7 @@ export class ProductController extends Controller {
         }
 
         try {
-            const ref = await riseRefVersion(RefTypes.PRODUCTS);
+            const ref = await riseRefVersion(request.client, RefTypes.PRODUCTS);
             return {
                 meta: { ref }
             };

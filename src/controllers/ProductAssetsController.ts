@@ -11,6 +11,7 @@ import { uploadAsset, deleteAsset, IAssetItem, ICreateAssetsResponse } from "./A
 import { AssetModel, IAsset } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
 import { IProductContents } from "../models/Product";
+import { IAuthRequest } from "src/interfaces";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProductAsset extends IAssetItem { }
@@ -257,7 +258,7 @@ export class ProductAssetsController extends Controller {
             product: PRODUCT_RESPONSE_TEMPLATE,
         }
     })
-    public async create(productId: string, langCode: string, @Request() request: express.Request): Promise<IProductCreateAssetsResponse> {
+    public async create(productId: string, langCode: string, @Request() request: IAuthRequest): Promise<IProductCreateAssetsResponse> {
         let assetsInfo: ICreateAssetsResponse;
         try {
             assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA]);
@@ -299,7 +300,7 @@ export class ProductAssetsController extends Controller {
             product.contents = contents;
             product.markModified("contents");
 
-            productRef = await riseRefVersion(RefTypes.PRODUCTS);
+            productRef = await riseRefVersion(request.client, RefTypes.PRODUCTS);
             await product.save();
         } catch (err) {
             this.setStatus(500);
@@ -339,7 +340,7 @@ export class ProductAssetsController extends Controller {
             product: PRODUCT_RESPONSE_TEMPLATE,
         }
     })
-    public async resource(productId: string, langCode: string, resourceType: ProductImageTypes, @Request() request: express.Request): Promise<IProductCreateAssetsResponse> {
+    public async resource(productId: string, langCode: string, resourceType: ProductImageTypes, @Request() request: IAuthRequest): Promise<IProductCreateAssetsResponse> {
         let assetsInfo: ICreateAssetsResponse;
         try {
             assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA], false);
@@ -373,7 +374,7 @@ export class ProductAssetsController extends Controller {
 
         let defaultLanguage: ILanguage;
         try {
-            defaultLanguage = await LanguageModel.findOne({ isDefault: true });
+            defaultLanguage = await LanguageModel.findOne({ $client: request.client, isDefault: true });
         } catch (err) {
             this.setStatus(500);
             return {
@@ -415,7 +416,7 @@ export class ProductAssetsController extends Controller {
                     await deleteAsset(asset.path);
                     await deleteAsset(asset.mipmap.x128);
                     await deleteAsset(asset.mipmap.x32);
-                    await riseRefVersion(RefTypes.ASSETS);
+                    await riseRefVersion(request.client, RefTypes.ASSETS);
                 }
             } catch (err) {
                 this.setStatus(500);
@@ -452,7 +453,7 @@ export class ProductAssetsController extends Controller {
 
             savedProduct = await product.save();
 
-            productRef = await riseRefVersion(RefTypes.PRODUCTS);
+            productRef = await riseRefVersion(request.client, RefTypes.PRODUCTS);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -491,7 +492,7 @@ export class ProductAssetsController extends Controller {
             product: PRODUCT_RESPONSE_TEMPLATE,
         }
     })
-    public async update(productId: string, langCode: string, assetId: string, @Body() request: IProductAssetUpdateRequest): Promise<IProductCreateAssetsResponse> {
+    public async update(productId: string, langCode: string, assetId: string, @Body() body: IProductAssetUpdateRequest, @Request() request: IAuthRequest): Promise<IProductCreateAssetsResponse> {
 
         let product: IProduct;
         try {
@@ -510,7 +511,7 @@ export class ProductAssetsController extends Controller {
 
         let productRef: IRefItem;
         try {
-            productRef = await getRef(RefTypes.PRODUCTS);
+            productRef = await getRef(request.client, RefTypes.PRODUCTS);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -526,13 +527,13 @@ export class ProductAssetsController extends Controller {
         try {
             const item = await AssetModel.findById(assetId);
 
-            for (const key in request) {
-                item[key] = request[key];
+            for (const key in body) {
+                item[key] = body[key];
             }
 
             await item.save();
 
-            const ref = await riseRefVersion(RefTypes.ASSETS);
+            const ref = await riseRefVersion(request.client, RefTypes.ASSETS);
             return {
                 meta: {
                     asset: {
@@ -566,7 +567,7 @@ export class ProductAssetsController extends Controller {
     @Example<IProductDeleteAssetsResponse>({
         meta: META_TEMPLATE
     })
-    public async delete(productId: string, langCode: string, assetId: string): Promise<IProductDeleteAssetsResponse> {
+    public async delete(productId: string, langCode: string, assetId: string, @Request() request: IAuthRequest): Promise<IProductDeleteAssetsResponse> {
         let product: IProduct;
         try {
             product = await ProductModel.findById(productId);
@@ -593,7 +594,7 @@ export class ProductAssetsController extends Controller {
                     await deleteAsset(asset.path);
                     await deleteAsset(asset.mipmap.x128);
                     await deleteAsset(asset.mipmap.x32);
-                    assetRef = await riseRefVersion(RefTypes.ASSETS);
+                    assetRef = await riseRefVersion(request.client, RefTypes.ASSETS);
                 }
             } catch (err) {
                 this.setStatus(500);
@@ -618,7 +619,7 @@ export class ProductAssetsController extends Controller {
 
             await product.save();
 
-            productsRef = await riseRefVersion(RefTypes.PRODUCTS);
+            productsRef = await riseRefVersion(request.client, RefTypes.PRODUCTS);
             return {
                 meta: {
                     product: {

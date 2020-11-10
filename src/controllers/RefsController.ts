@@ -1,5 +1,6 @@
 import { RefModel, IRef, RefTypes } from "../models/index";
-import { Controller, Route, Get, Tags, OperationId, Example, Security } from "tsoa";
+import { Controller, Route, Get, Tags, OperationId, Example, Security, Request } from "tsoa";
+import { IAuthRequest } from "src/interfaces";
 
 export interface IRefItem {
     name: string;
@@ -83,9 +84,9 @@ export class RefsController extends Controller {
     @Example<RefsResponse>({
         data: RESPONSE_TEMPLATE
     })
-    public async getAll(): Promise<RefsResponse> {
+    public async getAll(@Request() request: IAuthRequest): Promise<RefsResponse> {
         try {
-            const items = await RefModel.find({});
+            const items = await RefModel.find({ $client: request.client });
             return {
                 data: items.map(v => formatModel(v))
             };
@@ -113,9 +114,9 @@ export class RefController extends Controller {
     @Example<RefResponse>({
         data: RESPONSE_SINGLE_TEMPLATE
     })
-    public async getOne(name: string): Promise<RefResponse> {
+    public async getOne(name: string, @Request() request: IAuthRequest): Promise<RefResponse> {
         try {
-            const item = await RefModel.findOne({ name });
+            const item = await RefModel.findOne({ name, request });
             return {
                 data: formatModel(item)
             };

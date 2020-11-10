@@ -11,6 +11,7 @@ import { uploadAsset, deleteAsset, IAssetItem, ICreateAssetsResponse } from "./A
 import { AssetModel, IAsset } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
 import { ISelectorContents } from "../models/Selector";
+import { IAuthRequest } from "src/interfaces";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface ISelectorAsset extends IAssetItem { }
@@ -334,7 +335,7 @@ export class SelectorAssetsController extends Controller {
             selector: SELECTOR_RESPONSE_TEMPLATE,
         }
     })
-    public async resource(selectorId: string, langCode: string, resourceType: SelectorImageTypes, @Request() request: express.Request): Promise<ISelectorCreateAssetsResponse> {
+    public async resource(selectorId: string, langCode: string, resourceType: SelectorImageTypes, @Request() request: IAuthRequest): Promise<ISelectorCreateAssetsResponse> {
         let assetsInfo: ICreateAssetsResponse;
         try {
             assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA], false);
@@ -410,7 +411,7 @@ export class SelectorAssetsController extends Controller {
                     await deleteAsset(asset.path);
                     await deleteAsset(asset.mipmap.x128);
                     await deleteAsset(asset.mipmap.x32);
-                    await riseRefVersion(RefTypes.ASSETS);
+                    await riseRefVersion(request.client, RefTypes.ASSETS);
                 }
             } catch (err) {
                 this.setStatus(500);
@@ -446,7 +447,7 @@ export class SelectorAssetsController extends Controller {
 
             savedSelector = await selector.save();
 
-            selectorRef = await riseRefVersion(RefTypes.SELECTORS);
+            selectorRef = await riseRefVersion(request.client, RefTypes.SELECTORS);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -485,7 +486,7 @@ export class SelectorAssetsController extends Controller {
             selector: SELECTOR_RESPONSE_TEMPLATE,
         }
     })
-    public async update(selectorId: string, langCode: string, assetId: string, @Body() request: ISelectorAssetUpdateRequest): Promise<ISelectorCreateAssetsResponse> {
+    public async update(selectorId: string, langCode: string, assetId: string, @Body() body: ISelectorAssetUpdateRequest, @Request() request: IAuthRequest): Promise<ISelectorCreateAssetsResponse> {
 
         let selector: ISelector;
         try {
@@ -504,7 +505,7 @@ export class SelectorAssetsController extends Controller {
 
         let selectorRef: IRefItem;
         try {
-            selectorRef = await getRef(RefTypes.SELECTORS);
+            selectorRef = await getRef(request.client, RefTypes.SELECTORS);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -520,13 +521,13 @@ export class SelectorAssetsController extends Controller {
         try {
             const item = await AssetModel.findById(assetId);
 
-            for (const key in request) {
-                item[key] = request[key];
+            for (const key in body) {
+                item[key] = body[key];
             }
 
             await item.save();
 
-            const ref = await riseRefVersion(RefTypes.ASSETS);
+            const ref = await riseRefVersion(request.client, RefTypes.ASSETS);
             return {
                 meta: {
                     asset: {
@@ -560,7 +561,7 @@ export class SelectorAssetsController extends Controller {
     @Example<ISelectorDeleteAssetsResponse>({
         meta: META_TEMPLATE
     })
-    public async delete(selectorId: string, langCode: string, assetId: string): Promise<ISelectorDeleteAssetsResponse> {
+    public async delete(selectorId: string, langCode: string, assetId: string, @Request() request: IAuthRequest): Promise<ISelectorDeleteAssetsResponse> {
         let selector: ISelector;
         try {
             selector = await SelectorModel.findById(selectorId);
@@ -587,7 +588,7 @@ export class SelectorAssetsController extends Controller {
                     await deleteAsset(asset.path);
                     await deleteAsset(asset.mipmap.x128);
                     await deleteAsset(asset.mipmap.x32);
-                    assetRef = await riseRefVersion(RefTypes.ASSETS);
+                    assetRef = await riseRefVersion(request.client, RefTypes.ASSETS);
                 }
             } catch (err) {
                 this.setStatus(500);
@@ -611,7 +612,7 @@ export class SelectorAssetsController extends Controller {
 
             await selector.save();
 
-            selectorsRef = await riseRefVersion(RefTypes.SELECTORS);
+            selectorsRef = await riseRefVersion(request.client, RefTypes.SELECTORS);
             return {
                 meta: {
                     selector: {

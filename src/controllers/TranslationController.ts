@@ -1,8 +1,9 @@
 import { RefTypes, TranslationModel, ITranslate } from "../models/index";
-import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security } from "tsoa";
+import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Request } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatTranslationModel } from "../utils/translation";
 import { IRefItem } from "./RefsController";
+import { IAuthRequest } from "../interfaces";
 
 interface ITranslateItem {
     key: string;
@@ -77,10 +78,10 @@ export class TranslationsController extends Controller {
         meta: META_TEMPLATE,
         data: [RESPONSE_TEMPLATE],
     })
-    public async getAll(): Promise<TranslationsResponse> {
+    public async getAll(@Request() request: IAuthRequest): Promise<TranslationsResponse> {
         try {
-            const items = await TranslationModel.find({});
-            const ref = await getRef(RefTypes.TRANSLATIONS);
+            const items = await TranslationModel.find({ $client: request.client });
+            const ref = await getRef(request.client, RefTypes.TRANSLATIONS);
             return {
                 meta: { ref },
                 data: items.map(v => formatTranslationModel(v)),
@@ -110,10 +111,10 @@ export class TranslationController extends Controller {
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
-    public async getOne(id: string): Promise<TranslationResponse> {
+    public async getOne(id: string, @Request() request: IAuthRequest): Promise<TranslationResponse> {
         try {
             const item = await TranslationModel.findById(id);
-            const ref = await getRef(RefTypes.TRANSLATIONS);
+            const ref = await getRef(request.client, RefTypes.TRANSLATIONS);
             return {
                 meta: { ref },
                 data: formatTranslationModel(item),
@@ -167,12 +168,12 @@ export class TranslationController extends Controller {
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
-    public async update(id: string, @Body() request: TranslationUpdateRequest): Promise<TranslationResponse> {
+    public async update(id: string, @Body() body: TranslationUpdateRequest, @Request() request: IAuthRequest): Promise<TranslationResponse> {
         try {
             const item = await TranslationModel.findById(id);
 
-            for (const key in request) {
-                item[key] = request[key];
+            for (const key in body) {
+                item[key] = body[key];
                 if (key === "extra") {
                     item.markModified(key);
                 }
@@ -180,7 +181,7 @@ export class TranslationController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(RefTypes.TRANSLATIONS);
+            const ref = await riseRefVersion(request.client, RefTypes.TRANSLATIONS);
             return {
                 meta: { ref },
                 data: formatTranslationModel(item),
@@ -197,30 +198,30 @@ export class TranslationController extends Controller {
             };
         }
     }
-/*
-    @Delete("{id}")
-    @Security("jwt")
-    @OperationId("Delete")
-    @Example<TranslationResponse>({
-        meta: META_TEMPLATE,
-    })
-    public async delete(id: string): Promise<TranslationResponse> {
-        try {
-            await TranslationModel.findOneAndDelete({ _id: id });
-            const ref = await riseRefVersion(RefTypes.TRANSLATIONS);
-            return {
-                meta: { ref },
-            };
-        } catch (err) {
-            this.setStatus(500);
-            return {
-                error: [
-                    {
-                        code: 500,
-                        message: `Caught error. ${err}`,
-                    }
-                ]
-            };
-        }
-    }*/
+    /*
+        @Delete("{id}")
+        @Security("jwt")
+        @OperationId("Delete")
+        @Example<TranslationResponse>({
+            meta: META_TEMPLATE,
+        })
+        public async delete(id: string): Promise<TranslationResponse> {
+            try {
+                await TranslationModel.findOneAndDelete({ _id: id });
+                const ref = await riseRefVersion(RefTypes.TRANSLATIONS);
+                return {
+                    meta: { ref },
+                };
+            } catch (err) {
+                this.setStatus(500);
+                return {
+                    error: [
+                        {
+                            code: 500,
+                            message: `Caught error. ${err}`,
+                        }
+                    ]
+                };
+            }
+        }*/
 }

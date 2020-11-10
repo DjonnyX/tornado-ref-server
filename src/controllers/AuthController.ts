@@ -208,7 +208,7 @@ export class SignupController extends Controller {
                 password,
             });
             await newUser.save();
-            ref = await riseRefVersion(RefTypes.USERS);
+            ref = await riseRefVersion("", RefTypes.USERS);
         } catch (err) {
             this.setStatus(500);
             return {

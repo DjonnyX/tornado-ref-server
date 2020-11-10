@@ -1,5 +1,5 @@
 import { RefTypes, TagModel, LanguageModel, ILanguage, ProductModel, IProduct } from "../models/index";
-import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security } from "tsoa";
+import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Request } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatTagModel } from "../utils/tag";
 import { ITagContents, ITag } from "../models/Tag";
@@ -7,6 +7,7 @@ import { AssetModel } from "../models/Asset";
 import { deleteAsset } from "./AssetsController";
 import { normalizeContents, getDeletedImagesFromDifferense, getEntityAssets } from "../utils/entity";
 import { IRefItem } from "./RefsController";
+import { IAuthRequest } from "../interfaces";
 
 export interface ITagItem {
     id: string;
@@ -84,10 +85,10 @@ export class TagsController extends Controller {
         meta: META_TEMPLATE,
         data: [RESPONSE_TEMPLATE],
     })
-    public async getAll(): Promise<TagsResponse> {
+    public async getAll(@Request() request: IAuthRequest): Promise<TagsResponse> {
         try {
-            const items = await TagModel.find({});
-            const ref = await getRef(RefTypes.TAGS);
+            const items = await TagModel.find({ $client: request.client });
+            const ref = await getRef(request.client, RefTypes.TAGS);
             return {
                 meta: { ref },
                 data: items.map(v => formatTagModel(v)),
@@ -117,10 +118,10 @@ export class TagController extends Controller {
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
-    public async getOne(id: string): Promise<TagResponse> {
+    public async getOne(id: string, @Request() request: IAuthRequest): Promise<TagResponse> {
         try {
             const item = await TagModel.findById(id);
-            const ref = await getRef(RefTypes.TAGS);
+            const ref = await getRef(request.client, RefTypes.TAGS);
             return {
                 meta: { ref },
                 data: formatTagModel(item),
@@ -145,11 +146,11 @@ export class TagController extends Controller {
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
-    public async create(@Body() request: TagCreateRequest): Promise<TagResponse> {
+    public async create(@Body() body: TagCreateRequest, @Request() request: IAuthRequest): Promise<TagResponse> {
         try {
-            const item = new TagModel(request);
+            const item = new TagModel({...body, $client: request.client});
             const savedItem = await item.save();
-            const ref = await riseRefVersion(RefTypes.TAGS);
+            const ref = await riseRefVersion(request.client, RefTypes.TAGS);
             return {
                 meta: { ref },
                 data: formatTagModel(savedItem),
@@ -174,10 +175,10 @@ export class TagController extends Controller {
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
-    public async update(id: string, @Body() request: TagCreateRequest): Promise<TagResponse> {
+    public async update(id: string, @Body() body: TagCreateRequest, @Request() request: IAuthRequest): Promise<TagResponse> {
         let defaultLanguage: ILanguage;
         try {
-            defaultLanguage = await LanguageModel.findOne({ isDefault: true });
+            defaultLanguage = await LanguageModel.findOne({ $client: request.client, isDefault: true });
         } catch (err) {
             this.setStatus(500);
             return {
@@ -194,12 +195,12 @@ export class TagController extends Controller {
             const item = await TagModel.findById(id);
 
             let lastContents: ITagContents;
-            for (const key in request) {
+            for (const key in body) {
                 if (key === "contents") {
                     lastContents = item.contents;
                 }
 
-                item[key] = request[key];
+                item[key] = body[key];
 
                 if (key === "extra" || key === "contents") {
                     if (key === "contents") {
@@ -242,11 +243,11 @@ export class TagController extends Controller {
             await Promise.all(promises);
 
             if (isAssetsChanged) {
-                await riseRefVersion(RefTypes.ASSETS);
+                await riseRefVersion(request.client, RefTypes.ASSETS);
             }
 
             // выставление ассетов от предыдущего состояния
-            // ассеты неьзя перезаписывать напрямую!
+            // ассеты нельзя перезаписывать напрямую!
             if (!!lastContents) {
                 for (const lang in lastContents) {
                     if (!item.contents[lang]) {
@@ -260,7 +261,7 @@ export class TagController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(RefTypes.SELECTORS);
+            const ref = await riseRefVersion(request.client, RefTypes.SELECTORS);
             return {
                 meta: { ref },
                 data: formatTagModel(item),
@@ -284,10 +285,10 @@ export class TagController extends Controller {
     @Example<TagResponse>({
         meta: META_TEMPLATE,
     })
-    public async delete(id: string): Promise<TagResponse> {
+    public async delete(id: string, @Request() request: IAuthRequest): Promise<TagResponse> {
         let products: Array<IProduct>;
         try {
-            products = await ProductModel.find({ tags: [id] });
+            products = await ProductModel.find({ $client: request.client, tags: [id] });
         } catch (err) {
             console.warn(`Products with contains tag ${id} found error. ${err}`);
         }
@@ -315,12 +316,12 @@ export class TagController extends Controller {
 
         try {
             await Promise.all(promises);
-            await riseRefVersion(RefTypes.PRODUCTS);
+            await riseRefVersion(request.client, RefTypes.PRODUCTS);
         } catch (err) {
             console.warn(`Save products error. ${err}`);
         }
 
-        
+
         let tag: ITag;
         try {
             tag = await TagModel.findByIdAndDelete(id);
@@ -359,7 +360,7 @@ export class TagController extends Controller {
             await Promise.all(assetsPromises);
 
             if (!!isAssetsChanged) {
-                await riseRefVersion(RefTypes.ASSETS);
+                await riseRefVersion(request.client, RefTypes.ASSETS);
             }
         } catch (err) {
             this.setStatus(500);
@@ -374,7 +375,7 @@ export class TagController extends Controller {
         }
 
         try {
-            const ref = await riseRefVersion(RefTypes.TAGS);
+            const ref = await riseRefVersion(request.client, RefTypes.TAGS);
             return {
                 meta: { ref }
             };

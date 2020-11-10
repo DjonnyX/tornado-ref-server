@@ -4,7 +4,6 @@ import * as http from "http";
 import * as fs from "fs";
 
 import * as mongoose from "mongoose";
-import { initRefs } from "./db/initDB";
 import * as config from "./config";
 
 const PORT = config.PORT;
@@ -22,8 +21,6 @@ server.on("listening", () => {
     mongoose.connect(MONGO_URI, { useNewUrlParser: true });
     mongoose.connection.on("open", async () => {
         console.info("Connected to Mongo.");
-
-        await initRefs();
     });
     mongoose.connection.on("error", err => {
         console.error(err);

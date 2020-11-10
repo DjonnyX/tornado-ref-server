@@ -49,10 +49,11 @@ export async function expressAuthentication(
               reject(new Error("JWT does not contain required scope."));
             }
           }*/
+          console.log(decoded)
+          //(request as any).client = decoded.id
           resolve(decoded);
         }
       });
-      resolve();
     });
   }
 }

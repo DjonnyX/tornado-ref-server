@@ -9,6 +9,7 @@ import { IAsset, AssetModel } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
 import { assetsUploader, IFileInfo } from "../utils/assetUpload";
 import { IRefItem } from "./RefsController";
+import { IAuthRequest } from "../interfaces";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IAssetItem {
@@ -89,7 +90,7 @@ const RESPONSE_TEMPLATE: IAssetItem = {
     },
 };
 
-export const uploadAsset = async (request: express.Request, allowedExtensions: Array<AssetExtensions>, active = true): Promise<ICreateAssetsResponse> => {
+export const uploadAsset = async (request: IAuthRequest, allowedExtensions: Array<AssetExtensions>, active = true): Promise<ICreateAssetsResponse> => {
     let fileInfo: IFileInfo;
     try {
         fileInfo = await assetsUploader("file", allowedExtensions, request);
@@ -107,8 +108,8 @@ export const uploadAsset = async (request: express.Request, allowedExtensions: A
     let asset: IAsset;
     let assetRef: IRefItem;
     try {
-        asset = new AssetModel({...fileInfo, active});
-        assetRef = await riseRefVersion(RefTypes.ASSETS);
+        asset = new AssetModel({ ...fileInfo, active, $client: request.client });
+        assetRef = await riseRefVersion(request.client, RefTypes.ASSETS);
         await asset.save();
     } catch (err) {
         return {
@@ -158,10 +159,10 @@ export class AssetsController extends Controller {
         meta: META_TEMPLATE,
         data: [RESPONSE_TEMPLATE]
     })
-    public async getAll(): Promise<IGetAssetsResponse> {
+    public async getAll(@Request() request: IAuthRequest): Promise<IGetAssetsResponse> {
         try {
-            const items = await AssetModel.find({});
-            const ref = await getRef(RefTypes.ASSETS);
+            const items = await AssetModel.find({ $client: request.client });
+            const ref = await getRef(request.client, RefTypes.ASSETS);
             return {
                 meta: { ref },
                 data: items.map(v => formatAssetModel(v))

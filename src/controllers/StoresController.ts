@@ -1,8 +1,9 @@
 import { RefTypes, IStore, StoreModel } from "../models";
-import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security } from "tsoa";
+import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Request } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatStoreModel } from "../utils/store";
 import { IRefItem } from "./RefsController";
+import { IAuthRequest } from "../interfaces";
 
 interface IStoreItem extends IStore {
     id?: string;
@@ -84,10 +85,10 @@ export class StoresController extends Controller {
         meta: META_TEMPLATE,
         data: [RESPONSE_TEMPLATE]
     })
-    public async getAll(): Promise<IStoresResponse> {
+    public async getAll(@Request() request: IAuthRequest): Promise<IStoresResponse> {
         try {
-            const items = await StoreModel.find({});
-            const ref = await getRef(RefTypes.STORES);
+            const items = await StoreModel.find({ $client: request.client });
+            const ref = await getRef(request.client, RefTypes.STORES);
             return {
                 meta: { ref },
                 data: items.map(v => formatStoreModel(v))
@@ -117,10 +118,10 @@ export class StoreController extends Controller {
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE
     })
-    public async getOne(id: string): Promise<IStoreResponse> {
+    public async getOne(id: string, @Request() request: IAuthRequest): Promise<IStoreResponse> {
         try {
             const item = await StoreModel.findById(id);
-            const ref = await getRef(RefTypes.STORES);
+            const ref = await getRef(request.client, RefTypes.STORES);
             return {
                 meta: { ref },
                 data: formatStoreModel(item),
@@ -145,11 +146,11 @@ export class StoreController extends Controller {
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
-    public async create(@Body() request: IStoreCreateRequest): Promise<IStoreResponse> {
+    public async create(@Body() body: IStoreCreateRequest, @Request() request: IAuthRequest): Promise<IStoreResponse> {
         try {
-            const item = new StoreModel(request);
+            const item = new StoreModel({ ...body, $client: request.client });
             const savedItem = await item.save();
-            const ref = await riseRefVersion(RefTypes.STORES);
+            const ref = await riseRefVersion(request.client, RefTypes.STORES);
             return {
                 meta: { ref },
                 data: formatStoreModel(savedItem),
@@ -174,12 +175,12 @@ export class StoreController extends Controller {
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
-    public async update(id: string, @Body() request: IStoreUpdateRequest): Promise<IStoreResponse> {
+    public async update(id: string, @Body() body: IStoreUpdateRequest, @Request() request: IAuthRequest): Promise<IStoreResponse> {
         try {
             const item = await StoreModel.findById(id);
 
-            for (const key in request) {
-                item[key] = request[key];
+            for (const key in body) {
+                item[key] = body[key];
                 if (key === "extra") {
                     item.markModified(key);
                 }
@@ -187,7 +188,7 @@ export class StoreController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(RefTypes.STORES);
+            const ref = await riseRefVersion(request.client, RefTypes.STORES);
             return {
                 meta: { ref },
                 data: formatStoreModel(item),
@@ -211,7 +212,7 @@ export class StoreController extends Controller {
     @Example<IStoreResponse>({
         meta: META_TEMPLATE
     })
-    public async delete(id: string): Promise<IStoreResponse> {
+    public async delete(id: string, @Request() request: IAuthRequest): Promise<IStoreResponse> {
         let bp: IStore;
         try {
             bp = await StoreModel.findByIdAndDelete(id);
@@ -228,7 +229,7 @@ export class StoreController extends Controller {
         }
 
         try {
-            const ref = await riseRefVersion(RefTypes.STORES);
+            const ref = await riseRefVersion(request.client, RefTypes.STORES);
             return {
                 meta: { ref },
             };

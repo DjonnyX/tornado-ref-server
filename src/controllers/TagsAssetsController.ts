@@ -11,6 +11,7 @@ import { uploadAsset, deleteAsset, IAssetItem, ICreateAssetsResponse } from "./A
 import { AssetModel, IAsset } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
 import { ITagContents } from "../models/Tag";
+import { IAuthRequest } from "../interfaces";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface ITagAsset extends IAssetItem { }
@@ -334,7 +335,7 @@ export class TagAssetsController extends Controller {
             tag: SELECTOR_RESPONSE_TEMPLATE,
         }
     })
-    public async resource(tagId: string, langCode: string, resourceType: TagImageTypes, @Request() request: express.Request): Promise<ITagCreateAssetsResponse> {
+    public async resource(tagId: string, langCode: string, resourceType: TagImageTypes, @Request() request: IAuthRequest): Promise<ITagCreateAssetsResponse> {
         let assetsInfo: ICreateAssetsResponse;
         try {
             assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA], false);
@@ -368,7 +369,7 @@ export class TagAssetsController extends Controller {
 
         let defaultLanguage: ILanguage;
         try {
-            defaultLanguage = await LanguageModel.findOne({ isDefault: true });
+            defaultLanguage = await LanguageModel.findOne({ $client: request.client, isDefault: true });
         } catch (err) {
             this.setStatus(500);
             return {
@@ -410,7 +411,7 @@ export class TagAssetsController extends Controller {
                     await deleteAsset(asset.path);
                     await deleteAsset(asset.mipmap.x128);
                     await deleteAsset(asset.mipmap.x32);
-                    await riseRefVersion(RefTypes.ASSETS);
+                    await riseRefVersion(request.client, RefTypes.ASSETS);
                 }
             } catch (err) {
                 this.setStatus(500);
@@ -446,7 +447,7 @@ export class TagAssetsController extends Controller {
 
             savedTag = await tag.save();
 
-            tagRef = await riseRefVersion(RefTypes.SELECTORS);
+            tagRef = await riseRefVersion(request.client, RefTypes.SELECTORS);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -485,7 +486,7 @@ export class TagAssetsController extends Controller {
             tag: SELECTOR_RESPONSE_TEMPLATE,
         }
     })
-    public async update(tagId: string, langCode: string, assetId: string, @Body() request: ITagAssetUpdateRequest): Promise<ITagCreateAssetsResponse> {
+    public async update(tagId: string, langCode: string, assetId: string, @Body() body: ITagAssetUpdateRequest, @Request() request: IAuthRequest): Promise<ITagCreateAssetsResponse> {
 
         let tag: ITag;
         try {
@@ -504,7 +505,7 @@ export class TagAssetsController extends Controller {
 
         let tagRef: IRefItem;
         try {
-            tagRef = await getRef(RefTypes.SELECTORS);
+            tagRef = await getRef(request.client, RefTypes.SELECTORS);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -520,13 +521,13 @@ export class TagAssetsController extends Controller {
         try {
             const item = await AssetModel.findById(assetId);
 
-            for (const key in request) {
-                item[key] = request[key];
+            for (const key in body) {
+                item[key] = body[key];
             }
 
             await item.save();
 
-            const ref = await riseRefVersion(RefTypes.ASSETS);
+            const ref = await riseRefVersion(request.client, RefTypes.ASSETS);
             return {
                 meta: {
                     asset: {
@@ -560,7 +561,7 @@ export class TagAssetsController extends Controller {
     @Example<ITagDeleteAssetsResponse>({
         meta: META_TEMPLATE,
     })
-    public async delete(tagId: string, langCode: string, assetId: string): Promise<ITagDeleteAssetsResponse> {
+    public async delete(tagId: string, langCode: string, assetId: string, @Request() request: IAuthRequest): Promise<ITagDeleteAssetsResponse> {
         let tag: ITag;
         try {
             tag = await TagModel.findById(tagId);
@@ -587,7 +588,7 @@ export class TagAssetsController extends Controller {
                     await deleteAsset(asset.path);
                     await deleteAsset(asset.mipmap.x128);
                     await deleteAsset(asset.mipmap.x32);
-                    assetRef = await riseRefVersion(RefTypes.ASSETS);
+                    assetRef = await riseRefVersion(request.client, RefTypes.ASSETS);
                 }
             } catch (err) {
                 this.setStatus(500);
@@ -611,7 +612,7 @@ export class TagAssetsController extends Controller {
 
             await tag.save();
 
-            tagsRef = await riseRefVersion(RefTypes.SELECTORS);
+            tagsRef = await riseRefVersion(request.client, RefTypes.SELECTORS);
             return {
                 meta: {
                     tag: {

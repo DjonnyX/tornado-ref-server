@@ -11,6 +11,7 @@ import { uploadAsset, deleteAsset, IAssetItem, ICreateAssetsResponse } from "./A
 import { AssetModel, IAsset } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
 import { IOrderTypeContents } from "../models/OrderTypes";
+import { IAuthRequest } from "../interfaces";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IOrderTypeAsset extends IAssetItem { }
@@ -334,7 +335,7 @@ export class OrderTypeAssetsController extends Controller {
             orderType: SELECTOR_RESPONSE_TEMPLATE,
         }
     })
-    public async resource(orderTypeId: string, langCode: string, resourceType: OrderTypeImageTypes, @Request() request: express.Request): Promise<IOrderTypeCreateAssetsResponse> {
+    public async resource(orderTypeId: string, langCode: string, resourceType: OrderTypeImageTypes, @Request() request: IAuthRequest): Promise<IOrderTypeCreateAssetsResponse> {
         let assetsInfo: ICreateAssetsResponse;
         try {
             assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA], false);
@@ -368,7 +369,7 @@ export class OrderTypeAssetsController extends Controller {
 
         let defaultLanguage: ILanguage;
         try {
-            defaultLanguage = await LanguageModel.findOne({ isDefault: true });
+            defaultLanguage = await LanguageModel.findOne({ $client: request.client, isDefault: true });
         } catch (err) {
             this.setStatus(500);
             return {
@@ -410,7 +411,7 @@ export class OrderTypeAssetsController extends Controller {
                     await deleteAsset(asset.path);
                     await deleteAsset(asset.mipmap.x128);
                     await deleteAsset(asset.mipmap.x32);
-                    await riseRefVersion(RefTypes.ASSETS);
+                    await riseRefVersion(request.client, RefTypes.ASSETS);
                 }
             } catch (err) {
                 this.setStatus(500);
@@ -446,7 +447,7 @@ export class OrderTypeAssetsController extends Controller {
 
             savedOrderType = await orderType.save();
 
-            orderTypeRef = await riseRefVersion(RefTypes.SELECTORS);
+            orderTypeRef = await riseRefVersion(request.client, RefTypes.SELECTORS);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -485,7 +486,7 @@ export class OrderTypeAssetsController extends Controller {
             orderType: SELECTOR_RESPONSE_TEMPLATE,
         }
     })
-    public async update(orderTypeId: string, langCode: string, assetId: string, @Body() request: IOrderTypeAssetUpdateRequest): Promise<IOrderTypeCreateAssetsResponse> {
+    public async update(orderTypeId: string, langCode: string, assetId: string, @Body() body: IOrderTypeAssetUpdateRequest, @Request() request: IAuthRequest): Promise<IOrderTypeCreateAssetsResponse> {
 
         let orderType: IOrderType;
         try {
@@ -504,7 +505,7 @@ export class OrderTypeAssetsController extends Controller {
 
         let orderTypeRef: IRefItem;
         try {
-            orderTypeRef = await getRef(RefTypes.SELECTORS);
+            orderTypeRef = await getRef(request.client, RefTypes.SELECTORS);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -520,13 +521,13 @@ export class OrderTypeAssetsController extends Controller {
         try {
             const item = await AssetModel.findById(assetId);
 
-            for (const key in request) {
-                item[key] = request[key];
+            for (const key in body) {
+                item[key] = body[key];
             }
 
             await item.save();
 
-            const ref = await riseRefVersion(RefTypes.ASSETS);
+            const ref = await riseRefVersion(request.client, RefTypes.ASSETS);
             return {
                 meta: {
                     asset: {
@@ -560,7 +561,7 @@ export class OrderTypeAssetsController extends Controller {
     @Example<IOrderTypeDeleteAssetsResponse>({
         meta: META_TEMPLATE
     })
-    public async delete(orderTypeId: string, langCode: string, assetId: string): Promise<IOrderTypeDeleteAssetsResponse> {
+    public async delete(orderTypeId: string, langCode: string, assetId: string, @Request() request: IAuthRequest): Promise<IOrderTypeDeleteAssetsResponse> {
         let orderType: IOrderType;
         try {
             orderType = await OrderTypeModel.findById(orderTypeId);
@@ -587,7 +588,7 @@ export class OrderTypeAssetsController extends Controller {
                     await deleteAsset(asset.path);
                     await deleteAsset(asset.mipmap.x128);
                     await deleteAsset(asset.mipmap.x32);
-                    assetRef = await riseRefVersion(RefTypes.ASSETS);
+                    assetRef = await riseRefVersion(request.client, RefTypes.ASSETS);
                 }
             } catch (err) {
                 this.setStatus(500);
@@ -611,7 +612,7 @@ export class OrderTypeAssetsController extends Controller {
 
             await orderType.save();
 
-            orderTypesRef = await riseRefVersion(RefTypes.SELECTORS);
+            orderTypesRef = await riseRefVersion(request.client, RefTypes.SELECTORS);
             return {
                 meta: {
                     orderType: {
