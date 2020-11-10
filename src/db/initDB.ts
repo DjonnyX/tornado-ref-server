@@ -1,5 +1,5 @@
 import * as fs from "fs";
-import { RefModel, RefTypes, NodeModel, TranslationModel, LanguageModel, ILanguage, CurrencyModel, ICurrency } from "../models/index";
+import { RefModel, RefTypes, NodeModel, TranslationModel, LanguageModel, ILanguage, CurrencyModel } from "../models/index";
 import { NodeTypes } from "../models/enums";
 import { mergeTranslation, getTemplateLangs } from "../utils/translation";
 import { LOCALIZATION_TEMPLATE_PATH, CURRENCY_TEMPLATE_PATH } from "../config";
@@ -8,12 +8,13 @@ import { ICurrencyTemplate } from "../interfaces";
 import { riseRefVersion } from "./refs";
 
 
-const createRootNode = async () => {
-    const existsRootNode = await NodeModel.findOne({ type: NodeTypes.KIOSK_ROOT });
+const createRootNode = async (client: string) => {
+    const existsRootNode = await NodeModel.findOne({ $client: client, type: NodeTypes.KIOSK_ROOT });
 
     if (!existsRootNode) {
         // generate new root node
         const rootMenuNode = new NodeModel({
+            $client: client,
             active: true,
             type: NodeTypes.KIOSK_ROOT,
             parentId: null,
@@ -25,12 +26,14 @@ const createRootNode = async () => {
     }
 };
 
-const mergeDefaultTranslations = async () => {
+const mergeDefaultTranslations = async (client: string) => {
     const template: ITranslationTemplate = JSON.parse(fs.readFileSync(LOCALIZATION_TEMPLATE_PATH).toString("utf-8"));
     const availableLangs = getTemplateLangs(template);
-    
+
     const dictionary: { [key: string]: ILanguage } = {};
-    const langs = await LanguageModel.find({});
+    const langs = await LanguageModel.find({
+        $client: client,
+    });
 
     langs.forEach(item => {
         dictionary[item.code] = item;
@@ -40,9 +43,11 @@ const mergeDefaultTranslations = async () => {
     availableLangs.forEach(lang => {
         if (!dictionary[lang.code]) {
             const newTranslation = new TranslationModel({
+                $client: client,
                 language: lang.code,
             });
             const newLang = new LanguageModel({
+                $client: client,
                 isDefault: lang.isDefault || false,
                 name: lang.name,
                 code: lang.code,
@@ -57,8 +62,8 @@ const mergeDefaultTranslations = async () => {
     });
 
     await Promise.all(promises);
-    
-    const translations = await TranslationModel.find({});
+
+    const translations = await TranslationModel.find({ $client: client });
 
     if (!!translations) {
         const promises = new Array<Promise<any>>();
@@ -70,10 +75,10 @@ const mergeDefaultTranslations = async () => {
     }
 }
 
-const createDefaultCurrencyFromTemplate = async () => {
+const createDefaultCurrencyFromTemplate = async (client: string) => {
     const template: ICurrencyTemplate = JSON.parse(fs.readFileSync(CURRENCY_TEMPLATE_PATH).toString("utf-8"));
-    
-    const currencies = await CurrencyModel.find({});
+
+    const currencies = await CurrencyModel.find({ $client: client });
     let isDefaultSetted = false;
     let isTemplateCurrencyExists = false;
 
@@ -88,6 +93,7 @@ const createDefaultCurrencyFromTemplate = async () => {
 
     if (!isTemplateCurrencyExists) {
         const templateCurrency = new CurrencyModel({
+            $client: client,
             isDefault: !isDefaultSetted,
             active: true,
             name: template.name,
@@ -97,72 +103,87 @@ const createDefaultCurrencyFromTemplate = async () => {
 
         await templateCurrency.save();
 
-        await riseRefVersion(RefTypes.CURRENCIES);
+        await riseRefVersion(client, RefTypes.CURRENCIES);
     }
 }
 
-export const initRefs = async (): Promise<void> => {
+export const initRefs = async (client: string): Promise<void> => {
 
     const lastupdate = Date.now();
 
     const INITIAL_STATE = [
         {
+            $client: client,
             name: RefTypes.ROLES,
             version: 1,
             lastupdate,
         }, {
+            $client: client,
             name: RefTypes.USERS,
             version: 1,
             lastupdate,
         }, {
+            $client: client,
             name: RefTypes.NODES,
             version: 1,
             lastupdate,
         }, {
+            $client: client,
             name: RefTypes.PRODUCTS,
             version: 1,
             lastupdate,
         }, {
+            $client: client,
             name: RefTypes.SELECTORS,
             version: 1,
             lastupdate,
         }, {
+            $client: client,
             name: RefTypes.ASSETS,
             version: 1,
             lastupdate,
         }, {
+            $client: client,
             name: RefTypes.TAGS,
             version: 1,
             lastupdate,
         }, {
+            $client: client,
             name: RefTypes.BUSINESS_PERIODS,
             version: 1,
             lastupdate,
         }, {
+            $client: client,
             name: RefTypes.CURRENCIES,
             version: 1,
             lastupdate,
         }, {
+            $client: client,
             name: RefTypes.ADS,
             version: 1,
             lastupdate,
         }, {
+            $client: client,
             name: RefTypes.LANGUAGES,
             version: 1,
             lastupdate,
         }, {
+            $client: client,
             name: RefTypes.ORDER_TYPES,
             version: 1,
             lastupdate,
         }, {
+            $client: client,
             name: RefTypes.TRANSLATIONS,
             version: 1,
             lastupdate,
         }, {
+            $client: client,
             name: RefTypes.STORES,
             version: 1,
             lastupdate,
         }, {
+            $client: client,
             name: RefTypes.TERMINALS,
             version: 1,
             lastupdate,
@@ -171,7 +192,10 @@ export const initRefs = async (): Promise<void> => {
 
     for (let i = 0, l = INITIAL_STATE.length; i < l; i++) {
         const refData = INITIAL_STATE[i];
-        const existsRef = await RefModel.findOne({ name: refData.name });
+        const existsRef = await RefModel.findOne({
+            $client: client,
+            name: refData.name,
+        });
         if (existsRef) {
             continue;
         }
@@ -180,13 +204,13 @@ export const initRefs = async (): Promise<void> => {
     }
 
     // root node
-    await createRootNode();
+    await createRootNode(client);
 
     // translations
-    await mergeDefaultTranslations();
+    await mergeDefaultTranslations(client);
 
     // default currency
-    await createDefaultCurrencyFromTemplate();
+    await createDefaultCurrencyFromTemplate(client);
 
-    console.info("Refs are initialized.");
+    console.info(`Refs for client "${client}" are initialized.`);
 };
