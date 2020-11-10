@@ -3,6 +3,7 @@ import { Schema, Document } from "mongoose";
 import { AssetExtensions } from "./enums";
 
 interface IAsset extends Document {
+    $client: string;
     active: boolean;
     name: string;
     lastupdate: Date;
@@ -15,6 +16,7 @@ interface IAsset extends Document {
 }
 
 const AssetSchema = new Schema({
+    $client: { type: String, required: true, index: true },
     active: { type: Boolean, required: true, default: true },
     name: { type: String, required: true },
     lastupdate: { type: Date, required: true },

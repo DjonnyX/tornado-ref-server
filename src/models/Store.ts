@@ -2,6 +2,7 @@ import * as mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
 
 interface IStore {
+    $client: string;
     active: boolean;
     name: string;
     address: string | null;
@@ -13,6 +14,7 @@ interface IStore {
 interface IStoreDocument extends Document, IStore {}
 
 const StoreSchema = new Schema({
+    $client: { type: String, required: true, index: true },
     active: { type: Boolean, required: true, default: true },
     name: { type: String, required: true },
     address: { type: String, required: false },

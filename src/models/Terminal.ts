@@ -11,9 +11,12 @@ interface ITerminal {
     extra?: { [key: string]: any } | null;
 }
 
-interface ITerminalDocument extends Document, ITerminal { }
+interface ITerminalDocument extends Document, ITerminal {
+    $client: string;
+}
 
 const TerminalSchema = new Schema({
+    $client: { type: String, required: true, index: true },
     status: {
         type: String,
         enum: [

@@ -46,6 +46,7 @@ interface IScenario {
 }
 
 interface INode extends Document {
+    $client: string;
     active: boolean;
     /**
      * Тип нода
@@ -71,6 +72,7 @@ interface INode extends Document {
 }
 
 const ScenarioSchema = new Schema({
+    $client: { type: String, required: true, index: true },
     active: { type: Schema.Types.Boolean, required: true, default: true },
     action: {
         type: Schema.Types.String, enum: [
