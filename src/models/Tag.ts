@@ -25,7 +25,7 @@ interface ITag extends Document {
 }
 
 const TagSchema = new Schema({
-    $client: { type: String, required: true, index: true },
+    $client: { type: String, required: true, index: { unique: true } },
     active: { type: Boolean, required: true, default: true },
     name: { type: String, required: false },
     contents: { type: Schema.Types.Mixed, default: {} },

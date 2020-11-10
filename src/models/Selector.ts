@@ -29,7 +29,7 @@ interface ISelector extends Document {
 }
 
 const SelectorSchema = new Schema({
-    $client: { type: String, required: true, index: true },
+    $client: { type: String, required: true, index: { unique: true } },
     active: { type: Schema.Types.Boolean, required: true, default: true },
     name: { type: String, required: false },
     type: {

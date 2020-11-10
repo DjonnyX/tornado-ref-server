@@ -16,7 +16,7 @@ interface ITerminalDocument extends Document, ITerminal {
 }
 
 const TerminalSchema = new Schema({
-    $client: { type: String, required: true, index: true },
+    $client: { type: String, required: true, index: { unique: true } },
     status: {
         type: String,
         enum: [

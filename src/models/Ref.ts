@@ -9,7 +9,7 @@ interface IRef extends Document {
 }
 
 const RefSchema = new Schema({
-    $client: { type: String, required: true, index: true },
+    $client: { type: String, required: true, index: { unique: true } },
     name: { type: String, required: true },
     version: { type: Number, required: true },
     lastupdate: { type: Date, required: true },
