@@ -39,19 +39,19 @@ export async function expressAuthentication(
         reject(new Error("No apiKey provided."));
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      //jwt.verify(apiKey, config.AUTH_PRIVATE_KEY, function(err: any, decoded: any) {
-      //  if (err) {
-      //    reject(err);
-      //  } else {
-      //    // Check if JWT contains all required scopes
-      //    /*for (const scope of scopes) {
-      //      if (!decoded.scopes.includes(scope)) {
-      //        reject(new Error("JWT does not contain required scope."));
-      //      }
-      //    }*/
-      //    resolve(decoded);
-      //  }
-      //});
+      jwt.verify(apiKey, config.AUTH_CLIENT_PRIVATE_KEY, function(err: any, decoded: any) {
+        if (err) {
+          reject(err);
+        } else {
+          // Check if JWT contains all required scopes
+          /*for (const scope of scopes) {
+            if (!decoded.scopes.includes(scope)) {
+              reject(new Error("JWT does not contain required scope."));
+            }
+          }*/
+          resolve(decoded);
+        }
+      });
       resolve();
     });
   }
