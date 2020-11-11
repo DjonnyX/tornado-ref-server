@@ -72,7 +72,7 @@ interface INode extends Document {
 }
 
 const ScenarioSchema = new Schema({
-    client: { type: String, required: true, index: { unique: true } },
+    client: { type: String, required: true, index: { unique: false } },
     active: { type: Schema.Types.Boolean, required: true, default: true },
     action: {
         type: Schema.Types.String, enum: [
@@ -99,6 +99,7 @@ const ScenarioSchema = new Schema({
 });
 
 const NodeSchema = new Schema({
+    client: { type: String, required: true, index: { unique: false } },
     active: { type: Schema.Types.Boolean, required: true, default: true },
     type: {
         type: String, enum: [

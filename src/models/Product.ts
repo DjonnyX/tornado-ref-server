@@ -59,7 +59,7 @@ const PriceSchema = new Schema({
 });
 
 const ProductSchema = new Schema({
-    client: { type: String, required: true, index: { unique: true } },
+    client: { type: String, required: true, index: { unique: false } },
     active: { type: Schema.Types.Boolean, required: true, default: true },
     name: { type: String, required: false },
     contents: { type: Schema.Types.Mixed, default: {} },

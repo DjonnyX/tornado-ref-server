@@ -27,7 +27,7 @@ interface IOrderType extends Document {
 }
 
 const OrderTypeSchema = new Schema({
-    client: { type: String, required: true, index: { unique: true } },
+    client: { type: String, required: true, index: { unique: false } },
     active: { type: Schema.Types.Boolean, required: true, default: true },
     isDefault: { type: Schema.Types.Boolean, required: true, default: true },
     name: { type: String, required: false },
