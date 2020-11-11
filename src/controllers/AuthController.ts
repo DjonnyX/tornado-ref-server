@@ -87,7 +87,7 @@ interface VerifyResetPasswordTokenResponse {
     }>;
 }
 
-async function createProxyRequestToAuthServer<R = any>(request: express.Request): Promise<R> {
+async function createProxyRequestToAuthServer<R = any>(context: Controller, request: express.Request): Promise<R> {
     let response: R;
     try {
         response = await got.post(request.originalUrl, {
@@ -95,7 +95,7 @@ async function createProxyRequestToAuthServer<R = any>(request: express.Request)
             body: request.body,
         }) as any;
     } catch (err) {
-        this.setStatus(500);
+        context.setStatus(500);
         return {
             error: [
                 {
@@ -117,7 +117,7 @@ export class SignupController extends Controller {
         data: {}
     })
     public async signup(@Request() request: express.Request, @Body() body: ISignupParams): Promise<SignupResponse> {
-        return await createProxyRequestToAuthServer<SignupResponse>(request);
+        return await createProxyRequestToAuthServer<SignupResponse>(this, request);
     }
 }
 
@@ -135,7 +135,7 @@ export class SigninController extends Controller {
         }
     })
     public async signin(@Request() request: express.Request, @Body() body: ISigninParams): Promise<SigninResponse> {
-        return await createProxyRequestToAuthServer<SigninResponse>(request);
+        return await createProxyRequestToAuthServer<SigninResponse>(this, request);
     }
 }
 
@@ -168,7 +168,7 @@ export class ResetPasswordController extends Controller {
         data: {}
     })
     public async resetPassword(@Request() request: express.Request, @Body() body: IResetPasswordParams): Promise<ResetPasswordResponse> {
-        return await createProxyRequestToAuthServer<ResetPasswordResponse>(request);
+        return await createProxyRequestToAuthServer<ResetPasswordResponse>(this, request);
     }
 }
 
@@ -181,7 +181,7 @@ export class ForgotPasswordController extends Controller {
         data: {}
     })
     public async forgotPassword(@Request() request: express.Request, @Body() body: IForgotPasswordParams): Promise<ForgotPasswordResponse> {
-        return await createProxyRequestToAuthServer<ForgotPasswordResponse>(request);
+        return await createProxyRequestToAuthServer<ForgotPasswordResponse>(this, request);
     }
 }
 
@@ -194,6 +194,6 @@ export class VerifyResetPasswordTokenController extends Controller {
         data: {}
     })
     public async verifyResetPasswordToken(@Request() request: express.Request, @Body() body: IVerifyResetPasswordTokenParams): Promise<VerifyResetPasswordTokenResponse> {
-        return await createProxyRequestToAuthServer<VerifyResetPasswordTokenResponse>(request);
+        return await createProxyRequestToAuthServer<VerifyResetPasswordTokenResponse>(this, request);
     }
 }
