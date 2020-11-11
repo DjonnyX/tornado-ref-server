@@ -2027,7 +2027,8 @@ export function RegisterRoutes(app: express.Express) {
     app.post('/api/v1/auth/signup',
         function(request: any, response: any, next: any) {
             const args = {
-                requestBody: { "in": "body", "name": "requestBody", "required": true, "ref": "ISignupParams" },
+                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                body: { "in": "body", "name": "body", "required": true, "ref": "ISignupParams" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -2049,7 +2050,8 @@ export function RegisterRoutes(app: express.Express) {
     app.post('/api/v1/auth/signin',
         function(request: any, response: any, next: any) {
             const args = {
-                requestBody: { "in": "body", "name": "requestBody", "required": true, "ref": "ISigninParams" },
+                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                body: { "in": "body", "name": "body", "required": true, "ref": "ISigninParams" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -2093,7 +2095,8 @@ export function RegisterRoutes(app: express.Express) {
     app.post('/api/v1/auth/reset-password',
         function(request: any, response: any, next: any) {
             const args = {
-                requestBody: { "in": "body", "name": "requestBody", "required": true, "ref": "IResetPasswordParams" },
+                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                body: { "in": "body", "name": "body", "required": true, "ref": "IResetPasswordParams" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -2115,7 +2118,8 @@ export function RegisterRoutes(app: express.Express) {
     app.post('/api/v1/auth/forgot-password',
         function(request: any, response: any, next: any) {
             const args = {
-                requestBody: { "in": "body", "name": "requestBody", "required": true, "ref": "IForgotPasswordParams" },
+                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                body: { "in": "body", "name": "body", "required": true, "ref": "IForgotPasswordParams" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -2137,7 +2141,8 @@ export function RegisterRoutes(app: express.Express) {
     app.post('/api/v1/auth/verify-reset-password-token',
         function(request: any, response: any, next: any) {
             const args = {
-                requestBody: { "in": "body", "name": "requestBody", "required": true, "ref": "IVerifyResetPasswordTokenParams" },
+                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                body: { "in": "body", "name": "body", "required": true, "ref": "IVerifyResetPasswordTokenParams" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

@@ -1,6 +1,7 @@
 import { Controller, Route, Post, Tags, Example, Header, Request, Body } from "tsoa";
 import * as got from "got";
 import * as express from "express";
+import * as config from "../config";
 
 interface ISigninParams {
     email: string;
@@ -88,24 +89,57 @@ interface VerifyResetPasswordTokenResponse {
 }
 
 async function createProxyRequestToAuthServer<R = any>(context: Controller, request: express.Request): Promise<R> {
-    let response: R;
+    let r: got.Response<any>;
     try {
-        response = await got.post(request.originalUrl, {
-            headers: request.headers,
-            body: request.body,
-        }) as any;
+        r = await got.post(`${config.LIC_SERVER_HOST}${request.originalUrl}`, {
+            headers: {
+                "content-type": "application/json",
+            },
+            body: JSON.stringify(request.body),
+        });
     } catch (err) {
         context.setStatus(500);
+
+        if (err instanceof got.HTTPError && err.statusCode === 500) {
+            let authServerResp: any;
+            try {
+                authServerResp = JSON.parse(err.body as string);
+            } catch (err1) {
+                return {
+                    error: [
+                        {
+                            code: 500,
+                            message: `Proxy request to the auth server fail. Error: ${err}`,
+                        }
+                    ]
+                } as any;
+            }
+            return authServerResp;
+        }
         return {
             error: [
                 {
                     code: 500,
-                    message: "Auth server is not available",
+                    message: `Proxy request to the auth server fail. Error: ${err}`,
                 }
             ]
         } as any;
     }
-    return response;
+
+    let body: any;
+    try {
+        body = JSON.parse(r.body)
+    } catch (err) {
+        return {
+            error: [
+                {
+                    code: 500,
+                    message: `Response body from auth server bad format. Error: ${err}`,
+                }
+            ]
+        } as any;
+    }
+    return body;
 }
 
 @Route("/auth/signup")
