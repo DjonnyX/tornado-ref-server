@@ -1,38 +1,6 @@
-import * as config from "../config";
-import * as pug from "pug";
-import { sendToEmail } from "../utils/sendToEmail";
-import * as jwt from "jsonwebtoken";
-import { UserModel, IUser, hashPassword, checkIfUnencryptedPasswordIsValid, RefTypes } from "../models/index";
-import { Controller, Route, Post, Tags, Example, Body, Header } from "tsoa";
-import * as joi from "@hapi/joi";
-import { riseRefVersion } from "../db/refs";
-import { IRefItem } from "./RefsController";
-
-interface ISigninParams {
-    email: string;
-    password: string;
-}
-
-interface ISignupParams {
-    firstName: string;
-    lastName: string;
-    email: string;
-    password: string;
-    confirmPassword: string;
-}
-
-interface IResetPasswordParams {
-    token: string;
-    password: string;
-}
-
-interface IForgotPasswordParams {
-    email: string;
-}
-
-interface IVerifyResetPasswordTokenParams {
-    token: string;
-}
+import { Controller, Route, Post, Tags, Example, Header, Request } from "tsoa";
+import * as got from "got";
+import * as express from "express";
 
 interface SigninResponse {
     meta?: {};
@@ -93,62 +61,26 @@ interface VerifyResetPasswordTokenResponse {
     }>;
 }
 
-//function to validate user 
-const validateSigninParams = (user: ISigninParams): joi.ValidationResult => {
-    const schema = joi.object({
-        email: joi.string().min(5).max(255).required().email(),
-        password: joi.string().min(3).max(255)/*.pattern(new RegExp("^[a-zA-Z0-9]{3,30}$"))*/.required(),
-    });
-
-    return schema.validate(user);
-};
-
-const NAME_PATTERN = /^([\u00c0-\u01ffa-zA-Zа-яА-Я.'\-]+)$/;
-
-// At least one upper case English letter, (?=.*?[A-Z])
-// At least one lower case English letter, (?=.*?[a-z])
-// At least one digit, (?=.*?[0-9])
-// At least one special character, (?=.*?[#?!@$%^&*-])
-// Minimum eight in length .{8,} (with the anchors)
-// ^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$
-const PASSWORD_PATTERN = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/;
-
-const validateSignupParams = (params: ISignupParams): joi.ValidationResult => {
-    const schema = joi.object({
-        firstName: joi.string().min(3).max(50).pattern(NAME_PATTERN).required(),
-        lastName: joi.string().min(3).max(50).pattern(NAME_PATTERN).required(),
-        email: joi.string().min(5).max(255).email().required(),
-        password: joi.string().pattern(PASSWORD_PATTERN).required(),
-        confirmPassword: joi.string().pattern(PASSWORD_PATTERN).required(),
-    });
-
-    return schema.validate(params);
-};
-
-const validateResetPasswordParams = (params: IVerifyResetPasswordTokenParams): joi.ValidationResult => {
-    const schema = joi.object({
-        token: joi.string().required(),
-        password: joi.string().pattern(PASSWORD_PATTERN).required(),
-    });
-
-    return schema.validate(params);
-};
-
-const validateVerifyResetPasswordParams = (params: IVerifyResetPasswordTokenParams): joi.ValidationResult => {
-    const schema = joi.object({
-        token: joi.string().required(),
-    });
-
-    return schema.validate(params);
-};
-
-const validateForgotPasswordParams = (params: IForgotPasswordParams): joi.ValidationResult => {
-    const schema = joi.object({
-        email: joi.string().min(5).max(255).email().required(),
-    });
-
-    return schema.validate(params);
-};
+async function createProxyRequestToAuthServer<R = any>(request: express.Request): Promise<R> {
+    let response: R;
+    try {
+        response = await got.post(request.originalUrl, {
+            headers: request.headers,
+            body: request.body,
+        }) as any;
+    } catch (err) {
+        this.setStatus(500);
+        return {
+            error: [
+                {
+                    code: 500,
+                    message: "Auth server is not available",
+                }
+            ]
+        } as any;
+    }
+    return response;
+}
 
 @Route("/auth/signup")
 @Tags("Auth")
@@ -158,72 +90,8 @@ export class SignupController extends Controller {
         meta: {},
         data: {}
     })
-    public async signup(@Body() requestBody: ISignupParams): Promise<SignupResponse> {
-        const validation = validateSignupParams(requestBody);
-        if (validation.error) {
-            this.setStatus(500);
-            return {
-                error: [
-                    {
-                        code: 1001,
-                        message: validation.error.message,
-                    }
-                ]
-            };
-        }
-
-        if (requestBody.password !== requestBody.confirmPassword) {
-            this.setStatus(500);
-            return {
-                error: [
-                    {
-                        code: 1002,
-                        message: "Passwords are not equal.",
-                    }
-                ]
-            };
-        }
-
-        const user = await UserModel.findOne({ email: requestBody.email });
-        if (user) {
-            this.setStatus(500);
-            return {
-                error: [
-                    {
-                        code: 1003,
-                        message: "Email is already in use.",
-                    }
-                ]
-            };
-        }
-
-        let ref: IRefItem;
-
-        try {
-            const password = await hashPassword(requestBody.password);
-            const newUser = new UserModel({
-                firstName: requestBody.firstName,
-                lastName: requestBody.lastName,
-                email: requestBody.email,
-                password,
-            });
-            await newUser.save();
-            ref = await riseRefVersion("", RefTypes.USERS);
-        } catch (err) {
-            this.setStatus(500);
-            return {
-                error: [
-                    {
-                        code: 500,
-                        message: `Internal server error. ${err}`,
-                    }
-                ]
-            };
-        }
-
-        return {
-            meta: { ref }
-        };
+    public async signup(@Request() request: express.Request): Promise<SignupResponse> {
+        return await createProxyRequestToAuthServer<SignupResponse>(request);
     }
 }
 
@@ -240,72 +108,8 @@ export class SigninController extends Controller {
             email: "test@test.com",
         }
     })
-    public async signin(@Body() requestBody: ISigninParams): Promise<SigninResponse> {
-        const validation = validateSigninParams(requestBody);
-        if (validation.error) {
-            this.setStatus(500);
-            return {
-                error: [
-                    {
-                        code: 1001,
-                        message: validation.error.message,
-                    }
-                ]
-            };
-        }
-
-        let user: IUser;
-
-        try {
-            user = await UserModel.findOne({ email: requestBody.email });
-        } catch (err) {
-            this.setStatus(500);
-            return {
-                error: [
-                    {
-                        code: 500,
-                        message: err,
-                    }
-                ]
-            };
-        }
-
-        if (!user) {
-            this.setStatus(500);
-            return {
-                error: [
-                    {
-                        code: 500,
-                        message: "User not found.",
-                    }
-                ]
-            };
-        }
-
-        if (!checkIfUnencryptedPasswordIsValid(requestBody.password, user.password)) {
-            this.setStatus(500);
-            return {
-                error: [
-                    {
-                        code: 500,
-                        message: "Incorrect password",
-                    }
-                ]
-            };
-        }
-
-        const token = jwt.sign(
-            { userId: user.id, email: user.email },
-            config.AUTH_PRIVATE_KEY
-        );
-        return {
-            data: {
-                token,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                email: user.email,
-            }
-        };
+    public async signin(@Request() request: express.Request): Promise<SigninResponse> {
+        return await createProxyRequestToAuthServer<SigninResponse>(request);
     }
 }
 
@@ -337,107 +141,8 @@ export class ResetPasswordController extends Controller {
         meta: {},
         data: {}
     })
-    public async resetPassword(@Body() requestBody: IResetPasswordParams): Promise<ResetPasswordResponse> {
-        const validation = validateResetPasswordParams(requestBody);
-        if (validation.error) {
-            this.setStatus(500);
-            return {
-                error: [
-                    {
-                        code: 500,
-                        message: validation.error.message,
-                    }
-                ]
-            };
-        }
-
-        let user: IUser;
-
-        try {
-            user = await UserModel.findOne({ resetPasswordToken: requestBody.token });
-        } catch (err) {
-            this.setStatus(500);
-            return {
-                error: [
-                    {
-                        code: 500,
-                        message: err,
-                    }
-                ]
-            };
-        }
-
-        if (!user) {
-            this.setStatus(500);
-            return {
-                error: [
-                    {
-                        code: 500,
-                        message: "Token is not valid.",
-                    }
-                ]
-            };
-        }
-
-        const token = user.resetPasswordToken;
-        if (!token) {
-            this.setStatus(500);
-            return {
-                error: [
-                    {
-                        code: 500,
-                        message: "Link is not valid.",
-                    }
-                ]
-            };
-        }
-
-        const resetPasswordExpires = user.resetPasswordExpires;
-        if (resetPasswordExpires && resetPasswordExpires < Date.now()) {
-            this.setStatus(500);
-            return {
-                error: [
-                    {
-                        code: 500,
-                        message: "Password reset link timed out.",
-                    }
-                ]
-            };
-        }
-
-        user.resetPasswordToken = undefined;
-        user.resetPasswordExpires = undefined;
-        try {
-            user.password = await hashPassword(requestBody.password);
-        } catch (err) {
-            this.setStatus(500);
-            return {
-                error: [
-                    {
-                        code: 500,
-                        message: `Password changed error. ${err}`,
-                    }
-                ]
-            };
-        }
-
-        try {
-            await user.save();
-        } catch (err) {
-            this.setStatus(500);
-            return {
-                error: [
-                    {
-                        code: 500,
-                        message: `Internal server error. ${err}`,
-                    }
-                ]
-            };
-        }
-
-        return {
-            data: {}
-        };
+    public async resetPassword(@Request() request: express.Request): Promise<ResetPasswordResponse> {
+        return await createProxyRequestToAuthServer<ResetPasswordResponse>(request);
     }
 }
 
@@ -449,108 +154,8 @@ export class ForgotPasswordController extends Controller {
         meta: {},
         data: {}
     })
-    public async forgotPassword(@Body() requestBody: IForgotPasswordParams): Promise<ForgotPasswordResponse> {
-        const validation = validateForgotPasswordParams(requestBody);
-        if (validation.error) {
-            this.setStatus(500);
-            return {
-                error: [
-                    {
-                        code: 500,
-                        message: validation.error.message,
-                    }
-                ]
-            };
-        }
-
-        let user: IUser;
-
-        try {
-            user = await UserModel.findOne({ email: requestBody.email });
-        } catch (err) {
-            this.setStatus(500);
-            return {
-                error: [
-                    {
-                        code: 500,
-                        message: err,
-                    }
-                ]
-            };
-        }
-
-        if (!user) {
-            this.setStatus(500);
-            return {
-                error: [
-                    {
-                        code: 500,
-                        message: "User not found.",
-                    }
-                ]
-            };
-        }
-
-        const token = jwt.sign(
-            { userId: user.id, email: user.email, time: Date.now() },
-            config.AUTH_FORGOT_PRIVATE_KEY
-        );
-
-        user.resetPasswordToken = token;
-        user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
-
-        try {
-            await user.save();
-        } catch (err) {
-            this.setStatus(500);
-            return {
-                error: [
-                    {
-                        code: 500,
-                        message: `Internal server error. ${err}`,
-                    }
-                ]
-            };
-        }
-
-        try {
-            const htmlTempFunc = pug.compileFile(
-                "src/templates/resetPasswordTemplate.pug"
-            );
-
-            sendToEmail({
-                host: "smtp.jino.ru",
-                port: 587,
-                user: "tornado@eugene-grebennikov.pro",
-                pass: "6372363723!",
-                secure: false,
-                from: "\"Eugene Grebennikov 👻\" <tornado@eugene-grebennikov.pro>",
-                to: user.email,
-                subject: "Hello ✔",
-                text: "",
-                html: htmlTempFunc(
-                    {
-                        token,
-                        host: "localhost:4200",
-                        helpEmail: "tornado@eugene-grebennikov.pro",
-                    }
-                ),
-            });
-        } catch (err) {
-            this.setStatus(500);
-            return {
-                error: [
-                    {
-                        code: 500,
-                        message: `Internal server error. ${err}`,
-                    }
-                ]
-            };
-        }
-
-        return {
-            data: {}
-        };
+    public async forgotPassword(@Request() request: express.Request): Promise<ForgotPasswordResponse> {
+        return await createProxyRequestToAuthServer<ForgotPasswordResponse>(request);
     }
 }
 
@@ -562,76 +167,7 @@ export class VerifyResetPasswordTokenController extends Controller {
         meta: {},
         data: {}
     })
-    public async verifyResetPasswordToken(@Body() requestBody: IVerifyResetPasswordTokenParams): Promise<VerifyResetPasswordTokenResponse> {
-        const validation = validateVerifyResetPasswordParams(requestBody);
-        if (validation.error) {
-            this.setStatus(500);
-            return {
-                error: [
-                    {
-                        code: 500,
-                        message: validation.error.message,
-                    }
-                ]
-            };
-        }
-
-        let user: IUser;
-
-        try {
-            user = await UserModel.findOne({ resetPasswordToken: requestBody.token });
-        } catch (err) {
-            this.setStatus(500);
-            return {
-                error: [
-                    {
-                        code: 500,
-                        message: err,
-                    }
-                ]
-            };
-        }
-
-        if (!user) {
-            this.setStatus(500);
-            return {
-                error: [
-                    {
-                        code: 500,
-                        message: "Token is not valid.",
-                    }
-                ]
-            };
-        }
-
-        const token = user.resetPasswordToken;
-        if (!token) {
-            this.setStatus(500);
-            return {
-                error: [
-                    {
-                        code: 500,
-                        message: "Link is not valid.",
-                    }
-                ]
-            };
-        }
-
-        const resetPasswordExpires = user.resetPasswordExpires;
-        if (resetPasswordExpires && resetPasswordExpires < Date.now()) {
-            this.setStatus(500);
-            return {
-                error: [
-                    {
-                        code: 500,
-                        message: "Password reset link timed out.",
-                    }
-                ]
-            };
-        }
-
-        return {
-            data: {}
-        };
+    public async verifyResetPasswordToken(@Request() request: express.Request): Promise<VerifyResetPasswordTokenResponse> {
+        return await createProxyRequestToAuthServer<VerifyResetPasswordTokenResponse>(request);
     }
 }
