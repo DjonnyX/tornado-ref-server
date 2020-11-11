@@ -18,6 +18,7 @@ export const SWAGGER_ROUTE = process.env["SWAGGER_ROUTE"];
 export const LOCALIZATION_TEMPLATE_PATH = path.normalize("template/localization.json");
 export const CURRENCY_TEMPLATE_PATH = path.normalize("template/currency.json");
 export const LIC_SERVER_HOST = process.env["LIC_SERVER_HOST"];
+export const AUTH_LIC_SERVER_API_KEY = process.env["AUTH_LIC_SERVER_API_KEY"];
 
 if (!AUTH_PRIVATE_KEY) {
     logger.error("No client secret. Set AUTH_PRIVATE_KEY environment variable.");

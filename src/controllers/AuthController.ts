@@ -109,7 +109,7 @@ async function createProxyRequestToAuthServer<R = any>(context: Controller, requ
                     error: [
                         {
                             code: 500,
-                            message: `Proxy request to the auth server fail. Error: ${err}`,
+                            message: `Proxy request to the auth server fail. Error: ${err1}`,
                         }
                     ]
                 } as any;
