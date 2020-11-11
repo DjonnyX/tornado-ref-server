@@ -90,7 +90,7 @@ export class OrderTypesController extends Controller {
     public async getAll(@Request() request: IAuthRequest): Promise<OrderTypesResponse> {
         try {
             const items = await OrderTypeModel.find({});
-            const ref = await getRef(request.client, RefTypes.ORDER_TYPES);
+            const ref = await getRef(request.client.id, RefTypes.ORDER_TYPES);
             return {
                 meta: { ref },
                 data: items.map(v => formatOrderTypeModel(v)),
@@ -123,7 +123,7 @@ export class OrderTypeController extends Controller {
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<OrderTypeResponse> {
         try {
             const item = await OrderTypeModel.findById(id);
-            const ref = await getRef(request.client, RefTypes.ORDER_TYPES);
+            const ref = await getRef(request.client.id, RefTypes.ORDER_TYPES);
             return {
                 meta: { ref },
                 data: formatOrderTypeModel(item),
@@ -150,9 +150,9 @@ export class OrderTypeController extends Controller {
     })
     public async create(@Body() body: OrderTypeCreateRequest, @Request() request: IAuthRequest): Promise<OrderTypeResponse> {
         try {
-            const item = new OrderTypeModel({ ...body, $client: request.client });
+            const item = new OrderTypeModel({ ...body, $client: request.client.id });
             const savedItem = await item.save();
-            const ref = await riseRefVersion(request.client, RefTypes.ORDER_TYPES);
+            const ref = await riseRefVersion(request.client.id, RefTypes.ORDER_TYPES);
             return {
                 meta: { ref },
                 data: formatOrderTypeModel(savedItem),
@@ -180,7 +180,7 @@ export class OrderTypeController extends Controller {
     public async update(id: string, @Body() body: OrderTypeCreateRequest, @Request() request: IAuthRequest): Promise<OrderTypeResponse> {
         let defaultLanguage: ILanguage;
         try {
-            defaultLanguage = await LanguageModel.findOne({ $client: request.client, isDefault: true });
+            defaultLanguage = await LanguageModel.findOne({ $client: request.client.id, isDefault: true });
         } catch (err) {
             this.setStatus(500);
             return {
@@ -245,7 +245,7 @@ export class OrderTypeController extends Controller {
             await Promise.all(promises);
 
             if (isAssetsChanged) {
-                await riseRefVersion(request.client, RefTypes.ASSETS);
+                await riseRefVersion(request.client.id, RefTypes.ASSETS);
             }
 
             // выставление ассетов от предыдущего состояния
@@ -263,7 +263,7 @@ export class OrderTypeController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(request.client, RefTypes.ORDER_TYPES);
+            const ref = await riseRefVersion(request.client.id, RefTypes.ORDER_TYPES);
             return {
                 meta: { ref },
                 data: formatOrderTypeModel(item),
@@ -326,7 +326,7 @@ export class OrderTypeController extends Controller {
             await Promise.all(promises);
 
             if (!!isAssetsChanged) {
-                await riseRefVersion(request.client, RefTypes.ASSETS);
+                await riseRefVersion(request.client.id, RefTypes.ASSETS);
             }
         } catch (err) {
             this.setStatus(500);
@@ -341,7 +341,7 @@ export class OrderTypeController extends Controller {
         }
 
         try {
-            const ref = await riseRefVersion(request.client, RefTypes.ORDER_TYPES);
+            const ref = await riseRefVersion(request.client.id, RefTypes.ORDER_TYPES);
             return {
                 meta: { ref }
             };

@@ -98,14 +98,14 @@ export class AdsController extends Controller {
     public async getAll(@Request() request: IAuthRequest, @Query() type?: AdTypes): Promise<IAdsResponse> {
         try {
             const findParams: any = {
-                $client: request.client,
+                $client: request.client.id,
             };
 
             if (!!type) {
                 findParams.type = type;
             }
             const items = await AdModel.find(findParams);
-            const ref = await getRef(request.client, RefTypes.ADS);
+            const ref = await getRef(request.client.id, RefTypes.ADS);
             return {
                 meta: { ref },
                 data: items.map(v => formatAdModel(v)),
@@ -138,7 +138,7 @@ export class AdController extends Controller {
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<IAdResponse> {
         try {
             const item = await AdModel.findById(id);
-            const ref = await getRef(request.client, RefTypes.ADS);
+            const ref = await getRef(request.client.id, RefTypes.ADS);
             return {
                 meta: { ref },
                 data: formatAdModel(item),
@@ -165,9 +165,9 @@ export class AdController extends Controller {
     })
     public async create(@Body() body: IAdCreateRequest, @Request() request: IAuthRequest): Promise<IAdResponse> {
         try {
-            const item = new AdModel({ ...body, $client: request.client });
+            const item = new AdModel({ ...body, $client: request.client.id });
             const savedItem = await item.save();
-            const ref = await riseRefVersion(request.client, RefTypes.ADS);
+            const ref = await riseRefVersion(request.client.id, RefTypes.ADS);
             return {
                 meta: { ref },
                 data: formatAdModel(savedItem),
@@ -195,7 +195,7 @@ export class AdController extends Controller {
     public async update(id: string, @Body() body: IAdUpdateRequest, @Request() request: IAuthRequest): Promise<IAdResponse> {
         let defaultLanguage: ILanguage;
         try {
-            defaultLanguage = await LanguageModel.findOne({ $client: request.client, isDefault: true });
+            defaultLanguage = await LanguageModel.findOne({ $client: request.client.id, isDefault: true });
         } catch (err) {
             this.setStatus(500);
             return {
@@ -260,7 +260,7 @@ export class AdController extends Controller {
             await Promise.all(promises);
 
             if (isAssetsChanged) {
-                await riseRefVersion(request.client, RefTypes.ASSETS);
+                await riseRefVersion(request.client.id, RefTypes.ASSETS);
             }
 
             // выставление ассетов от предыдущего состояния
@@ -278,7 +278,7 @@ export class AdController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(request.client, RefTypes.ADS);
+            const ref = await riseRefVersion(request.client.id, RefTypes.ADS);
             return {
                 meta: { ref },
                 data: formatAdModel(item),
@@ -341,7 +341,7 @@ export class AdController extends Controller {
             await Promise.all(promises);
 
             if (!!isAssetsChanged) {
-                await riseRefVersion(request.client, RefTypes.ASSETS);
+                await riseRefVersion(request.client.id, RefTypes.ASSETS);
             }
         } catch (err) {
             this.setStatus(500);
@@ -356,7 +356,7 @@ export class AdController extends Controller {
         }
 
         try {
-            const ref = await riseRefVersion(request.client, RefTypes.ADS);
+            const ref = await riseRefVersion(request.client.id, RefTypes.ADS);
             return {
                 meta: { ref },
             };

@@ -190,8 +190,8 @@ export class RootNodesController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<INodesResponse> {
         try {
-            const items = await NodeModel.find({ $client: request.client, type: NodeTypes.KIOSK_ROOT });
-            const ref = await getRef(request.client, RefTypes.NODES);
+            const items = await NodeModel.find({ $client: request.client.id, type: NodeTypes.KIOSK_ROOT });
+            const ref = await getRef(request.client.id, RefTypes.NODES);
             return {
                 meta: { ref },
                 data: items.map(v => formatModel(v))
@@ -223,8 +223,8 @@ export class NodesController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<INodesResponse> {
         try {
-            const items = await NodeModel.find({ $client: request.client });
-            const ref = await getRef(request.client, RefTypes.NODES);
+            const items = await NodeModel.find({ $client: request.client.id });
+            const ref = await getRef(request.client.id, RefTypes.NODES);
             return {
                 meta: { ref },
                 data: items.map(v => formatModel(v))
@@ -253,7 +253,7 @@ export class NodesController extends Controller {
     public async getAllById(id: string, @Request() request: IAuthRequest): Promise<INodesResponse> {
         try {
             const items = await getNodesChain(id);
-            const ref = await getRef(request.client, RefTypes.NODES);
+            const ref = await getRef(request.client.id, RefTypes.NODES);
             return {
                 meta: { ref },
                 data: items.map(v => formatModel(v))
@@ -286,7 +286,7 @@ export class NodeController extends Controller {
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<INodeResponse> {
         try {
             const item = await NodeModel.findById(id);
-            const ref = await getRef(request.client, RefTypes.NODES);
+            const ref = await getRef(request.client.id, RefTypes.NODES);
             return {
                 meta: { ref },
                 data: formatModel(item)
@@ -370,7 +370,7 @@ export class NodeController extends Controller {
 
         let ref: IRefItem;
         try {
-            ref = await riseRefVersion(request.client, RefTypes.NODES);
+            ref = await riseRefVersion(request.client.id, RefTypes.NODES);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -493,7 +493,7 @@ export class NodeController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(request.client, RefTypes.NODES);
+            const ref = await riseRefVersion(request.client.id, RefTypes.NODES);
             return {
                 meta: { ref },
                 data: formatModel(item),
@@ -545,7 +545,7 @@ export class NodeController extends Controller {
 
         try {
             ids = await deleteNodesChain(id);
-            const ref = await riseRefVersion(request.client, RefTypes.NODES);
+            const ref = await riseRefVersion(request.client.id, RefTypes.NODES);
             return {
                 meta: { ref },
                 data: {

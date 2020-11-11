@@ -103,8 +103,8 @@ export class BusinessPeriodsController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<IBusinessPeriodsResponse> {
         try {
-            const items = await BusinessPeriodModel.find({ $client: request.client });
-            const ref = await getRef(request.client, RefTypes.BUSINESS_PERIODS);
+            const items = await BusinessPeriodModel.find({ $client: request.client.id });
+            const ref = await getRef(request.client.id, RefTypes.BUSINESS_PERIODS);
             return {
                 meta: { ref },
                 data: items.map(v => formatModel(v))
@@ -137,7 +137,7 @@ export class BusinessPeriodController extends Controller {
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<IBusinessPeriodResponse> {
         try {
             const item = await BusinessPeriodModel.findById(id);
-            const ref = await getRef(request.client, RefTypes.BUSINESS_PERIODS);
+            const ref = await getRef(request.client.id, RefTypes.BUSINESS_PERIODS);
             return {
                 meta: { ref },
                 data: formatModel(item),
@@ -177,9 +177,9 @@ export class BusinessPeriodController extends Controller {
         }
 
         try {
-            const item = new BusinessPeriodModel({ ...body, $client: request.client });
+            const item = new BusinessPeriodModel({ ...body, $client: request.client.id });
             const savedItem = await item.save();
-            const ref = await riseRefVersion(request.client, RefTypes.BUSINESS_PERIODS);
+            const ref = await riseRefVersion(request.client.id, RefTypes.BUSINESS_PERIODS);
             return {
                 meta: { ref },
                 data: formatModel(savedItem),
@@ -230,7 +230,7 @@ export class BusinessPeriodController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(request.client, RefTypes.BUSINESS_PERIODS);
+            const ref = await riseRefVersion(request.client.id, RefTypes.BUSINESS_PERIODS);
             return {
                 meta: { ref },
                 data: formatModel(item),
@@ -271,7 +271,7 @@ export class BusinessPeriodController extends Controller {
         }
 
         try {
-            const ref = await riseRefVersion(request.client, RefTypes.BUSINESS_PERIODS);
+            const ref = await riseRefVersion(request.client.id, RefTypes.BUSINESS_PERIODS);
             return {
                 meta: { ref },
             };

@@ -87,8 +87,8 @@ export class StoresController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<IStoresResponse> {
         try {
-            const items = await StoreModel.find({ $client: request.client });
-            const ref = await getRef(request.client, RefTypes.STORES);
+            const items = await StoreModel.find({ $client: request.client.id });
+            const ref = await getRef(request.client.id, RefTypes.STORES);
             return {
                 meta: { ref },
                 data: items.map(v => formatStoreModel(v))
@@ -121,7 +121,7 @@ export class StoreController extends Controller {
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<IStoreResponse> {
         try {
             const item = await StoreModel.findById(id);
-            const ref = await getRef(request.client, RefTypes.STORES);
+            const ref = await getRef(request.client.id, RefTypes.STORES);
             return {
                 meta: { ref },
                 data: formatStoreModel(item),
@@ -148,9 +148,9 @@ export class StoreController extends Controller {
     })
     public async create(@Body() body: IStoreCreateRequest, @Request() request: IAuthRequest): Promise<IStoreResponse> {
         try {
-            const item = new StoreModel({ ...body, $client: request.client });
+            const item = new StoreModel({ ...body, $client: request.client.id });
             const savedItem = await item.save();
-            const ref = await riseRefVersion(request.client, RefTypes.STORES);
+            const ref = await riseRefVersion(request.client.id, RefTypes.STORES);
             return {
                 meta: { ref },
                 data: formatStoreModel(savedItem),
@@ -188,7 +188,7 @@ export class StoreController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(request.client, RefTypes.STORES);
+            const ref = await riseRefVersion(request.client.id, RefTypes.STORES);
             return {
                 meta: { ref },
                 data: formatStoreModel(item),
@@ -229,7 +229,7 @@ export class StoreController extends Controller {
         }
 
         try {
-            const ref = await riseRefVersion(request.client, RefTypes.STORES);
+            const ref = await riseRefVersion(request.client.id, RefTypes.STORES);
             return {
                 meta: { ref },
             };

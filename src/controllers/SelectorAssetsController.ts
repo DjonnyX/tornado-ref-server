@@ -411,7 +411,7 @@ export class SelectorAssetsController extends Controller {
                     await deleteAsset(asset.path);
                     await deleteAsset(asset.mipmap.x128);
                     await deleteAsset(asset.mipmap.x32);
-                    await riseRefVersion(request.client, RefTypes.ASSETS);
+                    await riseRefVersion(request.client.id, RefTypes.ASSETS);
                 }
             } catch (err) {
                 this.setStatus(500);
@@ -447,7 +447,7 @@ export class SelectorAssetsController extends Controller {
 
             savedSelector = await selector.save();
 
-            selectorRef = await riseRefVersion(request.client, RefTypes.SELECTORS);
+            selectorRef = await riseRefVersion(request.client.id, RefTypes.SELECTORS);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -505,7 +505,7 @@ export class SelectorAssetsController extends Controller {
 
         let selectorRef: IRefItem;
         try {
-            selectorRef = await getRef(request.client, RefTypes.SELECTORS);
+            selectorRef = await getRef(request.client.id, RefTypes.SELECTORS);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -527,7 +527,7 @@ export class SelectorAssetsController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(request.client, RefTypes.ASSETS);
+            const ref = await riseRefVersion(request.client.id, RefTypes.ASSETS);
             return {
                 meta: {
                     asset: {
@@ -588,7 +588,7 @@ export class SelectorAssetsController extends Controller {
                     await deleteAsset(asset.path);
                     await deleteAsset(asset.mipmap.x128);
                     await deleteAsset(asset.mipmap.x32);
-                    assetRef = await riseRefVersion(request.client, RefTypes.ASSETS);
+                    assetRef = await riseRefVersion(request.client.id, RefTypes.ASSETS);
                 }
             } catch (err) {
                 this.setStatus(500);
@@ -612,7 +612,7 @@ export class SelectorAssetsController extends Controller {
 
             await selector.save();
 
-            selectorsRef = await riseRefVersion(request.client, RefTypes.SELECTORS);
+            selectorsRef = await riseRefVersion(request.client.id, RefTypes.SELECTORS);
             return {
                 meta: {
                     selector: {

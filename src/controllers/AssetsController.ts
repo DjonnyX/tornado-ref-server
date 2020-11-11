@@ -108,8 +108,8 @@ export const uploadAsset = async (request: IAuthRequest, allowedExtensions: Arra
     let asset: IAsset;
     let assetRef: IRefItem;
     try {
-        asset = new AssetModel({ ...fileInfo, active, $client: request.client });
-        assetRef = await riseRefVersion(request.client, RefTypes.ASSETS);
+        asset = new AssetModel({ ...fileInfo, active, $client: request.client.id });
+        assetRef = await riseRefVersion(request.client.id, RefTypes.ASSETS);
         await asset.save();
     } catch (err) {
         return {
@@ -161,8 +161,8 @@ export class AssetsController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<IGetAssetsResponse> {
         try {
-            const items = await AssetModel.find({ $client: request.client });
-            const ref = await getRef(request.client, RefTypes.ASSETS);
+            const items = await AssetModel.find({ $client: request.client.id });
+            const ref = await getRef(request.client.id, RefTypes.ASSETS);
             return {
                 meta: { ref },
                 data: items.map(v => formatAssetModel(v))

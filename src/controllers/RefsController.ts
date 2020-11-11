@@ -28,14 +28,6 @@ const date = new Date();
 
 const RESPONSE_TEMPLATE: Array<IRefItem> = [
     {
-        name: RefTypes.USERS,
-        version: 1,
-        lastupdate: date,
-    }, {
-        name: RefTypes.ROLES,
-        version: 2,
-        lastupdate: date,
-    }, {
         name: RefTypes.NODES,
         version: 1,
         lastupdate: date,
@@ -86,7 +78,7 @@ export class RefsController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<RefsResponse> {
         try {
-            const items = await RefModel.find({ $client: request.client });
+            const items = await RefModel.find({ $client: request.client.id });
             return {
                 data: items.map(v => formatModel(v))
             };

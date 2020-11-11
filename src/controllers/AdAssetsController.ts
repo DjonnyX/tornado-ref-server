@@ -367,7 +367,7 @@ export class AdAssetsController extends Controller {
 
         let defaultLanguage: ILanguage;
         try {
-            defaultLanguage = await LanguageModel.findOne({ $client: request.client, isDefault: true });
+            defaultLanguage = await LanguageModel.findOne({ $client: request.client.id, isDefault: true });
         } catch (err) {
             this.setStatus(500);
             return {
@@ -409,7 +409,7 @@ export class AdAssetsController extends Controller {
                     await deleteAsset(asset.path);
                     await deleteAsset(asset.mipmap.x128);
                     await deleteAsset(asset.mipmap.x32);
-                    await riseRefVersion(request.client, RefTypes.ASSETS);
+                    await riseRefVersion(request.client.id, RefTypes.ASSETS);
                 }
             } catch (err) {
                 this.setStatus(500);
@@ -445,7 +445,7 @@ export class AdAssetsController extends Controller {
 
             savedAd = await ad.save();
 
-            adRef = await riseRefVersion(request.client, RefTypes.ADS);
+            adRef = await riseRefVersion(request.client.id, RefTypes.ADS);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -503,7 +503,7 @@ export class AdAssetsController extends Controller {
 
         let adRef: IRefItem;
         try {
-            adRef = await getRef(request.client, RefTypes.ADS);
+            adRef = await getRef(request.client.id, RefTypes.ADS);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -525,7 +525,7 @@ export class AdAssetsController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(request.client, RefTypes.ASSETS);
+            const ref = await riseRefVersion(request.client.id, RefTypes.ASSETS);
             return {
                 meta: {
                     asset: {
@@ -586,7 +586,7 @@ export class AdAssetsController extends Controller {
                     await deleteAsset(asset.path);
                     await deleteAsset(asset.mipmap.x128);
                     await deleteAsset(asset.mipmap.x32);
-                    assetRef = await riseRefVersion(request.client, RefTypes.ASSETS);
+                    assetRef = await riseRefVersion(request.client.id, RefTypes.ASSETS);
                 }
             } catch (err) {
                 this.setStatus(500);
@@ -610,7 +610,7 @@ export class AdAssetsController extends Controller {
 
             await ad.save();
 
-            adsRef = await riseRefVersion(request.client, RefTypes.ADS);
+            adsRef = await riseRefVersion(request.client.id, RefTypes.ADS);
             return {
                 meta: {
                     ad: {

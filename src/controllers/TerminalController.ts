@@ -82,8 +82,8 @@ export class TerminalsController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<ITerminalsResponse> {
         try {
-            const items = await TerminalModel.find({ $client: request.client });
-            const ref = await getRef(request.client, RefTypes.TERMINALS);
+            const items = await TerminalModel.find({ $client: request.client.id });
+            const ref = await getRef(request.client.id, RefTypes.TERMINALS);
             return {
                 meta: { ref },
                 data: items.map(v => formatTerminalModel(v))
@@ -116,7 +116,7 @@ export class TerminalController extends Controller {
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<ITerminalResponse> {
         try {
             const item = await TerminalModel.findById(id);
-            const ref = await getRef(request.client, RefTypes.TERMINALS);
+            const ref = await getRef(request.client.id, RefTypes.TERMINALS);
             return {
                 meta: { ref },
                 data: formatTerminalModel(item),
@@ -183,7 +183,7 @@ export class TerminalController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(request.client, RefTypes.TERMINALS);
+            const ref = await riseRefVersion(request.client.id, RefTypes.TERMINALS);
             return {
                 meta: { ref },
                 data: formatTerminalModel(item),
@@ -224,7 +224,7 @@ export class TerminalController extends Controller {
         }
 
         try {
-            const ref = await riseRefVersion(request.client, RefTypes.TERMINALS);
+            const ref = await riseRefVersion(request.client.id, RefTypes.TERMINALS);
             return {
                 meta: { ref },
             };
