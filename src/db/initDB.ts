@@ -9,12 +9,12 @@ import { riseRefVersion } from "./refs";
 
 
 const createRootNode = async (client: string) => {
-    const existsRootNode = await NodeModel.findOne({ client: client, type: NodeTypes.KIOSK_ROOT });
+    const existsRootNode = await NodeModel.findOne({ client, type: NodeTypes.KIOSK_ROOT });
 
     if (!existsRootNode) {
         // generate new root node
         const rootMenuNode = new NodeModel({
-            client: client,
+            client,
             active: true,
             type: NodeTypes.KIOSK_ROOT,
             parentId: null,
@@ -32,7 +32,7 @@ const mergeDefaultTranslations = async (client: string) => {
 
     const dictionary: { [key: string]: ILanguage } = {};
     const langs = await LanguageModel.find({
-        client: client,
+        client,
     });
 
     langs.forEach(item => {
@@ -43,11 +43,11 @@ const mergeDefaultTranslations = async (client: string) => {
     availableLangs.forEach(lang => {
         if (!dictionary[lang.code]) {
             const newTranslation = new TranslationModel({
-                client: client,
+                client,
                 language: lang.code,
             });
             const newLang = new LanguageModel({
-                client: client,
+                client,
                 isDefault: lang.isDefault || false,
                 name: lang.name,
                 code: lang.code,
@@ -63,7 +63,7 @@ const mergeDefaultTranslations = async (client: string) => {
 
     await Promise.all(promises);
 
-    const translations = await TranslationModel.find({ client: client });
+    const translations = await TranslationModel.find({ client });
 
     if (!!translations) {
         const promises = new Array<Promise<any>>();
@@ -78,7 +78,7 @@ const mergeDefaultTranslations = async (client: string) => {
 const createDefaultCurrencyFromTemplate = async (client: string) => {
     const template: ICurrencyTemplate = JSON.parse(fs.readFileSync(CURRENCY_TEMPLATE_PATH).toString("utf-8"));
 
-    const currencies = await CurrencyModel.find({ client: client });
+    const currencies = await CurrencyModel.find({ client });
     let isDefaultSetted = false;
     let isTemplateCurrencyExists = false;
 
@@ -93,7 +93,7 @@ const createDefaultCurrencyFromTemplate = async (client: string) => {
 
     if (!isTemplateCurrencyExists) {
         const templateCurrency = new CurrencyModel({
-            client: client,
+            client,
             isDefault: !isDefaultSetted,
             active: true,
             name: template.name,
@@ -113,67 +113,67 @@ export const initRefs = async (client: string): Promise<void> => {
 
     const INITIAL_STATE = [
         {
-            client: client,
+            client,
             name: RefTypes.NODES,
             version: 1,
             lastupdate,
         }, {
-            client: client,
+            client,
             name: RefTypes.PRODUCTS,
             version: 1,
             lastupdate,
         }, {
-            client: client,
+            client,
             name: RefTypes.SELECTORS,
             version: 1,
             lastupdate,
         }, {
-            client: client,
+            client,
             name: RefTypes.ASSETS,
             version: 1,
             lastupdate,
         }, {
-            client: client,
+            client,
             name: RefTypes.TAGS,
             version: 1,
             lastupdate,
         }, {
-            client: client,
+            client,
             name: RefTypes.BUSINESS_PERIODS,
             version: 1,
             lastupdate,
         }, {
-            client: client,
+            client,
             name: RefTypes.CURRENCIES,
             version: 1,
             lastupdate,
         }, {
-            client: client,
+            client,
             name: RefTypes.ADS,
             version: 1,
             lastupdate,
         }, {
-            client: client,
+            client,
             name: RefTypes.LANGUAGES,
             version: 1,
             lastupdate,
         }, {
-            client: client,
+            client,
             name: RefTypes.ORDER_TYPES,
             version: 1,
             lastupdate,
         }, {
-            client: client,
+            client,
             name: RefTypes.TRANSLATIONS,
             version: 1,
             lastupdate,
         }, {
-            client: client,
+            client,
             name: RefTypes.STORES,
             version: 1,
             lastupdate,
         }, {
-            client: client,
+            client,
             name: RefTypes.TERMINALS,
             version: 1,
             lastupdate,
@@ -183,7 +183,7 @@ export const initRefs = async (client: string): Promise<void> => {
     for (let i = 0, l = INITIAL_STATE.length; i < l; i++) {
         const refData = INITIAL_STATE[i];
         const existsRef = await RefModel.findOne({
-            client: client,
+            client,
             name: refData.name,
         });
         if (existsRef) {

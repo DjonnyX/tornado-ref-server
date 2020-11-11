@@ -4,10 +4,15 @@ import { IRefItem } from "../controllers/RefsController";
 export const getRef = async (client: string, name: string): Promise<IRefItem> => {
     let ref: IRef;
     try {
-        ref = await RefModel.findOne({ name, client: client });
+        ref = await RefModel.findOne({ client, name });
     } catch (e) {
         throw Error("Error in getting reference.");
     }
+
+    if (!ref) {
+        throw Error(`Ref "${name}" not found.`)
+    }
+
     return {
         name: ref.name,
         version: ref.version,
@@ -18,7 +23,7 @@ export const getRef = async (client: string, name: string): Promise<IRefItem> =>
 export const riseRefVersion = async (client: string, name: string): Promise<IRefItem> => {
     let ref: IRef;
     try {
-        ref = await RefModel.findOne({ name, client: client });
+        ref = await RefModel.findOne({ client, name });
     } catch (e) {
         throw Error("Error in getting reference.");
     }

@@ -2,11 +2,12 @@ import * as config from "./config";
 import * as express from "express";
 import * as jwt from "jsonwebtoken";
 import * as got from "got";
+import { IAuthRequest } from "./interfaces";
 
 async function createProxyRequestToAuthServer(client: string): Promise<any> {
   let r: got.Response<any>;
   try {
-    r = await got.get(`${config.LIC_SERVER_HOST}/api/v1/client`, {
+    r = await got.get(`${config.LIC_SERVER_HOST}/api/v1/clients/${client}`, {
       headers: {
         "content-type": "application/json",
         "authorization": config.AUTH_LIC_SERVER_API_KEY,
@@ -21,12 +22,12 @@ async function createProxyRequestToAuthServer(client: string): Promise<any> {
         throw Error(`Proxy request to the auth server fail. Error: ${err1}`);
       }
     }
-    throw Error(!!authServerResp.error && !!authServerResp.error.length
+    throw Error(!!authServerResp && !!authServerResp.error && !!authServerResp.error.length
       ?
       authServerResp.error[0].message
-      : 
+      :
       `Proxy request to the auth server fail. Error: ${err}`
-      );
+    );
   }
 
   let body: any;
@@ -53,17 +54,17 @@ export async function expressAuthentication(
         reject(new Error("No token provided."));
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      jwt.verify(token, config.AUTH_PRIVATE_KEY, function (err: any, decoded: any) {
+      jwt.verify(token, config.AUTH_PRIVATE_KEY, function (err: any, decoded: { userId: string, email: string }) {
         if (err) {
           reject(err);
         } else {
           createProxyRequestToAuthServer(decoded.userId)
-          .then((client) => {
-            console.log(client)
-            resolve({ client });
-          }).catch(err => {
-            reject(err);
-          });
+            .then(res => {
+              (request as IAuthRequest).client = res.data;
+              resolve();
+            }).catch(err => {
+              reject(err);
+            });
           // Check if JWT contains all required scopes
           /*for (const scope of scopes) {
             if (!decoded.scopes.includes(scope)) {
@@ -85,13 +86,13 @@ export async function expressAuthentication(
         if (err) {
           reject(err);
         } else {
-          got.get(`${config.LIC_SERVER_HOST}/api/v1/client`, {
-            headers: request.headers,
-          }).then((client) => {
-            resolve({ client });
-          }).catch(err => {
-            reject(err);
-          });
+          createProxyRequestToAuthServer(decoded.userId)
+            .then(res => {
+              (request as IAuthRequest).client = res.data;
+              resolve();
+            }).catch(err => {
+              reject(err);
+            });
         }
       });
     });
