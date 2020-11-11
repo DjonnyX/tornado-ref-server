@@ -114,16 +114,6 @@ export const initRefs = async (client: string): Promise<void> => {
     const INITIAL_STATE = [
         {
             $client: client,
-            name: RefTypes.ROLES,
-            version: 1,
-            lastupdate,
-        }, {
-            $client: client,
-            name: RefTypes.USERS,
-            version: 1,
-            lastupdate,
-        }, {
-            $client: client,
             name: RefTypes.NODES,
             version: 1,
             lastupdate,
