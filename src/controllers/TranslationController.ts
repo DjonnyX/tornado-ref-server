@@ -80,7 +80,7 @@ export class TranslationsController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<TranslationsResponse> {
         try {
-            const items = await TranslationModel.find({ $client: request.client.id });
+            const items = await TranslationModel.find({ client: request.client.id });
             const ref = await getRef(request.client.id, RefTypes.TRANSLATIONS);
             return {
                 meta: { ref },

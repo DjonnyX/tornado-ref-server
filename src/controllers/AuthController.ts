@@ -2,6 +2,7 @@ import { Controller, Route, Post, Tags, Example, Header, Request, Body } from "t
 import * as got from "got";
 import * as express from "express";
 import * as config from "../config";
+import { initRefs } from "../db/initDB";
 
 interface ISigninParams {
     email: string;
@@ -54,7 +55,9 @@ interface SignoutResponse {
 
 interface SignupResponse {
     meta?: {};
-    data?: {};
+    data?: {
+        clientId: string;
+    };
     error?: Array<{
         code: number;
         message: string;
@@ -148,10 +151,17 @@ export class SignupController extends Controller {
     @Post()
     @Example<SignupResponse>({
         meta: {},
-        data: {}
+        data: {
+            clientId: "123456",
+        }
     })
     public async signup(@Request() request: express.Request, @Body() body: ISignupParams): Promise<SignupResponse> {
-        return await createProxyRequestToAuthServer<SignupResponse>(this, request);
+        const res = await createProxyRequestToAuthServer<SignupResponse>(this, request);
+
+        // Инициализация БД под клиента
+        await initRefs(res.data.clientId);
+
+        return res;
     }
 }
 

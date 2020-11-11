@@ -87,7 +87,7 @@ export class TagsController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<TagsResponse> {
         try {
-            const items = await TagModel.find({ $client: request.client.id });
+            const items = await TagModel.find({ client: request.client.id });
             const ref = await getRef(request.client.id, RefTypes.TAGS);
             return {
                 meta: { ref },
@@ -148,7 +148,7 @@ export class TagController extends Controller {
     })
     public async create(@Body() body: TagCreateRequest, @Request() request: IAuthRequest): Promise<TagResponse> {
         try {
-            const item = new TagModel({...body, $client: request.client.id});
+            const item = new TagModel({...body, client: request.client.id});
             const savedItem = await item.save();
             const ref = await riseRefVersion(request.client.id, RefTypes.TAGS);
             return {
@@ -178,7 +178,7 @@ export class TagController extends Controller {
     public async update(id: string, @Body() body: TagCreateRequest, @Request() request: IAuthRequest): Promise<TagResponse> {
         let defaultLanguage: ILanguage;
         try {
-            defaultLanguage = await LanguageModel.findOne({ $client: request.client.id, isDefault: true });
+            defaultLanguage = await LanguageModel.findOne({ client: request.client.id, isDefault: true });
         } catch (err) {
             this.setStatus(500);
             return {
@@ -288,7 +288,7 @@ export class TagController extends Controller {
     public async delete(id: string, @Request() request: IAuthRequest): Promise<TagResponse> {
         let products: Array<IProduct>;
         try {
-            products = await ProductModel.find({ $client: request.client.id, tags: [id] });
+            products = await ProductModel.find({ client: request.client.id, tags: [id] });
         } catch (err) {
             console.warn(`Products with contains tag ${id} found error. ${err}`);
         }

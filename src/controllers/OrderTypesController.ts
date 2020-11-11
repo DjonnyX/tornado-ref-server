@@ -150,7 +150,7 @@ export class OrderTypeController extends Controller {
     })
     public async create(@Body() body: OrderTypeCreateRequest, @Request() request: IAuthRequest): Promise<OrderTypeResponse> {
         try {
-            const item = new OrderTypeModel({ ...body, $client: request.client.id });
+            const item = new OrderTypeModel({ ...body, client: request.client.id });
             const savedItem = await item.save();
             const ref = await riseRefVersion(request.client.id, RefTypes.ORDER_TYPES);
             return {
@@ -180,7 +180,7 @@ export class OrderTypeController extends Controller {
     public async update(id: string, @Body() body: OrderTypeCreateRequest, @Request() request: IAuthRequest): Promise<OrderTypeResponse> {
         let defaultLanguage: ILanguage;
         try {
-            defaultLanguage = await LanguageModel.findOne({ $client: request.client.id, isDefault: true });
+            defaultLanguage = await LanguageModel.findOne({ client: request.client.id, isDefault: true });
         } catch (err) {
             this.setStatus(500);
             return {

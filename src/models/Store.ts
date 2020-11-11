@@ -11,11 +11,11 @@ interface IStore {
 }
 
 interface IStoreDocument extends Document, IStore {
-    $client: string;
+    client: string;
 }
 
 const StoreSchema = new Schema({
-    $client: { type: String, required: true, index: { unique: true } },
+    client: { type: String, required: true, index: { unique: true } },
     active: { type: Boolean, required: true, default: true },
     name: { type: String, required: true },
     address: { type: String, required: false },

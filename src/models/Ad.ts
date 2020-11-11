@@ -18,7 +18,7 @@ export interface IAdContents {
 }
 
 interface IAd extends Document {
-    $client: string;
+    client: string;
     active: boolean;
     type: AdTypes;
     name: string;
@@ -27,7 +27,7 @@ interface IAd extends Document {
 }
 
 const AdSchema = new Schema({
-    $client: { type: String, required: true, index: { unique: true } },
+    client: { type: String, required: true, index: { unique: true } },
     active: { type: Boolean, required: true, default: true },
     name: { type: String, required: false },
     type: {

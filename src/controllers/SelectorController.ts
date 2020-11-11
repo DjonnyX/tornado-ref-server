@@ -102,7 +102,7 @@ export class SelectorsController extends Controller {
     public async getAll(@Request() request: IAuthRequest, @Query() type?: SelectorTypes): Promise<ISelectorsResponse> {
         try {
             const findParams: any = {
-                $client: request.client.id,
+                client: request.client.id,
             };
             if (!!type) {
                 findParams.type = type;
@@ -172,7 +172,7 @@ export class SelectorController extends Controller {
 
             // создается корневой нод
             const jointNode = new NodeModel({
-                $client: request.client.id,
+                client: request.client.id,
                 active: true,
                 type: NodeTypes.SELECTOR_JOINT,
                 parentId: null,
@@ -184,7 +184,7 @@ export class SelectorController extends Controller {
             params = {
                 ...body,
                 joint: savedJointNode._id,
-                $client: request.client.id
+                client: request.client.id
             } as any;
         } catch (err) {
             this.setStatus(500);
@@ -229,7 +229,7 @@ export class SelectorController extends Controller {
     public async update(id: string, @Body() body: ISelectorUpdateRequest, @Request() request: IAuthRequest): Promise<ISelectorResponse> {
         let defaultLanguage: ILanguage;
         try {
-            defaultLanguage = await LanguageModel.findOne({ $client: request.client.id, isDefault: true });
+            defaultLanguage = await LanguageModel.findOne({ client: request.client.id, isDefault: true });
         } catch (err) {
             this.setStatus(500);
             return {

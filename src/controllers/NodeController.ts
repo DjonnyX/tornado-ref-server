@@ -190,7 +190,7 @@ export class RootNodesController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<INodesResponse> {
         try {
-            const items = await NodeModel.find({ $client: request.client.id, type: NodeTypes.KIOSK_ROOT });
+            const items = await NodeModel.find({ client: request.client.id, type: NodeTypes.KIOSK_ROOT });
             const ref = await getRef(request.client.id, RefTypes.NODES);
             return {
                 meta: { ref },
@@ -223,7 +223,7 @@ export class NodesController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<INodesResponse> {
         try {
-            const items = await NodeModel.find({ $client: request.client.id });
+            const items = await NodeModel.find({ client: request.client.id });
             const ref = await getRef(request.client.id, RefTypes.NODES);
             return {
                 meta: { ref },

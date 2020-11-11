@@ -369,7 +369,7 @@ export class OrderTypeAssetsController extends Controller {
 
         let defaultLanguage: ILanguage;
         try {
-            defaultLanguage = await LanguageModel.findOne({ $client: request.client.id, isDefault: true });
+            defaultLanguage = await LanguageModel.findOne({ client: request.client.id, isDefault: true });
         } catch (err) {
             this.setStatus(500);
             return {

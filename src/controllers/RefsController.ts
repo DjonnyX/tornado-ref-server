@@ -78,7 +78,7 @@ export class RefsController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<RefsResponse> {
         try {
-            const items = await RefModel.find({ $client: request.client.id });
+            const items = await RefModel.find({ client: request.client.id });
             return {
                 data: items.map(v => formatModel(v))
             };

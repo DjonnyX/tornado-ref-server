@@ -103,7 +103,7 @@ export class BusinessPeriodsController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<IBusinessPeriodsResponse> {
         try {
-            const items = await BusinessPeriodModel.find({ $client: request.client.id });
+            const items = await BusinessPeriodModel.find({ client: request.client.id });
             const ref = await getRef(request.client.id, RefTypes.BUSINESS_PERIODS);
             return {
                 meta: { ref },
@@ -177,7 +177,7 @@ export class BusinessPeriodController extends Controller {
         }
 
         try {
-            const item = new BusinessPeriodModel({ ...body, $client: request.client.id });
+            const item = new BusinessPeriodModel({ ...body, client: request.client.id });
             const savedItem = await item.save();
             const ref = await riseRefVersion(request.client.id, RefTypes.BUSINESS_PERIODS);
             return {

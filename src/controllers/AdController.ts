@@ -98,7 +98,7 @@ export class AdsController extends Controller {
     public async getAll(@Request() request: IAuthRequest, @Query() type?: AdTypes): Promise<IAdsResponse> {
         try {
             const findParams: any = {
-                $client: request.client.id,
+                client: request.client.id,
             };
 
             if (!!type) {
@@ -165,7 +165,7 @@ export class AdController extends Controller {
     })
     public async create(@Body() body: IAdCreateRequest, @Request() request: IAuthRequest): Promise<IAdResponse> {
         try {
-            const item = new AdModel({ ...body, $client: request.client.id });
+            const item = new AdModel({ ...body, client: request.client.id });
             const savedItem = await item.save();
             const ref = await riseRefVersion(request.client.id, RefTypes.ADS);
             return {
@@ -195,7 +195,7 @@ export class AdController extends Controller {
     public async update(id: string, @Body() body: IAdUpdateRequest, @Request() request: IAuthRequest): Promise<IAdResponse> {
         let defaultLanguage: ILanguage;
         try {
-            defaultLanguage = await LanguageModel.findOne({ $client: request.client.id, isDefault: true });
+            defaultLanguage = await LanguageModel.findOne({ client: request.client.id, isDefault: true });
         } catch (err) {
             this.setStatus(500);
             return {

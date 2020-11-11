@@ -3,7 +3,7 @@ import * as express from "express";
 import * as jwt from "jsonwebtoken";
 import * as got from "got";
 
-async function createProxyRequestToAuthServer(clientId: string): Promise<any> {
+async function createProxyRequestToAuthServer(client: string): Promise<any> {
   let r: got.Response<any>;
   try {
     r = await got.get(`${config.LIC_SERVER_HOST}/api/v1/client`, {
@@ -13,16 +13,20 @@ async function createProxyRequestToAuthServer(clientId: string): Promise<any> {
       },
     });
   } catch (err) {
+    let authServerResp: any;
     if (err instanceof got.HTTPError && err.statusCode === 500) {
-      let authServerResp: any;
       try {
         authServerResp = JSON.parse(err.body as string);
       } catch (err1) {
         throw Error(`Proxy request to the auth server fail. Error: ${err1}`);
       }
-      return authServerResp;
     }
-    throw Error(`Proxy request to the auth server fail. Error: ${err}`);
+    throw Error(!!authServerResp.error && !!authServerResp.error.length
+      ?
+      authServerResp.error[0].message
+      : 
+      `Proxy request to the auth server fail. Error: ${err}`
+      );
   }
 
   let body: any;
@@ -55,6 +59,7 @@ export async function expressAuthentication(
         } else {
           createProxyRequestToAuthServer(decoded.userId)
           .then((client) => {
+            console.log(client)
             resolve({ client });
           }).catch(err => {
             reject(err);

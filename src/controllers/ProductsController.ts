@@ -128,7 +128,7 @@ export class ProductsController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<IProductsResponse> {
         try {
-            const items = await ProductModel.find({ $client: request.client.id });
+            const items = await ProductModel.find({ client: request.client.id });
             const ref = await getRef(request.client.id, RefTypes.PRODUCTS);
             return {
                 meta: { ref },
@@ -193,7 +193,7 @@ export class ProductController extends Controller {
 
             // создается корневой нод
             const jointNode = new NodeModel({
-                $client: request.client.id,
+                client: request.client.id,
                 active: true,
                 type: NodeTypes.PRODUCT_JOINT,
                 parentId: null,
@@ -246,7 +246,7 @@ export class ProductController extends Controller {
     public async update(id: string, @Body() body: IProductUpdateRequest, @Request() request: IAuthRequest): Promise<IProductResponse> {
         let defaultLanguage: ILanguage;
         try {
-            defaultLanguage = await LanguageModel.findOne({ $client: request.client.id, isDefault: true });
+            defaultLanguage = await LanguageModel.findOne({ client: request.client.id, isDefault: true });
         } catch (err) {
             this.setStatus(500);
             return {

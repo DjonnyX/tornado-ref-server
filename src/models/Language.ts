@@ -2,7 +2,7 @@ import * as mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
 
 interface ILanguage extends Document {
-    $client: string;
+    client: string;
     active: boolean;
     isDefault: boolean;
     code: string;
@@ -16,7 +16,7 @@ interface ILanguage extends Document {
 }
 
 const LanguageSchema = new Schema({
-    $client: { type: String, required: true, index: { unique: true } },
+    client: { type: String, required: true, index: { unique: true } },
     active: { type: Schema.Types.Boolean, required: true, default: true },
     isDefault: { type: Schema.Types.Boolean, required: true, default: true },
     code: { type: Schema.Types.String, unique: true, required: true },
