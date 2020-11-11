@@ -1,5 +1,12 @@
 import * as express from "express";
 
 export interface IAuthRequest extends express.Request {
-    client: string;
+    client: IAuthInfo;
+}
+
+interface IAuthInfo {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
 }
