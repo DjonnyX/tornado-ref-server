@@ -4,7 +4,7 @@ export interface IAuthRequest extends express.Request {
     client: IAuthInfo;
 }
 
-interface IAuthInfo {
+export interface IAuthInfo {
     id: string;
     firstName: string;
     lastName: string;

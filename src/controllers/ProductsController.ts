@@ -202,7 +202,11 @@ export class ProductController extends Controller {
             });
             const jointRootNode = await jointNode.save();
 
-            params = { ...body, joint: jointRootNode._id } as any;
+            params = {
+                ...body,
+                client: request.client.id,
+                joint: jointRootNode._id
+            } as any;
         } catch (err) {
             this.setStatus(500);
             return {

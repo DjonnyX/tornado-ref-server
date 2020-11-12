@@ -1,8 +1,10 @@
 import { Controller, Route, Post, Tags, Example, Header, Request, Body } from "tsoa";
 import * as got from "got";
 import * as express from "express";
+import * as jwt from "jsonwebtoken";
 import * as config from "../config";
 import { initRefs } from "../db/initDB";
+import { IJWTBody } from "../interfaces";
 
 interface ISigninParams {
     email: string;
@@ -156,12 +158,7 @@ export class SignupController extends Controller {
         }
     })
     public async signup(@Request() request: express.Request, @Body() body: ISignupParams): Promise<SignupResponse> {
-        const res = await createProxyRequestToAuthServer<SignupResponse>(this, request);
-
-        // Инициализация БД под клиента
-        await initRefs(res.data.clientId);
-
-        return res;
+        return await createProxyRequestToAuthServer<SignupResponse>(this, request);
     }
 }
 
@@ -179,7 +176,36 @@ export class SigninController extends Controller {
         }
     })
     public async signin(@Request() request: express.Request, @Body() body: ISigninParams): Promise<SigninResponse> {
-        return await createProxyRequestToAuthServer<SigninResponse>(this, request);
+        const res = await createProxyRequestToAuthServer<SigninResponse>(this, request);
+
+        let authInfo: IJWTBody;
+
+        try {
+            authInfo = await new Promise((resolve, reject) => {
+                jwt.verify(res.data.token, config.AUTH_CLIENT_PRIVATE_KEY, function (err: any, decoded: any) {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(decoded);
+                    }
+                });
+            })
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Token is not valid. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        // Инициализация БД под клиента
+        await initRefs(authInfo.userId);
+
+        return res;
     }
 }
 

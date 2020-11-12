@@ -326,7 +326,7 @@ export class NodeController extends Controller {
         }
 
         if (body.type === NodeTypes.SELECTOR_NODE) {
-            const hasRecursion = await checkOnRecursion(body.parentId, body.contentId);
+            const hasRecursion = await checkOnRecursion(request.client.id, body.parentId, body.contentId);
             if (hasRecursion) {
                 this.setStatus(500);
                 return {
@@ -354,7 +354,7 @@ export class NodeController extends Controller {
 
         let savedItem: INode;
         try {
-            const item = new NodeModel(body);
+            const item = new NodeModel({ ...body, client: request.client.id });
             savedItem = await item.save();
         } catch (err) {
             this.setStatus(500);
@@ -386,7 +386,7 @@ export class NodeController extends Controller {
         let parentNode: INode;
 
         try {
-            parentNode = await NodeModel.findOne({ _id: savedItem.parentId });
+            parentNode = await NodeModel.findOne({ client: request.client.id, _id: savedItem.parentId });
             parentNode.children.push(savedItem._id);
             await parentNode.save();
         } catch (err) {
@@ -432,7 +432,7 @@ export class NodeController extends Controller {
         }
 
         if (body.type === NodeTypes.SELECTOR_NODE) {
-            const hasRecursion = await checkOnRecursion(body.parentId, body.contentId);
+            const hasRecursion = await checkOnRecursion(request.client.id, body.parentId, body.contentId);
             if (hasRecursion) {
                 this.setStatus(500);
                 return {

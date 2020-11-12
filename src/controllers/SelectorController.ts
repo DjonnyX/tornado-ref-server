@@ -184,7 +184,7 @@ export class SelectorController extends Controller {
             params = {
                 ...body,
                 joint: savedJointNode._id,
-                client: request.client.id
+                client: request.client.id,
             } as any;
         } catch (err) {
             this.setStatus(500);
