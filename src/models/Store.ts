@@ -10,9 +10,12 @@ interface IStore {
     extra?: { [key: string]: any } | null;
 }
 
-interface IStoreDocument extends Document, IStore {}
+interface IStoreDocument extends Document, IStore {
+    client: string;
+}
 
 const StoreSchema = new Schema({
+    client: { type: String, required: true, index: { unique: false } },
     active: { type: Boolean, required: true, default: true },
     name: { type: String, required: true },
     address: { type: String, required: false },

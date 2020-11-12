@@ -18,12 +18,14 @@ export interface ITagContents {
 }
 
 interface ITag extends Document {
+    client: string;
     active: boolean;
     contents: ITagContents;
     extra?: { [key: string]: any } | null;
 }
 
 const TagSchema = new Schema({
+    client: { type: String, required: true, index: { unique: false } },
     active: { type: Boolean, required: true, default: true },
     name: { type: String, required: false },
     contents: { type: Schema.Types.Mixed, default: {} },

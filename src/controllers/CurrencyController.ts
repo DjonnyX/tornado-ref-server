@@ -1,8 +1,9 @@
 import { RefTypes, CurrencyModel, ICurrency } from "../models/index";
-import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security } from "tsoa";
+import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Request } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatCurrencyModel } from "../utils/currency";
 import { IRefItem } from "./RefsController";
+import { IAuthRequest } from "../interfaces";
 
 interface ICurrencyItem {
     id: string;
@@ -83,10 +84,10 @@ export class CurrenciesController extends Controller {
         meta: META_TEMPLATE,
         data: [RESPONSE_TEMPLATE],
     })
-    public async getAll(): Promise<CurrenciesResponse> {
+    public async getAll(@Request() request: IAuthRequest): Promise<CurrenciesResponse> {
         try {
-            const items = await CurrencyModel.find({});
-            const ref = await getRef(RefTypes.CURRENCIES);
+            const items = await CurrencyModel.find({ client: request.client.id });
+            const ref = await getRef(request.client.id, RefTypes.CURRENCIES);
             return {
                 meta: { ref },
                 data: items.map(v => formatCurrencyModel(v)),
@@ -116,10 +117,10 @@ export class CurrencyController extends Controller {
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
-    public async getOne(id: string): Promise<CurrencyResponse> {
+    public async getOne(id: string, @Request() request: IAuthRequest): Promise<CurrencyResponse> {
         try {
             const item = await CurrencyModel.findById(id);
-            const ref = await getRef(RefTypes.CURRENCIES);
+            const ref = await getRef(request.client.id, RefTypes.CURRENCIES);
             return {
                 meta: { ref },
                 data: formatCurrencyModel(item),
@@ -144,11 +145,11 @@ export class CurrencyController extends Controller {
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
-    public async create(@Body() request: CurrencyCreateRequest): Promise<CurrencyResponse> {
+    public async create(@Body() body: CurrencyCreateRequest, @Request() request: IAuthRequest): Promise<CurrencyResponse> {
         let currencies: Array<ICurrency>;
 
         try {
-            currencies = await CurrencyModel.find({});
+            currencies = await CurrencyModel.find({ client: request.client.id });
         } catch (err) {
             this.setStatus(500);
             return {
@@ -162,10 +163,10 @@ export class CurrencyController extends Controller {
         }
 
         try {
-            request.isDefault = currencies.length === 0;
-            const item = new CurrencyModel(request);
+            body.isDefault = currencies.length === 0;
+            const item = new CurrencyModel({ ...body, client: request.client.id });
             const savedItem = await item.save();
-            const ref = await riseRefVersion(RefTypes.CURRENCIES);
+            const ref = await riseRefVersion(request.client.id, RefTypes.CURRENCIES);
             return {
                 meta: { ref },
                 data: formatCurrencyModel(savedItem),
@@ -190,7 +191,7 @@ export class CurrencyController extends Controller {
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
-    public async update(id: string, @Body() request: CurrencyUpdateRequest): Promise<CurrencyResponse> {
+    public async update(id: string, @Body() body: CurrencyUpdateRequest, @Request() request: IAuthRequest): Promise<CurrencyResponse> {
         let item: ICurrency;
 
         let isDefault: boolean;
@@ -200,11 +201,11 @@ export class CurrencyController extends Controller {
         try {
             item = await CurrencyModel.findById(id);
 
-            for (const key in request) {
-                item[key] = request[key];
+            for (const key in body) {
+                item[key] = body[key];
 
                 if (key === "code") {
-                    currencyCode = request[key];
+                    currencyCode = body[key];
                 }
 
                 if (key === "extra") {
@@ -227,7 +228,7 @@ export class CurrencyController extends Controller {
         }
 
         try {
-            const currencies: Array<ICurrency> = await CurrencyModel.find({});
+            const currencies: Array<ICurrency> = await CurrencyModel.find({ client: request.client.id });
 
             const promises = new Array<Promise<any>>();
 
@@ -292,7 +293,7 @@ export class CurrencyController extends Controller {
         try {
             await item.save();
 
-            const ref = await riseRefVersion(RefTypes.CURRENCIES);
+            const ref = await riseRefVersion(request.client.id, RefTypes.CURRENCIES);
             return {
                 meta: { ref },
                 data: formatCurrencyModel(item),
@@ -316,10 +317,10 @@ export class CurrencyController extends Controller {
     @Example<CurrencyResponse>({
         meta: META_TEMPLATE,
     })
-    public async delete(id: string): Promise<CurrencyResponse> {
+    public async delete(id: string, @Request() request: IAuthRequest): Promise<CurrencyResponse> {
         try {
             await CurrencyModel.findOneAndDelete({ _id: id });
-            const ref = await riseRefVersion(RefTypes.CURRENCIES);
+            const ref = await riseRefVersion(request.client.id, RefTypes.CURRENCIES);
             return {
                 meta: { ref },
             };

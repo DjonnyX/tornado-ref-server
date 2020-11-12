@@ -14,12 +14,14 @@ const TranslateSchema = new Schema({
 });
 
 interface ITranslation extends Document {
+    client: string;
     language: string;
     items: Array<ITranslate>;
     extra?: { [key: string]: any } | null;
 }
 
 const TranslationSchema = new Schema({
+    client: { type: String, required: true, index: { unique: false } },
     language: { type: Schema.Types.String, unique: true, required: true },
     items: [{ type: TranslateSchema, default: [] }],
     extra: { type: Schema.Types.Mixed, required: false },

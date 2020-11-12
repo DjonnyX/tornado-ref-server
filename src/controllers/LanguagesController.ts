@@ -1,11 +1,12 @@
 import { RefTypes, ILanguage, LanguageModel, TranslationModel, ITranslation } from "../models/index";
-import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security } from "tsoa";
+import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Request } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { IRefItem } from "./RefsController";
 import { formatLanguageModel } from "../utils/language";
 import { mergeTranslation } from "../utils/translation";
 import { AssetModel } from "../models/Asset";
 import { deleteAsset } from "./AssetsController";
+import { IAuthRequest } from "../interfaces";
 
 export interface ILanguageItem {
     id: string;
@@ -103,10 +104,10 @@ export class LanguagesController extends Controller {
         meta: META_TEMPLATE,
         data: [LANGUAGE_RESPONSE_TEMPLATE],
     })
-    public async getAll(): Promise<LanguagesResponse> {
+    public async getAll(@Request() request: IAuthRequest): Promise<LanguagesResponse> {
         try {
-            const items = await LanguageModel.find({});
-            const ref = await getRef(RefTypes.LANGUAGES);
+            const items = await LanguageModel.find({ client: request.client.id });
+            const ref = await getRef(request.client.id, RefTypes.LANGUAGES);
             return {
                 meta: { ref },
                 data: items.map(v => formatLanguageModel(v)),
@@ -136,10 +137,10 @@ export class LanguageController extends Controller {
         meta: META_TEMPLATE,
         data: LANGUAGE_RESPONSE_TEMPLATE,
     })
-    public async getOne(id: string): Promise<LanguageResponse> {
+    public async getOne(id: string, @Request() request: IAuthRequest): Promise<LanguageResponse> {
         try {
             const item = await LanguageModel.findById(id);
-            const ref = await getRef(RefTypes.LANGUAGES);
+            const ref = await getRef(request.client.id, RefTypes.LANGUAGES);
             return {
                 meta: { ref },
                 data: formatLanguageModel(item),
@@ -164,11 +165,11 @@ export class LanguageController extends Controller {
         meta: META_TEMPLATE,
         data: LANGUAGE_RESPONSE_TEMPLATE,
     })
-    public async create(@Body() request: LanguageCreateRequest): Promise<LanguageResponse> {
+    public async create(@Body() body: LanguageCreateRequest, @Request() request: IAuthRequest): Promise<LanguageResponse> {
         let langs: Array<ILanguage>;
 
         try {
-            langs = await LanguageModel.find({});
+            langs = await LanguageModel.find({ client: request.client.id });
         } catch (err) {
             this.setStatus(500);
             return {
@@ -185,8 +186,8 @@ export class LanguageController extends Controller {
         let savedItem: ILanguage;
         let ref: IRefItem;
         try {
-            request.isDefault = langs.length === 0;
-            item = new LanguageModel(request);
+            body.isDefault = langs.length === 0;
+            item = new LanguageModel({ ...body, client: request.client.id });
         } catch (err) {
             this.setStatus(500);
             return {
@@ -201,18 +202,19 @@ export class LanguageController extends Controller {
 
         try {
             const translation = new TranslationModel({
+                client: request.client.id,
                 language: item.code,
             });
 
             mergeTranslation(translation, false);
 
             const savedTranslationItem = await translation.save();
-            await riseRefVersion(RefTypes.TRANSLATIONS);
+            await riseRefVersion(request.client.id, RefTypes.TRANSLATIONS);
 
             item.translation = savedTranslationItem._id;
 
             savedItem = await item.save();
-            ref = await riseRefVersion(RefTypes.LANGUAGES);
+            ref = await riseRefVersion(request.client.id, RefTypes.LANGUAGES);
 
             return {
                 meta: { ref },
@@ -238,7 +240,7 @@ export class LanguageController extends Controller {
         meta: META_TEMPLATE,
         data: LANGUAGE_RESPONSE_TEMPLATE,
     })
-    public async update(id: string, @Body() request: LanguageUpdateRequest): Promise<LanguageResponse> {
+    public async update(id: string, @Body() body: LanguageUpdateRequest, @Request() request: IAuthRequest): Promise<LanguageResponse> {
         let item: ILanguage;
 
         let isDefault: boolean;
@@ -247,11 +249,11 @@ export class LanguageController extends Controller {
 
         try {
             item = await LanguageModel.findById(id);
-            for (const key in request) {
-                item[key] = request[key];
+            for (const key in body) {
+                item[key] = body[key];
 
                 if (key === "code") {
-                    languageCode = request[key];
+                    languageCode = body[key];
                 }
 
                 if (key === "extra") {
@@ -274,7 +276,7 @@ export class LanguageController extends Controller {
         }
 
         try {
-            const langs: Array<ILanguage> = await LanguageModel.find({});
+            const langs: Array<ILanguage> = await LanguageModel.find({ client: request.client.id });
 
             const promises = new Array<Promise<any>>();
 
@@ -340,17 +342,17 @@ export class LanguageController extends Controller {
             await item.save();
 
             if (!!languageCode) {
-                const translation = await TranslationModel.findOne({ code: item.code });
+                const translation = await TranslationModel.findOne({ client: request.client.id, code: item.code });
 
                 if (!!translation) {
                     translation.language = languageCode;
 
                     await translation.save();
-                    await riseRefVersion(RefTypes.TRANSLATIONS);
+                    await riseRefVersion(request.client.id, RefTypes.TRANSLATIONS);
                 }
             }
 
-            const ref = await riseRefVersion(RefTypes.LANGUAGES);
+            const ref = await riseRefVersion(request.client.id, RefTypes.LANGUAGES);
             return {
                 meta: { ref },
                 data: formatLanguageModel(item),
@@ -374,7 +376,7 @@ export class LanguageController extends Controller {
     @Example<LanguageResponse>({
         meta: META_TEMPLATE,
     })
-    public async delete(id: string): Promise<LanguageResponse> {
+    public async delete(id: string, @Request() request: IAuthRequest): Promise<LanguageResponse> {
         let language: ILanguage;
         try {
             language = await LanguageModel.findByIdAndDelete(id);
@@ -413,7 +415,7 @@ export class LanguageController extends Controller {
             await Promise.all(promises);
 
             if (!!isAssetsChanged) {
-                await riseRefVersion(RefTypes.ASSETS);
+                await riseRefVersion(request.client.id, RefTypes.ASSETS);
             }
         } catch (err) {
             this.setStatus(500);
@@ -429,7 +431,7 @@ export class LanguageController extends Controller {
 
         try {
             await TranslationModel.findOneAndDelete({ _id: language.translation });
-            await riseRefVersion(RefTypes.TRANSLATIONS);
+            await riseRefVersion(request.client.id, RefTypes.TRANSLATIONS);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -443,7 +445,7 @@ export class LanguageController extends Controller {
         }
 
         try {
-            const ref = await riseRefVersion(RefTypes.LANGUAGES);
+            const ref = await riseRefVersion(request.client.id, RefTypes.LANGUAGES);
             return {
                 meta: { ref }
             };
