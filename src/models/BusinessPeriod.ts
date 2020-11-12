@@ -23,6 +23,7 @@ interface ISchedule {
 }
 
 interface IBusinessPeriod extends Document {
+    client: string;
     active: boolean;
     name: string,
     contents: IBusinessPeriodContents;
@@ -44,6 +45,7 @@ const ScheduleSchema = new Schema({
 });
 
 const BusinessPeriodSchema = new Schema({
+    client: { type: String, required: true, index: { unique: false } },
     active: { type: Schema.Types.Boolean, required: true, default: true },
     name: { type: String, required: false },
     contents: { type: Schema.Types.Mixed, default: {} },

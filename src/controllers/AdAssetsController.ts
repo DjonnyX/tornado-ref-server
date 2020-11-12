@@ -11,6 +11,7 @@ import { uploadAsset, deleteAsset, IAssetItem, ICreateAssetsResponse } from "./A
 import { AssetModel, IAsset } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
 import { IAdContents } from "../models/Ad";
+import { IAuthRequest } from "../interfaces";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IAdAsset extends IAssetItem { }
@@ -332,7 +333,7 @@ export class AdAssetsController extends Controller {
             ad: AD_RESPONSE_TEMPLATE,
         }
     })
-    public async resource(adId: string, langCode: string, resourceType: AdImageTypes, @Request() request: express.Request): Promise<IAdCreateAssetsResponse> {
+    public async resource(adId: string, langCode: string, resourceType: AdImageTypes, @Request() request: IAuthRequest): Promise<IAdCreateAssetsResponse> {
         let assetsInfo: ICreateAssetsResponse;
         try {
             assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.MP4, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA], false);
@@ -366,7 +367,7 @@ export class AdAssetsController extends Controller {
 
         let defaultLanguage: ILanguage;
         try {
-            defaultLanguage = await LanguageModel.findOne({ isDefault: true });
+            defaultLanguage = await LanguageModel.findOne({ client: request.client.id, isDefault: true });
         } catch (err) {
             this.setStatus(500);
             return {
@@ -408,7 +409,7 @@ export class AdAssetsController extends Controller {
                     await deleteAsset(asset.path);
                     await deleteAsset(asset.mipmap.x128);
                     await deleteAsset(asset.mipmap.x32);
-                    await riseRefVersion(RefTypes.ASSETS);
+                    await riseRefVersion(request.client.id, RefTypes.ASSETS);
                 }
             } catch (err) {
                 this.setStatus(500);
@@ -444,7 +445,7 @@ export class AdAssetsController extends Controller {
 
             savedAd = await ad.save();
 
-            adRef = await riseRefVersion(RefTypes.ADS);
+            adRef = await riseRefVersion(request.client.id, RefTypes.ADS);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -483,7 +484,7 @@ export class AdAssetsController extends Controller {
             ad: AD_RESPONSE_TEMPLATE,
         }
     })
-    public async update(adId: string, langCode: string, assetId: string, @Body() request: IAdAssetUpdateRequest): Promise<IAdCreateAssetsResponse> {
+    public async update(adId: string, langCode: string, assetId: string, @Body() body: IAdAssetUpdateRequest, @Request() request: IAuthRequest): Promise<IAdCreateAssetsResponse> {
 
         let ad: IAd;
         try {
@@ -502,7 +503,7 @@ export class AdAssetsController extends Controller {
 
         let adRef: IRefItem;
         try {
-            adRef = await getRef(RefTypes.ADS);
+            adRef = await getRef(request.client.id, RefTypes.ADS);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -518,13 +519,13 @@ export class AdAssetsController extends Controller {
         try {
             const item = await AssetModel.findById(assetId);
 
-            for (const key in request) {
-                item[key] = request[key];
+            for (const key in body) {
+                item[key] = body[key];
             }
 
             await item.save();
 
-            const ref = await riseRefVersion(RefTypes.ASSETS);
+            const ref = await riseRefVersion(request.client.id, RefTypes.ASSETS);
             return {
                 meta: {
                     asset: {
@@ -558,7 +559,7 @@ export class AdAssetsController extends Controller {
     @Example<IAdDeleteAssetsResponse>({
         meta: META_TEMPLATE
     })
-    public async delete(adId: string, langCode: string, assetId: string): Promise<IAdDeleteAssetsResponse> {
+    public async delete(adId: string, langCode: string, assetId: string, @Request() request: IAuthRequest): Promise<IAdDeleteAssetsResponse> {
         let ad: IAd;
         try {
             ad = await AdModel.findById(adId);
@@ -585,7 +586,7 @@ export class AdAssetsController extends Controller {
                     await deleteAsset(asset.path);
                     await deleteAsset(asset.mipmap.x128);
                     await deleteAsset(asset.mipmap.x32);
-                    assetRef = await riseRefVersion(RefTypes.ASSETS);
+                    assetRef = await riseRefVersion(request.client.id, RefTypes.ASSETS);
                 }
             } catch (err) {
                 this.setStatus(500);
@@ -609,7 +610,7 @@ export class AdAssetsController extends Controller {
 
             await ad.save();
 
-            adsRef = await riseRefVersion(RefTypes.ADS);
+            adsRef = await riseRefVersion(request.client.id, RefTypes.ADS);
             return {
                 meta: {
                     ad: {

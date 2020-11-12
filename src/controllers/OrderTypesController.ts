@@ -1,5 +1,5 @@
 import { RefTypes, OrderTypeModel, LanguageModel, ILanguage } from "../models/index";
-import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security } from "tsoa";
+import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Request } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatOrderTypeModel } from "../utils/orderType";
 import { IOrderTypeContents, IOrderType } from "../models/OrderTypes";
@@ -7,6 +7,8 @@ import { AssetModel } from "../models/Asset";
 import { deleteAsset } from "./AssetsController";
 import { normalizeContents, getDeletedImagesFromDifferense, getEntityAssets } from "../utils/entity";
 import { IRefItem } from "./RefsController";
+import { IAuthRequest } from "src/interfaces";
+import { request } from "express";
 
 export interface IOrderTypeItem {
     id: string;
@@ -85,10 +87,10 @@ export class OrderTypesController extends Controller {
         meta: META_TEMPLATE,
         data: [RESPONSE_TEMPLATE],
     })
-    public async getAll(): Promise<OrderTypesResponse> {
+    public async getAll(@Request() request: IAuthRequest): Promise<OrderTypesResponse> {
         try {
             const items = await OrderTypeModel.find({});
-            const ref = await getRef(RefTypes.ORDER_TYPES);
+            const ref = await getRef(request.client.id, RefTypes.ORDER_TYPES);
             return {
                 meta: { ref },
                 data: items.map(v => formatOrderTypeModel(v)),
@@ -118,10 +120,10 @@ export class OrderTypeController extends Controller {
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
-    public async getOne(id: string): Promise<OrderTypeResponse> {
+    public async getOne(id: string, @Request() request: IAuthRequest): Promise<OrderTypeResponse> {
         try {
             const item = await OrderTypeModel.findById(id);
-            const ref = await getRef(RefTypes.ORDER_TYPES);
+            const ref = await getRef(request.client.id, RefTypes.ORDER_TYPES);
             return {
                 meta: { ref },
                 data: formatOrderTypeModel(item),
@@ -146,11 +148,11 @@ export class OrderTypeController extends Controller {
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
-    public async create(@Body() request: OrderTypeCreateRequest): Promise<OrderTypeResponse> {
+    public async create(@Body() body: OrderTypeCreateRequest, @Request() request: IAuthRequest): Promise<OrderTypeResponse> {
         try {
-            const item = new OrderTypeModel(request);
+            const item = new OrderTypeModel({ ...body, client: request.client.id });
             const savedItem = await item.save();
-            const ref = await riseRefVersion(RefTypes.ORDER_TYPES);
+            const ref = await riseRefVersion(request.client.id, RefTypes.ORDER_TYPES);
             return {
                 meta: { ref },
                 data: formatOrderTypeModel(savedItem),
@@ -175,10 +177,10 @@ export class OrderTypeController extends Controller {
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
-    public async update(id: string, @Body() request: OrderTypeCreateRequest): Promise<OrderTypeResponse> {
+    public async update(id: string, @Body() body: OrderTypeCreateRequest, @Request() request: IAuthRequest): Promise<OrderTypeResponse> {
         let defaultLanguage: ILanguage;
         try {
-            defaultLanguage = await LanguageModel.findOne({ isDefault: true });
+            defaultLanguage = await LanguageModel.findOne({ client: request.client.id, isDefault: true });
         } catch (err) {
             this.setStatus(500);
             return {
@@ -195,12 +197,12 @@ export class OrderTypeController extends Controller {
             const item = await OrderTypeModel.findById(id);
 
             let lastContents: IOrderTypeContents;
-            for (const key in request) {
+            for (const key in body) {
                 if (key === "contents") {
                     lastContents = item.contents;
                 }
 
-                item[key] = request[key];
+                item[key] = body[key];
 
                 if (key === "extra" || key === "contents") {
                     if (key === "contents") {
@@ -243,7 +245,7 @@ export class OrderTypeController extends Controller {
             await Promise.all(promises);
 
             if (isAssetsChanged) {
-                await riseRefVersion(RefTypes.ASSETS);
+                await riseRefVersion(request.client.id, RefTypes.ASSETS);
             }
 
             // выставление ассетов от предыдущего состояния
@@ -261,7 +263,7 @@ export class OrderTypeController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(RefTypes.ORDER_TYPES);
+            const ref = await riseRefVersion(request.client.id, RefTypes.ORDER_TYPES);
             return {
                 meta: { ref },
                 data: formatOrderTypeModel(item),
@@ -285,7 +287,7 @@ export class OrderTypeController extends Controller {
     @Example<OrderTypeResponse>({
         meta: META_TEMPLATE,
     })
-    public async delete(id: string): Promise<OrderTypeResponse> {
+    public async delete(id: string, @Request() request: IAuthRequest): Promise<OrderTypeResponse> {
         let orderType: IOrderType;
         try {
             orderType = await OrderTypeModel.findByIdAndDelete(id);
@@ -324,7 +326,7 @@ export class OrderTypeController extends Controller {
             await Promise.all(promises);
 
             if (!!isAssetsChanged) {
-                await riseRefVersion(RefTypes.ASSETS);
+                await riseRefVersion(request.client.id, RefTypes.ASSETS);
             }
         } catch (err) {
             this.setStatus(500);
@@ -339,7 +341,7 @@ export class OrderTypeController extends Controller {
         }
 
         try {
-            const ref = await riseRefVersion(RefTypes.ORDER_TYPES);
+            const ref = await riseRefVersion(request.client.id, RefTypes.ORDER_TYPES);
             return {
                 meta: { ref }
             };

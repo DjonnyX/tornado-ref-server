@@ -1,10 +1,11 @@
 import { RefTypes, ISchedule, IBusinessPeriod, BusinessPeriodModel } from "../models";
-import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security } from "tsoa";
+import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Request } from "tsoa";
 import * as joi from "@hapi/joi";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatModel } from "../utils/businessPeriod";
 import { IBusinessPeriodContents } from "src/models/BusinessPeriod";
 import { IRefItem } from "./RefsController";
+import { IAuthRequest } from "../interfaces";
 
 interface IBusinessPeriodItem {
     id?: string;
@@ -100,10 +101,10 @@ export class BusinessPeriodsController extends Controller {
         meta: META_TEMPLATE,
         data: [RESPONSE_TEMPLATE]
     })
-    public async getAll(): Promise<IBusinessPeriodsResponse> {
+    public async getAll(@Request() request: IAuthRequest): Promise<IBusinessPeriodsResponse> {
         try {
-            const items = await BusinessPeriodModel.find({});
-            const ref = await getRef(RefTypes.BUSINESS_PERIODS);
+            const items = await BusinessPeriodModel.find({ client: request.client.id });
+            const ref = await getRef(request.client.id, RefTypes.BUSINESS_PERIODS);
             return {
                 meta: { ref },
                 data: items.map(v => formatModel(v))
@@ -133,10 +134,10 @@ export class BusinessPeriodController extends Controller {
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE
     })
-    public async getOne(id: string): Promise<IBusinessPeriodResponse> {
+    public async getOne(id: string, @Request() request: IAuthRequest): Promise<IBusinessPeriodResponse> {
         try {
             const item = await BusinessPeriodModel.findById(id);
-            const ref = await getRef(RefTypes.BUSINESS_PERIODS);
+            const ref = await getRef(request.client.id, RefTypes.BUSINESS_PERIODS);
             return {
                 meta: { ref },
                 data: formatModel(item),
@@ -161,8 +162,8 @@ export class BusinessPeriodController extends Controller {
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
-    public async create(@Body() request: IBusinessPeriodCreateRequest): Promise<IBusinessPeriodResponse> {
-        const validation = validateBP(request);
+    public async create(@Body() body: IBusinessPeriodCreateRequest, @Request() request: IAuthRequest): Promise<IBusinessPeriodResponse> {
+        const validation = validateBP(body);
         if (validation.error) {
             this.setStatus(500);
             return {
@@ -176,9 +177,9 @@ export class BusinessPeriodController extends Controller {
         }
 
         try {
-            const item = new BusinessPeriodModel(request);
+            const item = new BusinessPeriodModel({ ...body, client: request.client.id });
             const savedItem = await item.save();
-            const ref = await riseRefVersion(RefTypes.BUSINESS_PERIODS);
+            const ref = await riseRefVersion(request.client.id, RefTypes.BUSINESS_PERIODS);
             return {
                 meta: { ref },
                 data: formatModel(savedItem),
@@ -203,8 +204,8 @@ export class BusinessPeriodController extends Controller {
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
-    public async update(id: string, @Body() request: IBusinessPeriodCreateRequest): Promise<IBusinessPeriodResponse> {
-        const validation = validateBP(request);
+    public async update(id: string, @Body() body: IBusinessPeriodCreateRequest, @Request() request: IAuthRequest): Promise<IBusinessPeriodResponse> {
+        const validation = validateBP(body);
         if (validation.error) {
             this.setStatus(500);
             return {
@@ -220,8 +221,8 @@ export class BusinessPeriodController extends Controller {
         try {
             const item = await BusinessPeriodModel.findById(id);
 
-            for (const key in request) {
-                item[key] = request[key];
+            for (const key in body) {
+                item[key] = body[key];
                 if (key === "extra" || key === "contents") {
                     item.markModified(key);
                 }
@@ -229,7 +230,7 @@ export class BusinessPeriodController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(RefTypes.BUSINESS_PERIODS);
+            const ref = await riseRefVersion(request.client.id, RefTypes.BUSINESS_PERIODS);
             return {
                 meta: { ref },
                 data: formatModel(item),
@@ -253,7 +254,7 @@ export class BusinessPeriodController extends Controller {
     @Example<IBusinessPeriodResponse>({
         meta: META_TEMPLATE
     })
-    public async delete(id: string): Promise<IBusinessPeriodResponse> {
+    public async delete(id: string, @Request() request: IAuthRequest): Promise<IBusinessPeriodResponse> {
         let bp: IBusinessPeriod;
         try {
             bp = await BusinessPeriodModel.findByIdAndDelete(id);
@@ -270,7 +271,7 @@ export class BusinessPeriodController extends Controller {
         }
 
         try {
-            const ref = await riseRefVersion(RefTypes.BUSINESS_PERIODS);
+            const ref = await riseRefVersion(request.client.id, RefTypes.BUSINESS_PERIODS);
             return {
                 meta: { ref },
             };

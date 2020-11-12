@@ -19,6 +19,7 @@ export interface ISelectorContents {
 }
 
 interface ISelector extends Document {
+    client: string;
     active: boolean;
     name: string;
     type: SelectorTypes;
@@ -28,6 +29,7 @@ interface ISelector extends Document {
 }
 
 const SelectorSchema = new Schema({
+    client: { type: String, required: true, index: { unique: false } },
     active: { type: Schema.Types.Boolean, required: true, default: true },
     name: { type: String, required: false },
     type: {

@@ -1,10 +1,11 @@
 import { NodeModel, INode, IScenario } from "../models/index";
-import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security } from "tsoa";
+import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Request } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { NodeTypes, RefTypes, ScenarioCommonActionTypes } from "../models/enums";
 import * as joi from "@hapi/joi";
 import { IRefItem } from "./RefsController";
 import { getNodesChain, deleteNodesChain, checkOnRecursion } from "../utils/node";
+import { IAuthRequest } from "../interfaces";
 
 interface INodeItem {
     id: string;
@@ -154,7 +155,7 @@ const validateUpdateNode = (node: INodeUpdateRequest): joi.ValidationResult => {
         type: joi.string()
             // включен полный список для сортировки
             .pattern(new RegExp(`^(${NodeTypes.PRODUCT}|${NodeTypes.SELECTOR}|${NodeTypes.KIOSK_PRESETS_ROOT}|${NodeTypes.KIOSK_ROOT}|${NodeTypes.SELECTOR_JOINT}|${NodeTypes.PRODUCT_JOINT}|${NodeTypes.SELECTOR_NODE})$`)),
-            active: joi.boolean(),
+        active: joi.boolean(),
         parentId: joi.optional(), // для рутовых элементов
         contentId: joi.optional(), // для рутовых элементов
         children: joi.required(),
@@ -187,10 +188,10 @@ export class RootNodesController extends Controller {
             }]
         }]
     })
-    public async getAll(): Promise<INodesResponse> {
+    public async getAll(@Request() request: IAuthRequest): Promise<INodesResponse> {
         try {
-            const items = await NodeModel.find({ type: NodeTypes.KIOSK_ROOT });
-            const ref = await getRef(RefTypes.NODES);
+            const items = await NodeModel.find({ client: request.client.id, type: NodeTypes.KIOSK_ROOT });
+            const ref = await getRef(request.client.id, RefTypes.NODES);
             return {
                 meta: { ref },
                 data: items.map(v => formatModel(v))
@@ -220,10 +221,10 @@ export class NodesController extends Controller {
         meta: META_TEMPLATE,
         data: [RESPONSE_TEMPLATE]
     })
-    public async getAll(): Promise<INodesResponse> {
+    public async getAll(@Request() request: IAuthRequest): Promise<INodesResponse> {
         try {
-            const items = await NodeModel.find({});
-            const ref = await getRef(RefTypes.NODES);
+            const items = await NodeModel.find({ client: request.client.id });
+            const ref = await getRef(request.client.id, RefTypes.NODES);
             return {
                 meta: { ref },
                 data: items.map(v => formatModel(v))
@@ -249,10 +250,10 @@ export class NodesController extends Controller {
         meta: META_TEMPLATE,
         data: [RESPONSE_TEMPLATE]
     })
-    public async getAllById(id: string): Promise<INodesResponse> {
+    public async getAllById(id: string, @Request() request: IAuthRequest): Promise<INodesResponse> {
         try {
             const items = await getNodesChain(id);
-            const ref = await getRef(RefTypes.NODES);
+            const ref = await getRef(request.client.id, RefTypes.NODES);
             return {
                 meta: { ref },
                 data: items.map(v => formatModel(v))
@@ -282,10 +283,10 @@ export class NodeController extends Controller {
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE
     })
-    public async getOne(id: string): Promise<INodeResponse> {
+    public async getOne(id: string, @Request() request: IAuthRequest): Promise<INodeResponse> {
         try {
             const item = await NodeModel.findById(id);
-            const ref = await getRef(RefTypes.NODES);
+            const ref = await getRef(request.client.id, RefTypes.NODES);
             return {
                 meta: { ref },
                 data: formatModel(item)
@@ -310,8 +311,8 @@ export class NodeController extends Controller {
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE
     })
-    public async create(@Body() request: INodeCreateRequest): Promise<ICreateNodeResponse> {
-        const validation = validateCreateNode(request);
+    public async create(@Body() body: INodeCreateRequest, @Request() request: IAuthRequest): Promise<ICreateNodeResponse> {
+        const validation = validateCreateNode(body);
         if (validation.error) {
             this.setStatus(500);
             return {
@@ -324,8 +325,8 @@ export class NodeController extends Controller {
             };
         }
 
-        if (request.type === NodeTypes.SELECTOR_NODE) {
-            const hasRecursion = await checkOnRecursion(request.parentId, request.contentId);
+        if (body.type === NodeTypes.SELECTOR_NODE) {
+            const hasRecursion = await checkOnRecursion(body.parentId, body.contentId);
             if (hasRecursion) {
                 this.setStatus(500);
                 return {
@@ -339,7 +340,7 @@ export class NodeController extends Controller {
             }
         }
 
-        if (request.type === NodeTypes.SELECTOR_NODE && !!request.children && request.children.length > 0) {
+        if (body.type === NodeTypes.SELECTOR_NODE && !!body.children && body.children.length > 0) {
             this.setStatus(500);
             return {
                 error: [
@@ -353,7 +354,7 @@ export class NodeController extends Controller {
 
         let savedItem: INode;
         try {
-            const item = new NodeModel(request);
+            const item = new NodeModel(body);
             savedItem = await item.save();
         } catch (err) {
             this.setStatus(500);
@@ -369,7 +370,7 @@ export class NodeController extends Controller {
 
         let ref: IRefItem;
         try {
-            ref = await riseRefVersion(RefTypes.NODES);
+            ref = await riseRefVersion(request.client.id, RefTypes.NODES);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -416,8 +417,8 @@ export class NodeController extends Controller {
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE
     })
-    public async update(id: string, @Body() request: INodeUpdateRequest): Promise<INodeResponse> {
-        const validation = validateUpdateNode(request);
+    public async update(id: string, @Body() body: INodeUpdateRequest, @Request() request: IAuthRequest): Promise<INodeResponse> {
+        const validation = validateUpdateNode(body);
         if (validation.error) {
             this.setStatus(500);
             return {
@@ -430,8 +431,8 @@ export class NodeController extends Controller {
             };
         }
 
-        if (request.type === NodeTypes.SELECTOR_NODE) {
-            const hasRecursion = await checkOnRecursion(request.parentId, request.contentId);
+        if (body.type === NodeTypes.SELECTOR_NODE) {
+            const hasRecursion = await checkOnRecursion(body.parentId, body.contentId);
             if (hasRecursion) {
                 this.setStatus(500);
                 return {
@@ -445,7 +446,7 @@ export class NodeController extends Controller {
             }
         }
 
-        if (request.type === NodeTypes.SELECTOR_NODE && !!request.children && request.children.length > 0) {
+        if (body.type === NodeTypes.SELECTOR_NODE && !!body.children && body.children.length > 0) {
             this.setStatus(500);
             return {
                 error: [
@@ -460,25 +461,25 @@ export class NodeController extends Controller {
         try {
             const item = await NodeModel.findById(id);
 
-            for (const key in request) {
+            for (const key in body) {
                 if (key === "extra") {
-                    item[key] = request[key];
+                    item[key] = body[key];
                     item.markModified(key);
                 } else
-                if (key === "scenarios") {
-                    const scenarios = request.scenarios.map(scenario => ({
-                        active: scenario.active,
-                        action: scenario.action,
-                        value: scenario.value,
-                        extra: scenario.extra,
-                    }));
-                    item["scenarios"] = scenarios;
-                } else {
-                    item[key] = request[key];
-                }
+                    if (key === "scenarios") {
+                        const scenarios = body.scenarios.map(scenario => ({
+                            active: scenario.active,
+                            action: scenario.action,
+                            value: scenario.value,
+                            extra: scenario.extra,
+                        }));
+                        item["scenarios"] = scenarios;
+                    } else {
+                        item[key] = body[key];
+                    }
             }
 
-            if (item.type === NodeTypes.SELECTOR_NODE && !!request.children && request.children.length > 0) {
+            if (item.type === NodeTypes.SELECTOR_NODE && !!body.children && body.children.length > 0) {
                 this.setStatus(500);
                 return {
                     error: [
@@ -492,7 +493,7 @@ export class NodeController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(RefTypes.NODES);
+            const ref = await riseRefVersion(request.client.id, RefTypes.NODES);
             return {
                 meta: { ref },
                 data: formatModel(item),
@@ -516,7 +517,7 @@ export class NodeController extends Controller {
     @Example<INodeResponse>({
         meta: META_TEMPLATE
     })
-    public async delete(id: string): Promise<IDeleteNodeResponse> {
+    public async delete(id: string, @Request() request: IAuthRequest): Promise<IDeleteNodeResponse> {
         let ids: Array<string>;
 
         let parentNode: INode;
@@ -544,7 +545,7 @@ export class NodeController extends Controller {
 
         try {
             ids = await deleteNodesChain(id);
-            const ref = await riseRefVersion(RefTypes.NODES);
+            const ref = await riseRefVersion(request.client.id, RefTypes.NODES);
             return {
                 meta: { ref },
                 data: {

@@ -1,9 +1,10 @@
 import { RefTypes, ITerminal, TerminalModel } from "../models";
-import { Controller, Route, Get, Tags, OperationId, Example, Security, Put, Body, Delete } from "tsoa";
+import { Controller, Route, Get, Tags, OperationId, Example, Security, Put, Body, Delete, Request } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatTerminalModel } from "../utils/terminal";
 import { IRefItem } from "./RefsController";
 import { TerminalTypes, TerminalStatusTypes } from "../models/enums";
+import { IAuthRequest } from "../interfaces";
 
 interface ITerminalItem extends ITerminal {
     id?: string;
@@ -79,10 +80,10 @@ export class TerminalsController extends Controller {
         meta: META_TEMPLATE,
         data: [RESPONSE_TEMPLATE]
     })
-    public async getAll(): Promise<ITerminalsResponse> {
+    public async getAll(@Request() request: IAuthRequest): Promise<ITerminalsResponse> {
         try {
-            const items = await TerminalModel.find({});
-            const ref = await getRef(RefTypes.TERMINALS);
+            const items = await TerminalModel.find({ client: request.client.id });
+            const ref = await getRef(request.client.id, RefTypes.TERMINALS);
             return {
                 meta: { ref },
                 data: items.map(v => formatTerminalModel(v))
@@ -112,10 +113,10 @@ export class TerminalController extends Controller {
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE
     })
-    public async getOne(id: string): Promise<ITerminalResponse> {
+    public async getOne(id: string, @Request() request: IAuthRequest): Promise<ITerminalResponse> {
         try {
             const item = await TerminalModel.findById(id);
-            const ref = await getRef(RefTypes.TERMINALS);
+            const ref = await getRef(request.client.id, RefTypes.TERMINALS);
             return {
                 meta: { ref },
                 data: formatTerminalModel(item),
@@ -169,12 +170,12 @@ export class TerminalController extends Controller {
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
-    public async update(id: string, @Body() request: ITerminalUpdateRequest): Promise<ITerminalResponse> {
+    public async update(id: string, @Body() body: ITerminalUpdateRequest, @Request() request: IAuthRequest): Promise<ITerminalResponse> {
         try {
             const item = await TerminalModel.findById(id);
 
-            for (const key in request) {
-                item[key] = request[key];
+            for (const key in body) {
+                item[key] = body[key];
                 if (key === "extra") {
                     item.markModified(key);
                 }
@@ -182,7 +183,7 @@ export class TerminalController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(RefTypes.TERMINALS);
+            const ref = await riseRefVersion(request.client.id, RefTypes.TERMINALS);
             return {
                 meta: { ref },
                 data: formatTerminalModel(item),
@@ -206,7 +207,7 @@ export class TerminalController extends Controller {
     @Example<ITerminalResponse>({
         meta: META_TEMPLATE
     })
-    public async delete(id: string): Promise<ITerminalResponse> {
+    public async delete(id: string, @Request() request: IAuthRequest): Promise<ITerminalResponse> {
         let bp: ITerminal;
         try {
             bp = await TerminalModel.findByIdAndDelete(id);
@@ -223,7 +224,7 @@ export class TerminalController extends Controller {
         }
 
         try {
-            const ref = await riseRefVersion(RefTypes.TERMINALS);
+            const ref = await riseRefVersion(request.client.id, RefTypes.TERMINALS);
             return {
                 meta: { ref },
             };

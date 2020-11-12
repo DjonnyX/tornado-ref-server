@@ -2,6 +2,7 @@ import * as mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
 
 interface ICurrency extends Document {
+    client: string;
     active: boolean;
     isDefault: boolean;
     code: string;
@@ -11,6 +12,7 @@ interface ICurrency extends Document {
 }
 
 const CurrencySchema = new Schema({
+    client: { type: String, required: true, index: { unique: false } },
     active: { type: Schema.Types.Boolean, required: true, default: true },
     isDefault: { type: Schema.Types.Boolean, required: true, default: true },
     code: { type: Schema.Types.String, unique: true, required: true },

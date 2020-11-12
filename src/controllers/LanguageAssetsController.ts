@@ -9,6 +9,7 @@ import { AssetModel } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
 import { ILanguageItem, LANGUAGE_RESPONSE_TEMPLATE } from "./LanguagesController";
 import { formatLanguageModel } from "../utils/language";
+import { IAuthRequest } from "../interfaces";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface ILanguageAsset extends IAssetItem { }
@@ -153,7 +154,7 @@ export class LanguageAssetsController extends Controller {
             language: LANGUAGE_RESPONSE_TEMPLATE,
         }
     })
-    public async create(languageId: string, @Request() request: express.Request): Promise<ILanguageCreateAssetsResponse> {
+    public async create(languageId: string, @Request() request: IAuthRequest): Promise<ILanguageCreateAssetsResponse> {
         const assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA]);
 
         let language: ILanguage;
@@ -174,7 +175,7 @@ export class LanguageAssetsController extends Controller {
         let languageRef: IRefItem;
         try {
             language.assets.push(assetsInfo.data.id);
-            languageRef = await riseRefVersion(RefTypes.LANGUAGES);
+            languageRef = await riseRefVersion(request.client.id, RefTypes.LANGUAGES);
             await language.save();
         } catch (err) {
             this.setStatus(500);
@@ -214,7 +215,7 @@ export class LanguageAssetsController extends Controller {
             language: LANGUAGE_RESPONSE_TEMPLATE,
         }
     })
-    public async resource(languageId: string, resourceType: LanguageImageTypes, @Request() request: express.Request): Promise<ILanguageCreateAssetsResponse> {
+    public async resource(languageId: string, resourceType: LanguageImageTypes, @Request() request: IAuthRequest): Promise<ILanguageCreateAssetsResponse> {
         const assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA], false);
 
         let language: ILanguage;
@@ -234,7 +235,7 @@ export class LanguageAssetsController extends Controller {
         }
 
         deletedAsset = language.resources[resourceType];
-        
+
         const assetIndex = language.assets.indexOf(deletedAsset);
         if (assetIndex > -1) {
             try {
@@ -262,7 +263,7 @@ export class LanguageAssetsController extends Controller {
         try {
             language.resources[resourceType] = assetsInfo.data.id;
             language.assets.push(assetsInfo.data.id);
-            languageRef = await riseRefVersion(RefTypes.LANGUAGES);
+            languageRef = await riseRefVersion(request.client.id, RefTypes.LANGUAGES);
             await language.save();
         } catch (err) {
             this.setStatus(500);
@@ -302,7 +303,7 @@ export class LanguageAssetsController extends Controller {
             language: LANGUAGE_RESPONSE_TEMPLATE,
         }
     })
-    public async update(languageId: string, assetId: string, @Body() request: ILanguageUpdateAssetsRequest): Promise<ILanguageCreateAssetsResponse> {
+    public async update(languageId: string, assetId: string, @Body() body: ILanguageUpdateAssetsRequest, @Request() request: IAuthRequest): Promise<ILanguageCreateAssetsResponse> {
 
         let language: ILanguage;
         try {
@@ -321,7 +322,7 @@ export class LanguageAssetsController extends Controller {
 
         let languageRef: IRefItem;
         try {
-            languageRef = await getRef(RefTypes.LANGUAGES);
+            languageRef = await getRef(request.client.id, RefTypes.LANGUAGES);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -337,13 +338,13 @@ export class LanguageAssetsController extends Controller {
         try {
             const item = await AssetModel.findById(assetId);
 
-            for (const key in request) {
-                item[key] = request[key];
+            for (const key in body) {
+                item[key] = body[key];
             }
 
             await item.save();
 
-            const ref = await riseRefVersion(RefTypes.ASSETS);
+            const ref = await riseRefVersion(request.client.id, RefTypes.ASSETS);
             return {
                 meta: {
                     asset: {
@@ -377,7 +378,7 @@ export class LanguageAssetsController extends Controller {
     @Example<ILanguageDeleteAssetsResponse>({
         meta: META_TEMPLATE
     })
-    public async delete(languageId: string, assetId: string): Promise<ILanguageDeleteAssetsResponse> {
+    public async delete(languageId: string, assetId: string, @Request() request: IAuthRequest): Promise<ILanguageDeleteAssetsResponse> {
         let language: ILanguage;
         try {
             language = await LanguageModel.findById(languageId);
@@ -401,7 +402,7 @@ export class LanguageAssetsController extends Controller {
                 await deleteAsset(asset.path);
                 await deleteAsset(asset.mipmap.x128);
                 await deleteAsset(asset.mipmap.x32);
-                assetRef = await riseRefVersion(RefTypes.ASSETS);
+                assetRef = await riseRefVersion(request.client.id, RefTypes.ASSETS);
             } catch (err) {
                 this.setStatus(500);
                 return {
@@ -419,7 +420,7 @@ export class LanguageAssetsController extends Controller {
         try {
             language.assets.splice(assetIndex, 1);
             await language.save();
-            languagesRef = await riseRefVersion(RefTypes.LANGUAGES);
+            languagesRef = await riseRefVersion(request.client.id, RefTypes.LANGUAGES);
             return {
                 meta: {
                     language: {
