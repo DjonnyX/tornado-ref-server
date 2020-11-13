@@ -182,7 +182,7 @@ export class SigninController extends Controller {
 
         try {
             authInfo = await new Promise((resolve, reject) => {
-                jwt.verify(res.data.token, config.AUTH_CLIENT_PRIVATE_KEY, function (err: any, decoded: any) {
+                jwt.verify(res.data.token, config.AUTH_CLIENT_PRIVATE_KEY, function (err: any, decoded: IJWTBody) {
                     if (err) {
                         reject(err);
                     } else {
