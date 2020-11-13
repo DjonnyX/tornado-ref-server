@@ -19,7 +19,7 @@ const LanguageSchema = new Schema({
     client: { type: String, required: true, index: { unique: false } },
     active: { type: Schema.Types.Boolean, required: true, default: true },
     isDefault: { type: Schema.Types.Boolean, required: true, default: true },
-    code: { type: Schema.Types.String, required: true },
+    code: { type: Schema.Types.String, unique: false, required: true },
     name: { type: Schema.Types.String, required: true },
     assets: [{ type: Schema.Types.ObjectId, required: true }],
     resources: {
