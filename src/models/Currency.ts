@@ -15,7 +15,7 @@ const CurrencySchema = new Schema({
     client: { type: String, required: true, index: { unique: false } },
     active: { type: Schema.Types.Boolean, required: true, default: true },
     isDefault: { type: Schema.Types.Boolean, required: true, default: true },
-    code: { type: Schema.Types.String, unique: true, required: true },
+    code: { type: Schema.Types.String, required: true },
     name: { type: Schema.Types.String, required: true },
     symbol: { type: Schema.Types.String, required: true },
     extra: { type: Schema.Types.Mixed, required: false },
