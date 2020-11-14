@@ -22,7 +22,7 @@ interface ITranslation extends Document {
 
 const TranslationSchema = new Schema({
     client: { type: String, required: true, index: { unique: false } },
-    language: { type: Schema.Types.String, unique: true, required: true },
+    language: { type: Schema.Types.String, unique: false, required: true },
     items: [{ type: TranslateSchema, default: [] }],
     extra: { type: Schema.Types.Mixed, required: false },
 });

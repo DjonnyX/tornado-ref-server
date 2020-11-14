@@ -1,8 +1,10 @@
-import { Controller, Route, Post, Tags, Example, Header, Request, Body } from "tsoa";
+import { Controller, Route, Post, Tags, Example, Header, Request, Body, Get } from "tsoa";
 import * as got from "got";
 import * as express from "express";
+import * as jwt from "jsonwebtoken";
 import * as config from "../config";
 import { initRefs } from "../db/initDB";
+import { IJWTBody } from "../interfaces";
 
 interface ISigninParams {
     email: string;
@@ -10,11 +12,12 @@ interface ISigninParams {
 }
 
 interface ISignupParams {
+    captchaId: string;
+    captchaValue: string;
     firstName: string;
     lastName: string;
     email: string;
     password: string;
-    confirmPassword: string;
 }
 
 interface IResetPasswordParams {
@@ -47,6 +50,20 @@ interface SigninResponse {
 interface SignoutResponse {
     meta?: {};
     data?: {};
+    error?: Array<{
+        code: number;
+        message: string;
+    }>;
+}
+
+interface GetSignupResponse {
+    meta?: {};
+    data?: {
+        captcha: {
+            id: string;
+            svg: string;
+        };
+    };
     error?: Array<{
         code: number;
         message: string;
@@ -93,13 +110,22 @@ interface VerifyResetPasswordTokenResponse {
 
 async function createProxyRequestToAuthServer<R = any>(context: Controller, request: express.Request): Promise<R> {
     let r: got.Response<any>;
+    const headers = {
+        "content-type": "application/json",
+    };
+
     try {
-        r = await got.post(`${config.LIC_SERVER_HOST}${request.originalUrl}`, {
-            headers: {
-                "content-type": "application/json",
-            },
-            body: JSON.stringify(request.body),
-        });
+        r = await (request.method === "POST"
+            ?
+            got.post(`${config.LIC_SERVER_HOST}${request.originalUrl}`, {
+                headers,
+                body: JSON.stringify(request.body),
+            })
+            :
+            got.get(`${config.LIC_SERVER_HOST}${request.originalUrl}`, {
+                headers,
+            })
+        );
     } catch (err) {
         context.setStatus(500);
 
@@ -148,6 +174,20 @@ async function createProxyRequestToAuthServer<R = any>(context: Controller, requ
 @Route("/auth/signup")
 @Tags("Auth")
 export class SignupController extends Controller {
+    @Get()
+    @Example<GetSignupResponse>({
+        meta: {},
+        data: {
+            captcha: {
+                id: "123123-234234-234234",
+                svg: "<svg></svg>",
+            },
+        }
+    })
+    public async getSignupParams(@Request() request: express.Request): Promise<GetSignupResponse> {
+        return await createProxyRequestToAuthServer<GetSignupResponse>(this, request);
+    }
+
     @Post()
     @Example<SignupResponse>({
         meta: {},
@@ -156,12 +196,7 @@ export class SignupController extends Controller {
         }
     })
     public async signup(@Request() request: express.Request, @Body() body: ISignupParams): Promise<SignupResponse> {
-        const res = await createProxyRequestToAuthServer<SignupResponse>(this, request);
-
-        // Инициализация БД под клиента
-        await initRefs(res.data.clientId);
-
-        return res;
+        return await createProxyRequestToAuthServer<SignupResponse>(this, request);
     }
 }
 
@@ -179,7 +214,36 @@ export class SigninController extends Controller {
         }
     })
     public async signin(@Request() request: express.Request, @Body() body: ISigninParams): Promise<SigninResponse> {
-        return await createProxyRequestToAuthServer<SigninResponse>(this, request);
+        const res = await createProxyRequestToAuthServer<SigninResponse>(this, request);
+
+        let authInfo: IJWTBody;
+
+        try {
+            authInfo = await new Promise((resolve, reject) => {
+                jwt.verify(res.data.token, config.AUTH_CLIENT_PRIVATE_KEY, function (err: any, decoded: IJWTBody) {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(decoded);
+                    }
+                });
+            })
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Token is not valid. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        // Инициализация БД под клиента
+        await initRefs(authInfo.userId);
+
+        return res;
     }
 }
 

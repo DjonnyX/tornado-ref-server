@@ -3,7 +3,8 @@ import { ErrorResponse } from "./ErrorResponse";
 import { SuccessResponse } from "./SuccessResponse";
 import { ITranslationTemplate } from "./ITranslationTemplate";
 import { ICurrencyTemplate } from "./ICurrencyTemplate";
-import { IAuthRequest } from "./IAuthRequest";
+import { IAuthInfo, IAuthRequest } from "./IAuthRequest";
+import { IJWTBody } from "./IJWTBody";
 
 export {
     IError,
@@ -12,4 +13,6 @@ export {
     ITranslationTemplate,
     ICurrencyTemplate,
     IAuthRequest,
+    IAuthInfo,
+    IJWTBody,
 };

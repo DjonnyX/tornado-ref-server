@@ -81,10 +81,10 @@ export const deleteNodesChain = async (id: string): Promise<Array<string>> => {
     return ids;
 };
 
-export const checkOnRecursion = async (id: string, contentId: string): Promise<boolean> => {
+export const checkOnRecursion = async (client: string, id: string, contentId: string): Promise<boolean> => {
     let items: Array<INode>;
     try {
-        items = await NodeModel.find();
+        items = await NodeModel.find({ client });
     } catch (err) {
         throw Error(`Could not find nodes. ${err}`);
     }

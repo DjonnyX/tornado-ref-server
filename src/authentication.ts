@@ -2,7 +2,7 @@ import * as config from "./config";
 import * as express from "express";
 import * as jwt from "jsonwebtoken";
 import * as got from "got";
-import { IAuthRequest } from "./interfaces";
+import { IAuthRequest, IJWTBody } from "./interfaces";
 
 async function createProxyRequestToAuthServer(client: string): Promise<any> {
   let r: got.Response<any>;
@@ -54,7 +54,7 @@ export async function expressAuthentication(
         reject(new Error("No token provided."));
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      jwt.verify(token, config.AUTH_PRIVATE_KEY, function (err: any, decoded: { userId: string, email: string }) {
+      jwt.verify(token, config.AUTH_PRIVATE_KEY, function (err: any, decoded: IJWTBody) {
         if (err) {
           reject(err);
         } else {
@@ -82,7 +82,7 @@ export async function expressAuthentication(
         reject(new Error("No apiKey provided."));
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      jwt.verify(apiKey, config.AUTH_CLIENT_PRIVATE_KEY, function (err: any, decoded: any) {
+      jwt.verify(apiKey, config.AUTH_CLIENT_PRIVATE_KEY, function (err: any, decoded: IJWTBody) {
         if (err) {
           reject(err);
         } else {
