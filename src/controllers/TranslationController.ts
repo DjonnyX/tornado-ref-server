@@ -72,7 +72,7 @@ const META_TEMPLATE: TranslationMeta = {
 export class TranslationsController extends Controller {
     @Get()
     @Security("clientToken")
-    @Security("serverToken")
+    @Security("apiKey")
     @OperationId("GetAll")
     @Example<TranslationsResponse>({
         meta: META_TEMPLATE,
@@ -105,7 +105,7 @@ export class TranslationsController extends Controller {
 export class TranslationController extends Controller {
     @Get("{id}")
     @Security("clientToken")
-    @Security("serverToken")
+    @Security("apiKey")
     @OperationId("GetOne")
     @Example<TranslationResponse>({
         meta: META_TEMPLATE,

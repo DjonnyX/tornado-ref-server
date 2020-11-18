@@ -89,7 +89,7 @@ const META_TEMPLATE: IAdsMeta = {
 export class AdsController extends Controller {
     @Get()
     @Security("clientToken")
-    @Security("serverToken")
+    @Security("apiKey")
     @OperationId("GetAll")
     @Example<IAdsResponse>({
         meta: META_TEMPLATE,
@@ -129,7 +129,7 @@ export class AdsController extends Controller {
 export class AdController extends Controller {
     @Get("{id}")
     @Security("clientToken")
-    @Security("serverToken")
+    @Security("apiKey")
     @OperationId("GetOne")
     @Example<IAdResponse>({
         meta: META_TEMPLATE,

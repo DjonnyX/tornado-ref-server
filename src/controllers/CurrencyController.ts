@@ -78,7 +78,7 @@ const META_TEMPLATE: ICurrencyMeta = {
 export class CurrenciesController extends Controller {
     @Get()
     @Security("clientToken")
-    @Security("serverToken")
+    @Security("apiKey")
     @OperationId("GetAll")
     @Example<CurrenciesResponse>({
         meta: META_TEMPLATE,
@@ -111,7 +111,7 @@ export class CurrenciesController extends Controller {
 export class CurrencyController extends Controller {
     @Get("{id}")
     @Security("clientToken")
-    @Security("serverToken")
+    @Security("apiKey")
     @OperationId("GetOne")
     @Example<CurrencyResponse>({
         meta: META_TEMPLATE,

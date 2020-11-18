@@ -79,7 +79,7 @@ export const RESPONSE_TEMPLATE: ITagItem = {
 export class TagsController extends Controller {
     @Get()
     @Security("clientToken")
-    @Security("serverToken")
+    @Security("apiKey")
     @OperationId("GetAll")
     @Example<TagsResponse>({
         meta: META_TEMPLATE,
@@ -112,7 +112,7 @@ export class TagsController extends Controller {
 export class TagController extends Controller {
     @Get("{id}")
     @Security("clientToken")
-    @Security("serverToken")
+    @Security("apiKey")
     @OperationId("GetOne")
     @Example<TagResponse>({
         meta: META_TEMPLATE,

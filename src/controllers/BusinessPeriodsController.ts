@@ -95,7 +95,7 @@ const META_TEMPLATE: IBusinessPeriodMeta = {
 export class BusinessPeriodsController extends Controller {
     @Get()
     @Security("clientToken")
-    @Security("serverToken")
+    @Security("apiKey")
     @OperationId("GetAll")
     @Example<IBusinessPeriodsResponse>({
         meta: META_TEMPLATE,
@@ -128,7 +128,7 @@ export class BusinessPeriodsController extends Controller {
 export class BusinessPeriodController extends Controller {
     @Get("{id}")
     @Security("clientToken")
-    @Security("serverToken")
+    @Security("apiKey")
     @OperationId("GetOne")
     @Example<IBusinessPeriodResponse>({
         meta: META_TEMPLATE,

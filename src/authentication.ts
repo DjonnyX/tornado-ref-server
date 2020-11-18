@@ -6,6 +6,16 @@ import { IAuthRequest, IJWTBody } from "./interfaces";
 
 async function createProxyRequestToAuthServer(client: string, token?: string): Promise<any> {
   let r: got.Response<any>;
+  let headers = {
+    "content-type": "application/json",
+  };
+
+  if (!!token) {
+    headers["x-authorization"] = token;
+  } else {
+    headers["x-api-key"] = config.AUTH_LIC_SERVER_API_KEY;
+  }
+
   try {
     r = await got.get(`${config.LIC_SERVER_HOST}/api/v1/clients/${client}`, {
       headers: {
@@ -46,8 +56,8 @@ export async function expressAuthentication(
   scopes?: string[],
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<any> {
-  const token = request.headers["x-authorization"] ? String(request.headers["x-authorization"]) : undefined;
   if (securityName === "clientToken") {
+    const token = request.headers["x-authorization"] ? String(request.headers["x-authorization"]) : undefined;
 
     return new Promise((resolve, reject) => {
       if (!token) {
@@ -74,7 +84,8 @@ export async function expressAuthentication(
         }
       });
     });
-  } else if (securityName === "serverToken") {
+  } else if (securityName === "apiKey") {
+    const token = request.headers["x-api-key"] ? String(request.headers["x-api-key"]) : undefined;
     return new Promise((resolve, reject) => {
       if (!token) {
         reject(new Error("No token provided."));

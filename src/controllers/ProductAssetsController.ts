@@ -144,7 +144,7 @@ const RESPONSE_TEMPLATE: IAssetItem = {
 export class ProductAssetsController extends Controller {
     @Get("{productId}/assets")
     @Security("clientToken")
-    @Security("serverToken")
+    @Security("apiKey")
     @OperationId("GetAll")
     @Example<IProductGetAllAssetsResponse>({
         meta: META_TEMPLATE,
@@ -206,7 +206,7 @@ export class ProductAssetsController extends Controller {
 
     @Get("{productId}/assets/{langCode}")
     @Security("clientToken")
-    @Security("serverToken")
+    @Security("apiKey")
     @OperationId("Get")
     @Example<IProductGetAssetsResponse>({
         meta: META_TEMPLATE,

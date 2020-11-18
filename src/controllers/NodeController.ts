@@ -171,7 +171,7 @@ const validateUpdateNode = (node: INodeUpdateRequest): joi.ValidationResult => {
 export class RootNodesController extends Controller {
     @Get()
     @Security("clientToken")
-    @Security("serverToken")
+    @Security("apiKey")
     @OperationId("GetRootNodes")
     @Example<INodesResponse>({
         meta: META_TEMPLATE,
@@ -215,7 +215,7 @@ export class RootNodesController extends Controller {
 export class NodesController extends Controller {
     @Get()
     @Security("clientToken")
-    @Security("serverToken")
+    @Security("apiKey")
     @OperationId("GetAll")
     @Example<INodesResponse>({
         meta: META_TEMPLATE,
@@ -244,7 +244,7 @@ export class NodesController extends Controller {
 
     @Get("{id}")
     @Security("clientToken")
-    @Security("serverToken")
+    @Security("apiKey")
     @OperationId("GetAllById")
     @Example<INodesResponse>({
         meta: META_TEMPLATE,
@@ -277,7 +277,7 @@ export class NodesController extends Controller {
 export class NodeController extends Controller {
     @Get("{id}")
     @Security("clientToken")
-    @Security("serverToken")
+    @Security("apiKey")
     @OperationId("GetOne")
     @Example<INodeResponse>({
         meta: META_TEMPLATE,

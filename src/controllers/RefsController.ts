@@ -71,7 +71,7 @@ const formatModel = (model: IRef): IRefItem => ({
 export class RefsController extends Controller {
     @Get()
     @Security("clientToken")
-    @Security("serverToken")
+    @Security("apiKey")
     @OperationId("GetAll")
     @Example<RefsResponse>({
         data: RESPONSE_TEMPLATE
@@ -101,7 +101,7 @@ export class RefsController extends Controller {
 export class RefController extends Controller {
     @Get("{name}")
     @Security("clientToken")
-    @Security("serverToken")
+    @Security("apiKey")
     @OperationId("GetOne")
     @Example<RefResponse>({
         data: RESPONSE_SINGLE_TEMPLATE

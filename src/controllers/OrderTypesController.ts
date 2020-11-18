@@ -81,7 +81,7 @@ export const RESPONSE_TEMPLATE: IOrderTypeItem = {
 export class OrderTypesController extends Controller {
     @Get()
     @Security("clientToken")
-    @Security("serverToken")
+    @Security("apiKey")
     @OperationId("GetAll")
     @Example<OrderTypesResponse>({
         meta: META_TEMPLATE,
@@ -114,7 +114,7 @@ export class OrderTypesController extends Controller {
 export class OrderTypeController extends Controller {
     @Get("{id}")
     @Security("clientToken")
-    @Security("serverToken")
+    @Security("apiKey")
     @OperationId("GetOne")
     @Example<OrderTypeResponse>({
         meta: META_TEMPLATE,

@@ -79,7 +79,7 @@ const META_TEMPLATE: IStoreMeta = {
 export class StoresController extends Controller {
     @Get()
     @Security("clientToken")
-    @Security("serverToken")
+    @Security("apiKey")
     @OperationId("GetAll")
     @Example<IStoresResponse>({
         meta: META_TEMPLATE,
@@ -112,7 +112,7 @@ export class StoresController extends Controller {
 export class StoreController extends Controller {
     @Get("{id}")
     @Security("clientToken")
-    @Security("serverToken")
+    @Security("apiKey")
     @OperationId("GetOne")
     @Example<IStoreResponse>({
         meta: META_TEMPLATE,

@@ -140,7 +140,7 @@ const RESPONSE_TEMPLATE: IAssetItem = {
 export class SelectorAssetsController extends Controller {
     @Get("{selectorId}/assets")
     @Security("clientToken")
-    @Security("serverToken")
+    @Security("apiKey")
     @OperationId("GetAll")
     @Example<ISelectorGetAllAssetsResponse>({
         meta: META_TEMPLATE,
@@ -202,7 +202,7 @@ export class SelectorAssetsController extends Controller {
 
     @Get("{selectorId}/assets/{langCode}")
     @Security("clientToken")
-    @Security("serverToken")
+    @Security("apiKey")
     @OperationId("Get")
     @Example<ISelectorGetAssetsResponse>({
         meta: META_TEMPLATE,

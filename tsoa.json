@@ -11,9 +11,9 @@
         "name": "x-authorization",
         "in": "header"
       },
-      "serverToken": {
+      "apiKey": {
         "type": "apiKey",
-        "name": "x-authorization",
+        "name": "x-api-key",
         "in": "header"
       }
     },

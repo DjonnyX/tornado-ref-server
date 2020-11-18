@@ -74,7 +74,7 @@ const META_TEMPLATE: ITerminalMeta = {
 export class TerminalsController extends Controller {
     @Get()
     @Security("clientToken")
-    @Security("serverToken")
+    @Security("apiKey")
     @OperationId("GetAll")
     @Example<ITerminalsResponse>({
         meta: META_TEMPLATE,
@@ -107,7 +107,7 @@ export class TerminalsController extends Controller {
 export class TerminalController extends Controller {
     @Get("{id}")
     @Security("clientToken")
-    @Security("serverToken")
+    @Security("apiKey")
     @OperationId("GetOne")
     @Example<ITerminalResponse>({
         meta: META_TEMPLATE,
