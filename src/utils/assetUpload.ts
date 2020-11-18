@@ -1,4 +1,3 @@
-import * as express from "express";
 import * as path from "path";
 import * as sharp from "sharp";
 import multer = require("multer");
@@ -6,6 +5,7 @@ import { AssetExtensions } from "../models/enums";
 import * as ffmpeg from "fluent-ffmpeg";
 import * as ffmpegStatic from "ffmpeg-static";
 import * as fs from "fs";
+import { IAuthRequest } from "../interfaces";
 
 ffmpeg.setFfmpegPath(ffmpegStatic);
 
@@ -63,11 +63,11 @@ export const makeThumbnail = (ext: string, pathToResource: string, width: number
     });
 };
 
-export const assetsUploader = (name: string, allowedExtensions: Array<AssetExtensions>, request: express.Request): Promise<IFileInfo> => {
+export const assetsUploader = (name: string, allowedExtensions: Array<AssetExtensions>, request: IAuthRequest): Promise<IFileInfo> => {
     return new Promise((resolve, reject) => {
         const EXT_PATTERN = new RegExp(`^(${allowedExtensions.map(v => `\\${v}`).join("|")})$`);
         multer({
-            dest: "assets/",
+            dest: `assets/${request.client.id}`,
             fileFilter: function (req, file, cb) {
                 const ext = path.extname(file.originalname);
                 if (!EXT_PATTERN.test(ext)) {
