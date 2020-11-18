@@ -112,6 +112,7 @@ async function createProxyRequestToAuthServer<R = any>(context: Controller, requ
     let r: got.Response<any>;
     const headers = {
         "content-type": "application/json",
+        "x-authorization": config.AUTH_LIC_SERVER_API_KEY,
     };
 
     try {

@@ -170,8 +170,8 @@ const validateUpdateNode = (node: INodeUpdateRequest): joi.ValidationResult => {
 @Tags("Node")
 export class RootNodesController extends Controller {
     @Get()
-    @Security("jwt")
-    @Security("apiKey")
+    @Security("clientToken")
+    @Security("serverToken")
     @OperationId("GetRootNodes")
     @Example<INodesResponse>({
         meta: META_TEMPLATE,
@@ -214,8 +214,8 @@ export class RootNodesController extends Controller {
 @Tags("Node")
 export class NodesController extends Controller {
     @Get()
-    @Security("jwt")
-    @Security("apiKey")
+    @Security("clientToken")
+    @Security("serverToken")
     @OperationId("GetAll")
     @Example<INodesResponse>({
         meta: META_TEMPLATE,
@@ -243,8 +243,8 @@ export class NodesController extends Controller {
     }
 
     @Get("{id}")
-    @Security("jwt")
-    @Security("apiKey")
+    @Security("clientToken")
+    @Security("serverToken")
     @OperationId("GetAllById")
     @Example<INodesResponse>({
         meta: META_TEMPLATE,
@@ -276,8 +276,8 @@ export class NodesController extends Controller {
 @Tags("Node")
 export class NodeController extends Controller {
     @Get("{id}")
-    @Security("jwt")
-    @Security("apiKey")
+    @Security("clientToken")
+    @Security("serverToken")
     @OperationId("GetOne")
     @Example<INodeResponse>({
         meta: META_TEMPLATE,
@@ -305,7 +305,7 @@ export class NodeController extends Controller {
     }
 
     @Post()
-    @Security("jwt")
+    @Security("clientToken")
     @OperationId("Create")
     @Example<INodeResponse>({
         meta: META_TEMPLATE,
@@ -411,7 +411,7 @@ export class NodeController extends Controller {
     }
 
     @Put("{id}")
-    @Security("jwt")
+    @Security("clientToken")
     @OperationId("Update")
     @Example<INodeResponse>({
         meta: META_TEMPLATE,
@@ -512,7 +512,7 @@ export class NodeController extends Controller {
     }
 
     @Delete("{id}")
-    @Security("jwt")
+    @Security("clientToken")
     @OperationId("Delete")
     @Example<INodeResponse>({
         meta: META_TEMPLATE

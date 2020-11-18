@@ -71,8 +71,8 @@ const META_TEMPLATE: TranslationMeta = {
 @Tags("Translation")
 export class TranslationsController extends Controller {
     @Get()
-    @Security("jwt")
-    @Security("apiKey")
+    @Security("clientToken")
+    @Security("serverToken")
     @OperationId("GetAll")
     @Example<TranslationsResponse>({
         meta: META_TEMPLATE,
@@ -104,8 +104,8 @@ export class TranslationsController extends Controller {
 @Tags("Translation")
 export class TranslationController extends Controller {
     @Get("{id}")
-    @Security("jwt")
-    @Security("apiKey")
+    @Security("clientToken")
+    @Security("serverToken")
     @OperationId("GetOne")
     @Example<TranslationResponse>({
         meta: META_TEMPLATE,
@@ -133,7 +133,7 @@ export class TranslationController extends Controller {
     }
 
     /*@Post()
-    @Security("jwt")
+    @Security("clientToken")
     @OperationId("Create")
     @Example<TranslationResponse>({
         meta: META_TEMPLATE,
@@ -162,7 +162,7 @@ export class TranslationController extends Controller {
     }*/
 
     @Put("{id}")
-    @Security("jwt")
+    @Security("clientToken")
     @OperationId("Update")
     @Example<TranslationResponse>({
         meta: META_TEMPLATE,
@@ -200,7 +200,7 @@ export class TranslationController extends Controller {
     }
     /*
         @Delete("{id}")
-        @Security("jwt")
+        @Security("clientToken")
         @OperationId("Delete")
         @Example<TranslationResponse>({
             meta: META_TEMPLATE,

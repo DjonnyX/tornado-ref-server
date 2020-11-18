@@ -6,14 +6,14 @@
   ],
   "spec": {
     "securityDefinitions": {
-      "jwt": {
+      "clientToken": {
         "type": "apiKey",
-        "name": "authorization",
+        "name": "x-authorization",
         "in": "header"
       },
-      "apiKey": {
+      "serverToken": {
         "type": "apiKey",
-        "name": "x-auth-token",
+        "name": "x-authorization",
         "in": "header"
       }
     },

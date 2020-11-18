@@ -4,13 +4,13 @@ import * as jwt from "jsonwebtoken";
 import * as got from "got";
 import { IAuthRequest, IJWTBody } from "./interfaces";
 
-async function createProxyRequestToAuthServer(client: string): Promise<any> {
+async function createProxyRequestToAuthServer(client: string, token?: string): Promise<any> {
   let r: got.Response<any>;
   try {
     r = await got.get(`${config.LIC_SERVER_HOST}/api/v1/clients/${client}`, {
       headers: {
         "content-type": "application/json",
-        "authorization": config.AUTH_LIC_SERVER_API_KEY,
+        "x-authorization": token || config.AUTH_LIC_SERVER_API_KEY,
       },
     });
   } catch (err) {
@@ -46,8 +46,8 @@ export async function expressAuthentication(
   scopes?: string[],
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<any> {
-  if (securityName === "jwt") {
-    const token = request.headers["authorization"] ? String(request.headers["authorization"]) : undefined;
+  const token = request.headers["x-authorization"] ? String(request.headers["x-authorization"]) : undefined;
+  if (securityName === "clientToken") {
 
     return new Promise((resolve, reject) => {
       if (!token) {
@@ -58,7 +58,7 @@ export async function expressAuthentication(
         if (err) {
           reject(err);
         } else {
-          createProxyRequestToAuthServer(decoded.userId)
+          createProxyRequestToAuthServer(decoded.userId, token)
             .then(res => {
               (request as IAuthRequest).client = res.data;
               resolve();
@@ -74,15 +74,13 @@ export async function expressAuthentication(
         }
       });
     });
-  } else if (securityName === "apiKey") {
-    const apiKey = request.headers["x-auth-token"] ? String(request.headers["x-auth-token"]) : undefined;
-
+  } else if (securityName === "serverToken") {
     return new Promise((resolve, reject) => {
-      if (!apiKey) {
-        reject(new Error("No apiKey provided."));
+      if (!token) {
+        reject(new Error("No token provided."));
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      jwt.verify(apiKey, config.AUTH_CLIENT_PRIVATE_KEY, function (err: any, decoded: IJWTBody) {
+      jwt.verify(token, config.AUTH_CLIENT_PRIVATE_KEY, function (err: any, decoded: IJWTBody) {
         if (err) {
           reject(err);
         } else {

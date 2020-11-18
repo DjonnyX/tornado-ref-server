@@ -94,8 +94,8 @@ const META_TEMPLATE: IBusinessPeriodMeta = {
 @Tags("Business Period")
 export class BusinessPeriodsController extends Controller {
     @Get()
-    @Security("jwt")
-    @Security("apiKey")
+    @Security("clientToken")
+    @Security("serverToken")
     @OperationId("GetAll")
     @Example<IBusinessPeriodsResponse>({
         meta: META_TEMPLATE,
@@ -127,8 +127,8 @@ export class BusinessPeriodsController extends Controller {
 @Tags("Business Period")
 export class BusinessPeriodController extends Controller {
     @Get("{id}")
-    @Security("jwt")
-    @Security("apiKey")
+    @Security("clientToken")
+    @Security("serverToken")
     @OperationId("GetOne")
     @Example<IBusinessPeriodResponse>({
         meta: META_TEMPLATE,
@@ -156,7 +156,7 @@ export class BusinessPeriodController extends Controller {
     }
 
     @Post()
-    @Security("jwt")
+    @Security("clientToken")
     @OperationId("Create")
     @Example<IBusinessPeriodResponse>({
         meta: META_TEMPLATE,
@@ -198,7 +198,7 @@ export class BusinessPeriodController extends Controller {
     }
 
     @Put("{id}")
-    @Security("jwt")
+    @Security("clientToken")
     @OperationId("Update")
     @Example<IBusinessPeriodResponse>({
         meta: META_TEMPLATE,
@@ -249,7 +249,7 @@ export class BusinessPeriodController extends Controller {
     }
 
     @Delete("{id}")
-    @Security("jwt")
+    @Security("clientToken")
     @OperationId("Delete")
     @Example<IBusinessPeriodResponse>({
         meta: META_TEMPLATE

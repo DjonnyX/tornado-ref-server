@@ -78,8 +78,8 @@ export const RESPONSE_TEMPLATE: ITagItem = {
 @Tags("Tag")
 export class TagsController extends Controller {
     @Get()
-    @Security("jwt")
-    @Security("apiKey")
+    @Security("clientToken")
+    @Security("serverToken")
     @OperationId("GetAll")
     @Example<TagsResponse>({
         meta: META_TEMPLATE,
@@ -111,8 +111,8 @@ export class TagsController extends Controller {
 @Tags("Tag")
 export class TagController extends Controller {
     @Get("{id}")
-    @Security("jwt")
-    @Security("apiKey")
+    @Security("clientToken")
+    @Security("serverToken")
     @OperationId("GetOne")
     @Example<TagResponse>({
         meta: META_TEMPLATE,
@@ -140,7 +140,7 @@ export class TagController extends Controller {
     }
 
     @Post()
-    @Security("jwt")
+    @Security("clientToken")
     @OperationId("Create")
     @Example<TagResponse>({
         meta: META_TEMPLATE,
@@ -169,7 +169,7 @@ export class TagController extends Controller {
     }
 
     @Put("{id}")
-    @Security("jwt")
+    @Security("clientToken")
     @OperationId("Update")
     @Example<TagResponse>({
         meta: META_TEMPLATE,
@@ -280,7 +280,7 @@ export class TagController extends Controller {
     }
 
     @Delete("{id}")
-    @Security("jwt")
+    @Security("clientToken")
     @OperationId("Delete")
     @Example<TagResponse>({
         meta: META_TEMPLATE,

@@ -80,8 +80,8 @@ export const RESPONSE_TEMPLATE: IOrderTypeItem = {
 @Tags("OrderType")
 export class OrderTypesController extends Controller {
     @Get()
-    @Security("jwt")
-    @Security("apiKey")
+    @Security("clientToken")
+    @Security("serverToken")
     @OperationId("GetAll")
     @Example<OrderTypesResponse>({
         meta: META_TEMPLATE,
@@ -113,8 +113,8 @@ export class OrderTypesController extends Controller {
 @Tags("OrderType")
 export class OrderTypeController extends Controller {
     @Get("{id}")
-    @Security("jwt")
-    @Security("apiKey")
+    @Security("clientToken")
+    @Security("serverToken")
     @OperationId("GetOne")
     @Example<OrderTypeResponse>({
         meta: META_TEMPLATE,
@@ -142,7 +142,7 @@ export class OrderTypeController extends Controller {
     }
 
     @Post()
-    @Security("jwt")
+    @Security("clientToken")
     @OperationId("Create")
     @Example<OrderTypeResponse>({
         meta: META_TEMPLATE,
@@ -171,7 +171,7 @@ export class OrderTypeController extends Controller {
     }
 
     @Put("{id}")
-    @Security("jwt")
+    @Security("clientToken")
     @OperationId("Update")
     @Example<OrderTypeResponse>({
         meta: META_TEMPLATE,
@@ -282,7 +282,7 @@ export class OrderTypeController extends Controller {
     }
 
     @Delete("{id}")
-    @Security("jwt")
+    @Security("clientToken")
     @OperationId("Delete")
     @Example<OrderTypeResponse>({
         meta: META_TEMPLATE,

@@ -5122,14 +5122,14 @@
 			}
 		},
 		"securitySchemes": {
-			"jwt": {
+			"clientToken": {
 				"type": "apiKey",
-				"name": "authorization",
+				"name": "x-authorization",
 				"in": "header"
 			},
-			"apiKey": {
+			"serverToken": {
 				"type": "apiKey",
-				"name": "x-auth-token",
+				"name": "x-authorization",
 				"in": "header"
 			}
 		}
@@ -5160,32 +5160,32 @@
 												{
 													"name": "nodes",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.365Z"
+													"lastupdate": "2020-11-18T16:56:52.167Z"
 												},
 												{
 													"name": "products",
 													"version": 3,
-													"lastupdate": "2020-11-18T13:36:03.365Z"
+													"lastupdate": "2020-11-18T16:56:52.168Z"
 												},
 												{
 													"name": "selectors",
 													"version": 4,
-													"lastupdate": "2020-11-18T13:36:03.365Z"
+													"lastupdate": "2020-11-18T16:56:52.168Z"
 												},
 												{
 													"name": "tags",
 													"version": 5,
-													"lastupdate": "2020-11-18T13:36:03.365Z"
+													"lastupdate": "2020-11-18T16:56:52.168Z"
 												},
 												{
 													"name": "business-periods",
 													"version": 3,
-													"lastupdate": "2020-11-18T13:36:03.365Z"
+													"lastupdate": "2020-11-18T16:56:52.168Z"
 												},
 												{
 													"name": "ads",
 													"version": 3,
-													"lastupdate": "2020-11-18T13:36:03.366Z"
+													"lastupdate": "2020-11-18T16:56:52.169Z"
 												}
 											]
 										}
@@ -5201,10 +5201,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					},
 					{
-						"apiKey": []
+						"serverToken": []
 					}
 				],
 				"parameters": []
@@ -5226,7 +5226,7 @@
 											"data": {
 												"name": "products",
 												"version": 1,
-												"lastupdate": "2020-11-18T13:36:03.371Z"
+												"lastupdate": "2020-11-18T16:56:52.174Z"
 											}
 										}
 									}
@@ -5241,10 +5241,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					},
 					{
-						"apiKey": []
+						"serverToken": []
 					}
 				],
 				"parameters": [
@@ -5276,14 +5276,14 @@
 												"ref": {
 													"name": "assets",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.381Z"
+													"lastupdate": "2020-11-18T16:56:52.186Z"
 												}
 											},
 											"data": [
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-11-18T13:36:03.381Z",
+													"lastupdate": "2020-11-18T16:56:52.186Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"path": "assets/some_3d_model.fbx",
@@ -5306,10 +5306,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					},
 					{
-						"apiKey": []
+						"serverToken": []
 					}
 				],
 				"parameters": []
@@ -5332,7 +5332,7 @@
 												"ref": {
 													"name": "ads",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.396Z"
+													"lastupdate": "2020-11-18T16:56:52.203Z"
 												}
 											},
 											"data": [
@@ -5371,10 +5371,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					},
 					{
-						"apiKey": []
+						"serverToken": []
 					}
 				],
 				"parameters": [
@@ -5406,7 +5406,7 @@
 												"ref": {
 													"name": "ads",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.401Z"
+													"lastupdate": "2020-11-18T16:56:52.209Z"
 												}
 											},
 											"data": {
@@ -5443,10 +5443,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					},
 					{
-						"apiKey": []
+						"serverToken": []
 					}
 				],
 				"parameters": [
@@ -5476,7 +5476,7 @@
 												"ref": {
 													"name": "ads",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.406Z"
+													"lastupdate": "2020-11-18T16:56:52.215Z"
 												}
 											},
 											"data": {
@@ -5513,7 +5513,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [
@@ -5553,7 +5553,7 @@
 												"ref": {
 													"name": "ads",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.411Z"
+													"lastupdate": "2020-11-18T16:56:52.222Z"
 												}
 											}
 										}
@@ -5569,7 +5569,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [
@@ -5601,7 +5601,7 @@
 												"ref": {
 													"name": "ads",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.402Z"
+													"lastupdate": "2020-11-18T16:56:52.210Z"
 												}
 											},
 											"data": {
@@ -5638,7 +5638,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [],
@@ -5672,14 +5672,14 @@
 													"ref": {
 														"name": "ads",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.417Z"
+														"lastupdate": "2020-11-18T16:56:52.230Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.417Z"
+														"lastupdate": "2020-11-18T16:56:52.230Z"
 													}
 												}
 											},
@@ -5688,7 +5688,7 @@
 													{
 														"id": "107c7f79bcf86cd7994f6c0e",
 														"active": true,
-														"lastupdate": "2020-11-18T13:36:03.418Z",
+														"lastupdate": "2020-11-18T16:56:52.230Z",
 														"name": "some_3d_model",
 														"ext": ".fbx",
 														"mipmap": {
@@ -5712,10 +5712,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					},
 					{
-						"apiKey": []
+						"serverToken": []
 					}
 				],
 				"parameters": [
@@ -5748,14 +5748,14 @@
 													"ref": {
 														"name": "ads",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.420Z"
+														"lastupdate": "2020-11-18T16:56:52.234Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.420Z"
+														"lastupdate": "2020-11-18T16:56:52.234Z"
 													}
 												}
 											},
@@ -5763,7 +5763,7 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-11-18T13:36:03.420Z",
+													"lastupdate": "2020-11-18T16:56:52.234Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -5786,10 +5786,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					},
 					{
-						"apiKey": []
+						"serverToken": []
 					}
 				],
 				"parameters": [
@@ -5830,14 +5830,14 @@
 													"ref": {
 														"name": "ads",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.424Z"
+														"lastupdate": "2020-11-18T16:56:52.241Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.424Z"
+														"lastupdate": "2020-11-18T16:56:52.241Z"
 													}
 												}
 											},
@@ -5845,7 +5845,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-11-18T13:36:03.425Z",
+													"lastupdate": "2020-11-18T16:56:52.241Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -5868,7 +5868,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [
@@ -5917,14 +5917,14 @@
 													"ref": {
 														"name": "ads",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.427Z"
+														"lastupdate": "2020-11-18T16:56:52.244Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.427Z"
+														"lastupdate": "2020-11-18T16:56:52.244Z"
 													}
 												}
 											},
@@ -5932,7 +5932,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-11-18T13:36:03.427Z",
+													"lastupdate": "2020-11-18T16:56:52.244Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -5955,7 +5955,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [
@@ -6012,14 +6012,14 @@
 													"ref": {
 														"name": "ads",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.431Z"
+														"lastupdate": "2020-11-18T16:56:52.249Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.431Z"
+														"lastupdate": "2020-11-18T16:56:52.249Z"
 													}
 												}
 											}
@@ -6036,7 +6036,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [
@@ -6363,7 +6363,7 @@
 												"ref": {
 													"name": "business-periods",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.468Z"
+													"lastupdate": "2020-11-18T16:56:52.293Z"
 												}
 											},
 											"data": [
@@ -6405,10 +6405,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					},
 					{
-						"apiKey": []
+						"serverToken": []
 					}
 				],
 				"parameters": []
@@ -6431,7 +6431,7 @@
 												"ref": {
 													"name": "business-periods",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.472Z"
+													"lastupdate": "2020-11-18T16:56:52.296Z"
 												}
 											},
 											"data": {
@@ -6471,10 +6471,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					},
 					{
-						"apiKey": []
+						"serverToken": []
 					}
 				],
 				"parameters": [
@@ -6504,7 +6504,7 @@
 												"ref": {
 													"name": "business-periods",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.476Z"
+													"lastupdate": "2020-11-18T16:56:52.303Z"
 												}
 											},
 											"data": {
@@ -6544,7 +6544,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [
@@ -6584,7 +6584,7 @@
 												"ref": {
 													"name": "business-periods",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.478Z"
+													"lastupdate": "2020-11-18T16:56:52.304Z"
 												}
 											}
 										}
@@ -6600,7 +6600,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [
@@ -6632,7 +6632,7 @@
 												"ref": {
 													"name": "business-periods",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.473Z"
+													"lastupdate": "2020-11-18T16:56:52.298Z"
 												}
 											},
 											"data": {
@@ -6672,7 +6672,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [],
@@ -6705,7 +6705,7 @@
 												"ref": {
 													"name": "currencies",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.484Z"
+													"lastupdate": "2020-11-18T16:56:52.311Z"
 												}
 											},
 											"data": [
@@ -6734,10 +6734,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					},
 					{
-						"apiKey": []
+						"serverToken": []
 					}
 				],
 				"parameters": []
@@ -6760,7 +6760,7 @@
 												"ref": {
 													"name": "currencies",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.487Z"
+													"lastupdate": "2020-11-18T16:56:52.315Z"
 												}
 											},
 											"data": {
@@ -6787,10 +6787,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					},
 					{
-						"apiKey": []
+						"serverToken": []
 					}
 				],
 				"parameters": [
@@ -6820,7 +6820,7 @@
 												"ref": {
 													"name": "currencies",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.491Z"
+													"lastupdate": "2020-11-18T16:56:52.318Z"
 												}
 											},
 											"data": {
@@ -6847,7 +6847,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [
@@ -6887,7 +6887,7 @@
 												"ref": {
 													"name": "currencies",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.493Z"
+													"lastupdate": "2020-11-18T16:56:52.322Z"
 												}
 											}
 										}
@@ -6903,7 +6903,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [
@@ -6935,7 +6935,7 @@
 												"ref": {
 													"name": "currencies",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.488Z"
+													"lastupdate": "2020-11-18T16:56:52.315Z"
 												}
 											},
 											"data": {
@@ -6962,7 +6962,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [],
@@ -6995,7 +6995,7 @@
 												"ref": {
 													"name": "languages",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.499Z"
+													"lastupdate": "2020-11-18T16:56:52.327Z"
 												}
 											},
 											"data": [
@@ -7029,10 +7029,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					},
 					{
-						"apiKey": []
+						"serverToken": []
 					}
 				],
 				"parameters": []
@@ -7055,7 +7055,7 @@
 												"ref": {
 													"name": "languages",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.502Z"
+													"lastupdate": "2020-11-18T16:56:52.331Z"
 												}
 											},
 											"data": {
@@ -7087,10 +7087,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					},
 					{
-						"apiKey": []
+						"serverToken": []
 					}
 				],
 				"parameters": [
@@ -7120,7 +7120,7 @@
 												"ref": {
 													"name": "languages",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.505Z"
+													"lastupdate": "2020-11-18T16:56:52.335Z"
 												}
 											},
 											"data": {
@@ -7152,7 +7152,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [
@@ -7192,7 +7192,7 @@
 												"ref": {
 													"name": "languages",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.508Z"
+													"lastupdate": "2020-11-18T16:56:52.338Z"
 												}
 											}
 										}
@@ -7208,7 +7208,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [
@@ -7240,7 +7240,7 @@
 												"ref": {
 													"name": "languages",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.503Z"
+													"lastupdate": "2020-11-18T16:56:52.332Z"
 												}
 											},
 											"data": {
@@ -7272,7 +7272,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [],
@@ -7306,14 +7306,14 @@
 													"ref": {
 														"name": "languages",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.513Z"
+														"lastupdate": "2020-11-18T16:56:52.343Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.513Z"
+														"lastupdate": "2020-11-18T16:56:52.343Z"
 													}
 												}
 											},
@@ -7321,7 +7321,7 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-11-18T13:36:03.513Z",
+													"lastupdate": "2020-11-18T16:56:52.343Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -7344,10 +7344,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					},
 					{
-						"apiKey": []
+						"serverToken": []
 					}
 				],
 				"parameters": [
@@ -7380,14 +7380,14 @@
 													"ref": {
 														"name": "languages",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.518Z"
+														"lastupdate": "2020-11-18T16:56:52.348Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.518Z"
+														"lastupdate": "2020-11-18T16:56:52.348Z"
 													}
 												}
 											},
@@ -7395,7 +7395,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-11-18T13:36:03.518Z",
+													"lastupdate": "2020-11-18T16:56:52.348Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -7418,7 +7418,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [
@@ -7451,14 +7451,14 @@
 													"ref": {
 														"name": "languages",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.519Z"
+														"lastupdate": "2020-11-18T16:56:52.350Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.519Z"
+														"lastupdate": "2020-11-18T16:56:52.350Z"
 													}
 												}
 											},
@@ -7466,7 +7466,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-11-18T13:36:03.519Z",
+													"lastupdate": "2020-11-18T16:56:52.350Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -7489,7 +7489,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [
@@ -7530,14 +7530,14 @@
 													"ref": {
 														"name": "languages",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.522Z"
+														"lastupdate": "2020-11-18T16:56:52.353Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.522Z"
+														"lastupdate": "2020-11-18T16:56:52.353Z"
 													}
 												}
 											},
@@ -7545,7 +7545,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-11-18T13:36:03.522Z",
+													"lastupdate": "2020-11-18T16:56:52.353Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -7568,7 +7568,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [
@@ -7617,14 +7617,14 @@
 													"ref": {
 														"name": "languages",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.527Z"
+														"lastupdate": "2020-11-18T16:56:52.359Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.527Z"
+														"lastupdate": "2020-11-18T16:56:52.359Z"
 													}
 												}
 											}
@@ -7641,7 +7641,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [
@@ -7681,7 +7681,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.551Z"
+													"lastupdate": "2020-11-18T16:56:52.385Z"
 												}
 											},
 											"data": [
@@ -7715,10 +7715,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					},
 					{
-						"apiKey": []
+						"serverToken": []
 					}
 				],
 				"parameters": []
@@ -7741,7 +7741,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.553Z"
+													"lastupdate": "2020-11-18T16:56:52.387Z"
 												}
 											},
 											"data": [
@@ -7775,10 +7775,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					},
 					{
-						"apiKey": []
+						"serverToken": []
 					}
 				],
 				"parameters": []
@@ -7801,7 +7801,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.555Z"
+													"lastupdate": "2020-11-18T16:56:52.388Z"
 												}
 											},
 											"data": [
@@ -7835,10 +7835,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					},
 					{
-						"apiKey": []
+						"serverToken": []
 					}
 				],
 				"parameters": [
@@ -7870,7 +7870,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.558Z"
+													"lastupdate": "2020-11-18T16:56:52.391Z"
 												}
 											},
 											"data": {
@@ -7902,10 +7902,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					},
 					{
-						"apiKey": []
+						"serverToken": []
 					}
 				],
 				"parameters": [
@@ -7935,7 +7935,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.575Z"
+													"lastupdate": "2020-11-18T16:56:52.403Z"
 												}
 											},
 											"data": {
@@ -7967,7 +7967,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [
@@ -8007,7 +8007,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.585Z"
+													"lastupdate": "2020-11-18T16:56:52.411Z"
 												}
 											}
 										}
@@ -8023,7 +8023,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [
@@ -8055,7 +8055,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.565Z"
+													"lastupdate": "2020-11-18T16:56:52.396Z"
 												}
 											},
 											"data": {
@@ -8087,7 +8087,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [],
@@ -8120,7 +8120,7 @@
 												"ref": {
 													"name": "order-types",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.595Z"
+													"lastupdate": "2020-11-18T16:56:52.421Z"
 												}
 											},
 											"data": [
@@ -8160,10 +8160,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					},
 					{
-						"apiKey": []
+						"serverToken": []
 					}
 				],
 				"parameters": []
@@ -8186,7 +8186,7 @@
 												"ref": {
 													"name": "order-types",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.598Z"
+													"lastupdate": "2020-11-18T16:56:52.425Z"
 												}
 											},
 											"data": {
@@ -8224,10 +8224,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					},
 					{
-						"apiKey": []
+						"serverToken": []
 					}
 				],
 				"parameters": [
@@ -8257,7 +8257,7 @@
 												"ref": {
 													"name": "order-types",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.602Z"
+													"lastupdate": "2020-11-18T16:56:52.431Z"
 												}
 											},
 											"data": {
@@ -8295,7 +8295,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [
@@ -8335,7 +8335,7 @@
 												"ref": {
 													"name": "order-types",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.603Z"
+													"lastupdate": "2020-11-18T16:56:52.433Z"
 												}
 											}
 										}
@@ -8351,7 +8351,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [
@@ -8383,7 +8383,7 @@
 												"ref": {
 													"name": "order-types",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.599Z"
+													"lastupdate": "2020-11-18T16:56:52.426Z"
 												}
 											},
 											"data": {
@@ -8421,7 +8421,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [],
@@ -8455,14 +8455,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.610Z"
+														"lastupdate": "2020-11-18T16:56:52.438Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.610Z"
+														"lastupdate": "2020-11-18T16:56:52.438Z"
 													}
 												}
 											},
@@ -8471,7 +8471,7 @@
 													{
 														"id": "107c7f79bcf86cd7994f6c0e",
 														"active": true,
-														"lastupdate": "2020-11-18T13:36:03.610Z",
+														"lastupdate": "2020-11-18T16:56:52.438Z",
 														"name": "some_3d_model",
 														"ext": ".fbx",
 														"mipmap": {
@@ -8495,10 +8495,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					},
 					{
-						"apiKey": []
+						"serverToken": []
 					}
 				],
 				"parameters": [
@@ -8531,14 +8531,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.613Z"
+														"lastupdate": "2020-11-18T16:56:52.441Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.613Z"
+														"lastupdate": "2020-11-18T16:56:52.441Z"
 													}
 												}
 											},
@@ -8546,7 +8546,7 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-11-18T13:36:03.613Z",
+													"lastupdate": "2020-11-18T16:56:52.441Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -8569,10 +8569,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					},
 					{
-						"apiKey": []
+						"serverToken": []
 					}
 				],
 				"parameters": [
@@ -8613,14 +8613,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.617Z"
+														"lastupdate": "2020-11-18T16:56:52.448Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.617Z"
+														"lastupdate": "2020-11-18T16:56:52.448Z"
 													}
 												}
 											},
@@ -8628,7 +8628,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-11-18T13:36:03.617Z",
+													"lastupdate": "2020-11-18T16:56:52.448Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -8651,7 +8651,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [
@@ -8700,14 +8700,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.619Z"
+														"lastupdate": "2020-11-18T16:56:52.451Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.619Z"
+														"lastupdate": "2020-11-18T16:56:52.451Z"
 													}
 												}
 											},
@@ -8715,7 +8715,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-11-18T13:36:03.619Z",
+													"lastupdate": "2020-11-18T16:56:52.451Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -8738,7 +8738,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [
@@ -8795,14 +8795,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.625Z"
+														"lastupdate": "2020-11-18T16:56:52.455Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.625Z"
+														"lastupdate": "2020-11-18T16:56:52.455Z"
 													}
 												}
 											}
@@ -8819,7 +8819,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [
@@ -8867,7 +8867,7 @@
 												"ref": {
 													"name": "products",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.637Z"
+													"lastupdate": "2020-11-18T16:56:52.470Z"
 												}
 											},
 											"data": [
@@ -8930,10 +8930,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					},
 					{
-						"apiKey": []
+						"serverToken": []
 					}
 				],
 				"parameters": []
@@ -8956,7 +8956,7 @@
 												"ref": {
 													"name": "products",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.640Z"
+													"lastupdate": "2020-11-18T16:56:52.474Z"
 												}
 											},
 											"data": {
@@ -9017,10 +9017,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					},
 					{
-						"apiKey": []
+						"serverToken": []
 					}
 				],
 				"parameters": [
@@ -9050,7 +9050,7 @@
 												"ref": {
 													"name": "products",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.645Z"
+													"lastupdate": "2020-11-18T16:56:52.480Z"
 												}
 											},
 											"data": {
@@ -9111,7 +9111,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [
@@ -9151,7 +9151,7 @@
 												"ref": {
 													"name": "products",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.650Z"
+													"lastupdate": "2020-11-18T16:56:52.485Z"
 												}
 											}
 										}
@@ -9167,7 +9167,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [
@@ -9199,7 +9199,7 @@
 												"ref": {
 													"name": "products",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.641Z"
+													"lastupdate": "2020-11-18T16:56:52.475Z"
 												}
 											},
 											"data": {
@@ -9260,7 +9260,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [],
@@ -9294,14 +9294,14 @@
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.655Z"
+														"lastupdate": "2020-11-18T16:56:52.490Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.655Z"
+														"lastupdate": "2020-11-18T16:56:52.491Z"
 													}
 												}
 											},
@@ -9310,7 +9310,7 @@
 													{
 														"id": "107c7f79bcf86cd7994f6c0e",
 														"active": true,
-														"lastupdate": "2020-11-18T13:36:03.655Z",
+														"lastupdate": "2020-11-18T16:56:52.491Z",
 														"name": "some_3d_model",
 														"ext": ".fbx",
 														"mipmap": {
@@ -9334,10 +9334,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					},
 					{
-						"apiKey": []
+						"serverToken": []
 					}
 				],
 				"parameters": [
@@ -9370,14 +9370,14 @@
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.658Z"
+														"lastupdate": "2020-11-18T16:56:52.493Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.658Z"
+														"lastupdate": "2020-11-18T16:56:52.494Z"
 													}
 												}
 											},
@@ -9385,7 +9385,7 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-11-18T13:36:03.658Z",
+													"lastupdate": "2020-11-18T16:56:52.494Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -9408,10 +9408,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					},
 					{
-						"apiKey": []
+						"serverToken": []
 					}
 				],
 				"parameters": [
@@ -9452,14 +9452,14 @@
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.662Z"
+														"lastupdate": "2020-11-18T16:56:52.498Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.662Z"
+														"lastupdate": "2020-11-18T16:56:52.498Z"
 													}
 												}
 											},
@@ -9467,7 +9467,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-11-18T13:36:03.662Z",
+													"lastupdate": "2020-11-18T16:56:52.498Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -9490,7 +9490,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [
@@ -9531,14 +9531,14 @@
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.663Z"
+														"lastupdate": "2020-11-18T16:56:52.500Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.663Z"
+														"lastupdate": "2020-11-18T16:56:52.500Z"
 													}
 												}
 											},
@@ -9546,7 +9546,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-11-18T13:36:03.663Z",
+													"lastupdate": "2020-11-18T16:56:52.501Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -9569,7 +9569,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [
@@ -9618,14 +9618,14 @@
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.665Z"
+														"lastupdate": "2020-11-18T16:56:52.502Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.665Z"
+														"lastupdate": "2020-11-18T16:56:52.502Z"
 													}
 												}
 											},
@@ -9633,7 +9633,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-11-18T13:36:03.665Z",
+													"lastupdate": "2020-11-18T16:56:52.503Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -9656,7 +9656,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [
@@ -9713,14 +9713,14 @@
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.672Z"
+														"lastupdate": "2020-11-18T16:56:52.507Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.672Z"
+														"lastupdate": "2020-11-18T16:56:52.507Z"
 													}
 												}
 											}
@@ -9737,7 +9737,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [
@@ -9785,7 +9785,7 @@
 												"ref": {
 													"name": "selectors",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.683Z"
+													"lastupdate": "2020-11-18T16:56:52.520Z"
 												}
 											},
 											"data": [
@@ -9826,10 +9826,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					},
 					{
-						"apiKey": []
+						"serverToken": []
 					}
 				],
 				"parameters": [
@@ -9861,7 +9861,7 @@
 												"ref": {
 													"name": "selectors",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.688Z"
+													"lastupdate": "2020-11-18T16:56:52.524Z"
 												}
 											},
 											"data": {
@@ -9900,10 +9900,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					},
 					{
-						"apiKey": []
+						"serverToken": []
 					}
 				],
 				"parameters": [
@@ -9933,7 +9933,7 @@
 												"ref": {
 													"name": "selectors",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.692Z"
+													"lastupdate": "2020-11-18T16:56:52.531Z"
 												}
 											},
 											"data": {
@@ -9972,7 +9972,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [
@@ -10012,7 +10012,7 @@
 												"ref": {
 													"name": "selectors",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.695Z"
+													"lastupdate": "2020-11-18T16:56:52.535Z"
 												}
 											}
 										}
@@ -10028,7 +10028,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [
@@ -10060,7 +10060,7 @@
 												"ref": {
 													"name": "selectors",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.689Z"
+													"lastupdate": "2020-11-18T16:56:52.525Z"
 												}
 											},
 											"data": {
@@ -10099,7 +10099,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [],
@@ -10133,14 +10133,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.700Z"
+														"lastupdate": "2020-11-18T16:56:52.541Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.701Z"
+														"lastupdate": "2020-11-18T16:56:52.541Z"
 													}
 												}
 											},
@@ -10149,7 +10149,7 @@
 													{
 														"id": "107c7f79bcf86cd7994f6c0e",
 														"active": true,
-														"lastupdate": "2020-11-18T13:36:03.701Z",
+														"lastupdate": "2020-11-18T16:56:52.541Z",
 														"name": "some_3d_model",
 														"ext": ".fbx",
 														"mipmap": {
@@ -10173,10 +10173,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					},
 					{
-						"apiKey": []
+						"serverToken": []
 					}
 				],
 				"parameters": [
@@ -10209,14 +10209,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.706Z"
+														"lastupdate": "2020-11-18T16:56:52.545Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.706Z"
+														"lastupdate": "2020-11-18T16:56:52.545Z"
 													}
 												}
 											},
@@ -10224,7 +10224,7 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-11-18T13:36:03.706Z",
+													"lastupdate": "2020-11-18T16:56:52.545Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -10247,10 +10247,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					},
 					{
-						"apiKey": []
+						"serverToken": []
 					}
 				],
 				"parameters": [
@@ -10291,14 +10291,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.711Z"
+														"lastupdate": "2020-11-18T16:56:52.550Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.711Z"
+														"lastupdate": "2020-11-18T16:56:52.550Z"
 													}
 												}
 											},
@@ -10306,7 +10306,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-11-18T13:36:03.711Z",
+													"lastupdate": "2020-11-18T16:56:52.550Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -10329,7 +10329,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [
@@ -10378,14 +10378,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.713Z"
+														"lastupdate": "2020-11-18T16:56:52.553Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.713Z"
+														"lastupdate": "2020-11-18T16:56:52.553Z"
 													}
 												}
 											},
@@ -10393,7 +10393,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-11-18T13:36:03.713Z",
+													"lastupdate": "2020-11-18T16:56:52.553Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -10416,7 +10416,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [
@@ -10473,14 +10473,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.718Z"
+														"lastupdate": "2020-11-18T16:56:52.558Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.718Z"
+														"lastupdate": "2020-11-18T16:56:52.558Z"
 													}
 												}
 											}
@@ -10497,7 +10497,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [
@@ -10545,7 +10545,7 @@
 												"ref": {
 													"name": "stores",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.727Z"
+													"lastupdate": "2020-11-18T16:56:52.569Z"
 												}
 											},
 											"data": [
@@ -10579,10 +10579,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					},
 					{
-						"apiKey": []
+						"serverToken": []
 					}
 				],
 				"parameters": []
@@ -10605,7 +10605,7 @@
 												"ref": {
 													"name": "stores",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.732Z"
+													"lastupdate": "2020-11-18T16:56:52.572Z"
 												}
 											},
 											"data": {
@@ -10637,10 +10637,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					},
 					{
-						"apiKey": []
+						"serverToken": []
 					}
 				],
 				"parameters": [
@@ -10670,7 +10670,7 @@
 												"ref": {
 													"name": "stores",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.736Z"
+													"lastupdate": "2020-11-18T16:56:52.580Z"
 												}
 											},
 											"data": {
@@ -10702,7 +10702,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [
@@ -10742,7 +10742,7 @@
 												"ref": {
 													"name": "stores",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.739Z"
+													"lastupdate": "2020-11-18T16:56:52.584Z"
 												}
 											}
 										}
@@ -10758,7 +10758,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [
@@ -10790,7 +10790,7 @@
 												"ref": {
 													"name": "stores",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.733Z"
+													"lastupdate": "2020-11-18T16:56:52.573Z"
 												}
 											},
 											"data": {
@@ -10822,7 +10822,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [],
@@ -10855,7 +10855,7 @@
 												"ref": {
 													"name": "tags",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.748Z"
+													"lastupdate": "2020-11-18T16:56:52.595Z"
 												}
 											},
 											"data": [
@@ -10894,10 +10894,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					},
 					{
-						"apiKey": []
+						"serverToken": []
 					}
 				],
 				"parameters": []
@@ -10920,7 +10920,7 @@
 												"ref": {
 													"name": "tags",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.751Z"
+													"lastupdate": "2020-11-18T16:56:52.598Z"
 												}
 											},
 											"data": {
@@ -10957,10 +10957,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					},
 					{
-						"apiKey": []
+						"serverToken": []
 					}
 				],
 				"parameters": [
@@ -10990,7 +10990,7 @@
 												"ref": {
 													"name": "tags",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.756Z"
+													"lastupdate": "2020-11-18T16:56:52.604Z"
 												}
 											},
 											"data": {
@@ -11027,7 +11027,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [
@@ -11067,7 +11067,7 @@
 												"ref": {
 													"name": "tags",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.758Z"
+													"lastupdate": "2020-11-18T16:56:52.606Z"
 												}
 											}
 										}
@@ -11083,7 +11083,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [
@@ -11115,7 +11115,7 @@
 												"ref": {
 													"name": "tags",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.752Z"
+													"lastupdate": "2020-11-18T16:56:52.599Z"
 												}
 											},
 											"data": {
@@ -11152,7 +11152,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [],
@@ -11186,14 +11186,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.763Z"
+														"lastupdate": "2020-11-18T16:56:52.612Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.763Z"
+														"lastupdate": "2020-11-18T16:56:52.612Z"
 													}
 												}
 											},
@@ -11202,7 +11202,7 @@
 													{
 														"id": "107c7f79bcf86cd7994f6c0e",
 														"active": true,
-														"lastupdate": "2020-11-18T13:36:03.763Z",
+														"lastupdate": "2020-11-18T16:56:52.612Z",
 														"name": "some_3d_model",
 														"ext": ".fbx",
 														"mipmap": {
@@ -11226,10 +11226,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					},
 					{
-						"apiKey": []
+						"serverToken": []
 					}
 				],
 				"parameters": [
@@ -11262,14 +11262,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.766Z"
+														"lastupdate": "2020-11-18T16:56:52.616Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.766Z"
+														"lastupdate": "2020-11-18T16:56:52.616Z"
 													}
 												}
 											},
@@ -11277,7 +11277,7 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-11-18T13:36:03.766Z",
+													"lastupdate": "2020-11-18T16:56:52.616Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -11300,10 +11300,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					},
 					{
-						"apiKey": []
+						"serverToken": []
 					}
 				],
 				"parameters": [
@@ -11344,14 +11344,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.771Z"
+														"lastupdate": "2020-11-18T16:56:52.621Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.771Z"
+														"lastupdate": "2020-11-18T16:56:52.621Z"
 													}
 												}
 											},
@@ -11359,7 +11359,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-11-18T13:36:03.771Z",
+													"lastupdate": "2020-11-18T16:56:52.621Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -11382,7 +11382,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [
@@ -11431,14 +11431,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.773Z"
+														"lastupdate": "2020-11-18T16:56:52.624Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.773Z"
+														"lastupdate": "2020-11-18T16:56:52.624Z"
 													}
 												}
 											},
@@ -11446,7 +11446,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-11-18T13:36:03.773Z",
+													"lastupdate": "2020-11-18T16:56:52.624Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -11469,7 +11469,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [
@@ -11526,14 +11526,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.777Z"
+														"lastupdate": "2020-11-18T16:56:52.629Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-18T13:36:03.777Z"
+														"lastupdate": "2020-11-18T16:56:52.629Z"
 													}
 												}
 											}
@@ -11550,7 +11550,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [
@@ -11598,7 +11598,7 @@
 												"ref": {
 													"name": "terminals",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.788Z"
+													"lastupdate": "2020-11-18T16:56:52.641Z"
 												}
 											},
 											"data": [
@@ -11607,7 +11607,7 @@
 													"type": "kiosk",
 													"name": "My terminal",
 													"store": "My store 1",
-													"lastwork": "2020-11-18T13:36:03.789Z",
+													"lastwork": "2020-11-18T16:56:52.642Z",
 													"extra": {
 														"key": "value"
 													}
@@ -11626,10 +11626,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					},
 					{
-						"apiKey": []
+						"serverToken": []
 					}
 				],
 				"parameters": []
@@ -11652,7 +11652,7 @@
 												"ref": {
 													"name": "terminals",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.792Z"
+													"lastupdate": "2020-11-18T16:56:52.646Z"
 												}
 											},
 											"data": {
@@ -11660,7 +11660,7 @@
 												"type": "kiosk",
 												"name": "My terminal",
 												"store": "My store 1",
-												"lastwork": "2020-11-18T13:36:03.792Z",
+												"lastwork": "2020-11-18T16:56:52.646Z",
 												"extra": {
 													"key": "value"
 												}
@@ -11678,10 +11678,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					},
 					{
-						"apiKey": []
+						"serverToken": []
 					}
 				],
 				"parameters": [
@@ -11711,7 +11711,7 @@
 												"ref": {
 													"name": "terminals",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.793Z"
+													"lastupdate": "2020-11-18T16:56:52.647Z"
 												}
 											},
 											"data": {
@@ -11719,7 +11719,7 @@
 												"type": "kiosk",
 												"name": "My terminal",
 												"store": "My store 1",
-												"lastwork": "2020-11-18T13:36:03.793Z",
+												"lastwork": "2020-11-18T16:56:52.647Z",
 												"extra": {
 													"key": "value"
 												}
@@ -11737,7 +11737,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [
@@ -11777,7 +11777,7 @@
 												"ref": {
 													"name": "terminals",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.796Z"
+													"lastupdate": "2020-11-18T16:56:52.651Z"
 												}
 											}
 										}
@@ -11793,7 +11793,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [
@@ -11825,7 +11825,7 @@
 												"ref": {
 													"name": "translations",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.803Z"
+													"lastupdate": "2020-11-18T16:56:52.659Z"
 												}
 											},
 											"data": [
@@ -11856,10 +11856,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					},
 					{
-						"apiKey": []
+						"serverToken": []
 					}
 				],
 				"parameters": []
@@ -11882,7 +11882,7 @@
 												"ref": {
 													"name": "translations",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.806Z"
+													"lastupdate": "2020-11-18T16:56:52.666Z"
 												}
 											},
 											"data": {
@@ -11911,10 +11911,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					},
 					{
-						"apiKey": []
+						"serverToken": []
 					}
 				],
 				"parameters": [
@@ -11944,7 +11944,7 @@
 												"ref": {
 													"name": "translations",
 													"version": 1,
-													"lastupdate": "2020-11-18T13:36:03.807Z"
+													"lastupdate": "2020-11-18T16:56:52.667Z"
 												}
 											},
 											"data": {
@@ -11973,7 +11973,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientToken": []
 					}
 				],
 				"parameters": [
