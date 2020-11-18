@@ -248,26 +248,6 @@ export class SigninController extends Controller {
     }
 }
 
-@Route("/auth/signout")
-@Tags("Auth")
-export class SignoutController extends Controller {
-    @Post()
-    @Example<SignoutResponse>({
-        meta: {},
-        data: {}
-    })
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public async signout(@Header("authorization") token: string): Promise<SignoutResponse> {
-
-        // позже нужно будет доделать
-        // + сессии сделать
-
-        return {
-            data: {}
-        };
-    }
-}
-
 @Route("/auth/reset-password")
 @Tags("Auth")
 export class ResetPasswordController extends Controller {
