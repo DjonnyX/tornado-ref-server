@@ -139,8 +139,8 @@ const RESPONSE_TEMPLATE: IAssetItem = {
 @Tags("OrderType assets")
 export class OrderTypeAssetsController extends Controller {
     @Get("{orderTypeId}/assets")
-    @Security("clientToken")
-    @Security("apiKey")
+    @Security("clientAccessToken")
+    @Security("accessToken")
     @OperationId("GetAll")
     @Example<IOrderTypeGetAllAssetsResponse>({
         meta: META_TEMPLATE,
@@ -201,8 +201,8 @@ export class OrderTypeAssetsController extends Controller {
     }
 
     @Get("{orderTypeId}/assets/{langCode}")
-    @Security("clientToken")
-    @Security("apiKey")
+    @Security("clientAccessToken")
+    @Security("accessToken")
     @OperationId("Get")
     @Example<IOrderTypeGetAssetsResponse>({
         meta: META_TEMPLATE,
@@ -245,7 +245,7 @@ export class OrderTypeAssetsController extends Controller {
     }
 
     /*@Post("{orderTypeId}/asset/{langCode}")
-    @Security("clientToken")
+    @Security("clientAccessToken")
     @OperationId("Create")
     @Example<IOrderTypeCreateAssetsResponse>({
         meta: META_TEMPLATE,
@@ -326,7 +326,7 @@ export class OrderTypeAssetsController extends Controller {
     }*/
 
     @Post("{orderTypeId}/resource/{langCode}/{resourceType}")
-    @Security("clientToken")
+    @Security("clientAccessToken")
     @OperationId("CreateResource")
     @Example<IOrderTypeCreateAssetsResponse>({
         meta: META_TEMPLATE,
@@ -477,7 +477,7 @@ export class OrderTypeAssetsController extends Controller {
     }
 
     @Put("{orderTypeId}/asset/{langCode}/{assetId}")
-    @Security("clientToken")
+    @Security("clientAccessToken")
     @OperationId("Update")
     @Example<IOrderTypeCreateAssetsResponse>({
         meta: META_TEMPLATE,
@@ -556,7 +556,7 @@ export class OrderTypeAssetsController extends Controller {
     }
 
     @Delete("{orderTypeId}/asset/{langCode}/{assetId}")
-    @Security("clientToken")
+    @Security("clientAccessToken")
     @OperationId("Delete")
     @Example<IOrderTypeDeleteAssetsResponse>({
         meta: META_TEMPLATE

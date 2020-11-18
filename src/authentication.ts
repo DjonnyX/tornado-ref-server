@@ -4,24 +4,16 @@ import * as jwt from "jsonwebtoken";
 import * as got from "got";
 import { IAuthRequest, IJWTBody } from "./interfaces";
 
-async function createProxyRequestToAuthServer(client: string, token?: string): Promise<any> {
+async function getClienInfo(client: string): Promise<any> {
   let r: got.Response<any>;
   let headers = {
     "content-type": "application/json",
+    "x-access-token": config.AUTH_LIC_SERVER_API_KEY,
   };
-
-  if (!!token) {
-    headers["x-authorization"] = token;
-  } else {
-    headers["x-api-key"] = config.AUTH_LIC_SERVER_API_KEY;
-  }
 
   try {
     r = await got.get(`${config.LIC_SERVER_HOST}/api/v1/clients/${client}`, {
-      headers: {
-        "content-type": "application/json",
-        "x-authorization": token || config.AUTH_LIC_SERVER_API_KEY,
-      },
+      headers,
     });
   } catch (err) {
     let authServerResp: any;
@@ -56,7 +48,7 @@ export async function expressAuthentication(
   scopes?: string[],
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<any> {
-  if (securityName === "clientToken") {
+  if (securityName === "clientAccessToken") {
     const token = request.headers["x-authorization"] ? String(request.headers["x-authorization"]) : undefined;
 
     return new Promise((resolve, reject) => {
@@ -68,7 +60,7 @@ export async function expressAuthentication(
         if (err) {
           reject(err);
         } else {
-          createProxyRequestToAuthServer(decoded.userId, token)
+          getClienInfo(decoded.userId)
             .then(res => {
               (request as IAuthRequest).client = res.data;
               resolve();
@@ -84,8 +76,8 @@ export async function expressAuthentication(
         }
       });
     });
-  } else if (securityName === "apiKey") {
-    const token = request.headers["x-api-key"] ? String(request.headers["x-api-key"]) : undefined;
+  } else if (securityName === "accessToken") {
+    const token = request.headers["x-access-token"] ? String(request.headers["x-access-token"]) : undefined;
     return new Promise((resolve, reject) => {
       if (!token) {
         reject(new Error("No token provided."));
@@ -95,7 +87,7 @@ export async function expressAuthentication(
         if (err) {
           reject(err);
         } else {
-          createProxyRequestToAuthServer(decoded.userId)
+          getClienInfo(decoded.userId)
             .then(res => {
               (request as IAuthRequest).client = res.data;
               resolve();

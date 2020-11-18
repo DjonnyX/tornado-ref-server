@@ -170,8 +170,8 @@ const validateUpdateNode = (node: INodeUpdateRequest): joi.ValidationResult => {
 @Tags("Node")
 export class RootNodesController extends Controller {
     @Get()
-    @Security("clientToken")
-    @Security("apiKey")
+    @Security("clientAccessToken")
+    @Security("accessToken")
     @OperationId("GetRootNodes")
     @Example<INodesResponse>({
         meta: META_TEMPLATE,
@@ -214,8 +214,8 @@ export class RootNodesController extends Controller {
 @Tags("Node")
 export class NodesController extends Controller {
     @Get()
-    @Security("clientToken")
-    @Security("apiKey")
+    @Security("clientAccessToken")
+    @Security("accessToken")
     @OperationId("GetAll")
     @Example<INodesResponse>({
         meta: META_TEMPLATE,
@@ -243,8 +243,8 @@ export class NodesController extends Controller {
     }
 
     @Get("{id}")
-    @Security("clientToken")
-    @Security("apiKey")
+    @Security("clientAccessToken")
+    @Security("accessToken")
     @OperationId("GetAllById")
     @Example<INodesResponse>({
         meta: META_TEMPLATE,
@@ -276,8 +276,8 @@ export class NodesController extends Controller {
 @Tags("Node")
 export class NodeController extends Controller {
     @Get("{id}")
-    @Security("clientToken")
-    @Security("apiKey")
+    @Security("clientAccessToken")
+    @Security("accessToken")
     @OperationId("GetOne")
     @Example<INodeResponse>({
         meta: META_TEMPLATE,
@@ -305,7 +305,7 @@ export class NodeController extends Controller {
     }
 
     @Post()
-    @Security("clientToken")
+    @Security("clientAccessToken")
     @OperationId("Create")
     @Example<INodeResponse>({
         meta: META_TEMPLATE,
@@ -411,7 +411,7 @@ export class NodeController extends Controller {
     }
 
     @Put("{id}")
-    @Security("clientToken")
+    @Security("clientAccessToken")
     @OperationId("Update")
     @Example<INodeResponse>({
         meta: META_TEMPLATE,
@@ -512,7 +512,7 @@ export class NodeController extends Controller {
     }
 
     @Delete("{id}")
-    @Security("clientToken")
+    @Security("clientAccessToken")
     @OperationId("Delete")
     @Example<INodeResponse>({
         meta: META_TEMPLATE

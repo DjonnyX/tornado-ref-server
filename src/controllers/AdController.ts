@@ -88,8 +88,8 @@ const META_TEMPLATE: IAdsMeta = {
 @Tags("Ad")
 export class AdsController extends Controller {
     @Get()
-    @Security("clientToken")
-    @Security("apiKey")
+    @Security("clientAccessToken")
+    @Security("accessToken")
     @OperationId("GetAll")
     @Example<IAdsResponse>({
         meta: META_TEMPLATE,
@@ -128,8 +128,8 @@ export class AdsController extends Controller {
 @Tags("Ad")
 export class AdController extends Controller {
     @Get("{id}")
-    @Security("clientToken")
-    @Security("apiKey")
+    @Security("clientAccessToken")
+    @Security("accessToken")
     @OperationId("GetOne")
     @Example<IAdResponse>({
         meta: META_TEMPLATE,
@@ -157,7 +157,7 @@ export class AdController extends Controller {
     }
 
     @Post()
-    @Security("clientToken")
+    @Security("clientAccessToken")
     @OperationId("Create")
     @Example<IAdResponse>({
         meta: META_TEMPLATE,
@@ -186,7 +186,7 @@ export class AdController extends Controller {
     }
 
     @Put("{id}")
-    @Security("clientToken")
+    @Security("clientAccessToken")
     @OperationId("Update")
     @Example<IAdResponse>({
         meta: META_TEMPLATE,
@@ -297,7 +297,7 @@ export class AdController extends Controller {
     }
 
     @Delete("{id}")
-    @Security("clientToken")
+    @Security("clientAccessToken")
     @OperationId("Delete")
     @Example<IAdResponse>({
         meta: META_TEMPLATE,

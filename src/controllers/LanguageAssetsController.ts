@@ -101,8 +101,8 @@ const RESPONSE_TEMPLATE: IAssetItem = {
 @Tags("Language assets")
 export class LanguageAssetsController extends Controller {
     @Get("{languageId}/assets")
-    @Security("clientToken")
-    @Security("apiKey")
+    @Security("clientAccessToken")
+    @Security("accessToken")
     @OperationId("Get")
     @Example<ILanguageGetAssetsResponse>({
         meta: META_TEMPLATE,
@@ -145,7 +145,7 @@ export class LanguageAssetsController extends Controller {
     }
 
     @Post("{languageId}/asset")
-    @Security("clientToken")
+    @Security("clientAccessToken")
     @OperationId("Create")
     @Example<ILanguageCreateAssetsResponse>({
         meta: META_TEMPLATE,
@@ -206,7 +206,7 @@ export class LanguageAssetsController extends Controller {
     }
 
     @Post("{languageId}/resource/{resourceType}")
-    @Security("clientToken")
+    @Security("clientAccessToken")
     @OperationId("Create")
     @Example<ILanguageCreateAssetsResponse>({
         meta: META_TEMPLATE,
@@ -294,7 +294,7 @@ export class LanguageAssetsController extends Controller {
     }
 
     @Put("{languageId}/asset/{assetId}")
-    @Security("clientToken")
+    @Security("clientAccessToken")
     @OperationId("Update")
     @Example<ILanguageCreateAssetsResponse>({
         meta: META_TEMPLATE,
@@ -373,7 +373,7 @@ export class LanguageAssetsController extends Controller {
     }
 
     @Delete("{languageId}/asset/{assetId}")
-    @Security("clientToken")
+    @Security("clientAccessToken")
     @OperationId("Delete")
     @Example<ILanguageDeleteAssetsResponse>({
         meta: META_TEMPLATE

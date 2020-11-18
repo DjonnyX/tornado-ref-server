@@ -77,8 +77,8 @@ const META_TEMPLATE: ICurrencyMeta = {
 @Tags("Currency")
 export class CurrenciesController extends Controller {
     @Get()
-    @Security("clientToken")
-    @Security("apiKey")
+    @Security("clientAccessToken")
+    @Security("accessToken")
     @OperationId("GetAll")
     @Example<CurrenciesResponse>({
         meta: META_TEMPLATE,
@@ -110,8 +110,8 @@ export class CurrenciesController extends Controller {
 @Tags("Currency")
 export class CurrencyController extends Controller {
     @Get("{id}")
-    @Security("clientToken")
-    @Security("apiKey")
+    @Security("clientAccessToken")
+    @Security("accessToken")
     @OperationId("GetOne")
     @Example<CurrencyResponse>({
         meta: META_TEMPLATE,
@@ -139,7 +139,7 @@ export class CurrencyController extends Controller {
     }
 
     @Post()
-    @Security("clientToken")
+    @Security("clientAccessToken")
     @OperationId("Create")
     @Example<CurrencyResponse>({
         meta: META_TEMPLATE,
@@ -185,7 +185,7 @@ export class CurrencyController extends Controller {
     }
 
     @Put("{id}")
-    @Security("clientToken")
+    @Security("clientAccessToken")
     @OperationId("Update")
     @Example<CurrencyResponse>({
         meta: META_TEMPLATE,
@@ -312,7 +312,7 @@ export class CurrencyController extends Controller {
     }
 
     @Delete("{id}")
-    @Security("clientToken")
+    @Security("clientAccessToken")
     @OperationId("Delete")
     @Example<CurrencyResponse>({
         meta: META_TEMPLATE,

@@ -78,8 +78,8 @@ const META_TEMPLATE: IStoreMeta = {
 @Tags("Store")
 export class StoresController extends Controller {
     @Get()
-    @Security("clientToken")
-    @Security("apiKey")
+    @Security("clientAccessToken")
+    @Security("accessToken")
     @OperationId("GetAll")
     @Example<IStoresResponse>({
         meta: META_TEMPLATE,
@@ -111,8 +111,8 @@ export class StoresController extends Controller {
 @Tags("Store")
 export class StoreController extends Controller {
     @Get("{id}")
-    @Security("clientToken")
-    @Security("apiKey")
+    @Security("clientAccessToken")
+    @Security("accessToken")
     @OperationId("GetOne")
     @Example<IStoreResponse>({
         meta: META_TEMPLATE,
@@ -140,7 +140,7 @@ export class StoreController extends Controller {
     }
 
     @Post()
-    @Security("clientToken")
+    @Security("clientAccessToken")
     @OperationId("Create")
     @Example<IStoreResponse>({
         meta: META_TEMPLATE,
@@ -169,7 +169,7 @@ export class StoreController extends Controller {
     }
 
     @Put("{id}")
-    @Security("clientToken")
+    @Security("clientAccessToken")
     @OperationId("Update")
     @Example<IStoreResponse>({
         meta: META_TEMPLATE,
@@ -207,7 +207,7 @@ export class StoreController extends Controller {
     }
 
     @Delete("{id}")
-    @Security("clientToken")
+    @Security("clientAccessToken")
     @OperationId("Delete")
     @Example<IStoreResponse>({
         meta: META_TEMPLATE

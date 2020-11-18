@@ -139,8 +139,8 @@ const RESPONSE_TEMPLATE: IAssetItem = {
 @Tags("Tag assets")
 export class TagAssetsController extends Controller {
     @Get("{tagId}/assets")
-    @Security("clientToken")
-    @Security("apiKey")
+    @Security("clientAccessToken")
+    @Security("accessToken")
     @OperationId("GetAll")
     @Example<ITagGetAllAssetsResponse>({
         meta: META_TEMPLATE,
@@ -201,8 +201,8 @@ export class TagAssetsController extends Controller {
     }
 
     @Get("{tagId}/assets/{langCode}")
-    @Security("clientToken")
-    @Security("apiKey")
+    @Security("clientAccessToken")
+    @Security("accessToken")
     @OperationId("Get")
     @Example<ITagGetAssetsResponse>({
         meta: META_TEMPLATE,
@@ -245,7 +245,7 @@ export class TagAssetsController extends Controller {
     }
 
     /*@Post("{tagId}/asset/{langCode}")
-    @Security("clientToken")
+    @Security("clientAccessToken")
     @OperationId("Create")
     @Example<ITagCreateAssetsResponse>({
         meta: META_TEMPLATE,
@@ -326,7 +326,7 @@ export class TagAssetsController extends Controller {
     }*/
 
     @Post("{tagId}/resource/{langCode}/{resourceType}")
-    @Security("clientToken")
+    @Security("clientAccessToken")
     @OperationId("CreateResource")
     @Example<ITagCreateAssetsResponse>({
         meta: META_TEMPLATE,
@@ -477,7 +477,7 @@ export class TagAssetsController extends Controller {
     }
 
     @Put("{tagId}/asset/{langCode}/{assetId}")
-    @Security("clientToken")
+    @Security("clientAccessToken")
     @OperationId("Update")
     @Example<ITagCreateAssetsResponse>({
         meta: META_TEMPLATE,
@@ -556,7 +556,7 @@ export class TagAssetsController extends Controller {
     }
 
     @Delete("{tagId}/asset/{langCode}/{assetId}")
-    @Security("clientToken")
+    @Security("clientAccessToken")
     @OperationId("Delete")
     @Example<ITagDeleteAssetsResponse>({
         meta: META_TEMPLATE,

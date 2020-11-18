@@ -137,8 +137,8 @@ const RESPONSE_TEMPLATE: IAssetItem = {
 @Tags("Ad assets")
 export class AdAssetsController extends Controller {
     @Get("{adId}/assets")
-    @Security("clientToken")
-    @Security("apiKey")
+    @Security("clientAccessToken")
+    @Security("accessToken")
     @OperationId("GetAll")
     @Example<IAdGetAllAssetsResponse>({
         meta: META_TEMPLATE,
@@ -199,8 +199,8 @@ export class AdAssetsController extends Controller {
     }
 
     @Get("{adId}/assets/{langCode}")
-    @Security("clientToken")
-    @Security("apiKey")
+    @Security("clientAccessToken")
+    @Security("accessToken")
     @OperationId("Get")
     @Example<IAdGetAssetsResponse>({
         meta: META_TEMPLATE,
@@ -243,7 +243,7 @@ export class AdAssetsController extends Controller {
     }
 
     /*@Post("{adId}/asset/{langCode}")
-    @Security("clientToken")
+    @Security("clientAccessToken")
     @OperationId("Create")
     @Example<IAdCreateAssetsResponse>({
         meta: META_TEMPLATE,
@@ -324,7 +324,7 @@ export class AdAssetsController extends Controller {
     }*/
 
     @Post("{adId}/resource/{langCode}/{resourceType}")
-    @Security("clientToken")
+    @Security("clientAccessToken")
     @OperationId("CreateResource")
     @Example<IAdCreateAssetsResponse>({
         meta: META_TEMPLATE,
@@ -475,7 +475,7 @@ export class AdAssetsController extends Controller {
     }
 
     @Put("{adId}/asset/{langCode}/{assetId}")
-    @Security("clientToken")
+    @Security("clientAccessToken")
     @OperationId("Update")
     @Example<IAdCreateAssetsResponse>({
         meta: META_TEMPLATE,
@@ -554,7 +554,7 @@ export class AdAssetsController extends Controller {
     }
 
     @Delete("{adId}/asset/{langCode}/{assetId}")
-    @Security("clientToken")
+    @Security("clientAccessToken")
     @OperationId("Delete")
     @Example<IAdDeleteAssetsResponse>({
         meta: META_TEMPLATE

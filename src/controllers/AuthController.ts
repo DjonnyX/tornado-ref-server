@@ -112,7 +112,7 @@ async function createProxyRequestToAuthServer<R = any>(context: Controller, requ
     let r: got.Response<any>;
     const headers = {
         "content-type": "application/json",
-        "x-api-key": config.AUTH_LIC_SERVER_API_KEY,
+        "x-access-token": config.AUTH_LIC_SERVER_API_KEY,
     };
 
     try {
@@ -215,7 +215,21 @@ export class SigninController extends Controller {
         }
     })
     public async signin(@Request() request: express.Request, @Body() body: ISigninParams): Promise<SigninResponse> {
-        const res = await createProxyRequestToAuthServer<SigninResponse>(this, request);
+        let res: SigninResponse;
+        
+        try {
+            res = await createProxyRequestToAuthServer<SigninResponse>(this, request);
+        } catch (err) {
+            this.setStatus(401);
+            return {
+                error: [
+                    {
+                        code: 401,
+                        message: `Bad request ("signin"). ${err}`,
+                    }
+                ]
+            };
+        }
 
         let authInfo: IJWTBody;
 
@@ -230,12 +244,12 @@ export class SigninController extends Controller {
                 });
             })
         } catch (err) {
-            this.setStatus(500);
+            this.setStatus(401);
             return {
                 error: [
                     {
-                        code: 500,
-                        message: `Token is not valid. ${err}`,
+                        code: 401,
+                        message: `Unauthorized.`,
                     }
                 ]
             };
