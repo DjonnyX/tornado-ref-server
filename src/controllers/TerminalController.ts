@@ -65,7 +65,7 @@ const META_TEMPLATE: ITerminalMeta = {
     ref: {
         name: RefTypes.TERMINALS,
         version: 1,
-        lastupdate: new Date(),
+        lastUpdate: new Date(),
     }
 };
 

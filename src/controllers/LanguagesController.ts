@@ -89,7 +89,7 @@ const META_TEMPLATE: LanguageMeta = {
     ref: {
         name: RefTypes.LANGUAGES,
         version: 1,
-        lastupdate: new Date(),
+        lastUpdate: new Date(),
     }
 };
 

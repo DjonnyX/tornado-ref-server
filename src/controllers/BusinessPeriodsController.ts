@@ -86,7 +86,7 @@ const META_TEMPLATE: IBusinessPeriodMeta = {
     ref: {
         name: RefTypes.BUSINESS_PERIODS,
         version: 1,
-        lastupdate: new Date(),
+        lastUpdate: new Date(),
     }
 };
 

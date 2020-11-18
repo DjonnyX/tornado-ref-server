@@ -110,14 +110,14 @@ const META_TEMPLATE = {
         ref: {
             name: RefTypes.SELECTORS,
             version: 1,
-            lastupdate: new Date(),
+            lastUpdate: new Date(),
         },
     },
     asset: {
         ref: {
             name: RefTypes.ASSETS,
             version: 1,
-            lastupdate: new Date(),
+            lastUpdate: new Date(),
         },
     },
 };
@@ -125,7 +125,7 @@ const META_TEMPLATE = {
 const RESPONSE_TEMPLATE: IAssetItem = {
     id: "107c7f79bcf86cd7994f6c0e",
     active: true,
-    lastupdate: new Date(),
+    lastUpdate: new Date(),
     name: "some_3d_model",
     ext: AssetExtensions.FBX,
     mipmap: {

@@ -80,7 +80,7 @@ const META_TEMPLATE: IAdsMeta = {
     ref: {
         name: RefTypes.ADS,
         version: 1,
-        lastupdate: new Date(),
+        lastUpdate: new Date(),
     }
 };
 

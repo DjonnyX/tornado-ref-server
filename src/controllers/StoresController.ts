@@ -70,7 +70,7 @@ const META_TEMPLATE: IStoreMeta = {
     ref: {
         name: RefTypes.STORES,
         version: 1,
-        lastupdate: new Date(),
+        lastUpdate: new Date(),
     }
 };
 

@@ -69,7 +69,7 @@ const META_TEMPLATE: ICurrencyMeta = {
     ref: {
         name: RefTypes.CURRENCIES,
         version: 1,
-        lastupdate: new Date(),
+        lastUpdate: new Date(),
     }
 };
 

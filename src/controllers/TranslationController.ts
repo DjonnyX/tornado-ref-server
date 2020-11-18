@@ -63,7 +63,7 @@ const META_TEMPLATE: TranslationMeta = {
     ref: {
         name: RefTypes.TRANSLATIONS,
         version: 1,
-        lastupdate: new Date(),
+        lastUpdate: new Date(),
     }
 };
 

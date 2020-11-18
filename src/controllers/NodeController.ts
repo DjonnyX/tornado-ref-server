@@ -131,7 +131,7 @@ const META_TEMPLATE: INodesMeta = {
     ref: {
         name: RefTypes.NODES,
         version: 1,
-        lastupdate: new Date(),
+        lastUpdate: new Date(),
     }
 };
 

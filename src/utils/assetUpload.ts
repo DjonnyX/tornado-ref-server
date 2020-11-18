@@ -12,7 +12,7 @@ ffmpeg.setFfmpegPath(ffmpegStatic);
 export interface IFileInfo {
     active: boolean;
     name: string;
-    lastupdate: number;
+    lastUpdate: number;
     ext: AssetExtensions;
     mipmap: {
         x128: string;
@@ -89,7 +89,7 @@ export const assetsUploader = (name: string, allowedExtensions: Array<AssetExten
                     resolve({
                         active: true,
                         name: request.file.originalname,
-                        lastupdate: Date.now(),
+                        lastUpdate: Date.now(),
                         ext,
                         mipmap: {
                             x128: x128Path,
