@@ -36,6 +36,7 @@ interface IVerifyResetPasswordTokenParams {
 interface SigninResponse {
     meta?: {};
     data?: {
+        role: string;
         token: string;
         firstName: string;
         lastName: string;
@@ -208,6 +209,7 @@ export class SigninController extends Controller {
     @Example<SigninResponse>({
         meta: {},
         data: {
+            role: "admin",
             token: "507c7f79bcf86cd7994f6c0e",
             firstName: "First name",
             lastName: "Last name",

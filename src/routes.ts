@@ -346,7 +346,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "meta": { "dataType": "nestedObjectLiteral", "nestedProperties": {} },
-            "data": { "dataType": "nestedObjectLiteral", "nestedProperties": { "email": { "dataType": "string", "required": true }, "lastName": { "dataType": "string", "required": true }, "firstName": { "dataType": "string", "required": true }, "token": { "dataType": "string", "required": true } } },
+            "data": { "dataType": "nestedObjectLiteral", "nestedProperties": { "email": { "dataType": "string", "required": true }, "lastName": { "dataType": "string", "required": true }, "firstName": { "dataType": "string", "required": true }, "token": { "dataType": "string", "required": true }, "role": { "dataType": "string", "required": true } } },
             "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
         },
         "additionalProperties": false,
