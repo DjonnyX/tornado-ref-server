@@ -377,6 +377,23 @@ export class LanguageController extends Controller {
         meta: META_TEMPLATE,
     })
     public async delete(id: string, @Request() request: IAuthRequest): Promise<LanguageResponse> {
+        let langs: Array<ILanguage>;
+        try {
+            langs = await LanguageModel.find({ client: request.client.id });
+        } catch (err) { }
+
+        if (langs && langs.length === 1) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: "There must be at least one language left.",
+                    }
+                ]
+            };
+        }
+
         let language: ILanguage;
         try {
             language = await LanguageModel.findByIdAndDelete(id);
