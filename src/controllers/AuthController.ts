@@ -5,6 +5,7 @@ import * as jwt from "jsonwebtoken";
 import * as config from "../config";
 import { initRefs } from "../db/initDB";
 import { IJWTBody } from "../interfaces";
+import { createProxyRequestToAuthServer } from "../utils/proxy";
 
 interface ISigninParams {
     email: string;
@@ -107,70 +108,6 @@ interface VerifyResetPasswordTokenResponse {
         code: number;
         message: string;
     }>;
-}
-
-async function createProxyRequestToAuthServer<R = any>(context: Controller, request: express.Request): Promise<R> {
-    let r: got.Response<any>;
-    const headers = {
-        "content-type": "application/json",
-        "x-access-token": config.AUTH_LIC_SERVER_API_KEY,
-    };
-
-    try {
-        r = await (request.method === "POST"
-            ?
-            got.post(`${config.LIC_SERVER_HOST}${request.originalUrl}`, {
-                headers,
-                body: JSON.stringify(request.body),
-            })
-            :
-            got.get(`${config.LIC_SERVER_HOST}${request.originalUrl}`, {
-                headers,
-            })
-        );
-    } catch (err) {
-        context.setStatus(500);
-
-        if (err instanceof got.HTTPError && err.statusCode === 500) {
-            let authServerResp: any;
-            try {
-                authServerResp = JSON.parse(err.body as string);
-            } catch (err1) {
-                return {
-                    error: [
-                        {
-                            code: 500,
-                            message: `Proxy request to the auth server fail. Error: ${err1}`,
-                        }
-                    ]
-                } as any;
-            }
-            return authServerResp;
-        }
-        return {
-            error: [
-                {
-                    code: 500,
-                    message: `Proxy request to the auth server fail. Error: ${err}`,
-                }
-            ]
-        } as any;
-    }
-
-    let body: any;
-    try {
-        body = JSON.parse(r.body)
-    } catch (err) {
-        return {
-            error: [
-                {
-                    code: 500,
-                    message: `Response body from auth server bad format. Error: ${err}`,
-                }
-            ]
-        } as any;
-    }
-    return body;
 }
 
 @Route("/auth/signup")
