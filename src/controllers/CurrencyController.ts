@@ -318,6 +318,23 @@ export class CurrencyController extends Controller {
         meta: META_TEMPLATE,
     })
     public async delete(id: string, @Request() request: IAuthRequest): Promise<CurrencyResponse> {
+        let currencies: Array<ICurrency>;
+        try {
+            currencies = await CurrencyModel.find({ client: request.client.id });
+        } catch (err) { }
+
+        if (currencies && currencies.length === 1) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: "There must be at least one currency left.",
+                    }
+                ]
+            };
+        }
+
         try {
             await CurrencyModel.findOneAndDelete({ _id: id });
             const ref = await riseRefVersion(request.client.id, RefTypes.CURRENCIES);
