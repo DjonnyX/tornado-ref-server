@@ -15,7 +15,7 @@ import { IAuthRequest } from "../interfaces";
 export interface IAssetItem {
     id: string;
     active: boolean;
-    lastupdate: Date;
+    lastUpdate: Date;
     name: string;
     ext: AssetExtensions;
     path: string;
@@ -73,14 +73,14 @@ const META_TEMPLATE = {
     ref: {
         name: RefTypes.ASSETS,
         version: 1,
-        lastupdate: new Date(),
+        lastUpdate: new Date(),
     },
 };
 
 const RESPONSE_TEMPLATE: IAssetItem = {
     id: "107c7f79bcf86cd7994f6c0e",
     active: true,
-    lastupdate: new Date(),
+    lastUpdate: new Date(),
     name: "some_3d_model",
     ext: AssetExtensions.FBX,
     path: "assets/some_3d_model.fbx",
@@ -152,8 +152,8 @@ export const deleteAsset = (assetPath: string): Promise<IAsset> => {
 @Tags("Asset")
 export class AssetsController extends Controller {
     @Get()
-    @Security("jwt")
-    @Security("apiKey")
+    @Security("clientAccessToken")
+    @Security("accessToken")
     @OperationId("GetAll")
     @Example<IGetAssetsResponse>({
         meta: META_TEMPLATE,
@@ -185,7 +185,7 @@ export class AssetsController extends Controller {
 @Tags("Asset")
 export class AssetController extends Controller {
     @Post()
-    @Security("jwt")
+    @Security("clientAccessToken")
     @OperationId("Create")
     @Example<ICreateAssetsResponse>({
         meta: META_TEMPLATE,
@@ -196,7 +196,7 @@ export class AssetController extends Controller {
     }
 
     @Put("{id}")
-    @Security("jwt")
+    @Security("clientAccessToken")
     @OperationId("Update")
     @Example<IUpdateAssetsResponse>({
         meta: META_TEMPLATE,
@@ -205,7 +205,7 @@ export class AssetController extends Controller {
     public async update(id: string, @Body() request: IAssetUpdateRequest): Promise<IUpdateAssetsResponse> {
         try {
             const item = await AssetModel.findById(id);
-            item.lastupdate = new Date(Date.now());
+            item.lastUpdate = new Date(Date.now());
             if (request.name !== undefined) {
                 item.name = request.name;
             }
@@ -231,7 +231,7 @@ export class AssetController extends Controller {
     }
 
     @Delete("{id}")
-    @Security("jwt")
+    @Security("clientAccessToken")
     @OperationId("Delete")
     @Example<IDeleteAssetsResponse>({
         meta: META_TEMPLATE,

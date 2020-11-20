@@ -110,14 +110,14 @@ const META_TEMPLATE = {
         ref: {
             name: RefTypes.SELECTORS,
             version: 1,
-            lastupdate: new Date(),
+            lastUpdate: new Date(),
         },
     },
     asset: {
         ref: {
             name: RefTypes.ASSETS,
             version: 1,
-            lastupdate: new Date(),
+            lastUpdate: new Date(),
         },
     },
 };
@@ -125,7 +125,7 @@ const META_TEMPLATE = {
 const RESPONSE_TEMPLATE: IAssetItem = {
     id: "107c7f79bcf86cd7994f6c0e",
     active: true,
-    lastupdate: new Date(),
+    lastUpdate: new Date(),
     name: "some_3d_model",
     ext: AssetExtensions.FBX,
     mipmap: {
@@ -139,8 +139,8 @@ const RESPONSE_TEMPLATE: IAssetItem = {
 @Tags("OrderType assets")
 export class OrderTypeAssetsController extends Controller {
     @Get("{orderTypeId}/assets")
-    @Security("jwt")
-    @Security("apiKey")
+    @Security("clientAccessToken")
+    @Security("accessToken")
     @OperationId("GetAll")
     @Example<IOrderTypeGetAllAssetsResponse>({
         meta: META_TEMPLATE,
@@ -201,8 +201,8 @@ export class OrderTypeAssetsController extends Controller {
     }
 
     @Get("{orderTypeId}/assets/{langCode}")
-    @Security("jwt")
-    @Security("apiKey")
+    @Security("clientAccessToken")
+    @Security("accessToken")
     @OperationId("Get")
     @Example<IOrderTypeGetAssetsResponse>({
         meta: META_TEMPLATE,
@@ -245,7 +245,7 @@ export class OrderTypeAssetsController extends Controller {
     }
 
     /*@Post("{orderTypeId}/asset/{langCode}")
-    @Security("jwt")
+    @Security("clientAccessToken")
     @OperationId("Create")
     @Example<IOrderTypeCreateAssetsResponse>({
         meta: META_TEMPLATE,
@@ -326,7 +326,7 @@ export class OrderTypeAssetsController extends Controller {
     }*/
 
     @Post("{orderTypeId}/resource/{langCode}/{resourceType}")
-    @Security("jwt")
+    @Security("clientAccessToken")
     @OperationId("CreateResource")
     @Example<IOrderTypeCreateAssetsResponse>({
         meta: META_TEMPLATE,
@@ -477,7 +477,7 @@ export class OrderTypeAssetsController extends Controller {
     }
 
     @Put("{orderTypeId}/asset/{langCode}/{assetId}")
-    @Security("jwt")
+    @Security("clientAccessToken")
     @OperationId("Update")
     @Example<IOrderTypeCreateAssetsResponse>({
         meta: META_TEMPLATE,
@@ -556,7 +556,7 @@ export class OrderTypeAssetsController extends Controller {
     }
 
     @Delete("{orderTypeId}/asset/{langCode}/{assetId}")
-    @Security("jwt")
+    @Security("clientAccessToken")
     @OperationId("Delete")
     @Example<IOrderTypeDeleteAssetsResponse>({
         meta: META_TEMPLATE

@@ -50,7 +50,7 @@ const META_TEMPLATE: ITagMeta = {
     ref: {
         name: RefTypes.TAGS,
         version: 1,
-        lastupdate: new Date(),
+        lastUpdate: new Date(),
     }
 };
 
@@ -78,8 +78,8 @@ export const RESPONSE_TEMPLATE: ITagItem = {
 @Tags("Tag")
 export class TagsController extends Controller {
     @Get()
-    @Security("jwt")
-    @Security("apiKey")
+    @Security("clientAccessToken")
+    @Security("accessToken")
     @OperationId("GetAll")
     @Example<TagsResponse>({
         meta: META_TEMPLATE,
@@ -111,8 +111,8 @@ export class TagsController extends Controller {
 @Tags("Tag")
 export class TagController extends Controller {
     @Get("{id}")
-    @Security("jwt")
-    @Security("apiKey")
+    @Security("clientAccessToken")
+    @Security("accessToken")
     @OperationId("GetOne")
     @Example<TagResponse>({
         meta: META_TEMPLATE,
@@ -140,7 +140,7 @@ export class TagController extends Controller {
     }
 
     @Post()
-    @Security("jwt")
+    @Security("clientAccessToken")
     @OperationId("Create")
     @Example<TagResponse>({
         meta: META_TEMPLATE,
@@ -169,7 +169,7 @@ export class TagController extends Controller {
     }
 
     @Put("{id}")
-    @Security("jwt")
+    @Security("clientAccessToken")
     @OperationId("Update")
     @Example<TagResponse>({
         meta: META_TEMPLATE,
@@ -280,7 +280,7 @@ export class TagController extends Controller {
     }
 
     @Delete("{id}")
-    @Security("jwt")
+    @Security("clientAccessToken")
     @OperationId("Delete")
     @Example<TagResponse>({
         meta: META_TEMPLATE,

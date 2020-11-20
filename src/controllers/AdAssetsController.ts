@@ -108,14 +108,14 @@ const META_TEMPLATE = {
         ref: {
             name: RefTypes.ADS,
             version: 1,
-            lastupdate: new Date(),
+            lastUpdate: new Date(),
         },
     },
     asset: {
         ref: {
             name: RefTypes.ASSETS,
             version: 1,
-            lastupdate: new Date(),
+            lastUpdate: new Date(),
         },
     },
 };
@@ -123,7 +123,7 @@ const META_TEMPLATE = {
 const RESPONSE_TEMPLATE: IAssetItem = {
     id: "107c7f79bcf86cd7994f6c0e",
     active: true,
-    lastupdate: new Date(),
+    lastUpdate: new Date(),
     name: "some_3d_model",
     ext: AssetExtensions.FBX,
     mipmap: {
@@ -137,8 +137,8 @@ const RESPONSE_TEMPLATE: IAssetItem = {
 @Tags("Ad assets")
 export class AdAssetsController extends Controller {
     @Get("{adId}/assets")
-    @Security("jwt")
-    @Security("apiKey")
+    @Security("clientAccessToken")
+    @Security("accessToken")
     @OperationId("GetAll")
     @Example<IAdGetAllAssetsResponse>({
         meta: META_TEMPLATE,
@@ -199,8 +199,8 @@ export class AdAssetsController extends Controller {
     }
 
     @Get("{adId}/assets/{langCode}")
-    @Security("jwt")
-    @Security("apiKey")
+    @Security("clientAccessToken")
+    @Security("accessToken")
     @OperationId("Get")
     @Example<IAdGetAssetsResponse>({
         meta: META_TEMPLATE,
@@ -243,7 +243,7 @@ export class AdAssetsController extends Controller {
     }
 
     /*@Post("{adId}/asset/{langCode}")
-    @Security("jwt")
+    @Security("clientAccessToken")
     @OperationId("Create")
     @Example<IAdCreateAssetsResponse>({
         meta: META_TEMPLATE,
@@ -324,7 +324,7 @@ export class AdAssetsController extends Controller {
     }*/
 
     @Post("{adId}/resource/{langCode}/{resourceType}")
-    @Security("jwt")
+    @Security("clientAccessToken")
     @OperationId("CreateResource")
     @Example<IAdCreateAssetsResponse>({
         meta: META_TEMPLATE,
@@ -475,7 +475,7 @@ export class AdAssetsController extends Controller {
     }
 
     @Put("{adId}/asset/{langCode}/{assetId}")
-    @Security("jwt")
+    @Security("clientAccessToken")
     @OperationId("Update")
     @Example<IAdCreateAssetsResponse>({
         meta: META_TEMPLATE,
@@ -554,7 +554,7 @@ export class AdAssetsController extends Controller {
     }
 
     @Delete("{adId}/asset/{langCode}/{assetId}")
-    @Security("jwt")
+    @Security("clientAccessToken")
     @OperationId("Delete")
     @Example<IAdDeleteAssetsResponse>({
         meta: META_TEMPLATE

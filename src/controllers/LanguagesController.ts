@@ -89,7 +89,7 @@ const META_TEMPLATE: LanguageMeta = {
     ref: {
         name: RefTypes.LANGUAGES,
         version: 1,
-        lastupdate: new Date(),
+        lastUpdate: new Date(),
     }
 };
 
@@ -97,8 +97,8 @@ const META_TEMPLATE: LanguageMeta = {
 @Tags("Language")
 export class LanguagesController extends Controller {
     @Get()
-    @Security("jwt")
-    @Security("apiKey")
+    @Security("clientAccessToken")
+    @Security("accessToken")
     @OperationId("GetAll")
     @Example<LanguagesResponse>({
         meta: META_TEMPLATE,
@@ -130,8 +130,8 @@ export class LanguagesController extends Controller {
 @Tags("Language")
 export class LanguageController extends Controller {
     @Get("{id}")
-    @Security("jwt")
-    @Security("apiKey")
+    @Security("clientAccessToken")
+    @Security("accessToken")
     @OperationId("GetOne")
     @Example<LanguageResponse>({
         meta: META_TEMPLATE,
@@ -159,7 +159,7 @@ export class LanguageController extends Controller {
     }
 
     @Post()
-    @Security("jwt")
+    @Security("clientAccessToken")
     @OperationId("Create")
     @Example<LanguageResponse>({
         meta: META_TEMPLATE,
@@ -234,7 +234,7 @@ export class LanguageController extends Controller {
     }
 
     @Put("{id}")
-    @Security("jwt")
+    @Security("clientAccessToken")
     @OperationId("Update")
     @Example<LanguageResponse>({
         meta: META_TEMPLATE,
@@ -371,12 +371,29 @@ export class LanguageController extends Controller {
     }
 
     @Delete("{id}")
-    @Security("jwt")
+    @Security("clientAccessToken")
     @OperationId("Delete")
     @Example<LanguageResponse>({
         meta: META_TEMPLATE,
     })
     public async delete(id: string, @Request() request: IAuthRequest): Promise<LanguageResponse> {
+        let langs: Array<ILanguage>;
+        try {
+            langs = await LanguageModel.find({ client: request.client.id });
+        } catch (err) { }
+
+        if (langs && langs.length === 1) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: "There must be at least one language left.",
+                    }
+                ]
+            };
+        }
+
         let language: ILanguage;
         try {
             language = await LanguageModel.findByIdAndDelete(id);

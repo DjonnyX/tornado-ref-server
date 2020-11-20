@@ -5,14 +5,14 @@ interface IRef extends Document {
     client: string;
     name: string;
     version: number;
-    lastupdate: Date;
+    lastUpdate: Date;
 }
 
 const RefSchema = new Schema({
     client: { type: String, required: true, index: { unique: false } },
     name: { type: String, required: true },
     version: { type: Number, required: true },
-    lastupdate: { type: Date, required: true },
+    lastUpdate: { type: Date, required: true },
 });
 
 const RefModel = mongoose.model<IRef>("Ref", RefSchema);

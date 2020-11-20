@@ -109,74 +109,74 @@ const createDefaultCurrencyFromTemplate = async (client: string) => {
 
 export const initRefs = async (client: string): Promise<void> => {
 
-    const lastupdate = Date.now();
+    const lastUpdate = Date.now();
 
     const INITIAL_STATE = [
         {
             client,
             name: RefTypes.NODES,
             version: 1,
-            lastupdate,
+            lastUpdate,
         }, {
             client,
             name: RefTypes.PRODUCTS,
             version: 1,
-            lastupdate,
+            lastUpdate,
         }, {
             client,
             name: RefTypes.SELECTORS,
             version: 1,
-            lastupdate,
+            lastUpdate,
         }, {
             client,
             name: RefTypes.ASSETS,
             version: 1,
-            lastupdate,
+            lastUpdate,
         }, {
             client,
             name: RefTypes.TAGS,
             version: 1,
-            lastupdate,
+            lastUpdate,
         }, {
             client,
             name: RefTypes.BUSINESS_PERIODS,
             version: 1,
-            lastupdate,
+            lastUpdate,
         }, {
             client,
             name: RefTypes.CURRENCIES,
             version: 1,
-            lastupdate,
+            lastUpdate,
         }, {
             client,
             name: RefTypes.ADS,
             version: 1,
-            lastupdate,
+            lastUpdate,
         }, {
             client,
             name: RefTypes.LANGUAGES,
             version: 1,
-            lastupdate,
+            lastUpdate,
         }, {
             client,
             name: RefTypes.ORDER_TYPES,
             version: 1,
-            lastupdate,
+            lastUpdate,
         }, {
             client,
             name: RefTypes.TRANSLATIONS,
             version: 1,
-            lastupdate,
+            lastUpdate,
         }, {
             client,
             name: RefTypes.STORES,
             version: 1,
-            lastupdate,
+            lastUpdate,
         }, {
             client,
             name: RefTypes.TERMINALS,
             version: 1,
-            lastupdate,
+            lastUpdate,
         },
     ];
 
