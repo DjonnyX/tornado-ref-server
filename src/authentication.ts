@@ -49,10 +49,11 @@ export async function expressAuthentication(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<any> {
   if (securityName === "clientAccessToken") {
-    const token = request.headers["authorization"] ? String(request.headers["authorization"]) : undefined;
+    const authorization = (request.headers["authorization"] ? String(request.headers["authorization"]) : undefined) || "";
+    let token = authorization.replace("Bearer ", "");
 
     return new Promise((resolve, reject) => {
-      if (!token) {
+      if (!token || token === "") {
         reject(new Error("No token provided."));
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
