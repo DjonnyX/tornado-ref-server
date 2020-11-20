@@ -49,7 +49,7 @@ export async function expressAuthentication(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<any> {
   if (securityName === "clientAccessToken") {
-    const token = request.headers["x-authorization"] ? String(request.headers["x-authorization"]) : undefined;
+    const token = request.headers["authorization"] ? String(request.headers["authorization"]) : undefined;
 
     return new Promise((resolve, reject) => {
       if (!token) {
@@ -82,6 +82,8 @@ export async function expressAuthentication(
       if (!token) {
         reject(new Error("No token provided."));
       }
+      // Вовке я bearer передаю от ключа
+      // проверку тут не надо делать её проверит lic-server отдельным запросом проверки ключа
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       jwt.verify(token, config.AUTH_CLIENT_PRIVATE_KEY, function (err: any, decoded: IJWTBody) {
         if (err) {

@@ -88,7 +88,6 @@ const META_TEMPLATE: ILicenseInfoMeta = {
 export class LicensesController extends Controller {
     @Get()
     @Security("clientAccessToken")
-    @Security("accessToken")
     @OperationId("GetAll")
     @Example<LicensesGetResponse>({
         meta: META_TEMPLATE,
@@ -104,7 +103,6 @@ export class LicensesController extends Controller {
 export class LicenseController extends Controller {
     @Get("{id}")
     @Security("clientAccessToken")
-    @Security("accessToken")
     @OperationId("GetOne")
     @Example<LicenseResponse>({
         meta: META_TEMPLATE,
@@ -116,7 +114,6 @@ export class LicenseController extends Controller {
 
     @Post("{id}")
     @Security("clientAccessToken")
-    @Security("accessToken")
     @OperationId("Create")
     @Example<LicenseResponse>({
         meta: META_TEMPLATE,
@@ -128,7 +125,6 @@ export class LicenseController extends Controller {
 
     @Put("{id}")
     @Security("clientAccessToken")
-    @Security("accessToken")
     @OperationId("Update")
     @Example<LicenseResponse>({
         meta: META_TEMPLATE,
@@ -140,7 +136,6 @@ export class LicenseController extends Controller {
 
     @Delete("{id}")
     @Security("clientAccessToken")
-    @Security("accessToken")
     @OperationId("Delete")
     @Example<LicenseResponse>({
         meta: META_TEMPLATE,
