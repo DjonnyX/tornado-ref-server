@@ -24,6 +24,9 @@ export async function expressAuthentication(
         if (err) {
           reject(err);
         } else {
+          if (!decoded.userId || !decoded.email) {
+            reject(new Error("Access token bad format."))
+          }
           (request as IAuthRequest).client = {
             id: decoded.userId,
             email: decoded.email,
