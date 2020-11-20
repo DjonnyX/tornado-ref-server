@@ -5,7 +5,7 @@ import { IAuthRequest } from "src/interfaces";
 export interface IRefItem {
     name: string;
     version: number;
-    lastupdate: Date;
+    lastUpdate: Date;
 }
 
 interface RefsResponse {
@@ -30,48 +30,48 @@ const RESPONSE_TEMPLATE: Array<IRefItem> = [
     {
         name: RefTypes.NODES,
         version: 1,
-        lastupdate: date,
+        lastUpdate: date,
     }, {
         name: RefTypes.PRODUCTS,
         version: 3,
-        lastupdate: date,
+        lastUpdate: date,
     }, {
         name: RefTypes.SELECTORS,
         version: 4,
-        lastupdate: date,
+        lastUpdate: date,
     }, {
         name: RefTypes.TAGS,
         version: 5,
-        lastupdate: date,
+        lastUpdate: date,
     }, {
         name: RefTypes.BUSINESS_PERIODS,
         version: 3,
-        lastupdate: date,
+        lastUpdate: date,
     }, {
         name: RefTypes.ADS,
         version: 3,
-        lastupdate: date,
+        lastUpdate: date,
     }
 ];
 
 const RESPONSE_SINGLE_TEMPLATE: IRefItem = {
     name: RefTypes.PRODUCTS,
     version: 1,
-    lastupdate: date,
+    lastUpdate: date,
 };
 
 const formatModel = (model: IRef): IRefItem => ({
     name: model.name,
     version: model.version,
-    lastupdate: model.lastupdate
+    lastUpdate: model.lastUpdate
 });
 
 @Route("/refs")
 @Tags("Ref")
 export class RefsController extends Controller {
     @Get()
-    @Security("jwt")
-    @Security("apiKey")
+    @Security("clientAccessToken")
+    @Security("accessToken")
     @OperationId("GetAll")
     @Example<RefsResponse>({
         data: RESPONSE_TEMPLATE
@@ -100,8 +100,8 @@ export class RefsController extends Controller {
 @Tags("Ref")
 export class RefController extends Controller {
     @Get("{name}")
-    @Security("jwt")
-    @Security("apiKey")
+    @Security("clientAccessToken")
+    @Security("accessToken")
     @OperationId("GetOne")
     @Example<RefResponse>({
         data: RESPONSE_SINGLE_TEMPLATE

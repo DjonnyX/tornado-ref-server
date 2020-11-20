@@ -15,7 +15,7 @@
 						"type": "number",
 						"format": "double"
 					},
-					"lastupdate": {
+					"lastUpdate": {
 						"type": "string",
 						"format": "date-time"
 					}
@@ -23,7 +23,7 @@
 				"required": [
 					"name",
 					"version",
-					"lastupdate"
+					"lastUpdate"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -118,7 +118,7 @@
 					"active": {
 						"type": "boolean"
 					},
-					"lastupdate": {
+					"lastUpdate": {
 						"type": "string",
 						"format": "date-time"
 					},
@@ -150,7 +150,7 @@
 				"required": [
 					"id",
 					"active",
-					"lastupdate",
+					"lastUpdate",
 					"name",
 					"ext",
 					"path",
@@ -436,7 +436,7 @@
 					"active": {
 						"type": "boolean"
 					},
-					"lastupdate": {
+					"lastUpdate": {
 						"type": "string",
 						"format": "date-time"
 					},
@@ -468,7 +468,7 @@
 				"required": [
 					"id",
 					"active",
-					"lastupdate",
+					"lastUpdate",
 					"name",
 					"ext",
 					"path",
@@ -847,13 +847,17 @@
 							},
 							"token": {
 								"type": "string"
+							},
+							"role": {
+								"type": "string"
 							}
 						},
 						"required": [
 							"email",
 							"lastName",
 							"firstName",
-							"token"
+							"token",
+							"role"
 						],
 						"type": "object"
 					},
@@ -893,39 +897,6 @@
 					"email",
 					"password"
 				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"SignoutResponse": {
-				"properties": {
-					"meta": {
-						"properties": {},
-						"type": "object"
-					},
-					"data": {
-						"properties": {},
-						"type": "object"
-					},
-					"error": {
-						"items": {
-							"properties": {
-								"message": {
-									"type": "string"
-								},
-								"code": {
-									"type": "number",
-									"format": "double"
-								}
-							},
-							"required": [
-								"message",
-								"code"
-							],
-							"type": "object"
-						},
-						"type": "array"
-					}
-				},
 				"type": "object",
 				"additionalProperties": false
 			},
@@ -1718,7 +1689,7 @@
 					"active": {
 						"type": "boolean"
 					},
-					"lastupdate": {
+					"lastUpdate": {
 						"type": "string",
 						"format": "date-time"
 					},
@@ -1750,7 +1721,7 @@
 				"required": [
 					"id",
 					"active",
-					"lastupdate",
+					"lastUpdate",
 					"name",
 					"ext",
 					"path",
@@ -1942,6 +1913,235 @@
 							"type": "object"
 						},
 						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ILicenseInfoMeta": {
+				"properties": {
+					"ref": {
+						"$ref": "#/components/schemas/IRefItem"
+					}
+				},
+				"required": [
+					"ref"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"LicenseStates": {
+				"enum": [
+					-1,
+					0,
+					1
+				],
+				"type": "number"
+			},
+			"LicenseStatuses": {
+				"enum": [
+					"NEW",
+					"DEMO",
+					"ACTIVE",
+					"WITHDRAWN"
+				],
+				"type": "string"
+			},
+			"ILicenseInfo": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"userId": {
+						"type": "string"
+					},
+					"dateStart": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"dateEnd": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"state": {
+						"$ref": "#/components/schemas/LicenseStates"
+					},
+					"status": {
+						"$ref": "#/components/schemas/LicenseStatuses"
+					},
+					"key": {
+						"type": "string"
+					},
+					"licTypeId": {
+						"type": "string"
+					},
+					"lastUpdate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"extra": {
+						"properties": {},
+						"additionalProperties": {
+							"additionalProperties": true
+						},
+						"type": "object",
+						"nullable": true
+					}
+				},
+				"required": [
+					"id",
+					"userId",
+					"dateStart",
+					"dateEnd",
+					"state",
+					"status",
+					"key",
+					"licTypeId",
+					"lastUpdate",
+					"extra"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"LicensesGetResponse": {
+				"properties": {
+					"meta": {
+						"$ref": "#/components/schemas/ILicenseInfoMeta"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/ILicenseInfo"
+						},
+						"type": "array"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"LicenseResponse": {
+				"properties": {
+					"meta": {
+						"$ref": "#/components/schemas/ILicenseInfoMeta"
+					},
+					"data": {
+						"$ref": "#/components/schemas/ILicenseInfo"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ICreateLicenseParams": {
+				"properties": {
+					"userId": {
+						"type": "string"
+					},
+					"dateStart": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"dateEnd": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"state": {
+						"$ref": "#/components/schemas/LicenseStates"
+					},
+					"status": {
+						"$ref": "#/components/schemas/LicenseStatuses"
+					},
+					"key": {
+						"type": "string"
+					},
+					"licTypeId": {
+						"type": "string"
+					},
+					"lastUpdate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"extra": {
+						"properties": {},
+						"additionalProperties": {
+							"additionalProperties": true
+						},
+						"type": "object",
+						"nullable": true
+					}
+				},
+				"required": [
+					"userId",
+					"dateStart",
+					"dateEnd",
+					"key",
+					"lastUpdate"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IUpdateLicenseParams": {
+				"properties": {
+					"dateStart": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"dateEnd": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"state": {
+						"$ref": "#/components/schemas/LicenseStates"
+					},
+					"status": {
+						"$ref": "#/components/schemas/LicenseStatuses"
+					},
+					"licTypeId": {
+						"type": "string"
+					},
+					"extra": {
+						"properties": {},
+						"additionalProperties": {
+							"additionalProperties": true
+						},
+						"type": "object",
+						"nullable": true
 					}
 				},
 				"type": "object",
@@ -2691,7 +2891,7 @@
 					"active": {
 						"type": "boolean"
 					},
-					"lastupdate": {
+					"lastUpdate": {
 						"type": "string",
 						"format": "date-time"
 					},
@@ -2723,7 +2923,7 @@
 				"required": [
 					"id",
 					"active",
-					"lastupdate",
+					"lastUpdate",
 					"name",
 					"ext",
 					"path",
@@ -3322,7 +3522,7 @@
 					"active": {
 						"type": "boolean"
 					},
-					"lastupdate": {
+					"lastUpdate": {
 						"type": "string",
 						"format": "date-time"
 					},
@@ -3354,7 +3554,7 @@
 				"required": [
 					"id",
 					"active",
-					"lastupdate",
+					"lastUpdate",
 					"name",
 					"ext",
 					"path",
@@ -3841,7 +4041,7 @@
 					"active": {
 						"type": "boolean"
 					},
-					"lastupdate": {
+					"lastUpdate": {
 						"type": "string",
 						"format": "date-time"
 					},
@@ -3873,7 +4073,7 @@
 				"required": [
 					"id",
 					"active",
-					"lastupdate",
+					"lastUpdate",
 					"name",
 					"ext",
 					"path",
@@ -4522,7 +4722,7 @@
 					"active": {
 						"type": "boolean"
 					},
-					"lastupdate": {
+					"lastUpdate": {
 						"type": "string",
 						"format": "date-time"
 					},
@@ -4554,7 +4754,7 @@
 				"required": [
 					"id",
 					"active",
-					"lastupdate",
+					"lastUpdate",
 					"name",
 					"ext",
 					"path",
@@ -5122,14 +5322,14 @@
 			}
 		},
 		"securitySchemes": {
-			"jwt": {
-				"type": "apiKey",
-				"name": "authorization",
-				"in": "header"
+			"clientAccessToken": {
+				"type": "http",
+				"scheme": "bearer",
+				"bearerFormat": "JWT"
 			},
-			"apiKey": {
+			"accessToken": {
 				"type": "apiKey",
-				"name": "x-auth-token",
+				"name": "x-access-token",
 				"in": "header"
 			}
 		}
@@ -5160,32 +5360,32 @@
 												{
 													"name": "nodes",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.394Z"
+													"lastUpdate": "2020-11-19T20:31:52.156Z"
 												},
 												{
 													"name": "products",
 													"version": 3,
-													"lastupdate": "2020-11-14T09:09:28.395Z"
+													"lastUpdate": "2020-11-19T20:31:52.156Z"
 												},
 												{
 													"name": "selectors",
 													"version": 4,
-													"lastupdate": "2020-11-14T09:09:28.395Z"
+													"lastUpdate": "2020-11-19T20:31:52.156Z"
 												},
 												{
 													"name": "tags",
 													"version": 5,
-													"lastupdate": "2020-11-14T09:09:28.395Z"
+													"lastUpdate": "2020-11-19T20:31:52.156Z"
 												},
 												{
 													"name": "business-periods",
 													"version": 3,
-													"lastupdate": "2020-11-14T09:09:28.395Z"
+													"lastUpdate": "2020-11-19T20:31:52.157Z"
 												},
 												{
 													"name": "ads",
 													"version": 3,
-													"lastupdate": "2020-11-14T09:09:28.395Z"
+													"lastUpdate": "2020-11-19T20:31:52.157Z"
 												}
 											]
 										}
@@ -5201,10 +5401,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					},
 					{
-						"apiKey": []
+						"accessToken": []
 					}
 				],
 				"parameters": []
@@ -5226,7 +5426,7 @@
 											"data": {
 												"name": "products",
 												"version": 1,
-												"lastupdate": "2020-11-14T09:09:28.401Z"
+												"lastUpdate": "2020-11-19T20:31:52.164Z"
 											}
 										}
 									}
@@ -5241,10 +5441,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					},
 					{
-						"apiKey": []
+						"accessToken": []
 					}
 				],
 				"parameters": [
@@ -5276,14 +5476,14 @@
 												"ref": {
 													"name": "assets",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.414Z"
+													"lastUpdate": "2020-11-19T20:31:52.175Z"
 												}
 											},
 											"data": [
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-11-14T09:09:28.415Z",
+													"lastUpdate": "2020-11-19T20:31:52.175Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"path": "assets/some_3d_model.fbx",
@@ -5306,10 +5506,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					},
 					{
-						"apiKey": []
+						"accessToken": []
 					}
 				],
 				"parameters": []
@@ -5332,7 +5532,7 @@
 												"ref": {
 													"name": "ads",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.429Z"
+													"lastUpdate": "2020-11-19T20:31:52.188Z"
 												}
 											},
 											"data": [
@@ -5371,10 +5571,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					},
 					{
-						"apiKey": []
+						"accessToken": []
 					}
 				],
 				"parameters": [
@@ -5406,7 +5606,7 @@
 												"ref": {
 													"name": "ads",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.435Z"
+													"lastUpdate": "2020-11-19T20:31:52.195Z"
 												}
 											},
 											"data": {
@@ -5443,10 +5643,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					},
 					{
-						"apiKey": []
+						"accessToken": []
 					}
 				],
 				"parameters": [
@@ -5476,7 +5676,7 @@
 												"ref": {
 													"name": "ads",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.442Z"
+													"lastUpdate": "2020-11-19T20:31:52.201Z"
 												}
 											},
 											"data": {
@@ -5513,7 +5713,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [
@@ -5553,7 +5753,7 @@
 												"ref": {
 													"name": "ads",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.448Z"
+													"lastUpdate": "2020-11-19T20:31:52.206Z"
 												}
 											}
 										}
@@ -5569,7 +5769,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [
@@ -5601,7 +5801,7 @@
 												"ref": {
 													"name": "ads",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.437Z"
+													"lastUpdate": "2020-11-19T20:31:52.196Z"
 												}
 											},
 											"data": {
@@ -5638,7 +5838,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [],
@@ -5672,14 +5872,14 @@
 													"ref": {
 														"name": "ads",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.455Z"
+														"lastUpdate": "2020-11-19T20:31:52.213Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.455Z"
+														"lastUpdate": "2020-11-19T20:31:52.213Z"
 													}
 												}
 											},
@@ -5688,7 +5888,7 @@
 													{
 														"id": "107c7f79bcf86cd7994f6c0e",
 														"active": true,
-														"lastupdate": "2020-11-14T09:09:28.455Z",
+														"lastUpdate": "2020-11-19T20:31:52.213Z",
 														"name": "some_3d_model",
 														"ext": ".fbx",
 														"mipmap": {
@@ -5712,10 +5912,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					},
 					{
-						"apiKey": []
+						"accessToken": []
 					}
 				],
 				"parameters": [
@@ -5748,14 +5948,14 @@
 													"ref": {
 														"name": "ads",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.459Z"
+														"lastUpdate": "2020-11-19T20:31:52.216Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.459Z"
+														"lastUpdate": "2020-11-19T20:31:52.216Z"
 													}
 												}
 											},
@@ -5763,7 +5963,7 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-11-14T09:09:28.459Z",
+													"lastUpdate": "2020-11-19T20:31:52.216Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -5786,10 +5986,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					},
 					{
-						"apiKey": []
+						"accessToken": []
 					}
 				],
 				"parameters": [
@@ -5830,14 +6030,14 @@
 													"ref": {
 														"name": "ads",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.464Z"
+														"lastUpdate": "2020-11-19T20:31:52.220Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.464Z"
+														"lastUpdate": "2020-11-19T20:31:52.221Z"
 													}
 												}
 											},
@@ -5845,7 +6045,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-11-14T09:09:28.464Z",
+													"lastUpdate": "2020-11-19T20:31:52.221Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -5868,7 +6068,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [
@@ -5917,14 +6117,14 @@
 													"ref": {
 														"name": "ads",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.467Z"
+														"lastUpdate": "2020-11-19T20:31:52.223Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.467Z"
+														"lastUpdate": "2020-11-19T20:31:52.223Z"
 													}
 												}
 											},
@@ -5932,7 +6132,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-11-14T09:09:28.467Z",
+													"lastUpdate": "2020-11-19T20:31:52.223Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -5955,7 +6155,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [
@@ -6012,14 +6212,14 @@
 													"ref": {
 														"name": "ads",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.475Z"
+														"lastUpdate": "2020-11-19T20:31:52.228Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.475Z"
+														"lastUpdate": "2020-11-19T20:31:52.228Z"
 													}
 												}
 											}
@@ -6036,7 +6236,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [
@@ -6157,6 +6357,7 @@
 										"value": {
 											"meta": {},
 											"data": {
+												"role": "admin",
 												"token": "507c7f79bcf86cd7994f6c0e",
 												"firstName": "First name",
 												"lastName": "Last name",
@@ -6185,45 +6386,6 @@
 						}
 					}
 				}
-			}
-		},
-		"/auth/signout": {
-			"post": {
-				"operationId": "Signout",
-				"responses": {
-					"200": {
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/SignoutResponse"
-								},
-								"examples": {
-									"example": {
-										"value": {
-											"meta": {},
-											"data": {}
-										}
-									}
-								}
-							}
-						},
-						"description": "Ok"
-					}
-				},
-				"tags": [
-					"Auth"
-				],
-				"security": [],
-				"parameters": [
-					{
-						"in": "header",
-						"name": "authorization",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
 			}
 		},
 		"/auth/reset-password": {
@@ -6363,7 +6525,7 @@
 												"ref": {
 													"name": "business-periods",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.516Z"
+													"lastUpdate": "2020-11-19T20:31:52.258Z"
 												}
 											},
 											"data": [
@@ -6405,10 +6567,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					},
 					{
-						"apiKey": []
+						"accessToken": []
 					}
 				],
 				"parameters": []
@@ -6431,7 +6593,7 @@
 												"ref": {
 													"name": "business-periods",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.520Z"
+													"lastUpdate": "2020-11-19T20:31:52.261Z"
 												}
 											},
 											"data": {
@@ -6471,10 +6633,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					},
 					{
-						"apiKey": []
+						"accessToken": []
 					}
 				],
 				"parameters": [
@@ -6504,7 +6666,7 @@
 												"ref": {
 													"name": "business-periods",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.526Z"
+													"lastUpdate": "2020-11-19T20:31:52.265Z"
 												}
 											},
 											"data": {
@@ -6544,7 +6706,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [
@@ -6584,7 +6746,7 @@
 												"ref": {
 													"name": "business-periods",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.528Z"
+													"lastUpdate": "2020-11-19T20:31:52.268Z"
 												}
 											}
 										}
@@ -6600,7 +6762,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [
@@ -6632,7 +6794,7 @@
 												"ref": {
 													"name": "business-periods",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.521Z"
+													"lastUpdate": "2020-11-19T20:31:52.262Z"
 												}
 											},
 											"data": {
@@ -6672,7 +6834,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [],
@@ -6705,7 +6867,7 @@
 												"ref": {
 													"name": "currencies",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.535Z"
+													"lastUpdate": "2020-11-19T20:31:52.277Z"
 												}
 											},
 											"data": [
@@ -6734,10 +6896,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					},
 					{
-						"apiKey": []
+						"accessToken": []
 					}
 				],
 				"parameters": []
@@ -6760,7 +6922,7 @@
 												"ref": {
 													"name": "currencies",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.539Z"
+													"lastUpdate": "2020-11-19T20:31:52.280Z"
 												}
 											},
 											"data": {
@@ -6787,10 +6949,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					},
 					{
-						"apiKey": []
+						"accessToken": []
 					}
 				],
 				"parameters": [
@@ -6820,7 +6982,7 @@
 												"ref": {
 													"name": "currencies",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.543Z"
+													"lastUpdate": "2020-11-19T20:31:52.284Z"
 												}
 											},
 											"data": {
@@ -6847,7 +7009,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [
@@ -6887,7 +7049,7 @@
 												"ref": {
 													"name": "currencies",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.546Z"
+													"lastUpdate": "2020-11-19T20:31:52.286Z"
 												}
 											}
 										}
@@ -6903,7 +7065,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [
@@ -6935,7 +7097,7 @@
 												"ref": {
 													"name": "currencies",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.540Z"
+													"lastUpdate": "2020-11-19T20:31:52.281Z"
 												}
 											},
 											"data": {
@@ -6962,7 +7124,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [],
@@ -6995,7 +7157,7 @@
 												"ref": {
 													"name": "languages",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.554Z"
+													"lastUpdate": "2020-11-19T20:31:52.292Z"
 												}
 											},
 											"data": [
@@ -7029,10 +7191,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					},
 					{
-						"apiKey": []
+						"accessToken": []
 					}
 				],
 				"parameters": []
@@ -7055,7 +7217,7 @@
 												"ref": {
 													"name": "languages",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.558Z"
+													"lastUpdate": "2020-11-19T20:31:52.295Z"
 												}
 											},
 											"data": {
@@ -7087,10 +7249,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					},
 					{
-						"apiKey": []
+						"accessToken": []
 					}
 				],
 				"parameters": [
@@ -7120,7 +7282,7 @@
 												"ref": {
 													"name": "languages",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.562Z"
+													"lastUpdate": "2020-11-19T20:31:52.299Z"
 												}
 											},
 											"data": {
@@ -7152,7 +7314,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [
@@ -7192,7 +7354,7 @@
 												"ref": {
 													"name": "languages",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.565Z"
+													"lastUpdate": "2020-11-19T20:31:52.301Z"
 												}
 											}
 										}
@@ -7208,7 +7370,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [
@@ -7240,7 +7402,7 @@
 												"ref": {
 													"name": "languages",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.559Z"
+													"lastUpdate": "2020-11-19T20:31:52.296Z"
 												}
 											},
 											"data": {
@@ -7272,7 +7434,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [],
@@ -7306,14 +7468,14 @@
 													"ref": {
 														"name": "languages",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.571Z"
+														"lastUpdate": "2020-11-19T20:31:52.308Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.572Z"
+														"lastUpdate": "2020-11-19T20:31:52.308Z"
 													}
 												}
 											},
@@ -7321,7 +7483,7 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-11-14T09:09:28.572Z",
+													"lastUpdate": "2020-11-19T20:31:52.308Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -7344,10 +7506,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					},
 					{
-						"apiKey": []
+						"accessToken": []
 					}
 				],
 				"parameters": [
@@ -7380,14 +7542,14 @@
 													"ref": {
 														"name": "languages",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.576Z"
+														"lastUpdate": "2020-11-19T20:31:52.313Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.577Z"
+														"lastUpdate": "2020-11-19T20:31:52.313Z"
 													}
 												}
 											},
@@ -7395,7 +7557,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-11-14T09:09:28.577Z",
+													"lastUpdate": "2020-11-19T20:31:52.313Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -7418,7 +7580,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [
@@ -7451,14 +7613,14 @@
 													"ref": {
 														"name": "languages",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.578Z"
+														"lastUpdate": "2020-11-19T20:31:52.314Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.578Z"
+														"lastUpdate": "2020-11-19T20:31:52.314Z"
 													}
 												}
 											},
@@ -7466,7 +7628,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-11-14T09:09:28.578Z",
+													"lastUpdate": "2020-11-19T20:31:52.314Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -7489,7 +7651,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [
@@ -7530,14 +7692,14 @@
 													"ref": {
 														"name": "languages",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.582Z"
+														"lastUpdate": "2020-11-19T20:31:52.316Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.582Z"
+														"lastUpdate": "2020-11-19T20:31:52.316Z"
 													}
 												}
 											},
@@ -7545,7 +7707,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-11-14T09:09:28.582Z",
+													"lastUpdate": "2020-11-19T20:31:52.316Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -7568,7 +7730,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [
@@ -7617,14 +7779,14 @@
 													"ref": {
 														"name": "languages",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.588Z"
+														"lastUpdate": "2020-11-19T20:31:52.322Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.588Z"
+														"lastUpdate": "2020-11-19T20:31:52.322Z"
 													}
 												}
 											}
@@ -7641,7 +7803,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [
@@ -7664,6 +7826,273 @@
 				]
 			}
 		},
+		"/licenses": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/LicensesGetResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "licenses",
+													"version": 1,
+													"lastUpdate": "2020-11-19T20:31:52.330Z"
+												}
+											},
+											"data": [
+												{
+													"id": "507c7f79bcf86cd7994f6c0e",
+													"userId": "507c7f79bcf86cd7994f6c0e",
+													"dateStart": "2020-11-19T20:31:52.330Z",
+													"dateEnd": "2020-11-19T20:31:52.330Z",
+													"state": 0,
+													"status": "NEW",
+													"key": "0000-1111-2222-3333",
+													"licTypeId": "507c7f79bcf86cd7994f6c0e",
+													"lastUpdate": "2020-11-19T20:31:52.330Z",
+													"extra": {
+														"key": "value"
+													}
+												}
+											]
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"License"
+				],
+				"security": [
+					{
+						"clientAccessToken": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/license/{id}": {
+			"get": {
+				"operationId": "GetOne",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/LicenseResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "licenses",
+													"version": 1,
+													"lastUpdate": "2020-11-19T20:31:52.334Z"
+												}
+											},
+											"data": {
+												"id": "507c7f79bcf86cd7994f6c0e",
+												"userId": "507c7f79bcf86cd7994f6c0e",
+												"dateStart": "2020-11-19T20:31:52.334Z",
+												"dateEnd": "2020-11-19T20:31:52.334Z",
+												"state": 0,
+												"status": "NEW",
+												"key": "0000-1111-2222-3333",
+												"licTypeId": "507c7f79bcf86cd7994f6c0e",
+												"lastUpdate": "2020-11-19T20:31:52.334Z",
+												"extra": {
+													"key": "value"
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"License"
+				],
+				"security": [
+					{
+						"clientAccessToken": []
+					}
+				],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/LicenseResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "licenses",
+													"version": 1,
+													"lastUpdate": "2020-11-19T20:31:52.335Z"
+												}
+											},
+											"data": {
+												"id": "507c7f79bcf86cd7994f6c0e",
+												"userId": "507c7f79bcf86cd7994f6c0e",
+												"dateStart": "2020-11-19T20:31:52.335Z",
+												"dateEnd": "2020-11-19T20:31:52.335Z",
+												"state": 0,
+												"status": "NEW",
+												"key": "0000-1111-2222-3333",
+												"licTypeId": "507c7f79bcf86cd7994f6c0e",
+												"lastUpdate": "2020-11-19T20:31:52.335Z",
+												"extra": {
+													"key": "value"
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"License"
+				],
+				"security": [
+					{
+						"clientAccessToken": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ICreateLicenseParams"
+							}
+						}
+					}
+				}
+			},
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/LicenseResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "licenses",
+													"version": 1,
+													"lastUpdate": "2020-11-19T20:31:52.339Z"
+												}
+											},
+											"data": {
+												"id": "507c7f79bcf86cd7994f6c0e",
+												"userId": "507c7f79bcf86cd7994f6c0e",
+												"dateStart": "2020-11-19T20:31:52.339Z",
+												"dateEnd": "2020-11-19T20:31:52.339Z",
+												"state": 0,
+												"status": "NEW",
+												"key": "0000-1111-2222-3333",
+												"licTypeId": "507c7f79bcf86cd7994f6c0e",
+												"lastUpdate": "2020-11-19T20:31:52.339Z",
+												"extra": {
+													"key": "value"
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"License"
+				],
+				"security": [
+					{
+						"clientAccessToken": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IUpdateLicenseParams"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "Delete",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/LicenseResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "licenses",
+													"version": 1,
+													"lastUpdate": "2020-11-19T20:31:52.343Z"
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"License"
+				],
+				"security": [
+					{
+						"clientAccessToken": []
+					}
+				],
+				"parameters": []
+			}
+		},
 		"/root-nodes": {
 			"get": {
 				"operationId": "GetRootNodes",
@@ -7681,7 +8110,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.614Z"
+													"lastUpdate": "2020-11-19T20:31:52.366Z"
 												}
 											},
 											"data": [
@@ -7715,10 +8144,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					},
 					{
-						"apiKey": []
+						"accessToken": []
 					}
 				],
 				"parameters": []
@@ -7741,7 +8170,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.617Z"
+													"lastUpdate": "2020-11-19T20:31:52.368Z"
 												}
 											},
 											"data": [
@@ -7775,10 +8204,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					},
 					{
-						"apiKey": []
+						"accessToken": []
 					}
 				],
 				"parameters": []
@@ -7801,7 +8230,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.618Z"
+													"lastUpdate": "2020-11-19T20:31:52.369Z"
 												}
 											},
 											"data": [
@@ -7835,10 +8264,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					},
 					{
-						"apiKey": []
+						"accessToken": []
 					}
 				],
 				"parameters": [
@@ -7870,7 +8299,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.622Z"
+													"lastUpdate": "2020-11-19T20:31:52.373Z"
 												}
 											},
 											"data": {
@@ -7902,10 +8331,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					},
 					{
-						"apiKey": []
+						"accessToken": []
 					}
 				],
 				"parameters": [
@@ -7935,7 +8364,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.632Z"
+													"lastUpdate": "2020-11-19T20:31:52.381Z"
 												}
 											},
 											"data": {
@@ -7967,7 +8396,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [
@@ -8007,7 +8436,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.639Z"
+													"lastUpdate": "2020-11-19T20:31:52.388Z"
 												}
 											}
 										}
@@ -8023,7 +8452,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [
@@ -8055,7 +8484,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.627Z"
+													"lastUpdate": "2020-11-19T20:31:52.377Z"
 												}
 											},
 											"data": {
@@ -8087,7 +8516,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [],
@@ -8120,7 +8549,7 @@
 												"ref": {
 													"name": "order-types",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.650Z"
+													"lastUpdate": "2020-11-19T20:31:52.397Z"
 												}
 											},
 											"data": [
@@ -8160,10 +8589,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					},
 					{
-						"apiKey": []
+						"accessToken": []
 					}
 				],
 				"parameters": []
@@ -8186,7 +8615,7 @@
 												"ref": {
 													"name": "order-types",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.654Z"
+													"lastUpdate": "2020-11-19T20:31:52.401Z"
 												}
 											},
 											"data": {
@@ -8224,10 +8653,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					},
 					{
-						"apiKey": []
+						"accessToken": []
 					}
 				],
 				"parameters": [
@@ -8257,7 +8686,7 @@
 												"ref": {
 													"name": "order-types",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.658Z"
+													"lastUpdate": "2020-11-19T20:31:52.406Z"
 												}
 											},
 											"data": {
@@ -8295,7 +8724,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [
@@ -8335,7 +8764,7 @@
 												"ref": {
 													"name": "order-types",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.660Z"
+													"lastUpdate": "2020-11-19T20:31:52.407Z"
 												}
 											}
 										}
@@ -8351,7 +8780,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [
@@ -8383,7 +8812,7 @@
 												"ref": {
 													"name": "order-types",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.655Z"
+													"lastUpdate": "2020-11-19T20:31:52.402Z"
 												}
 											},
 											"data": {
@@ -8421,7 +8850,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [],
@@ -8455,14 +8884,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.666Z"
+														"lastUpdate": "2020-11-19T20:31:52.412Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.667Z"
+														"lastUpdate": "2020-11-19T20:31:52.412Z"
 													}
 												}
 											},
@@ -8471,7 +8900,7 @@
 													{
 														"id": "107c7f79bcf86cd7994f6c0e",
 														"active": true,
-														"lastupdate": "2020-11-14T09:09:28.667Z",
+														"lastUpdate": "2020-11-19T20:31:52.412Z",
 														"name": "some_3d_model",
 														"ext": ".fbx",
 														"mipmap": {
@@ -8495,10 +8924,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					},
 					{
-						"apiKey": []
+						"accessToken": []
 					}
 				],
 				"parameters": [
@@ -8531,14 +8960,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.669Z"
+														"lastUpdate": "2020-11-19T20:31:52.415Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.670Z"
+														"lastUpdate": "2020-11-19T20:31:52.415Z"
 													}
 												}
 											},
@@ -8546,7 +8975,7 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-11-14T09:09:28.670Z",
+													"lastUpdate": "2020-11-19T20:31:52.415Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -8569,10 +8998,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					},
 					{
-						"apiKey": []
+						"accessToken": []
 					}
 				],
 				"parameters": [
@@ -8613,14 +9042,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.675Z"
+														"lastUpdate": "2020-11-19T20:31:52.421Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.675Z"
+														"lastUpdate": "2020-11-19T20:31:52.421Z"
 													}
 												}
 											},
@@ -8628,7 +9057,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-11-14T09:09:28.675Z",
+													"lastUpdate": "2020-11-19T20:31:52.422Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -8651,7 +9080,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [
@@ -8700,14 +9129,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.677Z"
+														"lastUpdate": "2020-11-19T20:31:52.424Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.677Z"
+														"lastUpdate": "2020-11-19T20:31:52.424Z"
 													}
 												}
 											},
@@ -8715,7 +9144,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-11-14T09:09:28.677Z",
+													"lastUpdate": "2020-11-19T20:31:52.424Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -8738,7 +9167,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [
@@ -8795,14 +9224,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.683Z"
+														"lastUpdate": "2020-11-19T20:31:52.429Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.683Z"
+														"lastUpdate": "2020-11-19T20:31:52.429Z"
 													}
 												}
 											}
@@ -8819,7 +9248,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [
@@ -8867,7 +9296,7 @@
 												"ref": {
 													"name": "products",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.699Z"
+													"lastUpdate": "2020-11-19T20:31:52.441Z"
 												}
 											},
 											"data": [
@@ -8930,10 +9359,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					},
 					{
-						"apiKey": []
+						"accessToken": []
 					}
 				],
 				"parameters": []
@@ -8956,7 +9385,7 @@
 												"ref": {
 													"name": "products",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.703Z"
+													"lastUpdate": "2020-11-19T20:31:52.444Z"
 												}
 											},
 											"data": {
@@ -9017,10 +9446,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					},
 					{
-						"apiKey": []
+						"accessToken": []
 					}
 				],
 				"parameters": [
@@ -9050,7 +9479,7 @@
 												"ref": {
 													"name": "products",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.708Z"
+													"lastUpdate": "2020-11-19T20:31:52.450Z"
 												}
 											},
 											"data": {
@@ -9111,7 +9540,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [
@@ -9151,7 +9580,7 @@
 												"ref": {
 													"name": "products",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.716Z"
+													"lastUpdate": "2020-11-19T20:31:52.455Z"
 												}
 											}
 										}
@@ -9167,7 +9596,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [
@@ -9199,7 +9628,7 @@
 												"ref": {
 													"name": "products",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.704Z"
+													"lastUpdate": "2020-11-19T20:31:52.445Z"
 												}
 											},
 											"data": {
@@ -9260,7 +9689,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [],
@@ -9294,14 +9723,14 @@
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.721Z"
+														"lastUpdate": "2020-11-19T20:31:52.460Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.722Z"
+														"lastUpdate": "2020-11-19T20:31:52.460Z"
 													}
 												}
 											},
@@ -9310,7 +9739,7 @@
 													{
 														"id": "107c7f79bcf86cd7994f6c0e",
 														"active": true,
-														"lastupdate": "2020-11-14T09:09:28.722Z",
+														"lastUpdate": "2020-11-19T20:31:52.460Z",
 														"name": "some_3d_model",
 														"ext": ".fbx",
 														"mipmap": {
@@ -9334,10 +9763,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					},
 					{
-						"apiKey": []
+						"accessToken": []
 					}
 				],
 				"parameters": [
@@ -9370,14 +9799,14 @@
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.724Z"
+														"lastUpdate": "2020-11-19T20:31:52.462Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.724Z"
+														"lastUpdate": "2020-11-19T20:31:52.462Z"
 													}
 												}
 											},
@@ -9385,7 +9814,7 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-11-14T09:09:28.724Z",
+													"lastUpdate": "2020-11-19T20:31:52.463Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -9408,10 +9837,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					},
 					{
-						"apiKey": []
+						"accessToken": []
 					}
 				],
 				"parameters": [
@@ -9452,14 +9881,14 @@
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.730Z"
+														"lastUpdate": "2020-11-19T20:31:52.467Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.730Z"
+														"lastUpdate": "2020-11-19T20:31:52.467Z"
 													}
 												}
 											},
@@ -9467,7 +9896,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-11-14T09:09:28.730Z",
+													"lastUpdate": "2020-11-19T20:31:52.467Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -9490,7 +9919,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [
@@ -9531,14 +9960,14 @@
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.732Z"
+														"lastUpdate": "2020-11-19T20:31:52.468Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.732Z"
+														"lastUpdate": "2020-11-19T20:31:52.468Z"
 													}
 												}
 											},
@@ -9546,7 +9975,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-11-14T09:09:28.732Z",
+													"lastUpdate": "2020-11-19T20:31:52.468Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -9569,7 +9998,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [
@@ -9618,14 +10047,14 @@
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.734Z"
+														"lastUpdate": "2020-11-19T20:31:52.470Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.734Z"
+														"lastUpdate": "2020-11-19T20:31:52.470Z"
 													}
 												}
 											},
@@ -9633,7 +10062,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-11-14T09:09:28.734Z",
+													"lastUpdate": "2020-11-19T20:31:52.470Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -9656,7 +10085,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [
@@ -9713,14 +10142,14 @@
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.740Z"
+														"lastUpdate": "2020-11-19T20:31:52.475Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.740Z"
+														"lastUpdate": "2020-11-19T20:31:52.475Z"
 													}
 												}
 											}
@@ -9737,7 +10166,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [
@@ -9785,7 +10214,7 @@
 												"ref": {
 													"name": "selectors",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.752Z"
+													"lastUpdate": "2020-11-19T20:31:52.485Z"
 												}
 											},
 											"data": [
@@ -9826,10 +10255,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					},
 					{
-						"apiKey": []
+						"accessToken": []
 					}
 				],
 				"parameters": [
@@ -9861,7 +10290,7 @@
 												"ref": {
 													"name": "selectors",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.757Z"
+													"lastUpdate": "2020-11-19T20:31:52.490Z"
 												}
 											},
 											"data": {
@@ -9900,10 +10329,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					},
 					{
-						"apiKey": []
+						"accessToken": []
 					}
 				],
 				"parameters": [
@@ -9933,7 +10362,7 @@
 												"ref": {
 													"name": "selectors",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.763Z"
+													"lastUpdate": "2020-11-19T20:31:52.496Z"
 												}
 											},
 											"data": {
@@ -9972,7 +10401,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [
@@ -10012,7 +10441,7 @@
 												"ref": {
 													"name": "selectors",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.767Z"
+													"lastUpdate": "2020-11-19T20:31:52.500Z"
 												}
 											}
 										}
@@ -10028,7 +10457,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [
@@ -10060,7 +10489,7 @@
 												"ref": {
 													"name": "selectors",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.758Z"
+													"lastUpdate": "2020-11-19T20:31:52.491Z"
 												}
 											},
 											"data": {
@@ -10099,7 +10528,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [],
@@ -10133,14 +10562,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.774Z"
+														"lastUpdate": "2020-11-19T20:31:52.506Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.774Z"
+														"lastUpdate": "2020-11-19T20:31:52.506Z"
 													}
 												}
 											},
@@ -10149,7 +10578,7 @@
 													{
 														"id": "107c7f79bcf86cd7994f6c0e",
 														"active": true,
-														"lastupdate": "2020-11-14T09:09:28.774Z",
+														"lastUpdate": "2020-11-19T20:31:52.506Z",
 														"name": "some_3d_model",
 														"ext": ".fbx",
 														"mipmap": {
@@ -10173,10 +10602,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					},
 					{
-						"apiKey": []
+						"accessToken": []
 					}
 				],
 				"parameters": [
@@ -10209,14 +10638,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.778Z"
+														"lastUpdate": "2020-11-19T20:31:52.510Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.778Z"
+														"lastUpdate": "2020-11-19T20:31:52.510Z"
 													}
 												}
 											},
@@ -10224,7 +10653,7 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-11-14T09:09:28.779Z",
+													"lastUpdate": "2020-11-19T20:31:52.510Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -10247,10 +10676,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					},
 					{
-						"apiKey": []
+						"accessToken": []
 					}
 				],
 				"parameters": [
@@ -10291,14 +10720,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.785Z"
+														"lastUpdate": "2020-11-19T20:31:52.515Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.785Z"
+														"lastUpdate": "2020-11-19T20:31:52.515Z"
 													}
 												}
 											},
@@ -10306,7 +10735,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-11-14T09:09:28.785Z",
+													"lastUpdate": "2020-11-19T20:31:52.515Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -10329,7 +10758,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [
@@ -10378,14 +10807,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.788Z"
+														"lastUpdate": "2020-11-19T20:31:52.517Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.788Z"
+														"lastUpdate": "2020-11-19T20:31:52.517Z"
 													}
 												}
 											},
@@ -10393,7 +10822,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-11-14T09:09:28.788Z",
+													"lastUpdate": "2020-11-19T20:31:52.517Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -10416,7 +10845,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [
@@ -10473,14 +10902,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.796Z"
+														"lastUpdate": "2020-11-19T20:31:52.522Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.796Z"
+														"lastUpdate": "2020-11-19T20:31:52.522Z"
 													}
 												}
 											}
@@ -10497,7 +10926,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [
@@ -10545,7 +10974,7 @@
 												"ref": {
 													"name": "stores",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.807Z"
+													"lastUpdate": "2020-11-19T20:31:52.532Z"
 												}
 											},
 											"data": [
@@ -10579,10 +11008,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					},
 					{
-						"apiKey": []
+						"accessToken": []
 					}
 				],
 				"parameters": []
@@ -10605,7 +11034,7 @@
 												"ref": {
 													"name": "stores",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.811Z"
+													"lastUpdate": "2020-11-19T20:31:52.536Z"
 												}
 											},
 											"data": {
@@ -10637,10 +11066,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					},
 					{
-						"apiKey": []
+						"accessToken": []
 					}
 				],
 				"parameters": [
@@ -10670,7 +11099,7 @@
 												"ref": {
 													"name": "stores",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.815Z"
+													"lastUpdate": "2020-11-19T20:31:52.540Z"
 												}
 											},
 											"data": {
@@ -10702,7 +11131,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [
@@ -10742,7 +11171,7 @@
 												"ref": {
 													"name": "stores",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.818Z"
+													"lastUpdate": "2020-11-19T20:31:52.543Z"
 												}
 											}
 										}
@@ -10758,7 +11187,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [
@@ -10790,7 +11219,7 @@
 												"ref": {
 													"name": "stores",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.812Z"
+													"lastUpdate": "2020-11-19T20:31:52.537Z"
 												}
 											},
 											"data": {
@@ -10822,7 +11251,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [],
@@ -10855,7 +11284,7 @@
 												"ref": {
 													"name": "tags",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.829Z"
+													"lastUpdate": "2020-11-19T20:31:52.553Z"
 												}
 											},
 											"data": [
@@ -10894,10 +11323,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					},
 					{
-						"apiKey": []
+						"accessToken": []
 					}
 				],
 				"parameters": []
@@ -10920,7 +11349,7 @@
 												"ref": {
 													"name": "tags",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.833Z"
+													"lastUpdate": "2020-11-19T20:31:52.566Z"
 												}
 											},
 											"data": {
@@ -10957,10 +11386,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					},
 					{
-						"apiKey": []
+						"accessToken": []
 					}
 				],
 				"parameters": [
@@ -10990,7 +11419,7 @@
 												"ref": {
 													"name": "tags",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.839Z"
+													"lastUpdate": "2020-11-19T20:31:52.570Z"
 												}
 											},
 											"data": {
@@ -11027,7 +11456,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [
@@ -11067,7 +11496,7 @@
 												"ref": {
 													"name": "tags",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.841Z"
+													"lastUpdate": "2020-11-19T20:31:52.572Z"
 												}
 											}
 										}
@@ -11083,7 +11512,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [
@@ -11115,7 +11544,7 @@
 												"ref": {
 													"name": "tags",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.834Z"
+													"lastUpdate": "2020-11-19T20:31:52.567Z"
 												}
 											},
 											"data": {
@@ -11152,7 +11581,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [],
@@ -11186,14 +11615,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.846Z"
+														"lastUpdate": "2020-11-19T20:31:52.576Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.847Z"
+														"lastUpdate": "2020-11-19T20:31:52.577Z"
 													}
 												}
 											},
@@ -11202,7 +11631,7 @@
 													{
 														"id": "107c7f79bcf86cd7994f6c0e",
 														"active": true,
-														"lastupdate": "2020-11-14T09:09:28.847Z",
+														"lastUpdate": "2020-11-19T20:31:52.577Z",
 														"name": "some_3d_model",
 														"ext": ".fbx",
 														"mipmap": {
@@ -11226,10 +11655,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					},
 					{
-						"apiKey": []
+						"accessToken": []
 					}
 				],
 				"parameters": [
@@ -11262,14 +11691,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.850Z"
+														"lastUpdate": "2020-11-19T20:31:52.579Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.850Z"
+														"lastUpdate": "2020-11-19T20:31:52.580Z"
 													}
 												}
 											},
@@ -11277,7 +11706,7 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-11-14T09:09:28.850Z",
+													"lastUpdate": "2020-11-19T20:31:52.580Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -11300,10 +11729,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					},
 					{
-						"apiKey": []
+						"accessToken": []
 					}
 				],
 				"parameters": [
@@ -11344,14 +11773,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.857Z"
+														"lastUpdate": "2020-11-19T20:31:52.583Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.857Z"
+														"lastUpdate": "2020-11-19T20:31:52.583Z"
 													}
 												}
 											},
@@ -11359,7 +11788,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-11-14T09:09:28.857Z",
+													"lastUpdate": "2020-11-19T20:31:52.583Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -11382,7 +11811,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [
@@ -11431,14 +11860,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.859Z"
+														"lastUpdate": "2020-11-19T20:31:52.586Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.859Z"
+														"lastUpdate": "2020-11-19T20:31:52.586Z"
 													}
 												}
 											},
@@ -11446,7 +11875,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastupdate": "2020-11-14T09:09:28.859Z",
+													"lastUpdate": "2020-11-19T20:31:52.586Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -11469,7 +11898,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [
@@ -11526,14 +11955,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.865Z"
+														"lastUpdate": "2020-11-19T20:31:52.591Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastupdate": "2020-11-14T09:09:28.865Z"
+														"lastUpdate": "2020-11-19T20:31:52.591Z"
 													}
 												}
 											}
@@ -11550,7 +11979,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [
@@ -11598,7 +12027,7 @@
 												"ref": {
 													"name": "terminals",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.878Z"
+													"lastUpdate": "2020-11-19T20:31:52.600Z"
 												}
 											},
 											"data": [
@@ -11607,7 +12036,7 @@
 													"type": "kiosk",
 													"name": "My terminal",
 													"store": "My store 1",
-													"lastwork": "2020-11-14T09:09:28.878Z",
+													"lastwork": "2020-11-19T20:31:52.601Z",
 													"extra": {
 														"key": "value"
 													}
@@ -11626,10 +12055,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					},
 					{
-						"apiKey": []
+						"accessToken": []
 					}
 				],
 				"parameters": []
@@ -11652,7 +12081,7 @@
 												"ref": {
 													"name": "terminals",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.883Z"
+													"lastUpdate": "2020-11-19T20:31:52.605Z"
 												}
 											},
 											"data": {
@@ -11660,7 +12089,7 @@
 												"type": "kiosk",
 												"name": "My terminal",
 												"store": "My store 1",
-												"lastwork": "2020-11-14T09:09:28.883Z",
+												"lastwork": "2020-11-19T20:31:52.605Z",
 												"extra": {
 													"key": "value"
 												}
@@ -11678,10 +12107,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					},
 					{
-						"apiKey": []
+						"accessToken": []
 					}
 				],
 				"parameters": [
@@ -11711,7 +12140,7 @@
 												"ref": {
 													"name": "terminals",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.884Z"
+													"lastUpdate": "2020-11-19T20:31:52.605Z"
 												}
 											},
 											"data": {
@@ -11719,7 +12148,7 @@
 												"type": "kiosk",
 												"name": "My terminal",
 												"store": "My store 1",
-												"lastwork": "2020-11-14T09:09:28.884Z",
+												"lastwork": "2020-11-19T20:31:52.606Z",
 												"extra": {
 													"key": "value"
 												}
@@ -11737,7 +12166,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [
@@ -11777,7 +12206,7 @@
 												"ref": {
 													"name": "terminals",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.889Z"
+													"lastUpdate": "2020-11-19T20:31:52.608Z"
 												}
 											}
 										}
@@ -11793,7 +12222,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [
@@ -11825,7 +12254,7 @@
 												"ref": {
 													"name": "translations",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.898Z"
+													"lastUpdate": "2020-11-19T20:31:52.615Z"
 												}
 											},
 											"data": [
@@ -11856,10 +12285,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					},
 					{
-						"apiKey": []
+						"accessToken": []
 					}
 				],
 				"parameters": []
@@ -11882,7 +12311,7 @@
 												"ref": {
 													"name": "translations",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.902Z"
+													"lastUpdate": "2020-11-19T20:31:52.618Z"
 												}
 											},
 											"data": {
@@ -11911,10 +12340,10 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					},
 					{
-						"apiKey": []
+						"accessToken": []
 					}
 				],
 				"parameters": [
@@ -11944,7 +12373,7 @@
 												"ref": {
 													"name": "translations",
 													"version": 1,
-													"lastupdate": "2020-11-14T09:09:28.903Z"
+													"lastUpdate": "2020-11-19T20:31:52.619Z"
 												}
 											},
 											"data": {
@@ -11973,7 +12402,7 @@
 				],
 				"security": [
 					{
-						"jwt": []
+						"clientAccessToken": []
 					}
 				],
 				"parameters": [

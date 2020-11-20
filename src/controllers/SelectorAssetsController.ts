@@ -110,14 +110,14 @@ const META_TEMPLATE = {
         ref: {
             name: RefTypes.SELECTORS,
             version: 1,
-            lastupdate: new Date(),
+            lastUpdate: new Date(),
         },
     },
     asset: {
         ref: {
             name: RefTypes.ASSETS,
             version: 1,
-            lastupdate: new Date(),
+            lastUpdate: new Date(),
         },
     },
 };
@@ -125,7 +125,7 @@ const META_TEMPLATE = {
 const RESPONSE_TEMPLATE: IAssetItem = {
     id: "107c7f79bcf86cd7994f6c0e",
     active: true,
-    lastupdate: new Date(),
+    lastUpdate: new Date(),
     name: "some_3d_model",
     ext: AssetExtensions.FBX,
     mipmap: {
@@ -139,8 +139,8 @@ const RESPONSE_TEMPLATE: IAssetItem = {
 @Tags("Selector assets")
 export class SelectorAssetsController extends Controller {
     @Get("{selectorId}/assets")
-    @Security("jwt")
-    @Security("apiKey")
+    @Security("clientAccessToken")
+    @Security("accessToken")
     @OperationId("GetAll")
     @Example<ISelectorGetAllAssetsResponse>({
         meta: META_TEMPLATE,
@@ -201,8 +201,8 @@ export class SelectorAssetsController extends Controller {
     }
 
     @Get("{selectorId}/assets/{langCode}")
-    @Security("jwt")
-    @Security("apiKey")
+    @Security("clientAccessToken")
+    @Security("accessToken")
     @OperationId("Get")
     @Example<ISelectorGetAssetsResponse>({
         meta: META_TEMPLATE,
@@ -245,7 +245,7 @@ export class SelectorAssetsController extends Controller {
     }
 
     /*@Post("{selectorId}/asset/{langCode}")
-    @Security("jwt")
+    @Security("clientAccessToken")
     @OperationId("Create")
     @Example<ISelectorCreateAssetsResponse>({
         meta: META_TEMPLATE,
@@ -326,7 +326,7 @@ export class SelectorAssetsController extends Controller {
     }*/
 
     @Post("{selectorId}/resource/{langCode}/{resourceType}")
-    @Security("jwt")
+    @Security("clientAccessToken")
     @OperationId("CreateResource")
     @Example<ISelectorCreateAssetsResponse>({
         meta: META_TEMPLATE,
@@ -477,7 +477,7 @@ export class SelectorAssetsController extends Controller {
     }
 
     @Put("{selectorId}/asset/{langCode}/{assetId}")
-    @Security("jwt")
+    @Security("clientAccessToken")
     @OperationId("Update")
     @Example<ISelectorCreateAssetsResponse>({
         meta: META_TEMPLATE,
@@ -556,7 +556,7 @@ export class SelectorAssetsController extends Controller {
     }
 
     @Delete("{selectorId}/asset/{langCode}/{assetId}")
-    @Security("jwt")
+    @Security("clientAccessToken")
     @OperationId("Delete")
     @Example<ISelectorDeleteAssetsResponse>({
         meta: META_TEMPLATE

@@ -4,14 +4,16 @@ import * as jwt from "jsonwebtoken";
 import * as got from "got";
 import { IAuthRequest, IJWTBody } from "./interfaces";
 
-async function createProxyRequestToAuthServer(client: string): Promise<any> {
+async function getClienInfo(client: string): Promise<any> {
   let r: got.Response<any>;
+  let headers = {
+    "content-type": "application/json",
+    "x-access-token": config.AUTH_LIC_SERVER_API_KEY,
+  };
+
   try {
     r = await got.get(`${config.LIC_SERVER_HOST}/api/v1/clients/${client}`, {
-      headers: {
-        "content-type": "application/json",
-        "authorization": config.AUTH_LIC_SERVER_API_KEY,
-      },
+      headers,
     });
   } catch (err) {
     let authServerResp: any;
@@ -46,7 +48,7 @@ export async function expressAuthentication(
   scopes?: string[],
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<any> {
-  if (securityName === "jwt") {
+  if (securityName === "clientAccessToken") {
     const token = request.headers["authorization"] ? String(request.headers["authorization"]) : undefined;
 
     return new Promise((resolve, reject) => {
@@ -58,7 +60,7 @@ export async function expressAuthentication(
         if (err) {
           reject(err);
         } else {
-          createProxyRequestToAuthServer(decoded.userId)
+          getClienInfo(decoded.userId)
             .then(res => {
               (request as IAuthRequest).client = res.data;
               resolve();
@@ -74,19 +76,20 @@ export async function expressAuthentication(
         }
       });
     });
-  } else if (securityName === "apiKey") {
-    const apiKey = request.headers["x-auth-token"] ? String(request.headers["x-auth-token"]) : undefined;
-
+  } else if (securityName === "accessToken") {
+    const token = request.headers["x-access-token"] ? String(request.headers["x-access-token"]) : undefined;
     return new Promise((resolve, reject) => {
-      if (!apiKey) {
-        reject(new Error("No apiKey provided."));
+      if (!token) {
+        reject(new Error("No token provided."));
       }
+      // Вовке я bearer передаю от ключа
+      // проверку тут не надо делать её проверит lic-server отдельным запросом проверки ключа
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      jwt.verify(apiKey, config.AUTH_CLIENT_PRIVATE_KEY, function (err: any, decoded: IJWTBody) {
+      jwt.verify(token, config.AUTH_CLIENT_PRIVATE_KEY, function (err: any, decoded: IJWTBody) {
         if (err) {
           reject(err);
         } else {
-          createProxyRequestToAuthServer(decoded.userId)
+          getClienInfo(decoded.userId)
             .then(res => {
               (request as IAuthRequest).client = res.data;
               resolve();

@@ -111,7 +111,7 @@ const META_TEMPLATE: IProductsMeta = {
     ref: {
         name: RefTypes.PRODUCTS,
         version: 1,
-        lastupdate: new Date(),
+        lastUpdate: new Date(),
     }
 };
 
@@ -119,8 +119,8 @@ const META_TEMPLATE: IProductsMeta = {
 @Tags("Product")
 export class ProductsController extends Controller {
     @Get()
-    @Security("jwt")
-    @Security("apiKey")
+    @Security("clientAccessToken")
+    @Security("accessToken")
     @OperationId("GetAll")
     @Example<IProductsResponse>({
         meta: META_TEMPLATE,
@@ -152,8 +152,8 @@ export class ProductsController extends Controller {
 @Tags("Product")
 export class ProductController extends Controller {
     @Get("{id}")
-    @Security("jwt")
-    @Security("apiKey")
+    @Security("clientAccessToken")
+    @Security("accessToken")
     @OperationId("GetOne")
     @Example<IProductResponse>({
         meta: META_TEMPLATE,
@@ -181,7 +181,7 @@ export class ProductController extends Controller {
     }
 
     @Post()
-    @Security("jwt")
+    @Security("clientAccessToken")
     @OperationId("Create")
     @Example<IProductResponse>({
         meta: META_TEMPLATE,
@@ -241,7 +241,7 @@ export class ProductController extends Controller {
     }
 
     @Put("{id}")
-    @Security("jwt")
+    @Security("clientAccessToken")
     @OperationId("Update")
     @Example<IProductResponse>({
         meta: META_TEMPLATE,
@@ -356,7 +356,7 @@ export class ProductController extends Controller {
     }
 
     @Delete("{id}")
-    @Security("jwt")
+    @Security("clientAccessToken")
     @OperationId("Delete")
     @Example<IProductResponse>({
         meta: META_TEMPLATE,

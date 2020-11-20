@@ -6,7 +6,7 @@ interface IAsset extends Document {
     client: string;
     active: boolean;
     name: string;
-    lastupdate: Date;
+    lastUpdate: Date;
     ext: AssetExtensions;
     mipmap: {
         x128: string;
@@ -19,7 +19,7 @@ const AssetSchema = new Schema({
     client: { type: String, required: true, index: { unique: false } },
     active: { type: Boolean, required: true, default: true },
     name: { type: String, required: true },
-    lastupdate: { type: Date, required: true },
+    lastUpdate: { type: Date, required: true },
     ext: {
         type: String, enum: [
             AssetExtensions.JPG,

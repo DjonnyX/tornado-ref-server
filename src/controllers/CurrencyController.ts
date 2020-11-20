@@ -69,7 +69,7 @@ const META_TEMPLATE: ICurrencyMeta = {
     ref: {
         name: RefTypes.CURRENCIES,
         version: 1,
-        lastupdate: new Date(),
+        lastUpdate: new Date(),
     }
 };
 
@@ -77,8 +77,8 @@ const META_TEMPLATE: ICurrencyMeta = {
 @Tags("Currency")
 export class CurrenciesController extends Controller {
     @Get()
-    @Security("jwt")
-    @Security("apiKey")
+    @Security("clientAccessToken")
+    @Security("accessToken")
     @OperationId("GetAll")
     @Example<CurrenciesResponse>({
         meta: META_TEMPLATE,
@@ -110,8 +110,8 @@ export class CurrenciesController extends Controller {
 @Tags("Currency")
 export class CurrencyController extends Controller {
     @Get("{id}")
-    @Security("jwt")
-    @Security("apiKey")
+    @Security("clientAccessToken")
+    @Security("accessToken")
     @OperationId("GetOne")
     @Example<CurrencyResponse>({
         meta: META_TEMPLATE,
@@ -139,7 +139,7 @@ export class CurrencyController extends Controller {
     }
 
     @Post()
-    @Security("jwt")
+    @Security("clientAccessToken")
     @OperationId("Create")
     @Example<CurrencyResponse>({
         meta: META_TEMPLATE,
@@ -185,7 +185,7 @@ export class CurrencyController extends Controller {
     }
 
     @Put("{id}")
-    @Security("jwt")
+    @Security("clientAccessToken")
     @OperationId("Update")
     @Example<CurrencyResponse>({
         meta: META_TEMPLATE,
@@ -312,12 +312,29 @@ export class CurrencyController extends Controller {
     }
 
     @Delete("{id}")
-    @Security("jwt")
+    @Security("clientAccessToken")
     @OperationId("Delete")
     @Example<CurrencyResponse>({
         meta: META_TEMPLATE,
     })
     public async delete(id: string, @Request() request: IAuthRequest): Promise<CurrencyResponse> {
+        let currencies: Array<ICurrency>;
+        try {
+            currencies = await CurrencyModel.find({ client: request.client.id });
+        } catch (err) { }
+
+        if (currencies && currencies.length === 1) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: "There must be at least one currency left.",
+                    }
+                ]
+            };
+        }
+
         try {
             await CurrencyModel.findOneAndDelete({ _id: id });
             const ref = await riseRefVersion(request.client.id, RefTypes.CURRENCIES);

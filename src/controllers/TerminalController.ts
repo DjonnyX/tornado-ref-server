@@ -65,7 +65,7 @@ const META_TEMPLATE: ITerminalMeta = {
     ref: {
         name: RefTypes.TERMINALS,
         version: 1,
-        lastupdate: new Date(),
+        lastUpdate: new Date(),
     }
 };
 
@@ -73,8 +73,8 @@ const META_TEMPLATE: ITerminalMeta = {
 @Tags("Terminal")
 export class TerminalsController extends Controller {
     @Get()
-    @Security("jwt")
-    @Security("apiKey")
+    @Security("clientAccessToken")
+    @Security("accessToken")
     @OperationId("GetAll")
     @Example<ITerminalsResponse>({
         meta: META_TEMPLATE,
@@ -106,8 +106,8 @@ export class TerminalsController extends Controller {
 @Tags("Terminal")
 export class TerminalController extends Controller {
     @Get("{id}")
-    @Security("jwt")
-    @Security("apiKey")
+    @Security("clientAccessToken")
+    @Security("accessToken")
     @OperationId("GetOne")
     @Example<ITerminalResponse>({
         meta: META_TEMPLATE,
@@ -135,7 +135,7 @@ export class TerminalController extends Controller {
     }
 
     /*@Post()
-    @Security("jwt")
+    @Security("clientAccessToken")
     @OperationId("Create")
     @Example<ITerminalResponse>({
         meta: META_TEMPLATE,
@@ -164,7 +164,7 @@ export class TerminalController extends Controller {
     }*/
 
     @Put("{id}")
-    @Security("jwt")
+    @Security("clientAccessToken")
     @OperationId("Update")
     @Example<ITerminalResponse>({
         meta: META_TEMPLATE,
@@ -202,7 +202,7 @@ export class TerminalController extends Controller {
     }
 
     @Delete("{id}")
-    @Security("jwt")
+    @Security("clientAccessToken")
     @OperationId("Delete")
     @Example<ITerminalResponse>({
         meta: META_TEMPLATE

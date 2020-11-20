@@ -5,6 +5,7 @@ import * as jwt from "jsonwebtoken";
 import * as config from "../config";
 import { initRefs } from "../db/initDB";
 import { IJWTBody } from "../interfaces";
+import { createProxyRequestToAuthServer } from "../utils/proxy";
 
 interface ISigninParams {
     email: string;
@@ -36,6 +37,7 @@ interface IVerifyResetPasswordTokenParams {
 interface SigninResponse {
     meta?: {};
     data?: {
+        role: string;
         token: string;
         firstName: string;
         lastName: string;
@@ -108,69 +110,6 @@ interface VerifyResetPasswordTokenResponse {
     }>;
 }
 
-async function createProxyRequestToAuthServer<R = any>(context: Controller, request: express.Request): Promise<R> {
-    let r: got.Response<any>;
-    const headers = {
-        "content-type": "application/json",
-    };
-
-    try {
-        r = await (request.method === "POST"
-            ?
-            got.post(`${config.LIC_SERVER_HOST}${request.originalUrl}`, {
-                headers,
-                body: JSON.stringify(request.body),
-            })
-            :
-            got.get(`${config.LIC_SERVER_HOST}${request.originalUrl}`, {
-                headers,
-            })
-        );
-    } catch (err) {
-        context.setStatus(500);
-
-        if (err instanceof got.HTTPError && err.statusCode === 500) {
-            let authServerResp: any;
-            try {
-                authServerResp = JSON.parse(err.body as string);
-            } catch (err1) {
-                return {
-                    error: [
-                        {
-                            code: 500,
-                            message: `Proxy request to the auth server fail. Error: ${err1}`,
-                        }
-                    ]
-                } as any;
-            }
-            return authServerResp;
-        }
-        return {
-            error: [
-                {
-                    code: 500,
-                    message: `Proxy request to the auth server fail. Error: ${err}`,
-                }
-            ]
-        } as any;
-    }
-
-    let body: any;
-    try {
-        body = JSON.parse(r.body)
-    } catch (err) {
-        return {
-            error: [
-                {
-                    code: 500,
-                    message: `Response body from auth server bad format. Error: ${err}`,
-                }
-            ]
-        } as any;
-    }
-    return body;
-}
-
 @Route("/auth/signup")
 @Tags("Auth")
 export class SignupController extends Controller {
@@ -207,6 +146,7 @@ export class SigninController extends Controller {
     @Example<SigninResponse>({
         meta: {},
         data: {
+            role: "admin",
             token: "507c7f79bcf86cd7994f6c0e",
             firstName: "First name",
             lastName: "Last name",
@@ -214,7 +154,21 @@ export class SigninController extends Controller {
         }
     })
     public async signin(@Request() request: express.Request, @Body() body: ISigninParams): Promise<SigninResponse> {
-        const res = await createProxyRequestToAuthServer<SigninResponse>(this, request);
+        let res: SigninResponse;
+        
+        try {
+            res = await createProxyRequestToAuthServer<SigninResponse>(this, request);
+        } catch (err) {
+            this.setStatus(401);
+            return {
+                error: [
+                    {
+                        code: 401,
+                        message: `Bad request ("signin"). ${err}`,
+                    }
+                ]
+            };
+        }
 
         let authInfo: IJWTBody;
 
@@ -229,12 +183,12 @@ export class SigninController extends Controller {
                 });
             })
         } catch (err) {
-            this.setStatus(500);
+            this.setStatus(401);
             return {
                 error: [
                     {
-                        code: 500,
-                        message: `Token is not valid. ${err}`,
+                        code: 401,
+                        message: `Unauthorized.`,
                     }
                 ]
             };
@@ -244,26 +198,6 @@ export class SigninController extends Controller {
         await initRefs(authInfo.userId);
 
         return res;
-    }
-}
-
-@Route("/auth/signout")
-@Tags("Auth")
-export class SignoutController extends Controller {
-    @Post()
-    @Example<SignoutResponse>({
-        meta: {},
-        data: {}
-    })
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public async signout(@Header("authorization") token: string): Promise<SignoutResponse> {
-
-        // позже нужно будет доделать
-        // + сессии сделать
-
-        return {
-            data: {}
-        };
     }
 }
 

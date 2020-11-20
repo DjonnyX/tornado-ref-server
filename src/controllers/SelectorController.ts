@@ -84,7 +84,7 @@ const META_TEMPLATE: ISelectorsMeta = {
     ref: {
         name: RefTypes.SELECTORS,
         version: 1,
-        lastupdate: new Date(),
+        lastUpdate: new Date(),
     }
 };
 
@@ -92,8 +92,8 @@ const META_TEMPLATE: ISelectorsMeta = {
 @Tags("Selector")
 export class SelectorsController extends Controller {
     @Get()
-    @Security("jwt")
-    @Security("apiKey")
+    @Security("clientAccessToken")
+    @Security("accessToken")
     @OperationId("GetAll")
     @Example<ISelectorsResponse>({
         meta: META_TEMPLATE,
@@ -131,8 +131,8 @@ export class SelectorsController extends Controller {
 @Tags("Selector")
 export class SelectorController extends Controller {
     @Get("{id}")
-    @Security("jwt")
-    @Security("apiKey")
+    @Security("clientAccessToken")
+    @Security("accessToken")
     @OperationId("GetOne")
     @Example<ISelectorResponse>({
         meta: META_TEMPLATE,
@@ -160,7 +160,7 @@ export class SelectorController extends Controller {
     }
 
     @Post()
-    @Security("jwt")
+    @Security("clientAccessToken")
     @OperationId("Create")
     @Example<ISelectorResponse>({
         meta: META_TEMPLATE,
@@ -220,7 +220,7 @@ export class SelectorController extends Controller {
     }
 
     @Put("{id}")
-    @Security("jwt")
+    @Security("clientAccessToken")
     @OperationId("Update")
     @Example<ISelectorResponse>({
         meta: META_TEMPLATE,
@@ -335,7 +335,7 @@ export class SelectorController extends Controller {
     }
 
     @Delete("{id}")
-    @Security("jwt")
+    @Security("clientAccessToken")
     @OperationId("Delete")
     @Example<ISelectorResponse>({
         meta: META_TEMPLATE,
