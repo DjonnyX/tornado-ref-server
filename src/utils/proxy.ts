@@ -3,6 +3,37 @@ import * as got from "got";
 import * as express from "express";
 import * as config from "../config";
 
+export async function makeRequest(request: got.GotPromise<any>): Promise<any> {
+    let r: got.Response<any>;
+
+    try {
+        r = await request;
+    } catch (err) {
+        let authServerResp: any;
+        if (err instanceof got.HTTPError && err.statusCode === 500) {
+            try {
+                authServerResp = JSON.parse(err.body as string);
+            } catch (err1) {
+                throw Error(`Proxy request to the auth server fail. Error: ${err1}`);
+            }
+        }
+        throw Error(!!authServerResp && !!authServerResp.error && !!authServerResp.error.length
+            ?
+            authServerResp.error[0].message
+            :
+            `Proxy request to the auth server fail. Error: ${err}`
+        );
+    }
+
+    let body: any;
+    try {
+        body = JSON.parse(r.body)
+    } catch (err) {
+        throw Error(`Response body from auth server bad format. Error: ${err}`);
+    }
+    return body;
+}
+
 export async function createProxyRequestToAuthServer<R = any>(context: Controller, request: express.Request): Promise<R> {
     let r: got.Response<any>;
     const headers = {
