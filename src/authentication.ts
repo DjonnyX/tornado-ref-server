@@ -31,6 +31,7 @@ export async function expressAuthentication(
             id: decoded.userId,
             email: decoded.email,
           };
+          (request as IAuthRequest).token = token;
           resolve();
         }
       });
@@ -48,9 +49,10 @@ export async function expressAuthentication(
         if (err) {
           reject(err);
         } else {
-          licServerApiService.verifyLicenseKey(token)
+          licServerApiService.verifyLicenseKey(token, { clientToken: token })
             .then(res => {
               (request as IAuthRequest).client = res.data;
+              (request as IAuthRequest).token = token;
               resolve();
             }).catch(err => {
               reject(err);

@@ -1,8 +1,8 @@
 import { Controller, Route, Post, Tags, Example, Request, Body, Get, Put, Delete, OperationId, Security } from "tsoa";
-import * as express from "express";
 import { RefTypes } from "../models/enums";
 import { IRefItem } from "./RefsController";
 import { licServerApiService } from "../services";
+import { IAuthRequest } from "../interfaces";
 
 interface ILicenseTypeInfo {
     id: string;
@@ -85,8 +85,8 @@ export class LicenseTypesController extends Controller {
         meta: META_TEMPLATE,
         data: [LICENSE_TYPE_RESPONSE_TEMPLATE],
     })
-    public async getLicenseType(@Request() request: express.Request): Promise<LicenseTypesGetResponse> {
-        return await licServerApiService.getLicenseTypes();
+    public async getLicenseType(@Request() request: IAuthRequest): Promise<LicenseTypesGetResponse> {
+        return await licServerApiService.getLicenseTypes({ clientToken: request.token });
     }
 }
 
@@ -100,8 +100,8 @@ export class LicenseTypeController extends Controller {
         meta: META_TEMPLATE,
         data: LICENSE_TYPE_RESPONSE_TEMPLATE,
     })
-    public async getLicenseType(id: string, @Request() request: express.Request): Promise<LicenseTypeResponse> {
-        return await licServerApiService.getLicenseType(id);
+    public async getLicenseType(id: string, @Request() request: IAuthRequest): Promise<LicenseTypeResponse> {
+        return await licServerApiService.getLicenseType(id, { clientToken: request.token });
     }
 
     @Post("{id}")
@@ -111,8 +111,8 @@ export class LicenseTypeController extends Controller {
         meta: META_TEMPLATE,
         data: LICENSE_TYPE_RESPONSE_TEMPLATE,
     })
-    public async createLicenseType(id: string, @Request() request: express.Request, @Body() body: ICreateLicenseTypeParams): Promise<LicenseTypeResponse> {
-        return await licServerApiService.createLicenseType(id, body as any);
+    public async createLicenseType(id: string, @Request() request: IAuthRequest, @Body() body: ICreateLicenseTypeParams): Promise<LicenseTypeResponse> {
+        return await licServerApiService.createLicenseType(id, body as any, { clientToken: request.token });
     }
 
     @Put("{id}")
@@ -122,8 +122,8 @@ export class LicenseTypeController extends Controller {
         meta: META_TEMPLATE,
         data: LICENSE_TYPE_RESPONSE_TEMPLATE,
     })
-    public async updateLicenseType(id: string, @Request() request: express.Request, @Body() body: IUpdateLicenseTypeParams): Promise<LicenseTypeResponse> {
-        return await licServerApiService.updateLicenseType(id, body as any);
+    public async updateLicenseType(id: string, @Request() request: IAuthRequest, @Body() body: IUpdateLicenseTypeParams): Promise<LicenseTypeResponse> {
+        return await licServerApiService.updateLicenseType(id, body as any, { clientToken: request.token });
     }
 
     @Delete("{id}")
@@ -132,7 +132,7 @@ export class LicenseTypeController extends Controller {
     @Example<LicenseTypeResponse>({
         meta: META_TEMPLATE,
     })
-    public async deleteLicenseType(id: string, @Request() request: express.Request): Promise<LicenseTypeResponse> {
-        return await licServerApiService.deleteLicenseType(id);
+    public async deleteLicenseType(id: string, @Request() request: IAuthRequest): Promise<LicenseTypeResponse> {
+        return await licServerApiService.deleteLicenseType(id, { clientToken: request.token });
     }
 }
