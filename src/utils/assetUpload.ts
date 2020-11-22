@@ -1,11 +1,11 @@
 import * as path from "path";
 import * as sharp from "sharp";
 import multer = require("multer");
-import { AssetExtensions } from "../models/enums";
 import * as ffmpeg from "fluent-ffmpeg";
 import * as ffmpegStatic from "ffmpeg-static";
 import * as fs from "fs";
 import { IAuthRequest } from "../interfaces";
+import { AssetExtensions } from "@djonnyx/tornado-types";
 
 ffmpeg.setFfmpegPath(ffmpegStatic);
 

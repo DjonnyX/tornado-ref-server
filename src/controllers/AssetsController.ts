@@ -1,15 +1,14 @@
 import * as fs from "fs";
 import * as path from "path";
-import * as express from "express";
 import { RefTypes } from "../models/index";
 import { Controller, Route, Post, Tags, OperationId, Example, Request, Security, Delete, Put, Body, Get } from "tsoa";
 import { riseRefVersion, getRef } from "../db/refs";
-import { AssetExtensions } from "../models/enums";
 import { IAsset, AssetModel } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
 import { assetsUploader, IFileInfo } from "../utils/assetUpload";
 import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "../interfaces";
+import { AssetExtensions } from "@djonnyx/tornado-types";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IAssetItem {

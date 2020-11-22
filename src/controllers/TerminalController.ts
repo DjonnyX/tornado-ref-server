@@ -1,14 +1,12 @@
-import { RefTypes, ITerminal, TerminalModel } from "../models";
+import { RefTypes, TerminalModel } from "../models";
 import { Controller, Route, Get, Tags, OperationId, Example, Security, Put, Body, Delete, Request } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatTerminalModel } from "../utils/terminal";
 import { IRefItem } from "./RefsController";
-import { TerminalTypes, TerminalStatusTypes } from "../models/enums";
 import { IAuthRequest } from "../interfaces";
+import { ITerminal, TerminalStatusTypes, TerminalTypes } from "@djonnyx/tornado-types";
 
-interface ITerminalItem extends ITerminal {
-    id?: string;
-}
+interface ITerminalItem extends ITerminal { }
 
 interface ITerminalMeta {
     ref: IRefItem;
