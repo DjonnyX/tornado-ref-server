@@ -1,8 +1,6 @@
-import * as express from "express";
 import { TagModel, ITag, RefTypes, ILanguage, LanguageModel } from "../models/index";
 import { Controller, Route, Post, Tags, OperationId, Example, Request, Security, Get, Delete, Body, Put } from "tsoa";
 import { riseRefVersion, getRef } from "../db/refs";
-import { AssetExtensions } from "../models/enums";
 import { ITagItem, RESPONSE_TEMPLATE as SELECTOR_RESPONSE_TEMPLATE } from "./TagsController";
 import { formatTagModel } from "../utils/tag";
 import { normalizeContents } from "../utils/entity";
@@ -12,6 +10,7 @@ import { AssetModel, IAsset } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
 import { ITagContents } from "../models/Tag";
 import { IAuthRequest } from "../interfaces";
+import { AssetExtensions } from "@djonnyx/tornado-types";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface ITagAsset extends IAssetItem { }

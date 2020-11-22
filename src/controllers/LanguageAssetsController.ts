@@ -2,7 +2,6 @@ import * as express from "express";
 import { RefTypes, ILanguage, LanguageModel } from "../models/index";
 import { Controller, Route, Post, Tags, OperationId, Example, Request, Security, Get, Delete, Body, Put } from "tsoa";
 import { riseRefVersion, getRef } from "../db/refs";
-import { AssetExtensions } from "../models/enums";
 import { IRefItem } from "./RefsController";
 import { uploadAsset, deleteAsset, IAssetItem } from "./AssetsController";
 import { AssetModel } from "../models/Asset";
@@ -10,6 +9,7 @@ import { formatAssetModel } from "../utils/asset";
 import { ILanguageItem, LANGUAGE_RESPONSE_TEMPLATE } from "./LanguagesController";
 import { formatLanguageModel } from "../utils/language";
 import { IAuthRequest } from "../interfaces";
+import { AssetExtensions } from "@djonnyx/tornado-types";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface ILanguageAsset extends IAssetItem { }
