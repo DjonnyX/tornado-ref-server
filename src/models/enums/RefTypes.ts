@@ -13,4 +13,5 @@ export enum RefTypes {
     STORES = "stores",
     TERMINALS = "terminals",
     LICENSES = "licenses",
+    LICENSE_TYPES = "license-types",
 }
