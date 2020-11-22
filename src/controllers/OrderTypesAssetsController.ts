@@ -9,9 +9,8 @@ import { IRefItem } from "./RefsController";
 import { uploadAsset, deleteAsset, IAssetItem, ICreateAssetsResponse } from "./AssetsController";
 import { AssetModel, IAsset } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
-import { IOrderTypeContents } from "../models/OrderTypes";
 import { IAuthRequest } from "../interfaces";
-import { AssetExtensions } from "@djonnyx/tornado-types";
+import { AssetExtensions, IOrderTypeContents } from "@djonnyx/tornado-types";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IOrderTypeAsset extends IAssetItem { }
@@ -88,7 +87,7 @@ const contentsToDefault = (contents: IOrderTypeContents, langCode: string) => {
     }
 
     if (!result[langCode]) {
-        result[langCode] = {};
+        result[langCode] = {} as any;
     }
 
     if (!result[langCode].resources) {
