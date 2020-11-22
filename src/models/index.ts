@@ -11,7 +11,7 @@ import { IAd, AdModel } from "./Ad";
 import { ILanguage, LanguageModel } from "./Language";
 import { ITranslate, ITranslation, TranslationModel } from "./Translation";
 import { IStoreDocument, StoreModel } from "./Store";
-import { ITerminalDocument, ITerminal, TerminalModel } from "./Terminal";
+import { ITerminalDocument, TerminalModel } from "./Terminal";
 
 export {
     NodeModel, INode,
@@ -27,5 +27,5 @@ export {
     ILanguage, LanguageModel,
     ITranslate, ITranslation, TranslationModel,
     IStoreDocument, StoreModel,
-    ITerminalDocument, ITerminal, TerminalModel,
+    ITerminalDocument, TerminalModel,
 };

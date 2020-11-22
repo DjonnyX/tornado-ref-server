@@ -1,18 +1,15 @@
+import { TerminalStatusTypes, TerminalTypes } from "@djonnyx/tornado-types";
 import * as mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
-import { TerminalStatusTypes, TerminalTypes } from "./enums";
 
-interface ITerminal {
+interface ITerminalDocument extends Document {
+    client: string;
     status: TerminalStatusTypes;
     type: TerminalTypes;
     name: string;
     store: string;
     lastwork: Date;
     extra?: { [key: string]: any } | null;
-}
-
-interface ITerminalDocument extends Document, ITerminal {
-    client: string;
 }
 
 const TerminalSchema = new Schema({
@@ -44,4 +41,4 @@ const TerminalSchema = new Schema({
 
 const TerminalModel = mongoose.model<ITerminalDocument>("Terminal", TerminalSchema);
 
-export { TerminalModel, ITerminalDocument, ITerminal };
+export { TerminalModel, ITerminalDocument };
