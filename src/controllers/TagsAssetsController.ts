@@ -8,9 +8,8 @@ import { IRefItem } from "./RefsController";
 import { uploadAsset, deleteAsset, IAssetItem, ICreateAssetsResponse } from "./AssetsController";
 import { AssetModel, IAsset } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
-import { ITagContents } from "../models/Tag";
 import { IAuthRequest } from "../interfaces";
-import { AssetExtensions } from "@djonnyx/tornado-types";
+import { AssetExtensions, ITagContents } from "@djonnyx/tornado-types";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface ITagAsset extends IAssetItem { }
@@ -87,7 +86,7 @@ const contentsToDefault = (contents: ITagContents, langCode: string) => {
     }
 
     if (!result[langCode]) {
-        result[langCode] = {};
+        result[langCode] = {} as any;
     }
 
     if (!result[langCode].resources) {

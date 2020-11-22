@@ -1,21 +1,6 @@
+import { ITagContents } from "@djonnyx/tornado-types";
 import * as mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
-
-export interface ITagContentsItem {
-    name: string;
-    description?: string;
-    color?: string;
-    resources: {
-        main: string | null;
-        icon: string | null;
-    };
-    assets?: Array<string>;
-    extra?: { [key: string]: any } | null;
-}
-
-export interface ITagContents {
-    [lang: string]: ITagContentsItem | any;
-}
 
 interface ITag extends Document {
     client: string;

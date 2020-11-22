@@ -841,6 +841,7 @@ const models: TsoaRoute.Models = {
             "price": { "dataType": "double", "required": true },
             "payNotice": { "dataType": "string", "required": true },
             "integrationId": { "dataType": "string", "required": true },
+            "lastUpdate": { "dataType": "string" },
             "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
         "additionalProperties": false,
@@ -2948,6 +2949,7 @@ export function RegisterRoutes(app: express.Express) {
         authenticateMiddleware([{ "clientAccessToken": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
+                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
                 request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
             };
 
@@ -2971,6 +2973,7 @@ export function RegisterRoutes(app: express.Express) {
         authenticateMiddleware([{ "clientAccessToken": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
+                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
                 request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
                 body: { "in": "body", "name": "body", "required": true, "ref": "ICreateLicenseTypeParams" },
             };
@@ -2995,6 +2998,7 @@ export function RegisterRoutes(app: express.Express) {
         authenticateMiddleware([{ "clientAccessToken": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
+                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
                 request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
                 body: { "in": "body", "name": "body", "required": true, "ref": "IUpdateLicenseTypeParams" },
             };
@@ -3019,6 +3023,7 @@ export function RegisterRoutes(app: express.Express) {
         authenticateMiddleware([{ "clientAccessToken": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
+                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
                 request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
             };
 

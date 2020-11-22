@@ -3,7 +3,7 @@ import * as got from "got";
 import * as express from "express";
 import * as config from "../config";
 
-export async function makeRequest(request: got.GotPromise<any>): Promise<any> {
+export async function makeRequest<T = any>(request: got.GotPromise<any>): Promise<T> {
     let r: got.Response<any>;
 
     try {
@@ -31,7 +31,7 @@ export async function makeRequest(request: got.GotPromise<any>): Promise<any> {
     } catch (err) {
         throw Error(`Response body from auth server bad format. Error: ${err}`);
     }
-    return body;
+    return body as T;
 }
 
 export async function createProxyRequestToAuthServer<R = any>(context: Controller, request: express.Request): Promise<R> {
