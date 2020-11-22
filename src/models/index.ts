@@ -1,4 +1,4 @@
-import { ProductModel, IProduct, IPrice, IReceiptItem } from "./Product";
+import { ProductModel, IProduct, IReceiptItem } from "./Product";
 import { TagModel, ITag } from "./Tag";
 import { RefModel, IRef } from "./Ref";
 import { INode, NodeModel } from "./Node";
@@ -17,7 +17,7 @@ export {
     NodeModel, INode,
     SelectorModel, ISelector,
     IReceiptItem,
-    ProductModel, IProduct, IPrice,
+    ProductModel, IProduct,
     CurrencyModel, ICurrency,
     TagModel, ITag,
     IBusinessPeriod, BusinessPeriodModel,
