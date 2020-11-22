@@ -1,17 +1,14 @@
 import * as mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
 
-interface IStore {
+interface IStoreDocument extends Document {
+    client: string;
     active: boolean;
     name: string;
     address: string | null;
     terminals?: Array<string>;
     employes?: Array<string>;
     extra?: { [key: string]: any } | null;
-}
-
-interface IStoreDocument extends Document, IStore {
-    client: string;
 }
 
 const StoreSchema = new Schema({
@@ -26,4 +23,4 @@ const StoreSchema = new Schema({
 
 const StoreModel = mongoose.model<IStoreDocument>("Store", StoreSchema);
 
-export { StoreModel, IStoreDocument, IStore };
+export { StoreModel, IStoreDocument };
