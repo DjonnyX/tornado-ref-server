@@ -1,11 +1,11 @@
-import { RefTypes, ISchedule, IBusinessPeriod, BusinessPeriodModel } from "../models";
+import { RefTypes, IBusinessPeriod, BusinessPeriodModel } from "../models";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Request } from "tsoa";
 import * as joi from "@hapi/joi";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatModel } from "../utils/businessPeriod";
 import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "../interfaces";
-import { IBusinessPeriodContents } from "@djonnyx/tornado-types";
+import { IBusinessPeriodContents, ISchedule } from "@djonnyx/tornado-types";
 
 interface IBusinessPeriodItem {
     id?: string;

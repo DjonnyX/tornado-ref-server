@@ -1,16 +1,6 @@
-import { IBusinessPeriodContents } from "@djonnyx/tornado-types";
+import { IBusinessPeriodContents, ISchedule } from "@djonnyx/tornado-types";
 import * as mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
-
-interface ISchedule {
-    active: boolean;
-    time?: {
-        start: number;
-        end?: number;
-    },
-    weekDays?: number[];
-    extra?: { [key: string]: any } | null;
-}
 
 interface IBusinessPeriod extends Document {
     client: string;
