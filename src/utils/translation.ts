@@ -1,9 +1,10 @@
 import * as fs from "fs";
-import { ITranslation, ITranslate } from "@models";
 import { ITranslationTemplate, ILanguageTranslation } from "../interfaces/ITranslationTemplate";
 import { LOCALIZATION_TEMPLATE_PATH } from "../config";
+import { ITranslate } from "@djonnyx/tornado-types/dist/interfaces/raw/ITranslation";
+import { ITranslationDocument } from "../models/Translation";
 
-export const formatTranslationModel = (model: ITranslation) => ({
+export const formatTranslationModel = (model: ITranslationDocument) => ({
     id: model._id,
     language: model.language,
     items: model.items.map(v => ({
@@ -13,7 +14,7 @@ export const formatTranslationModel = (model: ITranslation) => ({
     extra: model.extra,
 });
 
-export const mergeTranslation = async (translation: ITranslation, save = true) => {
+export const mergeTranslation = async (translation: ITranslationDocument, save = true) => {
     const lang = translation.language;
     const template: ITranslationTemplate = JSON.parse(fs.readFileSync(LOCALIZATION_TEMPLATE_PATH).toString("utf-8"));
     const dictionary: { [key: string]: ITranslate } = {};

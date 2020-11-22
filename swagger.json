@@ -103,6 +103,7 @@
 				"enum": [
 					".jpg",
 					".png",
+					".gif",
 					".mp4",
 					".fbx",
 					".obj",
@@ -212,35 +213,44 @@
 				],
 				"type": "string"
 			},
+			"IAdResources": {
+				"properties": {
+					"main": {
+						"type": "string",
+						"description": "Основной ресурс"
+					}
+				},
+				"required": [
+					"main"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"IAdContentsItem": {
 				"properties": {
 					"name": {
-						"type": "string"
-					},
-					"color": {
-						"type": "string"
+						"type": "string",
+						"description": "Имя"
 					},
 					"duration": {
 						"type": "number",
-						"format": "double"
+						"format": "double",
+						"description": "Продолжительность отображения"
+					},
+					"color": {
+						"type": "string",
+						"description": "Цвет"
 					},
 					"resources": {
-						"properties": {
-							"main": {
-								"type": "string",
-								"nullable": true
-							}
-						},
-						"required": [
-							"main"
-						],
-						"type": "object"
+						"$ref": "#/components/schemas/IAdResources",
+						"description": "Ресурсы"
 					},
 					"assets": {
 						"items": {
 							"type": "string"
 						},
-						"type": "array"
+						"type": "array",
+						"description": "Список ассетов"
 					},
 					"extra": {
 						"properties": {},
@@ -248,13 +258,16 @@
 							"additionalProperties": true
 						},
 						"type": "object",
-						"nullable": true
+						"nullable": true,
+						"description": "Экстра свойства"
 					}
 				},
 				"required": [
 					"name",
 					"duration",
-					"resources"
+					"color",
+					"resources",
+					"assets"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -263,14 +276,7 @@
 				"properties": {},
 				"type": "object",
 				"additionalProperties": {
-					"anyOf": [
-						{
-							"$ref": "#/components/schemas/IAdContentsItem"
-						},
-						{
-							"additionalProperties": true
-						}
-					]
+					"$ref": "#/components/schemas/IAdContentsItem"
 				}
 			},
 			"IAdItem": {
@@ -1054,16 +1060,12 @@
 			"IBusinessPeriodContentsItem": {
 				"properties": {
 					"name": {
-						"type": "string"
+						"type": "string",
+						"description": "Имя"
 					},
 					"description": {
-						"type": "string"
-					},
-					"assets": {
-						"items": {
-							"type": "string"
-						},
-						"type": "array"
+						"type": "string",
+						"description": "Описание"
 					},
 					"extra": {
 						"properties": {},
@@ -1071,11 +1073,13 @@
 							"additionalProperties": true
 						},
 						"type": "object",
-						"nullable": true
+						"nullable": true,
+						"description": "Галерея изображений"
 					}
 				},
 				"required": [
-					"name"
+					"name",
+					"description"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -1084,43 +1088,46 @@
 				"properties": {},
 				"type": "object",
 				"additionalProperties": {
-					"anyOf": [
-						{
-							"$ref": "#/components/schemas/IBusinessPeriodContentsItem"
-						},
-						{
-							"additionalProperties": true
-						}
-					]
+					"$ref": "#/components/schemas/IBusinessPeriodContentsItem"
 				}
+			},
+			"IScheduleTimeRange": {
+				"properties": {
+					"start": {
+						"type": "number",
+						"format": "double",
+						"description": "Время начала периода"
+					},
+					"end": {
+						"type": "number",
+						"format": "double",
+						"description": "Время конца периода"
+					}
+				},
+				"required": [
+					"start",
+					"end"
+				],
+				"type": "object",
+				"additionalProperties": false
 			},
 			"ISchedule": {
 				"properties": {
 					"active": {
-						"type": "boolean"
+						"type": "boolean",
+						"description": "Активность сущности"
 					},
 					"time": {
-						"properties": {
-							"end": {
-								"type": "number",
-								"format": "double"
-							},
-							"start": {
-								"type": "number",
-								"format": "double"
-							}
-						},
-						"required": [
-							"start"
-						],
-						"type": "object"
+						"$ref": "#/components/schemas/IScheduleTimeRange",
+						"description": "Временной интервал"
 					},
 					"weekDays": {
 						"items": {
 							"type": "number",
 							"format": "double"
 						},
-						"type": "array"
+						"type": "array",
+						"description": "Активные дни недели"
 					},
 					"extra": {
 						"properties": {},
@@ -1128,7 +1135,8 @@
 							"additionalProperties": true
 						},
 						"type": "object",
-						"nullable": true
+						"nullable": true,
+						"description": "Экстра свойства"
 					}
 				},
 				"required": [
@@ -2409,7 +2417,7 @@
 				],
 				"type": "string"
 			},
-			"IPropertyAccessor": {
+			"IScenarioPropertyAccessor": {
 				"properties": {
 					"entity": {
 						"$ref": "#/components/schemas/ScenarioEntityTypes"
@@ -2425,7 +2433,7 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"ProgramOperations": {
+			"ScenarioProgramOperations": {
 				"enum": [
 					"or",
 					"xor",
@@ -2436,13 +2444,13 @@
 			"IScenarioExpression": {
 				"properties": {
 					"prop1": {
-						"$ref": "#/components/schemas/IPropertyAccessor"
+						"$ref": "#/components/schemas/IScenarioPropertyAccessor"
 					},
 					"prop2": {
-						"$ref": "#/components/schemas/IPropertyAccessor"
+						"$ref": "#/components/schemas/IScenarioPropertyAccessor"
 					},
 					"operation": {
-						"$ref": "#/components/schemas/ProgramOperations"
+						"$ref": "#/components/schemas/ScenarioProgramOperations"
 					}
 				},
 				"required": [
@@ -2473,7 +2481,8 @@
 			"IScenario": {
 				"properties": {
 					"active": {
-						"type": "boolean"
+						"type": "boolean",
+						"description": "Активность сущности"
 					},
 					"action": {
 						"anyOf": [
@@ -2492,7 +2501,8 @@
 							{
 								"$ref": "#/components/schemas/ScenarioProgrammActionTypes"
 							}
-						]
+						],
+						"description": "Тип сценария"
 					},
 					"value": {
 						"anyOf": [
@@ -2535,7 +2545,8 @@
 								],
 								"nullable": true
 							}
-						]
+						],
+						"description": "Значение"
 					},
 					"extra": {
 						"properties": {},
@@ -2543,7 +2554,8 @@
 							"additionalProperties": true
 						},
 						"type": "object",
-						"nullable": true
+						"nullable": true,
+						"description": "Экстра свойства"
 					}
 				},
 				"required": [
@@ -2889,39 +2901,48 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"IOrderTypeResources": {
+				"properties": {
+					"main": {
+						"type": "string",
+						"description": "Основное изображение"
+					},
+					"icon": {
+						"type": "string",
+						"description": "Иконка"
+					}
+				},
+				"required": [
+					"main",
+					"icon"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"IOrderTypeContentsItem": {
 				"properties": {
 					"name": {
-						"type": "string"
+						"type": "string",
+						"description": "Имя"
 					},
 					"description": {
-						"type": "string"
+						"type": "string",
+						"description": "Описание"
 					},
 					"color": {
-						"type": "string"
+						"type": "string",
+						"description": "Цвет"
 					},
 					"resources": {
-						"properties": {
-							"icon": {
-								"type": "string",
-								"nullable": true
-							},
-							"main": {
-								"type": "string",
-								"nullable": true
-							}
-						},
-						"required": [
-							"icon",
-							"main"
-						],
-						"type": "object"
+						"$ref": "#/components/schemas/IOrderTypeResources",
+						"description": "Изображения"
 					},
 					"assets": {
 						"items": {
 							"type": "string"
 						},
-						"type": "array"
+						"type": "array",
+						"description": "Список ассетов"
 					},
 					"extra": {
 						"properties": {},
@@ -2929,12 +2950,16 @@
 							"additionalProperties": true
 						},
 						"type": "object",
-						"nullable": true
+						"nullable": true,
+						"description": "Галерея изображений"
 					}
 				},
 				"required": [
 					"name",
-					"resources"
+					"description",
+					"color",
+					"resources",
+					"assets"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -2943,14 +2968,7 @@
 				"properties": {},
 				"type": "object",
 				"additionalProperties": {
-					"anyOf": [
-						{
-							"$ref": "#/components/schemas/IOrderTypeContentsItem"
-						},
-						{
-							"additionalProperties": true
-						}
-					]
+					"$ref": "#/components/schemas/IOrderTypeContentsItem"
 				}
 			},
 			"IOrderTypeItem": {
@@ -3364,45 +3382,55 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"IProductResources": {
+				"properties": {
+					"main": {
+						"type": "string",
+						"description": "Основное изображение"
+					},
+					"icon": {
+						"type": "string",
+						"description": "Иконка"
+					}
+				},
+				"required": [
+					"main",
+					"icon"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"IProductContentsItem": {
 				"properties": {
 					"name": {
-						"type": "string"
+						"type": "string",
+						"description": "Имя"
 					},
 					"description": {
-						"type": "string"
+						"type": "string",
+						"description": "Описание"
 					},
 					"color": {
-						"type": "string"
+						"type": "string",
+						"description": "Цвет"
 					},
 					"resources": {
-						"properties": {
-							"icon": {
-								"type": "string",
-								"nullable": true
-							},
-							"main": {
-								"type": "string",
-								"nullable": true
-							}
-						},
-						"required": [
-							"icon",
-							"main"
-						],
-						"type": "object"
+						"$ref": "#/components/schemas/IProductResources",
+						"description": "Изображения"
 					},
 					"assets": {
 						"items": {
 							"type": "string"
 						},
-						"type": "array"
+						"type": "array",
+						"description": "Список ассетов"
 					},
 					"gallery": {
 						"items": {
 							"type": "string"
 						},
-						"type": "array"
+						"type": "array",
+						"description": "Галерея изображений"
 					},
 					"extra": {
 						"properties": {},
@@ -3410,12 +3438,17 @@
 							"additionalProperties": true
 						},
 						"type": "object",
-						"nullable": true
+						"nullable": true,
+						"description": "Экстра свойства"
 					}
 				},
 				"required": [
 					"name",
-					"resources"
+					"description",
+					"color",
+					"resources",
+					"assets",
+					"gallery"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -3424,37 +3457,24 @@
 				"properties": {},
 				"type": "object",
 				"additionalProperties": {
-					"anyOf": [
-						{
-							"$ref": "#/components/schemas/IProductContentsItem"
-						},
-						{
-							"additionalProperties": true
-						}
-					]
+					"$ref": "#/components/schemas/IProductContentsItem"
 				}
 			},
 			"IPrice": {
 				"properties": {
+					"currency": {
+						"type": "string",
+						"description": "Идентификатор валюты"
+					},
 					"value": {
 						"type": "number",
-						"format": "double"
-					},
-					"currency": {
-						"type": "string"
-					},
-					"extra": {
-						"properties": {},
-						"additionalProperties": {
-							"additionalProperties": true
-						},
-						"type": "object",
-						"nullable": true
+						"format": "double",
+						"description": "Значение цены.\r\nФормат: значение * 100"
 					}
 				},
 				"required": [
-					"value",
-					"currency"
+					"currency",
+					"value"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -4002,39 +4022,48 @@
 				],
 				"type": "string"
 			},
+			"ISelectorResources": {
+				"properties": {
+					"main": {
+						"type": "string",
+						"description": "Основное изображение"
+					},
+					"icon": {
+						"type": "string",
+						"description": "Иконка"
+					}
+				},
+				"required": [
+					"main",
+					"icon"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"ISelectorContentsItem": {
 				"properties": {
 					"name": {
-						"type": "string"
+						"type": "string",
+						"description": "Имя"
 					},
 					"description": {
-						"type": "string"
+						"type": "string",
+						"description": "Описание"
 					},
 					"color": {
-						"type": "string"
+						"type": "string",
+						"description": "Цвет"
 					},
 					"resources": {
-						"properties": {
-							"icon": {
-								"type": "string",
-								"nullable": true
-							},
-							"main": {
-								"type": "string",
-								"nullable": true
-							}
-						},
-						"required": [
-							"icon",
-							"main"
-						],
-						"type": "object"
+						"$ref": "#/components/schemas/ISelectorResources",
+						"description": "Изображения"
 					},
 					"assets": {
 						"items": {
 							"type": "string"
 						},
-						"type": "array"
+						"type": "array",
+						"description": "Список ассетов"
 					},
 					"extra": {
 						"properties": {},
@@ -4042,12 +4071,16 @@
 							"additionalProperties": true
 						},
 						"type": "object",
-						"nullable": true
+						"nullable": true,
+						"description": "Галерея изображений"
 					}
 				},
 				"required": [
 					"name",
-					"resources"
+					"description",
+					"color",
+					"resources",
+					"assets"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -4056,14 +4089,7 @@
 				"properties": {},
 				"type": "object",
 				"additionalProperties": {
-					"anyOf": [
-						{
-							"$ref": "#/components/schemas/ISelectorContentsItem"
-						},
-						{
-							"additionalProperties": true
-						}
-					]
+					"$ref": "#/components/schemas/ISelectorContentsItem"
 				}
 			},
 			"ISelectorItem": {
@@ -4516,6 +4542,10 @@
 			},
 			"IStoreItem": {
 				"properties": {
+					"id": {
+						"type": "string",
+						"description": "Идентификатор сущности"
+					},
 					"active": {
 						"type": "boolean"
 					},
@@ -4545,9 +4575,6 @@
 						},
 						"type": "object",
 						"nullable": true
-					},
-					"id": {
-						"type": "string"
 					}
 				},
 				"required": [
@@ -4720,39 +4747,48 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"ITagResources": {
+				"properties": {
+					"main": {
+						"type": "string",
+						"description": "Основное изображение"
+					},
+					"icon": {
+						"type": "string",
+						"description": "Иконка"
+					}
+				},
+				"required": [
+					"main",
+					"icon"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"ITagContentsItem": {
 				"properties": {
 					"name": {
-						"type": "string"
+						"type": "string",
+						"description": "Имя"
 					},
 					"description": {
-						"type": "string"
+						"type": "string",
+						"description": "Описание"
 					},
 					"color": {
-						"type": "string"
+						"type": "string",
+						"description": "Цвет"
 					},
 					"resources": {
-						"properties": {
-							"icon": {
-								"type": "string",
-								"nullable": true
-							},
-							"main": {
-								"type": "string",
-								"nullable": true
-							}
-						},
-						"required": [
-							"icon",
-							"main"
-						],
-						"type": "object"
+						"$ref": "#/components/schemas/ITagResources",
+						"description": "Изображения"
 					},
 					"assets": {
 						"items": {
 							"type": "string"
 						},
-						"type": "array"
+						"type": "array",
+						"description": "Список ассетов"
 					},
 					"extra": {
 						"properties": {},
@@ -4760,12 +4796,16 @@
 							"additionalProperties": true
 						},
 						"type": "object",
-						"nullable": true
+						"nullable": true,
+						"description": "Галерея изображений"
 					}
 				},
 				"required": [
 					"name",
-					"resources"
+					"description",
+					"color",
+					"resources",
+					"assets"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -4774,14 +4814,7 @@
 				"properties": {},
 				"type": "object",
 				"additionalProperties": {
-					"anyOf": [
-						{
-							"$ref": "#/components/schemas/ITagContentsItem"
-						},
-						{
-							"additionalProperties": true
-						}
-					]
+					"$ref": "#/components/schemas/ITagContentsItem"
 				}
 			},
 			"ITagItem": {
@@ -5216,6 +5249,10 @@
 			},
 			"ITerminalItem": {
 				"properties": {
+					"id": {
+						"type": "string",
+						"description": "Идентификатор сущности"
+					},
 					"status": {
 						"$ref": "#/components/schemas/TerminalStatusTypes"
 					},
@@ -5239,9 +5276,6 @@
 						},
 						"type": "object",
 						"nullable": true
-					},
-					"id": {
-						"type": "string"
 					}
 				},
 				"required": [
@@ -5484,7 +5518,28 @@
 				"additionalProperties": false
 			},
 			"ITranslate": {
-				"additionalProperties": true
+				"properties": {
+					"key": {
+						"type": "string"
+					},
+					"value": {
+						"type": "string"
+					},
+					"extra": {
+						"properties": {},
+						"additionalProperties": {
+							"additionalProperties": true
+						},
+						"type": "object",
+						"nullable": true
+					}
+				},
+				"required": [
+					"key",
+					"value"
+				],
+				"type": "object",
+				"additionalProperties": false
 			},
 			"TranslationUpdateRequest": {
 				"properties": {
@@ -5552,32 +5607,32 @@
 												{
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.036Z"
+													"lastUpdate": "2020-11-22T15:11:02.683Z"
 												},
 												{
 													"name": "products",
 													"version": 3,
-													"lastUpdate": "2020-11-22T13:56:14.038Z"
+													"lastUpdate": "2020-11-22T15:11:02.683Z"
 												},
 												{
 													"name": "selectors",
 													"version": 4,
-													"lastUpdate": "2020-11-22T13:56:14.039Z"
+													"lastUpdate": "2020-11-22T15:11:02.683Z"
 												},
 												{
 													"name": "tags",
 													"version": 5,
-													"lastUpdate": "2020-11-22T13:56:14.040Z"
+													"lastUpdate": "2020-11-22T15:11:02.683Z"
 												},
 												{
 													"name": "business-periods",
 													"version": 3,
-													"lastUpdate": "2020-11-22T13:56:14.040Z"
+													"lastUpdate": "2020-11-22T15:11:02.683Z"
 												},
 												{
 													"name": "ads",
 													"version": 3,
-													"lastUpdate": "2020-11-22T13:56:14.040Z"
+													"lastUpdate": "2020-11-22T15:11:02.684Z"
 												}
 											]
 										}
@@ -5618,7 +5673,7 @@
 											"data": {
 												"name": "products",
 												"version": 1,
-												"lastUpdate": "2020-11-22T13:56:14.048Z"
+												"lastUpdate": "2020-11-22T15:11:02.689Z"
 											}
 										}
 									}
@@ -5668,14 +5723,14 @@
 												"ref": {
 													"name": "assets",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.074Z"
+													"lastUpdate": "2020-11-22T15:11:02.701Z"
 												}
 											},
 											"data": [
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2020-11-22T13:56:14.075Z",
+													"lastUpdate": "2020-11-22T15:11:02.701Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"path": "assets/some_3d_model.fbx",
@@ -5724,7 +5779,7 @@
 												"ref": {
 													"name": "ads",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.100Z"
+													"lastUpdate": "2020-11-22T15:11:02.726Z"
 												}
 											},
 											"data": [
@@ -5798,7 +5853,7 @@
 												"ref": {
 													"name": "ads",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.110Z"
+													"lastUpdate": "2020-11-22T15:11:02.733Z"
 												}
 											},
 											"data": {
@@ -5868,7 +5923,7 @@
 												"ref": {
 													"name": "ads",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.121Z"
+													"lastUpdate": "2020-11-22T15:11:02.740Z"
 												}
 											},
 											"data": {
@@ -5945,7 +6000,7 @@
 												"ref": {
 													"name": "ads",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.131Z"
+													"lastUpdate": "2020-11-22T15:11:02.745Z"
 												}
 											}
 										}
@@ -5993,7 +6048,7 @@
 												"ref": {
 													"name": "ads",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.113Z"
+													"lastUpdate": "2020-11-22T15:11:02.735Z"
 												}
 											},
 											"data": {
@@ -6064,14 +6119,14 @@
 													"ref": {
 														"name": "ads",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.141Z"
+														"lastUpdate": "2020-11-22T15:11:02.753Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.141Z"
+														"lastUpdate": "2020-11-22T15:11:02.753Z"
 													}
 												}
 											},
@@ -6080,7 +6135,7 @@
 													{
 														"id": "107c7f79bcf86cd7994f6c0e",
 														"active": true,
-														"lastUpdate": "2020-11-22T13:56:14.141Z",
+														"lastUpdate": "2020-11-22T15:11:02.754Z",
 														"name": "some_3d_model",
 														"ext": ".fbx",
 														"mipmap": {
@@ -6140,14 +6195,14 @@
 													"ref": {
 														"name": "ads",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.153Z"
+														"lastUpdate": "2020-11-22T15:11:02.757Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.153Z"
+														"lastUpdate": "2020-11-22T15:11:02.757Z"
 													}
 												}
 											},
@@ -6155,7 +6210,7 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2020-11-22T13:56:14.153Z",
+													"lastUpdate": "2020-11-22T15:11:02.757Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -6222,14 +6277,14 @@
 													"ref": {
 														"name": "ads",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.166Z"
+														"lastUpdate": "2020-11-22T15:11:02.763Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.166Z"
+														"lastUpdate": "2020-11-22T15:11:02.763Z"
 													}
 												}
 											},
@@ -6237,7 +6292,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2020-11-22T13:56:14.166Z",
+													"lastUpdate": "2020-11-22T15:11:02.763Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -6309,14 +6364,14 @@
 													"ref": {
 														"name": "ads",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.169Z"
+														"lastUpdate": "2020-11-22T15:11:02.765Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.169Z"
+														"lastUpdate": "2020-11-22T15:11:02.765Z"
 													}
 												}
 											},
@@ -6324,7 +6379,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2020-11-22T13:56:14.169Z",
+													"lastUpdate": "2020-11-22T15:11:02.765Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -6404,14 +6459,14 @@
 													"ref": {
 														"name": "ads",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.178Z"
+														"lastUpdate": "2020-11-22T15:11:02.772Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.178Z"
+														"lastUpdate": "2020-11-22T15:11:02.772Z"
 													}
 												}
 											}
@@ -6717,7 +6772,7 @@
 												"ref": {
 													"name": "business-periods",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.242Z"
+													"lastUpdate": "2020-11-22T15:11:02.810Z"
 												}
 											},
 											"data": [
@@ -6785,7 +6840,7 @@
 												"ref": {
 													"name": "business-periods",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.248Z"
+													"lastUpdate": "2020-11-22T15:11:02.814Z"
 												}
 											},
 											"data": {
@@ -6858,7 +6913,7 @@
 												"ref": {
 													"name": "business-periods",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.256Z"
+													"lastUpdate": "2020-11-22T15:11:02.821Z"
 												}
 											},
 											"data": {
@@ -6938,7 +6993,7 @@
 												"ref": {
 													"name": "business-periods",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.259Z"
+													"lastUpdate": "2020-11-22T15:11:02.823Z"
 												}
 											}
 										}
@@ -6986,7 +7041,7 @@
 												"ref": {
 													"name": "business-periods",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.249Z"
+													"lastUpdate": "2020-11-22T15:11:02.816Z"
 												}
 											},
 											"data": {
@@ -7059,7 +7114,7 @@
 												"ref": {
 													"name": "currencies",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.276Z"
+													"lastUpdate": "2020-11-22T15:11:02.830Z"
 												}
 											},
 											"data": [
@@ -7114,7 +7169,7 @@
 												"ref": {
 													"name": "currencies",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.282Z"
+													"lastUpdate": "2020-11-22T15:11:02.835Z"
 												}
 											},
 											"data": {
@@ -7174,7 +7229,7 @@
 												"ref": {
 													"name": "currencies",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.287Z"
+													"lastUpdate": "2020-11-22T15:11:02.839Z"
 												}
 											},
 											"data": {
@@ -7241,7 +7296,7 @@
 												"ref": {
 													"name": "currencies",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.292Z"
+													"lastUpdate": "2020-11-22T15:11:02.842Z"
 												}
 											}
 										}
@@ -7289,7 +7344,7 @@
 												"ref": {
 													"name": "currencies",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.284Z"
+													"lastUpdate": "2020-11-22T15:11:02.836Z"
 												}
 											},
 											"data": {
@@ -7349,7 +7404,7 @@
 												"ref": {
 													"name": "languages",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.306Z"
+													"lastUpdate": "2020-11-22T15:11:02.851Z"
 												}
 											},
 											"data": [
@@ -7409,7 +7464,7 @@
 												"ref": {
 													"name": "languages",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.315Z"
+													"lastUpdate": "2020-11-22T15:11:02.856Z"
 												}
 											},
 											"data": {
@@ -7474,7 +7529,7 @@
 												"ref": {
 													"name": "languages",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.326Z"
+													"lastUpdate": "2020-11-22T15:11:02.861Z"
 												}
 											},
 											"data": {
@@ -7546,7 +7601,7 @@
 												"ref": {
 													"name": "languages",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.330Z"
+													"lastUpdate": "2020-11-22T15:11:02.866Z"
 												}
 											}
 										}
@@ -7594,7 +7649,7 @@
 												"ref": {
 													"name": "languages",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.318Z"
+													"lastUpdate": "2020-11-22T15:11:02.857Z"
 												}
 											},
 											"data": {
@@ -7660,14 +7715,14 @@
 													"ref": {
 														"name": "languages",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.341Z"
+														"lastUpdate": "2020-11-22T15:11:02.873Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.342Z"
+														"lastUpdate": "2020-11-22T15:11:02.873Z"
 													}
 												}
 											},
@@ -7675,7 +7730,7 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2020-11-22T13:56:14.342Z",
+													"lastUpdate": "2020-11-22T15:11:02.873Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -7734,14 +7789,14 @@
 													"ref": {
 														"name": "languages",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.355Z"
+														"lastUpdate": "2020-11-22T15:11:02.879Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.355Z"
+														"lastUpdate": "2020-11-22T15:11:02.879Z"
 													}
 												}
 											},
@@ -7749,7 +7804,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2020-11-22T13:56:14.355Z",
+													"lastUpdate": "2020-11-22T15:11:02.879Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -7805,14 +7860,14 @@
 													"ref": {
 														"name": "languages",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.358Z"
+														"lastUpdate": "2020-11-22T15:11:02.880Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.358Z"
+														"lastUpdate": "2020-11-22T15:11:02.880Z"
 													}
 												}
 											},
@@ -7820,7 +7875,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2020-11-22T13:56:14.358Z",
+													"lastUpdate": "2020-11-22T15:11:02.880Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -7884,14 +7939,14 @@
 													"ref": {
 														"name": "languages",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.362Z"
+														"lastUpdate": "2020-11-22T15:11:02.883Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.363Z"
+														"lastUpdate": "2020-11-22T15:11:02.883Z"
 													}
 												}
 											},
@@ -7899,7 +7954,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2020-11-22T13:56:14.363Z",
+													"lastUpdate": "2020-11-22T15:11:02.883Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -7971,14 +8026,14 @@
 													"ref": {
 														"name": "languages",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.386Z"
+														"lastUpdate": "2020-11-22T15:11:02.890Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.386Z"
+														"lastUpdate": "2020-11-22T15:11:02.890Z"
 													}
 												}
 											}
@@ -8035,7 +8090,7 @@
 												"ref": {
 													"name": "license-types",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.467Z"
+													"lastUpdate": "2020-11-22T15:11:02.927Z"
 												}
 											},
 											"data": [
@@ -8046,7 +8101,7 @@
 													"price": 180000,
 													"payNotice": "Оплата через терминал Эвотор",
 													"integrationId": "507c7f79bcf86cd7994f6c0e",
-													"lastUpdate": "2020-11-22T13:56:14.467Z",
+													"lastUpdate": "2020-11-22T15:11:02.927Z",
 													"extra": {
 														"key": "value"
 													}
@@ -8088,19 +8143,19 @@
 												"ref": {
 													"name": "licenses",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.425Z"
+													"lastUpdate": "2020-11-22T15:11:02.905Z"
 												}
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"userId": "507c7f79bcf86cd7994f6c0e",
-												"dateStart": "2020-11-22T13:56:14.425Z",
-												"dateEnd": "2020-11-22T13:56:14.425Z",
+												"dateStart": "2020-11-22T15:11:02.905Z",
+												"dateEnd": "2020-11-22T15:11:02.905Z",
 												"state": 0,
 												"status": "NEW",
 												"key": "0000-1111-2222-3333",
 												"licTypeId": "507c7f79bcf86cd7994f6c0e",
-												"lastUpdate": "2020-11-22T13:56:14.426Z",
+												"lastUpdate": "2020-11-22T15:11:02.905Z",
 												"extra": {
 													"key": "value"
 												}
@@ -8139,19 +8194,19 @@
 												"ref": {
 													"name": "licenses",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.427Z"
+													"lastUpdate": "2020-11-22T15:11:02.906Z"
 												}
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"userId": "507c7f79bcf86cd7994f6c0e",
-												"dateStart": "2020-11-22T13:56:14.427Z",
-												"dateEnd": "2020-11-22T13:56:14.427Z",
+												"dateStart": "2020-11-22T15:11:02.906Z",
+												"dateEnd": "2020-11-22T15:11:02.906Z",
 												"state": 0,
 												"status": "NEW",
 												"key": "0000-1111-2222-3333",
 												"licTypeId": "507c7f79bcf86cd7994f6c0e",
-												"lastUpdate": "2020-11-22T13:56:14.427Z",
+												"lastUpdate": "2020-11-22T15:11:02.906Z",
 												"extra": {
 													"key": "value"
 												}
@@ -8200,19 +8255,19 @@
 												"ref": {
 													"name": "licenses",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.439Z"
+													"lastUpdate": "2020-11-22T15:11:02.911Z"
 												}
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"userId": "507c7f79bcf86cd7994f6c0e",
-												"dateStart": "2020-11-22T13:56:14.439Z",
-												"dateEnd": "2020-11-22T13:56:14.439Z",
+												"dateStart": "2020-11-22T15:11:02.911Z",
+												"dateEnd": "2020-11-22T15:11:02.911Z",
 												"state": 0,
 												"status": "NEW",
 												"key": "0000-1111-2222-3333",
 												"licTypeId": "507c7f79bcf86cd7994f6c0e",
-												"lastUpdate": "2020-11-22T13:56:14.439Z",
+												"lastUpdate": "2020-11-22T15:11:02.911Z",
 												"extra": {
 													"key": "value"
 												}
@@ -8261,7 +8316,7 @@
 												"ref": {
 													"name": "licenses",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.452Z"
+													"lastUpdate": "2020-11-22T15:11:02.918Z"
 												}
 											}
 										}
@@ -8300,7 +8355,7 @@
 												"ref": {
 													"name": "license-types",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.475Z"
+													"lastUpdate": "2020-11-22T15:11:02.931Z"
 												}
 											},
 											"data": {
@@ -8310,7 +8365,7 @@
 												"price": 180000,
 												"payNotice": "Оплата через терминал Эвотор",
 												"integrationId": "507c7f79bcf86cd7994f6c0e",
-												"lastUpdate": "2020-11-22T13:56:14.475Z",
+												"lastUpdate": "2020-11-22T15:11:02.931Z",
 												"extra": {
 													"key": "value"
 												}
@@ -8358,7 +8413,7 @@
 												"ref": {
 													"name": "license-types",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.478Z"
+													"lastUpdate": "2020-11-22T15:11:02.932Z"
 												}
 											},
 											"data": {
@@ -8368,7 +8423,7 @@
 												"price": 180000,
 												"payNotice": "Оплата через терминал Эвотор",
 												"integrationId": "507c7f79bcf86cd7994f6c0e",
-												"lastUpdate": "2020-11-22T13:56:14.478Z",
+												"lastUpdate": "2020-11-22T15:11:02.932Z",
 												"extra": {
 													"key": "value"
 												}
@@ -8426,7 +8481,7 @@
 												"ref": {
 													"name": "license-types",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.488Z"
+													"lastUpdate": "2020-11-22T15:11:02.935Z"
 												}
 											},
 											"data": {
@@ -8436,7 +8491,7 @@
 												"price": 180000,
 												"payNotice": "Оплата через терминал Эвотор",
 												"integrationId": "507c7f79bcf86cd7994f6c0e",
-												"lastUpdate": "2020-11-22T13:56:14.489Z",
+												"lastUpdate": "2020-11-22T15:11:02.935Z",
 												"extra": {
 													"key": "value"
 												}
@@ -8494,7 +8549,7 @@
 												"ref": {
 													"name": "license-types",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.494Z"
+													"lastUpdate": "2020-11-22T15:11:02.939Z"
 												}
 											}
 										}
@@ -8542,7 +8597,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.551Z"
+													"lastUpdate": "2020-11-22T15:11:02.967Z"
 												}
 											},
 											"data": [
@@ -8602,7 +8657,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.554Z"
+													"lastUpdate": "2020-11-22T15:11:02.969Z"
 												}
 											},
 											"data": [
@@ -8662,7 +8717,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.556Z"
+													"lastUpdate": "2020-11-22T15:11:02.970Z"
 												}
 											},
 											"data": [
@@ -8731,7 +8786,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.567Z"
+													"lastUpdate": "2020-11-22T15:11:02.974Z"
 												}
 											},
 											"data": {
@@ -8796,7 +8851,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.581Z"
+													"lastUpdate": "2020-11-22T15:11:02.984Z"
 												}
 											},
 											"data": {
@@ -8868,7 +8923,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.591Z"
+													"lastUpdate": "2020-11-22T15:11:02.992Z"
 												}
 											}
 										}
@@ -8916,7 +8971,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.576Z"
+													"lastUpdate": "2020-11-22T15:11:02.979Z"
 												}
 											},
 											"data": {
@@ -8981,7 +9036,7 @@
 												"ref": {
 													"name": "order-types",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.602Z"
+													"lastUpdate": "2020-11-22T15:11:03.005Z"
 												}
 											},
 											"data": [
@@ -9047,7 +9102,7 @@
 												"ref": {
 													"name": "order-types",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.606Z"
+													"lastUpdate": "2020-11-22T15:11:03.012Z"
 												}
 											},
 											"data": {
@@ -9118,7 +9173,7 @@
 												"ref": {
 													"name": "order-types",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.610Z"
+													"lastUpdate": "2020-11-22T15:11:03.018Z"
 												}
 											},
 											"data": {
@@ -9196,7 +9251,7 @@
 												"ref": {
 													"name": "order-types",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.612Z"
+													"lastUpdate": "2020-11-22T15:11:03.020Z"
 												}
 											}
 										}
@@ -9244,7 +9299,7 @@
 												"ref": {
 													"name": "order-types",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.607Z"
+													"lastUpdate": "2020-11-22T15:11:03.013Z"
 												}
 											},
 											"data": {
@@ -9316,14 +9371,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.616Z"
+														"lastUpdate": "2020-11-22T15:11:03.027Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.616Z"
+														"lastUpdate": "2020-11-22T15:11:03.027Z"
 													}
 												}
 											},
@@ -9332,7 +9387,7 @@
 													{
 														"id": "107c7f79bcf86cd7994f6c0e",
 														"active": true,
-														"lastUpdate": "2020-11-22T13:56:14.617Z",
+														"lastUpdate": "2020-11-22T15:11:03.027Z",
 														"name": "some_3d_model",
 														"ext": ".fbx",
 														"mipmap": {
@@ -9392,14 +9447,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.620Z"
+														"lastUpdate": "2020-11-22T15:11:03.031Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.620Z"
+														"lastUpdate": "2020-11-22T15:11:03.031Z"
 													}
 												}
 											},
@@ -9407,7 +9462,7 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2020-11-22T13:56:14.620Z",
+													"lastUpdate": "2020-11-22T15:11:03.031Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -9474,14 +9529,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.624Z"
+														"lastUpdate": "2020-11-22T15:11:03.038Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.625Z"
+														"lastUpdate": "2020-11-22T15:11:03.038Z"
 													}
 												}
 											},
@@ -9489,7 +9544,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2020-11-22T13:56:14.625Z",
+													"lastUpdate": "2020-11-22T15:11:03.038Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -9561,14 +9616,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.627Z"
+														"lastUpdate": "2020-11-22T15:11:03.042Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.627Z"
+														"lastUpdate": "2020-11-22T15:11:03.042Z"
 													}
 												}
 											},
@@ -9576,7 +9631,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2020-11-22T13:56:14.627Z",
+													"lastUpdate": "2020-11-22T15:11:03.042Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -9656,14 +9711,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.631Z"
+														"lastUpdate": "2020-11-22T15:11:03.049Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.631Z"
+														"lastUpdate": "2020-11-22T15:11:03.049Z"
 													}
 												}
 											}
@@ -9728,7 +9783,7 @@
 												"ref": {
 													"name": "products",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.644Z"
+													"lastUpdate": "2020-11-22T15:11:03.066Z"
 												}
 											},
 											"data": [
@@ -9744,6 +9799,10 @@
 																"main": "g8h07f79bcf86cd7994f9d7k",
 																"icon": "gt7h7f79bcf86cd7994f9d6u"
 															},
+															"gallery": [
+																"gt7h7f79bcf86cd7994f9d6u",
+																"g8h07f79bcf86cd7994f9d7k"
+															],
 															"assets": [
 																"g8h07f79bcf86cd7994f9d7k"
 															]
@@ -9817,7 +9876,7 @@
 												"ref": {
 													"name": "products",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.647Z"
+													"lastUpdate": "2020-11-22T15:11:03.071Z"
 												}
 											},
 											"data": {
@@ -9832,6 +9891,10 @@
 															"main": "g8h07f79bcf86cd7994f9d7k",
 															"icon": "gt7h7f79bcf86cd7994f9d6u"
 														},
+														"gallery": [
+															"gt7h7f79bcf86cd7994f9d6u",
+															"g8h07f79bcf86cd7994f9d7k"
+														],
 														"assets": [
 															"g8h07f79bcf86cd7994f9d7k"
 														]
@@ -9911,7 +9974,7 @@
 												"ref": {
 													"name": "products",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.653Z"
+													"lastUpdate": "2020-11-22T15:11:03.078Z"
 												}
 											},
 											"data": {
@@ -9926,6 +9989,10 @@
 															"main": "g8h07f79bcf86cd7994f9d7k",
 															"icon": "gt7h7f79bcf86cd7994f9d6u"
 														},
+														"gallery": [
+															"gt7h7f79bcf86cd7994f9d6u",
+															"g8h07f79bcf86cd7994f9d7k"
+														],
 														"assets": [
 															"g8h07f79bcf86cd7994f9d7k"
 														]
@@ -10012,7 +10079,7 @@
 												"ref": {
 													"name": "products",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.657Z"
+													"lastUpdate": "2020-11-22T15:11:03.084Z"
 												}
 											}
 										}
@@ -10060,7 +10127,7 @@
 												"ref": {
 													"name": "products",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.648Z"
+													"lastUpdate": "2020-11-22T15:11:03.073Z"
 												}
 											},
 											"data": {
@@ -10075,6 +10142,10 @@
 															"main": "g8h07f79bcf86cd7994f9d7k",
 															"icon": "gt7h7f79bcf86cd7994f9d6u"
 														},
+														"gallery": [
+															"gt7h7f79bcf86cd7994f9d6u",
+															"g8h07f79bcf86cd7994f9d7k"
+														],
 														"assets": [
 															"g8h07f79bcf86cd7994f9d7k"
 														]
@@ -10155,14 +10226,14 @@
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.661Z"
+														"lastUpdate": "2020-11-22T15:11:03.090Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.662Z"
+														"lastUpdate": "2020-11-22T15:11:03.090Z"
 													}
 												}
 											},
@@ -10171,7 +10242,7 @@
 													{
 														"id": "107c7f79bcf86cd7994f6c0e",
 														"active": true,
-														"lastUpdate": "2020-11-22T13:56:14.662Z",
+														"lastUpdate": "2020-11-22T15:11:03.090Z",
 														"name": "some_3d_model",
 														"ext": ".fbx",
 														"mipmap": {
@@ -10231,14 +10302,14 @@
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.664Z"
+														"lastUpdate": "2020-11-22T15:11:03.093Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.664Z"
+														"lastUpdate": "2020-11-22T15:11:03.093Z"
 													}
 												}
 											},
@@ -10246,7 +10317,7 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2020-11-22T13:56:14.664Z",
+													"lastUpdate": "2020-11-22T15:11:03.093Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -10313,14 +10384,14 @@
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.669Z"
+														"lastUpdate": "2020-11-22T15:11:03.098Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.669Z"
+														"lastUpdate": "2020-11-22T15:11:03.098Z"
 													}
 												}
 											},
@@ -10328,7 +10399,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2020-11-22T13:56:14.669Z",
+													"lastUpdate": "2020-11-22T15:11:03.098Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -10392,14 +10463,14 @@
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.670Z"
+														"lastUpdate": "2020-11-22T15:11:03.100Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.670Z"
+														"lastUpdate": "2020-11-22T15:11:03.100Z"
 													}
 												}
 											},
@@ -10407,7 +10478,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2020-11-22T13:56:14.670Z",
+													"lastUpdate": "2020-11-22T15:11:03.100Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -10479,14 +10550,14 @@
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.672Z"
+														"lastUpdate": "2020-11-22T15:11:03.102Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.672Z"
+														"lastUpdate": "2020-11-22T15:11:03.102Z"
 													}
 												}
 											},
@@ -10494,7 +10565,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2020-11-22T13:56:14.672Z",
+													"lastUpdate": "2020-11-22T15:11:03.102Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -10574,14 +10645,14 @@
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.677Z"
+														"lastUpdate": "2020-11-22T15:11:03.108Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.677Z"
+														"lastUpdate": "2020-11-22T15:11:03.108Z"
 													}
 												}
 											}
@@ -10646,7 +10717,7 @@
 												"ref": {
 													"name": "selectors",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.686Z"
+													"lastUpdate": "2020-11-22T15:11:03.123Z"
 												}
 											},
 											"data": [
@@ -10722,7 +10793,7 @@
 												"ref": {
 													"name": "selectors",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.691Z"
+													"lastUpdate": "2020-11-22T15:11:03.128Z"
 												}
 											},
 											"data": {
@@ -10794,7 +10865,7 @@
 												"ref": {
 													"name": "selectors",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.695Z"
+													"lastUpdate": "2020-11-22T15:11:03.134Z"
 												}
 											},
 											"data": {
@@ -10873,7 +10944,7 @@
 												"ref": {
 													"name": "selectors",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.700Z"
+													"lastUpdate": "2020-11-22T15:11:03.139Z"
 												}
 											}
 										}
@@ -10921,7 +10992,7 @@
 												"ref": {
 													"name": "selectors",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.691Z"
+													"lastUpdate": "2020-11-22T15:11:03.129Z"
 												}
 											},
 											"data": {
@@ -10994,14 +11065,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.707Z"
+														"lastUpdate": "2020-11-22T15:11:03.144Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.708Z"
+														"lastUpdate": "2020-11-22T15:11:03.144Z"
 													}
 												}
 											},
@@ -11010,7 +11081,7 @@
 													{
 														"id": "107c7f79bcf86cd7994f6c0e",
 														"active": true,
-														"lastUpdate": "2020-11-22T13:56:14.708Z",
+														"lastUpdate": "2020-11-22T15:11:03.144Z",
 														"name": "some_3d_model",
 														"ext": ".fbx",
 														"mipmap": {
@@ -11070,14 +11141,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.711Z"
+														"lastUpdate": "2020-11-22T15:11:03.148Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.711Z"
+														"lastUpdate": "2020-11-22T15:11:03.148Z"
 													}
 												}
 											},
@@ -11085,7 +11156,7 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2020-11-22T13:56:14.711Z",
+													"lastUpdate": "2020-11-22T15:11:03.148Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -11152,14 +11223,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.717Z"
+														"lastUpdate": "2020-11-22T15:11:03.155Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.717Z"
+														"lastUpdate": "2020-11-22T15:11:03.155Z"
 													}
 												}
 											},
@@ -11167,7 +11238,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2020-11-22T13:56:14.717Z",
+													"lastUpdate": "2020-11-22T15:11:03.155Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -11239,14 +11310,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.719Z"
+														"lastUpdate": "2020-11-22T15:11:03.157Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.719Z"
+														"lastUpdate": "2020-11-22T15:11:03.157Z"
 													}
 												}
 											},
@@ -11254,7 +11325,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2020-11-22T13:56:14.719Z",
+													"lastUpdate": "2020-11-22T15:11:03.157Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -11334,14 +11405,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.725Z"
+														"lastUpdate": "2020-11-22T15:11:03.163Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.725Z"
+														"lastUpdate": "2020-11-22T15:11:03.163Z"
 													}
 												}
 											}
@@ -11406,7 +11477,7 @@
 												"ref": {
 													"name": "stores",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.735Z"
+													"lastUpdate": "2020-11-22T15:11:03.177Z"
 												}
 											},
 											"data": [
@@ -11466,7 +11537,7 @@
 												"ref": {
 													"name": "stores",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.739Z"
+													"lastUpdate": "2020-11-22T15:11:03.182Z"
 												}
 											},
 											"data": {
@@ -11531,7 +11602,7 @@
 												"ref": {
 													"name": "stores",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.743Z"
+													"lastUpdate": "2020-11-22T15:11:03.187Z"
 												}
 											},
 											"data": {
@@ -11603,7 +11674,7 @@
 												"ref": {
 													"name": "stores",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.745Z"
+													"lastUpdate": "2020-11-22T15:11:03.191Z"
 												}
 											}
 										}
@@ -11651,7 +11722,7 @@
 												"ref": {
 													"name": "stores",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.740Z"
+													"lastUpdate": "2020-11-22T15:11:03.183Z"
 												}
 											},
 											"data": {
@@ -11716,7 +11787,7 @@
 												"ref": {
 													"name": "tags",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.754Z"
+													"lastUpdate": "2020-11-22T15:11:03.205Z"
 												}
 											},
 											"data": [
@@ -11781,7 +11852,7 @@
 												"ref": {
 													"name": "tags",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.759Z"
+													"lastUpdate": "2020-11-22T15:11:03.209Z"
 												}
 											},
 											"data": {
@@ -11851,7 +11922,7 @@
 												"ref": {
 													"name": "tags",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.763Z"
+													"lastUpdate": "2020-11-22T15:11:03.213Z"
 												}
 											},
 											"data": {
@@ -11928,7 +11999,7 @@
 												"ref": {
 													"name": "tags",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.765Z"
+													"lastUpdate": "2020-11-22T15:11:03.215Z"
 												}
 											}
 										}
@@ -11976,7 +12047,7 @@
 												"ref": {
 													"name": "tags",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.760Z"
+													"lastUpdate": "2020-11-22T15:11:03.210Z"
 												}
 											},
 											"data": {
@@ -12047,14 +12118,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.770Z"
+														"lastUpdate": "2020-11-22T15:11:03.221Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.770Z"
+														"lastUpdate": "2020-11-22T15:11:03.221Z"
 													}
 												}
 											},
@@ -12063,7 +12134,7 @@
 													{
 														"id": "107c7f79bcf86cd7994f6c0e",
 														"active": true,
-														"lastUpdate": "2020-11-22T13:56:14.770Z",
+														"lastUpdate": "2020-11-22T15:11:03.221Z",
 														"name": "some_3d_model",
 														"ext": ".fbx",
 														"mipmap": {
@@ -12123,14 +12194,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.773Z"
+														"lastUpdate": "2020-11-22T15:11:03.224Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.773Z"
+														"lastUpdate": "2020-11-22T15:11:03.225Z"
 													}
 												}
 											},
@@ -12138,7 +12209,7 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2020-11-22T13:56:14.773Z",
+													"lastUpdate": "2020-11-22T15:11:03.225Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -12205,14 +12276,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.779Z"
+														"lastUpdate": "2020-11-22T15:11:03.233Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.779Z"
+														"lastUpdate": "2020-11-22T15:11:03.233Z"
 													}
 												}
 											},
@@ -12220,7 +12291,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2020-11-22T13:56:14.779Z",
+													"lastUpdate": "2020-11-22T15:11:03.233Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -12292,14 +12363,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.782Z"
+														"lastUpdate": "2020-11-22T15:11:03.236Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.782Z"
+														"lastUpdate": "2020-11-22T15:11:03.236Z"
 													}
 												}
 											},
@@ -12307,7 +12378,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2020-11-22T13:56:14.782Z",
+													"lastUpdate": "2020-11-22T15:11:03.236Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -12387,14 +12458,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.788Z"
+														"lastUpdate": "2020-11-22T15:11:03.242Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-22T13:56:14.788Z"
+														"lastUpdate": "2020-11-22T15:11:03.242Z"
 													}
 												}
 											}
@@ -12459,7 +12530,7 @@
 												"ref": {
 													"name": "terminals",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.801Z"
+													"lastUpdate": "2020-11-22T15:11:03.257Z"
 												}
 											},
 											"data": [
@@ -12468,7 +12539,7 @@
 													"type": "kiosk",
 													"name": "My terminal",
 													"store": "My store 1",
-													"lastwork": "2020-11-22T13:56:14.802Z",
+													"lastwork": "2020-11-22T15:11:03.258Z",
 													"extra": {
 														"key": "value"
 													}
@@ -12513,7 +12584,7 @@
 												"ref": {
 													"name": "terminals",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.808Z"
+													"lastUpdate": "2020-11-22T15:11:03.262Z"
 												}
 											},
 											"data": {
@@ -12521,7 +12592,7 @@
 												"type": "kiosk",
 												"name": "My terminal",
 												"store": "My store 1",
-												"lastwork": "2020-11-22T13:56:14.809Z",
+												"lastwork": "2020-11-22T15:11:03.262Z",
 												"extra": {
 													"key": "value"
 												}
@@ -12572,7 +12643,7 @@
 												"ref": {
 													"name": "terminals",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.810Z"
+													"lastUpdate": "2020-11-22T15:11:03.263Z"
 												}
 											},
 											"data": {
@@ -12580,7 +12651,7 @@
 												"type": "kiosk",
 												"name": "My terminal",
 												"store": "My store 1",
-												"lastwork": "2020-11-22T13:56:14.810Z",
+												"lastwork": "2020-11-22T15:11:03.264Z",
 												"extra": {
 													"key": "value"
 												}
@@ -12638,7 +12709,7 @@
 												"ref": {
 													"name": "terminals",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.816Z"
+													"lastUpdate": "2020-11-22T15:11:03.267Z"
 												}
 											}
 										}
@@ -12686,7 +12757,7 @@
 												"ref": {
 													"name": "translations",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.830Z"
+													"lastUpdate": "2020-11-22T15:11:03.276Z"
 												}
 											},
 											"data": [
@@ -12743,7 +12814,7 @@
 												"ref": {
 													"name": "translations",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.836Z"
+													"lastUpdate": "2020-11-22T15:11:03.279Z"
 												}
 											},
 											"data": {
@@ -12805,7 +12876,7 @@
 												"ref": {
 													"name": "translations",
 													"version": 1,
-													"lastUpdate": "2020-11-22T13:56:14.837Z"
+													"lastUpdate": "2020-11-22T15:11:03.280Z"
 												}
 											},
 											"data": {
