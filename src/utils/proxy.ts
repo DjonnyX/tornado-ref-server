@@ -10,18 +10,22 @@ export async function makeRequest<T = any>(request: got.GotPromise<any>): Promis
         r = await request;
     } catch (err) {
         let authServerResp: any;
-        if (err instanceof got.HTTPError && err.statusCode === 500) {
-            try {
-                authServerResp = JSON.parse(err.body as string);
-            } catch (err1) {
-                throw Error(`Proxy request to the auth server fail. Error: ${err1}`);
+        if (err instanceof got.HTTPError) {
+            if (err.statusCode === 500) {
+                try {
+                    authServerResp = JSON.parse(err.body as string);
+                } catch (err1) {
+                    throw Error(err1);
+                }
+            } else if (err.statusCode === 401) {
+                throw Error(err.message);
             }
         }
         throw Error(!!authServerResp && !!authServerResp.error && !!authServerResp.error.length
             ?
             authServerResp.error[0].message
             :
-            `Proxy request to the auth server fail. Error: ${err}`
+            err
         );
     }
 
