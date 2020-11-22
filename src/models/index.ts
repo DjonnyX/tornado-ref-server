@@ -1,7 +1,7 @@
 import { ProductModel, IProduct, IPrice, IReceiptItem } from "./Product";
 import { TagModel, ITag } from "./Tag";
 import { RefModel, IRef } from "./Ref";
-import { INode, NodeModel, IScenario } from "./Node";
+import { INode, NodeModel } from "./Node";
 import { ISelector, SelectorModel } from "./Selector";
 import { IBusinessPeriod, BusinessPeriodModel } from "./BusinessPeriod";
 import { RefTypes } from "./enums";
@@ -15,7 +15,6 @@ import { ITerminalDocument, ITerminal, TerminalModel } from "./Terminal";
 
 export {
     NodeModel, INode,
-    IScenario,
     SelectorModel, ISelector,
     IReceiptItem,
     ProductModel, IProduct, IPrice,

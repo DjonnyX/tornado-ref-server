@@ -1,7 +1,6 @@
 import { SelectorModel, ISelector, RefTypes, NodeModel, ILanguage, LanguageModel } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Query, Request } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
-import { NodeTypes } from "../models/enums";
 import { deleteNodesChain } from "../utils/node";
 import { SelectorTypes } from "../models/enums/SelectorTypes";
 import { formatSelectorModel } from "../utils/selector";
@@ -11,6 +10,7 @@ import { AssetModel } from "../models/Asset";
 import { deleteAsset } from "./AssetsController";
 import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "../interfaces";
+import { NodeTypes } from "@djonnyx/tornado-types";
 
 export interface ISelectorItem {
     id?: string;

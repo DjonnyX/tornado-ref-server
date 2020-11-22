@@ -1,7 +1,6 @@
 import { ProductModel, IProduct, IReceiptItem, RefTypes, NodeModel, IPrice, ILanguage, LanguageModel } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Request } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
-import { NodeTypes } from "../models/enums";
 import { deleteNodesChain } from "../utils/node";
 import { formatProductModel } from "../utils/product";
 import { getEntityAssets, getDeletedImagesFromDifferense, normalizeContents } from "../utils/entity";
@@ -10,6 +9,7 @@ import { AssetModel } from "../models/Asset";
 import { deleteAsset } from "./AssetsController";
 import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "../interfaces";
+import { NodeTypes } from "@djonnyx/tornado-types";
 
 export interface IProductItem {
     id?: string;

@@ -1,49 +1,6 @@
+import { IScenario, NodeTypes, ScenarioCommonActionTypes, ScenarioIntroActionTypes, ScenarioProductActionTypes, ScenarioProgrammActionTypes, ScenarioSelectorActionTypes } from "@djonnyx/tornado-types";
 import * as mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
-import { NodeTypes, ScenarioIntroActionTypes, ScenarioCommonActionTypes, ScenarioProductActionTypes, ScenarioSelectorActionTypes, ScenarioProgrammActionTypes } from "./enums";
-
-enum ScenarioEntityTypes {
-    BUSINESS_PERIOD = "business-period",
-    PRODUCT = "product",
-    SELECTOR = "selector",
-    ORDER_TYPE = "order-type",
-    CURRENCY = "currency",
-}
-
-interface IPropertyAccessor {
-    entity: ScenarioEntityTypes;
-    prop: string;
-}
-
-enum ProgramOperations {
-    OR = "or",
-    XOR = "xor",
-    AND = "and",
-}
-
-interface IScenarioExpression {
-    prop1: IPropertyAccessor;
-    prop2: IPropertyAccessor;
-    operation: ProgramOperations;
-}
-
-interface IScenarioSwitch {
-    condition: Array<IScenarioExpression>;
-    expressionPositive: IScenario;
-    expressionNegative: IScenario;
-}
-
-interface IScenarioPriceValue {
-    currency: string;
-    value: number;
-}
-
-interface IScenario {
-    active: boolean;
-    action: ScenarioIntroActionTypes | ScenarioCommonActionTypes | ScenarioProductActionTypes | ScenarioSelectorActionTypes | ScenarioProgrammActionTypes;
-    value?: number | string | Array<string> | Array<number> | Array<IScenarioExpression> | IScenarioPriceValue | IScenarioSwitch | null;
-    extra?: { [key: string]: any } | null;
-}
 
 interface INode extends Document {
     client: string;
