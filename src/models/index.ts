@@ -9,7 +9,7 @@ import { ICurrency, CurrencyModel } from "./Currency";
 import { IOrderType, OrderTypeModel } from "./OrderTypes";
 import { IAd, AdModel } from "./Ad";
 import { ILanguage, LanguageModel } from "./Language";
-import { ITranslate, ITranslation, TranslationModel } from "./Translation";
+import { TranslationModel } from "./Translation";
 import { IStoreDocument, StoreModel } from "./Store";
 import { ITerminalDocument, TerminalModel } from "./Terminal";
 
@@ -25,7 +25,7 @@ export {
     OrderTypeModel, IOrderType,
     IAd, AdModel,
     ILanguage, LanguageModel,
-    ITranslate, ITranslation, TranslationModel,
+    TranslationModel,
     IStoreDocument, StoreModel,
     ITerminalDocument, TerminalModel,
 };
