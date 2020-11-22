@@ -8,9 +8,8 @@ import { IRefItem } from "./RefsController";
 import { uploadAsset, deleteAsset, IAssetItem, ICreateAssetsResponse } from "./AssetsController";
 import { AssetModel, IAsset } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
-import { ISelectorContents } from "../models/Selector";
 import { IAuthRequest } from "src/interfaces";
-import { AssetExtensions } from "@djonnyx/tornado-types";
+import { AssetExtensions, ISelectorContents } from "@djonnyx/tornado-types";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface ISelectorAsset extends IAssetItem { }
@@ -87,7 +86,7 @@ const contentsToDefault = (contents: ISelectorContents, langCode: string) => {
     }
 
     if (!result[langCode]) {
-        result[langCode] = {};
+        result[langCode] = {} as any;
     }
 
     if (!result[langCode].resources) {

@@ -1,22 +1,6 @@
+import { ISelectorContents, SelectorTypes } from "@djonnyx/tornado-types";
 import * as mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
-import { SelectorTypes } from "./enums/SelectorTypes";
-
-export interface ISelectorContentsItem {
-    name: string;
-    description?: string;
-    color?: string;
-    resources: {
-        main: string | null;
-        icon: string | null;
-    };
-    assets?: Array<string>;
-    extra?: { [key: string]: any } | null;
-}
-
-export interface ISelectorContents {
-    [lang: string]: ISelectorContentsItem | any;
-}
 
 interface ISelector extends Document {
     client: string;
