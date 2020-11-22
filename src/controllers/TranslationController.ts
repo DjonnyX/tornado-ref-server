@@ -40,10 +40,6 @@ interface TranslationResponse {
     }>;
 }
 
-/*interface TranslationCreateRequest {
-    extra?: { [key: string]: any } | null;
-}*/
-
 interface TranslationUpdateRequest {
     language: string;
     items?: Array<ITranslate>;

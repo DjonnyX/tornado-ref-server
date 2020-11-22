@@ -5,7 +5,7 @@ import { Schema, Document } from "mongoose";
 interface ITag extends Document {
     client: string;
     active: boolean;
-    contents: ITagContents;
+    contents: ITagContents | {};
     extra?: { [key: string]: any } | null;
 }
 

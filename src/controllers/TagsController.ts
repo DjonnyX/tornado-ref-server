@@ -2,12 +2,13 @@ import { RefTypes, TagModel, LanguageModel, ILanguage, ProductModel, IProduct } 
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Request } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatTagModel } from "../utils/tag";
-import { ITagContents, ITag } from "../models/Tag";
+import { ITag } from "../models/Tag";
 import { AssetModel } from "../models/Asset";
 import { deleteAsset } from "./AssetsController";
 import { normalizeContents, getDeletedImagesFromDifferense, getEntityAssets } from "../utils/entity";
 import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "../interfaces";
+import { ITagContents } from "@djonnyx/tornado-types";
 
 export interface ITagItem {
     id: string;

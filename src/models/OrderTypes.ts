@@ -6,7 +6,7 @@ interface IOrderType extends Document {
     client: string;
     active: boolean;
     isDefault: boolean;
-    contents: IOrderTypeContents;
+    contents: IOrderTypeContents | {};
     extra?: { [key: string]: any } | null;
 }
 
