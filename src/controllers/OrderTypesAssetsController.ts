@@ -2,7 +2,6 @@ import * as express from "express";
 import { OrderTypeModel, IOrderType, RefTypes, ILanguage, LanguageModel } from "../models/index";
 import { Controller, Route, Post, Tags, OperationId, Example, Request, Security, Get, Delete, Body, Put } from "tsoa";
 import { riseRefVersion, getRef } from "../db/refs";
-import { AssetExtensions } from "../models/enums";
 import { IOrderTypeItem, RESPONSE_TEMPLATE as SELECTOR_RESPONSE_TEMPLATE } from "./OrderTypesController";
 import { formatOrderTypeModel } from "../utils/ordertype";
 import { normalizeContents } from "../utils/entity";
@@ -10,8 +9,8 @@ import { IRefItem } from "./RefsController";
 import { uploadAsset, deleteAsset, IAssetItem, ICreateAssetsResponse } from "./AssetsController";
 import { AssetModel, IAsset } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
-import { IOrderTypeContents } from "../models/OrderTypes";
 import { IAuthRequest } from "../interfaces";
+import { AssetExtensions, IOrderTypeContents } from "@djonnyx/tornado-types";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IOrderTypeAsset extends IAssetItem { }
@@ -88,7 +87,7 @@ const contentsToDefault = (contents: IOrderTypeContents, langCode: string) => {
     }
 
     if (!result[langCode]) {
-        result[langCode] = {};
+        result[langCode] = {} as any;
     }
 
     if (!result[langCode].resources) {

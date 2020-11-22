@@ -1,15 +1,14 @@
-import { ProductModel, IProduct, IReceiptItem, RefTypes, NodeModel, IPrice, ILanguage, LanguageModel } from "../models/index";
+import { ProductModel, IProduct, IReceiptItem, RefTypes, NodeModel, ILanguage, LanguageModel } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Request } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
-import { NodeTypes } from "../models/enums";
 import { deleteNodesChain } from "../utils/node";
 import { formatProductModel } from "../utils/product";
 import { getEntityAssets, getDeletedImagesFromDifferense, normalizeContents } from "../utils/entity";
-import { IProductContents } from "../models/Product";
 import { AssetModel } from "../models/Asset";
 import { deleteAsset } from "./AssetsController";
 import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "../interfaces";
+import { IPrice, IProductContents, NodeTypes } from "@djonnyx/tornado-types";
 
 export interface IProductItem {
     id?: string;
@@ -79,6 +78,7 @@ export const RESPONSE_TEMPLATE: IProductItem = {
                 main: "g8h07f79bcf86cd7994f9d7k",
                 icon: "gt7h7f79bcf86cd7994f9d6u",
             },
+            gallery: ["gt7h7f79bcf86cd7994f9d6u", "g8h07f79bcf86cd7994f9d7k",],
             assets: ["g8h07f79bcf86cd7994f9d7k",],
         },
     },
@@ -327,7 +327,7 @@ export class ProductController extends Controller {
             if (!!lastContents) {
                 for (const lang in lastContents) {
                     if (!item.contents[lang]) {
-                        item.contents[lang] = {};
+                        item.contents[lang] = {} as any;
                     }
                     if (lastContents[lang]) {
                         item.contents[lang].assets = lastContents[lang].assets;

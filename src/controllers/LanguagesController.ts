@@ -1,4 +1,4 @@
-import { RefTypes, ILanguage, LanguageModel, TranslationModel, ITranslation } from "../models/index";
+import { RefTypes, ILanguage, LanguageModel, TranslationModel } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Request } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { IRefItem } from "./RefsController";

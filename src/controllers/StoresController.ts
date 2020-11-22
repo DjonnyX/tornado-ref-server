@@ -1,13 +1,12 @@
-import { RefTypes, IStore, StoreModel } from "../models";
+import { RefTypes, StoreModel } from "../models";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Request } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatStoreModel } from "../utils/store";
 import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "../interfaces";
+import { IStore } from "@djonnyx/tornado-types";
 
-interface IStoreItem extends IStore {
-    id?: string;
-}
+interface IStoreItem extends IStore { }
 
 interface IStoreMeta {
     ref: IRefItem;

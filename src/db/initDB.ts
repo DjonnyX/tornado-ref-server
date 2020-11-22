@@ -1,11 +1,11 @@
 import * as fs from "fs";
 import { RefModel, RefTypes, NodeModel, TranslationModel, LanguageModel, ILanguage, CurrencyModel } from "../models/index";
-import { NodeTypes } from "../models/enums";
 import { mergeTranslation, getTemplateLangs } from "../utils/translation";
 import { LOCALIZATION_TEMPLATE_PATH, CURRENCY_TEMPLATE_PATH } from "../config";
 import { ITranslationTemplate } from "../interfaces/ITranslationTemplate";
 import { ICurrencyTemplate } from "../interfaces";
 import { riseRefVersion } from "./refs";
+import { NodeTypes } from "@djonnyx/tornado-types";
 
 
 const createRootNode = async (client: string) => {

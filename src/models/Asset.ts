@@ -1,6 +1,6 @@
+import { AssetExtensions } from "@djonnyx/tornado-types";
 import * as mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
-import { AssetExtensions } from "./enums";
 
 interface IAsset extends Document {
     client: string;

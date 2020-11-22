@@ -1,15 +1,13 @@
 import { AdModel, IAd, RefTypes, ILanguage, LanguageModel } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Query, Request } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
-import { AdTypes } from "../models/enums/AdTypes";
 import { formatAdModel } from "../utils/ad";
-import { IAdContents } from "../models/Ad";
 import { normalizeContents, getDeletedImagesFromDifferense, getEntityAssets } from "../utils/entity";
 import { AssetModel } from "../models/Asset";
 import { deleteAsset } from "./AssetsController";
 import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "../interfaces";
-import { request } from "express";
+import { AdTypes, IAdContents } from "@djonnyx/tornado-types";
 
 export interface IAdItem {
     id?: string;
@@ -268,7 +266,7 @@ export class AdController extends Controller {
             if (!!lastContents) {
                 for (const lang in lastContents) {
                     if (!item.contents[lang]) {
-                        item.contents[lang] = {};
+                        item.contents[lang] = {} as any;
                     }
                     if (lastContents[lang]) {
                         item.contents[lang].assets = lastContents[lang].assets;

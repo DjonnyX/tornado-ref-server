@@ -1,3 +1,4 @@
+import { IPrice, IProductContents } from "@djonnyx/tornado-types";
 import * as mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
 
@@ -7,29 +8,6 @@ interface IReceiptItem {
     calories: number;
     quantity: number;
     extra?: { [key: string]: any } | null;
-}
-
-export interface IPrice {
-    value: number;
-    currency: string;
-    extra?: { [key: string]: any } | null;
-}
-
-export interface IProductContentsItem {
-    name: string;
-    description?: string;
-    color?: string;
-    resources: {
-        main: string | null;
-        icon: string | null;
-    };
-    assets?: Array<string>;
-    gallery?: Array<string>;
-    extra?: { [key: string]: any } | null;
-}
-
-export interface IProductContents {
-    [lang: string]: IProductContentsItem | any;
 }
 
 interface IProduct extends Document {

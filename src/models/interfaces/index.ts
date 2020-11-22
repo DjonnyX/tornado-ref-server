@@ -1,3 +1,3 @@
-export * from "./IEntity";
-export * from "./IEntityContents";
-export * from "./IEntityContentsItem";
+export * from "./IVisualEntity";
+export * from "./IVisualEntityContents";
+export * from "./IVisualEntityContentsItem";

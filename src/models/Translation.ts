@@ -1,7 +1,7 @@
 import * as mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
 
-export interface ITranslate extends Document {
+export interface ITranslateDocument extends Document {
     key: string;
     value: string;
     extra?: { [key: string]: any } | null;
@@ -13,10 +13,10 @@ const TranslateSchema = new Schema({
     extra: { type: Schema.Types.Mixed, required: false },
 });
 
-interface ITranslation extends Document {
+interface ITranslationDocument extends Document {
     client: string;
     language: string;
-    items: Array<ITranslate>;
+    items: Array<ITranslateDocument>;
     extra?: { [key: string]: any } | null;
 }
 
@@ -27,6 +27,6 @@ const TranslationSchema = new Schema({
     extra: { type: Schema.Types.Mixed, required: false },
 });
 
-const TranslationModel = mongoose.model<ITranslation>("Translation", TranslationSchema);
+const TranslationModel = mongoose.model<ITranslationDocument>("Translation", TranslationSchema);
 
-export { TranslationModel, ITranslation };
+export { TranslationModel, ITranslationDocument };

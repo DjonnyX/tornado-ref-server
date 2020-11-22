@@ -1,21 +1,6 @@
+import { AdTypes, IAdContents } from "@djonnyx/tornado-types";
 import * as mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
-import { AdTypes } from "./enums";
-
-export interface IAdContentsItem {
-    name: string;
-    color?: string;
-    duration: number;
-    resources: {
-        main: string | null;
-    };
-    assets?: Array<string>;
-    extra?: { [key: string]: any } | null;
-}
-
-export interface IAdContents {
-    [lang: string]: IAdContentsItem | any;
-}
 
 interface IAd extends Document {
     client: string;

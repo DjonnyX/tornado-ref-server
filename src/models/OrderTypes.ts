@@ -1,27 +1,12 @@
+import { IOrderTypeContents } from "@djonnyx/tornado-types";
 import * as mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
-
-export interface IOrderTypeContentsItem {
-    name: string;
-    description?: string;
-    color?: string;
-    resources: {
-        main: string | null;
-        icon: string | null;
-    };
-    assets?: Array<string>;
-    extra?: { [key: string]: any } | null;
-}
-
-export interface IOrderTypeContents {
-    [lang: string]: IOrderTypeContentsItem | any;
-}
 
 interface IOrderType extends Document {
     client: string;
     active: boolean;
     isDefault: boolean;
-    contents: IOrderTypeContents;
+    contents: IOrderTypeContents | {};
     extra?: { [key: string]: any } | null;
 }
 

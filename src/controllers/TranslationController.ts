@@ -1,9 +1,10 @@
-import { RefTypes, TranslationModel, ITranslate } from "../models/index";
-import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Request } from "tsoa";
+import { RefTypes, TranslationModel } from "../models/index";
+import { Controller, Route, Get, Put, Tags, OperationId, Example, Body, Security, Request } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatTranslationModel } from "../utils/translation";
 import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "../interfaces";
+import { ITranslate } from "@djonnyx/tornado-types/dist/interfaces/raw/ITranslation";
 
 interface ITranslateItem {
     key: string;
@@ -38,10 +39,6 @@ interface TranslationResponse {
         message: string;
     }>;
 }
-
-/*interface TranslationCreateRequest {
-    extra?: { [key: string]: any } | null;
-}*/
 
 interface TranslationUpdateRequest {
     language: string;

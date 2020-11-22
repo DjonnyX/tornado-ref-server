@@ -1,11 +1,11 @@
-import { IEntityContents, IEntityContentsItem, IEntity } from "../models/interfaces";
+import { IVisualEntityContents, IVisualEntityContentsItem, IVisualEntity } from "../models/interfaces";
 
-export const normalizeContents = (contents: IEntityContents, defaultLang: string) => {
+export const normalizeContents = (contents: IVisualEntityContents, defaultLang: string) => {
     if (!contents) {
         return;
     }
 
-    let defaultContent: IEntityContentsItem;
+    let defaultContent: IVisualEntityContentsItem;
 
     // экстракт дефолтового контента
     for (const lang in contents) {
@@ -30,7 +30,7 @@ export const normalizeContents = (contents: IEntityContents, defaultLang: string
     }
 };
 
-export const equalFromImages = (content: IEntityContentsItem, resource: string): boolean => {
+export const equalFromImages = (content: IVisualEntityContentsItem, resource: string): boolean => {
     if (!!content && !!content.resources) {
         for (const resourceType in content) {
             if (resource == content[resourceType]) {
@@ -41,7 +41,7 @@ export const equalFromImages = (content: IEntityContentsItem, resource: string):
     return false;
 };
 
-export const getDeletedImagesFromDifferense = (lastContents: IEntityContents, newContents: IEntityContents) => {
+export const getDeletedImagesFromDifferense = (lastContents: IVisualEntityContents, newContents: IVisualEntityContents) => {
     const result = new Array<string>();
 
     const langs = getLangsFromContents(lastContents, newContents);
@@ -63,7 +63,7 @@ export const getDeletedImagesFromDifferense = (lastContents: IEntityContents, ne
     return result;
 };
 
-export const getLangsFromContents = (lastContents: IEntityContents, newContents: IEntityContents) => {
+export const getLangsFromContents = (lastContents: IVisualEntityContents, newContents: IVisualEntityContents) => {
     const result = new Array<string>();
     for (const lang in lastContents) {
         result.push(lang);
@@ -77,7 +77,7 @@ export const getLangsFromContents = (lastContents: IEntityContents, newContents:
     return result;
 };
 
-export const getEntityAssetsFromContent = (contents: IEntityContents) => {
+export const getEntityAssetsFromContent = (contents: IVisualEntityContents) => {
     const result = new Array<string>();
 
     if (!!contents) {
@@ -91,7 +91,7 @@ export const getEntityAssetsFromContent = (contents: IEntityContents) => {
     return result;
 };
 
-export const getEntityAssetsFromContentImages = (content: IEntityContentsItem) => {
+export const getEntityAssetsFromContentImages = (content: IVisualEntityContentsItem) => {
     const result = new Array<string>();
     if (!!content) {
         const resources = content.resources;
@@ -105,7 +105,7 @@ export const getEntityAssetsFromContentImages = (content: IEntityContentsItem) =
     return result;
 };
 
-export const getEntityAssets = (entity: IEntity) => {
+export const getEntityAssets = (entity: IVisualEntity) => {
     const result = new Array<string>();
 
     if (entity) {

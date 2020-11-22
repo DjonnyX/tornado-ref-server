@@ -1,10 +1,10 @@
 import { Controller, Route, Post, Tags, Example, Request, Body, Get, Put, Delete, OperationId, Security } from "tsoa";
-import * as express from "express";
 import { RefTypes } from "../models/enums";
 import { LicenseStates } from "@djonnyx/tornado-types/dist/interfaces/raw/LicenseStates";
 import { LicenseStatuses } from "@djonnyx/tornado-types/dist/interfaces/raw/LicenseStatuses";
 import { IRefItem } from "./RefsController";
-import { createProxyRequestToAuthServer } from "../utils/proxy";
+import { IAuthRequest } from "../interfaces";
+import { licServerApiService } from "../services";
 
 interface ILicenseInfo {
     id: string;
@@ -93,8 +93,8 @@ export class LicensesController extends Controller {
         meta: META_TEMPLATE,
         data: [LICENSE_RESPONSE_TEMPLATE],
     })
-    public async getLicense(@Request() request: express.Request): Promise<LicensesGetResponse> {
-        return await createProxyRequestToAuthServer<LicensesGetResponse>(this, request);
+    public async getLicense(@Request() request: IAuthRequest): Promise<LicensesGetResponse> {
+        return await licServerApiService.getLicenses({ clientToken: request.token });
     }
 }
 
@@ -108,8 +108,8 @@ export class LicenseController extends Controller {
         meta: META_TEMPLATE,
         data: LICENSE_RESPONSE_TEMPLATE,
     })
-    public async getLicense(@Request() request: express.Request): Promise<LicenseResponse> {
-        return await createProxyRequestToAuthServer<LicenseResponse>(this, request);
+    public async getLicense(id: string, @Request() request: IAuthRequest): Promise<LicenseResponse> {
+        return await licServerApiService.getLicense(id, { clientToken: request.token });
     }
 
     @Post("{id}")
@@ -119,8 +119,8 @@ export class LicenseController extends Controller {
         meta: META_TEMPLATE,
         data: LICENSE_RESPONSE_TEMPLATE,
     })
-    public async createLicense(@Request() request: express.Request, @Body() body: ICreateLicenseParams): Promise<LicenseResponse> {
-        return await createProxyRequestToAuthServer<LicenseResponse>(this, request);
+    public async createLicense(id: string, @Request() request: IAuthRequest, @Body() body: ICreateLicenseParams): Promise<LicenseResponse> {
+        return await licServerApiService.createLicense(id, body as any, { clientToken: request.token });
     }
 
     @Put("{id}")
@@ -130,8 +130,8 @@ export class LicenseController extends Controller {
         meta: META_TEMPLATE,
         data: LICENSE_RESPONSE_TEMPLATE,
     })
-    public async updateLicense(@Request() request: express.Request, @Body() body: IUpdateLicenseParams): Promise<LicenseResponse> {
-        return await createProxyRequestToAuthServer<LicenseResponse>(this, request);
+    public async updateLicense(id: string, @Request() request: IAuthRequest, @Body() body: IUpdateLicenseParams): Promise<LicenseResponse> {
+        return await licServerApiService.updateLicense(id, body as any, { clientToken: request.token });
     }
 
     @Delete("{id}")
@@ -140,7 +140,7 @@ export class LicenseController extends Controller {
     @Example<LicenseResponse>({
         meta: META_TEMPLATE,
     })
-    public async deleteLicense(@Request() request: express.Request): Promise<LicenseResponse> {
-        return await createProxyRequestToAuthServer<LicenseResponse>(this, request);
+    public async deleteLicense(id: string, @Request() request: IAuthRequest): Promise<LicenseResponse> {
+        return await licServerApiService.deleteLicense(id, { clientToken: request.token });
     }
 }
