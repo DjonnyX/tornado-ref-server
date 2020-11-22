@@ -75,7 +75,7 @@ const META_TEMPLATE: ILicenseTypeInfoMeta = {
     }
 };
 
-@Route("/licenses")
+@Route("/license-types")
 @Tags("LicenseType")
 export class LicenseTypesController extends Controller {
     @Get()
