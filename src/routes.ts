@@ -2888,6 +2888,7 @@ export function RegisterRoutes(app: express.Express) {
         authenticateMiddleware([{ "clientAccessToken": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
+                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
                 request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
             };
 
@@ -2911,6 +2912,7 @@ export function RegisterRoutes(app: express.Express) {
         authenticateMiddleware([{ "clientAccessToken": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
+                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
                 request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
                 body: { "in": "body", "name": "body", "required": true, "ref": "ICreateLicenseParams" },
             };
@@ -2935,6 +2937,7 @@ export function RegisterRoutes(app: express.Express) {
         authenticateMiddleware([{ "clientAccessToken": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
+                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
                 request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
                 body: { "in": "body", "name": "body", "required": true, "ref": "IUpdateLicenseParams" },
             };
@@ -2959,6 +2962,7 @@ export function RegisterRoutes(app: express.Express) {
         authenticateMiddleware([{ "clientAccessToken": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
+                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
                 request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
             };
 

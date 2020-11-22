@@ -1,7 +1,7 @@
 import * as got from "got";
 import { makeRequest } from "../utils/proxy";
 import * as config from "../config";
-import { ILicenseType } from "@djonnyx/tornado-types";
+import { ILicense, ILicenseType } from "@djonnyx/tornado-types";
 
 interface IRequestOptions {
     clientToken?: string;
@@ -47,6 +47,64 @@ class LicServerApiService {
                     "content-type": "application/json",
                     "authorization": this.getToken(options),
                 }
+            }),
+        );
+    }
+
+    // licenses
+    public async getLicenses<T = any>(options?: IRequestOptions): Promise<T> {
+        return await makeRequest<T>(
+            got.get(`${config.LIC_SERVER_HOST}/api/v1/licenses`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": this.getToken(options),
+                }
+            }),
+        );
+    }
+
+    public async getLicense<T = any>(id: string, options?: IRequestOptions): Promise<T> {
+        return await makeRequest<T>(
+            got.get(`${config.LIC_SERVER_HOST}/api/v1/license/${id}`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": this.getToken(options),
+                }
+            }),
+        );
+    }
+
+    public async createLicense<T = any>(id: string, license: ILicense, options?: IRequestOptions): Promise<T> {
+        return await makeRequest<T>(
+            got.get(`${config.LIC_SERVER_HOST}/api/v1/license/${id}`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": this.getToken(options),
+                },
+                body: JSON.stringify(license),
+            }),
+        );
+    }
+
+    public async updateLicense<T = any>(id: string, license: ILicense, options?: IRequestOptions): Promise<T> {
+        return await makeRequest<T>(
+            got.get(`${config.LIC_SERVER_HOST}/api/v1/license/${id}`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": this.getToken(options),
+                },
+                body: JSON.stringify(license),
+            }),
+        );
+    }
+
+    public async deleteLicense<T = any>(id: string, options?: IRequestOptions): Promise<T> {
+        return await makeRequest<T>(
+            got.get(`${config.LIC_SERVER_HOST}/api/v1/license/${id}`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": this.getToken(options),
+                },
             }),
         );
     }
