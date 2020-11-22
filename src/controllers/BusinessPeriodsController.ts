@@ -3,9 +3,9 @@ import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, 
 import * as joi from "@hapi/joi";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatModel } from "../utils/businessPeriod";
-import { IBusinessPeriodContents } from "src/models/BusinessPeriod";
 import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "../interfaces";
+import { IBusinessPeriodContents } from "@djonnyx/tornado-types";
 
 interface IBusinessPeriodItem {
     id?: string;

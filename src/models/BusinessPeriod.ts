@@ -1,16 +1,6 @@
+import { IBusinessPeriodContents } from "@djonnyx/tornado-types";
 import * as mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
-
-export interface IBusinessPeriodContentsItem {
-    name: string;
-    description?: string;
-    assets?: Array<string>;
-    extra?: { [key: string]: any } | null;
-}
-
-export interface IBusinessPeriodContents {
-    [lang: string]: IBusinessPeriodContentsItem | any;
-}
 
 interface ISchedule {
     active: boolean;
