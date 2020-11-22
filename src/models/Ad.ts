@@ -1,6 +1,6 @@
+import { AdTypes } from "@djonnyx/tornado-types";
 import * as mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
-import { AdTypes } from "./enums";
 
 export interface IAdContentsItem {
     name: string;
