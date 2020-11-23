@@ -12,6 +12,9 @@ export enum RefTypes {
     TRANSLATIONS = "translations",
     STORES = "stores",
     TERMINALS = "terminals",
+    // licserver
     LICENSES = "licenses",
     LICENSE_TYPES = "license-types",
+    APPLICATIONS = "applications",
+    INTEGRATION = "integrations",
 }

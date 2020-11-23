@@ -22,18 +22,18 @@ export async function expressAuthentication(
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       jwt.verify(token, config.AUTH_PRIVATE_KEY, function (err: any, decoded: IJWTBody) {
         if (err) {
-          reject(err);
-        } else {
-          if (!decoded.userId || !decoded.email) {
-            reject(new Error("Access token bad format."))
-          }
-          (request as IAuthRequest).client = {
-            id: decoded.userId,
-            email: decoded.email,
-          };
-          (request as IAuthRequest).token = token;
-          resolve();
+          return reject(err);
         }
+
+        if (!decoded.userId || !decoded.email) {
+          return reject(new Error("Access token bad format."))
+        }
+        (request as IAuthRequest).client = {
+          id: decoded.userId,
+          email: decoded.email,
+        };
+        (request as IAuthRequest).token = token;
+        return resolve();
       });
     });
   } else if (securityName === "accessToken") {
@@ -47,17 +47,17 @@ export async function expressAuthentication(
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       jwt.verify(token, config.AUTH_CLIENT_PRIVATE_KEY, function (err: any, decoded: IJWTBody) {
         if (err) {
-          reject(err);
-        } else {
-          licServerApiService.verifyLicenseKey(token, { clientToken: token })
-            .then(res => {
-              (request as IAuthRequest).client = res.data;
-              (request as IAuthRequest).token = token;
-              resolve();
-            }).catch(err => {
-              reject(err);
-            });
+          return reject(err);
         }
+
+        licServerApiService.verifyLicenseKey(token, { clientToken: token })
+          .then(res => {
+            (request as IAuthRequest).client = res.data;
+            (request as IAuthRequest).token = token;
+            resolve();
+          }).catch(err => {
+            reject(err);
+          });
       });
     });
   }
