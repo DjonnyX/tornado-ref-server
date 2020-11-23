@@ -1,8 +1,7 @@
 import * as got from "got";
 import { makeRequest } from "../utils/proxy";
 import * as config from "../config";
-import { ILicense, ILicenseType } from "@djonnyx/tornado-types";
-import { IApplication } from "@djonnyx/tornado-types";
+import { ILicense, ILicenseType, IApplication, IIntegration } from "@djonnyx/tornado-types";
 
 interface IRequestOptions {
     clientToken?: string;
@@ -218,6 +217,64 @@ class LicServerApiService {
     public async deleteApplication<T = any>(id: string, options?: IRequestOptions): Promise<T> {
         return await makeRequest<T>(
             got.get(`${config.LIC_SERVER_HOST}/api/v1/application/${id}`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": this.getToken(options),
+                },
+            }),
+        );
+    }
+
+    // integrations
+    public async getIntegrations<T = any>(options?: IRequestOptions): Promise<T> {
+        return await makeRequest<T>(
+            got.get(`${config.LIC_SERVER_HOST}/api/v1/integrations`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": this.getToken(options),
+                }
+            }),
+        );
+    }
+
+    public async getIntegration<T = any>(id: string, options?: IRequestOptions): Promise<T> {
+        return await makeRequest<T>(
+            got.get(`${config.LIC_SERVER_HOST}/api/v1/integration/${id}`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": this.getToken(options),
+                }
+            }),
+        );
+    }
+
+    public async createIntegration<T = any>(id: string, licenseType: IIntegration, options?: IRequestOptions): Promise<T> {
+        return await makeRequest<T>(
+            got.get(`${config.LIC_SERVER_HOST}/api/v1/integration/${id}`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": this.getToken(options),
+                },
+                body: JSON.stringify(licenseType),
+            }),
+        );
+    }
+
+    public async updateIntegration<T = any>(id: string, licenseType: IIntegration, options?: IRequestOptions): Promise<T> {
+        return await makeRequest<T>(
+            got.get(`${config.LIC_SERVER_HOST}/api/v1/integration/${id}`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": this.getToken(options),
+                },
+                body: JSON.stringify(licenseType),
+            }),
+        );
+    }
+
+    public async deleteIntegration<T = any>(id: string, options?: IRequestOptions): Promise<T> {
+        return await makeRequest<T>(
+            got.get(`${config.LIC_SERVER_HOST}/api/v1/integration/${id}`, {
                 headers: {
                     "content-type": "application/json",
                     "authorization": this.getToken(options),
