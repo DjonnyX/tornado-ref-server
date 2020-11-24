@@ -41,7 +41,7 @@ interface IBusinessPeriodResponse {
 interface IBusinessPeriodCreateRequest {
     active: boolean;
     name?: string;
-    contents?: IBusinessPeriodContents;
+    contents?: IBusinessPeriodContents | any;
     schedule: Array<ISchedule>;
     extra?: { [key: string]: any } | null;
 }

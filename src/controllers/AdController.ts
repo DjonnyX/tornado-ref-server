@@ -52,7 +52,7 @@ interface IAdUpdateRequest {
     active?: boolean;
     name?: string;
     type?: AdTypes;
-    contents?: IAdContents;
+    contents?: IAdContents | any;
     extra?: { [key: string]: any } | null;
 }
 

@@ -43,7 +43,7 @@ interface OrderTypeResponse {
 interface OrderTypeCreateRequest {
     active: boolean;
     isDefault?: boolean;
-    contents?: IOrderTypeContents;
+    contents?: IOrderTypeContents | any;
     extra?: { [key: string]: any } | null;
 }
 

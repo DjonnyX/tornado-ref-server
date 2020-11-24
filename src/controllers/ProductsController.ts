@@ -45,7 +45,7 @@ interface IProductResponse {
 
 interface IProductCreateRequest {
     active: boolean;
-    contents?: IProductContents;
+    contents?: IProductContents | any;
     prices: Array<IPrice>;
     receipt: Array<IReceiptItem>;
     tags: Array<string>;
@@ -55,7 +55,7 @@ interface IProductCreateRequest {
 
 interface IProductUpdateRequest {
     active?: boolean;
-    contents?: IProductContents;
+    contents?: IProductContents | any;
     prices?: Array<IPrice>;
     receipt?: Array<IReceiptItem>;
     tags?: Array<string>;

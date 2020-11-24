@@ -259,7 +259,7 @@ const models: TsoaRoute.Models = {
             "active": { "dataType": "boolean" },
             "name": { "dataType": "string" },
             "type": { "ref": "AdTypes" },
-            "contents": { "ref": "IAdContents" },
+            "contents": { "dataType": "union", "subSchemas": [{ "ref": "IAdContents" }, { "dataType": "any" }] },
             "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
         "additionalProperties": false,
@@ -598,7 +598,7 @@ const models: TsoaRoute.Models = {
         "properties": {
             "active": { "dataType": "boolean", "required": true },
             "name": { "dataType": "string" },
-            "contents": { "ref": "IBusinessPeriodContents" },
+            "contents": { "dataType": "union", "subSchemas": [{ "ref": "IBusinessPeriodContents" }, { "dataType": "any" }] },
             "schedule": { "dataType": "array", "array": { "ref": "ISchedule" }, "required": true },
             "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
@@ -1278,7 +1278,7 @@ const models: TsoaRoute.Models = {
         "properties": {
             "active": { "dataType": "boolean", "required": true },
             "isDefault": { "dataType": "boolean" },
-            "contents": { "ref": "IOrderTypeContents" },
+            "contents": { "dataType": "union", "subSchemas": [{ "ref": "IOrderTypeContents" }, { "dataType": "any" }] },
             "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
         "additionalProperties": false,
@@ -1450,7 +1450,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "active": { "dataType": "boolean", "required": true },
-            "contents": { "ref": "IProductContents" },
+            "contents": { "dataType": "union", "subSchemas": [{ "ref": "IProductContents" }, { "dataType": "any" }] },
             "prices": { "dataType": "array", "array": { "ref": "IPrice" }, "required": true },
             "receipt": { "dataType": "array", "array": { "ref": "IReceiptItem" }, "required": true },
             "tags": { "dataType": "array", "array": { "dataType": "string" }, "required": true },
@@ -1464,7 +1464,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "active": { "dataType": "boolean" },
-            "contents": { "ref": "IProductContents" },
+            "contents": { "dataType": "union", "subSchemas": [{ "ref": "IProductContents" }, { "dataType": "any" }] },
             "prices": { "dataType": "array", "array": { "ref": "IPrice" } },
             "receipt": { "dataType": "array", "array": { "ref": "IReceiptItem" } },
             "tags": { "dataType": "array", "array": { "dataType": "string" } },
@@ -1588,7 +1588,6 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "id": { "dataType": "string" },
-            "name": { "dataType": "string" },
             "type": { "ref": "SelectorTypes", "required": true },
             "active": { "dataType": "boolean", "required": true },
             "contents": { "ref": "ISelectorContents", "required": true },
@@ -1622,9 +1621,8 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "active": { "dataType": "boolean", "required": true },
-            "name": { "dataType": "string" },
             "type": { "ref": "SelectorTypes", "required": true },
-            "contents": { "ref": "ISelectorContents" },
+            "contents": { "dataType": "union", "subSchemas": [{ "ref": "ISelectorContents" }, { "dataType": "any" }] },
             "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
         "additionalProperties": false,
@@ -1634,9 +1632,8 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "active": { "dataType": "boolean" },
-            "name": { "dataType": "string" },
             "type": { "ref": "SelectorTypes" },
-            "contents": { "ref": "ISelectorContents" },
+            "contents": { "dataType": "union", "subSchemas": [{ "ref": "ISelectorContents" }, { "dataType": "any" }] },
             "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
         "additionalProperties": false,
@@ -1852,7 +1849,7 @@ const models: TsoaRoute.Models = {
         "properties": {
             "active": { "dataType": "boolean", "required": true },
             "name": { "dataType": "string" },
-            "contents": { "ref": "ITagContents" },
+            "contents": { "dataType": "union", "subSchemas": [{ "ref": "ITagContents" }, { "dataType": "any" }] },
             "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
         "additionalProperties": false,

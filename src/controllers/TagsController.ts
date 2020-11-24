@@ -43,7 +43,7 @@ interface TagResponse {
 interface TagCreateRequest {
     active: boolean;
     name?: string;
-    contents?: ITagContents;
+    contents?: ITagContents | any;
     extra?: { [key: string]: any } | null;
 }
 
