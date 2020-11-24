@@ -445,7 +445,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "meta": { "dataType": "nestedObjectLiteral", "nestedProperties": {} },
-            "data": { "dataType": "nestedObjectLiteral", "nestedProperties": { "email": { "dataType": "string", "required": true }, "lastName": { "dataType": "string", "required": true }, "firstName": { "dataType": "string", "required": true }, "token": { "dataType": "string", "required": true }, "role": { "dataType": "string", "required": true } } },
+            "data": { "dataType": "nestedObjectLiteral", "nestedProperties": { "rights": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "action": { "dataType": "string", "required": true }, "obj": { "dataType": "string", "required": true } } }, "required": true }, "token": { "dataType": "string", "required": true }, "account": { "dataType": "nestedObjectLiteral", "nestedProperties": { "language": { "dataType": "string", "required": true }, "name": { "dataType": "string", "required": true }, "position": { "dataType": "string", "required": true }, "phone": { "dataType": "string", "required": true }, "patronymicName": { "dataType": "string", "required": true }, "lastName": { "dataType": "string", "required": true }, "email": { "dataType": "string", "required": true } }, "required": true } } },
             "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
         },
         "additionalProperties": false,

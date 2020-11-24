@@ -7,6 +7,11 @@ interface IRequestOptions {
     clientToken?: string;
 }
 
+interface IGetClientTokenParams {
+    pass: string;
+    email: string;
+}
+
 class LicServerApiService {
     private getToken(options: IRequestOptions): string {
         const clientToken = !!options && !!options.clientToken ? options.clientToken: undefined;
@@ -15,7 +20,19 @@ class LicServerApiService {
             return `Bearer ${options.clientToken}`;
         }
         
-        return config.AUTH_LIC_SERVER_API_KEY;
+        return `Bearer ${config.AUTH_LIC_SERVER_API_KEY}`;
+    }
+
+    public async getClientToken<T = any>(params: IGetClientTokenParams, options?: IRequestOptions): Promise<T> {
+        return await makeRequest<T>(
+            got.post(`${config.LIC_SERVER_HOST}/api/v1/clientToken`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": this.getToken(options),
+                },
+                body: JSON.stringify(params),
+            }),
+        );
     }
 
     public async getClients<T = any>(options?: IRequestOptions): Promise<T> {

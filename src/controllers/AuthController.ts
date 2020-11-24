@@ -1,11 +1,11 @@
-import { Controller, Route, Post, Tags, Example, Header, Request, Body, Get } from "tsoa";
-import * as got from "got";
+import { Controller, Route, Post, Tags, Example, Request, Body, Get } from "tsoa";
 import * as express from "express";
 import * as jwt from "jsonwebtoken";
 import * as config from "../config";
 import { initRefs } from "../db/initDB";
 import { IJWTBody } from "../interfaces";
 import { createProxyRequestToAuthServer } from "../utils/proxy";
+import { licServerApiService } from "../services";
 
 interface ISigninParams {
     email: string;
@@ -37,11 +37,20 @@ interface IVerifyResetPasswordTokenParams {
 interface SigninResponse {
     meta?: {};
     data?: {
-        role: string;
+        account: {
+            email: string;
+            lastName: string;
+            patronymicName: string;
+            phone: string;
+            position: string;
+            name: string;
+            language: string;
+        },
         token: string;
-        firstName: string;
-        lastName: string;
-        email: string;
+        rights: Array<{
+            obj: string;
+            action: string;
+        }>;
     };
     error?: Array<{
         code: number;
@@ -146,18 +155,32 @@ export class SigninController extends Controller {
     @Example<SigninResponse>({
         meta: {},
         data: {
-            role: "admin",
+            account: {
+                email: "test@test.com",
+                lastName: "Last name",
+                patronymicName: "Patronymic name",
+                phone: "+79999999999",
+                position: "1",
+                name: "First name",
+                language: "RU"
+            },
             token: "507c7f79bcf86cd7994f6c0e",
-            firstName: "First name",
-            lastName: "Last name",
-            email: "test@test.com",
+            rights: [
+                {
+                    obj: "terminals",
+                    action: "ALLOW"
+                }
+            ]
         }
     })
     public async signin(@Request() request: express.Request, @Body() body: ISigninParams): Promise<SigninResponse> {
         let res: SigninResponse;
-        
+
         try {
-            res = await createProxyRequestToAuthServer<SigninResponse>(this, request);
+            res = await licServerApiService.getClientToken<SigninResponse>({
+                pass: body.password,
+                email: body.email,
+            });
         } catch (err) {
             this.setStatus(401);
             return {
@@ -170,8 +193,8 @@ export class SigninController extends Controller {
             };
         }
 
+        // Потом это убрать
         let authInfo: IJWTBody;
-
         try {
             authInfo = await new Promise((resolve, reject) => {
                 jwt.verify(res.data.token, config.AUTH_CLIENT_PRIVATE_KEY, function (err: any, decoded: IJWTBody) {
@@ -194,6 +217,7 @@ export class SigninController extends Controller {
             };
         }
 
+        // А тут заменить на res.meta.client.id (или подобное)
         // Инициализация БД под клиента
         await initRefs(authInfo.userId);
 
