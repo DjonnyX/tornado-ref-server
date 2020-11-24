@@ -102,15 +102,15 @@ export class IntegrationController extends Controller {
         return await licServerApiService.getIntegration(id, { clientToken: request.token });
     }
 
-    @Post("{id}")
+    @Post()
     @Security("clientAccessToken")
     @OperationId("Create")
     @Example<IntegrationResponse>({
         meta: META_TEMPLATE,
         data: APPLICATION_RESPONSE_TEMPLATE,
     })
-    public async createIntegration(id: string, @Request() request: IAuthRequest, @Body() body: ICreateIntegrationParams): Promise<IntegrationResponse> {
-        return await licServerApiService.createIntegration(id, body as any, { clientToken: request.token });
+    public async createIntegration(@Request() request: IAuthRequest, @Body() body: ICreateIntegrationParams): Promise<IntegrationResponse> {
+        return await licServerApiService.createIntegration(body as any);
     }
 
     @Put("{id}")
@@ -121,7 +121,7 @@ export class IntegrationController extends Controller {
         data: APPLICATION_RESPONSE_TEMPLATE,
     })
     public async updateIntegration(id: string, @Request() request: IAuthRequest, @Body() body: IUpdateIntegrationParams): Promise<IntegrationResponse> {
-        return await licServerApiService.updateIntegration(id, body as any, { clientToken: request.token });
+        return await licServerApiService.updateIntegration(id, body as any);
     }
 
     @Delete("{id}")

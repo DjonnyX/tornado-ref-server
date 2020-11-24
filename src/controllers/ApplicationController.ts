@@ -88,7 +88,7 @@ export class ApplicationsController extends Controller {
     }
 }
 
-@Route("/applications")
+@Route("/application")
 @Tags("Application")
 export class ApplicationController extends Controller {
     @Get("{id}")
@@ -102,15 +102,15 @@ export class ApplicationController extends Controller {
         return await licServerApiService.getApplication(id, { clientToken: request.token });
     }
 
-    @Post("{id}")
+    @Post()
     @Security("clientAccessToken")
     @OperationId("Create")
     @Example<ApplicationResponse>({
         meta: META_TEMPLATE,
         data: APPLICATION_RESPONSE_TEMPLATE,
     })
-    public async createApplication(id: string, @Request() request: IAuthRequest, @Body() body: ICreateApplicationParams): Promise<ApplicationResponse> {
-        return await licServerApiService.createApplication(id, body as any, { clientToken: request.token });
+    public async createApplication(@Request() request: IAuthRequest, @Body() body: ICreateApplicationParams): Promise<ApplicationResponse> {
+        return await licServerApiService.createApplication(body as any);
     }
 
     @Put("{id}")
@@ -121,7 +121,7 @@ export class ApplicationController extends Controller {
         data: APPLICATION_RESPONSE_TEMPLATE,
     })
     public async updateApplication(id: string, @Request() request: IAuthRequest, @Body() body: IUpdateApplicationParams): Promise<ApplicationResponse> {
-        return await licServerApiService.updateApplication(id, body as any, { clientToken: request.token });
+        return await licServerApiService.updateApplication(id, body as any);
     }
 
     @Delete("{id}")
@@ -131,6 +131,6 @@ export class ApplicationController extends Controller {
         meta: META_TEMPLATE,
     })
     public async deleteApplication(id: string, @Request() request: IAuthRequest): Promise<ApplicationResponse> {
-        return await licServerApiService.deleteApplication(id, { clientToken: request.token });
+        return await licServerApiService.deleteApplication(id);
     }
 }

@@ -2409,7 +2409,7 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/applications/:id',
+    app.get('/api/v1/application/:id',
         authenticateMiddleware([{ "clientAccessToken": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
@@ -2433,11 +2433,10 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/v1/applications/:id',
+    app.post('/api/v1/application',
         authenticateMiddleware([{ "clientAccessToken": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
                 request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
                 body: { "in": "body", "name": "body", "required": true, "ref": "ICreateApplicationParams" },
             };
@@ -2458,7 +2457,7 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.put('/api/v1/applications/:id',
+    app.put('/api/v1/application/:id',
         authenticateMiddleware([{ "clientAccessToken": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
@@ -2483,7 +2482,7 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.delete('/api/v1/applications/:id',
+    app.delete('/api/v1/application/:id',
         authenticateMiddleware([{ "clientAccessToken": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
@@ -2931,11 +2930,10 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/v1/integrations/:id',
+    app.post('/api/v1/integrations',
         authenticateMiddleware([{ "clientAccessToken": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
                 request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
                 body: { "in": "body", "name": "body", "required": true, "ref": "ICreateIntegrationParams" },
             };
@@ -3295,11 +3293,10 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/v1/license/:id',
+    app.post('/api/v1/license',
         authenticateMiddleware([{ "clientAccessToken": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
                 request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
                 body: { "in": "body", "name": "body", "required": true, "ref": "ICreateLicenseParams" },
             };
@@ -3416,11 +3413,10 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/v1/license-types/:id',
+    app.post('/api/v1/license-types',
         authenticateMiddleware([{ "clientAccessToken": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
                 request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
                 body: { "in": "body", "name": "body", "required": true, "ref": "ICreateLicenseTypeParams" },
             };

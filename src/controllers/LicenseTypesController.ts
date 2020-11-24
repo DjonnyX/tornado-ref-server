@@ -104,15 +104,15 @@ export class LicenseTypeController extends Controller {
         return await licServerApiService.getLicenseType(id, { clientToken: request.token });
     }
 
-    @Post("{id}")
+    @Post()
     @Security("clientAccessToken")
     @OperationId("Create")
     @Example<LicenseTypeResponse>({
         meta: META_TEMPLATE,
         data: LICENSE_TYPE_RESPONSE_TEMPLATE,
     })
-    public async createLicenseType(id: string, @Request() request: IAuthRequest, @Body() body: ICreateLicenseTypeParams): Promise<LicenseTypeResponse> {
-        return await licServerApiService.createLicenseType(id, body as any, { clientToken: request.token });
+    public async createLicenseType(@Request() request: IAuthRequest, @Body() body: ICreateLicenseTypeParams): Promise<LicenseTypeResponse> {
+        return await licServerApiService.createLicenseType(body as any);
     }
 
     @Put("{id}")
@@ -123,7 +123,7 @@ export class LicenseTypeController extends Controller {
         data: LICENSE_TYPE_RESPONSE_TEMPLATE,
     })
     public async updateLicenseType(id: string, @Request() request: IAuthRequest, @Body() body: IUpdateLicenseTypeParams): Promise<LicenseTypeResponse> {
-        return await licServerApiService.updateLicenseType(id, body as any, { clientToken: request.token });
+        return await licServerApiService.updateLicenseType(id, body as any);
     }
 
     @Delete("{id}")
@@ -133,6 +133,6 @@ export class LicenseTypeController extends Controller {
         meta: META_TEMPLATE,
     })
     public async deleteLicenseType(id: string, @Request() request: IAuthRequest): Promise<LicenseTypeResponse> {
-        return await licServerApiService.deleteLicenseType(id, { clientToken: request.token });
+        return await licServerApiService.deleteLicenseType(id);
     }
 }
