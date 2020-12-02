@@ -1,4 +1,4 @@
-import { Controller, Route, Post, Tags, Example, Request, Body, Get } from "tsoa";
+import { Controller, Route, Post, Tags, Example, Request, Body, Get, Query } from "tsoa";
 import * as express from "express";
 import * as jwt from "jsonwebtoken";
 import * as config from "../config";
@@ -22,12 +22,14 @@ interface ISignupParams {
 }
 
 interface IResetPasswordParams {
-    token: string;
+    restorePassCode: string;
     password: string;
 }
 
 interface IForgotPasswordParams {
     email: string;
+    captchaId: string;
+    captchaVal: string;
 }
 
 interface IVerifyResetPasswordTokenParams {
@@ -38,6 +40,7 @@ interface SigninResponse {
     meta?: {};
     data?: {
         account: {
+            id: string;
             email: string;
             lastName: string;
             patronymicName: string;
@@ -74,6 +77,18 @@ interface GetSignupResponse {
             id: string;
             svg: string;
         };
+    };
+    error?: Array<{
+        code: number;
+        message: string;
+    }>;
+}
+
+interface GetCaptchaResponse {
+    meta?: {};
+    data?: {
+        id: string;
+        svg: string;
     };
     error?: Array<{
         code: number;
@@ -119,6 +134,22 @@ interface VerifyResetPasswordTokenResponse {
     }>;
 }
 
+@Route("/auth/captcha")
+@Tags("Auth")
+export class CaptchaController extends Controller {
+    @Get()
+    @Example<GetCaptchaResponse>({
+        meta: {},
+        data: {
+            id: "123123-234234-234234",
+            svg: "<svg></svg>",
+        }
+    })
+    public async getCaptcha(@Request() request: express.Request): Promise<GetCaptchaResponse> {
+        return await licServerApiService.getCaptcha();
+    }
+}
+
 @Route("/auth/signup")
 @Tags("Auth")
 export class SignupController extends Controller {
@@ -156,6 +187,7 @@ export class SigninController extends Controller {
         meta: {},
         data: {
             account: {
+                id: "507c7f79bcf86cd7994f6c0e",
                 email: "test@test.com",
                 lastName: "Last name",
                 patronymicName: "Patronymic name",
@@ -193,8 +225,10 @@ export class SigninController extends Controller {
             };
         }
 
+        console.log(res)
+
         // Потом это убрать
-        let authInfo: IJWTBody;
+        /*let authInfo: IJWTBody;
         try {
             authInfo = await new Promise((resolve, reject) => {
                 jwt.verify(res.data.token, config.AUTH_CLIENT_PRIVATE_KEY, function (err: any, decoded: IJWTBody) {
@@ -215,11 +249,11 @@ export class SigninController extends Controller {
                     }
                 ]
             };
-        }
+        }*/
 
         // А тут заменить на res.meta.client.id (или подобное)
         // Инициализация БД под клиента
-        await initRefs(authInfo.userId);
+        await initRefs(res.data.account.id);
 
         return res;
     }
@@ -234,32 +268,35 @@ export class ResetPasswordController extends Controller {
         data: {}
     })
     public async resetPassword(@Request() request: express.Request, @Body() body: IResetPasswordParams): Promise<ResetPasswordResponse> {
-        return await createProxyRequestToAuthServer<ResetPasswordResponse>(this, request);
+        return await licServerApiService.postClientRestorePassword<ResetPasswordResponse>({
+            restorePassCode: body.restorePassCode,
+            newPass: body.password,
+        });
     }
 }
 
 @Route("/auth/forgot-password")
 @Tags("Auth")
 export class ForgotPasswordController extends Controller {
-    @Post()
+    @Get()
     @Example<ForgotPasswordResponse>({
         meta: {},
         data: {}
     })
-    public async forgotPassword(@Request() request: express.Request, @Body() body: IForgotPasswordParams): Promise<ForgotPasswordResponse> {
-        return await createProxyRequestToAuthServer<ForgotPasswordResponse>(this, request);
+    public async forgotPassword(@Request() request: express.Request, @Query() email: string, @Query() captchaId: string, @Query() captchaVal): Promise<ForgotPasswordResponse> {
+        return await licServerApiService.getClientRestorePassword<ForgotPasswordResponse>({ email, captchaId, captchaVal });
     }
 }
 
 @Route("/auth/verify-reset-password-token")
 @Tags("Auth")
 export class VerifyResetPasswordTokenController extends Controller {
-    @Post()
+    @Get()
     @Example<VerifyResetPasswordTokenResponse>({
         meta: {},
         data: {}
     })
-    public async verifyResetPasswordToken(@Request() request: express.Request, @Body() body: IVerifyResetPasswordTokenParams): Promise<VerifyResetPasswordTokenResponse> {
-        return await createProxyRequestToAuthServer<VerifyResetPasswordTokenResponse>(this, request);
+    public async verifyResetPasswordToken(@Request() request: express.Request, @Query() restorePassCode: string): Promise<VerifyResetPasswordTokenResponse> {
+        return await licServerApiService.clientCheckRestorePassCode<VerifyResetPasswordTokenResponse>({ restorePassCode });
     }
 }

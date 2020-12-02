@@ -12,20 +12,50 @@ interface IGetClientTokenParams {
     email: string;
 }
 
+interface IGetClientCheckRestorePasswordParams {
+    restorePassCode: string;
+}
+
+interface IPostClientRestorePasswordParams {
+    restorePassCode: string;
+    newPass: string;
+}
+
+interface IGetClientRestorePasswordParams {
+    email: string;
+    captchaId: string;
+    captchaVal: string;
+}
+
+const BASE_URL = "api/v0/";
+
 class LicServerApiService {
     private getToken(options: IRequestOptions): string {
-        const clientToken = !!options && !!options.clientToken ? options.clientToken: undefined;
-        
+        const clientToken = !!options && !!options.clientToken ? options.clientToken : undefined;
+
         if (!!clientToken) {
             return `Bearer ${options.clientToken}`;
         }
-        
+
         return `Bearer ${config.AUTH_LIC_SERVER_API_KEY}`;
     }
 
-    public async getClientToken<T = any>(params: IGetClientTokenParams, options?: IRequestOptions): Promise<T> {
+    public async getCaptcha<T = any>(options?: IRequestOptions): Promise<T> {
         return await makeRequest<T>(
-            got.post(`${config.LIC_SERVER_HOST}/api/v1/clientToken`, {
+            got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}captcha`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": this.getToken(options),
+                },
+            }),
+        );
+    }
+
+    public async getClientToken<T = any>(params: IGetClientTokenParams, options?: IRequestOptions): Promise<T> {
+        console.log(`POST: ${config.LIC_SERVER_HOST}/${BASE_URL}clientToken`)
+        console.log(params)
+        return await makeRequest<T>(
+            got.post(`${config.LIC_SERVER_HOST}/${BASE_URL}clientToken`, {
                 headers: {
                     "content-type": "application/json",
                     "authorization": this.getToken(options),
@@ -35,9 +65,47 @@ class LicServerApiService {
         );
     }
 
+    public async postClientRestorePassword<T = any>(params: IPostClientRestorePasswordParams, options?: IRequestOptions): Promise<T> {
+        console.log(`POST: ${config.LIC_SERVER_HOST}/${BASE_URL}client/restorePass`)
+        console.log(params)
+        return await makeRequest<T>(
+            got.post(`${config.LIC_SERVER_HOST}/${BASE_URL}client/restorePass`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": this.getToken(options),
+                },
+                body: JSON.stringify(params),
+            }),
+        );
+    }
+
+    public async getClientRestorePassword<T = any>(params: IGetClientRestorePasswordParams, options?: IRequestOptions): Promise<T> {
+        return await makeRequest<T>(
+            got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}client/restorePass`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": this.getToken(options),
+                },
+                query: params,
+            }),
+        );
+    }
+
+    public async clientCheckRestorePassCode<T = any>(params: IGetClientCheckRestorePasswordParams, options?: IRequestOptions): Promise<T> {
+        return await makeRequest<T>(
+            got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}client/checkRestorePassCode`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": this.getToken(options),
+                },
+                query: params,
+            }),
+        );
+    }
+
     public async getClients<T = any>(options?: IRequestOptions): Promise<T> {
         return await makeRequest<T>(
-            got.get(`${config.LIC_SERVER_HOST}/api/v1/clients`, {
+            got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}clients`, {
                 headers: {
                     "content-type": "application/json",
                     "authorization": this.getToken(options),
@@ -48,7 +116,7 @@ class LicServerApiService {
 
     public async getClient<T = any>(id: string, options?: IRequestOptions): Promise<T> {
         return await makeRequest<T>(
-            got.get(`${config.LIC_SERVER_HOST}/api/v1/clients/${id}`, {
+            got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}clients/${id}`, {
                 headers: {
                     "content-type": "application/json",
                     "authorization": this.getToken(options),
@@ -59,7 +127,7 @@ class LicServerApiService {
 
     public async verifyLicenseKey<T = any>(key: string, options?: IRequestOptions): Promise<T> {
         return await makeRequest<T>(
-            got.get(`${config.LIC_SERVER_HOST}/api/v1/verify-lic-key/${key}`, {
+            got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}verify-lic-key/${key}`, {
                 headers: {
                     "content-type": "application/json",
                     "authorization": this.getToken(options),
@@ -71,7 +139,7 @@ class LicServerApiService {
     // licenses
     public async getLicenses<T = any>(options?: IRequestOptions): Promise<T> {
         return await makeRequest<T>(
-            got.get(`${config.LIC_SERVER_HOST}/api/v1/licenses`, {
+            got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}licenses`, {
                 headers: {
                     "content-type": "application/json",
                     "authorization": this.getToken(options),
@@ -82,7 +150,7 @@ class LicServerApiService {
 
     public async getLicense<T = any>(id: string, options?: IRequestOptions): Promise<T> {
         return await makeRequest<T>(
-            got.get(`${config.LIC_SERVER_HOST}/api/v1/license/${id}`, {
+            got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}license/${id}`, {
                 headers: {
                     "content-type": "application/json",
                     "authorization": this.getToken(options),
@@ -93,7 +161,7 @@ class LicServerApiService {
 
     public async createLicense<T = any>(license: ILicense, options?: IRequestOptions): Promise<T> {
         return await makeRequest<T>(
-            got.get(`${config.LIC_SERVER_HOST}/api/v1/license`, {
+            got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}license`, {
                 headers: {
                     "content-type": "application/json",
                     "authorization": this.getToken(options),
@@ -105,7 +173,7 @@ class LicServerApiService {
 
     public async updateLicense<T = any>(id: string, license: ILicense, options?: IRequestOptions): Promise<T> {
         return await makeRequest<T>(
-            got.get(`${config.LIC_SERVER_HOST}/api/v1/license/${id}`, {
+            got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}license/${id}`, {
                 headers: {
                     "content-type": "application/json",
                     "authorization": this.getToken(options),
@@ -117,7 +185,7 @@ class LicServerApiService {
 
     public async deleteLicense<T = any>(id: string, options?: IRequestOptions): Promise<T> {
         return await makeRequest<T>(
-            got.get(`${config.LIC_SERVER_HOST}/api/v1/license/${id}`, {
+            got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}license/${id}`, {
                 headers: {
                     "content-type": "application/json",
                     "authorization": this.getToken(options),
@@ -129,7 +197,7 @@ class LicServerApiService {
     // license types
     public async getLicenseTypes<T = any>(options?: IRequestOptions): Promise<T> {
         return await makeRequest<T>(
-            got.get(`${config.LIC_SERVER_HOST}/api/v1/license-types`, {
+            got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}license-types`, {
                 headers: {
                     "content-type": "application/json",
                     "authorization": this.getToken(options),
@@ -140,7 +208,7 @@ class LicServerApiService {
 
     public async getLicenseType<T = any>(id: string, options?: IRequestOptions): Promise<T> {
         return await makeRequest<T>(
-            got.get(`${config.LIC_SERVER_HOST}/api/v1/license-type/${id}`, {
+            got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}license-type/${id}`, {
                 headers: {
                     "content-type": "application/json",
                     "authorization": this.getToken(options),
@@ -151,7 +219,7 @@ class LicServerApiService {
 
     public async createLicenseType<T = any>(licenseType: ILicenseType, options?: IRequestOptions): Promise<T> {
         return await makeRequest<T>(
-            got.get(`${config.LIC_SERVER_HOST}/api/v1/license-type`, {
+            got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}license-type`, {
                 headers: {
                     "content-type": "application/json",
                     "authorization": this.getToken(options),
@@ -163,7 +231,7 @@ class LicServerApiService {
 
     public async updateLicenseType<T = any>(id: string, licenseType: ILicenseType, options?: IRequestOptions): Promise<T> {
         return await makeRequest<T>(
-            got.get(`${config.LIC_SERVER_HOST}/api/v1/license-type/${id}`, {
+            got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}license-type/${id}`, {
                 headers: {
                     "content-type": "application/json",
                     "authorization": this.getToken(options),
@@ -175,7 +243,7 @@ class LicServerApiService {
 
     public async deleteLicenseType<T = any>(id: string, options?: IRequestOptions): Promise<T> {
         return await makeRequest<T>(
-            got.get(`${config.LIC_SERVER_HOST}/api/v1/license-type/${id}`, {
+            got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}license-type/${id}`, {
                 headers: {
                     "content-type": "application/json",
                     "authorization": this.getToken(options),
@@ -187,7 +255,7 @@ class LicServerApiService {
     // applications
     public async getApplications<T = any>(options?: IRequestOptions): Promise<T> {
         return await makeRequest<T>(
-            got.get(`${config.LIC_SERVER_HOST}/api/v1/applications`, {
+            got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}applications`, {
                 headers: {
                     "content-type": "application/json",
                     "authorization": this.getToken(options),
@@ -198,7 +266,7 @@ class LicServerApiService {
 
     public async getApplication<T = any>(id: string, options?: IRequestOptions): Promise<T> {
         return await makeRequest<T>(
-            got.get(`${config.LIC_SERVER_HOST}/api/v1/application/${id}`, {
+            got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}application/${id}`, {
                 headers: {
                     "content-type": "application/json",
                     "authorization": this.getToken(options),
@@ -209,7 +277,7 @@ class LicServerApiService {
 
     public async createApplication<T = any>(licenseType: IApplication, options?: IRequestOptions): Promise<T> {
         return await makeRequest<T>(
-            got.post(`${config.LIC_SERVER_HOST}/api/v1/application`, {
+            got.post(`${config.LIC_SERVER_HOST}/${BASE_URL}application`, {
                 headers: {
                     "content-type": "application/json",
                     "authorization": this.getToken(options),
@@ -221,7 +289,7 @@ class LicServerApiService {
 
     public async updateApplication<T = any>(id: string, licenseType: IApplication, options?: IRequestOptions): Promise<T> {
         return await makeRequest<T>(
-            got.put(`${config.LIC_SERVER_HOST}/api/v1/application/${id}`, {
+            got.put(`${config.LIC_SERVER_HOST}/${BASE_URL}application/${id}`, {
                 headers: {
                     "content-type": "application/json",
                     "authorization": this.getToken(options),
@@ -233,7 +301,7 @@ class LicServerApiService {
 
     public async deleteApplication<T = any>(id: string, options?: IRequestOptions): Promise<T> {
         return await makeRequest<T>(
-            got.delete(`${config.LIC_SERVER_HOST}/api/v1/application/${id}`, {
+            got.delete(`${config.LIC_SERVER_HOST}/${BASE_URL}application/${id}`, {
                 headers: {
                     "content-type": "application/json",
                     "authorization": this.getToken(options),
@@ -245,7 +313,7 @@ class LicServerApiService {
     // integrations
     public async getIntegrations<T = any>(options?: IRequestOptions): Promise<T> {
         return await makeRequest<T>(
-            got.get(`${config.LIC_SERVER_HOST}/api/v1/integrations`, {
+            got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}integrations`, {
                 headers: {
                     "content-type": "application/json",
                     "authorization": this.getToken(options),
@@ -256,7 +324,7 @@ class LicServerApiService {
 
     public async getIntegration<T = any>(id: string, options?: IRequestOptions): Promise<T> {
         return await makeRequest<T>(
-            got.get(`${config.LIC_SERVER_HOST}/api/v1/integration/${id}`, {
+            got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}integration/${id}`, {
                 headers: {
                     "content-type": "application/json",
                     "authorization": this.getToken(options),
@@ -267,7 +335,7 @@ class LicServerApiService {
 
     public async createIntegration<T = any>(licenseType: IIntegration, options?: IRequestOptions): Promise<T> {
         return await makeRequest<T>(
-            got.post(`${config.LIC_SERVER_HOST}/api/v1/integration`, {
+            got.post(`${config.LIC_SERVER_HOST}/${BASE_URL}integration`, {
                 headers: {
                     "content-type": "application/json",
                     "authorization": this.getToken(options),
@@ -279,7 +347,7 @@ class LicServerApiService {
 
     public async updateIntegration<T = any>(id: string, licenseType: IIntegration, options?: IRequestOptions): Promise<T> {
         return await makeRequest<T>(
-            got.put(`${config.LIC_SERVER_HOST}/api/v1/integration/${id}`, {
+            got.put(`${config.LIC_SERVER_HOST}/${BASE_URL}integration/${id}`, {
                 headers: {
                     "content-type": "application/json",
                     "authorization": this.getToken(options),
@@ -291,7 +359,7 @@ class LicServerApiService {
 
     public async deleteIntegration<T = any>(id: string, options?: IRequestOptions): Promise<T> {
         return await makeRequest<T>(
-            got.delete(`${config.LIC_SERVER_HOST}/api/v1/integration/${id}`, {
+            got.delete(`${config.LIC_SERVER_HOST}/${BASE_URL}integration/${id}`, {
                 headers: {
                     "content-type": "application/json",
                     "authorization": this.getToken(options),

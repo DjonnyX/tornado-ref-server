@@ -9,6 +9,7 @@ export async function makeRequest<T = any>(request: got.GotPromise<any>): Promis
     try {
         r = await request;
     } catch (err) {
+        console.log(err)
         let authServerResp: any;
         if (err instanceof got.HTTPError) {
             if (err.statusCode === 500) {

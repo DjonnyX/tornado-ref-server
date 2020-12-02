@@ -19,6 +19,8 @@ import { ApplicationsController } from './controllers/ApplicationController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { ApplicationController } from './controllers/ApplicationController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { CaptchaController } from './controllers/AuthController';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { SignupController } from './controllers/AuthController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { SigninController } from './controllers/AuthController';
@@ -408,6 +410,16 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "GetCaptchaResponse": {
+        "dataType": "refObject",
+        "properties": {
+            "meta": { "dataType": "nestedObjectLiteral", "nestedProperties": {} },
+            "data": { "dataType": "nestedObjectLiteral", "nestedProperties": { "svg": { "dataType": "string", "required": true }, "id": { "dataType": "string", "required": true } } },
+            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "GetSignupResponse": {
         "dataType": "refObject",
         "properties": {
@@ -445,7 +457,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "meta": { "dataType": "nestedObjectLiteral", "nestedProperties": {} },
-            "data": { "dataType": "nestedObjectLiteral", "nestedProperties": { "rights": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "action": { "dataType": "string", "required": true }, "obj": { "dataType": "string", "required": true } } }, "required": true }, "token": { "dataType": "string", "required": true }, "account": { "dataType": "nestedObjectLiteral", "nestedProperties": { "language": { "dataType": "string", "required": true }, "name": { "dataType": "string", "required": true }, "position": { "dataType": "string", "required": true }, "phone": { "dataType": "string", "required": true }, "patronymicName": { "dataType": "string", "required": true }, "lastName": { "dataType": "string", "required": true }, "email": { "dataType": "string", "required": true } }, "required": true } } },
+            "data": { "dataType": "nestedObjectLiteral", "nestedProperties": { "rights": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "action": { "dataType": "string", "required": true }, "obj": { "dataType": "string", "required": true } } }, "required": true }, "token": { "dataType": "string", "required": true }, "account": { "dataType": "nestedObjectLiteral", "nestedProperties": { "language": { "dataType": "string", "required": true }, "name": { "dataType": "string", "required": true }, "position": { "dataType": "string", "required": true }, "phone": { "dataType": "string", "required": true }, "patronymicName": { "dataType": "string", "required": true }, "lastName": { "dataType": "string", "required": true }, "email": { "dataType": "string", "required": true }, "id": { "dataType": "string", "required": true } }, "required": true } } },
             "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
         },
         "additionalProperties": false,
@@ -473,7 +485,7 @@ const models: TsoaRoute.Models = {
     "IResetPasswordParams": {
         "dataType": "refObject",
         "properties": {
-            "token": { "dataType": "string", "required": true },
+            "restorePassCode": { "dataType": "string", "required": true },
             "password": { "dataType": "string", "required": true },
         },
         "additionalProperties": false,
@@ -489,28 +501,12 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IForgotPasswordParams": {
-        "dataType": "refObject",
-        "properties": {
-            "email": { "dataType": "string", "required": true },
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "VerifyResetPasswordTokenResponse": {
         "dataType": "refObject",
         "properties": {
             "meta": { "dataType": "nestedObjectLiteral", "nestedProperties": {} },
             "data": { "dataType": "nestedObjectLiteral", "nestedProperties": {} },
             "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IVerifyResetPasswordTokenParams": {
-        "dataType": "refObject",
-        "properties": {
-            "token": { "dataType": "string", "required": true },
         },
         "additionalProperties": false,
     },
@@ -2503,6 +2499,28 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.get('/api/v1/auth/captcha',
+        function(request: any, response: any, next: any) {
+            const args = {
+                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new CaptchaController();
+
+
+            const promise = controller.getCaptcha.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     app.get('/api/v1/auth/signup',
         function(request: any, response: any, next: any) {
             const args = {
@@ -2594,11 +2612,13 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/v1/auth/forgot-password',
+    app.get('/api/v1/auth/forgot-password',
         function(request: any, response: any, next: any) {
             const args = {
                 request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
-                body: { "in": "body", "name": "body", "required": true, "ref": "IForgotPasswordParams" },
+                email: { "in": "query", "name": "email", "required": true, "dataType": "string" },
+                captchaId: { "in": "query", "name": "captchaId", "required": true, "dataType": "string" },
+                captchaVal: { "in": "query", "name": "captchaVal", "required": true, "dataType": "any" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -2617,11 +2637,11 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/v1/auth/verify-reset-password-token',
+    app.get('/api/v1/auth/verify-reset-password-token',
         function(request: any, response: any, next: any) {
             const args = {
                 request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
-                body: { "in": "body", "name": "body", "required": true, "ref": "IVerifyResetPasswordTokenParams" },
+                restorePassCode: { "in": "query", "name": "restorePassCode", "required": true, "dataType": "string" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
