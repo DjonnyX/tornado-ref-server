@@ -2467,6 +2467,69 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"LicenseVerifyResponse": {
+				"properties": {
+					"meta": {
+						"$ref": "#/components/schemas/ILicenseInfoMeta"
+					},
+					"data": {
+						"properties": {
+							"client": {
+								"properties": {
+									"email": {
+										"type": "string"
+									},
+									"lastName": {
+										"type": "string"
+									},
+									"firstName": {
+										"type": "string"
+									},
+									"id": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"email",
+									"lastName",
+									"firstName",
+									"id"
+								],
+								"type": "object"
+							},
+							"license": {
+								"$ref": "#/components/schemas/ILicenseInfo"
+							}
+						},
+						"required": [
+							"client",
+							"license"
+						],
+						"type": "object"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
 			"LicenseResponse": {
 				"properties": {
 					"meta": {
@@ -5799,7 +5862,7 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"ITerminalUpdateRequest": {
+			"ITerminalCreateRequest": {
 				"properties": {
 					"active": {
 						"type": "boolean"
@@ -5808,7 +5871,8 @@
 						"type": "string"
 					},
 					"address": {
-						"type": "string"
+						"type": "string",
+						"nullable": true
 					},
 					"terminals": {
 						"items": {
@@ -5834,6 +5898,8 @@
 					}
 				},
 				"required": [
+					"name",
+					"address",
 					"terminals",
 					"employes"
 				],
@@ -6053,32 +6119,32 @@
 												{
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.058Z"
+													"lastUpdate": "2020-12-13T14:28:21.178Z"
 												},
 												{
 													"name": "products",
 													"version": 3,
-													"lastUpdate": "2020-11-26T11:56:35.058Z"
+													"lastUpdate": "2020-12-13T14:28:21.180Z"
 												},
 												{
 													"name": "selectors",
 													"version": 4,
-													"lastUpdate": "2020-11-26T11:56:35.058Z"
+													"lastUpdate": "2020-12-13T14:28:21.181Z"
 												},
 												{
 													"name": "tags",
 													"version": 5,
-													"lastUpdate": "2020-11-26T11:56:35.059Z"
+													"lastUpdate": "2020-12-13T14:28:21.181Z"
 												},
 												{
 													"name": "business-periods",
 													"version": 3,
-													"lastUpdate": "2020-11-26T11:56:35.059Z"
+													"lastUpdate": "2020-12-13T14:28:21.181Z"
 												},
 												{
 													"name": "ads",
 													"version": 3,
-													"lastUpdate": "2020-11-26T11:56:35.059Z"
+													"lastUpdate": "2020-12-13T14:28:21.181Z"
 												}
 											]
 										}
@@ -6119,7 +6185,7 @@
 											"data": {
 												"name": "products",
 												"version": 1,
-												"lastUpdate": "2020-11-26T11:56:35.065Z"
+												"lastUpdate": "2020-12-13T14:28:21.200Z"
 											}
 										}
 									}
@@ -6169,14 +6235,14 @@
 												"ref": {
 													"name": "assets",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.076Z"
+													"lastUpdate": "2020-12-13T14:28:21.261Z"
 												}
 											},
 											"data": [
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2020-11-26T11:56:35.076Z",
+													"lastUpdate": "2020-12-13T14:28:21.261Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"path": "assets/some_3d_model.fbx",
@@ -6225,7 +6291,7 @@
 												"ref": {
 													"name": "ads",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.095Z"
+													"lastUpdate": "2020-12-13T14:28:21.330Z"
 												}
 											},
 											"data": [
@@ -6299,7 +6365,7 @@
 												"ref": {
 													"name": "ads",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.103Z"
+													"lastUpdate": "2020-12-13T14:28:21.352Z"
 												}
 											},
 											"data": {
@@ -6369,7 +6435,7 @@
 												"ref": {
 													"name": "ads",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.110Z"
+													"lastUpdate": "2020-12-13T14:28:21.375Z"
 												}
 											},
 											"data": {
@@ -6446,7 +6512,7 @@
 												"ref": {
 													"name": "ads",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.115Z"
+													"lastUpdate": "2020-12-13T14:28:21.389Z"
 												}
 											}
 										}
@@ -6494,7 +6560,7 @@
 												"ref": {
 													"name": "ads",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.105Z"
+													"lastUpdate": "2020-12-13T14:28:21.355Z"
 												}
 											},
 											"data": {
@@ -6565,14 +6631,14 @@
 													"ref": {
 														"name": "ads",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.124Z"
+														"lastUpdate": "2020-12-13T14:28:21.416Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.124Z"
+														"lastUpdate": "2020-12-13T14:28:21.416Z"
 													}
 												}
 											},
@@ -6581,7 +6647,7 @@
 													{
 														"id": "107c7f79bcf86cd7994f6c0e",
 														"active": true,
-														"lastUpdate": "2020-11-26T11:56:35.124Z",
+														"lastUpdate": "2020-12-13T14:28:21.417Z",
 														"name": "some_3d_model",
 														"ext": ".fbx",
 														"mipmap": {
@@ -6641,14 +6707,14 @@
 													"ref": {
 														"name": "ads",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.129Z"
+														"lastUpdate": "2020-12-13T14:28:21.426Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.129Z"
+														"lastUpdate": "2020-12-13T14:28:21.426Z"
 													}
 												}
 											},
@@ -6656,7 +6722,7 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2020-11-26T11:56:35.129Z",
+													"lastUpdate": "2020-12-13T14:28:21.427Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -6723,14 +6789,14 @@
 													"ref": {
 														"name": "ads",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.136Z"
+														"lastUpdate": "2020-12-13T14:28:21.452Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.136Z"
+														"lastUpdate": "2020-12-13T14:28:21.452Z"
 													}
 												}
 											},
@@ -6738,7 +6804,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2020-11-26T11:56:35.136Z",
+													"lastUpdate": "2020-12-13T14:28:21.452Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -6810,14 +6876,14 @@
 													"ref": {
 														"name": "ads",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.138Z"
+														"lastUpdate": "2020-12-13T14:28:21.461Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.138Z"
+														"lastUpdate": "2020-12-13T14:28:21.462Z"
 													}
 												}
 											},
@@ -6825,7 +6891,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2020-11-26T11:56:35.139Z",
+													"lastUpdate": "2020-12-13T14:28:21.462Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -6905,14 +6971,14 @@
 													"ref": {
 														"name": "ads",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.145Z"
+														"lastUpdate": "2020-12-13T14:28:21.491Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.145Z"
+														"lastUpdate": "2020-12-13T14:28:21.491Z"
 													}
 												}
 											}
@@ -6977,7 +7043,7 @@
 												"ref": {
 													"name": "applications",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.155Z"
+													"lastUpdate": "2020-12-13T14:28:21.529Z"
 												}
 											},
 											"data": [
@@ -6991,7 +7057,7 @@
 														"version": "1.0.23"
 													},
 													"state": 0,
-													"lastUpdate": "2020-11-26T11:56:35.155Z"
+													"lastUpdate": "2020-12-13T14:28:21.531Z"
 												}
 											]
 										}
@@ -7030,7 +7096,7 @@
 												"ref": {
 													"name": "applications",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.158Z"
+													"lastUpdate": "2020-12-13T14:28:21.543Z"
 												}
 											},
 											"data": {
@@ -7043,7 +7109,7 @@
 													"version": "1.0.23"
 												},
 												"state": 0,
-												"lastUpdate": "2020-11-26T11:56:35.158Z"
+												"lastUpdate": "2020-12-13T14:28:21.543Z"
 											}
 										}
 									}
@@ -7088,7 +7154,7 @@
 												"ref": {
 													"name": "applications",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.163Z"
+													"lastUpdate": "2020-12-13T14:28:21.569Z"
 												}
 											},
 											"data": {
@@ -7101,7 +7167,7 @@
 													"version": "1.0.23"
 												},
 												"state": 0,
-												"lastUpdate": "2020-11-26T11:56:35.163Z"
+												"lastUpdate": "2020-12-13T14:28:21.569Z"
 											}
 										}
 									}
@@ -7156,7 +7222,7 @@
 												"ref": {
 													"name": "applications",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.167Z"
+													"lastUpdate": "2020-12-13T14:28:21.582Z"
 												}
 											}
 										}
@@ -7204,7 +7270,7 @@
 												"ref": {
 													"name": "applications",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.159Z"
+													"lastUpdate": "2020-12-13T14:28:21.555Z"
 												}
 											},
 											"data": {
@@ -7217,7 +7283,7 @@
 													"version": "1.0.23"
 												},
 												"state": 0,
-												"lastUpdate": "2020-11-26T11:56:35.160Z"
+												"lastUpdate": "2020-12-13T14:28:21.555Z"
 											}
 										}
 									}
@@ -7565,7 +7631,7 @@
 												"ref": {
 													"name": "business-periods",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.217Z"
+													"lastUpdate": "2020-12-13T14:28:21.726Z"
 												}
 											},
 											"data": [
@@ -7633,7 +7699,7 @@
 												"ref": {
 													"name": "business-periods",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.224Z"
+													"lastUpdate": "2020-12-13T14:28:21.737Z"
 												}
 											},
 											"data": {
@@ -7706,7 +7772,7 @@
 												"ref": {
 													"name": "business-periods",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.234Z"
+													"lastUpdate": "2020-12-13T14:28:21.753Z"
 												}
 											},
 											"data": {
@@ -7786,7 +7852,7 @@
 												"ref": {
 													"name": "business-periods",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.237Z"
+													"lastUpdate": "2020-12-13T14:28:21.758Z"
 												}
 											}
 										}
@@ -7834,7 +7900,7 @@
 												"ref": {
 													"name": "business-periods",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.226Z"
+													"lastUpdate": "2020-12-13T14:28:21.740Z"
 												}
 											},
 											"data": {
@@ -7907,7 +7973,7 @@
 												"ref": {
 													"name": "currencies",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.245Z"
+													"lastUpdate": "2020-12-13T14:28:21.788Z"
 												}
 											},
 											"data": [
@@ -7962,7 +8028,7 @@
 												"ref": {
 													"name": "currencies",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.249Z"
+													"lastUpdate": "2020-12-13T14:28:21.811Z"
 												}
 											},
 											"data": {
@@ -8022,7 +8088,7 @@
 												"ref": {
 													"name": "currencies",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.253Z"
+													"lastUpdate": "2020-12-13T14:28:21.826Z"
 												}
 											},
 											"data": {
@@ -8089,7 +8155,7 @@
 												"ref": {
 													"name": "currencies",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.257Z"
+													"lastUpdate": "2020-12-13T14:28:21.836Z"
 												}
 											}
 										}
@@ -8137,7 +8203,7 @@
 												"ref": {
 													"name": "currencies",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.250Z"
+													"lastUpdate": "2020-12-13T14:28:21.815Z"
 												}
 											},
 											"data": {
@@ -8197,7 +8263,7 @@
 												"ref": {
 													"name": "applications",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.264Z"
+													"lastUpdate": "2020-12-13T14:28:21.862Z"
 												}
 											},
 											"data": [
@@ -8211,7 +8277,7 @@
 														"version": "1.0.23"
 													},
 													"state": 0,
-													"lastUpdate": "2020-11-26T11:56:35.264Z"
+													"lastUpdate": "2020-12-13T14:28:21.862Z"
 												}
 											]
 										}
@@ -8248,7 +8314,7 @@
 												"ref": {
 													"name": "applications",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.270Z"
+													"lastUpdate": "2020-12-13T14:28:21.878Z"
 												}
 											},
 											"data": {
@@ -8261,7 +8327,7 @@
 													"version": "1.0.23"
 												},
 												"state": 0,
-												"lastUpdate": "2020-11-26T11:56:35.270Z"
+												"lastUpdate": "2020-12-13T14:28:21.878Z"
 											}
 										}
 									}
@@ -8309,7 +8375,7 @@
 												"ref": {
 													"name": "applications",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.269Z"
+													"lastUpdate": "2020-12-13T14:28:21.876Z"
 												}
 											},
 											"data": {
@@ -8322,7 +8388,7 @@
 													"version": "1.0.23"
 												},
 												"state": 0,
-												"lastUpdate": "2020-11-26T11:56:35.269Z"
+												"lastUpdate": "2020-12-13T14:28:21.876Z"
 											}
 										}
 									}
@@ -8367,7 +8433,7 @@
 												"ref": {
 													"name": "applications",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.274Z"
+													"lastUpdate": "2020-12-13T14:28:21.891Z"
 												}
 											},
 											"data": {
@@ -8380,7 +8446,7 @@
 													"version": "1.0.23"
 												},
 												"state": 0,
-												"lastUpdate": "2020-11-26T11:56:35.274Z"
+												"lastUpdate": "2020-12-13T14:28:21.891Z"
 											}
 										}
 									}
@@ -8435,7 +8501,7 @@
 												"ref": {
 													"name": "applications",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.279Z"
+													"lastUpdate": "2020-12-13T14:28:21.906Z"
 												}
 											}
 										}
@@ -8483,7 +8549,7 @@
 												"ref": {
 													"name": "languages",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.292Z"
+													"lastUpdate": "2020-12-13T14:28:21.925Z"
 												}
 											},
 											"data": [
@@ -8543,7 +8609,7 @@
 												"ref": {
 													"name": "languages",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.297Z"
+													"lastUpdate": "2020-12-13T14:28:21.940Z"
 												}
 											},
 											"data": {
@@ -8608,7 +8674,7 @@
 												"ref": {
 													"name": "languages",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.303Z"
+													"lastUpdate": "2020-12-13T14:28:21.961Z"
 												}
 											},
 											"data": {
@@ -8680,7 +8746,7 @@
 												"ref": {
 													"name": "languages",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.306Z"
+													"lastUpdate": "2020-12-13T14:28:21.974Z"
 												}
 											}
 										}
@@ -8728,7 +8794,7 @@
 												"ref": {
 													"name": "languages",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.299Z"
+													"lastUpdate": "2020-12-13T14:28:21.943Z"
 												}
 											},
 											"data": {
@@ -8794,14 +8860,14 @@
 													"ref": {
 														"name": "languages",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.312Z"
+														"lastUpdate": "2020-12-13T14:28:22.004Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.313Z"
+														"lastUpdate": "2020-12-13T14:28:22.004Z"
 													}
 												}
 											},
@@ -8809,7 +8875,7 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2020-11-26T11:56:35.313Z",
+													"lastUpdate": "2020-12-13T14:28:22.005Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -8868,14 +8934,14 @@
 													"ref": {
 														"name": "languages",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.319Z"
+														"lastUpdate": "2020-12-13T14:28:22.040Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.319Z"
+														"lastUpdate": "2020-12-13T14:28:22.040Z"
 													}
 												}
 											},
@@ -8883,7 +8949,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2020-11-26T11:56:35.319Z",
+													"lastUpdate": "2020-12-13T14:28:22.040Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -8939,14 +9005,14 @@
 													"ref": {
 														"name": "languages",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.320Z"
+														"lastUpdate": "2020-12-13T14:28:22.043Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.320Z"
+														"lastUpdate": "2020-12-13T14:28:22.043Z"
 													}
 												}
 											},
@@ -8954,7 +9020,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2020-11-26T11:56:35.321Z",
+													"lastUpdate": "2020-12-13T14:28:22.043Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -9018,14 +9084,14 @@
 													"ref": {
 														"name": "languages",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.323Z"
+														"lastUpdate": "2020-12-13T14:28:22.051Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.323Z"
+														"lastUpdate": "2020-12-13T14:28:22.051Z"
 													}
 												}
 											},
@@ -9033,7 +9099,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2020-11-26T11:56:35.323Z",
+													"lastUpdate": "2020-12-13T14:28:22.051Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -9105,14 +9171,14 @@
 													"ref": {
 														"name": "languages",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.328Z"
+														"lastUpdate": "2020-12-13T14:28:22.067Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.328Z"
+														"lastUpdate": "2020-12-13T14:28:22.067Z"
 													}
 												}
 											}
@@ -9169,20 +9235,20 @@
 												"ref": {
 													"name": "licenses",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.340Z"
+													"lastUpdate": "2020-12-13T14:28:22.100Z"
 												}
 											},
 											"data": [
 												{
 													"id": "507c7f79bcf86cd7994f6c0e",
 													"userId": "507c7f79bcf86cd7994f6c0e",
-													"dateStart": "2020-11-26T11:56:35.340Z",
-													"dateEnd": "2020-11-26T11:56:35.340Z",
+													"dateStart": "2020-12-13T14:28:22.100Z",
+													"dateEnd": "2020-12-13T14:28:22.100Z",
 													"state": 0,
 													"status": "NEW",
 													"key": "0000-1111-2222-3333",
 													"licTypeId": "507c7f79bcf86cd7994f6c0e",
-													"lastUpdate": "2020-11-26T11:56:35.340Z",
+													"lastUpdate": "2020-12-13T14:28:22.101Z",
 													"extra": {
 														"key": "value"
 													}
@@ -9207,6 +9273,67 @@
 				"parameters": []
 			}
 		},
+		"/license/verify": {
+			"get": {
+				"operationId": "Verify",
+				"responses": {
+					"200": {
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/LicenseVerifyResponse"
+								},
+								"examples": {
+									"example": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "licenses",
+													"version": 1,
+													"lastUpdate": "2020-12-13T14:28:22.115Z"
+												}
+											},
+											"data": {
+												"license": {
+													"id": "507c7f79bcf86cd7994f6c0e",
+													"userId": "507c7f79bcf86cd7994f6c0e",
+													"dateStart": "2020-12-13T14:28:22.115Z",
+													"dateEnd": "2020-12-13T14:28:22.115Z",
+													"state": 0,
+													"status": "NEW",
+													"key": "0000-1111-2222-3333",
+													"licTypeId": "507c7f79bcf86cd7994f6c0e",
+													"lastUpdate": "2020-12-13T14:28:22.115Z",
+													"extra": {
+														"key": "value"
+													}
+												},
+												"client": {
+													"id": "1234324234234",
+													"firstName": "First name",
+													"lastName": "Last name",
+													"email": "client@test.com"
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"description": "Ok"
+					}
+				},
+				"tags": [
+					"License"
+				],
+				"security": [
+					{
+						"accessToken": []
+					}
+				],
+				"parameters": []
+			}
+		},
 		"/license/{id}": {
 			"get": {
 				"operationId": "GetOne",
@@ -9224,19 +9351,19 @@
 												"ref": {
 													"name": "licenses",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.344Z"
+													"lastUpdate": "2020-12-13T14:28:22.126Z"
 												}
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"userId": "507c7f79bcf86cd7994f6c0e",
-												"dateStart": "2020-11-26T11:56:35.344Z",
-												"dateEnd": "2020-11-26T11:56:35.344Z",
+												"dateStart": "2020-12-13T14:28:22.126Z",
+												"dateEnd": "2020-12-13T14:28:22.126Z",
 												"state": 0,
 												"status": "NEW",
 												"key": "0000-1111-2222-3333",
 												"licTypeId": "507c7f79bcf86cd7994f6c0e",
-												"lastUpdate": "2020-11-26T11:56:35.345Z",
+												"lastUpdate": "2020-12-13T14:28:22.126Z",
 												"extra": {
 													"key": "value"
 												}
@@ -9284,19 +9411,19 @@
 												"ref": {
 													"name": "licenses",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.363Z"
+													"lastUpdate": "2020-12-13T14:28:22.146Z"
 												}
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"userId": "507c7f79bcf86cd7994f6c0e",
-												"dateStart": "2020-11-26T11:56:35.363Z",
-												"dateEnd": "2020-11-26T11:56:35.363Z",
+												"dateStart": "2020-12-13T14:28:22.146Z",
+												"dateEnd": "2020-12-13T14:28:22.146Z",
 												"state": 0,
 												"status": "NEW",
 												"key": "0000-1111-2222-3333",
 												"licTypeId": "507c7f79bcf86cd7994f6c0e",
-												"lastUpdate": "2020-11-26T11:56:35.363Z",
+												"lastUpdate": "2020-12-13T14:28:22.146Z",
 												"extra": {
 													"key": "value"
 												}
@@ -9354,7 +9481,7 @@
 												"ref": {
 													"name": "licenses",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.368Z"
+													"lastUpdate": "2020-12-13T14:28:22.163Z"
 												}
 											}
 										}
@@ -9402,19 +9529,19 @@
 												"ref": {
 													"name": "licenses",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.346Z"
+													"lastUpdate": "2020-12-13T14:28:22.129Z"
 												}
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"userId": "507c7f79bcf86cd7994f6c0e",
-												"dateStart": "2020-11-26T11:56:35.346Z",
-												"dateEnd": "2020-11-26T11:56:35.346Z",
+												"dateStart": "2020-12-13T14:28:22.129Z",
+												"dateEnd": "2020-12-13T14:28:22.129Z",
 												"state": 0,
 												"status": "NEW",
 												"key": "0000-1111-2222-3333",
 												"licTypeId": "507c7f79bcf86cd7994f6c0e",
-												"lastUpdate": "2020-11-26T11:56:35.346Z",
+												"lastUpdate": "2020-12-13T14:28:22.129Z",
 												"extra": {
 													"key": "value"
 												}
@@ -9465,7 +9592,7 @@
 												"ref": {
 													"name": "license-types",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.374Z"
+													"lastUpdate": "2020-12-13T14:28:22.184Z"
 												}
 											},
 											"data": [
@@ -9476,7 +9603,7 @@
 													"price": 180000,
 													"payNotice": "Оплата через терминал Эвотор",
 													"integrationId": "507c7f79bcf86cd7994f6c0e",
-													"lastUpdate": "2020-11-26T11:56:35.374Z",
+													"lastUpdate": "2020-12-13T14:28:22.184Z",
 													"extra": {
 														"key": "value"
 													}
@@ -9516,7 +9643,7 @@
 												"ref": {
 													"name": "license-types",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.379Z"
+													"lastUpdate": "2020-12-13T14:28:22.198Z"
 												}
 											},
 											"data": {
@@ -9526,7 +9653,7 @@
 												"price": 180000,
 												"payNotice": "Оплата через терминал Эвотор",
 												"integrationId": "507c7f79bcf86cd7994f6c0e",
-												"lastUpdate": "2020-11-26T11:56:35.379Z",
+												"lastUpdate": "2020-12-13T14:28:22.198Z",
 												"extra": {
 													"key": "value"
 												}
@@ -9577,7 +9704,7 @@
 												"ref": {
 													"name": "license-types",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.378Z"
+													"lastUpdate": "2020-12-13T14:28:22.195Z"
 												}
 											},
 											"data": {
@@ -9587,7 +9714,7 @@
 												"price": 180000,
 												"payNotice": "Оплата через терминал Эвотор",
 												"integrationId": "507c7f79bcf86cd7994f6c0e",
-												"lastUpdate": "2020-11-26T11:56:35.378Z",
+												"lastUpdate": "2020-12-13T14:28:22.195Z",
 												"extra": {
 													"key": "value"
 												}
@@ -9635,7 +9762,7 @@
 												"ref": {
 													"name": "license-types",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.382Z"
+													"lastUpdate": "2020-12-13T14:28:22.210Z"
 												}
 											},
 											"data": {
@@ -9645,7 +9772,7 @@
 												"price": 180000,
 												"payNotice": "Оплата через терминал Эвотор",
 												"integrationId": "507c7f79bcf86cd7994f6c0e",
-												"lastUpdate": "2020-11-26T11:56:35.382Z",
+												"lastUpdate": "2020-12-13T14:28:22.210Z",
 												"extra": {
 													"key": "value"
 												}
@@ -9703,7 +9830,7 @@
 												"ref": {
 													"name": "license-types",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.386Z"
+													"lastUpdate": "2020-12-13T14:28:22.217Z"
 												}
 											}
 										}
@@ -9751,7 +9878,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.413Z"
+													"lastUpdate": "2020-12-13T14:28:22.310Z"
 												}
 											},
 											"data": [
@@ -9811,7 +9938,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.415Z"
+													"lastUpdate": "2020-12-13T14:28:22.315Z"
 												}
 											},
 											"data": [
@@ -9871,7 +9998,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.416Z"
+													"lastUpdate": "2020-12-13T14:28:22.321Z"
 												}
 											},
 											"data": [
@@ -9940,7 +10067,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.425Z"
+													"lastUpdate": "2020-12-13T14:28:22.335Z"
 												}
 											},
 											"data": {
@@ -10005,7 +10132,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.445Z"
+													"lastUpdate": "2020-12-13T14:28:22.368Z"
 												}
 											},
 											"data": {
@@ -10077,7 +10204,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.460Z"
+													"lastUpdate": "2020-12-13T14:28:22.389Z"
 												}
 											}
 										}
@@ -10125,7 +10252,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.435Z"
+													"lastUpdate": "2020-12-13T14:28:22.352Z"
 												}
 											},
 											"data": {
@@ -10190,7 +10317,7 @@
 												"ref": {
 													"name": "order-types",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.483Z"
+													"lastUpdate": "2020-12-13T14:28:22.425Z"
 												}
 											},
 											"data": [
@@ -10256,7 +10383,7 @@
 												"ref": {
 													"name": "order-types",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.489Z"
+													"lastUpdate": "2020-12-13T14:28:22.436Z"
 												}
 											},
 											"data": {
@@ -10327,7 +10454,7 @@
 												"ref": {
 													"name": "order-types",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.495Z"
+													"lastUpdate": "2020-12-13T14:28:22.453Z"
 												}
 											},
 											"data": {
@@ -10405,7 +10532,7 @@
 												"ref": {
 													"name": "order-types",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.498Z"
+													"lastUpdate": "2020-12-13T14:28:22.458Z"
 												}
 											}
 										}
@@ -10453,7 +10580,7 @@
 												"ref": {
 													"name": "order-types",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.490Z"
+													"lastUpdate": "2020-12-13T14:28:22.440Z"
 												}
 											},
 											"data": {
@@ -10525,14 +10652,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.506Z"
+														"lastUpdate": "2020-12-13T14:28:22.478Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.506Z"
+														"lastUpdate": "2020-12-13T14:28:22.479Z"
 													}
 												}
 											},
@@ -10541,7 +10668,7 @@
 													{
 														"id": "107c7f79bcf86cd7994f6c0e",
 														"active": true,
-														"lastUpdate": "2020-11-26T11:56:35.507Z",
+														"lastUpdate": "2020-12-13T14:28:22.479Z",
 														"name": "some_3d_model",
 														"ext": ".fbx",
 														"mipmap": {
@@ -10601,14 +10728,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.511Z"
+														"lastUpdate": "2020-12-13T14:28:22.486Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.511Z"
+														"lastUpdate": "2020-12-13T14:28:22.486Z"
 													}
 												}
 											},
@@ -10616,7 +10743,7 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2020-11-26T11:56:35.511Z",
+													"lastUpdate": "2020-12-13T14:28:22.486Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -10683,14 +10810,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.518Z"
+														"lastUpdate": "2020-12-13T14:28:22.503Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.518Z"
+														"lastUpdate": "2020-12-13T14:28:22.503Z"
 													}
 												}
 											},
@@ -10698,7 +10825,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2020-11-26T11:56:35.518Z",
+													"lastUpdate": "2020-12-13T14:28:22.503Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -10770,14 +10897,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.521Z"
+														"lastUpdate": "2020-12-13T14:28:22.509Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.521Z"
+														"lastUpdate": "2020-12-13T14:28:22.509Z"
 													}
 												}
 											},
@@ -10785,7 +10912,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2020-11-26T11:56:35.521Z",
+													"lastUpdate": "2020-12-13T14:28:22.510Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -10865,14 +10992,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.530Z"
+														"lastUpdate": "2020-12-13T14:28:22.527Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.530Z"
+														"lastUpdate": "2020-12-13T14:28:22.527Z"
 													}
 												}
 											}
@@ -10937,7 +11064,7 @@
 												"ref": {
 													"name": "products",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.554Z"
+													"lastUpdate": "2020-12-13T14:28:22.580Z"
 												}
 											},
 											"data": [
@@ -11030,7 +11157,7 @@
 												"ref": {
 													"name": "products",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.559Z"
+													"lastUpdate": "2020-12-13T14:28:22.593Z"
 												}
 											},
 											"data": {
@@ -11128,7 +11255,7 @@
 												"ref": {
 													"name": "products",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.567Z"
+													"lastUpdate": "2020-12-13T14:28:22.615Z"
 												}
 											},
 											"data": {
@@ -11233,7 +11360,7 @@
 												"ref": {
 													"name": "products",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.574Z"
+													"lastUpdate": "2020-12-13T14:28:22.632Z"
 												}
 											}
 										}
@@ -11281,7 +11408,7 @@
 												"ref": {
 													"name": "products",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.561Z"
+													"lastUpdate": "2020-12-13T14:28:22.596Z"
 												}
 											},
 											"data": {
@@ -11380,14 +11507,14 @@
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.582Z"
+														"lastUpdate": "2020-12-13T14:28:22.650Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.582Z"
+														"lastUpdate": "2020-12-13T14:28:22.651Z"
 													}
 												}
 											},
@@ -11396,7 +11523,7 @@
 													{
 														"id": "107c7f79bcf86cd7994f6c0e",
 														"active": true,
-														"lastUpdate": "2020-11-26T11:56:35.582Z",
+														"lastUpdate": "2020-12-13T14:28:22.651Z",
 														"name": "some_3d_model",
 														"ext": ".fbx",
 														"mipmap": {
@@ -11456,14 +11583,14 @@
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.587Z"
+														"lastUpdate": "2020-12-13T14:28:22.660Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.587Z"
+														"lastUpdate": "2020-12-13T14:28:22.660Z"
 													}
 												}
 											},
@@ -11471,7 +11598,7 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2020-11-26T11:56:35.587Z",
+													"lastUpdate": "2020-12-13T14:28:22.661Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -11538,14 +11665,14 @@
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.594Z"
+														"lastUpdate": "2020-12-13T14:28:22.676Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.594Z"
+														"lastUpdate": "2020-12-13T14:28:22.677Z"
 													}
 												}
 											},
@@ -11553,7 +11680,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2020-11-26T11:56:35.594Z",
+													"lastUpdate": "2020-12-13T14:28:22.677Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -11617,14 +11744,14 @@
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.595Z"
+														"lastUpdate": "2020-12-13T14:28:22.680Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.595Z"
+														"lastUpdate": "2020-12-13T14:28:22.680Z"
 													}
 												}
 											},
@@ -11632,7 +11759,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2020-11-26T11:56:35.595Z",
+													"lastUpdate": "2020-12-13T14:28:22.680Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -11704,14 +11831,14 @@
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.599Z"
+														"lastUpdate": "2020-12-13T14:28:22.688Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.599Z"
+														"lastUpdate": "2020-12-13T14:28:22.688Z"
 													}
 												}
 											},
@@ -11719,7 +11846,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2020-11-26T11:56:35.599Z",
+													"lastUpdate": "2020-12-13T14:28:22.688Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -11799,14 +11926,14 @@
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.611Z"
+														"lastUpdate": "2020-12-13T14:28:22.706Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.611Z"
+														"lastUpdate": "2020-12-13T14:28:22.706Z"
 													}
 												}
 											}
@@ -11871,7 +11998,7 @@
 												"ref": {
 													"name": "selectors",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.637Z"
+													"lastUpdate": "2020-12-13T14:28:22.755Z"
 												}
 											},
 											"data": [
@@ -11947,7 +12074,7 @@
 												"ref": {
 													"name": "selectors",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.643Z"
+													"lastUpdate": "2020-12-13T14:28:22.767Z"
 												}
 											},
 											"data": {
@@ -12019,7 +12146,7 @@
 												"ref": {
 													"name": "selectors",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.651Z"
+													"lastUpdate": "2020-12-13T14:28:22.785Z"
 												}
 											},
 											"data": {
@@ -12098,7 +12225,7 @@
 												"ref": {
 													"name": "selectors",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.658Z"
+													"lastUpdate": "2020-12-13T14:28:22.799Z"
 												}
 											}
 										}
@@ -12146,7 +12273,7 @@
 												"ref": {
 													"name": "selectors",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.645Z"
+													"lastUpdate": "2020-12-13T14:28:22.771Z"
 												}
 											},
 											"data": {
@@ -12219,14 +12346,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.667Z"
+														"lastUpdate": "2020-12-13T14:28:22.816Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.668Z"
+														"lastUpdate": "2020-12-13T14:28:22.816Z"
 													}
 												}
 											},
@@ -12235,7 +12362,7 @@
 													{
 														"id": "107c7f79bcf86cd7994f6c0e",
 														"active": true,
-														"lastUpdate": "2020-11-26T11:56:35.668Z",
+														"lastUpdate": "2020-12-13T14:28:22.817Z",
 														"name": "some_3d_model",
 														"ext": ".fbx",
 														"mipmap": {
@@ -12295,14 +12422,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.672Z"
+														"lastUpdate": "2020-12-13T14:28:22.830Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.672Z"
+														"lastUpdate": "2020-12-13T14:28:22.830Z"
 													}
 												}
 											},
@@ -12310,7 +12437,7 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2020-11-26T11:56:35.672Z",
+													"lastUpdate": "2020-12-13T14:28:22.830Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -12377,14 +12504,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.679Z"
+														"lastUpdate": "2020-12-13T14:28:22.848Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.679Z"
+														"lastUpdate": "2020-12-13T14:28:22.849Z"
 													}
 												}
 											},
@@ -12392,7 +12519,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2020-11-26T11:56:35.679Z",
+													"lastUpdate": "2020-12-13T14:28:22.850Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -12464,14 +12591,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.683Z"
+														"lastUpdate": "2020-12-13T14:28:22.857Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.683Z"
+														"lastUpdate": "2020-12-13T14:28:22.857Z"
 													}
 												}
 											},
@@ -12479,7 +12606,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2020-11-26T11:56:35.683Z",
+													"lastUpdate": "2020-12-13T14:28:22.857Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -12559,14 +12686,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.691Z"
+														"lastUpdate": "2020-12-13T14:28:22.876Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.691Z"
+														"lastUpdate": "2020-12-13T14:28:22.876Z"
 													}
 												}
 											}
@@ -12631,7 +12758,7 @@
 												"ref": {
 													"name": "stores",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.708Z"
+													"lastUpdate": "2020-12-13T14:28:22.923Z"
 												}
 											},
 											"data": [
@@ -12691,7 +12818,7 @@
 												"ref": {
 													"name": "stores",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.712Z"
+													"lastUpdate": "2020-12-13T14:28:22.933Z"
 												}
 											},
 											"data": {
@@ -12756,7 +12883,7 @@
 												"ref": {
 													"name": "stores",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.718Z"
+													"lastUpdate": "2020-12-13T14:28:22.944Z"
 												}
 											},
 											"data": {
@@ -12828,7 +12955,7 @@
 												"ref": {
 													"name": "stores",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.721Z"
+													"lastUpdate": "2020-12-13T14:28:22.953Z"
 												}
 											}
 										}
@@ -12876,7 +13003,7 @@
 												"ref": {
 													"name": "stores",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.714Z"
+													"lastUpdate": "2020-12-13T14:28:22.936Z"
 												}
 											},
 											"data": {
@@ -12941,7 +13068,7 @@
 												"ref": {
 													"name": "tags",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.734Z"
+													"lastUpdate": "2020-12-13T14:28:22.989Z"
 												}
 											},
 											"data": [
@@ -13006,7 +13133,7 @@
 												"ref": {
 													"name": "tags",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.738Z"
+													"lastUpdate": "2020-12-13T14:28:23.001Z"
 												}
 											},
 											"data": {
@@ -13076,7 +13203,7 @@
 												"ref": {
 													"name": "tags",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.742Z"
+													"lastUpdate": "2020-12-13T14:28:23.017Z"
 												}
 											},
 											"data": {
@@ -13153,7 +13280,7 @@
 												"ref": {
 													"name": "tags",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.744Z"
+													"lastUpdate": "2020-12-13T14:28:23.024Z"
 												}
 											}
 										}
@@ -13201,7 +13328,7 @@
 												"ref": {
 													"name": "tags",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.739Z"
+													"lastUpdate": "2020-12-13T14:28:23.007Z"
 												}
 											},
 											"data": {
@@ -13272,14 +13399,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.752Z"
+														"lastUpdate": "2020-12-13T14:28:23.065Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.752Z"
+														"lastUpdate": "2020-12-13T14:28:23.066Z"
 													}
 												}
 											},
@@ -13288,7 +13415,7 @@
 													{
 														"id": "107c7f79bcf86cd7994f6c0e",
 														"active": true,
-														"lastUpdate": "2020-11-26T11:56:35.752Z",
+														"lastUpdate": "2020-12-13T14:28:23.066Z",
 														"name": "some_3d_model",
 														"ext": ".fbx",
 														"mipmap": {
@@ -13348,14 +13475,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.756Z"
+														"lastUpdate": "2020-12-13T14:28:23.075Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.756Z"
+														"lastUpdate": "2020-12-13T14:28:23.075Z"
 													}
 												}
 											},
@@ -13363,7 +13490,7 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2020-11-26T11:56:35.756Z",
+													"lastUpdate": "2020-12-13T14:28:23.076Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -13430,14 +13557,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.762Z"
+														"lastUpdate": "2020-12-13T14:28:23.094Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.762Z"
+														"lastUpdate": "2020-12-13T14:28:23.094Z"
 													}
 												}
 											},
@@ -13445,7 +13572,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2020-11-26T11:56:35.762Z",
+													"lastUpdate": "2020-12-13T14:28:23.095Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -13517,14 +13644,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.765Z"
+														"lastUpdate": "2020-12-13T14:28:23.101Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.765Z"
+														"lastUpdate": "2020-12-13T14:28:23.101Z"
 													}
 												}
 											},
@@ -13532,7 +13659,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2020-11-26T11:56:35.765Z",
+													"lastUpdate": "2020-12-13T14:28:23.102Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -13612,14 +13739,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.771Z"
+														"lastUpdate": "2020-12-13T14:28:23.128Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2020-11-26T11:56:35.771Z"
+														"lastUpdate": "2020-12-13T14:28:23.128Z"
 													}
 												}
 											}
@@ -13684,7 +13811,7 @@
 												"ref": {
 													"name": "terminals",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.785Z"
+													"lastUpdate": "2020-12-13T14:28:23.178Z"
 												}
 											},
 											"data": [
@@ -13693,7 +13820,7 @@
 													"type": "kiosk",
 													"name": "My terminal",
 													"store": "My store 1",
-													"lastwork": "2020-11-26T11:56:35.786Z",
+													"lastwork": "2020-12-13T14:28:23.179Z",
 													"extra": {
 														"key": "value"
 													}
@@ -13738,7 +13865,7 @@
 												"ref": {
 													"name": "terminals",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.791Z"
+													"lastUpdate": "2020-12-13T14:28:23.191Z"
 												}
 											},
 											"data": {
@@ -13746,7 +13873,7 @@
 												"type": "kiosk",
 												"name": "My terminal",
 												"store": "My store 1",
-												"lastwork": "2020-11-26T11:56:35.791Z",
+												"lastwork": "2020-12-13T14:28:23.191Z",
 												"extra": {
 													"key": "value"
 												}
@@ -13780,9 +13907,11 @@
 						}
 					}
 				]
-			},
-			"put": {
-				"operationId": "Update",
+			}
+		},
+		"/terminal": {
+			"post": {
+				"operationId": "Create",
 				"responses": {
 					"200": {
 						"content": {
@@ -13797,7 +13926,7 @@
 												"ref": {
 													"name": "terminals",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.792Z"
+													"lastUpdate": "2020-12-13T14:28:23.193Z"
 												}
 											},
 											"data": {
@@ -13805,7 +13934,7 @@
 												"type": "kiosk",
 												"name": "My terminal",
 												"store": "My store 1",
-												"lastwork": "2020-11-26T11:56:35.792Z",
+												"lastwork": "2020-12-13T14:28:23.193Z",
 												"extra": {
 													"key": "value"
 												}
@@ -13826,72 +13955,17 @@
 						"clientAccessToken": []
 					}
 				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				],
+				"parameters": [],
 				"requestBody": {
 					"required": true,
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/ITerminalUpdateRequest"
+								"$ref": "#/components/schemas/ITerminalCreateRequest"
 							}
 						}
 					}
 				}
-			},
-			"delete": {
-				"operationId": "Delete",
-				"responses": {
-					"200": {
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ITerminalResponse"
-								},
-								"examples": {
-									"example": {
-										"value": {
-											"meta": {
-												"ref": {
-													"name": "terminals",
-													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.798Z"
-												}
-											}
-										}
-									}
-								}
-							}
-						},
-						"description": "Ok"
-					}
-				},
-				"tags": [
-					"Terminal"
-				],
-				"security": [
-					{
-						"clientAccessToken": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
 			}
 		},
 		"/translations": {
@@ -13911,7 +13985,7 @@
 												"ref": {
 													"name": "translations",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.809Z"
+													"lastUpdate": "2020-12-13T14:28:23.227Z"
 												}
 											},
 											"data": [
@@ -13968,7 +14042,7 @@
 												"ref": {
 													"name": "translations",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.813Z"
+													"lastUpdate": "2020-12-13T14:28:23.242Z"
 												}
 											},
 											"data": {
@@ -14030,7 +14104,7 @@
 												"ref": {
 													"name": "translations",
 													"version": 1,
-													"lastUpdate": "2020-11-26T11:56:35.815Z"
+													"lastUpdate": "2020-12-13T14:28:23.247Z"
 												}
 											},
 											"data": {

@@ -30,7 +30,7 @@ interface IGetClientRestorePasswordParams {
 const BASE_URL = "api/v0/";
 
 class LicServerApiService {
-    private getToken(options: IRequestOptions): string {
+    private getToken(options?: IRequestOptions): string {
         const clientToken = !!options && !!options.clientToken ? options.clientToken : undefined;
 
         if (!!clientToken) {
@@ -125,12 +125,12 @@ class LicServerApiService {
         );
     }
 
-    public async verifyLicenseKey<T = any>(key: string, options?: IRequestOptions): Promise<T> {
+    public async verifyLicenseKey<T = any>(token: string): Promise<T> {
         return await makeRequest<T>(
-            got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}verify-lic-key/${key}`, {
+            got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}license/verify/${token}`, {
                 headers: {
                     "content-type": "application/json",
-                    "authorization": this.getToken(options),
+                    "authorization": this.getToken(),
                 }
             }),
         );

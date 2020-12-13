@@ -5,6 +5,7 @@ import { LicenseStatuses } from "@djonnyx/tornado-types/dist/interfaces/raw/Lice
 import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "../interfaces";
 import { licServerApiService } from "../services";
+import { ILicense } from "@djonnyx/tornado-types";
 
 interface ILicenseInfo {
     id: string;
@@ -38,6 +39,23 @@ interface IUpdateLicenseParams {
     status?: LicenseStatuses;
     licTypeId?: string;
     extra?: { [key: string]: any } | null;
+}
+
+interface LicenseVerifyResponse {
+    meta?: ILicenseInfoMeta;
+    data?: {
+        license: ILicenseInfo;
+        client: {
+            id: string;
+            firstName: string;
+            lastName: string;
+            email: string;
+        };
+    };
+    error?: Array<{
+        code: number;
+        message: string;
+    }>;
 }
 
 interface LicensesGetResponse {
@@ -95,6 +113,43 @@ export class LicensesController extends Controller {
     })
     public async getLicense(@Request() request: IAuthRequest): Promise<LicensesGetResponse> {
         return await licServerApiService.getLicenses({ clientToken: request.token });
+    }
+}
+
+@Route("/license/verify")
+@Tags("License")
+export class LicenseCheckController extends Controller {
+    @Get()
+    @Security("accessToken")
+    @OperationId("Verify")
+    @Example<LicenseVerifyResponse>({
+        meta: META_TEMPLATE,
+        data: {
+            license: LICENSE_RESPONSE_TEMPLATE,
+            client: {
+                id: "1234324234234",
+                firstName: "First name",
+                lastName: "Last name",
+                email: "client@test.com"
+            }
+        },
+    })
+    public async verifyLicense(@Request() request: IAuthRequest): Promise<LicenseVerifyResponse> {
+        let req: any;
+        try {
+            req = await licServerApiService.verifyLicenseKey(request.token);
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Caught error. ${err}`,
+                    }
+                ]
+            };
+        }
+        return req;
     }
 }
 

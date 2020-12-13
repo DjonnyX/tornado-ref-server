@@ -1,10 +1,11 @@
 import { RefTypes, TerminalModel } from "../models";
-import { Controller, Route, Get, Tags, OperationId, Example, Security, Put, Body, Delete, Request } from "tsoa";
+import { Controller, Route, Get, Tags, OperationId, Example, Security, Put, Body, Delete, Request, Post } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatTerminalModel } from "../utils/terminal";
 import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "../interfaces";
-import { ITerminal, TerminalStatusTypes, TerminalTypes } from "@djonnyx/tornado-types";
+import { ILicense, ITerminal, TerminalStatusTypes, TerminalTypes } from "@djonnyx/tornado-types";
+import { licServerApiService } from "../services";
 
 interface ITerminalItem extends ITerminal { }
 
@@ -30,14 +31,14 @@ interface ITerminalResponse {
     }>;
 }
 
-/*interface ITerminalCreateRequest {
+interface ITerminalCreateRequest {
     active?: boolean;
     name: string;
     address: string | null;
     terminals: Array<string> | null;
     employes: Array<string> | null;
     extra?: { [key: string]: any } | null;
-}*/
+}
 
 interface ITerminalUpdateRequest {
     active?: boolean;
@@ -109,7 +110,7 @@ export class TerminalController extends Controller {
     @OperationId("GetOne")
     @Example<ITerminalResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE
+        data: RESPONSE_TEMPLATE,
     })
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<ITerminalResponse> {
         try {
@@ -132,18 +133,34 @@ export class TerminalController extends Controller {
         }
     }
 
-    /*@Post()
+    @Post()
     @Security("clientAccessToken")
     @OperationId("Create")
     @Example<ITerminalResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
-    public async create(@Body() request: ITerminalCreateRequest): Promise<ITerminalResponse> {
+    public async create(@Body() body: ITerminalCreateRequest, @Request() request: IAuthRequest): Promise<ITerminalResponse> {
+        // create terminal
+        let license: ILicense;
         try {
-            const item = new TerminalModel(request);
+            license = await licServerApiService.verifyLicenseKey(request.token);
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Caught error. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        try {
+            const item = new TerminalModel(body);
             const savedItem = await item.save();
-            const ref = await riseRefVersion(RefTypes.TERMINALS);
+            const ref = await riseRefVersion(license.userId, RefTypes.TERMINALS);
             return {
                 meta: { ref },
                 data: formatTerminalModel(savedItem),
@@ -159,9 +176,9 @@ export class TerminalController extends Controller {
                 ]
             };
         }
-    }*/
+    }
 
-    @Put("{id}")
+    /*@Put("{id}")
     @Security("clientAccessToken")
     @OperationId("Update")
     @Example<ITerminalResponse>({
@@ -237,5 +254,5 @@ export class TerminalController extends Controller {
                 ]
             };
         }
-    }
+    }*/
 }

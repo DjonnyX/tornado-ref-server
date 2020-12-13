@@ -4,6 +4,64 @@ import * as jwt from "jsonwebtoken";
 import { IAuthRequest, IJWTBody } from "./interfaces";
 import { licServerApiService } from "./services";
 
+const checkClientToken = async (token: string, request: express.Request) => {
+  return new Promise((resolve, reject) => {
+    if (!token) {
+      reject(new Error("No token provided."));
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    jwt.verify(token, config.AUTH_PRIVATE_KEY, async function (err: any, decoded: IJWTBody) {
+      if (err) {
+        return reject(err);
+      }
+
+      if (!decoded.userId || !decoded.email) {
+        return reject(new Error("Client access token bad format."))
+      }
+
+      (request as IAuthRequest).client = {
+        id: decoded.userId,
+        email: decoded.email,
+      };
+      (request as IAuthRequest).token = token;
+
+      return resolve();
+    });
+  });
+}
+
+const checkApiKey = async (apikey: string, request: express.Request) => {
+  return new Promise((resolve, reject) => {
+    if (!apikey) {
+      reject(new Error("No apikey provided."));
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    jwt.verify(apikey, config.AUTH_APIKEY_PRIVATE_KEY, async function (err: any, decoded: IJWTBody) {
+      if (err) {
+        return reject(err);
+      }
+
+      if (!decoded.userId || !decoded.email) {
+        if (request.method === "POST" && request.path === "/api/v0/apikey/register") {
+          // allow
+        } else {
+          return reject(new Error("apikey bad format."));
+        }
+      }
+
+      (request as IAuthRequest).client = {
+        id: decoded.userId,
+        email: decoded.email,
+      };
+      (request as IAuthRequest).token = apikey;
+
+      return resolve();
+    });
+  });
+}
+
 export async function expressAuthentication(
   request: express.Request,
   securityName: string,
@@ -15,50 +73,10 @@ export async function expressAuthentication(
     const authorization = (request.headers["authorization"] ? String(request.headers["authorization"]) : undefined) || "";
     let token = authorization.replace("Bearer ", "");
 
-    return new Promise((resolve, reject) => {
-      if (!token || token === "") {
-        reject(new Error("No token provided."));
-      }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      jwt.verify(token, config.AUTH_PRIVATE_KEY, function (err: any, decoded: IJWTBody) {
-        if (err) {
-          return reject(err);
-        }
-
-        if (!decoded.userId || !decoded.email) {
-          return reject(new Error("Access token bad format."))
-        }
-        (request as IAuthRequest).client = {
-          id: decoded.userId,
-          email: decoded.email,
-        };
-        (request as IAuthRequest).token = token;
-        return resolve();
-      });
-    });
+    return await checkClientToken(token, request);
   } else if (securityName === "accessToken") {
     const token = request.headers["x-access-token"] ? String(request.headers["x-access-token"]) : undefined;
-    return new Promise((resolve, reject) => {
-      if (!token) {
-        reject(new Error("No token provided."));
-      }
-      // Вовке я bearer передаю от ключа
-      // проверку тут не надо делать её проверит lic-server отдельным запросом проверки ключа
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      jwt.verify(token, config.AUTH_CLIENT_PRIVATE_KEY, function (err: any, decoded: IJWTBody) {
-        if (err) {
-          return reject(err);
-        }
-
-        licServerApiService.verifyLicenseKey(token, { clientToken: token })
-          .then(res => {
-            (request as IAuthRequest).client = res.data;
-            (request as IAuthRequest).token = token;
-            resolve();
-          }).catch(err => {
-            reject(err);
-          });
-      });
-    });
+    
+    return await checkApiKey(token, request);
   }
 }
