@@ -160,7 +160,7 @@ export class TerminalController extends Controller {
         try {
             const item = new TerminalModel(body);
             const savedItem = await item.save();
-            const ref = await riseRefVersion(license.userId, RefTypes.TERMINALS);
+            const ref = await riseRefVersion(license.clientId, RefTypes.TERMINALS);
             return {
                 meta: { ref },
                 data: formatTerminalModel(savedItem),

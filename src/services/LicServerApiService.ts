@@ -137,12 +137,14 @@ class LicServerApiService {
     }
 
     // licenses
-    public async getLicenses<T = any>(options?: IRequestOptions): Promise<T> {
+    public async getLicenses<T = any>(token: string): Promise<T> {
         return await makeRequest<T>(
-            got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}licenses`, {
+            got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}license/forClient`, {
                 headers: {
                     "content-type": "application/json",
-                    "authorization": this.getToken(options),
+                    "authorization": this.getToken({
+                        clientToken: token,
+                    }),
                 }
             }),
         );

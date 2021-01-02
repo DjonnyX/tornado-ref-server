@@ -876,6 +876,18 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ILicenseType": {
+        "dataType": "refObject",
+        "properties": {
+            "id": { "dataType": "string" },
+            "name": { "dataType": "string", "required": true },
+            "description": { "dataType": "string", "required": true },
+            "price": { "dataType": "double", "required": true },
+            "payNotice": { "dataType": "string", "required": true },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "LicenseStates": {
         "dataType": "refEnum",
         "enums": [-1, 0, 1],
@@ -890,15 +902,17 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "id": { "dataType": "string", "required": true },
-            "userId": { "dataType": "string", "required": true },
-            "dateStart": { "dataType": "datetime", "required": true },
+            "clientId": { "dataType": "string", "required": true },
             "dateEnd": { "dataType": "datetime", "required": true },
+            "dateStart": { "dataType": "datetime", "required": true },
+            "integrationSubscriptionId": { "dataType": "string", "required": true },
+            "integrationUser": { "dataType": "string", "required": true },
+            "key": { "dataType": "string", "required": true },
+            "lastUpdate": { "dataType": "datetime", "required": true },
+            "licType": { "ref": "ILicenseType", "required": true },
+            "licTypeId": { "dataType": "string", "required": true },
             "state": { "ref": "LicenseStates", "required": true },
             "status": { "ref": "LicenseStatuses", "required": true },
-            "key": { "dataType": "string", "required": true },
-            "licTypeId": { "dataType": "string", "required": true },
-            "lastUpdate": { "dataType": "datetime", "required": true },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }], "required": true },
         },
         "additionalProperties": false,
     },
@@ -929,35 +943,6 @@ const models: TsoaRoute.Models = {
             "meta": { "ref": "ILicenseInfoMeta" },
             "data": { "ref": "ILicenseInfo" },
             "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ICreateLicenseParams": {
-        "dataType": "refObject",
-        "properties": {
-            "userId": { "dataType": "string", "required": true },
-            "dateStart": { "dataType": "datetime", "required": true },
-            "dateEnd": { "dataType": "datetime", "required": true },
-            "state": { "ref": "LicenseStates" },
-            "status": { "ref": "LicenseStatuses" },
-            "key": { "dataType": "string", "required": true },
-            "licTypeId": { "dataType": "string" },
-            "lastUpdate": { "dataType": "datetime", "required": true },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IUpdateLicenseParams": {
-        "dataType": "refObject",
-        "properties": {
-            "dateStart": { "dataType": "datetime" },
-            "dateEnd": { "dataType": "datetime" },
-            "state": { "ref": "LicenseStates" },
-            "status": { "ref": "LicenseStatuses" },
-            "licTypeId": { "dataType": "string" },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
         "additionalProperties": false,
     },
@@ -3342,79 +3327,6 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getLicense.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
-        });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/v1/license',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
-            const args = {
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
-                body: { "in": "body", "name": "body", "required": true, "ref": "ICreateLicenseParams" },
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = getValidatedArgs(args, request);
-            } catch (err) {
-                return next(err);
-            }
-
-            const controller = new LicenseController();
-
-
-            const promise = controller.createLicense.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
-        });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.put('/api/v1/license/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
-            const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
-                body: { "in": "body", "name": "body", "required": true, "ref": "IUpdateLicenseParams" },
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = getValidatedArgs(args, request);
-            } catch (err) {
-                return next(err);
-            }
-
-            const controller = new LicenseController();
-
-
-            const promise = controller.updateLicense.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
-        });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.delete('/api/v1/license/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
-            const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = getValidatedArgs(args, request);
-            } catch (err) {
-                return next(err);
-            }
-
-            const controller = new LicenseController();
-
-
-            const promise = controller.deleteLicense.apply(controller, validatedArgs as any);
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

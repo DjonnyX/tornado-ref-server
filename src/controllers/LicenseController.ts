@@ -7,21 +7,10 @@ import { IAuthRequest } from "../interfaces";
 import { licServerApiService } from "../services";
 import { ILicense } from "@djonnyx/tornado-types";
 
-interface ILicenseInfo {
-    id: string;
-    userId: string;
-    dateStart: Date;
-    dateEnd: Date;
-    state: LicenseStates;
-    status: LicenseStatuses;
-    key: string;
-    licTypeId: string;
-    lastUpdate: Date;
-    extra: { [key: string]: any } | null;
-}
+interface ILicenseInfo extends ILicense {}
 
-interface ICreateLicenseParams {
-    userId: string;
+/*interface ICreateLicenseParams {
+    clientId: string;
     dateStart: Date;
     dateEnd: Date;
     state?: LicenseStates;
@@ -39,7 +28,7 @@ interface IUpdateLicenseParams {
     status?: LicenseStatuses;
     licTypeId?: string;
     extra?: { [key: string]: any } | null;
-}
+}*/
 
 interface LicenseVerifyResponse {
     meta?: ILicenseInfoMeta;
@@ -82,15 +71,22 @@ interface ILicenseInfoMeta {
 
 const LICENSE_RESPONSE_TEMPLATE: ILicenseInfo = {
     id: "507c7f79bcf86cd7994f6c0e",
-    userId: "507c7f79bcf86cd7994f6c0e",
+    clientId: "507c7f79bcf86cd7994f6c0e",
     dateStart: new Date(),
     dateEnd: new Date(),
+    integrationSubscriptionId: "6cc21660-3598-44ca-8117-11886767cc05",
+    integrationUser: "01-000000000283339",
     state: LicenseStates.ACTIVE,
     status: LicenseStatuses.NEW,
     key: "0000-1111-2222-3333",
-    licTypeId: "507c7f79bcf86cd7994f6c0e",
+    licType: {
+        description: "Киоск с кассой эвотор",
+        name: "Киоск с кассой эвотор",
+        payNotice: "оплата лицензии осуществляется на market.evotor.ru",
+        price: 1006,
+    },
+    licTypeId: "ecbbfd40-62ba-49bf-8620-75d8c5ed3953",
     lastUpdate: new Date(),
-    extra: { key: "value" },
 };
 
 const META_TEMPLATE: ILicenseInfoMeta = {
@@ -112,7 +108,7 @@ export class LicensesController extends Controller {
         data: [LICENSE_RESPONSE_TEMPLATE],
     })
     public async getLicense(@Request() request: IAuthRequest): Promise<LicensesGetResponse> {
-        return await licServerApiService.getLicenses({ clientToken: request.token });
+        return await licServerApiService.getLicenses(request.token);
     }
 }
 
@@ -167,7 +163,7 @@ export class LicenseController extends Controller {
         return await licServerApiService.getLicense(id, { clientToken: request.token });
     }
 
-    @Post()
+    /*@Post()
     @Security("clientAccessToken")
     @OperationId("Create")
     @Example<LicenseResponse>({
@@ -197,5 +193,5 @@ export class LicenseController extends Controller {
     })
     public async deleteLicense(id: string, @Request() request: IAuthRequest): Promise<LicenseResponse> {
         return await licServerApiService.deleteLicense(id);
-    }
+    }*/
 }
