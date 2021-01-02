@@ -9,7 +9,6 @@ if (fs.existsSync(".env")) {
 }
 
 export const AUTH_PRIVATE_KEY = process.env["AUTH_PRIVATE_KEY"];
-export const AUTH_FORGOT_PRIVATE_KEY = process.env["AUTH_FORGOT_PRIVATE_KEY"];
 export const AUTH_APIKEY_PRIVATE_KEY = process.env["AUTH_APIKEY_PRIVATE_KEY"];
 export const DB_NAME = process.env["DB_NAME"];
 export const DB_URI = process.env["DB_URI"];
@@ -22,10 +21,5 @@ export const AUTH_LIC_SERVER_API_KEY = process.env["AUTH_LIC_SERVER_API_KEY"];
 
 if (!AUTH_PRIVATE_KEY) {
     logger.error("No client secret. Set AUTH_PRIVATE_KEY environment variable.");
-    process.exit(1);
-}
-
-if (!AUTH_FORGOT_PRIVATE_KEY) {
-    logger.error("No client secret. Set AUTH_FORGOT_PRIVATE_KEY environment variable.");
     process.exit(1);
 }
