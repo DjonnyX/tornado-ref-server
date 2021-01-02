@@ -4,7 +4,7 @@ import { SuccessResponse } from "./SuccessResponse";
 import { ITranslationTemplate } from "./ITranslationTemplate";
 import { ICurrencyTemplate } from "./ICurrencyTemplate";
 import { IAuthInfo, IAuthRequest } from "./IAuthRequest";
-import { IJWTBody } from "./IJWTBody";
+import { IClientJWTBody } from "./IClientJWTBody";
 
 export {
     IError,
@@ -14,5 +14,5 @@ export {
     ICurrencyTemplate,
     IAuthRequest,
     IAuthInfo,
-    IJWTBody,
+    IClientJWTBody,
 };
