@@ -84,7 +84,7 @@ export class ApplicationsController extends Controller {
         data: [APPLICATION_RESPONSE_TEMPLATE],
     })
     public async getApplication(@Request() request: IAuthRequest): Promise<ApplicationsGetResponse> {
-        return await licServerApiService.getApplications({ clientToken: request.token });
+        return await licServerApiService.getApplications();
     }
 }
 

@@ -132,7 +132,7 @@ export const uploadAsset = async (request: IAuthRequest, allowedExtensions: Arra
 /**
  * Возвращает удаленный asset
  */
-export const deleteAsset = (assetPath: string): Promise<IAsset> => {
+export const deleteAsset = (assetPath: string): Promise<IAsset | void> => {
     return new Promise((resolve, reject) => {
         fs.unlink(path.normalize(assetPath), (err) => {
             if (!!err && err.code === "ENOENT") {

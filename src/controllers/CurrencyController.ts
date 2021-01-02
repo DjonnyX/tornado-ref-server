@@ -230,14 +230,14 @@ export class CurrencyController extends Controller {
         try {
             const currencies: Array<ICurrency> = await CurrencyModel.find({ client: request.client.id });
 
-            const promises = new Array<Promise<any>>();
+            const promises = new Array<Promise<void>>();
 
             if (isDefault) {
                 currencies.forEach(currency => {
                     if (currency.code !== currencyCode) {
                         if (!!currency.isDefault) {
                             currency.isDefault = false;
-                            promises.push(new Promise(async (resolve, reject) => {
+                            promises.push(new Promise<void>(async (resolve, reject) => {
                                 try {
                                     await currency.save();
                                 } catch (err) {
@@ -265,7 +265,7 @@ export class CurrencyController extends Controller {
                 if (needSetupDefault && firstCurrency) {
                     firstCurrency.isDefault = true;
 
-                    promises.push(new Promise(async (resolve, reject) => {
+                    promises.push(new Promise<void>(async (resolve, reject) => {
                         try {
                             await firstCurrency.save();
                         } catch (err) {

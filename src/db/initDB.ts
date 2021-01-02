@@ -39,7 +39,7 @@ const mergeDefaultTranslations = async (client: string) => {
         dictionary[item.code] = item;
     });
 
-    const promises = new Array<Promise<any>>();
+    const promises = new Array<Promise<void>>();
     availableLangs.forEach(lang => {
         if (!dictionary[lang.code]) {
             const newTranslation = new TranslationModel({

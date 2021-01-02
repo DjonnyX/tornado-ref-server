@@ -278,14 +278,14 @@ export class LanguageController extends Controller {
         try {
             const langs: Array<ILanguage> = await LanguageModel.find({ client: request.client.id });
 
-            const promises = new Array<Promise<any>>();
+            const promises = new Array<Promise<void>>();
 
             if (isDefault) {
                 langs.forEach(lang => {
                     if (lang.code !== languageCode) {
                         if (!!lang.isDefault) {
                             lang.isDefault = false;
-                            promises.push(new Promise(async (resolve, reject) => {
+                            promises.push(new Promise<void>(async (resolve, reject) => {
                                 try {
                                     await lang.save();
                                 } catch (err) {
@@ -313,7 +313,7 @@ export class LanguageController extends Controller {
                 if (needSetupDefault && firstLang) {
                     firstLang.isDefault = true;
 
-                    promises.push(new Promise(async (resolve, reject) => {
+                    promises.push(new Promise<void>(async (resolve, reject) => {
                         try {
                             await firstLang.save();
                         } catch (err) {
@@ -412,7 +412,7 @@ export class LanguageController extends Controller {
         // нужно удалять ассеты
         const assetsList = language.assets;
 
-        const promises = new Array<Promise<any>>();
+        const promises = new Array<Promise<void>>();
 
         try {
             let isAssetsChanged = false;

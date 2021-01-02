@@ -227,10 +227,10 @@ export class AdController extends Controller {
 
             // удаление ассетов из разности resources
             const deletedAssetsFromImages = getDeletedImagesFromDifferense(lastContents, item.contents);
-            const promises = new Array<Promise<any>>();
+            const promises = new Array<Promise<void>>();
             let isAssetsChanged = false;
             deletedAssetsFromImages.forEach(assetId => {
-                promises.push(new Promise(async (resolve, reject) => {
+                promises.push(new Promise<void>(async (resolve, reject) => {
                     // удаление из списка assets
                     if (item.contents) {
                         for (const lang in item.contents) {
@@ -319,12 +319,12 @@ export class AdController extends Controller {
         // нужно удалять ассеты
         const assetsList = getEntityAssets(ad);
 
-        const promises = new Array<Promise<any>>();
+        const promises = new Array<Promise<void>>();
 
         try {
             let isAssetsChanged = false;
             assetsList.forEach(assetId => {
-                promises.push(new Promise(async (resolve) => {
+                promises.push(new Promise<void>(async (resolve) => {
                     const asset = await AssetModel.findByIdAndDelete(assetId);
                     if (!!asset) {
                         await deleteAsset(asset.path);

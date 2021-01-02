@@ -1,9 +1,6 @@
 import { Controller, Route, Post, Tags, Example, Request, Body, Get, Query } from "tsoa";
 import * as express from "express";
-import * as jwt from "jsonwebtoken";
-import * as config from "../config";
 import { initRefs } from "../db/initDB";
-import { IJWTBody } from "../interfaces";
 import { createProxyRequestToAuthServer } from "../utils/proxy";
 import { licServerApiService } from "../services";
 

@@ -262,7 +262,7 @@ export class SelectorController extends Controller {
 
             // удаление ассетов из разности resources
             const deletedAssetsFromImages = getDeletedImagesFromDifferense(lastContents, item.contents);
-            const promises = new Array<Promise<any>>();
+            const promises = new Array<Promise<void>>();
             let isAssetsChanged = false;
             deletedAssetsFromImages.forEach(assetId => {
                 promises.push(new Promise(async (resolve, reject) => {
@@ -354,7 +354,7 @@ export class SelectorController extends Controller {
         // нужно удалять ассеты
         const assetsList = getEntityAssets(selector);
 
-        const promises = new Array<Promise<any>>();
+        const promises = new Array<Promise<void>>();
 
         try {
             let isAssetsChanged = false;

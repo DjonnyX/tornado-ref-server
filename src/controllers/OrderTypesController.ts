@@ -214,7 +214,7 @@ export class OrderTypeController extends Controller {
 
             // удаление ассетов из разности resources
             const deletedAssetsFromImages = getDeletedImagesFromDifferense(lastContents, item.contents);
-            const promises = new Array<Promise<any>>();
+            const promises = new Array<Promise<void>>();
             let isAssetsChanged = false;
             deletedAssetsFromImages.forEach(assetId => {
                 promises.push(new Promise(async (resolve, reject) => {
@@ -306,7 +306,7 @@ export class OrderTypeController extends Controller {
         // нужно удалять ассеты
         const assetsList = getEntityAssets(orderType);
 
-        const promises = new Array<Promise<any>>();
+        const promises = new Array<Promise<void>>();
 
         try {
             let isAssetsChanged = false;

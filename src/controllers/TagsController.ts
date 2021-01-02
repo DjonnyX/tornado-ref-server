@@ -213,7 +213,7 @@ export class TagController extends Controller {
 
             // удаление ассетов из разности resources
             const deletedAssetsFromImages = getDeletedImagesFromDifferense(lastContents, item.contents);
-            const promises = new Array<Promise<any>>();
+            const promises = new Array<Promise<void>>();
             let isAssetsChanged = false;
             deletedAssetsFromImages.forEach(assetId => {
                 promises.push(new Promise(async (resolve, reject) => {
@@ -294,7 +294,7 @@ export class TagController extends Controller {
             console.warn(`Products with contains tag ${id} found error. ${err}`);
         }
 
-        const promises = new Array<Promise<any>>();
+        const promises = new Array<Promise<void>>();
         if (!!products) {
             products.forEach(product => {
                 if (!!product.tags) {
@@ -341,7 +341,7 @@ export class TagController extends Controller {
         // нужно удалять ассеты
         const assetsList = getEntityAssets(tag);
 
-        const assetsPromises = new Array<Promise<any>>();
+        const assetsPromises = new Array<Promise<void>>();
 
         try {
             let isAssetsChanged = false;
