@@ -51,8 +51,6 @@ import { LanguageAssetsController } from './controllers/LanguageAssetsController
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { LicensesController } from './controllers/LicenseController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { LicenseCheckController } from './controllers/LicenseController';
-// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { LicenseController } from './controllers/LicenseController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { LicenseTypesController } from './controllers/LicenseTypesController';
@@ -922,16 +920,6 @@ const models: TsoaRoute.Models = {
         "properties": {
             "meta": { "ref": "ILicenseInfoMeta" },
             "data": { "dataType": "array", "array": { "ref": "ILicenseInfo" } },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "LicenseVerifyResponse": {
-        "dataType": "refObject",
-        "properties": {
-            "meta": { "ref": "ILicenseInfoMeta" },
-            "data": { "dataType": "nestedObjectLiteral", "nestedProperties": { "client": { "dataType": "nestedObjectLiteral", "nestedProperties": { "email": { "dataType": "string", "required": true }, "lastName": { "dataType": "string", "required": true }, "firstName": { "dataType": "string", "required": true }, "id": { "dataType": "string", "required": true } }, "required": true }, "license": { "ref": "ILicenseInfo", "required": true } } },
             "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
         },
         "additionalProperties": false,
@@ -3280,29 +3268,6 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getLicense.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
-        });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/license/verify',
-        authenticateMiddleware([{ "accessToken": [] }]),
-        function(request: any, response: any, next: any) {
-            const args = {
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = getValidatedArgs(args, request);
-            } catch (err) {
-                return next(err);
-            }
-
-            const controller = new LicenseCheckController();
-
-
-            const promise = controller.verifyLicense.apply(controller, validatedArgs as any);
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

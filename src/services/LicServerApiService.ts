@@ -125,13 +125,29 @@ class LicServerApiService {
         );
     }
 
-    public async verifyLicenseKey<T = any>(token: string): Promise<T> {
+    /*public async verifyLicenseKey<T = any>(token: string): Promise<T> {
         return await makeRequest<T>(
             got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}license/verify/${token}`, {
                 headers: {
                     "content-type": "application/json",
                     "authorization": this.getToken(),
                 }
+            }),
+        );
+    }*/
+
+    public async setDevice<T = any>(data: {
+        id: string,
+        imei: string,
+        hash: string,
+    }): Promise<T> {
+        return await makeRequest<T>(
+            got.put(`${config.LIC_SERVER_HOST}/${BASE_URL}license/setDevice`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": this.getToken(),
+                },
+                body: JSON.stringify(data),
             }),
         );
     }
@@ -150,18 +166,29 @@ class LicServerApiService {
         );
     }
 
-    public async getLicense<T = any>(id: string, options?: IRequestOptions): Promise<T> {
+    public async getLicense<T = any>(id: string, token: string, filter?: Array<any>): Promise<T> {
+        const query: any = {};
+        if (filter) {
+            query.filter = filter;
+        }
+
         return await makeRequest<T>(
-            got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}license/${id}`, {
+            got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}license/forClient`, {
                 headers: {
                     "content-type": "application/json",
-                    "authorization": this.getToken(options),
+                    "authorization": this.getToken({
+                        clientToken: token,
+                    }),
+                    query: JSON.stringify(query),
+                },
+                query: {
+                    id,
                 }
             }),
         );
     }
 
-    public async createLicense<T = any>(license: ILicense, options?: IRequestOptions): Promise<T> {
+    /*public async createLicense<T = any>(license: ILicense, options?: IRequestOptions): Promise<T> {
         return await makeRequest<T>(
             got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}license`, {
                 headers: {
@@ -194,7 +221,7 @@ class LicServerApiService {
                 },
             }),
         );
-    }
+    }*/
 
     // license types
     public async getLicenseTypes<T = any>(options?: IRequestOptions): Promise<T> {

@@ -32,29 +32,31 @@ interface ITerminalResponse {
 }
 
 interface ITerminalCreateRequest {
-    active?: boolean;
-    name: string;
-    address: string | null;
-    terminals: Array<string> | null;
-    employes: Array<string> | null;
+    clientId?: string;
+    status?: TerminalStatusTypes;
+    type: TerminalTypes;
+    name?: string;
+    storeId?: string;
+    lastwork?: Date;
+    imei: string;
+    licenseId?: string;
     extra?: { [key: string]: any } | null;
 }
 
 interface ITerminalUpdateRequest {
-    active?: boolean;
-    name?: string;
-    address?: string;
-    terminals: Array<string> | null;
-    employes: Array<string> | null;
+    name: string;
     extra?: { [key: string]: any } | null;
 }
 
 const RESPONSE_TEMPLATE: ITerminalItem = {
+    clientId: "f234r34r-34r23-4t32-43434",
     status: TerminalStatusTypes.ONLINE,
     type: TerminalTypes.KIOSK,
     name: "My terminal",
-    store: "My store 1",
+    storeId: "My store 1",
     lastwork: new Date(),
+    imei: "00001-000000000034",
+    licenseId: "34r34r-34r23-4t32-43434",
     extra: {
         key: "value",
     }
@@ -141,10 +143,25 @@ export class TerminalController extends Controller {
         data: RESPONSE_TEMPLATE,
     })
     public async create(@Body() body: ITerminalCreateRequest, @Request() request: IAuthRequest): Promise<ITerminalResponse> {
-        // create terminal
         let license: ILicense;
         try {
-            license = await licServerApiService.verifyLicenseKey(request.token);
+            license = await licServerApiService.checkLicense();
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Caught error. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        // create terminal
+        let license1: ILicense;
+        try {
+            license1 = await licServerApiService.setDevice({ id: body.licenseId, imei: body.imei });
         } catch (err) {
             this.setStatus(500);
             return {
@@ -160,7 +177,7 @@ export class TerminalController extends Controller {
         try {
             const item = new TerminalModel(body);
             const savedItem = await item.save();
-            const ref = await riseRefVersion(license.clientId, RefTypes.TERMINALS);
+            const ref = await riseRefVersion(request.client.id, RefTypes.TERMINALS);
             return {
                 meta: { ref },
                 data: formatTerminalModel(savedItem),

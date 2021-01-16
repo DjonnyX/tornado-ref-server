@@ -37,7 +37,7 @@ const checkApiKey = async (apikey: string, request: express.Request) => {
       }
 
       if (!decoded.id || !decoded.email) {
-        if (request.method === "POST" && request.path === "/api/v0/license/verify") {
+        if (request.method === "POST" && request.path === "/api/v1/terminal/register") {
           // allow
         } else {
           return reject(new Error("apikey bad format."));

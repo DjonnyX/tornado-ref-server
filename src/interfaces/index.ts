@@ -5,6 +5,7 @@ import { ITranslationTemplate } from "./ITranslationTemplate";
 import { ICurrencyTemplate } from "./ICurrencyTemplate";
 import { IAuthInfo, IAuthRequest } from "./IAuthRequest";
 import { IClientJWTBody } from "./IClientJWTBody";
+import { IRequestOptions } from "./IRequestOptions";
 
 export {
     IError,
@@ -15,4 +16,5 @@ export {
     IAuthRequest,
     IAuthInfo,
     IClientJWTBody,
+    IRequestOptions,
 };

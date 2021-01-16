@@ -1,4 +1,4 @@
-import { Controller, Route, Post, Tags, Example, Request, Body, Get, Put, Delete, OperationId, Security } from "tsoa";
+import { Controller, Route, Post, Tags, Example, Request, Body, Get, Put, Delete, OperationId, Security, Query } from "tsoa";
 import { RefTypes } from "../models/enums";
 import { LicenseStates } from "@djonnyx/tornado-types/dist/interfaces/raw/LicenseStates";
 import { LicenseStatuses } from "@djonnyx/tornado-types/dist/interfaces/raw/LicenseStatuses";
@@ -79,6 +79,7 @@ const LICENSE_RESPONSE_TEMPLATE: ILicenseInfo = {
     state: LicenseStates.ACTIVE,
     status: LicenseStatuses.NEW,
     key: "0000-1111-2222-3333",
+    imei: "3425t42t543yt45t",
     licType: {
         description: "Киоск с кассой эвотор",
         name: "Киоск с кассой эвотор",
@@ -112,7 +113,7 @@ export class LicensesController extends Controller {
     }
 }
 
-@Route("/license/verify")
+/*@Route("/license/verify")
 @Tags("License")
 export class LicenseCheckController extends Controller {
     @Get()
@@ -147,11 +148,30 @@ export class LicenseCheckController extends Controller {
         }
         return req;
     }
-}
+}*/
 
 @Route("/license")
 @Tags("License")
 export class LicenseController extends Controller {
+    @Put()
+    @Security("clientAccessToken")
+    @OperationId("GetOne")
+    @Example<LicenseResponse>({
+        meta: META_TEMPLATE,
+        data: LICENSE_RESPONSE_TEMPLATE,
+    })
+
+    public async setDevice(@Request() request: IAuthRequest, @Query() licId?: string, @Query() imei?: string, @Query() hash?: string): Promise<LicenseResponse> {
+        return await licServerApiService.setDevice({
+            id: licId,
+            imei,
+        }, request.token, {
+            filter: [
+                hash,
+            ]
+        });
+    }
+    
     @Get("{id}")
     @Security("clientAccessToken")
     @OperationId("GetOne")
@@ -160,7 +180,7 @@ export class LicenseController extends Controller {
         data: LICENSE_RESPONSE_TEMPLATE,
     })
     public async getLicense(id: string, @Request() request: IAuthRequest): Promise<LicenseResponse> {
-        return await licServerApiService.getLicense(id, { clientToken: request.token });
+        return await licServerApiService.getLicense(id, request.token);
     }
 
     /*@Post()

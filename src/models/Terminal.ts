@@ -3,17 +3,19 @@ import * as mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
 
 interface ITerminalDocument extends Document {
-    client: string;
+    clientId: string;
     status: TerminalStatusTypes;
     type: TerminalTypes;
     name: string;
-    store: string;
+    storeId: string;
     lastwork: Date;
+    imei: string;
+    licenseId: string;
     extra?: { [key: string]: any } | null;
 }
 
 const TerminalSchema = new Schema({
-    client: { type: String, required: true, index: { unique: false } },
+    clientId: { type: String, required: true, index: { unique: false } },
     status: {
         type: String,
         enum: [
@@ -33,9 +35,11 @@ const TerminalSchema = new Schema({
             TerminalTypes.COLLECTOR,
         ]
     },
-    name: { type: String, required: true },
-    store: { type: Schema.Types.ObjectId },
+    name: { type: String },
+    storeId: { type: Schema.Types.ObjectId },
     lastwork: { type: Date },
+    imei: { type: String, required: true },
+    licenseId: { type: String, required: true },
     extra: { type: Schema.Types.Mixed, required: false, default: {} },
 });
 
