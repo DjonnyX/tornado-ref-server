@@ -79,6 +79,7 @@ const LICENSE_RESPONSE_TEMPLATE: ILicenseInfo = {
     state: LicenseStates.ACTIVE,
     status: LicenseStatuses.NEW,
     key: "0000-1111-2222-3333",
+    md5key: "1e0328629e0b73cfcb5cca8bdefb0b76",
     imei: "3425t42t543yt45t",
     licType: {
         description: "Киоск с кассой эвотор",

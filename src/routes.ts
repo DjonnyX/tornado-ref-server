@@ -906,6 +906,7 @@ const models: TsoaRoute.Models = {
             "integrationSubscriptionId": { "dataType": "string", "required": true },
             "integrationUser": { "dataType": "string", "required": true },
             "key": { "dataType": "string", "required": true },
+            "md5key": { "dataType": "string", "required": true },
             "lastUpdate": { "dataType": "datetime", "required": true },
             "licType": { "ref": "ILicenseType", "required": true },
             "licTypeId": { "dataType": "string", "required": true },

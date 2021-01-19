@@ -1,5 +1,5 @@
-import { ILicense } from "@djonnyx/tornado-types";
 import * as express from "express";
+import { ILicense } from "@djonnyx/tornado-types";
 
 export interface IAuthRequest extends express.Request {
     client?: IAuthInfo;
