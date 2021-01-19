@@ -1,11 +1,12 @@
 import { ITerminalDocument, RefTypes, TerminalModel } from "../models";
 import { Controller, Route, Get, Tags, OperationId, Example, Security, Put, Body, Delete, Request, Post } from "tsoa";
+import { ITerminal, TerminalStatusTypes, TerminalTypes } from "@djonnyx/tornado-types";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatTerminalModel } from "../utils/terminal";
 import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "../interfaces";
-import { ILicense, ITerminal, TerminalStatusTypes, TerminalTypes } from "@djonnyx/tornado-types";
-import { licServerApiService } from "../services";
+import { ISetDeviceResponse, licServerApiService } from "../services";
+import { extractError } from "../utils/error";
 
 interface ITerminalItem extends ITerminal { }
 
@@ -169,14 +170,18 @@ export class TerminalController extends Controller {
         data: RESPONSE_TEMPLATE,
     })
     public async register(@Body() body: ITerminalRegisterRequest, @Request() request: IAuthRequest): Promise<ITerminalResponse> {
-        // create terminal
-        let deviceLicense: ILicense;
+        let setDeviceResponse: ISetDeviceResponse;
         try {
-            deviceLicense = await licServerApiService.setDevice({
+            setDeviceResponse = await licServerApiService.setDevice({
                 id: request.terminal.license.id,
                 imei: request.terminal.imei,
                 keyHash: request.terminal.key,
             });
+
+            const err = extractError(setDeviceResponse.error);
+            if (!!err) {
+              throw new Error(err);
+            }
         } catch (err) {
             this.setStatus(500);
             return {
@@ -191,13 +196,13 @@ export class TerminalController extends Controller {
 
         try {
             const item = new TerminalModel({
-                clientId: deviceLicense.clientId,
+                clientId: setDeviceResponse.data.clientId,
                 status: TerminalStatusTypes.ONLINE,
                 type: body.type,
                 name: body.name,
                 lastwork: new Date(Date.now()),
-                imei: deviceLicense.imei,
-                licenseId: deviceLicense.id,
+                imei: setDeviceResponse.data.imei,
+                licenseId: setDeviceResponse.data.id,
                 extra: {},
             });
             const savedItem = await item.save();

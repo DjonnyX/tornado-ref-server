@@ -36,6 +36,15 @@ export interface ICheckLicenseResponse {
     }>;
 }
 
+export interface ISetDeviceResponse {
+    meta?: any;
+    data?: ILicense;
+    error?: Array<{
+        code: number;
+        message: string;
+    }>;
+}
+
 const BASE_URL = "api/v0/";
 
 class LicServerApiService {
@@ -145,15 +154,15 @@ class LicServerApiService {
         );
     }*/
 
-    public async setDevice<T = any>(data: {
+    public async setDevice(data: {
         /**
          * lic id
          */
         id: string,
         imei: string,
         keyHash: string,
-    }): Promise<T> {
-        return await makeRequest<T>(
+    }): Promise<ISetDeviceResponse> {
+        return await makeRequest(
             got.put(`${config.LIC_SERVER_HOST}/${BASE_URL}license/setDevice`, {
                 headers: {
                     "content-type": "application/json",
