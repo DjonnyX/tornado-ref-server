@@ -194,10 +194,10 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "name": { "dataType": "string", "required": true },
-            "duration": { "dataType": "double", "required": true },
-            "color": { "dataType": "string", "required": true },
-            "resources": { "ref": "IAdResources", "required": true },
-            "assets": { "dataType": "array", "array": { "dataType": "string" }, "required": true },
+            "duration": { "dataType": "double" },
+            "color": { "dataType": "string" },
+            "resources": { "ref": "IAdResources" },
+            "assets": { "dataType": "array", "array": { "dataType": "string" } },
             "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
         "additionalProperties": false,
@@ -214,7 +214,6 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "id": { "dataType": "string" },
-            "name": { "dataType": "string" },
             "type": { "ref": "AdTypes", "required": true },
             "active": { "dataType": "boolean", "required": true },
             "contents": { "ref": "IAdContents", "required": true },
@@ -247,8 +246,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "active": { "dataType": "boolean", "required": true },
-            "name": { "dataType": "string" },
-            "type": { "ref": "AdTypes", "required": true },
+            "type": { "dataType": "union", "subSchemas": [{ "ref": "AdTypes" }, { "dataType": "string" }], "required": true },
             "contents": { "ref": "IAdContents" },
             "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
@@ -259,7 +257,6 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "active": { "dataType": "boolean" },
-            "name": { "dataType": "string" },
             "type": { "ref": "AdTypes" },
             "contents": { "dataType": "union", "subSchemas": [{ "ref": "IAdContents" }, { "dataType": "any" }] },
             "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },

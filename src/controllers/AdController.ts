@@ -1,5 +1,6 @@
 import { AdModel, IAd, RefTypes, ILanguage, LanguageModel } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Query, Request } from "tsoa";
+import { AdTypes, IAdContents } from "@djonnyx/tornado-types";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatAdModel } from "../utils/ad";
 import { normalizeContents, getDeletedImagesFromDifferense, getEntityAssets } from "../utils/entity";
@@ -7,11 +8,9 @@ import { AssetModel } from "../models/Asset";
 import { deleteAsset } from "./AssetsController";
 import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "../interfaces";
-import { AdTypes, IAdContents } from "@djonnyx/tornado-types";
 
 export interface IAdItem {
     id?: string;
-    name?: string;
     type: AdTypes;
     active: boolean;
     contents: IAdContents;
@@ -42,15 +41,13 @@ interface IAdResponse {
 
 interface IAdCreateRequest {
     active: boolean;
-    name?: string;
-    type: AdTypes;
+    type: AdTypes | string;
     contents?: IAdContents;
     extra?: { [key: string]: any } | null;
 }
 
 interface IAdUpdateRequest {
     active?: boolean;
-    name?: string;
     type?: AdTypes;
     contents?: IAdContents | any;
     extra?: { [key: string]: any } | null;
