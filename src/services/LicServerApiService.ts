@@ -154,21 +154,13 @@ class LicServerApiService {
         );
     }*/
 
-    public async setDevice(data: {
-        /**
-         * lic id
-         */
-        id: string,
-        imei: string,
-        keyHash: string,
-    }): Promise<ISetDeviceResponse> {
+    public async setDevice(): Promise<ISetDeviceResponse> {
         return await makeRequest(
             got.put(`${config.LIC_SERVER_HOST}/${BASE_URL}license/setDevice`, {
                 headers: {
                     "content-type": "application/json",
                     "authorization": this.getToken(),
                 },
-                body: JSON.stringify(data),
             }),
         );
     }

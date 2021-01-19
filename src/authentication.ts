@@ -39,33 +39,41 @@ const checkApiKey = async (apikey: string, request: express.Request) => {
       return reject(new Error("apikey bad format."));
     }
 
-    console.log(apikey, payload)
+    console.log(payload, request.path)
 
-    // Проверка подлинности токена на стороне сервера лицензирования
-
-    let licenseResponse: ICheckLicenseResponse;
-    try {
-      licenseResponse = await licServerApiService.checkLicense(apikey);
-
-      const err = extractError(licenseResponse.error);
-      if (!!err) {
-        throw new Error(err);
+    jwt.verify(apikey, `${config.AUTH_APIKEY_PRIVATE_KEY_SALT}${payload.serial}`, async function (err: any, decoded: IClientJWTBody) {
+      if (err) {
+        return reject(err);
       }
-    } catch (err) {
-      return reject(new Error(`Check license error. ${err}`));
-    }
 
-    (request as IAuthRequest).terminal = {
-      license: licenseResponse.data,
-      imei: payload.imei,
-      key: payload.key,
-    };
-    (request as IAuthRequest).client = {
-      id: licenseResponse.data.clientId,
-    };
-    (request as IAuthRequest).token = apikey;
+      if (request.path === "/api/v1/terminal/registration" && request.method === "POST") {
+        // allow
+      } else {
+        let licenseResponse: ICheckLicenseResponse;
+        try {
+          licenseResponse = await licServerApiService.checkLicense(apikey);
 
-    return resolve(payload);
+          const err = extractError(licenseResponse.error);
+          if (!!err) {
+            throw new Error(err);
+          }
+        } catch (err) {
+          return reject(new Error(`Check license error. ${err}`));
+        }
+
+        (request as IAuthRequest).terminal = {
+          license: licenseResponse.data,
+          imei: payload.imei,
+          key: payload.key,
+        };
+        (request as IAuthRequest).client = {
+          id: licenseResponse.data.clientId,
+        };
+      }
+      (request as IAuthRequest).token = apikey;
+
+      return resolve(payload);
+    });
   });
 }
 

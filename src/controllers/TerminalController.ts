@@ -33,8 +33,8 @@ interface ITerminalResponse {
 }
 
 interface ITerminalRegisterRequest {
-    name: string;
-    type: TerminalTypes;
+    name?: string;
+    type?: TerminalTypes;
 }
 
 interface ITerminalUpdateRequest {
@@ -47,7 +47,7 @@ const RESPONSE_TEMPLATE: ITerminalItem = {
     status: TerminalStatusTypes.ONLINE,
     type: TerminalTypes.KIOSK,
     name: "My terminal",
-    storeId: "My store 1",
+    storeId: "g234r34r-34r23-4t32-43434",
     lastwork: new Date(),
     imei: "00001-000000000034",
     licenseId: "34r34r-34r23-4t32-43434",
@@ -169,14 +169,10 @@ export class TerminalController extends Controller {
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
-    public async register(@Body() body: ITerminalRegisterRequest, @Request() request: IAuthRequest): Promise<ITerminalResponse> {
+    public async registration(@Body() body: ITerminalRegisterRequest): Promise<ITerminalResponse> {
         let setDeviceResponse: ISetDeviceResponse;
         try {
-            setDeviceResponse = await licServerApiService.setDevice({
-                id: request.terminal.license.id,
-                imei: request.terminal.imei,
-                keyHash: request.terminal.key,
-            });
+            setDeviceResponse = await licServerApiService.setDevice();
 
             const err = extractError(setDeviceResponse.error);
             if (!!err) {
@@ -206,7 +202,7 @@ export class TerminalController extends Controller {
                 extra: {},
             });
             const savedItem = await item.save();
-            const ref = await riseRefVersion(request.client.id, RefTypes.TERMINALS);
+            const ref = await riseRefVersion(setDeviceResponse.data.clientId, RefTypes.TERMINALS);
             return {
                 meta: { ref },
                 data: formatTerminalModel(savedItem),
