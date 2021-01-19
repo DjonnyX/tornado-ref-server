@@ -7,10 +7,8 @@ import { extractError } from "./utils/error";
 
 const checkClientToken = async (token: string, request: express.Request) => {
   return new Promise((resolve, reject) => {
-    console.log(token)
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     jwt.verify(token, config.AUTH_PRIVATE_KEY, async function (err: any, decoded: IClientJWTBody) {
-      console.log(err, decoded)
       if (err) {
         return reject(err);
       }
@@ -39,9 +37,7 @@ const checkApiKey = async (apikey: string, request: express.Request) => {
       return reject(new Error("apikey bad format."));
     }
 
-    console.log(payload, request.path)
-
-    jwt.verify(apikey, `${config.AUTH_APIKEY_PRIVATE_KEY_SALT}${payload.serial}`, async function (err: any, decoded: IClientJWTBody) {
+    jwt.verify(apikey, `${config.AUTH_APIKEY_PRIVATE_KEY_SALT}${payload.serial}`, async function (err: any, decoded: ITerminalJWTBody) {
       if (err) {
         return reject(err);
       }
