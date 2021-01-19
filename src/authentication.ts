@@ -2,7 +2,6 @@ import * as config from "./config";
 import * as express from "express";
 import * as jwt from "jsonwebtoken";
 import { IAuthRequest, IClientJWTBody, ITerminalJWTBody } from "./interfaces";
-import { ILicense } from "@djonnyx/tornado-types";
 import { ICheckLicenseResponse, licServerApiService } from "./services";
 import { extractError } from "./utils/error";
 
