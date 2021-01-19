@@ -138,7 +138,7 @@ const RESPONSE_TEMPLATE: IAssetItem = {
 export class TagAssetsController extends Controller {
     @Get("{tagId}/assets")
     @Security("clientAccessToken")
-    @Security("accessToken")
+    @Security("terminalAccessToken")
     @OperationId("GetAll")
     @Example<ITagGetAllAssetsResponse>({
         meta: META_TEMPLATE,
@@ -200,7 +200,7 @@ export class TagAssetsController extends Controller {
 
     @Get("{tagId}/assets/{langCode}")
     @Security("clientAccessToken")
-    @Security("accessToken")
+    @Security("terminalAccessToken")
     @OperationId("Get")
     @Example<ITagGetAssetsResponse>({
         meta: META_TEMPLATE,

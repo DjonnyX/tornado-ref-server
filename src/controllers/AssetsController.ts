@@ -152,7 +152,7 @@ export const deleteAsset = (assetPath: string): Promise<IAsset | void> => {
 export class AssetsController extends Controller {
     @Get()
     @Security("clientAccessToken")
-    @Security("accessToken")
+    @Security("terminalAccessToken")
     @OperationId("GetAll")
     @Example<IGetAssetsResponse>({
         meta: META_TEMPLATE,

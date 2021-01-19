@@ -1,4 +1,4 @@
-import { RefTypes, TerminalModel } from "../models";
+import { ITerminalDocument, RefTypes, TerminalModel } from "../models";
 import { Controller, Route, Get, Tags, OperationId, Example, Security, Put, Body, Delete, Request, Post } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatTerminalModel } from "../utils/terminal";
@@ -31,16 +31,9 @@ interface ITerminalResponse {
     }>;
 }
 
-interface ITerminalCreateRequest {
-    clientId?: string;
-    status?: TerminalStatusTypes;
+interface ITerminalRegisterRequest {
+    name: string;
     type: TerminalTypes;
-    name?: string;
-    storeId?: string;
-    lastwork?: Date;
-    imei: string;
-    licenseId?: string;
-    extra?: { [key: string]: any } | null;
 }
 
 interface ITerminalUpdateRequest {
@@ -75,7 +68,7 @@ const META_TEMPLATE: ITerminalMeta = {
 export class TerminalsController extends Controller {
     @Get()
     @Security("clientAccessToken")
-    @Security("accessToken")
+    @Security("terminalAccessToken")
     @OperationId("GetAll")
     @Example<ITerminalsResponse>({
         meta: META_TEMPLATE,
@@ -108,7 +101,7 @@ export class TerminalsController extends Controller {
 export class TerminalController extends Controller {
     @Get("{id}")
     @Security("clientAccessToken")
-    @Security("accessToken")
+    @Security("terminalAccessToken")
     @OperationId("GetOne")
     @Example<ITerminalResponse>({
         meta: META_TEMPLATE,
@@ -135,47 +128,78 @@ export class TerminalController extends Controller {
         }
     }
 
-    @Post()
-    @Security("clientAccessToken")
-    @OperationId("Create")
+    @Get("license-verify")
+    @Security("terminalAccessToken")
+    @OperationId("LicenseVerify")
     @Example<ITerminalResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
-    public async create(@Body() body: ITerminalCreateRequest, @Request() request: IAuthRequest): Promise<ITerminalResponse> {
-        let license: ILicense;
+    public async licenseVerify(@Request() request: IAuthRequest): Promise<ITerminalResponse> {
+        let terminal: ITerminalDocument;
         try {
-            license = await licServerApiService.checkLicense();
+            terminal = await TerminalModel.findOne({
+                imei: request.terminal.imei,
+                licenseId: request.terminal.license.id,
+            });
         } catch (err) {
             this.setStatus(500);
             return {
                 error: [
                     {
                         code: 500,
-                        message: `Caught error. ${err}`,
+                        message: `Terminal not found. ${err}`,
                     }
                 ]
             };
         }
 
+        const ref = await getRef(request.client.id, RefTypes.TERMINALS);
+        return {
+            meta: { ref },
+            data: formatTerminalModel(terminal),
+        };
+    }
+
+    @Post("registration")
+    @Security("terminalAccessToken")
+    @OperationId("Register")
+    @Example<ITerminalResponse>({
+        meta: META_TEMPLATE,
+        data: RESPONSE_TEMPLATE,
+    })
+    public async register(@Body() body: ITerminalRegisterRequest, @Request() request: IAuthRequest): Promise<ITerminalResponse> {
         // create terminal
-        let license1: ILicense;
+        let deviceLicense: ILicense;
         try {
-            license1 = await licServerApiService.setDevice({ id: body.licenseId, imei: body.imei });
+            deviceLicense = await licServerApiService.setDevice({
+                id: request.terminal.license.id,
+                imei: request.terminal.imei,
+                keyHash: request.terminal.key,
+            });
         } catch (err) {
             this.setStatus(500);
             return {
                 error: [
                     {
                         code: 500,
-                        message: `Caught error. ${err}`,
+                        message: `Set device error. ${err}`,
                     }
                 ]
             };
         }
 
         try {
-            const item = new TerminalModel(body);
+            const item = new TerminalModel({
+                clientId: deviceLicense.clientId,
+                status: TerminalStatusTypes.ONLINE,
+                type: body.type,
+                name: body.name,
+                lastwork: new Date(Date.now()),
+                imei: deviceLicense.imei,
+                licenseId: deviceLicense.id,
+                extra: {},
+            });
             const savedItem = await item.save();
             const ref = await riseRefVersion(request.client.id, RefTypes.TERMINALS);
             return {

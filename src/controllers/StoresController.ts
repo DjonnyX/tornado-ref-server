@@ -78,7 +78,7 @@ const META_TEMPLATE: IStoreMeta = {
 export class StoresController extends Controller {
     @Get()
     @Security("clientAccessToken")
-    @Security("accessToken")
+    @Security("terminalAccessToken")
     @OperationId("GetAll")
     @Example<IStoresResponse>({
         meta: META_TEMPLATE,
@@ -111,7 +111,7 @@ export class StoresController extends Controller {
 export class StoreController extends Controller {
     @Get("{id}")
     @Security("clientAccessToken")
-    @Security("accessToken")
+    @Security("terminalAccessToken")
     @OperationId("GetOne")
     @Example<IStoreResponse>({
         meta: META_TEMPLATE,

@@ -139,7 +139,7 @@ const RESPONSE_TEMPLATE: IAssetItem = {
 export class OrderTypeAssetsController extends Controller {
     @Get("{orderTypeId}/assets")
     @Security("clientAccessToken")
-    @Security("accessToken")
+    @Security("terminalAccessToken")
     @OperationId("GetAll")
     @Example<IOrderTypeGetAllAssetsResponse>({
         meta: META_TEMPLATE,
@@ -201,7 +201,7 @@ export class OrderTypeAssetsController extends Controller {
 
     @Get("{orderTypeId}/assets/{langCode}")
     @Security("clientAccessToken")
-    @Security("accessToken")
+    @Security("terminalAccessToken")
     @OperationId("Get")
     @Example<IOrderTypeGetAssetsResponse>({
         meta: META_TEMPLATE,

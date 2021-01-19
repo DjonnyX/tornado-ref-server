@@ -88,7 +88,7 @@ const META_TEMPLATE: ISelectorsMeta = {
 export class SelectorsController extends Controller {
     @Get()
     @Security("clientAccessToken")
-    @Security("accessToken")
+    @Security("terminalAccessToken")
     @OperationId("GetAll")
     @Example<ISelectorsResponse>({
         meta: META_TEMPLATE,
@@ -127,7 +127,7 @@ export class SelectorsController extends Controller {
 export class SelectorController extends Controller {
     @Get("{id}")
     @Security("clientAccessToken")
-    @Security("accessToken")
+    @Security("terminalAccessToken")
     @OperationId("GetOne")
     @Example<ISelectorResponse>({
         meta: META_TEMPLATE,

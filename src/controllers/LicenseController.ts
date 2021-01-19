@@ -117,7 +117,7 @@ export class LicensesController extends Controller {
 @Tags("License")
 export class LicenseCheckController extends Controller {
     @Get()
-    @Security("accessToken")
+    @Security("terminalAccessToken")
     @OperationId("Verify")
     @Example<LicenseVerifyResponse>({
         meta: META_TEMPLATE,
@@ -153,25 +153,6 @@ export class LicenseCheckController extends Controller {
 @Route("/license")
 @Tags("License")
 export class LicenseController extends Controller {
-    @Put()
-    @Security("clientAccessToken")
-    @OperationId("GetOne")
-    @Example<LicenseResponse>({
-        meta: META_TEMPLATE,
-        data: LICENSE_RESPONSE_TEMPLATE,
-    })
-
-    public async setDevice(@Request() request: IAuthRequest, @Query() licId?: string, @Query() imei?: string, @Query() hash?: string): Promise<LicenseResponse> {
-        return await licServerApiService.setDevice({
-            id: licId,
-            imei,
-        }, request.token, {
-            filter: [
-                hash,
-            ]
-        });
-    }
-    
     @Get("{id}")
     @Security("clientAccessToken")
     @OperationId("GetOne")

@@ -1,7 +1,9 @@
 import * as config from "./config";
 import * as express from "express";
 import * as jwt from "jsonwebtoken";
-import { IAuthRequest, IClientJWTBody } from "./interfaces";
+import { IAuthRequest, IClientJWTBody, ITerminalJWTBody } from "./interfaces";
+import { ILicense } from "@djonnyx/tornado-types";
+import { licServerApiService } from "./services";
 
 const checkClientToken = async (token: string, request: express.Request) => {
   return new Promise((resolve, reject) => {
@@ -19,7 +21,6 @@ const checkClientToken = async (token: string, request: express.Request) => {
 
       (request as IAuthRequest).client = {
         id: decoded.id,
-        email: decoded.email,
       };
       (request as IAuthRequest).token = token;
 
@@ -29,29 +30,37 @@ const checkClientToken = async (token: string, request: express.Request) => {
 }
 
 const checkApiKey = async (apikey: string, request: express.Request) => {
-  return new Promise((resolve, reject) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    jwt.verify(apikey, config.AUTH_APIKEY_PRIVATE_KEY, async function (err: any, decoded: IClientJWTBody) {
-      if (err) {
-        return reject(err);
-      }
+  return new Promise(async (resolve, reject) => {
+    const payload = jwt.decode(apikey, {
+      json: true,
+    }) as ITerminalJWTBody;
 
-      if (!decoded.id || !decoded.email) {
-        if (request.method === "POST" && request.path === "/api/v1/terminal/register") {
-          // allow
-        } else {
-          return reject(new Error("apikey bad format."));
-        }
-      }
+    if (!payload.imei || !payload.key) {
+      return reject(new Error("apikey bad format."));
+    }
 
-      (request as IAuthRequest).client = {
-        id: decoded.id,
-        email: decoded.email,
-      };
-      (request as IAuthRequest).token = apikey;
+    console.log(apikey, payload)
 
-      return resolve(decoded);
-    });
+    // Проверка подлинности токена на стороне сервера лицензирования
+
+    let license: ILicense;
+    try {
+      license = await licServerApiService.checkLicense(apikey);
+    } catch (err) {
+      return reject(new Error(`Check license error. ${err}`));
+    }
+
+    (request as IAuthRequest).terminal = {
+      license,
+      imei: payload.imei,
+      key: payload.key,
+    };
+    (request as IAuthRequest).client = {
+      id: license.clientId,
+    };
+    (request as IAuthRequest).token = apikey;
+
+    return resolve(payload);
   });
 }
 
@@ -62,7 +71,6 @@ export async function expressAuthentication(
   scopes?: string[],
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<any> {
-  console.log(securityName)
   if (securityName === "clientAccessToken") {
     const authorization = request.headers["authorization"] ? String(request.headers["authorization"]) : undefined;
     let token = authorization ? authorization.replace("Bearer ", "") : undefined;
@@ -72,7 +80,7 @@ export async function expressAuthentication(
     }
   }
 
-  if (securityName === "accessToken") {
+  if (securityName === "terminalAccessToken") {
     const token = request.headers["x-access-token"] ? String(request.headers["x-access-token"]) : undefined;
 
     if (!!token) {

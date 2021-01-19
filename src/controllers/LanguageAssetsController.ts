@@ -102,7 +102,7 @@ const RESPONSE_TEMPLATE: IAssetItem = {
 export class LanguageAssetsController extends Controller {
     @Get("{languageId}/assets")
     @Security("clientAccessToken")
-    @Security("accessToken")
+    @Security("terminalAccessToken")
     @OperationId("Get")
     @Example<ILanguageGetAssetsResponse>({
         meta: META_TEMPLATE,

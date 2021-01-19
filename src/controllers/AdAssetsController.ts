@@ -136,7 +136,7 @@ const RESPONSE_TEMPLATE: IAssetItem = {
 export class AdAssetsController extends Controller {
     @Get("{adId}/assets")
     @Security("clientAccessToken")
-    @Security("accessToken")
+    @Security("terminalAccessToken")
     @OperationId("GetAll")
     @Example<IAdGetAllAssetsResponse>({
         meta: META_TEMPLATE,
@@ -198,7 +198,7 @@ export class AdAssetsController extends Controller {
 
     @Get("{adId}/assets/{langCode}")
     @Security("clientAccessToken")
-    @Security("accessToken")
+    @Security("terminalAccessToken")
     @OperationId("Get")
     @Example<IAdGetAssetsResponse>({
         meta: META_TEMPLATE,

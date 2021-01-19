@@ -137,9 +137,12 @@ class LicServerApiService {
     }*/
 
     public async setDevice<T = any>(data: {
+        /**
+         * lic id
+         */
         id: string,
         imei: string,
-        hash: string,
+        keyHash: string,
     }): Promise<T> {
         return await makeRequest<T>(
             got.put(`${config.LIC_SERVER_HOST}/${BASE_URL}license/setDevice`, {
@@ -148,6 +151,19 @@ class LicServerApiService {
                     "authorization": this.getToken(),
                 },
                 body: JSON.stringify(data),
+            }),
+        );
+    }
+
+    public async checkLicense<T = any>(deviceToken: string): Promise<T> {
+        return await makeRequest<T>(
+            got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}deviceToken/check`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": this.getToken({
+                        clientToken: deviceToken,
+                    }),
+                },
             }),
         );
     }
@@ -167,11 +183,6 @@ class LicServerApiService {
     }
 
     public async getLicense<T = any>(id: string, token: string, filter?: Array<any>): Promise<T> {
-        const query: any = {};
-        if (filter) {
-            query.filter = filter;
-        }
-
         return await makeRequest<T>(
             got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}license/forClient`, {
                 headers: {
@@ -179,7 +190,6 @@ class LicServerApiService {
                     "authorization": this.getToken({
                         clientToken: token,
                     }),
-                    query: JSON.stringify(query),
                 },
                 query: {
                     id,
