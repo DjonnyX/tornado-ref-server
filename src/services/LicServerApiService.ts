@@ -27,6 +27,15 @@ interface IGetClientRestorePasswordParams {
     captchaVal: string;
 }
 
+export interface ICheckLicenseResponse {
+    meta?: any;
+    data?: ILicense;
+    error?: Array<{
+        code: number;
+        message: string;
+    }>;
+}
+
 const BASE_URL = "api/v0/";
 
 class LicServerApiService {
@@ -155,8 +164,8 @@ class LicServerApiService {
         );
     }
 
-    public async checkLicense<T = any>(deviceToken: string): Promise<T> {
-        return await makeRequest<T>(
+    public async checkLicense(deviceToken: string): Promise<ICheckLicenseResponse> {
+        return await makeRequest(
             got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}deviceToken/check`, {
                 headers: {
                     "content-type": "application/json",

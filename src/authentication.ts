@@ -3,7 +3,8 @@ import * as express from "express";
 import * as jwt from "jsonwebtoken";
 import { IAuthRequest, IClientJWTBody, ITerminalJWTBody } from "./interfaces";
 import { ILicense } from "@djonnyx/tornado-types";
-import { licServerApiService } from "./services";
+import { ICheckLicenseResponse, licServerApiService } from "./services";
+import { extractError } from "./utils/error";
 
 const checkClientToken = async (token: string, request: express.Request) => {
   return new Promise((resolve, reject) => {
@@ -43,20 +44,25 @@ const checkApiKey = async (apikey: string, request: express.Request) => {
 
     // Проверка подлинности токена на стороне сервера лицензирования
 
-    let license: ILicense;
+    let licenseResponse: ICheckLicenseResponse;
     try {
-      license = await licServerApiService.checkLicense(apikey);
+      licenseResponse = await licServerApiService.checkLicense(apikey);
+
+      const err = extractError(licenseResponse.error);
+      if (!!err) {
+        throw new Error(err);
+      }
     } catch (err) {
       return reject(new Error(`Check license error. ${err}`));
     }
 
     (request as IAuthRequest).terminal = {
-      license,
+      license: licenseResponse.data,
       imei: payload.imei,
       key: payload.key,
     };
     (request as IAuthRequest).client = {
-      id: license.clientId,
+      id: licenseResponse.data.clientId,
     };
     (request as IAuthRequest).token = apikey;
 

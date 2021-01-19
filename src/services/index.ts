@@ -1,1 +1,1 @@
-export { licServerApiService } from "./LicServerApiService";
+export * from "./LicServerApiService";
