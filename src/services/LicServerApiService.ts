@@ -184,7 +184,7 @@ class LicServerApiService {
 
     public async getLicense<T = any>(id: string, token: string, filter?: Array<any>): Promise<T> {
         return await makeRequest<T>(
-            got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}license/forClient`, {
+            got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}license/forClient/byId`, {
                 headers: {
                     "content-type": "application/json",
                     "authorization": this.getToken({
