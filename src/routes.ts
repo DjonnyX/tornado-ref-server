@@ -417,16 +417,6 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "GetSignupResponse": {
-        "dataType": "refObject",
-        "properties": {
-            "meta": { "dataType": "nestedObjectLiteral", "nestedProperties": {} },
-            "data": { "dataType": "nestedObjectLiteral", "nestedProperties": { "captcha": { "dataType": "nestedObjectLiteral", "nestedProperties": { "svg": { "dataType": "string", "required": true }, "id": { "dataType": "string", "required": true } }, "required": true } } },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "SignupResponse": {
         "dataType": "refObject",
         "properties": {
@@ -900,8 +890,6 @@ const models: TsoaRoute.Models = {
             "clientId": { "dataType": "string", "required": true },
             "dateEnd": { "dataType": "datetime", "required": true },
             "dateStart": { "dataType": "datetime", "required": true },
-            "integrationSubscriptionId": { "dataType": "string", "required": true },
-            "integrationUser": { "dataType": "string", "required": true },
             "key": { "dataType": "string", "required": true },
             "md5key": { "dataType": "string", "required": true },
             "lastUpdate": { "dataType": "datetime", "required": true },
@@ -2504,32 +2492,9 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/auth/signup',
-        function(request: any, response: any, next: any) {
-            const args = {
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = getValidatedArgs(args, request);
-            } catch (err) {
-                return next(err);
-            }
-
-            const controller = new SignupController();
-
-
-            const promise = controller.getSignupParams.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
-        });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     app.post('/api/v1/auth/signup',
         function(request: any, response: any, next: any) {
             const args = {
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
                 body: { "in": "body", "name": "body", "required": true, "ref": "ISignupParams" },
             };
 

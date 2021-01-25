@@ -1,4 +1,4 @@
-import { Controller, Route, Post, Tags, Example, Request, Body, Get, Query } from "tsoa";
+import { Controller, Route, Post, Tags, Example, Request, Body, Get, Query, Security } from "tsoa";
 import * as express from "express";
 import { initRefs } from "../db/initDB";
 import { createProxyRequestToAuthServer } from "../utils/proxy";
@@ -150,20 +150,6 @@ export class CaptchaController extends Controller {
 @Route("/auth/signup")
 @Tags("Auth")
 export class SignupController extends Controller {
-    @Get()
-    @Example<GetSignupResponse>({
-        meta: {},
-        data: {
-            captcha: {
-                id: "123123-234234-234234",
-                svg: "<svg></svg>",
-            },
-        }
-    })
-    public async getSignupParams(@Request() request: express.Request): Promise<GetSignupResponse> {
-        return await createProxyRequestToAuthServer<GetSignupResponse>(this, request);
-    }
-
     @Post()
     @Example<SignupResponse>({
         meta: {},
@@ -171,8 +157,24 @@ export class SignupController extends Controller {
             clientId: "123456",
         }
     })
-    public async signup(@Request() request: express.Request, @Body() body: ISignupParams): Promise<SignupResponse> {
-        return await createProxyRequestToAuthServer<SignupResponse>(this, request);
+    public async signup(@Body() body: ISignupParams): Promise<SignupResponse> {
+        let res: SignupResponse;
+
+        try {
+            res = await licServerApiService.signup<SignupResponse>(body);
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: err.message,
+                    }
+                ]
+            };
+        }
+
+        return res;
     }
 }
 
@@ -206,7 +208,7 @@ export class SigninController extends Controller {
         let res: SigninResponse;
 
         try {
-            res = await licServerApiService.getClientToken<SigninResponse>({
+            res = await licServerApiService.signin<SigninResponse>({
                 pass: body.password,
                 email: body.email,
             });
@@ -216,39 +218,12 @@ export class SigninController extends Controller {
                 error: [
                     {
                         code: 401,
-                        message: `Bad request ("signin"). ${err}`,
+                        message: err.message,
                     }
                 ]
             };
         }
 
-        console.log(res)
-
-        // Потом это убрать
-        /*let authInfo: IJWTBody;
-        try {
-            authInfo = await new Promise((resolve, reject) => {
-                jwt.verify(res.data.token, config.AUTH_CLIENT_PRIVATE_KEY, function (err: any, decoded: IJWTBody) {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        resolve(decoded);
-                    }
-                });
-            })
-        } catch (err) {
-            this.setStatus(401);
-            return {
-                error: [
-                    {
-                        code: 401,
-                        message: `Unauthorized.`,
-                    }
-                ]
-            };
-        }*/
-
-        // А тут заменить на res.meta.client.id (или подобное)
         // Инициализация БД под клиента
         await initRefs(res.data.account.id);
 

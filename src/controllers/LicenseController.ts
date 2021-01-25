@@ -7,7 +7,7 @@ import { IAuthRequest } from "../interfaces";
 import { licServerApiService } from "../services";
 import { ILicense } from "@djonnyx/tornado-types";
 
-interface ILicenseInfo extends ILicense {}
+interface ILicenseInfo extends ILicense { }
 
 /*interface ICreateLicenseParams {
     clientId: string;
@@ -74,18 +74,16 @@ const LICENSE_RESPONSE_TEMPLATE: ILicenseInfo = {
     clientId: "507c7f79bcf86cd7994f6c0e",
     dateStart: new Date(),
     dateEnd: new Date(),
-    integrationSubscriptionId: "6cc21660-3598-44ca-8117-11886767cc05",
-    integrationUser: "01-000000000283339",
     state: LicenseStates.ACTIVE,
     status: LicenseStatuses.NEW,
     key: "0000-1111-2222-3333",
     md5key: "1e0328629e0b73cfcb5cca8bdefb0b76",
     imei: "3425t42t543yt45t",
     licType: {
-        description: "Киоск с кассой эвотор",
-        name: "Киоск с кассой эвотор",
-        payNotice: "оплата лицензии осуществляется на market.evotor.ru",
-        price: 1006,
+        description: "Киоск с кассой r-keeper",
+        name: "Киоск с кассой r-keeper",
+        payNotice: "оплата лицензии осуществляется в личном кабинете пользователя",
+        price: 100000,
     },
     licTypeId: "ecbbfd40-62ba-49bf-8620-75d8c5ed3953",
     lastUpdate: new Date(),

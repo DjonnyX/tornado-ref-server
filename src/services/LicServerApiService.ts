@@ -7,9 +7,18 @@ interface IRequestOptions {
     clientToken?: string;
 }
 
-interface IGetClientTokenParams {
+interface ILoginParams {
     pass: string;
     email: string;
+}
+
+interface IRegistrationParams {
+    captchaId: string;
+    captchaValue: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
 }
 
 interface IGetClientCheckRestorePasswordParams {
@@ -58,20 +67,18 @@ class LicServerApiService {
         return `Bearer ${config.AUTH_LIC_SERVER_API_KEY}`;
     }
 
-    public async getCaptcha<T = any>(options?: IRequestOptions): Promise<T> {
+    public async getCaptcha<T = any>(): Promise<T> {
         return await makeRequest<T>(
             got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}captcha`, {
                 headers: {
                     "content-type": "application/json",
-                    "authorization": this.getToken(options),
+                    "authorization": this.getToken(),
                 },
             }),
         );
     }
 
-    public async getClientToken<T = any>(params: IGetClientTokenParams, options?: IRequestOptions): Promise<T> {
-        console.log(`POST: ${config.LIC_SERVER_HOST}/${BASE_URL}clientToken`)
-        console.log(params)
+    public async signin<T = any>(params: ILoginParams, options?: IRequestOptions): Promise<T> {
         return await makeRequest<T>(
             got.post(`${config.LIC_SERVER_HOST}/${BASE_URL}clientToken`, {
                 headers: {
@@ -83,9 +90,19 @@ class LicServerApiService {
         );
     }
 
+    public async signup<T = any>(params: IRegistrationParams, options?: IRequestOptions): Promise<T> {
+        return await makeRequest<T>(
+            got.post(`${config.LIC_SERVER_HOST}/${BASE_URL}registration`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": this.getToken(options),
+                },
+                body: JSON.stringify(params),
+            }),
+        );
+    }
+
     public async postClientRestorePassword<T = any>(params: IPostClientRestorePasswordParams, options?: IRequestOptions): Promise<T> {
-        console.log(`POST: ${config.LIC_SERVER_HOST}/${BASE_URL}client/restorePass`)
-        console.log(params)
         return await makeRequest<T>(
             got.post(`${config.LIC_SERVER_HOST}/${BASE_URL}client/restorePass`, {
                 headers: {

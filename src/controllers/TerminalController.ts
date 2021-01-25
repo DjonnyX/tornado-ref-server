@@ -164,7 +164,7 @@ export class TerminalController extends Controller {
 
     @Post("registration")
     @Security("terminalAccessToken")
-    @OperationId("Register")
+    @OperationId("Registration")
     @Example<ITerminalResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
