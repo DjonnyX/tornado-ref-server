@@ -169,10 +169,10 @@ export class TerminalController extends Controller {
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
-    public async registration(@Body() body: ITerminalRegisterRequest): Promise<ITerminalResponse> {
+    public async registration(@Body() body: ITerminalRegisterRequest, @Request() request: IAuthRequest): Promise<ITerminalResponse> {
         let setDeviceResponse: ISetDeviceResponse;
         try {
-            setDeviceResponse = await licServerApiService.setDevice();
+            setDeviceResponse = await licServerApiService.setDevice(request.token);
 
             const err = extractError(setDeviceResponse.error);
             if (!!err) {

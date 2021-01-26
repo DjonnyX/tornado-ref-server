@@ -33,43 +33,37 @@ const checkApiKey = async (apikey: string, request: express.Request) => {
       json: true,
     }) as ITerminalJWTBody;
 
-    if (!payload.imei || !payload.key) {
+    if (!payload.imei || !payload.hash) {
       return reject(new Error("apikey bad format."));
     }
 
-    jwt.verify(apikey, `${config.AUTH_APIKEY_PRIVATE_KEY_SALT}${payload.serial}`, async function (err: any, decoded: ITerminalJWTBody) {
-      if (err) {
-        return reject(err);
-      }
+    if (request.path === "/api/v1/terminal/registration" && request.method === "POST") {
+      // allow
+    } else {
+      let licenseResponse: ICheckLicenseResponse;
+      try {
+        licenseResponse = await licServerApiService.checkLicense(apikey);
 
-      if (request.path === "/api/v1/terminal/registration" && request.method === "POST") {
-        // allow
-      } else {
-        let licenseResponse: ICheckLicenseResponse;
-        try {
-          licenseResponse = await licServerApiService.checkLicense(apikey);
-
-          const err = extractError(licenseResponse.error);
-          if (!!err) {
-            throw new Error(err);
-          }
-        } catch (err) {
-          return reject(new Error(`Check license error. ${err}`));
+        const err = extractError(licenseResponse.error);
+        if (!!err) {
+          throw new Error(err);
         }
-
-        (request as IAuthRequest).terminal = {
-          license: licenseResponse.data,
-          imei: payload.imei,
-          key: payload.key,
-        };
-        (request as IAuthRequest).client = {
-          id: licenseResponse.data.clientId,
-        };
+      } catch (err) {
+        return reject(new Error(`Check license error. ${err}`));
       }
-      (request as IAuthRequest).token = apikey;
 
-      return resolve(payload);
-    });
+      (request as IAuthRequest).terminal = {
+        license: licenseResponse.data,
+        imei: payload.imei,
+        key: payload.hash,
+      };
+      (request as IAuthRequest).client = {
+        id: licenseResponse.data.clientId,
+      };
+    }
+    (request as IAuthRequest).token = apikey;
+
+    return resolve(payload);
   });
 }
 
@@ -91,7 +85,7 @@ export async function expressAuthentication(
 
   if (securityName === "terminalAccessToken") {
     const token = request.headers["x-access-token"] ? String(request.headers["x-access-token"]) : undefined;
-
+    console.log(request, token)
     if (!!token) {
       return await checkApiKey(token, request);
     }

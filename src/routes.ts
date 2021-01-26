@@ -4750,6 +4750,7 @@ export function RegisterRoutes(app: express.Express) {
         function(request: any, response: any, next: any) {
             const args = {
                 body: { "in": "body", "name": "body", "required": true, "ref": "ITerminalRegisterRequest" },
+                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
