@@ -88,7 +88,7 @@ export class IntegrationsController extends Controller {
     }
 }
 
-@Route("/integrations")
+@Route("/integration")
 @Tags("Integration")
 export class IntegrationController extends Controller {
     @Get("{id}")
