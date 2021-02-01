@@ -263,58 +263,68 @@ class LicServerApiService {
     }*/
 
     // license types
-    public async getLicenseTypes<T = any>(options?: IRequestOptions): Promise<T> {
+    public async getLicenseTypes<T = any>(token: string): Promise<T> {
         return await makeRequest<T>(
             got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}license-types`, {
                 headers: {
                     "content-type": "application/json",
-                    "authorization": this.getToken(options),
+                    "authorization": this.getToken({
+                        clientToken: token,
+                    }),
                 }
             }),
         );
     }
 
-    public async getLicenseType<T = any>(id: string, options?: IRequestOptions): Promise<T> {
+    public async getLicenseType<T = any>(id: string, token: string): Promise<T> {
         return await makeRequest<T>(
             got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}license-type/${id}`, {
                 headers: {
                     "content-type": "application/json",
-                    "authorization": this.getToken(options),
+                    "authorization": this.getToken({
+                        clientToken: token,
+                    }),
                 }
             }),
         );
     }
 
-    public async createLicenseType<T = any>(licenseType: ILicenseType, options?: IRequestOptions): Promise<T> {
+    public async createLicenseType<T = any>(licenseType: ILicenseType, token: string): Promise<T> {
         return await makeRequest<T>(
             got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}license-type`, {
                 headers: {
                     "content-type": "application/json",
-                    "authorization": this.getToken(options),
+                    "authorization": this.getToken({
+                        clientToken: token,
+                    }),
                 },
                 body: JSON.stringify(licenseType),
             }),
         );
     }
 
-    public async updateLicenseType<T = any>(id: string, licenseType: ILicenseType, options?: IRequestOptions): Promise<T> {
+    public async updateLicenseType<T = any>(id: string, licenseType: ILicenseType, token: string): Promise<T> {
         return await makeRequest<T>(
             got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}license-type/${id}`, {
                 headers: {
                     "content-type": "application/json",
-                    "authorization": this.getToken(options),
+                    "authorization": this.getToken({
+                        clientToken: token,
+                    }),
                 },
                 body: JSON.stringify(licenseType),
             }),
         );
     }
 
-    public async deleteLicenseType<T = any>(id: string, options?: IRequestOptions): Promise<T> {
+    public async deleteLicenseType<T = any>(id: string, token: string): Promise<T> {
         return await makeRequest<T>(
             got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}license-type/${id}`, {
                 headers: {
                     "content-type": "application/json",
-                    "authorization": this.getToken(options),
+                    "authorization": this.getToken({
+                        clientToken: token,
+                    }),
                 },
             }),
         );
@@ -389,58 +399,68 @@ class LicServerApiService {
     }
 
     // integrations
-    public async getIntegrations<T = any>(options?: IRequestOptions): Promise<T> {
+    public async getIntegrations<T = any>(token: string): Promise<T> {
         return await makeRequest<T>(
             got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}integrations`, {
                 headers: {
                     "content-type": "application/json",
-                    "authorization": this.getToken(options),
+                    "authorization": this.getToken({
+                        clientToken: token,
+                    }),
                 }
             }),
         );
     }
 
-    public async getIntegration<T = any>(id: string, options?: IRequestOptions): Promise<T> {
+    public async getIntegration<T = any>(id: string, token: string): Promise<T> {
         return await makeRequest<T>(
             got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}integration/${id}`, {
                 headers: {
                     "content-type": "application/json",
-                    "authorization": this.getToken(options),
+                    "authorization": this.getToken({
+                        clientToken: token,
+                    }),
                 }
             }),
         );
     }
 
-    public async createIntegration<T = any>(licenseType: IIntegration, options?: IRequestOptions): Promise<T> {
+    public async createIntegration<T = any>(licenseType: IIntegration, token: string): Promise<T> {
         return await makeRequest<T>(
             got.post(`${config.LIC_SERVER_HOST}/${BASE_URL}integration`, {
                 headers: {
                     "content-type": "application/json",
-                    "authorization": this.getToken(options),
+                    "authorization": this.getToken({
+                        clientToken: token,
+                    }),
                 },
                 body: JSON.stringify(licenseType),
             }),
         );
     }
 
-    public async updateIntegration<T = any>(id: string, licenseType: IIntegration, options?: IRequestOptions): Promise<T> {
+    public async updateIntegration<T = any>(id: string, licenseType: IIntegration, token: string): Promise<T> {
         return await makeRequest<T>(
             got.put(`${config.LIC_SERVER_HOST}/${BASE_URL}integration/${id}`, {
                 headers: {
                     "content-type": "application/json",
-                    "authorization": this.getToken(options),
+                    "authorization": this.getToken({
+                        clientToken: token,
+                    }),
                 },
                 body: JSON.stringify(licenseType),
             }),
         );
     }
 
-    public async deleteIntegration<T = any>(id: string, options?: IRequestOptions): Promise<T> {
+    public async deleteIntegration<T = any>(id: string, token: string): Promise<T> {
         return await makeRequest<T>(
             got.delete(`${config.LIC_SERVER_HOST}/${BASE_URL}integration/${id}`, {
                 headers: {
                     "content-type": "application/json",
-                    "authorization": this.getToken(options),
+                    "authorization": this.getToken({
+                        clientToken: token,
+                    }),
                 },
             }),
         );

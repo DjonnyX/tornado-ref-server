@@ -3,14 +3,14 @@ import { RefTypes } from "../models/enums";
 import { IRefItem } from "./RefsController";
 import { licServerApiService } from "../services";
 import { IAuthRequest } from "../interfaces";
-import { IVersion } from "@djonnyx/tornado-types";
+import { IntegrationStates, IVersion } from "@djonnyx/tornado-types";
 
 interface IIntegrationInfo {
     id: string;
     name: string;
     description: string;
     version: IVersion;
-    state: number;
+    state: IntegrationStates;
     lastUpdate: Date;
 }
 
@@ -18,7 +18,7 @@ interface ICreateIntegrationParams {
     name: string;
     description?: string;
     version: IVersion;
-    state: number;
+    state: IntegrationStates;
     lastUpdate?: Date;
 }
 
@@ -26,7 +26,7 @@ interface IUpdateIntegrationParams {
     name?: string;
     description?: string;
     version?: IVersion;
-    state?: number;
+    state?: IntegrationStates;
     lastUpdate?: Date;
 }
 
@@ -61,7 +61,7 @@ const APPLICATION_RESPONSE_TEMPLATE: IIntegrationInfo = {
         code: 1,
         version: "1.0.23",
     },
-    state: 0,
+    state: IntegrationStates.ACTIVE,
     lastUpdate: new Date(),
 };
 
@@ -84,7 +84,7 @@ export class IntegrationsController extends Controller {
         data: [APPLICATION_RESPONSE_TEMPLATE],
     })
     public async getIntegration(@Request() request: IAuthRequest): Promise<IntegrationsGetResponse> {
-        return await licServerApiService.getIntegrations({ clientToken: request.token });
+        return await licServerApiService.getIntegrations(request.token);
     }
 }
 
@@ -99,7 +99,7 @@ export class IntegrationController extends Controller {
         data: APPLICATION_RESPONSE_TEMPLATE,
     })
     public async getIntegration(id: string, @Request() request: IAuthRequest): Promise<IntegrationResponse> {
-        return await licServerApiService.getIntegration(id, { clientToken: request.token });
+        return await licServerApiService.getIntegration(id, request.token);
     }
 
     @Post()
@@ -109,8 +109,8 @@ export class IntegrationController extends Controller {
         meta: META_TEMPLATE,
         data: APPLICATION_RESPONSE_TEMPLATE,
     })
-    public async createIntegration(@Request() request: IAuthRequest, @Body() body: ICreateIntegrationParams): Promise<IntegrationResponse> {
-        return await licServerApiService.createIntegration(body as any);
+    public async createIntegration(@Body() body: ICreateIntegrationParams, @Request() request: IAuthRequest): Promise<IntegrationResponse> {
+        return await licServerApiService.createIntegration(body as any, request.token);
     }
 
     @Put("{id}")
@@ -120,8 +120,8 @@ export class IntegrationController extends Controller {
         meta: META_TEMPLATE,
         data: APPLICATION_RESPONSE_TEMPLATE,
     })
-    public async updateIntegration(id: string, @Request() request: IAuthRequest, @Body() body: IUpdateIntegrationParams): Promise<IntegrationResponse> {
-        return await licServerApiService.updateIntegration(id, body as any);
+    public async updateIntegration(id: string, @Body() body: IUpdateIntegrationParams, @Request() request: IAuthRequest): Promise<IntegrationResponse> {
+        return await licServerApiService.updateIntegration(id, body as any, request.token);
     }
 
     @Delete("{id}")
@@ -131,6 +131,6 @@ export class IntegrationController extends Controller {
         meta: META_TEMPLATE,
     })
     public async deleteIntegration(id: string, @Request() request: IAuthRequest): Promise<IntegrationResponse> {
-        return await licServerApiService.deleteIntegration(id, { clientToken: request.token });
+        return await licServerApiService.deleteIntegration(id, request.token);
     }
 }
