@@ -357,7 +357,6 @@ const models: TsoaRoute.Models = {
             "name": { "dataType": "string", "required": true },
             "description": { "dataType": "string", "required": true },
             "version": { "ref": "IVersion", "required": true },
-            "state": { "dataType": "double", "required": true },
             "lastUpdate": { "dataType": "datetime", "required": true },
         },
         "additionalProperties": false,
@@ -389,8 +388,6 @@ const models: TsoaRoute.Models = {
             "name": { "dataType": "string", "required": true },
             "description": { "dataType": "string" },
             "version": { "ref": "IVersion", "required": true },
-            "state": { "dataType": "double", "required": true },
-            "lastUpdate": { "dataType": "datetime" },
         },
         "additionalProperties": false,
     },
@@ -401,8 +398,6 @@ const models: TsoaRoute.Models = {
             "name": { "dataType": "string" },
             "description": { "dataType": "string" },
             "version": { "ref": "IVersion" },
-            "state": { "dataType": "double" },
-            "lastUpdate": { "dataType": "datetime" },
         },
         "additionalProperties": false,
     },
@@ -2401,8 +2396,8 @@ export function RegisterRoutes(app: express.Express) {
         authenticateMiddleware([{ "clientAccessToken": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
                 body: { "in": "body", "name": "body", "required": true, "ref": "ICreateApplicationParams" },
+                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -2426,8 +2421,8 @@ export function RegisterRoutes(app: express.Express) {
         function(request: any, response: any, next: any) {
             const args = {
                 id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
                 body: { "in": "body", "name": "body", "required": true, "ref": "IUpdateApplicationParams" },
+                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

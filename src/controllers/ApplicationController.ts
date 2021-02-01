@@ -2,15 +2,14 @@ import { Controller, Route, Post, Tags, Example, Request, Body, Get, Put, Delete
 import { RefTypes } from "../models/enums";
 import { IRefItem } from "./RefsController";
 import { licServerApiService } from "../services";
-import { IAuthRequest } from "../interfaces";
 import { IVersion } from "@djonnyx/tornado-types";
+import { IAuthRequest } from "src/interfaces";
 
 interface IApplicationInfo {
     id: string;
     name: string;
     description: string;
     version: IVersion;
-    state: number;
     lastUpdate: Date;
 }
 
@@ -18,16 +17,12 @@ interface ICreateApplicationParams {
     name: string;
     description?: string;
     version: IVersion;
-    state: number;
-    lastUpdate?: Date;
 }
 
 interface IUpdateApplicationParams {
     name?: string;
     description?: string;
     version?: IVersion;
-    state?: number;
-    lastUpdate?: Date;
 }
 
 interface ApplicationsGetResponse {
@@ -61,7 +56,6 @@ const APPLICATION_RESPONSE_TEMPLATE: IApplicationInfo = {
         code: 1,
         version: "1.0.23",
     },
-    state: 0,
     lastUpdate: new Date(),
 };
 
@@ -84,7 +78,7 @@ export class ApplicationsController extends Controller {
         data: [APPLICATION_RESPONSE_TEMPLATE],
     })
     public async getApplication(@Request() request: IAuthRequest): Promise<ApplicationsGetResponse> {
-        return await licServerApiService.getApplications();
+        return await licServerApiService.getApplications(request.token);
     }
 }
 
@@ -99,7 +93,7 @@ export class ApplicationController extends Controller {
         data: APPLICATION_RESPONSE_TEMPLATE,
     })
     public async getApplication(id: string, @Request() request: IAuthRequest): Promise<ApplicationResponse> {
-        return await licServerApiService.getApplication(id, { clientToken: request.token });
+        return await licServerApiService.getApplication(id, request.token);
     }
 
     @Post()
@@ -109,8 +103,8 @@ export class ApplicationController extends Controller {
         meta: META_TEMPLATE,
         data: APPLICATION_RESPONSE_TEMPLATE,
     })
-    public async createApplication(@Request() request: IAuthRequest, @Body() body: ICreateApplicationParams): Promise<ApplicationResponse> {
-        return await licServerApiService.createApplication(body as any);
+    public async createApplication(@Body() body: ICreateApplicationParams, @Request() request: IAuthRequest): Promise<ApplicationResponse> {
+        return await licServerApiService.createApplication(body as any, request.token);
     }
 
     @Put("{id}")
@@ -120,8 +114,8 @@ export class ApplicationController extends Controller {
         meta: META_TEMPLATE,
         data: APPLICATION_RESPONSE_TEMPLATE,
     })
-    public async updateApplication(id: string, @Request() request: IAuthRequest, @Body() body: IUpdateApplicationParams): Promise<ApplicationResponse> {
-        return await licServerApiService.updateApplication(id, body as any);
+    public async updateApplication(id: string, @Body() body: IUpdateApplicationParams, @Request() request: IAuthRequest): Promise<ApplicationResponse> {
+        return await licServerApiService.updateApplication(id, body as any, request.token);
     }
 
     @Delete("{id}")
@@ -131,6 +125,6 @@ export class ApplicationController extends Controller {
         meta: META_TEMPLATE,
     })
     public async deleteApplication(id: string, @Request() request: IAuthRequest): Promise<ApplicationResponse> {
-        return await licServerApiService.deleteApplication(id);
+        return await licServerApiService.deleteApplication(id, request.token);
     }
 }
