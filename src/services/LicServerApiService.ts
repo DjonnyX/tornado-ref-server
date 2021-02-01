@@ -291,7 +291,7 @@ class LicServerApiService {
 
     public async createLicenseType<T = any>(licenseType: ILicenseType, token: string): Promise<T> {
         return await makeRequest<T>(
-            got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}license-type`, {
+            got.post(`${config.LIC_SERVER_HOST}/${BASE_URL}license-type`, {
                 headers: {
                     "content-type": "application/json",
                     "authorization": this.getToken({
@@ -305,7 +305,7 @@ class LicServerApiService {
 
     public async updateLicenseType<T = any>(id: string, licenseType: ILicenseType, token: string): Promise<T> {
         return await makeRequest<T>(
-            got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}license-type/${id}`, {
+            got.put(`${config.LIC_SERVER_HOST}/${BASE_URL}license-type/${id}`, {
                 headers: {
                     "content-type": "application/json",
                     "authorization": this.getToken({
@@ -319,7 +319,7 @@ class LicServerApiService {
 
     public async deleteLicenseType<T = any>(id: string, token: string): Promise<T> {
         return await makeRequest<T>(
-            got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}license-type/${id}`, {
+            got.delete(`${config.LIC_SERVER_HOST}/${BASE_URL}license-type/${id}`, {
                 headers: {
                     "content-type": "application/json",
                     "authorization": this.getToken({

@@ -12,7 +12,6 @@ interface ILicenseTypeInfo {
     payNotice: string;
     integrationId: string;
     lastUpdate: Date;
-    extra?: { [key: string]: any } | null;
 }
 
 interface ICreateLicenseTypeParams {
@@ -22,7 +21,6 @@ interface ICreateLicenseTypeParams {
     payNotice: string;
     integrationId: string;
     lastUpdate?: string;
-    extra?: { [key: string]: any } | null;
 }
 
 interface IUpdateLicenseTypeParams {
@@ -31,7 +29,6 @@ interface IUpdateLicenseTypeParams {
     price?: number;
     payNotice?: string;
     integrationId?: string;
-    extra?: { [key: string]: any } | null;
 }
 
 interface LicenseTypesGetResponse {
@@ -64,7 +61,6 @@ const LICENSE_TYPE_RESPONSE_TEMPLATE: ILicenseTypeInfo = {
     payNotice: "Оплата через терминал Эвотор",
     integrationId: "507c7f79bcf86cd7994f6c0e",
     lastUpdate: new Date(),
-    extra: { key: "value" },
 };
 
 const META_TEMPLATE: ILicenseTypeInfoMeta = {
@@ -90,7 +86,7 @@ export class LicenseTypesController extends Controller {
     }
 }
 
-@Route("/license-types")
+@Route("/license-type")
 @Tags("LicenseType")
 export class LicenseTypeController extends Controller {
     @Get("{id}")

@@ -857,6 +857,7 @@ const models: TsoaRoute.Models = {
             "description": { "dataType": "string", "required": true },
             "price": { "dataType": "double", "required": true },
             "payNotice": { "dataType": "string", "required": true },
+            "integrationId": { "dataType": "string", "required": true },
         },
         "additionalProperties": false,
     },
@@ -928,7 +929,6 @@ const models: TsoaRoute.Models = {
             "payNotice": { "dataType": "string", "required": true },
             "integrationId": { "dataType": "string", "required": true },
             "lastUpdate": { "dataType": "datetime", "required": true },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
         "additionalProperties": false,
     },
@@ -962,7 +962,6 @@ const models: TsoaRoute.Models = {
             "payNotice": { "dataType": "string", "required": true },
             "integrationId": { "dataType": "string", "required": true },
             "lastUpdate": { "dataType": "string" },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
         "additionalProperties": false,
     },
@@ -975,7 +974,6 @@ const models: TsoaRoute.Models = {
             "price": { "dataType": "double" },
             "payNotice": { "dataType": "string" },
             "integrationId": { "dataType": "string" },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
         "additionalProperties": false,
     },
@@ -3221,7 +3219,7 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/license-types/:id',
+    app.get('/api/v1/license-type/:id',
         authenticateMiddleware([{ "clientAccessToken": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
@@ -3245,7 +3243,7 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/v1/license-types',
+    app.post('/api/v1/license-type',
         authenticateMiddleware([{ "clientAccessToken": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
@@ -3269,7 +3267,7 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.put('/api/v1/license-types/:id',
+    app.put('/api/v1/license-type/:id',
         authenticateMiddleware([{ "clientAccessToken": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
@@ -3294,7 +3292,7 @@ export function RegisterRoutes(app: express.Express) {
             promiseHandler(controller, promise, response, next);
         });
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.delete('/api/v1/license-types/:id',
+    app.delete('/api/v1/license-type/:id',
         authenticateMiddleware([{ "clientAccessToken": [] }]),
         function(request: any, response: any, next: any) {
             const args = {

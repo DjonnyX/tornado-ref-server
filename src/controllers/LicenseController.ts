@@ -84,6 +84,7 @@ const LICENSE_RESPONSE_TEMPLATE: ILicenseInfo = {
         name: "Киоск с кассой r-keeper",
         payNotice: "оплата лицензии осуществляется в личном кабинете пользователя",
         price: 100000,
+        integrationId: "507c7f79bcf86cd7994f6c0e",
     },
     licTypeId: "ecbbfd40-62ba-49bf-8620-75d8c5ed3953",
     lastUpdate: new Date(),
