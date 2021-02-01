@@ -659,6 +659,11 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IntegrationStates": {
+        "dataType": "refEnum",
+        "enums": [0, 1],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "IIntegrationInfo": {
         "dataType": "refObject",
         "properties": {
@@ -666,7 +671,7 @@ const models: TsoaRoute.Models = {
             "name": { "dataType": "string", "required": true },
             "description": { "dataType": "string", "required": true },
             "version": { "ref": "IVersion", "required": true },
-            "state": { "dataType": "double", "required": true },
+            "state": { "ref": "IntegrationStates", "required": true },
             "lastUpdate": { "dataType": "datetime", "required": true },
         },
         "additionalProperties": false,
@@ -698,7 +703,7 @@ const models: TsoaRoute.Models = {
             "name": { "dataType": "string", "required": true },
             "description": { "dataType": "string" },
             "version": { "ref": "IVersion", "required": true },
-            "state": { "dataType": "double", "required": true },
+            "state": { "ref": "IntegrationStates", "required": true },
             "lastUpdate": { "dataType": "datetime" },
         },
         "additionalProperties": false,
@@ -710,7 +715,7 @@ const models: TsoaRoute.Models = {
             "name": { "dataType": "string" },
             "description": { "dataType": "string" },
             "version": { "ref": "IVersion" },
-            "state": { "dataType": "double" },
+            "state": { "ref": "IntegrationStates" },
             "lastUpdate": { "dataType": "datetime" },
         },
         "additionalProperties": false,
@@ -2894,8 +2899,8 @@ export function RegisterRoutes(app: express.Express) {
         authenticateMiddleware([{ "clientAccessToken": [] }]),
         function(request: any, response: any, next: any) {
             const args = {
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
                 body: { "in": "body", "name": "body", "required": true, "ref": "ICreateIntegrationParams" },
+                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -2919,8 +2924,8 @@ export function RegisterRoutes(app: express.Express) {
         function(request: any, response: any, next: any) {
             const args = {
                 id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
                 body: { "in": "body", "name": "body", "required": true, "ref": "IUpdateIntegrationParams" },
+                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

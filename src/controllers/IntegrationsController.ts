@@ -14,13 +14,13 @@ interface IIntegrationInfo {
     lastUpdate: Date;
 }
 
-interface ICreateIntegrationParams {
+/*interface ICreateIntegrationParams {
     name: string;
     description?: string;
     version: IVersion;
     state: IntegrationStates;
     lastUpdate?: Date;
-}
+}*/
 
 interface IUpdateIntegrationParams {
     name?: string;
@@ -102,7 +102,7 @@ export class IntegrationController extends Controller {
         return await licServerApiService.getIntegration(id, request.token);
     }
 
-    @Post()
+    /*@Post()
     @Security("clientAccessToken")
     @OperationId("Create")
     @Example<IntegrationResponse>({
@@ -111,7 +111,7 @@ export class IntegrationController extends Controller {
     })
     public async createIntegration(@Body() body: ICreateIntegrationParams, @Request() request: IAuthRequest): Promise<IntegrationResponse> {
         return await licServerApiService.createIntegration(body as any, request.token);
-    }
+    }*/
 
     @Put("{id}")
     @Security("clientAccessToken")
@@ -124,7 +124,7 @@ export class IntegrationController extends Controller {
         return await licServerApiService.updateIntegration(id, body as any, request.token);
     }
 
-    @Delete("{id}")
+    /*@Delete("{id}")
     @Security("clientAccessToken")
     @OperationId("Delete")
     @Example<IntegrationResponse>({
@@ -132,5 +132,5 @@ export class IntegrationController extends Controller {
     })
     public async deleteIntegration(id: string, @Request() request: IAuthRequest): Promise<IntegrationResponse> {
         return await licServerApiService.deleteIntegration(id, request.token);
-    }
+    }*/
 }
