@@ -8,26 +8,23 @@ import { ILicense, RefTypes } from "@djonnyx/tornado-types";
 
 interface ILicenseInfo extends ILicense { }
 
-/*interface ICreateLicenseParams {
+interface ICreateLicenseParams {
     clientId: string;
     dateStart: Date;
     dateEnd: Date;
-    state?: LicenseStates;
-    status?: LicenseStatuses;
-    key: string;
-    licTypeId?: string;
-    lastUpdate: Date;
-    extra?: { [key: string]: any } | null;
+    state: LicenseStates;
+    status: LicenseStatuses;
+    licTypeId: string;
 }
 
 interface IUpdateLicenseParams {
+    clientId?: string;
     dateStart?: Date;
     dateEnd?: Date;
     state?: LicenseStates;
     status?: LicenseStatuses;
     licTypeId?: string;
-    extra?: { [key: string]: any } | null;
-}*/
+}
 
 interface LicenseVerifyResponse {
     meta?: ILicenseInfoMeta;
@@ -46,7 +43,7 @@ interface LicenseVerifyResponse {
     }>;
 }
 
-interface LicensesGetResponse {
+interface LicensesResponse {
     meta?: ILicenseInfoMeta;
     data?: Array<ILicenseInfo>;
     error?: Array<{
@@ -97,57 +94,50 @@ const META_TEMPLATE: ILicenseInfoMeta = {
     }
 };
 
+@Route("/licenses/forClient")
+@Tags("License")
+export class LicensesForClientController extends Controller {
+    @Get()
+    @Security("clientAccessToken")
+    @OperationId("GetAll")
+    @Example<LicensesResponse>({
+        meta: META_TEMPLATE,
+        data: [LICENSE_RESPONSE_TEMPLATE],
+    })
+    public async getLicense(@Request() request: IAuthRequest): Promise<LicensesResponse> {
+        return await licServerApiService.getLicensesForClient(request.token);
+    }
+}
+
+@Route("/license/forClient")
+@Tags("License")
+export class LicenseForClientController extends Controller {
+    @Get("{id}")
+    @Security("clientAccessToken")
+    @OperationId("GetOne")
+    @Example<LicenseResponse>({
+        meta: META_TEMPLATE,
+        data: LICENSE_RESPONSE_TEMPLATE,
+    })
+    public async getLicense(id: string, @Request() request: IAuthRequest): Promise<LicenseResponse> {
+        return await licServerApiService.getLicenseForClient(id, request.token);
+    }
+}
+
 @Route("/licenses")
 @Tags("License")
 export class LicensesController extends Controller {
     @Get()
     @Security("clientAccessToken")
     @OperationId("GetAll")
-    @Example<LicensesGetResponse>({
+    @Example<LicensesResponse>({
         meta: META_TEMPLATE,
         data: [LICENSE_RESPONSE_TEMPLATE],
     })
-    public async getLicense(@Request() request: IAuthRequest): Promise<LicensesGetResponse> {
-        return await licServerApiService.getLicenses(request.token);
+    public async getLicenses(): Promise<LicensesResponse> {
+        return await licServerApiService.getLicenses();
     }
 }
-
-/*@Route("/license/verify")
-@Tags("License")
-export class LicenseCheckController extends Controller {
-    @Get()
-    @Security("terminalAccessToken")
-    @OperationId("Verify")
-    @Example<LicenseVerifyResponse>({
-        meta: META_TEMPLATE,
-        data: {
-            license: LICENSE_RESPONSE_TEMPLATE,
-            client: {
-                id: "1234324234234",
-                firstName: "First name",
-                lastName: "Last name",
-                email: "client@test.com"
-            }
-        },
-    })
-    public async verifyLicense(@Request() request: IAuthRequest): Promise<LicenseVerifyResponse> {
-        let req: any;
-        try {
-            req = await licServerApiService.verifyLicenseKey(request.token);
-        } catch (err) {
-            this.setStatus(500);
-            return {
-                error: [
-                    {
-                        code: 500,
-                        message: `Caught error. ${err}`,
-                    }
-                ]
-            };
-        }
-        return req;
-    }
-}*/
 
 @Route("/license")
 @Tags("License")
@@ -159,18 +149,18 @@ export class LicenseController extends Controller {
         meta: META_TEMPLATE,
         data: LICENSE_RESPONSE_TEMPLATE,
     })
-    public async getLicense(id: string, @Request() request: IAuthRequest): Promise<LicenseResponse> {
-        return await licServerApiService.getLicense(id, request.token);
+    public async getLicense(id: string): Promise<LicenseResponse> {
+        return await licServerApiService.getLicense(id);
     }
 
-    /*@Post()
+    @Post()
     @Security("clientAccessToken")
     @OperationId("Create")
     @Example<LicenseResponse>({
         meta: META_TEMPLATE,
         data: LICENSE_RESPONSE_TEMPLATE,
     })
-    public async createLicense(@Request() request: IAuthRequest, @Body() body: ICreateLicenseParams): Promise<LicenseResponse> {
+    public async createLicense(@Body() body: ICreateLicenseParams): Promise<LicenseResponse> {
         return await licServerApiService.createLicense(body as any);
     }
 
@@ -181,7 +171,7 @@ export class LicenseController extends Controller {
         meta: META_TEMPLATE,
         data: LICENSE_RESPONSE_TEMPLATE,
     })
-    public async updateLicense(id: string, @Request() request: IAuthRequest, @Body() body: IUpdateLicenseParams): Promise<LicenseResponse> {
+    public async updateLicense(id: string, @Body() body: IUpdateLicenseParams): Promise<LicenseResponse> {
         return await licServerApiService.updateLicense(id, body as any);
     }
 
@@ -191,7 +181,7 @@ export class LicenseController extends Controller {
     @Example<LicenseResponse>({
         meta: META_TEMPLATE,
     })
-    public async deleteLicense(id: string, @Request() request: IAuthRequest): Promise<LicenseResponse> {
+    public async deleteLicense(id: string): Promise<LicenseResponse> {
         return await licServerApiService.deleteLicense(id);
-    }*/
+    }
 }
