@@ -38,8 +38,8 @@ const TerminalSchema = new Schema({
     name: { type: String },
     storeId: { type: Schema.Types.ObjectId },
     lastwork: { type: Date },
-    imei: { type: String, required: true },
-    licenseId: { type: String, required: true },
+    imei: { type: String, unique: true, required: true },
+    licenseId: { type: String, unique: true, required: true },
     extra: { type: Schema.Types.Mixed, required: false, default: {} },
 });
 

@@ -64,6 +64,135 @@ const META_TEMPLATE: ITerminalMeta = {
     }
 };
 
+
+@Route("/device")
+@Tags("Terminal")
+export class Deviceontroller extends Controller {
+    @Get("license-verify")
+    @Security("terminalAccessToken")
+    @OperationId("LicenseVerify")
+    @Example<ITerminalResponse>({
+        meta: META_TEMPLATE,
+        data: RESPONSE_TEMPLATE,
+    })
+    public async licenseVerify(@Request() request: IAuthRequest): Promise<ITerminalResponse> {
+        let terminal: ITerminalDocument;
+        try {
+            terminal = await TerminalModel.findOne({
+                imei: request.terminal.imei,
+                licenseId: request.terminal.license.id,
+            });
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Terminal not found. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        const ref = await getRef(request.client.id, RefTypes.TERMINALS);
+        return {
+            meta: { ref },
+            data: formatTerminalModel(terminal),
+        };
+    }
+
+    @Post("registration")
+    @Security("terminalAccessToken")
+    @OperationId("Registration")
+    @Example<ITerminalResponse>({
+        meta: META_TEMPLATE,
+        data: RESPONSE_TEMPLATE,
+    })
+    public async registration(@Body() body: ITerminalRegisterRequest, @Request() request: IAuthRequest): Promise<ITerminalResponse> {
+        let setDeviceResponse: ISetDeviceResponse;
+        try {
+            setDeviceResponse = await licServerApiService.setDevice(request.token);
+
+            const err = extractError(setDeviceResponse.error);
+            if (!!err) {
+                throw new Error(err);
+            }
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Set device error. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        let existsTrminal: ITerminalDocument;
+        try {
+            existsTrminal = await TerminalModel.findOne({ imei: setDeviceResponse.data.imei });
+        } catch (err) { }
+
+        if (!!existsTrminal) {
+            existsTrminal.clientId = setDeviceResponse.data.clientId;
+            existsTrminal.status = TerminalStatusTypes.ONLINE;
+            existsTrminal.type = body.type;
+            existsTrminal.name = body.name;
+            existsTrminal.lastwork = new Date(Date.now());
+            existsTrminal.licenseId = setDeviceResponse.data.id;
+
+            try {
+                const savedItem = await existsTrminal.save();
+                const ref = await riseRefVersion(setDeviceResponse.data.clientId, RefTypes.TERMINALS);
+                return {
+                    meta: { ref },
+                    data: formatTerminalModel(savedItem),
+                };
+            } catch (err) {
+                this.setStatus(500);
+                return {
+                    error: [
+                        {
+                            code: 500,
+                            message: `Terminal update failed. ${err}`,
+                        }
+                    ]
+                };
+            }
+        }
+
+        try {
+            const item = new TerminalModel({
+                clientId: setDeviceResponse.data.clientId,
+                status: TerminalStatusTypes.ONLINE,
+                type: body.type,
+                name: body.name,
+                lastwork: new Date(Date.now()),
+                imei: setDeviceResponse.data.imei,
+                licenseId: setDeviceResponse.data.id,
+                extra: {},
+            });
+            const savedItem = await item.save();
+            const ref = await riseRefVersion(setDeviceResponse.data.clientId, RefTypes.TERMINALS);
+            return {
+                meta: { ref },
+                data: formatTerminalModel(savedItem),
+            };
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Caught error. ${err}`,
+                    }
+                ]
+            };
+        }
+    }
+}
+
 @Route("/terminals")
 @Tags("Terminal")
 export class TerminalsController extends Controller {
@@ -115,97 +244,6 @@ export class TerminalController extends Controller {
             return {
                 meta: { ref },
                 data: formatTerminalModel(item),
-            };
-        } catch (err) {
-            this.setStatus(500);
-            return {
-                error: [
-                    {
-                        code: 500,
-                        message: `Caught error. ${err}`,
-                    }
-                ]
-            };
-        }
-    }
-
-    @Get("license-verify")
-    @Security("terminalAccessToken")
-    @OperationId("LicenseVerify")
-    @Example<ITerminalResponse>({
-        meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE,
-    })
-    public async licenseVerify(@Request() request: IAuthRequest): Promise<ITerminalResponse> {
-        let terminal: ITerminalDocument;
-        try {
-            terminal = await TerminalModel.findOne({
-                imei: request.terminal.imei,
-                licenseId: request.terminal.license.id,
-            });
-        } catch (err) {
-            this.setStatus(500);
-            return {
-                error: [
-                    {
-                        code: 500,
-                        message: `Terminal not found. ${err}`,
-                    }
-                ]
-            };
-        }
-
-        const ref = await getRef(request.client.id, RefTypes.TERMINALS);
-        return {
-            meta: { ref },
-            data: formatTerminalModel(terminal),
-        };
-    }
-
-    @Post("registration")
-    @Security("terminalAccessToken")
-    @OperationId("Registration")
-    @Example<ITerminalResponse>({
-        meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE,
-    })
-    public async registration(@Body() body: ITerminalRegisterRequest, @Request() request: IAuthRequest): Promise<ITerminalResponse> {
-        let setDeviceResponse: ISetDeviceResponse;
-        try {
-            setDeviceResponse = await licServerApiService.setDevice(request.token);
-
-            const err = extractError(setDeviceResponse.error);
-            if (!!err) {
-              throw new Error(err);
-            }
-        } catch (err) {
-            this.setStatus(500);
-            return {
-                error: [
-                    {
-                        code: 500,
-                        message: `Set device error. ${err}`,
-                    }
-                ]
-            };
-        }
-
-        try {
-            const item = new TerminalModel({
-                clientId: setDeviceResponse.data.clientId,
-                status: TerminalStatusTypes.ONLINE,
-                type: body.type,
-                name: body.name,
-                lastwork: new Date(Date.now()),
-                imei: setDeviceResponse.data.imei,
-                licenseId: setDeviceResponse.data.id,
-                extra: {},
-            });
-            const savedItem = await item.save();
-            const ref = await riseRefVersion(setDeviceResponse.data.clientId, RefTypes.TERMINALS);
-            return {
-                meta: { ref },
-                data: formatTerminalModel(savedItem),
             };
         } catch (err) {
             this.setStatus(500);
