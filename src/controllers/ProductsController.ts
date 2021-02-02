@@ -1,4 +1,4 @@
-import { ProductModel, IProduct, IReceiptItem, RefTypes, NodeModel, ILanguage, LanguageModel } from "../models/index";
+import { ProductModel, IProduct, IReceiptItem, NodeModel, ILanguage, LanguageModel } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Request } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { deleteNodesChain } from "../utils/node";
@@ -8,7 +8,7 @@ import { AssetModel } from "../models/Asset";
 import { deleteAsset } from "./AssetsController";
 import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "../interfaces";
-import { IPrice, IProductContents, NodeTypes } from "@djonnyx/tornado-types";
+import { IPrice, IProductContents, NodeTypes, RefTypes } from "@djonnyx/tornado-types";
 
 export interface IProductItem {
     id?: string;

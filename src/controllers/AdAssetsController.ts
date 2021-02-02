@@ -1,4 +1,4 @@
-import { AdModel, IAd, RefTypes, ILanguage, LanguageModel } from "../models/index";
+import { AdModel, IAd, ILanguage, LanguageModel } from "../models/index";
 import { Controller, Route, Post, Tags, OperationId, Example, Request, Security, Get, Delete, Body, Put } from "tsoa";
 import { riseRefVersion, getRef } from "../db/refs";
 import { IAdItem, RESPONSE_TEMPLATE as AD_RESPONSE_TEMPLATE } from "./AdController";
@@ -9,7 +9,7 @@ import { uploadAsset, deleteAsset, IAssetItem, ICreateAssetsResponse } from "./A
 import { AssetModel, IAsset } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
 import { IAuthRequest } from "../interfaces";
-import { AssetExtensions, IAdContents } from "@djonnyx/tornado-types";
+import { AssetExtensions, IAdContents, RefTypes } from "@djonnyx/tornado-types";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IAdAsset extends IAssetItem { }

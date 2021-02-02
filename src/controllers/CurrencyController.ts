@@ -1,9 +1,10 @@
-import { RefTypes, CurrencyModel, ICurrency } from "../models/index";
+import { CurrencyModel, ICurrency } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Request } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatCurrencyModel } from "../utils/currency";
 import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "../interfaces";
+import { RefTypes } from "@djonnyx/tornado-types";
 
 interface ICurrencyItem {
     id: string;

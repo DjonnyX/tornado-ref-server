@@ -1,4 +1,4 @@
-import { RefTypes, ILanguage, LanguageModel, TranslationModel } from "../models/index";
+import { ILanguage, LanguageModel, TranslationModel } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Request } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { IRefItem } from "./RefsController";
@@ -7,6 +7,7 @@ import { mergeTranslation } from "../utils/translation";
 import { AssetModel } from "../models/Asset";
 import { deleteAsset } from "./AssetsController";
 import { IAuthRequest } from "../interfaces";
+import { RefTypes } from "@djonnyx/tornado-types";
 
 export interface ILanguageItem {
     id: string;

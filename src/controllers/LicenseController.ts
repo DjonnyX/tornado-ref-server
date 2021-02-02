@@ -1,11 +1,10 @@
 import { Controller, Route, Post, Tags, Example, Request, Body, Get, Put, Delete, OperationId, Security, Query } from "tsoa";
-import { RefTypes } from "../models/enums";
 import { LicenseStates } from "@djonnyx/tornado-types/dist/interfaces/raw/LicenseStates";
 import { LicenseStatuses } from "@djonnyx/tornado-types/dist/interfaces/raw/LicenseStatuses";
 import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "../interfaces";
 import { licServerApiService } from "../services";
-import { ILicense } from "@djonnyx/tornado-types";
+import { ILicense, RefTypes } from "@djonnyx/tornado-types";
 
 interface ILicenseInfo extends ILicense { }
 

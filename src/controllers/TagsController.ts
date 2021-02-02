@@ -1,4 +1,4 @@
-import { RefTypes, TagModel, LanguageModel, ILanguage, ProductModel, IProduct } from "../models/index";
+import { TagModel, LanguageModel, ILanguage, ProductModel, IProduct } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Request } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatTagModel } from "../utils/tag";
@@ -8,7 +8,7 @@ import { deleteAsset } from "./AssetsController";
 import { normalizeContents, getDeletedImagesFromDifferense, getEntityAssets } from "../utils/entity";
 import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "../interfaces";
-import { ITagContents } from "@djonnyx/tornado-types";
+import { ITagContents, RefTypes } from "@djonnyx/tornado-types";
 
 export interface ITagItem {
     id: string;

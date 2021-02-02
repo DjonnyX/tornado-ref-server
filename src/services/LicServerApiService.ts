@@ -138,23 +138,34 @@ class LicServerApiService {
         );
     }
 
-    public async getClients<T = any>(options?: IRequestOptions): Promise<T> {
+    public async getAccounts<T = any>(): Promise<T> {
         return await makeRequest<T>(
             got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}clients`, {
                 headers: {
                     "content-type": "application/json",
-                    "authorization": this.getToken(options),
+                    "authorization": this.getToken(),
                 }
             }),
         );
     }
 
-    public async getClient<T = any>(id: string, options?: IRequestOptions): Promise<T> {
+    public async getAccount<T = any>(id: string): Promise<T> {
         return await makeRequest<T>(
             got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}clients/${id}`, {
                 headers: {
                     "content-type": "application/json",
-                    "authorization": this.getToken(options),
+                    "authorization": this.getToken(),
+                }
+            }),
+        );
+    }
+
+    public async updateAccount<T = any>(id: string): Promise<T> {
+        return await makeRequest<T>(
+            got.put(`${config.LIC_SERVER_HOST}/${BASE_URL}clients/${id}`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": this.getToken(),
                 }
             }),
         );

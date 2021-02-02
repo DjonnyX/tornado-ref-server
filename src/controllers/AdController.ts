@@ -1,6 +1,6 @@
-import { AdModel, IAd, RefTypes, ILanguage, LanguageModel } from "../models/index";
+import { AdModel, IAd, ILanguage, LanguageModel } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Query, Request } from "tsoa";
-import { AdTypes, IAdContents } from "@djonnyx/tornado-types";
+import { AdTypes, IAdContents, RefTypes } from "@djonnyx/tornado-types";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatAdModel } from "../utils/ad";
 import { normalizeContents, getDeletedImagesFromDifferense, getEntityAssets } from "../utils/entity";

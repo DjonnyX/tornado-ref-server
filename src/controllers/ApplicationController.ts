@@ -1,8 +1,7 @@
 import { Controller, Route, Post, Tags, Example, Request, Body, Get, Put, Delete, OperationId, Security } from "tsoa";
-import { RefTypes } from "../models/enums";
 import { IRefItem } from "./RefsController";
 import { licServerApiService } from "../services";
-import { IVersion } from "@djonnyx/tornado-types";
+import { IVersion, RefTypes } from "@djonnyx/tornado-types";
 import { IAuthRequest } from "src/interfaces";
 
 interface IApplicationInfo {

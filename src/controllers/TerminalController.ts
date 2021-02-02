@@ -1,6 +1,6 @@
-import { ITerminalDocument, RefTypes, TerminalModel } from "../models";
+import { ITerminalDocument, TerminalModel } from "../models";
 import { Controller, Route, Get, Tags, OperationId, Example, Security, Put, Body, Delete, Request, Post } from "tsoa";
-import { ITerminal, TerminalStatusTypes, TerminalTypes } from "@djonnyx/tornado-types";
+import { ITerminal, TerminalStatusTypes, TerminalTypes, RefTypes } from "@djonnyx/tornado-types";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatTerminalModel } from "../utils/terminal";
 import { IRefItem } from "./RefsController";

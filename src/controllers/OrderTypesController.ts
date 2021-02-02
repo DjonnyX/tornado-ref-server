@@ -1,4 +1,4 @@
-import { RefTypes, OrderTypeModel, LanguageModel, ILanguage } from "../models/index";
+import { OrderTypeModel, LanguageModel, ILanguage } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Request } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatOrderTypeModel } from "../utils/orderType";
@@ -8,7 +8,7 @@ import { deleteAsset } from "./AssetsController";
 import { normalizeContents, getDeletedImagesFromDifferense, getEntityAssets } from "../utils/entity";
 import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "src/interfaces";
-import { IOrderTypeContents } from "@djonnyx/tornado-types";
+import { IOrderTypeContents, RefTypes } from "@djonnyx/tornado-types";
 
 export interface IOrderTypeItem {
     id: string;

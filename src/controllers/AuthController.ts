@@ -1,7 +1,6 @@
-import { Controller, Route, Post, Tags, Example, Request, Body, Get, Query, Security } from "tsoa";
+import { Controller, Route, Post, Tags, Example, Request, Body, Get, Query } from "tsoa";
 import * as express from "express";
 import { initRefs } from "../db/initDB";
-import { createProxyRequestToAuthServer } from "../utils/proxy";
 import { licServerApiService } from "../services";
 
 interface ISigninParams {

@@ -1,4 +1,4 @@
-import { SelectorModel, ISelector, RefTypes, NodeModel, ILanguage, LanguageModel } from "../models/index";
+import { SelectorModel, ISelector, NodeModel, ILanguage, LanguageModel } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Query, Request } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { deleteNodesChain } from "../utils/node";
@@ -8,7 +8,7 @@ import { AssetModel } from "../models/Asset";
 import { deleteAsset } from "./AssetsController";
 import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "../interfaces";
-import { ISelectorContents, NodeTypes, SelectorTypes } from "@djonnyx/tornado-types";
+import { ISelectorContents, NodeTypes, SelectorTypes, RefTypes } from "@djonnyx/tornado-types";
 
 export interface ISelectorItem {
     id?: string;

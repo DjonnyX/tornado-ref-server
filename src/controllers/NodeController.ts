@@ -1,12 +1,11 @@
 import { NodeModel, INode } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Request } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
-import { RefTypes } from "../models/enums";
 import * as joi from "@hapi/joi";
 import { IRefItem } from "./RefsController";
 import { getNodesChain, deleteNodesChain, checkOnRecursion } from "../utils/node";
 import { IAuthRequest } from "../interfaces";
-import { IScenario, NodeTypes, ScenarioCommonActionTypes } from "@djonnyx/tornado-types";
+import { IScenario, NodeTypes, ScenarioCommonActionTypes, RefTypes } from "@djonnyx/tornado-types";
 
 interface INodeItem {
     id: string;

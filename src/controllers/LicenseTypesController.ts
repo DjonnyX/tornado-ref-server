@@ -1,8 +1,8 @@
 import { Controller, Route, Post, Tags, Example, Request, Body, Get, Put, Delete, OperationId, Security } from "tsoa";
-import { RefTypes } from "../models/enums";
 import { IRefItem } from "./RefsController";
 import { licServerApiService } from "../services";
 import { IAuthRequest } from "../interfaces";
+import { RefTypes } from "@djonnyx/tornado-types";
 
 interface ILicenseTypeInfo {
     id: string;

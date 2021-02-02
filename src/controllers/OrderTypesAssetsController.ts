@@ -1,5 +1,5 @@
 import * as express from "express";
-import { OrderTypeModel, IOrderType, RefTypes, ILanguage, LanguageModel } from "../models/index";
+import { OrderTypeModel, IOrderType, ILanguage, LanguageModel } from "../models/index";
 import { Controller, Route, Post, Tags, OperationId, Example, Request, Security, Get, Delete, Body, Put } from "tsoa";
 import { riseRefVersion, getRef } from "../db/refs";
 import { IOrderTypeItem, RESPONSE_TEMPLATE as SELECTOR_RESPONSE_TEMPLATE } from "./OrderTypesController";
@@ -10,7 +10,7 @@ import { uploadAsset, deleteAsset, IAssetItem, ICreateAssetsResponse } from "./A
 import { AssetModel, IAsset } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
 import { IAuthRequest } from "../interfaces";
-import { AssetExtensions, IOrderTypeContents } from "@djonnyx/tornado-types";
+import { AssetExtensions, IOrderTypeContents, RefTypes } from "@djonnyx/tornado-types";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IOrderTypeAsset extends IAssetItem { }

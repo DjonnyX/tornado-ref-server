@@ -1,6 +1,7 @@
-import { RefModel, IRef, RefTypes } from "../models/index";
+import { RefModel, IRef } from "../models/index";
 import { Controller, Route, Get, Tags, OperationId, Example, Security, Request } from "tsoa";
 import { IAuthRequest } from "src/interfaces";
+import { RefTypes } from "@djonnyx/tornado-types";
 
 export interface IRefItem {
     name: string;

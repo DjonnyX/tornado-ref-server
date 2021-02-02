@@ -1,9 +1,10 @@
-import { RefTypes, TranslationModel } from "../models/index";
+import { TranslationModel } from "../models/index";
 import { Controller, Route, Get, Put, Tags, OperationId, Example, Body, Security, Request } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatTranslationModel } from "../utils/translation";
 import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "../interfaces";
+import { RefTypes } from "@djonnyx/tornado-types";
 import { ITranslate } from "@djonnyx/tornado-types/dist/interfaces/raw/ITranslation";
 
 interface ITranslateItem {

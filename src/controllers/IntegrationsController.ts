@@ -1,9 +1,8 @@
 import { Controller, Route, Post, Tags, Example, Request, Body, Get, Put, Delete, OperationId, Security } from "tsoa";
-import { RefTypes } from "../models/enums";
 import { IRefItem } from "./RefsController";
 import { licServerApiService } from "../services";
 import { IAuthRequest } from "../interfaces";
-import { IntegrationStates, IVersion } from "@djonnyx/tornado-types";
+import { IntegrationStates, IVersion, RefTypes } from "@djonnyx/tornado-types";
 
 interface IIntegrationInfo {
     id: string;
@@ -67,7 +66,7 @@ const APPLICATION_RESPONSE_TEMPLATE: IIntegrationInfo = {
 
 const META_TEMPLATE: IIntegrationInfoMeta = {
     ref: {
-        name: RefTypes.APPLICATIONS,
+        name: RefTypes.INTEGRATIONS,
         version: 1,
         lastUpdate: new Date(),
     }
