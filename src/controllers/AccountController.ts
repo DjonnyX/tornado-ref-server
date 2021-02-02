@@ -49,7 +49,7 @@ const META_TEMPLATE: IAccountInfoMeta = {
     }
 };
 
-@Route("/integrations")
+@Route("/accounts")
 @Tags("Account")
 export class AccountsController extends Controller {
     @Get()
@@ -64,7 +64,7 @@ export class AccountsController extends Controller {
     }
 }
 
-@Route("/integration")
+@Route("/account")
 @Tags("Account")
 export class AccountController extends Controller {
     @Get("{id}")
