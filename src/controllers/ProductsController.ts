@@ -125,8 +125,8 @@ export class ProductsController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<IProductsResponse> {
         try {
-            const items = await ProductModel.find({ client: request.client.id });
-            const ref = await getRef(request.client.id, RefTypes.PRODUCTS);
+            const items = await ProductModel.find({ client: request.account.id });
+            const ref = await getRef(request.account.id, RefTypes.PRODUCTS);
             return {
                 meta: { ref },
                 data: items.map(v => formatProductModel(v)),
@@ -159,7 +159,7 @@ export class ProductController extends Controller {
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<IProductResponse> {
         try {
             const item = await ProductModel.findById(id);
-            const ref = await getRef(request.client.id, RefTypes.PRODUCTS);
+            const ref = await getRef(request.account.id, RefTypes.PRODUCTS);
             return {
                 meta: { ref },
                 data: formatProductModel(item),
@@ -190,7 +190,7 @@ export class ProductController extends Controller {
 
             // создается корневой нод
             const jointNode = new NodeModel({
-                client: request.client.id,
+                client: request.account.id,
                 active: true,
                 type: NodeTypes.PRODUCT_JOINT,
                 parentId: null,
@@ -201,7 +201,7 @@ export class ProductController extends Controller {
 
             params = {
                 ...body,
-                client: request.client.id,
+                client: request.account.id,
                 joint: jointRootNode._id
             } as any;
         } catch (err) {
@@ -219,7 +219,7 @@ export class ProductController extends Controller {
         try {
             const item = new ProductModel(params);
             const savedItem = await item.save();
-            const ref = await riseRefVersion(request.client.id, RefTypes.PRODUCTS);
+            const ref = await riseRefVersion(request.account.id, RefTypes.PRODUCTS);
             return {
                 meta: { ref },
                 data: formatProductModel(savedItem),
@@ -247,7 +247,7 @@ export class ProductController extends Controller {
     public async update(id: string, @Body() body: IProductUpdateRequest, @Request() request: IAuthRequest): Promise<IProductResponse> {
         let defaultLanguage: ILanguage;
         try {
-            defaultLanguage = await LanguageModel.findOne({ client: request.client.id, isDefault: true });
+            defaultLanguage = await LanguageModel.findOne({ client: request.account.id, isDefault: true });
         } catch (err) {
             this.setStatus(500);
             return {
@@ -316,7 +316,7 @@ export class ProductController extends Controller {
             await Promise.all(promises);
 
             if (isAssetsChanged) {
-                await riseRefVersion(request.client.id, RefTypes.ASSETS);
+                await riseRefVersion(request.account.id, RefTypes.ASSETS);
             }
 
             // выставление ассетов от предыдущего состояния
@@ -334,7 +334,7 @@ export class ProductController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(request.client.id, RefTypes.PRODUCTS);
+            const ref = await riseRefVersion(request.account.id, RefTypes.PRODUCTS);
             return {
                 meta: { ref },
                 data: formatProductModel(item),
@@ -397,7 +397,7 @@ export class ProductController extends Controller {
             await Promise.all(promises);
 
             if (!!isAssetsChanged) {
-                await riseRefVersion(request.client.id, RefTypes.ASSETS);
+                await riseRefVersion(request.account.id, RefTypes.ASSETS);
             }
         } catch (err) {
             this.setStatus(500);
@@ -426,7 +426,7 @@ export class ProductController extends Controller {
         }
 
         try {
-            const ref = await riseRefVersion(request.client.id, RefTypes.PRODUCTS);
+            const ref = await riseRefVersion(request.account.id, RefTypes.PRODUCTS);
             return {
                 meta: { ref }
             };

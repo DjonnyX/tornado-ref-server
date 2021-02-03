@@ -67,7 +67,7 @@ export const assetsUploader = (name: string, allowedExtensions: Array<AssetExten
     return new Promise((resolve, reject) => {
         const EXT_PATTERN = new RegExp(`^(${allowedExtensions.map(v => `\\${v}`).join("|")})$`);
         multer({
-            dest: `assets/${request.client.id}`,
+            dest: `assets/${request.account.id}`,
             fileFilter: function (req, file, cb) {
                 const ext = path.extname(file.originalname);
                 if (!EXT_PATTERN.test(ext)) {

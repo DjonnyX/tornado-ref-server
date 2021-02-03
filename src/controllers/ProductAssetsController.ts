@@ -298,7 +298,7 @@ export class ProductAssetsController extends Controller {
             product.contents = contents;
             product.markModified("contents");
 
-            productRef = await riseRefVersion(request.client.id, RefTypes.PRODUCTS);
+            productRef = await riseRefVersion(request.account.id, RefTypes.PRODUCTS);
             await product.save();
         } catch (err) {
             this.setStatus(500);
@@ -372,7 +372,7 @@ export class ProductAssetsController extends Controller {
 
         let defaultLanguage: ILanguage;
         try {
-            defaultLanguage = await LanguageModel.findOne({ client: request.client.id, isDefault: true });
+            defaultLanguage = await LanguageModel.findOne({ client: request.account.id, isDefault: true });
         } catch (err) {
             this.setStatus(500);
             return {
@@ -414,7 +414,7 @@ export class ProductAssetsController extends Controller {
                     await deleteAsset(asset.path);
                     await deleteAsset(asset.mipmap.x128);
                     await deleteAsset(asset.mipmap.x32);
-                    await riseRefVersion(request.client.id, RefTypes.ASSETS);
+                    await riseRefVersion(request.account.id, RefTypes.ASSETS);
                 }
             } catch (err) {
                 this.setStatus(500);
@@ -451,7 +451,7 @@ export class ProductAssetsController extends Controller {
 
             savedProduct = await product.save();
 
-            productRef = await riseRefVersion(request.client.id, RefTypes.PRODUCTS);
+            productRef = await riseRefVersion(request.account.id, RefTypes.PRODUCTS);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -509,7 +509,7 @@ export class ProductAssetsController extends Controller {
 
         let productRef: IRefItem;
         try {
-            productRef = await getRef(request.client.id, RefTypes.PRODUCTS);
+            productRef = await getRef(request.account.id, RefTypes.PRODUCTS);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -531,7 +531,7 @@ export class ProductAssetsController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(request.client.id, RefTypes.ASSETS);
+            const ref = await riseRefVersion(request.account.id, RefTypes.ASSETS);
             return {
                 meta: {
                     asset: {
@@ -592,7 +592,7 @@ export class ProductAssetsController extends Controller {
                     await deleteAsset(asset.path);
                     await deleteAsset(asset.mipmap.x128);
                     await deleteAsset(asset.mipmap.x32);
-                    assetRef = await riseRefVersion(request.client.id, RefTypes.ASSETS);
+                    assetRef = await riseRefVersion(request.account.id, RefTypes.ASSETS);
                 }
             } catch (err) {
                 this.setStatus(500);
@@ -617,7 +617,7 @@ export class ProductAssetsController extends Controller {
 
             await product.save();
 
-            productsRef = await riseRefVersion(request.client.id, RefTypes.PRODUCTS);
+            productsRef = await riseRefVersion(request.account.id, RefTypes.PRODUCTS);
             return {
                 meta: {
                     product: {

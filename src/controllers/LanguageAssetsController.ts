@@ -176,7 +176,7 @@ export class LanguageAssetsController extends Controller {
         let languageRef: IRefItem;
         try {
             language.assets.push(assetsInfo.data.id);
-            languageRef = await riseRefVersion(request.client.id, RefTypes.LANGUAGES);
+            languageRef = await riseRefVersion(request.account.id, RefTypes.LANGUAGES);
             await language.save();
         } catch (err) {
             this.setStatus(500);
@@ -264,7 +264,7 @@ export class LanguageAssetsController extends Controller {
         try {
             language.resources[resourceType] = assetsInfo.data.id;
             language.assets.push(assetsInfo.data.id);
-            languageRef = await riseRefVersion(request.client.id, RefTypes.LANGUAGES);
+            languageRef = await riseRefVersion(request.account.id, RefTypes.LANGUAGES);
             await language.save();
         } catch (err) {
             this.setStatus(500);
@@ -323,7 +323,7 @@ export class LanguageAssetsController extends Controller {
 
         let languageRef: IRefItem;
         try {
-            languageRef = await getRef(request.client.id, RefTypes.LANGUAGES);
+            languageRef = await getRef(request.account.id, RefTypes.LANGUAGES);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -345,7 +345,7 @@ export class LanguageAssetsController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(request.client.id, RefTypes.ASSETS);
+            const ref = await riseRefVersion(request.account.id, RefTypes.ASSETS);
             return {
                 meta: {
                     asset: {
@@ -403,7 +403,7 @@ export class LanguageAssetsController extends Controller {
                 await deleteAsset(asset.path);
                 await deleteAsset(asset.mipmap.x128);
                 await deleteAsset(asset.mipmap.x32);
-                assetRef = await riseRefVersion(request.client.id, RefTypes.ASSETS);
+                assetRef = await riseRefVersion(request.account.id, RefTypes.ASSETS);
             } catch (err) {
                 this.setStatus(500);
                 return {
@@ -421,7 +421,7 @@ export class LanguageAssetsController extends Controller {
         try {
             language.assets.splice(assetIndex, 1);
             await language.save();
-            languagesRef = await riseRefVersion(request.client.id, RefTypes.LANGUAGES);
+            languagesRef = await riseRefVersion(request.account.id, RefTypes.LANGUAGES);
             return {
                 meta: {
                     language: {

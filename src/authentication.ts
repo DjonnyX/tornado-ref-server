@@ -6,7 +6,10 @@ import { ICheckLicenseResponse, licServerApiService } from "./services";
 import { extractError } from "./utils/error";
 
 const checkClientToken = async (token: string, request: express.Request) => {
-  return new Promise((resolve, reject) => {
+  return new Promise<void>((resolve, reject) => {
+    if (!token) {
+      return reject(new Error("Token is empty."));
+    }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     jwt.verify(token, config.AUTH_PRIVATE_KEY, async function (err: any, decoded: IClientJWTBody) {
       if (err) {
@@ -17,18 +20,21 @@ const checkClientToken = async (token: string, request: express.Request) => {
         return reject(new Error("Client access token bad format."))
       }
 
-      (request as IAuthRequest).client = {
+      (request as IAuthRequest).account = {
         id: decoded.id,
       };
       (request as IAuthRequest).token = token;
 
-      return resolve(decoded);
+      return resolve();
     });
   });
 }
 
 const checkApiKey = async (apikey: string, request: express.Request) => {
-  return new Promise(async (resolve, reject) => {
+  return new Promise<void>(async (resolve, reject) => {
+    if (!apikey) {
+      return reject(new Error("Apikey is empty."));
+    }
     const payload = jwt.decode(apikey, {
       json: true,
     }) as ITerminalJWTBody;
@@ -37,33 +43,31 @@ const checkApiKey = async (apikey: string, request: express.Request) => {
       return reject(new Error("apikey bad format."));
     }
 
-    if (request.path === "/api/v1/terminal/registration" && request.method === "POST") {
-      // allow
-    } else {
-      let licenseResponse: ICheckLicenseResponse;
-      try {
-        licenseResponse = await licServerApiService.checkLicense(apikey);
+    let licenseResponse: ICheckLicenseResponse;
+    try {
+      licenseResponse = await licServerApiService.checkLicense(apikey);
 
-        const err = extractError(licenseResponse.error);
-        if (!!err) {
-          throw new Error(err);
-        }
-      } catch (err) {
-        return reject(new Error(`Check license error. ${err}`));
+      const err = extractError(licenseResponse.error);
+      if (!!err) {
+        throw new Error(err);
       }
-
-      (request as IAuthRequest).terminal = {
-        license: licenseResponse.data,
-        imei: payload.imei,
-        key: payload.hash,
-      };
-      (request as IAuthRequest).client = {
-        id: licenseResponse.data.clientId,
-      };
+    } catch (err) {
+      return reject(new Error(`Check license error. ${err}`));
     }
+
+    (request as IAuthRequest).terminal = {
+      license: licenseResponse.data,
+      imei: payload.imei,
+      key: payload.hash,
+    };
+
+    (request as IAuthRequest).account = {
+      id: licenseResponse.data.clientId,
+    };
+
     (request as IAuthRequest).token = apikey;
 
-    return resolve(payload);
+    return resolve();
   });
 }
 
@@ -78,15 +82,11 @@ export async function expressAuthentication(
     const authorization = request.headers["authorization"] ? String(request.headers["authorization"]) : undefined;
     let token = authorization ? authorization.replace("Bearer ", "") : undefined;
 
-    if (!!token) {
-      return await checkClientToken(token, request);
-    }
+    return await checkClientToken(token, request);
   }
 
   if (securityName === "terminalAccessToken") {
     const token = request.headers["x-access-token"] ? String(request.headers["x-access-token"]) : undefined;
-    if (!!token) {
-      return await checkApiKey(token, request);
-    }
+    return await checkApiKey(token, request);
   }
 }

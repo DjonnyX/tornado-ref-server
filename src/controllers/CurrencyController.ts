@@ -87,8 +87,8 @@ export class CurrenciesController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<CurrenciesResponse> {
         try {
-            const items = await CurrencyModel.find({ client: request.client.id });
-            const ref = await getRef(request.client.id, RefTypes.CURRENCIES);
+            const items = await CurrencyModel.find({ client: request.account.id });
+            const ref = await getRef(request.account.id, RefTypes.CURRENCIES);
             return {
                 meta: { ref },
                 data: items.map(v => formatCurrencyModel(v)),
@@ -121,7 +121,7 @@ export class CurrencyController extends Controller {
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<CurrencyResponse> {
         try {
             const item = await CurrencyModel.findById(id);
-            const ref = await getRef(request.client.id, RefTypes.CURRENCIES);
+            const ref = await getRef(request.account.id, RefTypes.CURRENCIES);
             return {
                 meta: { ref },
                 data: formatCurrencyModel(item),
@@ -150,7 +150,7 @@ export class CurrencyController extends Controller {
         let currencies: Array<ICurrency>;
 
         try {
-            currencies = await CurrencyModel.find({ client: request.client.id });
+            currencies = await CurrencyModel.find({ client: request.account.id });
         } catch (err) {
             this.setStatus(500);
             return {
@@ -165,9 +165,9 @@ export class CurrencyController extends Controller {
 
         try {
             body.isDefault = currencies.length === 0;
-            const item = new CurrencyModel({ ...body, client: request.client.id });
+            const item = new CurrencyModel({ ...body, client: request.account.id });
             const savedItem = await item.save();
-            const ref = await riseRefVersion(request.client.id, RefTypes.CURRENCIES);
+            const ref = await riseRefVersion(request.account.id, RefTypes.CURRENCIES);
             return {
                 meta: { ref },
                 data: formatCurrencyModel(savedItem),
@@ -229,7 +229,7 @@ export class CurrencyController extends Controller {
         }
 
         try {
-            const currencies: Array<ICurrency> = await CurrencyModel.find({ client: request.client.id });
+            const currencies: Array<ICurrency> = await CurrencyModel.find({ client: request.account.id });
 
             const promises = new Array<Promise<void>>();
 
@@ -294,7 +294,7 @@ export class CurrencyController extends Controller {
         try {
             await item.save();
 
-            const ref = await riseRefVersion(request.client.id, RefTypes.CURRENCIES);
+            const ref = await riseRefVersion(request.account.id, RefTypes.CURRENCIES);
             return {
                 meta: { ref },
                 data: formatCurrencyModel(item),
@@ -321,7 +321,7 @@ export class CurrencyController extends Controller {
     public async delete(id: string, @Request() request: IAuthRequest): Promise<CurrencyResponse> {
         let currencies: Array<ICurrency>;
         try {
-            currencies = await CurrencyModel.find({ client: request.client.id });
+            currencies = await CurrencyModel.find({ client: request.account.id });
         } catch (err) { }
 
         if (currencies && currencies.length === 1) {
@@ -338,7 +338,7 @@ export class CurrencyController extends Controller {
 
         try {
             await CurrencyModel.findOneAndDelete({ _id: id });
-            const ref = await riseRefVersion(request.client.id, RefTypes.CURRENCIES);
+            const ref = await riseRefVersion(request.account.id, RefTypes.CURRENCIES);
             return {
                 meta: { ref },
             };

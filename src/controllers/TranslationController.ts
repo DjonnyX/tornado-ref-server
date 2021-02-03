@@ -78,8 +78,8 @@ export class TranslationsController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<TranslationsResponse> {
         try {
-            const items = await TranslationModel.find({ client: request.client.id });
-            const ref = await getRef(request.client.id, RefTypes.TRANSLATIONS);
+            const items = await TranslationModel.find({ client: request.account.id });
+            const ref = await getRef(request.account.id, RefTypes.TRANSLATIONS);
             return {
                 meta: { ref },
                 data: items.map(v => formatTranslationModel(v)),
@@ -112,7 +112,7 @@ export class TranslationController extends Controller {
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<TranslationResponse> {
         try {
             const item = await TranslationModel.findById(id);
-            const ref = await getRef(request.client.id, RefTypes.TRANSLATIONS);
+            const ref = await getRef(request.account.id, RefTypes.TRANSLATIONS);
             return {
                 meta: { ref },
                 data: formatTranslationModel(item),
@@ -179,7 +179,7 @@ export class TranslationController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(request.client.id, RefTypes.TRANSLATIONS);
+            const ref = await riseRefVersion(request.account.id, RefTypes.TRANSLATIONS);
             return {
                 meta: { ref },
                 data: formatTranslationModel(item),

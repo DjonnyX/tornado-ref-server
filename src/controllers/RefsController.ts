@@ -79,7 +79,7 @@ export class RefsController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<RefsResponse> {
         try {
-            const items = await RefModel.find({ client: request.client.id });
+            const items = await RefModel.find({ client: request.account.id });
             return {
                 data: items.map(v => formatModel(v))
             };
@@ -109,7 +109,7 @@ export class RefController extends Controller {
     })
     public async getOne(name: string, @Request() request: IAuthRequest): Promise<RefResponse> {
         try {
-            const item = await RefModel.findOne({ name, request });
+            const item = await RefModel.findOne({ name, client: request.account.id });
             return {
                 data: formatModel(item)
             };
