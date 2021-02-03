@@ -1,11 +1,7 @@
-import { Controller, Route, Post, Tags, Example, Header, Request, Body, Get } from "tsoa";
-import * as got from "got";
+import { Controller, Route, Post, Tags, Example, Request, Body, Get, Query } from "tsoa";
 import * as express from "express";
-import * as jwt from "jsonwebtoken";
-import * as config from "../config";
 import { initRefs } from "../db/initDB";
-import { IJWTBody } from "../interfaces";
-import { createProxyRequestToAuthServer } from "../utils/proxy";
+import { licServerApiService } from "../services";
 
 interface ISigninParams {
     email: string;
@@ -22,12 +18,14 @@ interface ISignupParams {
 }
 
 interface IResetPasswordParams {
-    token: string;
+    restorePassCode: string;
     password: string;
 }
 
 interface IForgotPasswordParams {
     email: string;
+    captchaId: string;
+    captchaVal: string;
 }
 
 interface IVerifyResetPasswordTokenParams {
@@ -37,11 +35,21 @@ interface IVerifyResetPasswordTokenParams {
 interface SigninResponse {
     meta?: {};
     data?: {
-        role: string;
+        account: {
+            id: string;
+            email: string;
+            lastName: string;
+            patronymicName: string;
+            phone: string;
+            position: string;
+            name: string;
+            language: string;
+        },
         token: string;
-        firstName: string;
-        lastName: string;
-        email: string;
+        rights: Array<{
+            obj: string;
+            action: string;
+        }>;
     };
     error?: Array<{
         code: number;
@@ -65,6 +73,18 @@ interface GetSignupResponse {
             id: string;
             svg: string;
         };
+    };
+    error?: Array<{
+        code: number;
+        message: string;
+    }>;
+}
+
+interface GetCaptchaResponse {
+    meta?: {};
+    data?: {
+        id: string;
+        svg: string;
     };
     error?: Array<{
         code: number;
@@ -110,23 +130,25 @@ interface VerifyResetPasswordTokenResponse {
     }>;
 }
 
+@Route("/auth/captcha")
+@Tags("Auth")
+export class CaptchaController extends Controller {
+    @Get()
+    @Example<GetCaptchaResponse>({
+        meta: {},
+        data: {
+            id: "123123-234234-234234",
+            svg: "<svg></svg>",
+        }
+    })
+    public async getCaptcha(@Request() request: express.Request): Promise<GetCaptchaResponse> {
+        return await licServerApiService.getCaptcha();
+    }
+}
+
 @Route("/auth/signup")
 @Tags("Auth")
 export class SignupController extends Controller {
-    @Get()
-    @Example<GetSignupResponse>({
-        meta: {},
-        data: {
-            captcha: {
-                id: "123123-234234-234234",
-                svg: "<svg></svg>",
-            },
-        }
-    })
-    public async getSignupParams(@Request() request: express.Request): Promise<GetSignupResponse> {
-        return await createProxyRequestToAuthServer<GetSignupResponse>(this, request);
-    }
-
     @Post()
     @Example<SignupResponse>({
         meta: {},
@@ -134,8 +156,24 @@ export class SignupController extends Controller {
             clientId: "123456",
         }
     })
-    public async signup(@Request() request: express.Request, @Body() body: ISignupParams): Promise<SignupResponse> {
-        return await createProxyRequestToAuthServer<SignupResponse>(this, request);
+    public async signup(@Body() body: ISignupParams): Promise<SignupResponse> {
+        let res: SignupResponse;
+
+        try {
+            res = await licServerApiService.signup<SignupResponse>(body);
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: err.message,
+                    }
+                ]
+            };
+        }
+
+        return res;
     }
 }
 
@@ -146,56 +184,47 @@ export class SigninController extends Controller {
     @Example<SigninResponse>({
         meta: {},
         data: {
-            role: "admin",
+            account: {
+                id: "507c7f79bcf86cd7994f6c0e",
+                email: "test@test.com",
+                lastName: "Last name",
+                patronymicName: "Patronymic name",
+                phone: "+79999999999",
+                position: "1",
+                name: "First name",
+                language: "RU"
+            },
             token: "507c7f79bcf86cd7994f6c0e",
-            firstName: "First name",
-            lastName: "Last name",
-            email: "test@test.com",
+            rights: [
+                {
+                    obj: "terminals",
+                    action: "ALLOW"
+                }
+            ]
         }
     })
     public async signin(@Request() request: express.Request, @Body() body: ISigninParams): Promise<SigninResponse> {
         let res: SigninResponse;
-        
+
         try {
-            res = await createProxyRequestToAuthServer<SigninResponse>(this, request);
+            res = await licServerApiService.signin<SigninResponse>({
+                pass: body.password,
+                email: body.email,
+            });
         } catch (err) {
             this.setStatus(401);
             return {
                 error: [
                     {
                         code: 401,
-                        message: `Bad request ("signin"). ${err}`,
-                    }
-                ]
-            };
-        }
-
-        let authInfo: IJWTBody;
-
-        try {
-            authInfo = await new Promise((resolve, reject) => {
-                jwt.verify(res.data.token, config.AUTH_CLIENT_PRIVATE_KEY, function (err: any, decoded: IJWTBody) {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        resolve(decoded);
-                    }
-                });
-            })
-        } catch (err) {
-            this.setStatus(401);
-            return {
-                error: [
-                    {
-                        code: 401,
-                        message: `Unauthorized.`,
+                        message: err.message,
                     }
                 ]
             };
         }
 
         // Инициализация БД под клиента
-        await initRefs(authInfo.userId);
+        await initRefs(res.data.account.id);
 
         return res;
     }
@@ -210,32 +239,35 @@ export class ResetPasswordController extends Controller {
         data: {}
     })
     public async resetPassword(@Request() request: express.Request, @Body() body: IResetPasswordParams): Promise<ResetPasswordResponse> {
-        return await createProxyRequestToAuthServer<ResetPasswordResponse>(this, request);
+        return await licServerApiService.postClientRestorePassword<ResetPasswordResponse>({
+            restorePassCode: body.restorePassCode,
+            newPass: body.password,
+        });
     }
 }
 
 @Route("/auth/forgot-password")
 @Tags("Auth")
 export class ForgotPasswordController extends Controller {
-    @Post()
+    @Get()
     @Example<ForgotPasswordResponse>({
         meta: {},
         data: {}
     })
-    public async forgotPassword(@Request() request: express.Request, @Body() body: IForgotPasswordParams): Promise<ForgotPasswordResponse> {
-        return await createProxyRequestToAuthServer<ForgotPasswordResponse>(this, request);
+    public async forgotPassword(@Request() request: express.Request, @Query() email: string, @Query() captchaId: string, @Query() captchaVal): Promise<ForgotPasswordResponse> {
+        return await licServerApiService.getClientRestorePassword<ForgotPasswordResponse>({ email, captchaId, captchaVal });
     }
 }
 
 @Route("/auth/verify-reset-password-token")
 @Tags("Auth")
 export class VerifyResetPasswordTokenController extends Controller {
-    @Post()
+    @Get()
     @Example<VerifyResetPasswordTokenResponse>({
         meta: {},
         data: {}
     })
-    public async verifyResetPasswordToken(@Request() request: express.Request, @Body() body: IVerifyResetPasswordTokenParams): Promise<VerifyResetPasswordTokenResponse> {
-        return await createProxyRequestToAuthServer<VerifyResetPasswordTokenResponse>(this, request);
+    public async verifyResetPasswordToken(@Request() request: express.Request, @Query() restorePassCode: string): Promise<VerifyResetPasswordTokenResponse> {
+        return await licServerApiService.clientCheckRestorePassCode<VerifyResetPasswordTokenResponse>({ restorePassCode });
     }
 }

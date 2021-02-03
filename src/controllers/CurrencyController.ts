@@ -1,9 +1,10 @@
-import { RefTypes, CurrencyModel, ICurrency } from "../models/index";
+import { CurrencyModel, ICurrency } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Request } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatCurrencyModel } from "../utils/currency";
 import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "../interfaces";
+import { RefTypes } from "@djonnyx/tornado-types";
 
 interface ICurrencyItem {
     id: string;
@@ -78,7 +79,7 @@ const META_TEMPLATE: ICurrencyMeta = {
 export class CurrenciesController extends Controller {
     @Get()
     @Security("clientAccessToken")
-    @Security("accessToken")
+    @Security("terminalAccessToken")
     @OperationId("GetAll")
     @Example<CurrenciesResponse>({
         meta: META_TEMPLATE,
@@ -86,8 +87,8 @@ export class CurrenciesController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<CurrenciesResponse> {
         try {
-            const items = await CurrencyModel.find({ client: request.client.id });
-            const ref = await getRef(request.client.id, RefTypes.CURRENCIES);
+            const items = await CurrencyModel.find({ client: request.account.id });
+            const ref = await getRef(request.account.id, RefTypes.CURRENCIES);
             return {
                 meta: { ref },
                 data: items.map(v => formatCurrencyModel(v)),
@@ -111,7 +112,7 @@ export class CurrenciesController extends Controller {
 export class CurrencyController extends Controller {
     @Get("{id}")
     @Security("clientAccessToken")
-    @Security("accessToken")
+    @Security("terminalAccessToken")
     @OperationId("GetOne")
     @Example<CurrencyResponse>({
         meta: META_TEMPLATE,
@@ -120,7 +121,7 @@ export class CurrencyController extends Controller {
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<CurrencyResponse> {
         try {
             const item = await CurrencyModel.findById(id);
-            const ref = await getRef(request.client.id, RefTypes.CURRENCIES);
+            const ref = await getRef(request.account.id, RefTypes.CURRENCIES);
             return {
                 meta: { ref },
                 data: formatCurrencyModel(item),
@@ -149,7 +150,7 @@ export class CurrencyController extends Controller {
         let currencies: Array<ICurrency>;
 
         try {
-            currencies = await CurrencyModel.find({ client: request.client.id });
+            currencies = await CurrencyModel.find({ client: request.account.id });
         } catch (err) {
             this.setStatus(500);
             return {
@@ -164,9 +165,9 @@ export class CurrencyController extends Controller {
 
         try {
             body.isDefault = currencies.length === 0;
-            const item = new CurrencyModel({ ...body, client: request.client.id });
+            const item = new CurrencyModel({ ...body, client: request.account.id });
             const savedItem = await item.save();
-            const ref = await riseRefVersion(request.client.id, RefTypes.CURRENCIES);
+            const ref = await riseRefVersion(request.account.id, RefTypes.CURRENCIES);
             return {
                 meta: { ref },
                 data: formatCurrencyModel(savedItem),
@@ -228,16 +229,16 @@ export class CurrencyController extends Controller {
         }
 
         try {
-            const currencies: Array<ICurrency> = await CurrencyModel.find({ client: request.client.id });
+            const currencies: Array<ICurrency> = await CurrencyModel.find({ client: request.account.id });
 
-            const promises = new Array<Promise<any>>();
+            const promises = new Array<Promise<void>>();
 
             if (isDefault) {
                 currencies.forEach(currency => {
                     if (currency.code !== currencyCode) {
                         if (!!currency.isDefault) {
                             currency.isDefault = false;
-                            promises.push(new Promise(async (resolve, reject) => {
+                            promises.push(new Promise<void>(async (resolve, reject) => {
                                 try {
                                     await currency.save();
                                 } catch (err) {
@@ -265,7 +266,7 @@ export class CurrencyController extends Controller {
                 if (needSetupDefault && firstCurrency) {
                     firstCurrency.isDefault = true;
 
-                    promises.push(new Promise(async (resolve, reject) => {
+                    promises.push(new Promise<void>(async (resolve, reject) => {
                         try {
                             await firstCurrency.save();
                         } catch (err) {
@@ -293,7 +294,7 @@ export class CurrencyController extends Controller {
         try {
             await item.save();
 
-            const ref = await riseRefVersion(request.client.id, RefTypes.CURRENCIES);
+            const ref = await riseRefVersion(request.account.id, RefTypes.CURRENCIES);
             return {
                 meta: { ref },
                 data: formatCurrencyModel(item),
@@ -320,7 +321,7 @@ export class CurrencyController extends Controller {
     public async delete(id: string, @Request() request: IAuthRequest): Promise<CurrencyResponse> {
         let currencies: Array<ICurrency>;
         try {
-            currencies = await CurrencyModel.find({ client: request.client.id });
+            currencies = await CurrencyModel.find({ client: request.account.id });
         } catch (err) { }
 
         if (currencies && currencies.length === 1) {
@@ -337,7 +338,7 @@ export class CurrencyController extends Controller {
 
         try {
             await CurrencyModel.findOneAndDelete({ _id: id });
-            const ref = await riseRefVersion(request.client.id, RefTypes.CURRENCIES);
+            const ref = await riseRefVersion(request.account.id, RefTypes.CURRENCIES);
             return {
                 meta: { ref },
             };

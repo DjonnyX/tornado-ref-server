@@ -1,4 +1,4 @@
-import { RefTypes, OrderTypeModel, LanguageModel, ILanguage } from "../models/index";
+import { OrderTypeModel, LanguageModel, ILanguage } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Request } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatOrderTypeModel } from "../utils/orderType";
@@ -8,7 +8,7 @@ import { deleteAsset } from "./AssetsController";
 import { normalizeContents, getDeletedImagesFromDifferense, getEntityAssets } from "../utils/entity";
 import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "src/interfaces";
-import { IOrderTypeContents } from "@djonnyx/tornado-types";
+import { IOrderTypeContents, RefTypes } from "@djonnyx/tornado-types";
 
 export interface IOrderTypeItem {
     id: string;
@@ -43,7 +43,7 @@ interface OrderTypeResponse {
 interface OrderTypeCreateRequest {
     active: boolean;
     isDefault?: boolean;
-    contents?: IOrderTypeContents;
+    contents?: IOrderTypeContents | any;
     extra?: { [key: string]: any } | null;
 }
 
@@ -81,7 +81,7 @@ export const RESPONSE_TEMPLATE: IOrderTypeItem = {
 export class OrderTypesController extends Controller {
     @Get()
     @Security("clientAccessToken")
-    @Security("accessToken")
+    @Security("terminalAccessToken")
     @OperationId("GetAll")
     @Example<OrderTypesResponse>({
         meta: META_TEMPLATE,
@@ -90,7 +90,7 @@ export class OrderTypesController extends Controller {
     public async getAll(@Request() request: IAuthRequest): Promise<OrderTypesResponse> {
         try {
             const items = await OrderTypeModel.find({});
-            const ref = await getRef(request.client.id, RefTypes.ORDER_TYPES);
+            const ref = await getRef(request.account.id, RefTypes.ORDER_TYPES);
             return {
                 meta: { ref },
                 data: items.map(v => formatOrderTypeModel(v)),
@@ -114,7 +114,7 @@ export class OrderTypesController extends Controller {
 export class OrderTypeController extends Controller {
     @Get("{id}")
     @Security("clientAccessToken")
-    @Security("accessToken")
+    @Security("terminalAccessToken")
     @OperationId("GetOne")
     @Example<OrderTypeResponse>({
         meta: META_TEMPLATE,
@@ -123,7 +123,7 @@ export class OrderTypeController extends Controller {
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<OrderTypeResponse> {
         try {
             const item = await OrderTypeModel.findById(id);
-            const ref = await getRef(request.client.id, RefTypes.ORDER_TYPES);
+            const ref = await getRef(request.account.id, RefTypes.ORDER_TYPES);
             return {
                 meta: { ref },
                 data: formatOrderTypeModel(item),
@@ -150,9 +150,9 @@ export class OrderTypeController extends Controller {
     })
     public async create(@Body() body: OrderTypeCreateRequest, @Request() request: IAuthRequest): Promise<OrderTypeResponse> {
         try {
-            const item = new OrderTypeModel({ ...body, client: request.client.id });
+            const item = new OrderTypeModel({ ...body, client: request.account.id });
             const savedItem = await item.save();
-            const ref = await riseRefVersion(request.client.id, RefTypes.ORDER_TYPES);
+            const ref = await riseRefVersion(request.account.id, RefTypes.ORDER_TYPES);
             return {
                 meta: { ref },
                 data: formatOrderTypeModel(savedItem),
@@ -180,7 +180,7 @@ export class OrderTypeController extends Controller {
     public async update(id: string, @Body() body: OrderTypeCreateRequest, @Request() request: IAuthRequest): Promise<OrderTypeResponse> {
         let defaultLanguage: ILanguage;
         try {
-            defaultLanguage = await LanguageModel.findOne({ client: request.client.id, isDefault: true });
+            defaultLanguage = await LanguageModel.findOne({ client: request.account.id, isDefault: true });
         } catch (err) {
             this.setStatus(500);
             return {
@@ -214,7 +214,7 @@ export class OrderTypeController extends Controller {
 
             // удаление ассетов из разности resources
             const deletedAssetsFromImages = getDeletedImagesFromDifferense(lastContents, item.contents);
-            const promises = new Array<Promise<any>>();
+            const promises = new Array<Promise<void>>();
             let isAssetsChanged = false;
             deletedAssetsFromImages.forEach(assetId => {
                 promises.push(new Promise(async (resolve, reject) => {
@@ -245,7 +245,7 @@ export class OrderTypeController extends Controller {
             await Promise.all(promises);
 
             if (isAssetsChanged) {
-                await riseRefVersion(request.client.id, RefTypes.ASSETS);
+                await riseRefVersion(request.account.id, RefTypes.ASSETS);
             }
 
             // выставление ассетов от предыдущего состояния
@@ -263,7 +263,7 @@ export class OrderTypeController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(request.client.id, RefTypes.ORDER_TYPES);
+            const ref = await riseRefVersion(request.account.id, RefTypes.ORDER_TYPES);
             return {
                 meta: { ref },
                 data: formatOrderTypeModel(item),
@@ -306,7 +306,7 @@ export class OrderTypeController extends Controller {
         // нужно удалять ассеты
         const assetsList = getEntityAssets(orderType);
 
-        const promises = new Array<Promise<any>>();
+        const promises = new Array<Promise<void>>();
 
         try {
             let isAssetsChanged = false;
@@ -326,7 +326,7 @@ export class OrderTypeController extends Controller {
             await Promise.all(promises);
 
             if (!!isAssetsChanged) {
-                await riseRefVersion(request.client.id, RefTypes.ASSETS);
+                await riseRefVersion(request.account.id, RefTypes.ASSETS);
             }
         } catch (err) {
             this.setStatus(500);
@@ -341,7 +341,7 @@ export class OrderTypeController extends Controller {
         }
 
         try {
-            const ref = await riseRefVersion(request.client.id, RefTypes.ORDER_TYPES);
+            const ref = await riseRefVersion(request.account.id, RefTypes.ORDER_TYPES);
             return {
                 meta: { ref }
             };

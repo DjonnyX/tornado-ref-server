@@ -5,7 +5,6 @@ import { Schema, Document } from "mongoose";
 interface ISelector extends Document {
     client: string;
     active: boolean;
-    name: string;
     type: SelectorTypes;
     contents: ISelectorContents;
     joint: string;
@@ -15,7 +14,6 @@ interface ISelector extends Document {
 const SelectorSchema = new Schema({
     client: { type: String, required: true, index: { unique: false } },
     active: { type: Schema.Types.Boolean, required: true, default: true },
-    name: { type: String, required: false },
     type: {
         type: Schema.Types.String, enum: [
             SelectorTypes.MENU_CATEGORY,

@@ -1,4 +1,4 @@
-import { AdModel, IAd, RefTypes, ILanguage, LanguageModel } from "../models/index";
+import { AdModel, IAd, ILanguage, LanguageModel } from "../models/index";
 import { Controller, Route, Post, Tags, OperationId, Example, Request, Security, Get, Delete, Body, Put } from "tsoa";
 import { riseRefVersion, getRef } from "../db/refs";
 import { IAdItem, RESPONSE_TEMPLATE as AD_RESPONSE_TEMPLATE } from "./AdController";
@@ -9,7 +9,7 @@ import { uploadAsset, deleteAsset, IAssetItem, ICreateAssetsResponse } from "./A
 import { AssetModel, IAsset } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
 import { IAuthRequest } from "../interfaces";
-import { AssetExtensions, IAdContents } from "@djonnyx/tornado-types";
+import { AssetExtensions, IAdContents, RefTypes } from "@djonnyx/tornado-types";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IAdAsset extends IAssetItem { }
@@ -136,7 +136,7 @@ const RESPONSE_TEMPLATE: IAssetItem = {
 export class AdAssetsController extends Controller {
     @Get("{adId}/assets")
     @Security("clientAccessToken")
-    @Security("accessToken")
+    @Security("terminalAccessToken")
     @OperationId("GetAll")
     @Example<IAdGetAllAssetsResponse>({
         meta: META_TEMPLATE,
@@ -198,7 +198,7 @@ export class AdAssetsController extends Controller {
 
     @Get("{adId}/assets/{langCode}")
     @Security("clientAccessToken")
-    @Security("accessToken")
+    @Security("terminalAccessToken")
     @OperationId("Get")
     @Example<IAdGetAssetsResponse>({
         meta: META_TEMPLATE,
@@ -365,7 +365,7 @@ export class AdAssetsController extends Controller {
 
         let defaultLanguage: ILanguage;
         try {
-            defaultLanguage = await LanguageModel.findOne({ client: request.client.id, isDefault: true });
+            defaultLanguage = await LanguageModel.findOne({ client: request.account.id, isDefault: true });
         } catch (err) {
             this.setStatus(500);
             return {
@@ -407,7 +407,7 @@ export class AdAssetsController extends Controller {
                     await deleteAsset(asset.path);
                     await deleteAsset(asset.mipmap.x128);
                     await deleteAsset(asset.mipmap.x32);
-                    await riseRefVersion(request.client.id, RefTypes.ASSETS);
+                    await riseRefVersion(request.account.id, RefTypes.ASSETS);
                 }
             } catch (err) {
                 this.setStatus(500);
@@ -443,7 +443,7 @@ export class AdAssetsController extends Controller {
 
             savedAd = await ad.save();
 
-            adRef = await riseRefVersion(request.client.id, RefTypes.ADS);
+            adRef = await riseRefVersion(request.account.id, RefTypes.ADS);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -501,7 +501,7 @@ export class AdAssetsController extends Controller {
 
         let adRef: IRefItem;
         try {
-            adRef = await getRef(request.client.id, RefTypes.ADS);
+            adRef = await getRef(request.account.id, RefTypes.ADS);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -523,7 +523,7 @@ export class AdAssetsController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(request.client.id, RefTypes.ASSETS);
+            const ref = await riseRefVersion(request.account.id, RefTypes.ASSETS);
             return {
                 meta: {
                     asset: {
@@ -584,7 +584,7 @@ export class AdAssetsController extends Controller {
                     await deleteAsset(asset.path);
                     await deleteAsset(asset.mipmap.x128);
                     await deleteAsset(asset.mipmap.x32);
-                    assetRef = await riseRefVersion(request.client.id, RefTypes.ASSETS);
+                    assetRef = await riseRefVersion(request.account.id, RefTypes.ASSETS);
                 }
             } catch (err) {
                 this.setStatus(500);
@@ -608,7 +608,7 @@ export class AdAssetsController extends Controller {
 
             await ad.save();
 
-            adsRef = await riseRefVersion(request.client.id, RefTypes.ADS);
+            adsRef = await riseRefVersion(request.account.id, RefTypes.ADS);
             return {
                 meta: {
                     ad: {

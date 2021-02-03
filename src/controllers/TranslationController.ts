@@ -1,9 +1,10 @@
-import { RefTypes, TranslationModel } from "../models/index";
+import { TranslationModel } from "../models/index";
 import { Controller, Route, Get, Put, Tags, OperationId, Example, Body, Security, Request } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatTranslationModel } from "../utils/translation";
 import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "../interfaces";
+import { RefTypes } from "@djonnyx/tornado-types";
 import { ITranslate } from "@djonnyx/tornado-types/dist/interfaces/raw/ITranslation";
 
 interface ITranslateItem {
@@ -69,7 +70,7 @@ const META_TEMPLATE: TranslationMeta = {
 export class TranslationsController extends Controller {
     @Get()
     @Security("clientAccessToken")
-    @Security("accessToken")
+    @Security("terminalAccessToken")
     @OperationId("GetAll")
     @Example<TranslationsResponse>({
         meta: META_TEMPLATE,
@@ -77,8 +78,8 @@ export class TranslationsController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<TranslationsResponse> {
         try {
-            const items = await TranslationModel.find({ client: request.client.id });
-            const ref = await getRef(request.client.id, RefTypes.TRANSLATIONS);
+            const items = await TranslationModel.find({ client: request.account.id });
+            const ref = await getRef(request.account.id, RefTypes.TRANSLATIONS);
             return {
                 meta: { ref },
                 data: items.map(v => formatTranslationModel(v)),
@@ -102,7 +103,7 @@ export class TranslationsController extends Controller {
 export class TranslationController extends Controller {
     @Get("{id}")
     @Security("clientAccessToken")
-    @Security("accessToken")
+    @Security("terminalAccessToken")
     @OperationId("GetOne")
     @Example<TranslationResponse>({
         meta: META_TEMPLATE,
@@ -111,7 +112,7 @@ export class TranslationController extends Controller {
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<TranslationResponse> {
         try {
             const item = await TranslationModel.findById(id);
-            const ref = await getRef(request.client.id, RefTypes.TRANSLATIONS);
+            const ref = await getRef(request.account.id, RefTypes.TRANSLATIONS);
             return {
                 meta: { ref },
                 data: formatTranslationModel(item),
@@ -178,7 +179,7 @@ export class TranslationController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(request.client.id, RefTypes.TRANSLATIONS);
+            const ref = await riseRefVersion(request.account.id, RefTypes.TRANSLATIONS);
             return {
                 meta: { ref },
                 data: formatTranslationModel(item),

@@ -1,12 +1,11 @@
 import { NodeModel, INode } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Request } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
-import { RefTypes } from "../models/enums";
 import * as joi from "@hapi/joi";
 import { IRefItem } from "./RefsController";
 import { getNodesChain, deleteNodesChain, checkOnRecursion } from "../utils/node";
 import { IAuthRequest } from "../interfaces";
-import { IScenario, NodeTypes, ScenarioCommonActionTypes } from "@djonnyx/tornado-types";
+import { IScenario, NodeTypes, ScenarioCommonActionTypes, RefTypes } from "@djonnyx/tornado-types";
 
 interface INodeItem {
     id: string;
@@ -172,7 +171,7 @@ const validateUpdateNode = (node: INodeUpdateRequest): joi.ValidationResult => {
 export class RootNodesController extends Controller {
     @Get()
     @Security("clientAccessToken")
-    @Security("accessToken")
+    @Security("terminalAccessToken")
     @OperationId("GetRootNodes")
     @Example<INodesResponse>({
         meta: META_TEMPLATE,
@@ -191,8 +190,8 @@ export class RootNodesController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<INodesResponse> {
         try {
-            const items = await NodeModel.find({ client: request.client.id, type: NodeTypes.KIOSK_ROOT });
-            const ref = await getRef(request.client.id, RefTypes.NODES);
+            const items = await NodeModel.find({ client: request.account.id, type: NodeTypes.KIOSK_ROOT });
+            const ref = await getRef(request.account.id, RefTypes.NODES);
             return {
                 meta: { ref },
                 data: items.map(v => formatModel(v))
@@ -216,7 +215,7 @@ export class RootNodesController extends Controller {
 export class NodesController extends Controller {
     @Get()
     @Security("clientAccessToken")
-    @Security("accessToken")
+    @Security("terminalAccessToken")
     @OperationId("GetAll")
     @Example<INodesResponse>({
         meta: META_TEMPLATE,
@@ -224,8 +223,8 @@ export class NodesController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<INodesResponse> {
         try {
-            const items = await NodeModel.find({ client: request.client.id });
-            const ref = await getRef(request.client.id, RefTypes.NODES);
+            const items = await NodeModel.find({ client: request.account.id });
+            const ref = await getRef(request.account.id, RefTypes.NODES);
             return {
                 meta: { ref },
                 data: items.map(v => formatModel(v))
@@ -245,7 +244,7 @@ export class NodesController extends Controller {
 
     @Get("{id}")
     @Security("clientAccessToken")
-    @Security("accessToken")
+    @Security("terminalAccessToken")
     @OperationId("GetAllById")
     @Example<INodesResponse>({
         meta: META_TEMPLATE,
@@ -254,7 +253,7 @@ export class NodesController extends Controller {
     public async getAllById(id: string, @Request() request: IAuthRequest): Promise<INodesResponse> {
         try {
             const items = await getNodesChain(id);
-            const ref = await getRef(request.client.id, RefTypes.NODES);
+            const ref = await getRef(request.account.id, RefTypes.NODES);
             return {
                 meta: { ref },
                 data: items.map(v => formatModel(v))
@@ -278,7 +277,7 @@ export class NodesController extends Controller {
 export class NodeController extends Controller {
     @Get("{id}")
     @Security("clientAccessToken")
-    @Security("accessToken")
+    @Security("terminalAccessToken")
     @OperationId("GetOne")
     @Example<INodeResponse>({
         meta: META_TEMPLATE,
@@ -287,7 +286,7 @@ export class NodeController extends Controller {
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<INodeResponse> {
         try {
             const item = await NodeModel.findById(id);
-            const ref = await getRef(request.client.id, RefTypes.NODES);
+            const ref = await getRef(request.account.id, RefTypes.NODES);
             return {
                 meta: { ref },
                 data: formatModel(item)
@@ -327,7 +326,7 @@ export class NodeController extends Controller {
         }
 
         if (body.type === NodeTypes.SELECTOR_NODE) {
-            const hasRecursion = await checkOnRecursion(request.client.id, body.parentId, body.contentId);
+            const hasRecursion = await checkOnRecursion(request.account.id, body.parentId, body.contentId);
             if (hasRecursion) {
                 this.setStatus(500);
                 return {
@@ -355,7 +354,7 @@ export class NodeController extends Controller {
 
         let savedItem: INode;
         try {
-            const item = new NodeModel({ ...body, client: request.client.id });
+            const item = new NodeModel({ ...body, client: request.account.id });
             savedItem = await item.save();
         } catch (err) {
             this.setStatus(500);
@@ -371,7 +370,7 @@ export class NodeController extends Controller {
 
         let ref: IRefItem;
         try {
-            ref = await riseRefVersion(request.client.id, RefTypes.NODES);
+            ref = await riseRefVersion(request.account.id, RefTypes.NODES);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -387,7 +386,7 @@ export class NodeController extends Controller {
         let parentNode: INode;
 
         try {
-            parentNode = await NodeModel.findOne({ client: request.client.id, _id: savedItem.parentId });
+            parentNode = await NodeModel.findOne({ client: request.account.id, _id: savedItem.parentId });
             parentNode.children.push(savedItem._id);
             await parentNode.save();
         } catch (err) {
@@ -433,7 +432,7 @@ export class NodeController extends Controller {
         }
 
         if (body.type === NodeTypes.SELECTOR_NODE) {
-            const hasRecursion = await checkOnRecursion(request.client.id, body.parentId, body.contentId);
+            const hasRecursion = await checkOnRecursion(request.account.id, body.parentId, body.contentId);
             if (hasRecursion) {
                 this.setStatus(500);
                 return {
@@ -494,7 +493,7 @@ export class NodeController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(request.client.id, RefTypes.NODES);
+            const ref = await riseRefVersion(request.account.id, RefTypes.NODES);
             return {
                 meta: { ref },
                 data: formatModel(item),
@@ -546,7 +545,7 @@ export class NodeController extends Controller {
 
         try {
             ids = await deleteNodesChain(id);
-            const ref = await riseRefVersion(request.client.id, RefTypes.NODES);
+            const ref = await riseRefVersion(request.account.id, RefTypes.NODES);
             return {
                 meta: { ref },
                 data: {
