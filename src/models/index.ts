@@ -4,7 +4,6 @@ import { RefModel, IRef } from "./Ref";
 import { INode, NodeModel } from "./Node";
 import { ISelector, SelectorModel } from "./Selector";
 import { IBusinessPeriod, BusinessPeriodModel } from "./BusinessPeriod";
-import { RefTypes } from "./enums";
 import { ICurrency, CurrencyModel } from "./Currency";
 import { IOrderType, OrderTypeModel } from "./OrderTypes";
 import { IAd, AdModel } from "./Ad";
@@ -21,7 +20,7 @@ export {
     CurrencyModel, ICurrency,
     TagModel, ITag,
     IBusinessPeriod, BusinessPeriodModel,
-    RefModel, IRef, RefTypes,
+    RefModel, IRef,
     OrderTypeModel, IOrderType,
     IAd, AdModel,
     ILanguage, LanguageModel,

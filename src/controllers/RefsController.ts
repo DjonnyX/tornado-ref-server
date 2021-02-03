@@ -1,6 +1,7 @@
-import { RefModel, IRef, RefTypes } from "../models/index";
+import { RefModel, IRef } from "../models/index";
 import { Controller, Route, Get, Tags, OperationId, Example, Security, Request } from "tsoa";
 import { IAuthRequest } from "src/interfaces";
+import { RefTypes } from "@djonnyx/tornado-types";
 
 export interface IRefItem {
     name: string;
@@ -71,14 +72,14 @@ const formatModel = (model: IRef): IRefItem => ({
 export class RefsController extends Controller {
     @Get()
     @Security("clientAccessToken")
-    @Security("accessToken")
+    @Security("terminalAccessToken")
     @OperationId("GetAll")
     @Example<RefsResponse>({
         data: RESPONSE_TEMPLATE
     })
     public async getAll(@Request() request: IAuthRequest): Promise<RefsResponse> {
         try {
-            const items = await RefModel.find({ client: request.client.id });
+            const items = await RefModel.find({ client: request.account.id });
             return {
                 data: items.map(v => formatModel(v))
             };
@@ -101,14 +102,14 @@ export class RefsController extends Controller {
 export class RefController extends Controller {
     @Get("{name}")
     @Security("clientAccessToken")
-    @Security("accessToken")
+    @Security("terminalAccessToken")
     @OperationId("GetOne")
     @Example<RefResponse>({
         data: RESPONSE_SINGLE_TEMPLATE
     })
     public async getOne(name: string, @Request() request: IAuthRequest): Promise<RefResponse> {
         try {
-            const item = await RefModel.findOne({ name, request });
+            const item = await RefModel.findOne({ name, client: request.account.id });
             return {
                 data: formatModel(item)
             };

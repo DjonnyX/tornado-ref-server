@@ -1,4 +1,4 @@
-import { SelectorModel, ISelector, RefTypes, ILanguage, LanguageModel } from "../models/index";
+import { SelectorModel, ISelector, ILanguage, LanguageModel } from "../models/index";
 import { Controller, Route, Post, Tags, OperationId, Example, Request, Security, Get, Delete, Body, Put } from "tsoa";
 import { riseRefVersion, getRef } from "../db/refs";
 import { ISelectorItem, RESPONSE_TEMPLATE as SELECTOR_RESPONSE_TEMPLATE } from "./SelectorController";
@@ -9,7 +9,7 @@ import { uploadAsset, deleteAsset, IAssetItem, ICreateAssetsResponse } from "./A
 import { AssetModel, IAsset } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
 import { IAuthRequest } from "src/interfaces";
-import { AssetExtensions, ISelectorContents } from "@djonnyx/tornado-types";
+import { AssetExtensions, ISelectorContents, RefTypes } from "@djonnyx/tornado-types";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface ISelectorAsset extends IAssetItem { }
@@ -138,7 +138,7 @@ const RESPONSE_TEMPLATE: IAssetItem = {
 export class SelectorAssetsController extends Controller {
     @Get("{selectorId}/assets")
     @Security("clientAccessToken")
-    @Security("accessToken")
+    @Security("terminalAccessToken")
     @OperationId("GetAll")
     @Example<ISelectorGetAllAssetsResponse>({
         meta: META_TEMPLATE,
@@ -200,7 +200,7 @@ export class SelectorAssetsController extends Controller {
 
     @Get("{selectorId}/assets/{langCode}")
     @Security("clientAccessToken")
-    @Security("accessToken")
+    @Security("terminalAccessToken")
     @OperationId("Get")
     @Example<ISelectorGetAssetsResponse>({
         meta: META_TEMPLATE,
@@ -409,7 +409,7 @@ export class SelectorAssetsController extends Controller {
                     await deleteAsset(asset.path);
                     await deleteAsset(asset.mipmap.x128);
                     await deleteAsset(asset.mipmap.x32);
-                    await riseRefVersion(request.client.id, RefTypes.ASSETS);
+                    await riseRefVersion(request.account.id, RefTypes.ASSETS);
                 }
             } catch (err) {
                 this.setStatus(500);
@@ -445,7 +445,7 @@ export class SelectorAssetsController extends Controller {
 
             savedSelector = await selector.save();
 
-            selectorRef = await riseRefVersion(request.client.id, RefTypes.SELECTORS);
+            selectorRef = await riseRefVersion(request.account.id, RefTypes.SELECTORS);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -503,7 +503,7 @@ export class SelectorAssetsController extends Controller {
 
         let selectorRef: IRefItem;
         try {
-            selectorRef = await getRef(request.client.id, RefTypes.SELECTORS);
+            selectorRef = await getRef(request.account.id, RefTypes.SELECTORS);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -525,7 +525,7 @@ export class SelectorAssetsController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(request.client.id, RefTypes.ASSETS);
+            const ref = await riseRefVersion(request.account.id, RefTypes.ASSETS);
             return {
                 meta: {
                     asset: {
@@ -586,7 +586,7 @@ export class SelectorAssetsController extends Controller {
                     await deleteAsset(asset.path);
                     await deleteAsset(asset.mipmap.x128);
                     await deleteAsset(asset.mipmap.x32);
-                    assetRef = await riseRefVersion(request.client.id, RefTypes.ASSETS);
+                    assetRef = await riseRefVersion(request.account.id, RefTypes.ASSETS);
                 }
             } catch (err) {
                 this.setStatus(500);
@@ -610,7 +610,7 @@ export class SelectorAssetsController extends Controller {
 
             await selector.save();
 
-            selectorsRef = await riseRefVersion(request.client.id, RefTypes.SELECTORS);
+            selectorsRef = await riseRefVersion(request.account.id, RefTypes.SELECTORS);
             return {
                 meta: {
                     selector: {

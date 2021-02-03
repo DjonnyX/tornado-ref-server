@@ -1,8 +1,75 @@
 import * as config from "./config";
 import * as express from "express";
 import * as jwt from "jsonwebtoken";
-import { IAuthRequest, IJWTBody } from "./interfaces";
-import { licServerApiService } from "./services";
+import { IAuthRequest, IClientJWTBody, ITerminalJWTBody } from "./interfaces";
+import { ICheckLicenseResponse, licServerApiService } from "./services";
+import { extractError } from "./utils/error";
+
+const checkClientToken = async (token: string, request: express.Request) => {
+  return new Promise<void>((resolve, reject) => {
+    if (!token) {
+      return reject(new Error("Token is empty."));
+    }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    jwt.verify(token, config.AUTH_PRIVATE_KEY, async function (err: any, decoded: IClientJWTBody) {
+      if (err) {
+        return reject(err);
+      }
+
+      if (!decoded.id || !decoded.email) {
+        return reject(new Error("Client access token bad format."))
+      }
+
+      (request as IAuthRequest).account = {
+        id: decoded.id,
+      };
+      (request as IAuthRequest).token = token;
+
+      return resolve();
+    });
+  });
+}
+
+const checkApiKey = async (apikey: string, request: express.Request) => {
+  return new Promise<void>(async (resolve, reject) => {
+    if (!apikey) {
+      return reject(new Error("Apikey is empty."));
+    }
+    const payload = jwt.decode(apikey, {
+      json: true,
+    }) as ITerminalJWTBody;
+
+    if (!payload.imei || !payload.hash) {
+      return reject(new Error("apikey bad format."));
+    }
+
+    let licenseResponse: ICheckLicenseResponse;
+    try {
+      licenseResponse = await licServerApiService.checkLicense(apikey);
+
+      const err = extractError(licenseResponse.error);
+      if (!!err) {
+        throw new Error(err);
+      }
+    } catch (err) {
+      return reject(new Error(`Check license error. ${err}`));
+    }
+
+    (request as IAuthRequest).terminal = {
+      license: licenseResponse.data,
+      imei: payload.imei,
+      key: payload.hash,
+    };
+
+    (request as IAuthRequest).account = {
+      id: licenseResponse.data.clientId,
+    };
+
+    (request as IAuthRequest).token = apikey;
+
+    return resolve();
+  });
+}
 
 export async function expressAuthentication(
   request: express.Request,
@@ -12,53 +79,14 @@ export async function expressAuthentication(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<any> {
   if (securityName === "clientAccessToken") {
-    const authorization = (request.headers["authorization"] ? String(request.headers["authorization"]) : undefined) || "";
-    let token = authorization.replace("Bearer ", "");
+    const authorization = request.headers["authorization"] ? String(request.headers["authorization"]) : undefined;
+    let token = authorization ? authorization.replace("Bearer ", "") : undefined;
 
-    return new Promise((resolve, reject) => {
-      if (!token || token === "") {
-        reject(new Error("No token provided."));
-      }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      jwt.verify(token, config.AUTH_PRIVATE_KEY, function (err: any, decoded: IJWTBody) {
-        if (err) {
-          reject(err);
-        } else {
-          if (!decoded.userId || !decoded.email) {
-            reject(new Error("Access token bad format."))
-          }
-          (request as IAuthRequest).client = {
-            id: decoded.userId,
-            email: decoded.email,
-          };
-          (request as IAuthRequest).token = token;
-          resolve();
-        }
-      });
-    });
-  } else if (securityName === "accessToken") {
+    return await checkClientToken(token, request);
+  }
+
+  if (securityName === "terminalAccessToken") {
     const token = request.headers["x-access-token"] ? String(request.headers["x-access-token"]) : undefined;
-    return new Promise((resolve, reject) => {
-      if (!token) {
-        reject(new Error("No token provided."));
-      }
-      // Вовке я bearer передаю от ключа
-      // проверку тут не надо делать её проверит lic-server отдельным запросом проверки ключа
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      jwt.verify(token, config.AUTH_CLIENT_PRIVATE_KEY, function (err: any, decoded: IJWTBody) {
-        if (err) {
-          reject(err);
-        } else {
-          licServerApiService.verifyLicenseKey(token, { clientToken: token })
-            .then(res => {
-              (request as IAuthRequest).client = res.data;
-              (request as IAuthRequest).token = token;
-              resolve();
-            }).catch(err => {
-              reject(err);
-            });
-        }
-      });
-    });
+    return await checkApiKey(token, request);
   }
 }

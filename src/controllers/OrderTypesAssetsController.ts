@@ -1,5 +1,5 @@
 import * as express from "express";
-import { OrderTypeModel, IOrderType, RefTypes, ILanguage, LanguageModel } from "../models/index";
+import { OrderTypeModel, IOrderType, ILanguage, LanguageModel } from "../models/index";
 import { Controller, Route, Post, Tags, OperationId, Example, Request, Security, Get, Delete, Body, Put } from "tsoa";
 import { riseRefVersion, getRef } from "../db/refs";
 import { IOrderTypeItem, RESPONSE_TEMPLATE as SELECTOR_RESPONSE_TEMPLATE } from "./OrderTypesController";
@@ -10,7 +10,7 @@ import { uploadAsset, deleteAsset, IAssetItem, ICreateAssetsResponse } from "./A
 import { AssetModel, IAsset } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
 import { IAuthRequest } from "../interfaces";
-import { AssetExtensions, IOrderTypeContents } from "@djonnyx/tornado-types";
+import { AssetExtensions, IOrderTypeContents, RefTypes } from "@djonnyx/tornado-types";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IOrderTypeAsset extends IAssetItem { }
@@ -139,7 +139,7 @@ const RESPONSE_TEMPLATE: IAssetItem = {
 export class OrderTypeAssetsController extends Controller {
     @Get("{orderTypeId}/assets")
     @Security("clientAccessToken")
-    @Security("accessToken")
+    @Security("terminalAccessToken")
     @OperationId("GetAll")
     @Example<IOrderTypeGetAllAssetsResponse>({
         meta: META_TEMPLATE,
@@ -201,7 +201,7 @@ export class OrderTypeAssetsController extends Controller {
 
     @Get("{orderTypeId}/assets/{langCode}")
     @Security("clientAccessToken")
-    @Security("accessToken")
+    @Security("terminalAccessToken")
     @OperationId("Get")
     @Example<IOrderTypeGetAssetsResponse>({
         meta: META_TEMPLATE,
@@ -368,7 +368,7 @@ export class OrderTypeAssetsController extends Controller {
 
         let defaultLanguage: ILanguage;
         try {
-            defaultLanguage = await LanguageModel.findOne({ client: request.client.id, isDefault: true });
+            defaultLanguage = await LanguageModel.findOne({ client: request.account.id, isDefault: true });
         } catch (err) {
             this.setStatus(500);
             return {
@@ -410,7 +410,7 @@ export class OrderTypeAssetsController extends Controller {
                     await deleteAsset(asset.path);
                     await deleteAsset(asset.mipmap.x128);
                     await deleteAsset(asset.mipmap.x32);
-                    await riseRefVersion(request.client.id, RefTypes.ASSETS);
+                    await riseRefVersion(request.account.id, RefTypes.ASSETS);
                 }
             } catch (err) {
                 this.setStatus(500);
@@ -446,7 +446,7 @@ export class OrderTypeAssetsController extends Controller {
 
             savedOrderType = await orderType.save();
 
-            orderTypeRef = await riseRefVersion(request.client.id, RefTypes.SELECTORS);
+            orderTypeRef = await riseRefVersion(request.account.id, RefTypes.SELECTORS);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -504,7 +504,7 @@ export class OrderTypeAssetsController extends Controller {
 
         let orderTypeRef: IRefItem;
         try {
-            orderTypeRef = await getRef(request.client.id, RefTypes.SELECTORS);
+            orderTypeRef = await getRef(request.account.id, RefTypes.SELECTORS);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -526,7 +526,7 @@ export class OrderTypeAssetsController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(request.client.id, RefTypes.ASSETS);
+            const ref = await riseRefVersion(request.account.id, RefTypes.ASSETS);
             return {
                 meta: {
                     asset: {
@@ -587,7 +587,7 @@ export class OrderTypeAssetsController extends Controller {
                     await deleteAsset(asset.path);
                     await deleteAsset(asset.mipmap.x128);
                     await deleteAsset(asset.mipmap.x32);
-                    assetRef = await riseRefVersion(request.client.id, RefTypes.ASSETS);
+                    assetRef = await riseRefVersion(request.account.id, RefTypes.ASSETS);
                 }
             } catch (err) {
                 this.setStatus(500);
@@ -611,7 +611,7 @@ export class OrderTypeAssetsController extends Controller {
 
             await orderType.save();
 
-            orderTypesRef = await riseRefVersion(request.client.id, RefTypes.SELECTORS);
+            orderTypesRef = await riseRefVersion(request.account.id, RefTypes.SELECTORS);
             return {
                 meta: {
                     orderType: {

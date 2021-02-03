@@ -1,12 +1,11 @@
-import { AdTypes, IAdContents } from "@djonnyx/tornado-types";
 import * as mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
+import { AdTypes, IAdContents } from "@djonnyx/tornado-types";
 
 interface IAd extends Document {
     client: string;
     active: boolean;
     type: AdTypes;
-    name: string;
     contents: IAdContents;
     extra?: { [key: string]: any } | null;
 }
@@ -14,7 +13,6 @@ interface IAd extends Document {
 const AdSchema = new Schema({
     client: { type: String, required: true, index: { unique: false } },
     active: { type: Boolean, required: true, default: true },
-    name: { type: String, required: false },
     type: {
         type: String,
         enum: [

@@ -1,6 +1,5 @@
 import * as fs from "fs";
 import * as path from "path";
-import { RefTypes } from "../models/index";
 import { Controller, Route, Post, Tags, OperationId, Example, Request, Security, Delete, Put, Body, Get } from "tsoa";
 import { riseRefVersion, getRef } from "../db/refs";
 import { IAsset, AssetModel } from "../models/Asset";
@@ -8,7 +7,7 @@ import { formatAssetModel } from "../utils/asset";
 import { assetsUploader, IFileInfo } from "../utils/assetUpload";
 import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "../interfaces";
-import { AssetExtensions } from "@djonnyx/tornado-types";
+import { AssetExtensions, RefTypes } from "@djonnyx/tornado-types";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IAssetItem {
@@ -107,8 +106,8 @@ export const uploadAsset = async (request: IAuthRequest, allowedExtensions: Arra
     let asset: IAsset;
     let assetRef: IRefItem;
     try {
-        asset = new AssetModel({ ...fileInfo, active, client: request.client.id });
-        assetRef = await riseRefVersion(request.client.id, RefTypes.ASSETS);
+        asset = new AssetModel({ ...fileInfo, active, client: request.account.id });
+        assetRef = await riseRefVersion(request.account.id, RefTypes.ASSETS);
         await asset.save();
     } catch (err) {
         return {
@@ -132,7 +131,7 @@ export const uploadAsset = async (request: IAuthRequest, allowedExtensions: Arra
 /**
  * Возвращает удаленный asset
  */
-export const deleteAsset = (assetPath: string): Promise<IAsset> => {
+export const deleteAsset = (assetPath: string): Promise<IAsset | void> => {
     return new Promise((resolve, reject) => {
         fs.unlink(path.normalize(assetPath), (err) => {
             if (!!err && err.code === "ENOENT") {
@@ -152,7 +151,7 @@ export const deleteAsset = (assetPath: string): Promise<IAsset> => {
 export class AssetsController extends Controller {
     @Get()
     @Security("clientAccessToken")
-    @Security("accessToken")
+    @Security("terminalAccessToken")
     @OperationId("GetAll")
     @Example<IGetAssetsResponse>({
         meta: META_TEMPLATE,
@@ -160,8 +159,8 @@ export class AssetsController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<IGetAssetsResponse> {
         try {
-            const items = await AssetModel.find({ client: request.client.id });
-            const ref = await getRef(request.client.id, RefTypes.ASSETS);
+            const items = await AssetModel.find({ client: request.account.id });
+            const ref = await getRef(request.account.id, RefTypes.ASSETS);
             return {
                 meta: { ref },
                 data: items.map(v => formatAssetModel(v))

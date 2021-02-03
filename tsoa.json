@@ -11,7 +11,7 @@
         "scheme": "bearer",
         "bearerFormat": "JWT"
       },
-      "accessToken": {
+      "terminalAccessToken": {
         "type": "apiKey",
         "name": "x-access-token",
         "in": "header"

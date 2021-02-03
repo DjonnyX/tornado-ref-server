@@ -1,5 +1,6 @@
-import { AdModel, IAd, RefTypes, ILanguage, LanguageModel } from "../models/index";
+import { AdModel, IAd, ILanguage, LanguageModel } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Query, Request } from "tsoa";
+import { AdTypes, IAdContents, RefTypes } from "@djonnyx/tornado-types";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatAdModel } from "../utils/ad";
 import { normalizeContents, getDeletedImagesFromDifferense, getEntityAssets } from "../utils/entity";
@@ -7,11 +8,9 @@ import { AssetModel } from "../models/Asset";
 import { deleteAsset } from "./AssetsController";
 import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "../interfaces";
-import { AdTypes, IAdContents } from "@djonnyx/tornado-types";
 
 export interface IAdItem {
     id?: string;
-    name?: string;
     type: AdTypes;
     active: boolean;
     contents: IAdContents;
@@ -42,17 +41,15 @@ interface IAdResponse {
 
 interface IAdCreateRequest {
     active: boolean;
-    name?: string;
-    type: AdTypes;
+    type: AdTypes | string;
     contents?: IAdContents;
     extra?: { [key: string]: any } | null;
 }
 
 interface IAdUpdateRequest {
     active?: boolean;
-    name?: string;
     type?: AdTypes;
-    contents?: IAdContents;
+    contents?: IAdContents | any;
     extra?: { [key: string]: any } | null;
 }
 
@@ -87,7 +84,7 @@ const META_TEMPLATE: IAdsMeta = {
 export class AdsController extends Controller {
     @Get()
     @Security("clientAccessToken")
-    @Security("accessToken")
+    @Security("terminalAccessToken")
     @OperationId("GetAll")
     @Example<IAdsResponse>({
         meta: META_TEMPLATE,
@@ -96,14 +93,14 @@ export class AdsController extends Controller {
     public async getAll(@Request() request: IAuthRequest, @Query() type?: AdTypes): Promise<IAdsResponse> {
         try {
             const findParams: any = {
-                client: request.client.id,
+                client: request.account.id,
             };
 
             if (!!type) {
                 findParams.type = type;
             }
             const items = await AdModel.find(findParams);
-            const ref = await getRef(request.client.id, RefTypes.ADS);
+            const ref = await getRef(request.account.id, RefTypes.ADS);
             return {
                 meta: { ref },
                 data: items.map(v => formatAdModel(v)),
@@ -127,7 +124,7 @@ export class AdsController extends Controller {
 export class AdController extends Controller {
     @Get("{id}")
     @Security("clientAccessToken")
-    @Security("accessToken")
+    @Security("terminalAccessToken")
     @OperationId("GetOne")
     @Example<IAdResponse>({
         meta: META_TEMPLATE,
@@ -136,7 +133,7 @@ export class AdController extends Controller {
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<IAdResponse> {
         try {
             const item = await AdModel.findById(id);
-            const ref = await getRef(request.client.id, RefTypes.ADS);
+            const ref = await getRef(request.account.id, RefTypes.ADS);
             return {
                 meta: { ref },
                 data: formatAdModel(item),
@@ -163,9 +160,9 @@ export class AdController extends Controller {
     })
     public async create(@Body() body: IAdCreateRequest, @Request() request: IAuthRequest): Promise<IAdResponse> {
         try {
-            const item = new AdModel({ ...body, client: request.client.id });
+            const item = new AdModel({ ...body, client: request.account.id });
             const savedItem = await item.save();
-            const ref = await riseRefVersion(request.client.id, RefTypes.ADS);
+            const ref = await riseRefVersion(request.account.id, RefTypes.ADS);
             return {
                 meta: { ref },
                 data: formatAdModel(savedItem),
@@ -193,7 +190,7 @@ export class AdController extends Controller {
     public async update(id: string, @Body() body: IAdUpdateRequest, @Request() request: IAuthRequest): Promise<IAdResponse> {
         let defaultLanguage: ILanguage;
         try {
-            defaultLanguage = await LanguageModel.findOne({ client: request.client.id, isDefault: true });
+            defaultLanguage = await LanguageModel.findOne({ client: request.account.id, isDefault: true });
         } catch (err) {
             this.setStatus(500);
             return {
@@ -227,10 +224,10 @@ export class AdController extends Controller {
 
             // удаление ассетов из разности resources
             const deletedAssetsFromImages = getDeletedImagesFromDifferense(lastContents, item.contents);
-            const promises = new Array<Promise<any>>();
+            const promises = new Array<Promise<void>>();
             let isAssetsChanged = false;
             deletedAssetsFromImages.forEach(assetId => {
-                promises.push(new Promise(async (resolve, reject) => {
+                promises.push(new Promise<void>(async (resolve, reject) => {
                     // удаление из списка assets
                     if (item.contents) {
                         for (const lang in item.contents) {
@@ -258,7 +255,7 @@ export class AdController extends Controller {
             await Promise.all(promises);
 
             if (isAssetsChanged) {
-                await riseRefVersion(request.client.id, RefTypes.ASSETS);
+                await riseRefVersion(request.account.id, RefTypes.ASSETS);
             }
 
             // выставление ассетов от предыдущего состояния
@@ -276,7 +273,7 @@ export class AdController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(request.client.id, RefTypes.ADS);
+            const ref = await riseRefVersion(request.account.id, RefTypes.ADS);
             return {
                 meta: { ref },
                 data: formatAdModel(item),
@@ -319,12 +316,12 @@ export class AdController extends Controller {
         // нужно удалять ассеты
         const assetsList = getEntityAssets(ad);
 
-        const promises = new Array<Promise<any>>();
+        const promises = new Array<Promise<void>>();
 
         try {
             let isAssetsChanged = false;
             assetsList.forEach(assetId => {
-                promises.push(new Promise(async (resolve) => {
+                promises.push(new Promise<void>(async (resolve) => {
                     const asset = await AssetModel.findByIdAndDelete(assetId);
                     if (!!asset) {
                         await deleteAsset(asset.path);
@@ -339,7 +336,7 @@ export class AdController extends Controller {
             await Promise.all(promises);
 
             if (!!isAssetsChanged) {
-                await riseRefVersion(request.client.id, RefTypes.ASSETS);
+                await riseRefVersion(request.account.id, RefTypes.ASSETS);
             }
         } catch (err) {
             this.setStatus(500);
@@ -354,7 +351,7 @@ export class AdController extends Controller {
         }
 
         try {
-            const ref = await riseRefVersion(request.client.id, RefTypes.ADS);
+            const ref = await riseRefVersion(request.account.id, RefTypes.ADS);
             return {
                 meta: { ref },
             };

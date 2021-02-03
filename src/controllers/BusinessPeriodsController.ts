@@ -1,11 +1,11 @@
-import { RefTypes, IBusinessPeriod, BusinessPeriodModel } from "../models";
+import { IBusinessPeriod, BusinessPeriodModel } from "../models";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Request } from "tsoa";
 import * as joi from "@hapi/joi";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatModel } from "../utils/businessPeriod";
 import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "../interfaces";
-import { IBusinessPeriodContents, ISchedule } from "@djonnyx/tornado-types";
+import { IBusinessPeriodContents, ISchedule, RefTypes } from "@djonnyx/tornado-types";
 
 interface IBusinessPeriodItem {
     id?: string;
@@ -41,7 +41,7 @@ interface IBusinessPeriodResponse {
 interface IBusinessPeriodCreateRequest {
     active: boolean;
     name?: string;
-    contents?: IBusinessPeriodContents;
+    contents?: IBusinessPeriodContents | any;
     schedule: Array<ISchedule>;
     extra?: { [key: string]: any } | null;
 }
@@ -95,7 +95,7 @@ const META_TEMPLATE: IBusinessPeriodMeta = {
 export class BusinessPeriodsController extends Controller {
     @Get()
     @Security("clientAccessToken")
-    @Security("accessToken")
+    @Security("terminalAccessToken")
     @OperationId("GetAll")
     @Example<IBusinessPeriodsResponse>({
         meta: META_TEMPLATE,
@@ -103,8 +103,8 @@ export class BusinessPeriodsController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<IBusinessPeriodsResponse> {
         try {
-            const items = await BusinessPeriodModel.find({ client: request.client.id });
-            const ref = await getRef(request.client.id, RefTypes.BUSINESS_PERIODS);
+            const items = await BusinessPeriodModel.find({ client: request.account.id });
+            const ref = await getRef(request.account.id, RefTypes.BUSINESS_PERIODS);
             return {
                 meta: { ref },
                 data: items.map(v => formatModel(v))
@@ -128,7 +128,7 @@ export class BusinessPeriodsController extends Controller {
 export class BusinessPeriodController extends Controller {
     @Get("{id}")
     @Security("clientAccessToken")
-    @Security("accessToken")
+    @Security("terminalAccessToken")
     @OperationId("GetOne")
     @Example<IBusinessPeriodResponse>({
         meta: META_TEMPLATE,
@@ -137,7 +137,7 @@ export class BusinessPeriodController extends Controller {
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<IBusinessPeriodResponse> {
         try {
             const item = await BusinessPeriodModel.findById(id);
-            const ref = await getRef(request.client.id, RefTypes.BUSINESS_PERIODS);
+            const ref = await getRef(request.account.id, RefTypes.BUSINESS_PERIODS);
             return {
                 meta: { ref },
                 data: formatModel(item),
@@ -177,9 +177,9 @@ export class BusinessPeriodController extends Controller {
         }
 
         try {
-            const item = new BusinessPeriodModel({ ...body, client: request.client.id });
+            const item = new BusinessPeriodModel({ ...body, client: request.account.id });
             const savedItem = await item.save();
-            const ref = await riseRefVersion(request.client.id, RefTypes.BUSINESS_PERIODS);
+            const ref = await riseRefVersion(request.account.id, RefTypes.BUSINESS_PERIODS);
             return {
                 meta: { ref },
                 data: formatModel(savedItem),
@@ -230,7 +230,7 @@ export class BusinessPeriodController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(request.client.id, RefTypes.BUSINESS_PERIODS);
+            const ref = await riseRefVersion(request.account.id, RefTypes.BUSINESS_PERIODS);
             return {
                 meta: { ref },
                 data: formatModel(item),
@@ -271,7 +271,7 @@ export class BusinessPeriodController extends Controller {
         }
 
         try {
-            const ref = await riseRefVersion(request.client.id, RefTypes.BUSINESS_PERIODS);
+            const ref = await riseRefVersion(request.account.id, RefTypes.BUSINESS_PERIODS);
             return {
                 meta: { ref },
             };

@@ -1,8 +1,8 @@
 import { Controller, Route, Post, Tags, Example, Request, Body, Get, Put, Delete, OperationId, Security } from "tsoa";
-import { RefTypes } from "../models/enums";
 import { IRefItem } from "./RefsController";
 import { licServerApiService } from "../services";
 import { IAuthRequest } from "../interfaces";
+import { RefTypes } from "@djonnyx/tornado-types";
 
 interface ILicenseTypeInfo {
     id: string;
@@ -12,7 +12,6 @@ interface ILicenseTypeInfo {
     payNotice: string;
     integrationId: string;
     lastUpdate: Date;
-    extra?: { [key: string]: any } | null;
 }
 
 interface ICreateLicenseTypeParams {
@@ -22,7 +21,6 @@ interface ICreateLicenseTypeParams {
     payNotice: string;
     integrationId: string;
     lastUpdate?: string;
-    extra?: { [key: string]: any } | null;
 }
 
 interface IUpdateLicenseTypeParams {
@@ -31,7 +29,6 @@ interface IUpdateLicenseTypeParams {
     price?: number;
     payNotice?: string;
     integrationId?: string;
-    extra?: { [key: string]: any } | null;
 }
 
 interface LicenseTypesGetResponse {
@@ -64,7 +61,6 @@ const LICENSE_TYPE_RESPONSE_TEMPLATE: ILicenseTypeInfo = {
     payNotice: "Оплата через терминал Эвотор",
     integrationId: "507c7f79bcf86cd7994f6c0e",
     lastUpdate: new Date(),
-    extra: { key: "value" },
 };
 
 const META_TEMPLATE: ILicenseTypeInfoMeta = {
@@ -86,11 +82,11 @@ export class LicenseTypesController extends Controller {
         data: [LICENSE_TYPE_RESPONSE_TEMPLATE],
     })
     public async getLicenseType(@Request() request: IAuthRequest): Promise<LicenseTypesGetResponse> {
-        return await licServerApiService.getLicenseTypes({ clientToken: request.token });
+        return await licServerApiService.getLicenseTypes(request.token);
     }
 }
 
-@Route("/license-types")
+@Route("/license-type")
 @Tags("LicenseType")
 export class LicenseTypeController extends Controller {
     @Get("{id}")
@@ -101,18 +97,18 @@ export class LicenseTypeController extends Controller {
         data: LICENSE_TYPE_RESPONSE_TEMPLATE,
     })
     public async getLicenseType(id: string, @Request() request: IAuthRequest): Promise<LicenseTypeResponse> {
-        return await licServerApiService.getLicenseType(id, { clientToken: request.token });
+        return await licServerApiService.getLicenseType(id, request.token);
     }
 
-    @Post("{id}")
+    @Post()
     @Security("clientAccessToken")
     @OperationId("Create")
     @Example<LicenseTypeResponse>({
         meta: META_TEMPLATE,
         data: LICENSE_TYPE_RESPONSE_TEMPLATE,
     })
-    public async createLicenseType(id: string, @Request() request: IAuthRequest, @Body() body: ICreateLicenseTypeParams): Promise<LicenseTypeResponse> {
-        return await licServerApiService.createLicenseType(id, body as any, { clientToken: request.token });
+    public async createLicenseType(@Body() body: ICreateLicenseTypeParams, @Request() request: IAuthRequest): Promise<LicenseTypeResponse> {
+        return await licServerApiService.createLicenseType(body as any, request.token);
     }
 
     @Put("{id}")
@@ -122,8 +118,8 @@ export class LicenseTypeController extends Controller {
         meta: META_TEMPLATE,
         data: LICENSE_TYPE_RESPONSE_TEMPLATE,
     })
-    public async updateLicenseType(id: string, @Request() request: IAuthRequest, @Body() body: IUpdateLicenseTypeParams): Promise<LicenseTypeResponse> {
-        return await licServerApiService.updateLicenseType(id, body as any, { clientToken: request.token });
+    public async updateLicenseType(id: string, @Body() body: IUpdateLicenseTypeParams, @Request() request: IAuthRequest): Promise<LicenseTypeResponse> {
+        return await licServerApiService.updateLicenseType(id, body as any, request.token);
     }
 
     @Delete("{id}")
@@ -133,6 +129,6 @@ export class LicenseTypeController extends Controller {
         meta: META_TEMPLATE,
     })
     public async deleteLicenseType(id: string, @Request() request: IAuthRequest): Promise<LicenseTypeResponse> {
-        return await licServerApiService.deleteLicenseType(id, { clientToken: request.token });
+        return await licServerApiService.deleteLicenseType(id, request.token);
     }
 }
