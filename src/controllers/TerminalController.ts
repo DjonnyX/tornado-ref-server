@@ -206,7 +206,7 @@ export class TerminalsController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<ITerminalsResponse> {
         try {
-            const items = await TerminalModel.find({ client: request.account.id });
+            const items = await TerminalModel.find({ clientId: request.account.id });
             const ref = await getRef(request.account.id, RefTypes.TERMINALS);
             return {
                 meta: { ref },
