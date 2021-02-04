@@ -31,35 +31,20 @@ interface IStoreResponse {
 }
 
 interface IStoreCreateRequest {
-    active?: boolean;
     name: string;
     address: string | null;
-    terminals: Array<string> | null;
-    employes: Array<string> | null;
     extra?: { [key: string]: any } | null;
 }
 
 interface IStoreUpdateRequest {
-    active?: boolean;
     name?: string;
     address?: string;
-    terminals: Array<string> | null;
-    employes: Array<string> | null;
     extra?: { [key: string]: any } | null;
 }
 
 const RESPONSE_TEMPLATE: IStoreItem = {
-    active: true,
     name: "My store",
     address: "Moscow",
-    terminals: [
-        "a0830860-d869-4d31-837f-122097f75f4a",
-        "2aff85fb-2316-4554-869c-df2ecd9126e9",
-    ],
-    employes: [
-        "a0830860-d869-4d31-837f-122097f75f4a",
-        "2aff85fb-2316-4554-869c-df2ecd9126e9",
-    ],
     extra: {
         key: "value",
     }
@@ -169,6 +154,7 @@ export class StoreController extends Controller {
 
     @Put("{id}")
     @Security("clientAccessToken")
+    @Security("terminalAccessToken")
     @OperationId("Update")
     @Example<IStoreResponse>({
         meta: META_TEMPLATE,
