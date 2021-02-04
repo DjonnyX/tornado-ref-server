@@ -236,7 +236,7 @@ export class LicensesController extends Controller {
         if (!response.error) {
             let terminals: Array<ITerminalDocument>;
             try {
-                terminals = await TerminalModel.find({ clientId: request.account.id });
+                terminals = await TerminalModel.find({});
             } catch (err) {
                 this.setStatus(500);
                 return {
@@ -280,7 +280,7 @@ export class LicenseController extends Controller {
         if (!response.error) {
             let terminal: ITerminalDocument;
             try {
-                terminal = await TerminalModel.findOne({ clientId: request.account.id, licenseId: response.data.id });
+                terminal = await TerminalModel.findOne({ licenseId: response.data.id });
             } catch (err) {
                 this.setStatus(500);
                 return {
@@ -315,7 +315,7 @@ export class LicenseController extends Controller {
         if (!response.error) {
             let terminal: ITerminalDocument;
             try {
-                terminal = await TerminalModel.findOne({ clientId: request.account.id, licenseId: response.data.id });
+                terminal = await TerminalModel.findOne({ licenseId: response.data.id });
             } catch (err) {
                 this.setStatus(500);
                 return {
@@ -350,7 +350,7 @@ export class LicenseController extends Controller {
         if (!response.error) {
             let terminal: ITerminalDocument;
             try {
-                terminal = await TerminalModel.findOne({ clientId: request.account.id, licenseId: response.data.id });
+                terminal = await TerminalModel.findOne({ licenseId: response.data.id });
             } catch (err) {
                 this.setStatus(500);
                 return {
