@@ -36,7 +36,7 @@ const TerminalSchema = new Schema({
         ]
     },
     name: { type: String },
-    storeId: { type: Schema.Types.ObjectId },
+    storeId: { type: String },
     lastwork: { type: Date },
     imei: { type: String, unique: true, required: true },
     licenseId: { type: String, unique: true, required: true },
