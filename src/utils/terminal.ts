@@ -1,6 +1,7 @@
 import { ITerminalDocument } from "@models";
 
 export const formatTerminalModel = (model: ITerminalDocument) => ({
+    id: model.id,
     clientId: model.clientId,
     status: model.status,
     type: model.type,
