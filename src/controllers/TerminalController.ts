@@ -38,7 +38,8 @@ interface ITerminalRegisterRequest {
 }
 
 interface ITerminalUpdateRequest {
-    name: string;
+    name?: string;
+    storeId?: string;
     extra?: { [key: string]: any } | null;
 }
 
@@ -258,8 +259,9 @@ export class TerminalController extends Controller {
         }
     }
 
-    /*@Put("{id}")
+    @Put("{id}")
     @Security("clientAccessToken")
+    @Security("terminalAccessToken")
     @OperationId("Update")
     @Example<ITerminalResponse>({
         meta: META_TEMPLATE,
@@ -296,7 +298,7 @@ export class TerminalController extends Controller {
         }
     }
 
-    @Delete("{id}")
+    /*@Delete("{id}")
     @Security("clientAccessToken")
     @OperationId("Delete")
     @Example<ITerminalResponse>({
