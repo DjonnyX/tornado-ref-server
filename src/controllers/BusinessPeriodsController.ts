@@ -6,6 +6,7 @@ import { formatModel } from "../utils/businessPeriod";
 import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "../interfaces";
 import { IBusinessPeriodContents, ISchedule, RefTypes } from "@djonnyx/tornado-types";
+import { findAllWithFilter } from "../utils/requestOptions";
 
 interface IBusinessPeriodItem {
     id?: string;
@@ -103,7 +104,7 @@ export class BusinessPeriodsController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<IBusinessPeriodsResponse> {
         try {
-            const items = await BusinessPeriodModel.find({ client: request.account.id });
+            const items = await findAllWithFilter(BusinessPeriodModel.find({ client: request.account.id }), request);
             const ref = await getRef(request.account.id, RefTypes.BUSINESS_PERIODS);
             return {
                 meta: { ref },

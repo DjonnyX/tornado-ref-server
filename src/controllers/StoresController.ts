@@ -5,6 +5,7 @@ import { formatStoreModel } from "../utils/store";
 import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "../interfaces";
 import { IStore, RefTypes } from "@djonnyx/tornado-types";
+import { findAllWithFilter } from "../utils/requestOptions";
 
 interface IStoreItem extends IStore { }
 
@@ -71,7 +72,7 @@ export class StoresController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<IStoresResponse> {
         try {
-            const items = await StoreModel.find({ client: request.account.id });
+            const items = await findAllWithFilter(StoreModel.find({ client: request.account.id }), request);
             const ref = await getRef(request.account.id, RefTypes.STORES);
             return {
                 meta: { ref },
