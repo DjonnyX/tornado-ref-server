@@ -7,6 +7,7 @@ import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "../interfaces";
 import { ISetDeviceResponse, licServerApiService } from "../services";
 import { extractError } from "../utils/error";
+import { findAllWithFilter } from "../utils/requestOptions";
 
 interface ITerminalItem extends ITerminal { }
 
@@ -206,8 +207,10 @@ export class TerminalsController extends Controller {
         data: [RESPONSE_TEMPLATE]
     })
     public async getAll(@Request() request: IAuthRequest): Promise<ITerminalsResponse> {
+        let findParams: any = request.terminal ? {} : { clientId: request.account.id };
+
         try {
-            const items = await TerminalModel.find({ clientId: request.account.id });
+            const items = await findAllWithFilter(TerminalModel.find(findParams), request);
             const ref = await getRef(request.account.id, RefTypes.TERMINALS);
             return {
                 meta: { ref },
