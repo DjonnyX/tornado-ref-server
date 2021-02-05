@@ -9,6 +9,7 @@ import { deleteAsset } from "./AssetsController";
 import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "../interfaces";
 import { IPrice, IProductContents, NodeTypes, RefTypes } from "@djonnyx/tornado-types";
+import { findAllWithFilter } from "../utils/requestOptions";
 
 export interface IProductItem {
     id?: string;
@@ -125,7 +126,7 @@ export class ProductsController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<IProductsResponse> {
         try {
-            const items = await ProductModel.find({ client: request.account.id });
+            const items = await findAllWithFilter(ProductModel.find({ client: request.account.id }), request);
             const ref = await getRef(request.account.id, RefTypes.PRODUCTS);
             return {
                 meta: { ref },

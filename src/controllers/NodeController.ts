@@ -6,6 +6,7 @@ import { IRefItem } from "./RefsController";
 import { getNodesChain, deleteNodesChain, checkOnRecursion } from "../utils/node";
 import { IAuthRequest } from "../interfaces";
 import { IScenario, NodeTypes, ScenarioCommonActionTypes, RefTypes } from "@djonnyx/tornado-types";
+import { findAllWithFilter } from "../utils/requestOptions";
 
 interface INodeItem {
     id: string;
@@ -223,7 +224,7 @@ export class NodesController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<INodesResponse> {
         try {
-            const items = await NodeModel.find({ client: request.account.id });
+            const items = await findAllWithFilter(NodeModel.find({ client: request.account.id }), request);
             const ref = await getRef(request.account.id, RefTypes.NODES);
             return {
                 meta: { ref },

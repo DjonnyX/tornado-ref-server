@@ -8,6 +8,7 @@ import { AssetModel } from "../models/Asset";
 import { deleteAsset } from "./AssetsController";
 import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "../interfaces";
+import { findAllWithFilter } from "../utils/requestOptions";
 
 export interface IAdItem {
     id?: string;
@@ -92,14 +93,7 @@ export class AdsController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest, @Query() type?: AdTypes): Promise<IAdsResponse> {
         try {
-            const findParams: any = {
-                client: request.account.id,
-            };
-
-            if (!!type) {
-                findParams.type = type;
-            }
-            const items = await AdModel.find(findParams);
+            const items = await findAllWithFilter(AdModel.find({ client: request.account.id }), request);
             const ref = await getRef(request.account.id, RefTypes.ADS);
             return {
                 meta: { ref },

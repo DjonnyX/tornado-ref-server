@@ -6,6 +6,7 @@ import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "../interfaces";
 import { RefTypes } from "@djonnyx/tornado-types";
 import { ITranslate } from "@djonnyx/tornado-types/dist/interfaces/raw/ITranslation";
+import { findAllWithFilter } from "../utils/requestOptions";
 
 interface ITranslateItem {
     key: string;
@@ -78,7 +79,7 @@ export class TranslationsController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<TranslationsResponse> {
         try {
-            const items = await TranslationModel.find({ client: request.account.id });
+            const items = await findAllWithFilter(TranslationModel.find({ client: request.account.id }), request);
             const ref = await getRef(request.account.id, RefTypes.TRANSLATIONS);
             return {
                 meta: { ref },

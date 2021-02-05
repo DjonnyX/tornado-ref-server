@@ -2,7 +2,7 @@ import { Controller, Route, Post, Tags, Example, Request, Body, Get, Put, Delete
 import { IRefItem } from "./RefsController";
 import { licServerApiService } from "../services";
 import { IVersion, RefTypes } from "@djonnyx/tornado-types";
-import { IAuthRequest } from "src/interfaces";
+import { IAuthRequest } from "../interfaces";
 
 interface IApplicationInfo {
     id: string;

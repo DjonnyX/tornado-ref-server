@@ -8,6 +8,7 @@ import { AssetModel } from "../models/Asset";
 import { deleteAsset } from "./AssetsController";
 import { IAuthRequest } from "../interfaces";
 import { RefTypes } from "@djonnyx/tornado-types";
+import { findAllWithFilter } from "../utils/requestOptions";
 
 export interface ILanguageItem {
     id: string;
@@ -107,7 +108,7 @@ export class LanguagesController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<LanguagesResponse> {
         try {
-            const items = await LanguageModel.find({ client: request.account.id });
+            const items = await findAllWithFilter(LanguageModel.find({ client: request.account.id }), request);
             const ref = await getRef(request.account.id, RefTypes.LANGUAGES);
             return {
                 meta: { ref },

@@ -9,6 +9,7 @@ import { normalizeContents, getDeletedImagesFromDifferense, getEntityAssets } fr
 import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "../interfaces";
 import { ITagContents, RefTypes } from "@djonnyx/tornado-types";
+import { findAllWithFilter } from "../utils/requestOptions";
 
 export interface ITagItem {
     id: string;
@@ -88,7 +89,7 @@ export class TagsController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<TagsResponse> {
         try {
-            const items = await TagModel.find({ client: request.account.id });
+            const items = await findAllWithFilter(TagModel.find({ client: request.account.id }), request);
             const ref = await getRef(request.account.id, RefTypes.TAGS);
             return {
                 meta: { ref },
@@ -149,7 +150,7 @@ export class TagController extends Controller {
     })
     public async create(@Body() body: TagCreateRequest, @Request() request: IAuthRequest): Promise<TagResponse> {
         try {
-            const item = new TagModel({...body, client: request.account.id});
+            const item = new TagModel({ ...body, client: request.account.id });
             const savedItem = await item.save();
             const ref = await riseRefVersion(request.account.id, RefTypes.TAGS);
             return {

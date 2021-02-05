@@ -5,6 +5,7 @@ import { formatStoreModel } from "../utils/store";
 import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "../interfaces";
 import { IStore, RefTypes } from "@djonnyx/tornado-types";
+import { findAllWithFilter } from "../utils/requestOptions";
 
 interface IStoreItem extends IStore { }
 
@@ -31,35 +32,20 @@ interface IStoreResponse {
 }
 
 interface IStoreCreateRequest {
-    active?: boolean;
     name: string;
     address: string | null;
-    terminals: Array<string> | null;
-    employes: Array<string> | null;
     extra?: { [key: string]: any } | null;
 }
 
 interface IStoreUpdateRequest {
-    active?: boolean;
     name?: string;
     address?: string;
-    terminals: Array<string> | null;
-    employes: Array<string> | null;
     extra?: { [key: string]: any } | null;
 }
 
 const RESPONSE_TEMPLATE: IStoreItem = {
-    active: true,
     name: "My store",
     address: "Moscow",
-    terminals: [
-        "a0830860-d869-4d31-837f-122097f75f4a",
-        "2aff85fb-2316-4554-869c-df2ecd9126e9",
-    ],
-    employes: [
-        "a0830860-d869-4d31-837f-122097f75f4a",
-        "2aff85fb-2316-4554-869c-df2ecd9126e9",
-    ],
     extra: {
         key: "value",
     }
@@ -86,7 +72,7 @@ export class StoresController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<IStoresResponse> {
         try {
-            const items = await StoreModel.find({ client: request.account.id });
+            const items = await findAllWithFilter(StoreModel.find({ client: request.account.id }), request);
             const ref = await getRef(request.account.id, RefTypes.STORES);
             return {
                 meta: { ref },
@@ -169,6 +155,7 @@ export class StoreController extends Controller {
 
     @Put("{id}")
     @Security("clientAccessToken")
+    @Security("terminalAccessToken")
     @OperationId("Update")
     @Example<IStoreResponse>({
         meta: META_TEMPLATE,
