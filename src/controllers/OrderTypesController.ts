@@ -9,6 +9,7 @@ import { normalizeContents, getDeletedImagesFromDifferense, getEntityAssets } fr
 import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "src/interfaces";
 import { IOrderTypeContents, RefTypes } from "@djonnyx/tornado-types";
+import { findAllWithFilter } from "../utils/requestOptions";
 
 export interface IOrderTypeItem {
     id: string;
@@ -89,7 +90,7 @@ export class OrderTypesController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<OrderTypesResponse> {
         try {
-            const items = await OrderTypeModel.find({});
+            const items = await findAllWithFilter(OrderTypeModel.find({ client: request.account.id }), request);
             const ref = await getRef(request.account.id, RefTypes.ORDER_TYPES);
             return {
                 meta: { ref },

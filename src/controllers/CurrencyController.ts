@@ -5,6 +5,7 @@ import { formatCurrencyModel } from "../utils/currency";
 import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "../interfaces";
 import { RefTypes } from "@djonnyx/tornado-types";
+import { findAllWithFilter } from "../utils/requestOptions";
 
 interface ICurrencyItem {
     id: string;
@@ -40,7 +41,7 @@ interface CurrencyResponse {
 
 interface CurrencyCreateRequest {
     active?: boolean;
-    isDefault: boolean;
+    isDefault?: boolean;
     code: string;
     name: string;
     symbol: string;
@@ -49,7 +50,7 @@ interface CurrencyCreateRequest {
 
 interface CurrencyUpdateRequest {
     active?: boolean;
-    isDefault: boolean;
+    isDefault?: boolean;
     code?: string;
     name?: string;
     symbol?: string;
@@ -87,7 +88,7 @@ export class CurrenciesController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<CurrenciesResponse> {
         try {
-            const items = await CurrencyModel.find({ client: request.account.id });
+            const items = await findAllWithFilter(CurrencyModel.find({ client: request.account.id }), request);
             const ref = await getRef(request.account.id, RefTypes.CURRENCIES);
             return {
                 meta: { ref },

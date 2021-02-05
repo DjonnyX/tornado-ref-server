@@ -7,6 +7,7 @@ import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "../interfaces";
 import { ISetDeviceResponse, licServerApiService } from "../services";
 import { extractError } from "../utils/error";
+import { findAllWithFilter } from "../utils/requestOptions";
 
 interface ITerminalItem extends ITerminal { }
 
@@ -38,7 +39,8 @@ interface ITerminalRegisterRequest {
 }
 
 interface ITerminalUpdateRequest {
-    name: string;
+    name?: string;
+    storeId?: string;
     extra?: { [key: string]: any } | null;
 }
 
@@ -205,8 +207,10 @@ export class TerminalsController extends Controller {
         data: [RESPONSE_TEMPLATE]
     })
     public async getAll(@Request() request: IAuthRequest): Promise<ITerminalsResponse> {
+        let findParams: any = request.terminal ? {} : { clientId: request.account.id };
+
         try {
-            const items = await TerminalModel.find({ client: request.account.id });
+            const items = await findAllWithFilter(TerminalModel.find(findParams), request);
             const ref = await getRef(request.account.id, RefTypes.TERMINALS);
             return {
                 meta: { ref },
@@ -258,8 +262,9 @@ export class TerminalController extends Controller {
         }
     }
 
-    /*@Put("{id}")
+    @Put("{id}")
     @Security("clientAccessToken")
+    @Security("terminalAccessToken")
     @OperationId("Update")
     @Example<ITerminalResponse>({
         meta: META_TEMPLATE,
@@ -296,7 +301,7 @@ export class TerminalController extends Controller {
         }
     }
 
-    @Delete("{id}")
+    /*@Delete("{id}")
     @Security("clientAccessToken")
     @OperationId("Delete")
     @Example<ITerminalResponse>({

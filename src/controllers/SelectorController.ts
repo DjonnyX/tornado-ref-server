@@ -9,6 +9,7 @@ import { deleteAsset } from "./AssetsController";
 import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "../interfaces";
 import { ISelectorContents, NodeTypes, SelectorTypes, RefTypes } from "@djonnyx/tornado-types";
+import { findAllWithFilter } from "../utils/requestOptions";
 
 export interface ISelectorItem {
     id?: string;
@@ -94,15 +95,9 @@ export class SelectorsController extends Controller {
         meta: META_TEMPLATE,
         data: [RESPONSE_TEMPLATE],
     })
-    public async getAll(@Request() request: IAuthRequest, @Query() type?: SelectorTypes): Promise<ISelectorsResponse> {
+    public async getAll(@Request() request: IAuthRequest): Promise<ISelectorsResponse> {
         try {
-            const findParams: any = {
-                client: request.account.id,
-            };
-            if (!!type) {
-                findParams.type = type;
-            }
-            const items = await SelectorModel.find(findParams);
+            const items = await findAllWithFilter(SelectorModel.find({ client: request.account.id }), request);
             const ref = await getRef(request.account.id, RefTypes.SELECTORS);
             return {
                 meta: { ref },
