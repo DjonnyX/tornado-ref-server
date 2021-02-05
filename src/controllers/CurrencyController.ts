@@ -40,7 +40,7 @@ interface CurrencyResponse {
 
 interface CurrencyCreateRequest {
     active?: boolean;
-    isDefault: boolean;
+    isDefault?: boolean;
     code: string;
     name: string;
     symbol: string;
@@ -49,7 +49,7 @@ interface CurrencyCreateRequest {
 
 interface CurrencyUpdateRequest {
     active?: boolean;
-    isDefault: boolean;
+    isDefault?: boolean;
     code?: string;
     name?: string;
     symbol?: string;
