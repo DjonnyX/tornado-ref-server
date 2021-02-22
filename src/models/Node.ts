@@ -46,6 +46,7 @@ const ScenarioSchema = new Schema({
             ScenarioProductActionTypes.FIXED_PRICE,
             // selector
             ScenarioSelectorActionTypes.MAX_USAGE,
+            ScenarioSelectorActionTypes.MIN_USAGE,
             ScenarioSelectorActionTypes.DEFAULT_PRODUCTS,
         ],
         required: true,
