@@ -52,7 +52,7 @@ const checkApiKey = async (apikey: string, request: express.Request) => {
         throw new Error(err);
       }
     } catch (err) {
-      return reject(new Error(`Check license error. ${err}`));
+      return reject(err);
     }
 
     (request as IAuthRequest).terminal = {
