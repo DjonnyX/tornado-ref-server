@@ -11,6 +11,7 @@ import { ILanguage, LanguageModel } from "./Language";
 import { TranslationModel } from "./Translation";
 import { IStoreDocument, StoreModel } from "./Store";
 import { ITerminalDocument, TerminalModel } from "./Terminal";
+import { ICheckueDocument, CheckueModel } from "./Checkue";
 
 export {
     NodeModel, INode,
@@ -27,4 +28,5 @@ export {
     TranslationModel,
     IStoreDocument, StoreModel,
     ITerminalDocument, TerminalModel,
+    ICheckueDocument, CheckueModel,
 };
