@@ -661,12 +661,12 @@ const models: TsoaRoute.Models = {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ScenarioCommonActionTypes": {
         "dataType": "refEnum",
-        "enums": ["visible-by-store", "visible-by-business-period"],
+        "enums": ["visible-by-terminal", "visible-by-store", "visible-by-business-period", "visible-by-order-type"],
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ScenarioProductActionTypes": {
         "dataType": "refEnum",
-        "enums": ["up-limit", "down-limit", "additional-price", "fixed-price"],
+        "enums": ["up-limit", "down-limit"],
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ScenarioSelectorActionTypes": {
@@ -679,9 +679,14 @@ const models: TsoaRoute.Models = {
         "enums": ["switch", "expression"],
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ScenarioPriceActionTypes": {
+        "dataType": "refEnum",
+        "enums": ["price", "price-by-business-period", "price-by-order-type"],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ScenarioEntityTypes": {
         "dataType": "refEnum",
-        "enums": ["business-period", "product", "selector", "order-type", "currency"],
+        "enums": ["business-period", "product", "selector", "order-type", "currency", "checkue"],
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "IScenarioPropertyAccessor": {
@@ -713,6 +718,8 @@ const models: TsoaRoute.Models = {
         "properties": {
             "currency": { "dataType": "string", "required": true },
             "value": { "dataType": "double", "required": true },
+            "isStatic": { "dataType": "boolean", "required": true },
+            "isPersentage": { "dataType": "boolean", "required": true },
         },
         "additionalProperties": false,
     },
@@ -721,7 +728,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "active": { "dataType": "boolean", "required": true },
-            "action": { "dataType": "union", "subSchemas": [{ "ref": "ScenarioIntroActionTypes" }, { "ref": "ScenarioCommonActionTypes" }, { "ref": "ScenarioProductActionTypes" }, { "ref": "ScenarioSelectorActionTypes" }, { "ref": "ScenarioProgrammActionTypes" }], "required": true },
+            "action": { "dataType": "union", "subSchemas": [{ "ref": "ScenarioIntroActionTypes" }, { "ref": "ScenarioCommonActionTypes" }, { "ref": "ScenarioProductActionTypes" }, { "ref": "ScenarioSelectorActionTypes" }, { "ref": "ScenarioProgrammActionTypes" }, { "ref": "ScenarioPriceActionTypes" }], "required": true },
             "value": { "dataType": "union", "subSchemas": [{ "dataType": "double" }, { "dataType": "string" }, { "dataType": "array", "array": { "dataType": "string" } }, { "dataType": "array", "array": { "dataType": "double" } }, { "dataType": "array", "array": { "ref": "IScenarioExpression" } }, { "ref": "IScenarioPriceValue" }, { "ref": "IScenarioSwitch" }, { "dataType": "enum", "enums": [null] }] },
             "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
         },
