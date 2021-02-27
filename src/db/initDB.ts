@@ -176,6 +176,11 @@ export const initRefs = async (client: string): Promise<void> => {
             name: RefTypes.TERMINALS,
             version: 1,
             lastUpdate,
+        }, {
+            client,
+            name: RefTypes.CHECKUES,
+            version: 1,
+            lastUpdate,
         },
     ];
 
@@ -185,7 +190,7 @@ export const initRefs = async (client: string): Promise<void> => {
             client,
             name: refData.name,
         });
-        if (existsRef) {
+        if (!!existsRef) {
             continue;
         }
         const model = new RefModel(refData);

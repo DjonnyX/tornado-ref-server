@@ -1,3 +1,4 @@
+import { RefTypes } from "@djonnyx/tornado-types";
 import * as mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
 
@@ -10,7 +11,24 @@ interface IRef extends Document {
 
 const RefSchema = new Schema({
     client: { type: String, required: true, index: { unique: false } },
-    name: { type: String, required: true },
+    name: { type: String, enum: [
+        RefTypes.ACCOUNTS,
+        RefTypes.ADS,
+        RefTypes.APPLICATIONS,
+        RefTypes.ASSETS,
+        RefTypes.BUSINESS_PERIODS,
+        RefTypes.CHECKUES,
+        RefTypes.CURRENCIES,
+        RefTypes.LANGUAGES,
+        RefTypes.NODES,
+        RefTypes.ORDER_TYPES,
+        RefTypes.PRODUCTS,
+        RefTypes.SELECTORS,
+        RefTypes.STORES,
+        RefTypes.TAGS,
+        RefTypes.TERMINALS,
+        RefTypes.TRANSLATIONS,
+    ], required: true },
     version: { type: Number, required: true },
     lastUpdate: { type: Date, required: true },
 });

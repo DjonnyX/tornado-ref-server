@@ -1,6 +1,7 @@
-import { IScenario, NodeTypes, ScenarioCommonActionTypes, ScenarioIntroActionTypes, ScenarioProductActionTypes, ScenarioProgrammActionTypes, ScenarioSelectorActionTypes } from "@djonnyx/tornado-types";
+import { IScenario, NodeTypes } from "@djonnyx/tornado-types";
 import * as mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
+import { ScenarioSchema } from "./Scenario";
 
 interface INode extends Document {
     client: string;
@@ -27,33 +28,6 @@ interface INode extends Document {
     scenarios: Array<IScenario>;
     extra?: { [key: string]: any } | null;
 }
-
-const ScenarioSchema = new Schema({
-    active: { type: Schema.Types.Boolean, required: true, default: true },
-    action: {
-        type: Schema.Types.String, enum: [
-            // program
-            ScenarioProgrammActionTypes.SWITCH,
-            // common
-            ScenarioCommonActionTypes.VISIBLE_BY_BUSINESS_PERIOD,
-            ScenarioCommonActionTypes.VISIBLE_BY_STORE,
-            // intro
-            ScenarioIntroActionTypes.DURATION,
-            // product
-            ScenarioProductActionTypes.UP_LIMIT,
-            ScenarioProductActionTypes.DOWN_LIMIT,
-            ScenarioProductActionTypes.ADDITIONAL_PRICE,
-            ScenarioProductActionTypes.FIXED_PRICE,
-            // selector
-            ScenarioSelectorActionTypes.MAX_USAGE,
-            ScenarioSelectorActionTypes.MIN_USAGE,
-            ScenarioSelectorActionTypes.DEFAULT_PRODUCTS,
-        ],
-        required: true,
-    },
-    value: { type: Schema.Types.Mixed, required: false },
-    extra: { type: Schema.Types.Mixed, required: false },
-});
 
 const NodeSchema = new Schema({
     client: { type: String, required: true, index: { unique: false } },
