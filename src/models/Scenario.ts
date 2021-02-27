@@ -18,12 +18,9 @@ export const ScenarioSchema = new Schema({
             // intro
             ScenarioIntroActionTypes.DURATION,
             // price
-            ScenarioPriceActionTypes.ADDITIONAL_PRICE,
-            ScenarioPriceActionTypes.FIXED_PRICE,
-            ScenarioPriceActionTypes.ADDITIONAL_PRICE_BY_BUSINESS_PERIOD,
-            ScenarioPriceActionTypes.FIXED_PRICE_BY_BUSINESS_PERIOD,
-            ScenarioPriceActionTypes.ADDITIONAL_PRICE_BY_ORDER_TYPE,
-            ScenarioPriceActionTypes.FIXED_PRICE_BY_ORDER_TYPE,
+            ScenarioPriceActionTypes.PRICE,
+            ScenarioPriceActionTypes.PRICE_BY_BUSINESS_PERIOD,
+            ScenarioPriceActionTypes.PRICE_BY_ORDER_TYPE,
             // product
             ScenarioProductActionTypes.UP_LIMIT,
             ScenarioProductActionTypes.DOWN_LIMIT,
