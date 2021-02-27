@@ -1,5 +1,5 @@
 import {
-    ScenarioCommonActionTypes, ScenarioIntroActionTypes, ScenarioProductActionTypes,
+    ScenarioCommonActionTypes, ScenarioIntroActionTypes, ScenarioPriceActionTypes, ScenarioProductActionTypes,
     ScenarioProgrammActionTypes, ScenarioSelectorActionTypes
 } from "@djonnyx/tornado-types";
 import { Schema } from "mongoose";
@@ -12,14 +12,21 @@ export const ScenarioSchema = new Schema({
             ScenarioProgrammActionTypes.SWITCH,
             // common
             ScenarioCommonActionTypes.VISIBLE_BY_BUSINESS_PERIOD,
+            ScenarioCommonActionTypes.VISIBLE_BY_ORDER_TYPE,
             ScenarioCommonActionTypes.VISIBLE_BY_STORE,
+            ScenarioCommonActionTypes.VISIBLE_BY_TERMINAL,
             // intro
             ScenarioIntroActionTypes.DURATION,
+            // price
+            ScenarioPriceActionTypes.ADDITIONAL_PRICE,
+            ScenarioPriceActionTypes.FIXED_PRICE,
+            ScenarioPriceActionTypes.ADDITIONAL_PRICE_BY_BUSINESS_PERIOD,
+            ScenarioPriceActionTypes.FIXED_PRICE_BY_BUSINESS_PERIOD,
+            ScenarioPriceActionTypes.ADDITIONAL_PRICE_BY_ORDER_TYPE,
+            ScenarioPriceActionTypes.FIXED_PRICE_BY_ORDER_TYPE,
             // product
             ScenarioProductActionTypes.UP_LIMIT,
             ScenarioProductActionTypes.DOWN_LIMIT,
-            ScenarioProductActionTypes.ADDITIONAL_PRICE,
-            ScenarioProductActionTypes.FIXED_PRICE,
             // selector
             ScenarioSelectorActionTypes.MAX_USAGE,
             ScenarioSelectorActionTypes.MIN_USAGE,
