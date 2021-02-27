@@ -39,6 +39,10 @@ import { BusinessPeriodsController } from './controllers/BusinessPeriodsControll
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { BusinessPeriodController } from './controllers/BusinessPeriodsController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { CheckuesController } from './controllers/CheckueController';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { CheckueController } from './controllers/CheckueController';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { CurrenciesController } from './controllers/CurrencyController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { CurrencyController } from './controllers/CurrencyController';
@@ -642,6 +646,152 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ICheckueMeta": {
+        "dataType": "refObject",
+        "properties": {
+            "ref": { "ref": "IRefItem", "required": true },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ScenarioIntroActionTypes": {
+        "dataType": "refEnum",
+        "enums": ["duration"],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ScenarioCommonActionTypes": {
+        "dataType": "refEnum",
+        "enums": ["visible-by-store", "visible-by-business-period"],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ScenarioProductActionTypes": {
+        "dataType": "refEnum",
+        "enums": ["up-limit", "down-limit", "additional-price", "fixed-price"],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ScenarioSelectorActionTypes": {
+        "dataType": "refEnum",
+        "enums": ["max-usage", "min-usage", "default-products"],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ScenarioProgrammActionTypes": {
+        "dataType": "refEnum",
+        "enums": ["switch", "expression"],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ScenarioEntityTypes": {
+        "dataType": "refEnum",
+        "enums": ["business-period", "product", "selector", "order-type", "currency"],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IScenarioPropertyAccessor": {
+        "dataType": "refObject",
+        "properties": {
+            "entity": { "ref": "ScenarioEntityTypes", "required": true },
+            "prop": { "dataType": "string", "required": true },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ScenarioProgramOperations": {
+        "dataType": "refEnum",
+        "enums": ["or", "xor", "and"],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IScenarioExpression": {
+        "dataType": "refObject",
+        "properties": {
+            "prop1": { "ref": "IScenarioPropertyAccessor", "required": true },
+            "prop2": { "ref": "IScenarioPropertyAccessor", "required": true },
+            "operation": { "ref": "ScenarioProgramOperations", "required": true },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IScenarioPriceValue": {
+        "dataType": "refObject",
+        "properties": {
+            "currency": { "dataType": "string", "required": true },
+            "value": { "dataType": "double", "required": true },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IScenario": {
+        "dataType": "refObject",
+        "properties": {
+            "active": { "dataType": "boolean", "required": true },
+            "action": { "dataType": "union", "subSchemas": [{ "ref": "ScenarioIntroActionTypes" }, { "ref": "ScenarioCommonActionTypes" }, { "ref": "ScenarioProductActionTypes" }, { "ref": "ScenarioSelectorActionTypes" }, { "ref": "ScenarioProgrammActionTypes" }], "required": true },
+            "value": { "dataType": "union", "subSchemas": [{ "dataType": "double" }, { "dataType": "string" }, { "dataType": "array", "array": { "dataType": "string" } }, { "dataType": "array", "array": { "dataType": "double" } }, { "dataType": "array", "array": { "ref": "IScenarioExpression" } }, { "ref": "IScenarioPriceValue" }, { "ref": "IScenarioSwitch" }, { "dataType": "enum", "enums": [null] }] },
+            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IScenarioSwitch": {
+        "dataType": "refObject",
+        "properties": {
+            "condition": { "dataType": "array", "array": { "ref": "IScenarioExpression" }, "required": true },
+            "expressionPositive": { "ref": "IScenario", "required": true },
+            "expressionNegative": { "ref": "IScenario", "required": true },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ICheckueItem": {
+        "dataType": "refObject",
+        "properties": {
+            "id": { "dataType": "string", "required": true },
+            "active": { "dataType": "boolean", "required": true },
+            "name": { "dataType": "string", "required": true },
+            "scenarios": { "dataType": "array", "array": { "ref": "IScenario" }, "required": true },
+            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "CheckuesResponse": {
+        "dataType": "refObject",
+        "properties": {
+            "meta": { "ref": "ICheckueMeta" },
+            "data": { "dataType": "array", "array": { "ref": "ICheckueItem" } },
+            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "CheckueResponse": {
+        "dataType": "refObject",
+        "properties": {
+            "meta": { "ref": "ICheckueMeta" },
+            "data": { "ref": "ICheckueItem" },
+            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "CheckueCreateRequest": {
+        "dataType": "refObject",
+        "properties": {
+            "active": { "dataType": "boolean" },
+            "name": { "dataType": "string", "required": true },
+            "scenarios": { "dataType": "array", "array": { "ref": "IScenario" } },
+            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "CheckueUpdateRequest": {
+        "dataType": "refObject",
+        "properties": {
+            "active": { "dataType": "boolean" },
+            "name": { "dataType": "string" },
+            "scenarios": { "dataType": "array", "array": { "ref": "IScenario" } },
+            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ICurrencyMeta": {
         "dataType": "refObject",
         "properties": {
@@ -1114,90 +1264,6 @@ const models: TsoaRoute.Models = {
     "NodeTypes": {
         "dataType": "refEnum",
         "enums": ["kiosk-root", "kiosk-presets-root", "selector", "product", "product-joint", "selector-joint", "selector-node"],
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ScenarioIntroActionTypes": {
-        "dataType": "refEnum",
-        "enums": ["duration"],
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ScenarioCommonActionTypes": {
-        "dataType": "refEnum",
-        "enums": ["visible-by-store", "visible-by-business-period"],
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ScenarioProductActionTypes": {
-        "dataType": "refEnum",
-        "enums": ["up-limit", "down-limit", "additional-price", "fixed-price"],
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ScenarioSelectorActionTypes": {
-        "dataType": "refEnum",
-        "enums": ["max-usage", "min-usage", "default-products"],
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ScenarioProgrammActionTypes": {
-        "dataType": "refEnum",
-        "enums": ["switch", "expression"],
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ScenarioEntityTypes": {
-        "dataType": "refEnum",
-        "enums": ["business-period", "product", "selector", "order-type", "currency"],
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IScenarioPropertyAccessor": {
-        "dataType": "refObject",
-        "properties": {
-            "entity": { "ref": "ScenarioEntityTypes", "required": true },
-            "prop": { "dataType": "string", "required": true },
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ScenarioProgramOperations": {
-        "dataType": "refEnum",
-        "enums": ["or", "xor", "and"],
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IScenarioExpression": {
-        "dataType": "refObject",
-        "properties": {
-            "prop1": { "ref": "IScenarioPropertyAccessor", "required": true },
-            "prop2": { "ref": "IScenarioPropertyAccessor", "required": true },
-            "operation": { "ref": "ScenarioProgramOperations", "required": true },
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IScenarioPriceValue": {
-        "dataType": "refObject",
-        "properties": {
-            "currency": { "dataType": "string", "required": true },
-            "value": { "dataType": "double", "required": true },
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IScenario": {
-        "dataType": "refObject",
-        "properties": {
-            "active": { "dataType": "boolean", "required": true },
-            "action": { "dataType": "union", "subSchemas": [{ "ref": "ScenarioIntroActionTypes" }, { "ref": "ScenarioCommonActionTypes" }, { "ref": "ScenarioProductActionTypes" }, { "ref": "ScenarioSelectorActionTypes" }, { "ref": "ScenarioProgrammActionTypes" }], "required": true },
-            "value": { "dataType": "union", "subSchemas": [{ "dataType": "double" }, { "dataType": "string" }, { "dataType": "array", "array": { "dataType": "string" } }, { "dataType": "array", "array": { "dataType": "double" } }, { "dataType": "array", "array": { "ref": "IScenarioExpression" } }, { "ref": "IScenarioPriceValue" }, { "ref": "IScenarioSwitch" }, { "dataType": "enum", "enums": [null] }] },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IScenarioSwitch": {
-        "dataType": "refObject",
-        "properties": {
-            "condition": { "dataType": "array", "array": { "ref": "IScenarioExpression" }, "required": true },
-            "expressionPositive": { "ref": "IScenario", "required": true },
-            "expressionNegative": { "ref": "IScenario", "required": true },
-        },
-        "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "INodeItem": {
@@ -2905,6 +2971,126 @@ export function RegisterRoutes(app: express.Express) {
             }
 
             const controller = new BusinessPeriodController();
+
+
+            const promise = controller.delete.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.get('/api/v1/checkues',
+        authenticateMiddleware([{ "clientAccessToken": [] }, { "terminalAccessToken": [] }]),
+        function(request: any, response: any, next: any) {
+            const args = {
+                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new CheckuesController();
+
+
+            const promise = controller.getAll.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.get('/api/v1/checkue/:id',
+        authenticateMiddleware([{ "clientAccessToken": [] }, { "terminalAccessToken": [] }]),
+        function(request: any, response: any, next: any) {
+            const args = {
+                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
+                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new CheckueController();
+
+
+            const promise = controller.getOne.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.post('/api/v1/checkue',
+        authenticateMiddleware([{ "clientAccessToken": [] }]),
+        function(request: any, response: any, next: any) {
+            const args = {
+                body: { "in": "body", "name": "body", "required": true, "ref": "CheckueCreateRequest" },
+                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new CheckueController();
+
+
+            const promise = controller.create.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.put('/api/v1/checkue/:id',
+        authenticateMiddleware([{ "clientAccessToken": [] }]),
+        function(request: any, response: any, next: any) {
+            const args = {
+                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
+                body: { "in": "body", "name": "body", "required": true, "ref": "CheckueUpdateRequest" },
+                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new CheckueController();
+
+
+            const promise = controller.update.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    app.delete('/api/v1/checkue/:id',
+        authenticateMiddleware([{ "clientAccessToken": [] }]),
+        function(request: any, response: any, next: any) {
+            const args = {
+                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
+                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new CheckueController();
 
 
             const promise = controller.delete.apply(controller, validatedArgs as any);
