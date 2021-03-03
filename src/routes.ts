@@ -720,6 +720,7 @@ const models: TsoaRoute.Models = {
             "value": {"dataType":"double","required":true},
             "isStatic": {"dataType":"boolean","required":true},
             "isPersentage": {"dataType":"boolean","required":true},
+            "entities": {"dataType":"array","array":{"dataType":"string"}},
         },
         "additionalProperties": false,
     },
