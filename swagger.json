@@ -370,9 +370,7 @@
 					},
 					"extra": {
 						"properties": {},
-						"additionalProperties": {
-							"additionalProperties": true
-						},
+						"additionalProperties": {},
 						"type": "object",
 						"nullable": true,
 						"description": "Экстра свойства"
@@ -407,9 +405,7 @@
 					},
 					"extra": {
 						"properties": {},
-						"additionalProperties": {
-							"additionalProperties": true
-						},
+						"additionalProperties": {},
 						"type": "object",
 						"nullable": true
 					}
@@ -507,9 +503,7 @@
 					},
 					"extra": {
 						"properties": {},
-						"additionalProperties": {
-							"additionalProperties": true
-						},
+						"additionalProperties": {},
 						"type": "object",
 						"nullable": true
 					}
@@ -534,16 +528,12 @@
 							{
 								"$ref": "#/components/schemas/IAdContents"
 							},
-							{
-								"additionalProperties": true
-							}
+							{}
 						]
 					},
 					"extra": {
 						"properties": {},
-						"additionalProperties": {
-							"additionalProperties": true
-						},
+						"additionalProperties": {},
 						"type": "object",
 						"nullable": true
 					}
@@ -1358,9 +1348,7 @@
 					},
 					"extra": {
 						"properties": {},
-						"additionalProperties": {
-							"additionalProperties": true
-						},
+						"additionalProperties": {},
 						"type": "object",
 						"nullable": true,
 						"description": "Галерея изображений"
@@ -1420,9 +1408,7 @@
 					},
 					"extra": {
 						"properties": {},
-						"additionalProperties": {
-							"additionalProperties": true
-						},
+						"additionalProperties": {},
 						"type": "object",
 						"nullable": true,
 						"description": "Экстра свойства"
@@ -1456,9 +1442,7 @@
 					},
 					"extra": {
 						"properties": {},
-						"additionalProperties": {
-							"additionalProperties": true
-						},
+						"additionalProperties": {},
 						"type": "object",
 						"nullable": true
 					}
@@ -1549,9 +1533,7 @@
 							{
 								"$ref": "#/components/schemas/IBusinessPeriodContents"
 							},
-							{
-								"additionalProperties": true
-							}
+							{}
 						]
 					},
 					"schedule": {
@@ -1562,9 +1544,7 @@
 					},
 					"extra": {
 						"properties": {},
-						"additionalProperties": {
-							"additionalProperties": true
-						},
+						"additionalProperties": {},
 						"type": "object",
 						"nullable": true
 					}
@@ -1702,6 +1682,12 @@
 					},
 					"isPersentage": {
 						"type": "boolean"
+					},
+					"entities": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
 					}
 				},
 				"required": [
@@ -1775,22 +1761,14 @@
 							},
 							{
 								"$ref": "#/components/schemas/IScenarioSwitch"
-							},
-							{
-								"type": "number",
-								"enum": [
-									null
-								],
-								"nullable": true
 							}
 						],
+						"nullable": true,
 						"description": "Значение"
 					},
 					"extra": {
 						"properties": {},
-						"additionalProperties": {
-							"additionalProperties": true
-						},
+						"additionalProperties": {},
 						"type": "object",
 						"nullable": true,
 						"description": "Экстра свойства"
@@ -1845,9 +1823,7 @@
 					},
 					"extra": {
 						"properties": {},
-						"additionalProperties": {
-							"additionalProperties": true
-						},
+						"additionalProperties": {},
 						"type": "object",
 						"nullable": true
 					}
@@ -1942,9 +1918,7 @@
 					},
 					"extra": {
 						"properties": {},
-						"additionalProperties": {
-							"additionalProperties": true
-						},
+						"additionalProperties": {},
 						"type": "object",
 						"nullable": true
 					}
@@ -1971,9 +1945,7 @@
 					},
 					"extra": {
 						"properties": {},
-						"additionalProperties": {
-							"additionalProperties": true
-						},
+						"additionalProperties": {},
 						"type": "object",
 						"nullable": true
 					}
@@ -2015,9 +1987,7 @@
 					},
 					"extra": {
 						"properties": {},
-						"additionalProperties": {
-							"additionalProperties": true
-						},
+						"additionalProperties": {},
 						"type": "object",
 						"nullable": true
 					}
@@ -2117,9 +2087,7 @@
 					},
 					"extra": {
 						"properties": {},
-						"additionalProperties": {
-							"additionalProperties": true
-						},
+						"additionalProperties": {},
 						"type": "object",
 						"nullable": true
 					}
@@ -2151,9 +2119,7 @@
 					},
 					"extra": {
 						"properties": {},
-						"additionalProperties": {
-							"additionalProperties": true
-						},
+						"additionalProperties": {},
 						"type": "object",
 						"nullable": true
 					}
@@ -2350,9 +2316,7 @@
 					},
 					"extra": {
 						"properties": {},
-						"additionalProperties": {
-							"additionalProperties": true
-						},
+						"additionalProperties": {},
 						"type": "object",
 						"nullable": true
 					}
@@ -2466,9 +2430,7 @@
 					},
 					"extra": {
 						"properties": {},
-						"additionalProperties": {
-							"additionalProperties": true
-						},
+						"additionalProperties": {},
 						"type": "object",
 						"nullable": true
 					}
@@ -2515,9 +2477,7 @@
 					},
 					"extra": {
 						"properties": {},
-						"additionalProperties": {
-							"additionalProperties": true
-						},
+						"additionalProperties": {},
 						"type": "object",
 						"nullable": true
 					}
@@ -3361,9 +3321,7 @@
 					},
 					"extra": {
 						"properties": {},
-						"additionalProperties": {
-							"additionalProperties": true
-						},
+						"additionalProperties": {},
 						"type": "object",
 						"nullable": true
 					}
@@ -3517,9 +3475,7 @@
 					},
 					"extra": {
 						"properties": {},
-						"additionalProperties": {
-							"additionalProperties": true
-						},
+						"additionalProperties": {},
 						"type": "object",
 						"nullable": true
 					}
@@ -3565,9 +3521,7 @@
 					},
 					"extra": {
 						"properties": {},
-						"additionalProperties": {
-							"additionalProperties": true
-						},
+						"additionalProperties": {},
 						"type": "object",
 						"nullable": true
 					}
@@ -3688,9 +3642,7 @@
 					},
 					"extra": {
 						"properties": {},
-						"additionalProperties": {
-							"additionalProperties": true
-						},
+						"additionalProperties": {},
 						"type": "object",
 						"nullable": true,
 						"description": "Галерея изображений"
@@ -3729,9 +3681,7 @@
 					},
 					"extra": {
 						"properties": {},
-						"additionalProperties": {
-							"additionalProperties": true
-						},
+						"additionalProperties": {},
 						"type": "object",
 						"nullable": true
 					}
@@ -3822,16 +3772,12 @@
 							{
 								"$ref": "#/components/schemas/IOrderTypeContents"
 							},
-							{
-								"additionalProperties": true
-							}
+							{}
 						]
 					},
 					"extra": {
 						"properties": {},
-						"additionalProperties": {
-							"additionalProperties": true
-						},
+						"additionalProperties": {},
 						"type": "object",
 						"nullable": true
 					}
@@ -4183,9 +4129,7 @@
 					},
 					"extra": {
 						"properties": {},
-						"additionalProperties": {
-							"additionalProperties": true
-						},
+						"additionalProperties": {},
 						"type": "object",
 						"nullable": true,
 						"description": "Экстра свойства"
@@ -4246,9 +4190,7 @@
 					},
 					"extra": {
 						"properties": {},
-						"additionalProperties": {
-							"additionalProperties": true
-						},
+						"additionalProperties": {},
 						"type": "object",
 						"nullable": true
 					}
@@ -4296,9 +4238,7 @@
 					},
 					"extra": {
 						"properties": {},
-						"additionalProperties": {
-							"additionalProperties": true
-						},
+						"additionalProperties": {},
 						"type": "object",
 						"nullable": true
 					}
@@ -4388,9 +4328,7 @@
 							{
 								"$ref": "#/components/schemas/IProductContents"
 							},
-							{
-								"additionalProperties": true
-							}
+							{}
 						]
 					},
 					"prices": {
@@ -4416,9 +4354,7 @@
 					},
 					"extra": {
 						"properties": {},
-						"additionalProperties": {
-							"additionalProperties": true
-						},
+						"additionalProperties": {},
 						"type": "object",
 						"nullable": true
 					}
@@ -4442,9 +4378,7 @@
 							{
 								"$ref": "#/components/schemas/IProductContents"
 							},
-							{
-								"additionalProperties": true
-							}
+							{}
 						]
 					},
 					"prices": {
@@ -4470,9 +4404,7 @@
 					},
 					"extra": {
 						"properties": {},
-						"additionalProperties": {
-							"additionalProperties": true
-						},
+						"additionalProperties": {},
 						"type": "object",
 						"nullable": true
 					}
@@ -4821,9 +4753,7 @@
 					},
 					"extra": {
 						"properties": {},
-						"additionalProperties": {
-							"additionalProperties": true
-						},
+						"additionalProperties": {},
 						"type": "object",
 						"nullable": true,
 						"description": "Галерея изображений"
@@ -4865,9 +4795,7 @@
 					},
 					"extra": {
 						"properties": {},
-						"additionalProperties": {
-							"additionalProperties": true
-						},
+						"additionalProperties": {},
 						"type": "object",
 						"nullable": true
 					}
@@ -4959,16 +4887,12 @@
 							{
 								"$ref": "#/components/schemas/ISelectorContents"
 							},
-							{
-								"additionalProperties": true
-							}
+							{}
 						]
 					},
 					"extra": {
 						"properties": {},
-						"additionalProperties": {
-							"additionalProperties": true
-						},
+						"additionalProperties": {},
 						"type": "object",
 						"nullable": true
 					}
@@ -4993,16 +4917,12 @@
 							{
 								"$ref": "#/components/schemas/ISelectorContents"
 							},
-							{
-								"additionalProperties": true
-							}
+							{}
 						]
 					},
 					"extra": {
 						"properties": {},
-						"additionalProperties": {
-							"additionalProperties": true
-						},
+						"additionalProperties": {},
 						"type": "object",
 						"nullable": true
 					}
@@ -5314,9 +5234,7 @@
 					},
 					"extra": {
 						"properties": {},
-						"additionalProperties": {
-							"additionalProperties": true
-						},
+						"additionalProperties": {},
 						"type": "object",
 						"nullable": true
 					}
@@ -5404,9 +5322,7 @@
 					},
 					"extra": {
 						"properties": {},
-						"additionalProperties": {
-							"additionalProperties": true
-						},
+						"additionalProperties": {},
 						"type": "object",
 						"nullable": true
 					}
@@ -5428,9 +5344,7 @@
 					},
 					"extra": {
 						"properties": {},
-						"additionalProperties": {
-							"additionalProperties": true
-						},
+						"additionalProperties": {},
 						"type": "object",
 						"nullable": true
 					}
@@ -5495,9 +5409,7 @@
 					},
 					"extra": {
 						"properties": {},
-						"additionalProperties": {
-							"additionalProperties": true
-						},
+						"additionalProperties": {},
 						"type": "object",
 						"nullable": true,
 						"description": "Галерея изображений"
@@ -5536,9 +5448,7 @@
 					},
 					"extra": {
 						"properties": {},
-						"additionalProperties": {
-							"additionalProperties": true
-						},
+						"additionalProperties": {},
 						"type": "object",
 						"nullable": true
 					}
@@ -5629,16 +5539,12 @@
 							{
 								"$ref": "#/components/schemas/ITagContents"
 							},
-							{
-								"additionalProperties": true
-							}
+							{}
 						]
 					},
 					"extra": {
 						"properties": {},
-						"additionalProperties": {
-							"additionalProperties": true
-						},
+						"additionalProperties": {},
 						"type": "object",
 						"nullable": true
 					}
@@ -5990,9 +5896,7 @@
 					},
 					"extra": {
 						"properties": {},
-						"additionalProperties": {
-							"additionalProperties": true
-						},
+						"additionalProperties": {},
 						"type": "object",
 						"nullable": true
 					}
@@ -6097,9 +6001,7 @@
 					},
 					"extra": {
 						"properties": {},
-						"additionalProperties": {
-							"additionalProperties": true
-						},
+						"additionalProperties": {},
 						"type": "object",
 						"nullable": true
 					}
@@ -6150,9 +6052,7 @@
 					},
 					"extra": {
 						"properties": {},
-						"additionalProperties": {
-							"additionalProperties": true
-						},
+						"additionalProperties": {},
 						"type": "object",
 						"nullable": true
 					}
@@ -6240,9 +6140,7 @@
 					},
 					"extra": {
 						"properties": {},
-						"additionalProperties": {
-							"additionalProperties": true
-						},
+						"additionalProperties": {},
 						"type": "object",
 						"nullable": true
 					}
@@ -6267,9 +6165,7 @@
 					},
 					"extra": {
 						"properties": {},
-						"additionalProperties": {
-							"additionalProperties": true
-						},
+						"additionalProperties": {},
 						"type": "object",
 						"nullable": true
 					}
@@ -6299,6 +6195,10 @@
 		"version": "1.1.0",
 		"license": {
 			"name": "Commercial"
+		},
+		"contact": {
+			"name": "Eugene Grebennikov",
+			"email": "djonnyx@gmail.com"
 		}
 	},
 	"openapi": "3.0.0",
@@ -6308,52 +6208,52 @@
 				"operationId": "GetAll",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/RefsResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"data": [
 												{
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.518Z"
+													"lastUpdate": "2021-03-03T04:32:26.502Z"
 												},
 												{
 													"name": "products",
 													"version": 3,
-													"lastUpdate": "2021-02-27T14:47:12.518Z"
+													"lastUpdate": "2021-03-03T04:32:26.503Z"
 												},
 												{
 													"name": "selectors",
 													"version": 4,
-													"lastUpdate": "2021-02-27T14:47:12.519Z"
+													"lastUpdate": "2021-03-03T04:32:26.503Z"
 												},
 												{
 													"name": "tags",
 													"version": 5,
-													"lastUpdate": "2021-02-27T14:47:12.519Z"
+													"lastUpdate": "2021-03-03T04:32:26.504Z"
 												},
 												{
 													"name": "business-periods",
 													"version": 3,
-													"lastUpdate": "2021-02-27T14:47:12.519Z"
+													"lastUpdate": "2021-03-03T04:32:26.504Z"
 												},
 												{
 													"name": "ads",
 													"version": 3,
-													"lastUpdate": "2021-02-27T14:47:12.519Z"
+													"lastUpdate": "2021-03-03T04:32:26.504Z"
 												}
 											]
 										}
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -6375,25 +6275,25 @@
 				"operationId": "GetOne",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/RefResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"data": {
 												"name": "products",
 												"version": 1,
-												"lastUpdate": "2021-02-27T14:47:12.525Z"
+												"lastUpdate": "2021-03-03T04:32:26.521Z"
 											}
 										}
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -6424,19 +6324,20 @@
 				"operationId": "GetAll",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/AccountsGetResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "accounts",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.549Z"
+													"lastUpdate": "2021-03-03T04:32:26.567Z"
 												}
 											},
 											"data": [
@@ -6451,8 +6352,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -6471,19 +6371,20 @@
 				"operationId": "GetOne",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/AccountResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "accounts",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.555Z"
+													"lastUpdate": "2021-03-03T04:32:26.582Z"
 												}
 											},
 											"data": {
@@ -6496,8 +6397,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -6523,19 +6423,20 @@
 				"operationId": "Update",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/AccountResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "accounts",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.557Z"
+													"lastUpdate": "2021-03-03T04:32:26.586Z"
 												}
 											},
 											"data": {
@@ -6548,8 +6449,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -6587,26 +6487,27 @@
 				"operationId": "GetAll",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/IGetAssetsResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "assets",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.570Z"
+													"lastUpdate": "2021-03-03T04:32:26.630Z"
 												}
 											},
 											"data": [
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-02-27T14:47:12.570Z",
+													"lastUpdate": "2021-03-03T04:32:26.630Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"path": "assets/some_3d_model.fbx",
@@ -6620,8 +6521,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -6643,19 +6543,20 @@
 				"operationId": "GetAll",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/IAdsResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "ads",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.586Z"
+													"lastUpdate": "2021-03-03T04:32:26.686Z"
 												}
 											},
 											"data": [
@@ -6685,8 +6586,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -6717,19 +6617,20 @@
 				"operationId": "GetOne",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/IAdResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "ads",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.593Z"
+													"lastUpdate": "2021-03-03T04:32:26.705Z"
 												}
 											},
 											"data": {
@@ -6757,8 +6658,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -6787,19 +6687,20 @@
 				"operationId": "Update",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/IAdResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "ads",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.599Z"
+													"lastUpdate": "2021-03-03T04:32:26.724Z"
 												}
 											},
 											"data": {
@@ -6827,8 +6728,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -6864,27 +6764,27 @@
 				"operationId": "Delete",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/IAdResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "ads",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.604Z"
+													"lastUpdate": "2021-03-03T04:32:26.740Z"
 												}
 											}
 										}
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -6912,19 +6812,20 @@
 				"operationId": "Create",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/IAdResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "ads",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.594Z"
+													"lastUpdate": "2021-03-03T04:32:26.709Z"
 												}
 											},
 											"data": {
@@ -6952,8 +6853,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -6982,27 +6882,28 @@
 				"operationId": "GetAll",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/IAdGetAllAssetsResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ad": {
 													"ref": {
 														"name": "ads",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:12.611Z"
+														"lastUpdate": "2021-03-03T04:32:26.760Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:12.611Z"
+														"lastUpdate": "2021-03-03T04:32:26.760Z"
 													}
 												}
 											},
@@ -7011,7 +6912,7 @@
 													{
 														"id": "107c7f79bcf86cd7994f6c0e",
 														"active": true,
-														"lastUpdate": "2021-02-27T14:47:12.611Z",
+														"lastUpdate": "2021-03-03T04:32:26.760Z",
 														"name": "some_3d_model",
 														"ext": ".fbx",
 														"mipmap": {
@@ -7026,8 +6927,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -7058,27 +6958,28 @@
 				"operationId": "Get",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/IAdGetAssetsResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ad": {
 													"ref": {
 														"name": "ads",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:12.615Z"
+														"lastUpdate": "2021-03-03T04:32:26.769Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:12.615Z"
+														"lastUpdate": "2021-03-03T04:32:26.769Z"
 													}
 												}
 											},
@@ -7086,7 +6987,7 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-02-27T14:47:12.615Z",
+													"lastUpdate": "2021-03-03T04:32:26.769Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -7100,8 +7001,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -7140,27 +7040,28 @@
 				"operationId": "CreateResource",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/IAdCreateAssetsResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ad": {
 													"ref": {
 														"name": "ads",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:12.620Z"
+														"lastUpdate": "2021-03-03T04:32:26.789Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:12.620Z"
+														"lastUpdate": "2021-03-03T04:32:26.790Z"
 													}
 												}
 											},
@@ -7168,7 +7069,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-02-27T14:47:12.621Z",
+													"lastUpdate": "2021-03-03T04:32:26.790Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -7182,8 +7083,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -7227,27 +7127,28 @@
 				"operationId": "Update",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/IAdCreateAssetsResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ad": {
 													"ref": {
 														"name": "ads",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:12.623Z"
+														"lastUpdate": "2021-03-03T04:32:26.801Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:12.623Z"
+														"lastUpdate": "2021-03-03T04:32:26.801Z"
 													}
 												}
 											},
@@ -7255,7 +7156,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-02-27T14:47:12.623Z",
+													"lastUpdate": "2021-03-03T04:32:26.801Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -7269,8 +7170,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -7322,27 +7222,28 @@
 				"operationId": "Delete",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/IAdDeleteAssetsResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ad": {
 													"ref": {
 														"name": "ads",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:12.630Z"
+														"lastUpdate": "2021-03-03T04:32:26.822Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:12.630Z"
+														"lastUpdate": "2021-03-03T04:32:26.822Z"
 													}
 												}
 											}
@@ -7350,8 +7251,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -7395,19 +7295,20 @@
 				"operationId": "GetAll",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/ApplicationsGetResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "applications",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.640Z"
+													"lastUpdate": "2021-03-03T04:32:26.850Z"
 												}
 											},
 											"data": [
@@ -7420,15 +7321,14 @@
 														"code": 1,
 														"version": "1.0.23"
 													},
-													"lastUpdate": "2021-02-27T14:47:12.640Z"
+													"lastUpdate": "2021-03-03T04:32:26.850Z"
 												}
 											]
 										}
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -7447,19 +7347,20 @@
 				"operationId": "GetOne",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/ApplicationResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "applications",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.644Z"
+													"lastUpdate": "2021-03-03T04:32:26.863Z"
 												}
 											},
 											"data": {
@@ -7471,14 +7372,13 @@
 													"code": 1,
 													"version": "1.0.23"
 												},
-												"lastUpdate": "2021-02-27T14:47:12.644Z"
+												"lastUpdate": "2021-03-03T04:32:26.863Z"
 											}
 										}
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -7504,19 +7404,20 @@
 				"operationId": "Update",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/ApplicationResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "applications",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.650Z"
+													"lastUpdate": "2021-03-03T04:32:26.878Z"
 												}
 											},
 											"data": {
@@ -7528,14 +7429,13 @@
 													"code": 1,
 													"version": "1.0.23"
 												},
-												"lastUpdate": "2021-02-27T14:47:12.650Z"
+												"lastUpdate": "2021-03-03T04:32:26.878Z"
 											}
 										}
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -7571,27 +7471,27 @@
 				"operationId": "Delete",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/ApplicationResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "applications",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.654Z"
+													"lastUpdate": "2021-03-03T04:32:26.890Z"
 												}
 											}
 										}
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -7619,19 +7519,20 @@
 				"operationId": "Create",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/ApplicationResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "applications",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.645Z"
+													"lastUpdate": "2021-03-03T04:32:26.866Z"
 												}
 											},
 											"data": {
@@ -7643,14 +7544,13 @@
 													"code": 1,
 													"version": "1.0.23"
 												},
-												"lastUpdate": "2021-02-27T14:47:12.645Z"
+												"lastUpdate": "2021-03-03T04:32:26.866Z"
 											}
 										}
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -7679,13 +7579,14 @@
 				"operationId": "GetCaptcha",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/GetCaptchaResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {},
 											"data": {
@@ -7696,8 +7597,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -7712,13 +7612,14 @@
 				"operationId": "Signup",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/SignupResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {},
 											"data": {
@@ -7728,8 +7629,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -7754,13 +7654,14 @@
 				"operationId": "Signin",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/SigninResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {},
 											"data": {
@@ -7786,8 +7687,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -7812,13 +7712,14 @@
 				"operationId": "ResetPassword",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/ResetPasswordResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {},
 											"data": {}
@@ -7826,8 +7727,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -7852,13 +7752,14 @@
 				"operationId": "ForgotPassword",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/ForgotPasswordResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {},
 											"data": {}
@@ -7866,8 +7767,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -7907,13 +7807,14 @@
 				"operationId": "VerifyResetPasswordToken",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/VerifyResetPasswordTokenResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {},
 											"data": {}
@@ -7921,8 +7822,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -7946,19 +7846,20 @@
 				"operationId": "GetAll",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/IBusinessPeriodsResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "business-periods",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.697Z"
+													"lastUpdate": "2021-03-03T04:32:27.030Z"
 												}
 											},
 											"data": [
@@ -7991,8 +7892,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -8014,19 +7914,20 @@
 				"operationId": "GetOne",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/IBusinessPeriodResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "business-periods",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.702Z"
+													"lastUpdate": "2021-03-03T04:32:27.045Z"
 												}
 											},
 											"data": {
@@ -8057,8 +7958,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -8087,19 +7987,20 @@
 				"operationId": "Update",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/IBusinessPeriodResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "business-periods",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.708Z"
+													"lastUpdate": "2021-03-03T04:32:27.063Z"
 												}
 											},
 											"data": {
@@ -8130,8 +8031,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -8167,27 +8067,27 @@
 				"operationId": "Delete",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/IBusinessPeriodResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "business-periods",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.710Z"
+													"lastUpdate": "2021-03-03T04:32:27.070Z"
 												}
 											}
 										}
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -8215,19 +8115,20 @@
 				"operationId": "Create",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/IBusinessPeriodResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "business-periods",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.703Z"
+													"lastUpdate": "2021-03-03T04:32:27.048Z"
 												}
 											},
 											"data": {
@@ -8258,8 +8159,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -8288,19 +8188,20 @@
 				"operationId": "GetAll",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/CheckuesResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "checkues",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.752Z"
+													"lastUpdate": "2021-03-03T04:32:27.182Z"
 												}
 											},
 											"data": [
@@ -8318,8 +8219,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -8341,19 +8241,20 @@
 				"operationId": "GetOne",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/CheckueResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "checkues",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.758Z"
+													"lastUpdate": "2021-03-03T04:32:27.193Z"
 												}
 											},
 											"data": {
@@ -8369,8 +8270,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -8399,19 +8299,20 @@
 				"operationId": "Update",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/CheckueResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "checkues",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.763Z"
+													"lastUpdate": "2021-03-03T04:32:27.208Z"
 												}
 											},
 											"data": {
@@ -8427,8 +8328,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -8464,27 +8364,27 @@
 				"operationId": "Delete",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/CheckueResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "checkues",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.767Z"
+													"lastUpdate": "2021-03-03T04:32:27.221Z"
 												}
 											}
 										}
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -8512,19 +8412,20 @@
 				"operationId": "Create",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/CheckueResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "checkues",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.759Z"
+													"lastUpdate": "2021-03-03T04:32:27.196Z"
 												}
 											},
 											"data": {
@@ -8540,8 +8441,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -8570,19 +8470,20 @@
 				"operationId": "GetAll",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/CurrenciesResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "currencies",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.775Z"
+													"lastUpdate": "2021-03-03T04:32:27.243Z"
 												}
 											},
 											"data": [
@@ -8602,8 +8503,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -8625,19 +8525,20 @@
 				"operationId": "GetOne",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/CurrencyResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "currencies",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.779Z"
+													"lastUpdate": "2021-03-03T04:32:27.255Z"
 												}
 											},
 											"data": {
@@ -8655,8 +8556,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -8685,19 +8585,20 @@
 				"operationId": "Update",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/CurrencyResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "currencies",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.783Z"
+													"lastUpdate": "2021-03-03T04:32:27.269Z"
 												}
 											},
 											"data": {
@@ -8715,8 +8616,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -8752,27 +8652,27 @@
 				"operationId": "Delete",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/CurrencyResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "currencies",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.786Z"
+													"lastUpdate": "2021-03-03T04:32:27.279Z"
 												}
 											}
 										}
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -8800,19 +8700,20 @@
 				"operationId": "Create",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/CurrencyResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "currencies",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.780Z"
+													"lastUpdate": "2021-03-03T04:32:27.258Z"
 												}
 											},
 											"data": {
@@ -8830,8 +8731,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -8860,19 +8760,20 @@
 				"operationId": "GetAll",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/IntegrationsGetResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "integrations",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.795Z"
+													"lastUpdate": "2021-03-03T04:32:27.309Z"
 												}
 											},
 											"data": [
@@ -8886,15 +8787,14 @@
 														"version": "1.0.23"
 													},
 													"state": 1,
-													"lastUpdate": "2021-02-27T14:47:12.796Z"
+													"lastUpdate": "2021-03-03T04:32:27.310Z"
 												}
 											]
 										}
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -8913,19 +8813,20 @@
 				"operationId": "GetOne",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/IntegrationResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "integrations",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.800Z"
+													"lastUpdate": "2021-03-03T04:32:27.321Z"
 												}
 											},
 											"data": {
@@ -8938,14 +8839,13 @@
 													"version": "1.0.23"
 												},
 												"state": 1,
-												"lastUpdate": "2021-02-27T14:47:12.800Z"
+												"lastUpdate": "2021-03-03T04:32:27.321Z"
 											}
 										}
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -8971,19 +8871,20 @@
 				"operationId": "Update",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/IntegrationResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "integrations",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.801Z"
+													"lastUpdate": "2021-03-03T04:32:27.324Z"
 												}
 											},
 											"data": {
@@ -8996,14 +8897,13 @@
 													"version": "1.0.23"
 												},
 												"state": 1,
-												"lastUpdate": "2021-02-27T14:47:12.801Z"
+												"lastUpdate": "2021-03-03T04:32:27.324Z"
 											}
 										}
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -9041,19 +8941,20 @@
 				"operationId": "GetAll",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/LanguagesResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "languages",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.813Z"
+													"lastUpdate": "2021-03-03T04:32:27.369Z"
 												}
 											},
 											"data": [
@@ -9078,8 +8979,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -9101,19 +9001,20 @@
 				"operationId": "GetOne",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/LanguageResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "languages",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.817Z"
+													"lastUpdate": "2021-03-03T04:32:27.407Z"
 												}
 											},
 											"data": {
@@ -9136,8 +9037,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -9166,19 +9066,20 @@
 				"operationId": "Update",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/LanguageResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "languages",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.821Z"
+													"lastUpdate": "2021-03-03T04:32:27.425Z"
 												}
 											},
 											"data": {
@@ -9201,8 +9102,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -9238,27 +9138,27 @@
 				"operationId": "Delete",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/LanguageResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "languages",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.825Z"
+													"lastUpdate": "2021-03-03T04:32:27.434Z"
 												}
 											}
 										}
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -9286,19 +9186,20 @@
 				"operationId": "Create",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/LanguageResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "languages",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.818Z"
+													"lastUpdate": "2021-03-03T04:32:27.411Z"
 												}
 											},
 											"data": {
@@ -9321,8 +9222,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -9351,27 +9251,28 @@
 				"operationId": "Get",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/ILanguageGetAssetsResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"language": {
 													"ref": {
 														"name": "languages",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:12.831Z"
+														"lastUpdate": "2021-03-03T04:32:27.458Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:12.831Z"
+														"lastUpdate": "2021-03-03T04:32:27.458Z"
 													}
 												}
 											},
@@ -9379,7 +9280,7 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-02-27T14:47:12.832Z",
+													"lastUpdate": "2021-03-03T04:32:27.458Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -9393,8 +9294,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -9425,27 +9325,28 @@
 				"operationId": "Create",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/ILanguageCreateAssetsResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"language": {
 													"ref": {
 														"name": "languages",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:12.838Z"
+														"lastUpdate": "2021-03-03T04:32:27.505Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:12.838Z"
+														"lastUpdate": "2021-03-03T04:32:27.505Z"
 													}
 												}
 											},
@@ -9453,7 +9354,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-02-27T14:47:12.838Z",
+													"lastUpdate": "2021-03-03T04:32:27.505Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -9467,8 +9368,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -9496,27 +9396,28 @@
 				"operationId": "Create",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/ILanguageCreateAssetsResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"language": {
 													"ref": {
 														"name": "languages",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:12.840Z"
+														"lastUpdate": "2021-03-03T04:32:27.508Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:12.840Z"
+														"lastUpdate": "2021-03-03T04:32:27.508Z"
 													}
 												}
 											},
@@ -9524,7 +9425,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-02-27T14:47:12.840Z",
+													"lastUpdate": "2021-03-03T04:32:27.508Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -9538,8 +9439,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -9575,27 +9475,28 @@
 				"operationId": "Update",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/ILanguageCreateAssetsResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"language": {
 													"ref": {
 														"name": "languages",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:12.842Z"
+														"lastUpdate": "2021-03-03T04:32:27.522Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:12.842Z"
+														"lastUpdate": "2021-03-03T04:32:27.522Z"
 													}
 												}
 											},
@@ -9603,7 +9504,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-02-27T14:47:12.842Z",
+													"lastUpdate": "2021-03-03T04:32:27.522Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -9617,8 +9518,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -9662,27 +9562,28 @@
 				"operationId": "Delete",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/ILanguageDeleteAssetsResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"language": {
 													"ref": {
 														"name": "languages",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:12.848Z"
+														"lastUpdate": "2021-03-03T04:32:27.541Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:12.848Z"
+														"lastUpdate": "2021-03-03T04:32:27.541Z"
 													}
 												}
 											}
@@ -9690,8 +9591,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -9727,19 +9627,20 @@
 				"operationId": "GetAll",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/LicensesAccountResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "licenses",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.869Z"
+													"lastUpdate": "2021-03-03T04:32:27.631Z"
 												}
 											},
 											"data": [
@@ -9747,8 +9648,8 @@
 													"id": "507c7f79bcf86cd7994f6c0e",
 													"clientId": "507c7f79bcf86cd7994f6c0e",
 													"terminalId": "507c7f79bcf86cd7994f6c0e",
-													"dateStart": "2021-02-27T14:47:12.869Z",
-													"dateEnd": "2021-02-27T14:47:12.869Z",
+													"dateStart": "2021-03-03T04:32:27.631Z",
+													"dateEnd": "2021-03-03T04:32:27.631Z",
 													"state": 0,
 													"status": "NEW",
 													"key": "0000-1111-2222-3333",
@@ -9762,15 +9663,14 @@
 														"integrationId": "507c7f79bcf86cd7994f6c0e"
 													},
 													"licTypeId": "ecbbfd40-62ba-49bf-8620-75d8c5ed3953",
-													"lastUpdate": "2021-02-27T14:47:12.870Z"
+													"lastUpdate": "2021-03-03T04:32:27.632Z"
 												}
 											]
 										}
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -9789,27 +9689,28 @@
 				"operationId": "GetOne",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/LicenseAccountResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "licenses",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.875Z"
+													"lastUpdate": "2021-03-03T04:32:27.644Z"
 												}
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"clientId": "507c7f79bcf86cd7994f6c0e",
 												"terminalId": "507c7f79bcf86cd7994f6c0e",
-												"dateStart": "2021-02-27T14:47:12.875Z",
-												"dateEnd": "2021-02-27T14:47:12.875Z",
+												"dateStart": "2021-03-03T04:32:27.644Z",
+												"dateEnd": "2021-03-03T04:32:27.644Z",
 												"state": 0,
 												"status": "NEW",
 												"key": "0000-1111-2222-3333",
@@ -9823,14 +9724,13 @@
 													"integrationId": "507c7f79bcf86cd7994f6c0e"
 												},
 												"licTypeId": "ecbbfd40-62ba-49bf-8620-75d8c5ed3953",
-												"lastUpdate": "2021-02-27T14:47:12.875Z"
+												"lastUpdate": "2021-03-03T04:32:27.644Z"
 											}
 										}
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -9858,27 +9758,28 @@
 				"operationId": "GetAll",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/LicensesResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "licenses",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.882Z"
+													"lastUpdate": "2021-03-03T04:32:27.690Z"
 												}
 											},
 											"data": [
 												{
 													"id": "507c7f79bcf86cd7994f6c0e",
 													"clientId": "507c7f79bcf86cd7994f6c0e",
-													"dateStart": "2021-02-27T14:47:12.882Z",
-													"dateEnd": "2021-02-27T14:47:12.882Z",
+													"dateStart": "2021-03-03T04:32:27.690Z",
+													"dateEnd": "2021-03-03T04:32:27.690Z",
 													"state": 0,
 													"status": "NEW",
 													"key": "0000-1111-2222-3333",
@@ -9892,15 +9793,14 @@
 														"integrationId": "507c7f79bcf86cd7994f6c0e"
 													},
 													"licTypeId": "ecbbfd40-62ba-49bf-8620-75d8c5ed3953",
-													"lastUpdate": "2021-02-27T14:47:12.882Z"
+													"lastUpdate": "2021-03-03T04:32:27.690Z"
 												}
 											]
 										}
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -9919,27 +9819,28 @@
 				"operationId": "GetOne",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/LicenseAccountResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "licenses",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.883Z"
+													"lastUpdate": "2021-03-03T04:32:27.692Z"
 												}
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"clientId": "507c7f79bcf86cd7994f6c0e",
 												"terminalId": "507c7f79bcf86cd7994f6c0e",
-												"dateStart": "2021-02-27T14:47:12.883Z",
-												"dateEnd": "2021-02-27T14:47:12.883Z",
+												"dateStart": "2021-03-03T04:32:27.693Z",
+												"dateEnd": "2021-03-03T04:32:27.693Z",
 												"state": 0,
 												"status": "NEW",
 												"key": "0000-1111-2222-3333",
@@ -9953,14 +9854,13 @@
 													"integrationId": "507c7f79bcf86cd7994f6c0e"
 												},
 												"licTypeId": "ecbbfd40-62ba-49bf-8620-75d8c5ed3953",
-												"lastUpdate": "2021-02-27T14:47:12.883Z"
+												"lastUpdate": "2021-03-03T04:32:27.693Z"
 											}
 										}
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -9986,27 +9886,28 @@
 				"operationId": "Update",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/LicenseAccountResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "licenses",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.889Z"
+													"lastUpdate": "2021-03-03T04:32:27.707Z"
 												}
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"clientId": "507c7f79bcf86cd7994f6c0e",
 												"terminalId": "507c7f79bcf86cd7994f6c0e",
-												"dateStart": "2021-02-27T14:47:12.889Z",
-												"dateEnd": "2021-02-27T14:47:12.889Z",
+												"dateStart": "2021-03-03T04:32:27.707Z",
+												"dateEnd": "2021-03-03T04:32:27.707Z",
 												"state": 0,
 												"status": "NEW",
 												"key": "0000-1111-2222-3333",
@@ -10020,14 +9921,13 @@
 													"integrationId": "507c7f79bcf86cd7994f6c0e"
 												},
 												"licTypeId": "ecbbfd40-62ba-49bf-8620-75d8c5ed3953",
-												"lastUpdate": "2021-02-27T14:47:12.889Z"
+												"lastUpdate": "2021-03-03T04:32:27.707Z"
 											}
 										}
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -10063,27 +9963,27 @@
 				"operationId": "Delete",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/LicenseResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "licenses",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.897Z"
+													"lastUpdate": "2021-03-03T04:32:27.746Z"
 												}
 											}
 										}
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -10111,27 +10011,28 @@
 				"operationId": "Create",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/LicenseAccountResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "licenses",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.884Z"
+													"lastUpdate": "2021-03-03T04:32:27.695Z"
 												}
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"clientId": "507c7f79bcf86cd7994f6c0e",
 												"terminalId": "507c7f79bcf86cd7994f6c0e",
-												"dateStart": "2021-02-27T14:47:12.884Z",
-												"dateEnd": "2021-02-27T14:47:12.884Z",
+												"dateStart": "2021-03-03T04:32:27.695Z",
+												"dateEnd": "2021-03-03T04:32:27.695Z",
 												"state": 0,
 												"status": "NEW",
 												"key": "0000-1111-2222-3333",
@@ -10145,14 +10046,13 @@
 													"integrationId": "507c7f79bcf86cd7994f6c0e"
 												},
 												"licTypeId": "ecbbfd40-62ba-49bf-8620-75d8c5ed3953",
-												"lastUpdate": "2021-02-27T14:47:12.884Z"
+												"lastUpdate": "2021-03-03T04:32:27.695Z"
 											}
 										}
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -10181,19 +10081,20 @@
 				"operationId": "GetAll",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/LicenseTypesGetResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "license_types",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.903Z"
+													"lastUpdate": "2021-03-03T04:32:27.780Z"
 												}
 											},
 											"data": [
@@ -10204,15 +10105,14 @@
 													"price": 180000,
 													"payNotice": "Оплата через терминал Эвотор",
 													"integrationId": "507c7f79bcf86cd7994f6c0e",
-													"lastUpdate": "2021-02-27T14:47:12.903Z"
+													"lastUpdate": "2021-03-03T04:32:27.780Z"
 												}
 											]
 										}
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -10231,19 +10131,20 @@
 				"operationId": "GetOne",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/LicenseTypeResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "license_types",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.907Z"
+													"lastUpdate": "2021-03-03T04:32:27.792Z"
 												}
 											},
 											"data": {
@@ -10253,14 +10154,13 @@
 												"price": 180000,
 												"payNotice": "Оплата через терминал Эвотор",
 												"integrationId": "507c7f79bcf86cd7994f6c0e",
-												"lastUpdate": "2021-02-27T14:47:12.907Z"
+												"lastUpdate": "2021-03-03T04:32:27.792Z"
 											}
 										}
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -10286,19 +10186,20 @@
 				"operationId": "Update",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/LicenseTypeResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "license_types",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.912Z"
+													"lastUpdate": "2021-03-03T04:32:27.803Z"
 												}
 											},
 											"data": {
@@ -10308,14 +10209,13 @@
 												"price": 180000,
 												"payNotice": "Оплата через терминал Эвотор",
 												"integrationId": "507c7f79bcf86cd7994f6c0e",
-												"lastUpdate": "2021-02-27T14:47:12.912Z"
+												"lastUpdate": "2021-03-03T04:32:27.804Z"
 											}
 										}
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -10351,27 +10251,27 @@
 				"operationId": "Delete",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/LicenseTypeResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "license_types",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.915Z"
+													"lastUpdate": "2021-03-03T04:32:27.814Z"
 												}
 											}
 										}
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -10399,19 +10299,20 @@
 				"operationId": "Create",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/LicenseTypeResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "license_types",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.908Z"
+													"lastUpdate": "2021-03-03T04:32:27.794Z"
 												}
 											},
 											"data": {
@@ -10421,14 +10322,13 @@
 												"price": 180000,
 												"payNotice": "Оплата через терминал Эвотор",
 												"integrationId": "507c7f79bcf86cd7994f6c0e",
-												"lastUpdate": "2021-02-27T14:47:12.909Z"
+												"lastUpdate": "2021-03-03T04:32:27.795Z"
 											}
 										}
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -10457,19 +10357,20 @@
 				"operationId": "GetRootNodes",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/INodesResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.925Z"
+													"lastUpdate": "2021-03-03T04:32:27.843Z"
 												}
 											},
 											"data": [
@@ -10494,8 +10395,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -10517,19 +10417,20 @@
 				"operationId": "GetAll",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/INodesResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.927Z"
+													"lastUpdate": "2021-03-03T04:32:27.847Z"
 												}
 											},
 											"data": [
@@ -10554,8 +10455,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -10577,19 +10477,20 @@
 				"operationId": "GetAllById",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/INodesResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.928Z"
+													"lastUpdate": "2021-03-03T04:32:27.850Z"
 												}
 											},
 											"data": [
@@ -10614,8 +10515,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -10646,19 +10546,20 @@
 				"operationId": "GetOne",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/INodeResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.932Z"
+													"lastUpdate": "2021-03-03T04:32:27.865Z"
 												}
 											},
 											"data": {
@@ -10681,8 +10582,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -10711,19 +10611,20 @@
 				"operationId": "Update",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/INodeResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.943Z"
+													"lastUpdate": "2021-03-03T04:32:27.898Z"
 												}
 											},
 											"data": {
@@ -10746,8 +10647,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -10783,27 +10683,27 @@
 				"operationId": "Delete",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/IDeleteNodeResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.954Z"
+													"lastUpdate": "2021-03-03T04:32:27.923Z"
 												}
 											}
 										}
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -10831,19 +10731,20 @@
 				"operationId": "Create",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/ICreateNodeResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.938Z"
+													"lastUpdate": "2021-03-03T04:32:27.883Z"
 												}
 											},
 											"data": {
@@ -10866,8 +10767,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -10896,19 +10796,20 @@
 				"operationId": "GetAll",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/OrderTypesResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "order-types",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.969Z"
+													"lastUpdate": "2021-03-03T04:32:27.984Z"
 												}
 											},
 											"data": [
@@ -10939,8 +10840,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -10962,19 +10862,20 @@
 				"operationId": "GetOne",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/OrderTypeResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "order-types",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.973Z"
+													"lastUpdate": "2021-03-03T04:32:27.996Z"
 												}
 											},
 											"data": {
@@ -11003,8 +10904,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -11033,19 +10933,20 @@
 				"operationId": "Update",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/OrderTypeResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "order-types",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.978Z"
+													"lastUpdate": "2021-03-03T04:32:28.020Z"
 												}
 											},
 											"data": {
@@ -11074,8 +10975,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -11111,27 +11011,27 @@
 				"operationId": "Delete",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/OrderTypeResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "order-types",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.979Z"
+													"lastUpdate": "2021-03-03T04:32:28.034Z"
 												}
 											}
 										}
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -11159,19 +11059,20 @@
 				"operationId": "Create",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/OrderTypeResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "order-types",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:12.974Z"
+													"lastUpdate": "2021-03-03T04:32:28.003Z"
 												}
 											},
 											"data": {
@@ -11200,8 +11101,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -11230,27 +11130,28 @@
 				"operationId": "GetAll",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/IOrderTypeGetAllAssetsResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"orderType": {
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:12.986Z"
+														"lastUpdate": "2021-03-03T04:32:28.062Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:12.986Z"
+														"lastUpdate": "2021-03-03T04:32:28.067Z"
 													}
 												}
 											},
@@ -11259,7 +11160,7 @@
 													{
 														"id": "107c7f79bcf86cd7994f6c0e",
 														"active": true,
-														"lastUpdate": "2021-02-27T14:47:12.986Z",
+														"lastUpdate": "2021-03-03T04:32:28.068Z",
 														"name": "some_3d_model",
 														"ext": ".fbx",
 														"mipmap": {
@@ -11274,8 +11175,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -11306,27 +11206,28 @@
 				"operationId": "Get",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/IOrderTypeGetAssetsResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"orderType": {
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:12.989Z"
+														"lastUpdate": "2021-03-03T04:32:28.083Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:12.990Z"
+														"lastUpdate": "2021-03-03T04:32:28.083Z"
 													}
 												}
 											},
@@ -11334,7 +11235,7 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-02-27T14:47:12.990Z",
+													"lastUpdate": "2021-03-03T04:32:28.083Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -11348,8 +11249,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -11388,27 +11288,28 @@
 				"operationId": "CreateResource",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/IOrderTypeCreateAssetsResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"orderType": {
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:12.995Z"
+														"lastUpdate": "2021-03-03T04:32:28.146Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:12.995Z"
+														"lastUpdate": "2021-03-03T04:32:28.146Z"
 													}
 												}
 											},
@@ -11416,7 +11317,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-02-27T14:47:12.995Z",
+													"lastUpdate": "2021-03-03T04:32:28.147Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -11430,8 +11331,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -11475,27 +11375,28 @@
 				"operationId": "Update",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/IOrderTypeCreateAssetsResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"orderType": {
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:12.997Z"
+														"lastUpdate": "2021-03-03T04:32:28.157Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:12.997Z"
+														"lastUpdate": "2021-03-03T04:32:28.158Z"
 													}
 												}
 											},
@@ -11503,7 +11404,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-02-27T14:47:12.997Z",
+													"lastUpdate": "2021-03-03T04:32:28.158Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -11517,8 +11418,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -11570,27 +11470,28 @@
 				"operationId": "Delete",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/IOrderTypeDeleteAssetsResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"orderType": {
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:13.005Z"
+														"lastUpdate": "2021-03-03T04:32:28.201Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:13.005Z"
+														"lastUpdate": "2021-03-03T04:32:28.201Z"
 													}
 												}
 											}
@@ -11598,8 +11499,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -11643,19 +11543,20 @@
 				"operationId": "GetAll",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/IProductsResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "products",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:13.022Z"
+													"lastUpdate": "2021-03-03T04:32:28.266Z"
 												}
 											},
 											"data": [
@@ -11713,8 +11614,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -11736,19 +11636,20 @@
 				"operationId": "GetOne",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/IProductResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "products",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:13.027Z"
+													"lastUpdate": "2021-03-03T04:32:28.278Z"
 												}
 											},
 											"data": {
@@ -11804,8 +11705,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -11834,19 +11734,20 @@
 				"operationId": "Update",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/IProductResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "products",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:13.033Z"
+													"lastUpdate": "2021-03-03T04:32:28.298Z"
 												}
 											},
 											"data": {
@@ -11902,8 +11803,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -11939,27 +11839,27 @@
 				"operationId": "Delete",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/IProductResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "products",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:13.039Z"
+													"lastUpdate": "2021-03-03T04:32:28.318Z"
 												}
 											}
 										}
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -11987,19 +11887,20 @@
 				"operationId": "Create",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/IProductResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "products",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:13.028Z"
+													"lastUpdate": "2021-03-03T04:32:28.281Z"
 												}
 											},
 											"data": {
@@ -12055,8 +11956,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -12085,27 +11985,28 @@
 				"operationId": "GetAll",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/IProductGetAllAssetsResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"product": {
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:13.052Z"
+														"lastUpdate": "2021-03-03T04:32:28.337Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:13.053Z"
+														"lastUpdate": "2021-03-03T04:32:28.337Z"
 													}
 												}
 											},
@@ -12114,7 +12015,7 @@
 													{
 														"id": "107c7f79bcf86cd7994f6c0e",
 														"active": true,
-														"lastUpdate": "2021-02-27T14:47:13.053Z",
+														"lastUpdate": "2021-03-03T04:32:28.337Z",
 														"name": "some_3d_model",
 														"ext": ".fbx",
 														"mipmap": {
@@ -12129,8 +12030,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -12161,27 +12061,28 @@
 				"operationId": "Get",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/IProductGetAssetsResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"product": {
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:13.060Z"
+														"lastUpdate": "2021-03-03T04:32:28.347Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:13.060Z"
+														"lastUpdate": "2021-03-03T04:32:28.347Z"
 													}
 												}
 											},
@@ -12189,7 +12090,7 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-02-27T14:47:13.060Z",
+													"lastUpdate": "2021-03-03T04:32:28.347Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -12203,8 +12104,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -12243,27 +12143,28 @@
 				"operationId": "Create",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/IProductCreateAssetsResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"product": {
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:13.067Z"
+														"lastUpdate": "2021-03-03T04:32:28.366Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:13.067Z"
+														"lastUpdate": "2021-03-03T04:32:28.366Z"
 													}
 												}
 											},
@@ -12271,7 +12172,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-02-27T14:47:13.067Z",
+													"lastUpdate": "2021-03-03T04:32:28.366Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -12285,8 +12186,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -12322,27 +12222,28 @@
 				"operationId": "CreateResource",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/IProductCreateAssetsResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"product": {
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:13.069Z"
+														"lastUpdate": "2021-03-03T04:32:28.370Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:13.069Z"
+														"lastUpdate": "2021-03-03T04:32:28.370Z"
 													}
 												}
 											},
@@ -12350,7 +12251,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-02-27T14:47:13.069Z",
+													"lastUpdate": "2021-03-03T04:32:28.370Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -12364,8 +12265,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -12409,27 +12309,28 @@
 				"operationId": "Update",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/IProductCreateAssetsResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"product": {
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:13.071Z"
+														"lastUpdate": "2021-03-03T04:32:28.376Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:13.072Z"
+														"lastUpdate": "2021-03-03T04:32:28.376Z"
 													}
 												}
 											},
@@ -12437,7 +12338,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-02-27T14:47:13.072Z",
+													"lastUpdate": "2021-03-03T04:32:28.376Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -12451,8 +12352,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -12504,27 +12404,28 @@
 				"operationId": "Delete",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/IProductDeleteAssetsResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"product": {
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:13.079Z"
+														"lastUpdate": "2021-03-03T04:32:28.396Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:13.079Z"
+														"lastUpdate": "2021-03-03T04:32:28.396Z"
 													}
 												}
 											}
@@ -12532,8 +12433,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -12577,19 +12477,20 @@
 				"operationId": "GetAll",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/ISelectorsResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "selectors",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:13.094Z"
+													"lastUpdate": "2021-03-03T04:32:28.438Z"
 												}
 											},
 											"data": [
@@ -12621,8 +12522,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -12644,19 +12544,20 @@
 				"operationId": "GetOne",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/ISelectorResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "selectors",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:13.098Z"
+													"lastUpdate": "2021-03-03T04:32:28.451Z"
 												}
 											},
 											"data": {
@@ -12686,8 +12587,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -12716,19 +12616,20 @@
 				"operationId": "Update",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/ISelectorResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "selectors",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:13.104Z"
+													"lastUpdate": "2021-03-03T04:32:28.469Z"
 												}
 											},
 											"data": {
@@ -12758,8 +12659,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -12795,27 +12695,27 @@
 				"operationId": "Delete",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/ISelectorResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "selectors",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:13.109Z"
+													"lastUpdate": "2021-03-03T04:32:28.481Z"
 												}
 											}
 										}
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -12843,19 +12743,20 @@
 				"operationId": "Create",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/ISelectorResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "selectors",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:13.100Z"
+													"lastUpdate": "2021-03-03T04:32:28.454Z"
 												}
 											},
 											"data": {
@@ -12885,8 +12786,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -12915,27 +12815,28 @@
 				"operationId": "GetAll",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/ISelectorGetAllAssetsResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"selector": {
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:13.115Z"
+														"lastUpdate": "2021-03-03T04:32:28.500Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:13.115Z"
+														"lastUpdate": "2021-03-03T04:32:28.500Z"
 													}
 												}
 											},
@@ -12944,7 +12845,7 @@
 													{
 														"id": "107c7f79bcf86cd7994f6c0e",
 														"active": true,
-														"lastUpdate": "2021-02-27T14:47:13.115Z",
+														"lastUpdate": "2021-03-03T04:32:28.501Z",
 														"name": "some_3d_model",
 														"ext": ".fbx",
 														"mipmap": {
@@ -12959,8 +12860,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -12991,27 +12891,28 @@
 				"operationId": "Get",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/ISelectorGetAssetsResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"selector": {
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:13.118Z"
+														"lastUpdate": "2021-03-03T04:32:28.511Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:13.118Z"
+														"lastUpdate": "2021-03-03T04:32:28.511Z"
 													}
 												}
 											},
@@ -13019,7 +12920,7 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-02-27T14:47:13.118Z",
+													"lastUpdate": "2021-03-03T04:32:28.511Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -13033,8 +12934,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -13073,27 +12973,28 @@
 				"operationId": "CreateResource",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/ISelectorCreateAssetsResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"selector": {
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:13.123Z"
+														"lastUpdate": "2021-03-03T04:32:28.543Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:13.123Z"
+														"lastUpdate": "2021-03-03T04:32:28.543Z"
 													}
 												}
 											},
@@ -13101,7 +13002,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-02-27T14:47:13.123Z",
+													"lastUpdate": "2021-03-03T04:32:28.543Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -13115,8 +13016,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -13160,27 +13060,28 @@
 				"operationId": "Update",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/ISelectorCreateAssetsResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"selector": {
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:13.126Z"
+														"lastUpdate": "2021-03-03T04:32:28.554Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:13.126Z"
+														"lastUpdate": "2021-03-03T04:32:28.554Z"
 													}
 												}
 											},
@@ -13188,7 +13089,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-02-27T14:47:13.126Z",
+													"lastUpdate": "2021-03-03T04:32:28.554Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -13202,8 +13103,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -13255,27 +13155,28 @@
 				"operationId": "Delete",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/ISelectorDeleteAssetsResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"selector": {
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:13.132Z"
+														"lastUpdate": "2021-03-03T04:32:28.592Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:13.132Z"
+														"lastUpdate": "2021-03-03T04:32:28.592Z"
 													}
 												}
 											}
@@ -13283,8 +13184,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -13328,19 +13228,20 @@
 				"operationId": "GetAll",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/IStoresResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "stores",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:13.145Z"
+													"lastUpdate": "2021-03-03T04:32:28.639Z"
 												}
 											},
 											"data": [
@@ -13356,8 +13257,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -13379,19 +13279,20 @@
 				"operationId": "GetOne",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/IStoreResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "stores",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:13.149Z"
+													"lastUpdate": "2021-03-03T04:32:28.657Z"
 												}
 											},
 											"data": {
@@ -13405,8 +13306,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -13435,19 +13335,20 @@
 				"operationId": "Update",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/IStoreResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "stores",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:13.153Z"
+													"lastUpdate": "2021-03-03T04:32:28.676Z"
 												}
 											},
 											"data": {
@@ -13461,8 +13362,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -13501,27 +13401,27 @@
 				"operationId": "Delete",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/IStoreResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "stores",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:13.157Z"
+													"lastUpdate": "2021-03-03T04:32:28.689Z"
 												}
 											}
 										}
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -13549,19 +13449,20 @@
 				"operationId": "Create",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/IStoreResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "stores",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:13.150Z"
+													"lastUpdate": "2021-03-03T04:32:28.663Z"
 												}
 											},
 											"data": {
@@ -13575,8 +13476,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -13605,19 +13505,20 @@
 				"operationId": "GetAll",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/TagsResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "tags",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:13.171Z"
+													"lastUpdate": "2021-03-03T04:32:28.731Z"
 												}
 											},
 											"data": [
@@ -13647,8 +13548,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -13670,19 +13570,20 @@
 				"operationId": "GetOne",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/TagResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "tags",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:13.176Z"
+													"lastUpdate": "2021-03-03T04:32:28.746Z"
 												}
 											},
 											"data": {
@@ -13710,8 +13611,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -13740,19 +13640,20 @@
 				"operationId": "Update",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/TagResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "tags",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:13.181Z"
+													"lastUpdate": "2021-03-03T04:32:28.759Z"
 												}
 											},
 											"data": {
@@ -13780,8 +13681,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -13817,27 +13717,27 @@
 				"operationId": "Delete",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/TagResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "tags",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:13.183Z"
+													"lastUpdate": "2021-03-03T04:32:28.765Z"
 												}
 											}
 										}
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -13865,19 +13765,20 @@
 				"operationId": "Create",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/TagResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "tags",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:13.177Z"
+													"lastUpdate": "2021-03-03T04:32:28.748Z"
 												}
 											},
 											"data": {
@@ -13905,8 +13806,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -13935,27 +13835,28 @@
 				"operationId": "GetAll",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/ITagGetAllAssetsResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"tag": {
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:13.190Z"
+														"lastUpdate": "2021-03-03T04:32:28.787Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:13.190Z"
+														"lastUpdate": "2021-03-03T04:32:28.787Z"
 													}
 												}
 											},
@@ -13964,7 +13865,7 @@
 													{
 														"id": "107c7f79bcf86cd7994f6c0e",
 														"active": true,
-														"lastUpdate": "2021-02-27T14:47:13.190Z",
+														"lastUpdate": "2021-03-03T04:32:28.787Z",
 														"name": "some_3d_model",
 														"ext": ".fbx",
 														"mipmap": {
@@ -13979,8 +13880,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -14011,27 +13911,28 @@
 				"operationId": "Get",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/ITagGetAssetsResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"tag": {
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:13.193Z"
+														"lastUpdate": "2021-03-03T04:32:28.796Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:13.193Z"
+														"lastUpdate": "2021-03-03T04:32:28.796Z"
 													}
 												}
 											},
@@ -14039,7 +13940,7 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-02-27T14:47:13.193Z",
+													"lastUpdate": "2021-03-03T04:32:28.796Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -14053,8 +13954,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -14093,27 +13993,28 @@
 				"operationId": "CreateResource",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/ITagCreateAssetsResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"tag": {
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:13.199Z"
+														"lastUpdate": "2021-03-03T04:32:28.812Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:13.199Z"
+														"lastUpdate": "2021-03-03T04:32:28.812Z"
 													}
 												}
 											},
@@ -14121,7 +14022,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-02-27T14:47:13.199Z",
+													"lastUpdate": "2021-03-03T04:32:28.812Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -14135,8 +14036,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -14180,27 +14080,28 @@
 				"operationId": "Update",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/ITagCreateAssetsResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"tag": {
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:13.201Z"
+														"lastUpdate": "2021-03-03T04:32:28.819Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:13.201Z"
+														"lastUpdate": "2021-03-03T04:32:28.819Z"
 													}
 												}
 											},
@@ -14208,7 +14109,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-02-27T14:47:13.201Z",
+													"lastUpdate": "2021-03-03T04:32:28.820Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -14222,8 +14123,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -14275,27 +14175,28 @@
 				"operationId": "Delete",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/ITagDeleteAssetsResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"tag": {
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:13.207Z"
+														"lastUpdate": "2021-03-03T04:32:28.838Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-02-27T14:47:13.207Z"
+														"lastUpdate": "2021-03-03T04:32:28.838Z"
 													}
 												}
 											}
@@ -14303,8 +14204,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -14348,19 +14248,20 @@
 				"operationId": "LicenseVerify",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/ITerminalResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "terminals",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:13.238Z"
+													"lastUpdate": "2021-03-03T04:32:28.882Z"
 												}
 											},
 											"data": {
@@ -14369,7 +14270,7 @@
 												"type": "kiosk",
 												"name": "My terminal",
 												"storeId": "g234r34r-34r23-4t32-43434",
-												"lastwork": "2021-02-27T14:47:13.239Z",
+												"lastwork": "2021-03-03T04:32:28.883Z",
 												"imei": "00001-000000000034",
 												"licenseId": "34r34r-34r23-4t32-43434",
 												"extra": {
@@ -14380,8 +14281,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -14400,19 +14300,20 @@
 				"operationId": "Registration",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/ITerminalResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "terminals",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:13.240Z"
+													"lastUpdate": "2021-03-03T04:32:28.885Z"
 												}
 											},
 											"data": {
@@ -14421,7 +14322,7 @@
 												"type": "kiosk",
 												"name": "My terminal",
 												"storeId": "g234r34r-34r23-4t32-43434",
-												"lastwork": "2021-02-27T14:47:13.240Z",
+												"lastwork": "2021-03-03T04:32:28.885Z",
 												"imei": "00001-000000000034",
 												"licenseId": "34r34r-34r23-4t32-43434",
 												"extra": {
@@ -14432,8 +14333,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -14462,19 +14362,20 @@
 				"operationId": "GetAll",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/ITerminalsResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "terminals",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:13.248Z"
+													"lastUpdate": "2021-03-03T04:32:28.904Z"
 												}
 											},
 											"data": [
@@ -14484,7 +14385,7 @@
 													"type": "kiosk",
 													"name": "My terminal",
 													"storeId": "g234r34r-34r23-4t32-43434",
-													"lastwork": "2021-02-27T14:47:13.248Z",
+													"lastwork": "2021-03-03T04:32:28.904Z",
 													"imei": "00001-000000000034",
 													"licenseId": "34r34r-34r23-4t32-43434",
 													"extra": {
@@ -14496,8 +14397,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -14519,19 +14419,20 @@
 				"operationId": "GetOne",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/ITerminalResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "terminals",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:13.250Z"
+													"lastUpdate": "2021-03-03T04:32:28.907Z"
 												}
 											},
 											"data": {
@@ -14540,7 +14441,7 @@
 												"type": "kiosk",
 												"name": "My terminal",
 												"storeId": "g234r34r-34r23-4t32-43434",
-												"lastwork": "2021-02-27T14:47:13.250Z",
+												"lastwork": "2021-03-03T04:32:28.907Z",
 												"imei": "00001-000000000034",
 												"licenseId": "34r34r-34r23-4t32-43434",
 												"extra": {
@@ -14551,8 +14452,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -14581,19 +14481,20 @@
 				"operationId": "Update",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/ITerminalResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "terminals",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:13.253Z"
+													"lastUpdate": "2021-03-03T04:32:28.913Z"
 												}
 											},
 											"data": {
@@ -14602,7 +14503,7 @@
 												"type": "kiosk",
 												"name": "My terminal",
 												"storeId": "g234r34r-34r23-4t32-43434",
-												"lastwork": "2021-02-27T14:47:13.254Z",
+												"lastwork": "2021-03-03T04:32:28.913Z",
 												"imei": "00001-000000000034",
 												"licenseId": "34r34r-34r23-4t32-43434",
 												"extra": {
@@ -14613,8 +14514,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -14655,19 +14555,20 @@
 				"operationId": "GetAll",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/TranslationsResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "translations",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:13.275Z"
+													"lastUpdate": "2021-03-03T04:32:28.945Z"
 												}
 											},
 											"data": [
@@ -14689,8 +14590,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -14712,19 +14612,20 @@
 				"operationId": "GetOne",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/TranslationResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "translations",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:13.279Z"
+													"lastUpdate": "2021-03-03T04:32:28.956Z"
 												}
 											},
 											"data": {
@@ -14744,8 +14645,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -14774,19 +14674,20 @@
 				"operationId": "Update",
 				"responses": {
 					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/TranslationResponse"
 								},
 								"examples": {
-									"example": {
+									"Example 1": {
 										"value": {
 											"meta": {
 												"ref": {
 													"name": "translations",
 													"version": 1,
-													"lastUpdate": "2021-02-27T14:47:13.280Z"
+													"lastUpdate": "2021-03-03T04:32:28.963Z"
 												}
 											},
 											"data": {
@@ -14806,8 +14707,7 @@
 									}
 								}
 							}
-						},
-						"description": "Ok"
+						}
 					}
 				},
 				"tags": [
@@ -14844,6 +14744,16 @@
 	"servers": [
 		{
 			"url": "/api/v1"
+		}
+	],
+	"tags": [
+		{
+			"name": "Tag",
+			"description": "Operations about tags",
+			"externalDocs": {
+				"description": "Find out more about tags",
+				"url": "http://swagger.io"
+			}
 		}
 	]
 }

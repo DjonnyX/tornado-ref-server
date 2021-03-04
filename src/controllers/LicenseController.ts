@@ -173,7 +173,7 @@ export class LicensesForClientController extends Controller {
 
             return {
                 meta: response.meta,
-                data: response.data.map(l => ({ ...l, terminalId: terminalsMap[l.id]._id })),
+                data: response.data.map(l => ({ ...l, terminalId: !!terminalsMap[l.id] ? terminalsMap[l.id]._id : undefined })),
             }
         }
 
@@ -212,7 +212,7 @@ export class LicenseForClientController extends Controller {
 
             return {
                 meta: response.meta,
-                data: ({ ...response.data, terminalId: terminal._id }),
+                data: ({ ...response.data, terminalId: !!terminal ? terminal._id : undefined }),
             }
         }
 
@@ -256,7 +256,7 @@ export class LicensesController extends Controller {
 
             return {
                 meta: response.meta,
-                data: response.data.map(l => ({ ...l, terminalId: terminalsMap[l.id]._id })),
+                data: response.data.map(l => ({ ...l, terminalId: !!terminalsMap[l.id] ? terminalsMap[l.id]._id : undefined })),
             }
         }
 
@@ -295,7 +295,7 @@ export class LicenseController extends Controller {
 
             return {
                 meta: response.meta,
-                data: ({ ...response.data, terminalId: terminal._id }),
+                data: ({ ...response.data, terminalId: !!terminal ? terminal._id : undefined }),
             }
         }
 
@@ -330,7 +330,7 @@ export class LicenseController extends Controller {
 
             return {
                 meta: response.meta,
-                data: ({ ...response.data, terminalId: terminal._id }),
+                data: ({ ...response.data, terminalId: !!terminal ? terminal._id : undefined }),
             }
         }
 
@@ -365,7 +365,7 @@ export class LicenseController extends Controller {
 
             return {
                 meta: response.meta,
-                data: ({ ...response.data, terminalId: terminal._id }),
+                data: ({ ...response.data, terminalId: !!terminal ? terminal._id : undefined }),
             }
         }
 

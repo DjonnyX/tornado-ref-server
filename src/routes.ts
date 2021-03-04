@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { Controller, ValidationService, FieldErrors, ValidateError, TsoaRoute } from 'tsoa';
+import { Controller, ValidationService, FieldErrors, ValidateError, TsoaRoute, HttpStatusCodeLiteral, TsoaResponse } from '@tsoa/runtime';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { RefsController } from './controllers/RefsController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -121,9 +121,9 @@ const models: TsoaRoute.Models = {
     "IRefItem": {
         "dataType": "refObject",
         "properties": {
-            "name": { "dataType": "string", "required": true },
-            "version": { "dataType": "double", "required": true },
-            "lastUpdate": { "dataType": "datetime", "required": true },
+            "name": {"dataType":"string","required":true},
+            "version": {"dataType":"double","required":true},
+            "lastUpdate": {"dataType":"datetime","required":true},
         },
         "additionalProperties": false,
     },
@@ -131,8 +131,8 @@ const models: TsoaRoute.Models = {
     "RefsResponse": {
         "dataType": "refObject",
         "properties": {
-            "data": { "dataType": "array", "array": { "ref": "IRefItem" } },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "data": {"dataType":"array","array":{"ref":"IRefItem"}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -140,8 +140,8 @@ const models: TsoaRoute.Models = {
     "RefResponse": {
         "dataType": "refObject",
         "properties": {
-            "data": { "ref": "IRefItem" },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "data": {"ref":"IRefItem"},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -149,7 +149,7 @@ const models: TsoaRoute.Models = {
     "IAccountInfoMeta": {
         "dataType": "refObject",
         "properties": {
-            "ref": { "ref": "IRefItem", "required": true },
+            "ref": {"ref":"IRefItem","required":true},
         },
         "additionalProperties": false,
     },
@@ -157,10 +157,10 @@ const models: TsoaRoute.Models = {
     "IAccountInfo": {
         "dataType": "refObject",
         "properties": {
-            "id": { "dataType": "string" },
-            "firstName": { "dataType": "string", "required": true },
-            "lastName": { "dataType": "string", "required": true },
-            "email": { "dataType": "string", "required": true },
+            "id": {"dataType":"string"},
+            "firstName": {"dataType":"string","required":true},
+            "lastName": {"dataType":"string","required":true},
+            "email": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
@@ -168,9 +168,9 @@ const models: TsoaRoute.Models = {
     "AccountsGetResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "ref": "IAccountInfoMeta" },
-            "data": { "dataType": "array", "array": { "ref": "IAccountInfo" } },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"ref":"IAccountInfoMeta"},
+            "data": {"dataType":"array","array":{"ref":"IAccountInfo"}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -178,9 +178,9 @@ const models: TsoaRoute.Models = {
     "AccountResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "ref": "IAccountInfoMeta" },
-            "data": { "ref": "IAccountInfo" },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"ref":"IAccountInfoMeta"},
+            "data": {"ref":"IAccountInfo"},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -188,9 +188,9 @@ const models: TsoaRoute.Models = {
     "IUpdateAccountParams": {
         "dataType": "refObject",
         "properties": {
-            "firstName": { "dataType": "string" },
-            "lastName": { "dataType": "string" },
-            "email": { "dataType": "string" },
+            "firstName": {"dataType":"string"},
+            "lastName": {"dataType":"string"},
+            "email": {"dataType":"string"},
         },
         "additionalProperties": false,
     },
@@ -198,26 +198,26 @@ const models: TsoaRoute.Models = {
     "IAssetMeta": {
         "dataType": "refObject",
         "properties": {
-            "ref": { "ref": "IRefItem", "required": true },
+            "ref": {"ref":"IRefItem","required":true},
         },
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "AssetExtensions": {
         "dataType": "refEnum",
-        "enums": [".jpg", ".png", ".gif", ".mp4", ".fbx", ".obj", ".dae"],
+        "enums": [".jpg",".png",".gif",".mp4",".fbx",".obj",".dae"],
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "IAssetItem": {
         "dataType": "refObject",
         "properties": {
-            "id": { "dataType": "string", "required": true },
-            "active": { "dataType": "boolean", "required": true },
-            "lastUpdate": { "dataType": "datetime", "required": true },
-            "name": { "dataType": "string", "required": true },
-            "ext": { "ref": "AssetExtensions", "required": true },
-            "path": { "dataType": "string", "required": true },
-            "mipmap": { "dataType": "nestedObjectLiteral", "nestedProperties": { "x32": { "dataType": "string", "required": true }, "x128": { "dataType": "string", "required": true } }, "required": true },
+            "id": {"dataType":"string","required":true},
+            "active": {"dataType":"boolean","required":true},
+            "lastUpdate": {"dataType":"datetime","required":true},
+            "name": {"dataType":"string","required":true},
+            "ext": {"ref":"AssetExtensions","required":true},
+            "path": {"dataType":"string","required":true},
+            "mipmap": {"dataType":"nestedObjectLiteral","nestedProperties":{"x32":{"dataType":"string","required":true},"x128":{"dataType":"string","required":true}},"required":true},
         },
         "additionalProperties": false,
     },
@@ -225,9 +225,9 @@ const models: TsoaRoute.Models = {
     "IGetAssetsResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "ref": "IAssetMeta" },
-            "data": { "dataType": "array", "array": { "ref": "IAssetItem" } },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"ref":"IAssetMeta"},
+            "data": {"dataType":"array","array":{"ref":"IAssetItem"}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -235,20 +235,20 @@ const models: TsoaRoute.Models = {
     "IAdsMeta": {
         "dataType": "refObject",
         "properties": {
-            "ref": { "ref": "IRefItem", "required": true },
+            "ref": {"ref":"IRefItem","required":true},
         },
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "AdTypes": {
         "dataType": "refEnum",
-        "enums": ["intro", "banner"],
+        "enums": ["intro","banner"],
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "IAdResources": {
         "dataType": "refObject",
         "properties": {
-            "main": { "dataType": "string", "required": true },
+            "main": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
@@ -256,12 +256,12 @@ const models: TsoaRoute.Models = {
     "IAdContentsItem": {
         "dataType": "refObject",
         "properties": {
-            "name": { "dataType": "string", "required": true },
-            "duration": { "dataType": "double" },
-            "color": { "dataType": "string" },
-            "resources": { "ref": "IAdResources" },
-            "assets": { "dataType": "array", "array": { "dataType": "string" } },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+            "name": {"dataType":"string","required":true},
+            "duration": {"dataType":"double"},
+            "color": {"dataType":"string"},
+            "resources": {"ref":"IAdResources"},
+            "assets": {"dataType":"array","array":{"dataType":"string"}},
+            "extra": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
     },
@@ -270,17 +270,17 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
         },
-        "additionalProperties": { "ref": "IAdContentsItem" },
+        "additionalProperties": {"ref":"IAdContentsItem"},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "IAdItem": {
         "dataType": "refObject",
         "properties": {
-            "id": { "dataType": "string" },
-            "type": { "ref": "AdTypes", "required": true },
-            "active": { "dataType": "boolean", "required": true },
-            "contents": { "ref": "IAdContents", "required": true },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+            "id": {"dataType":"string"},
+            "type": {"ref":"AdTypes","required":true},
+            "active": {"dataType":"boolean","required":true},
+            "contents": {"ref":"IAdContents","required":true},
+            "extra": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
     },
@@ -288,9 +288,9 @@ const models: TsoaRoute.Models = {
     "IAdsResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "ref": "IAdsMeta" },
-            "data": { "dataType": "array", "array": { "ref": "IAdItem" } },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"ref":"IAdsMeta"},
+            "data": {"dataType":"array","array":{"ref":"IAdItem"}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -298,9 +298,9 @@ const models: TsoaRoute.Models = {
     "IAdResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "ref": "IAdsMeta" },
-            "data": { "ref": "IAdItem" },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"ref":"IAdsMeta"},
+            "data": {"ref":"IAdItem"},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -308,10 +308,10 @@ const models: TsoaRoute.Models = {
     "IAdCreateRequest": {
         "dataType": "refObject",
         "properties": {
-            "active": { "dataType": "boolean", "required": true },
-            "type": { "dataType": "union", "subSchemas": [{ "ref": "AdTypes" }, { "dataType": "string" }], "required": true },
-            "contents": { "ref": "IAdContents" },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+            "active": {"dataType":"boolean","required":true},
+            "type": {"dataType":"union","subSchemas":[{"ref":"AdTypes"},{"dataType":"string"}],"required":true},
+            "contents": {"ref":"IAdContents"},
+            "extra": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
     },
@@ -319,10 +319,10 @@ const models: TsoaRoute.Models = {
     "IAdUpdateRequest": {
         "dataType": "refObject",
         "properties": {
-            "active": { "dataType": "boolean" },
-            "type": { "ref": "AdTypes" },
-            "contents": { "dataType": "union", "subSchemas": [{ "ref": "IAdContents" }, { "dataType": "any" }] },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+            "active": {"dataType":"boolean"},
+            "type": {"ref":"AdTypes"},
+            "contents": {"dataType":"union","subSchemas":[{"ref":"IAdContents"},{"dataType":"any"}]},
+            "extra": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
     },
@@ -330,13 +330,13 @@ const models: TsoaRoute.Models = {
     "IAdAsset": {
         "dataType": "refObject",
         "properties": {
-            "id": { "dataType": "string", "required": true },
-            "active": { "dataType": "boolean", "required": true },
-            "lastUpdate": { "dataType": "datetime", "required": true },
-            "name": { "dataType": "string", "required": true },
-            "ext": { "ref": "AssetExtensions", "required": true },
-            "path": { "dataType": "string", "required": true },
-            "mipmap": { "dataType": "nestedObjectLiteral", "nestedProperties": { "x32": { "dataType": "string", "required": true }, "x128": { "dataType": "string", "required": true } }, "required": true },
+            "id": {"dataType":"string","required":true},
+            "active": {"dataType":"boolean","required":true},
+            "lastUpdate": {"dataType":"datetime","required":true},
+            "name": {"dataType":"string","required":true},
+            "ext": {"ref":"AssetExtensions","required":true},
+            "path": {"dataType":"string","required":true},
+            "mipmap": {"dataType":"nestedObjectLiteral","nestedProperties":{"x32":{"dataType":"string","required":true},"x128":{"dataType":"string","required":true}},"required":true},
         },
         "additionalProperties": false,
     },
@@ -344,9 +344,9 @@ const models: TsoaRoute.Models = {
     "IAdGetAllAssetsResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "dataType": "nestedObjectLiteral", "nestedProperties": {} },
-            "data": { "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "array", "array": { "ref": "IAdAsset" } } },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"dataType":"nestedObjectLiteral","nestedProperties":{}},
+            "data": {"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"array","array":{"ref":"IAdAsset"}}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -354,9 +354,9 @@ const models: TsoaRoute.Models = {
     "IAdGetAssetsResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "dataType": "nestedObjectLiteral", "nestedProperties": {} },
-            "data": { "dataType": "array", "array": { "ref": "IAdAsset" } },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"dataType":"nestedObjectLiteral","nestedProperties":{}},
+            "data": {"dataType":"array","array":{"ref":"IAdAsset"}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -364,9 +364,9 @@ const models: TsoaRoute.Models = {
     "IAdCreateAssetsResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "dataType": "nestedObjectLiteral", "nestedProperties": { "asset": { "dataType": "nestedObjectLiteral", "nestedProperties": { "ref": { "ref": "IRefItem", "required": true } }, "required": true }, "ad": { "dataType": "nestedObjectLiteral", "nestedProperties": { "ref": { "ref": "IRefItem", "required": true } }, "required": true } } },
-            "data": { "dataType": "nestedObjectLiteral", "nestedProperties": { "ad": { "ref": "IAdItem", "required": true }, "asset": { "ref": "IAdAsset", "required": true } } },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"dataType":"nestedObjectLiteral","nestedProperties":{"asset":{"dataType":"nestedObjectLiteral","nestedProperties":{"ref":{"ref":"IRefItem","required":true}},"required":true},"ad":{"dataType":"nestedObjectLiteral","nestedProperties":{"ref":{"ref":"IRefItem","required":true}},"required":true}}},
+            "data": {"dataType":"nestedObjectLiteral","nestedProperties":{"ad":{"ref":"IAdItem","required":true},"asset":{"ref":"IAdAsset","required":true}}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -379,8 +379,8 @@ const models: TsoaRoute.Models = {
     "IAdAssetUpdateRequest": {
         "dataType": "refObject",
         "properties": {
-            "active": { "dataType": "boolean", "required": true },
-            "name": { "dataType": "string", "required": true },
+            "active": {"dataType":"boolean","required":true},
+            "name": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
@@ -388,9 +388,9 @@ const models: TsoaRoute.Models = {
     "IAdDeleteAssetsResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "dataType": "nestedObjectLiteral", "nestedProperties": { "asset": { "dataType": "nestedObjectLiteral", "nestedProperties": { "ref": { "ref": "IRefItem", "required": true } }, "required": true }, "ad": { "dataType": "nestedObjectLiteral", "nestedProperties": { "ref": { "ref": "IRefItem", "required": true } }, "required": true } } },
-            "data": { "dataType": "nestedObjectLiteral", "nestedProperties": {} },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"dataType":"nestedObjectLiteral","nestedProperties":{"asset":{"dataType":"nestedObjectLiteral","nestedProperties":{"ref":{"ref":"IRefItem","required":true}},"required":true},"ad":{"dataType":"nestedObjectLiteral","nestedProperties":{"ref":{"ref":"IRefItem","required":true}},"required":true}}},
+            "data": {"dataType":"nestedObjectLiteral","nestedProperties":{}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -398,7 +398,7 @@ const models: TsoaRoute.Models = {
     "IApplicationInfoMeta": {
         "dataType": "refObject",
         "properties": {
-            "ref": { "ref": "IRefItem", "required": true },
+            "ref": {"ref":"IRefItem","required":true},
         },
         "additionalProperties": false,
     },
@@ -406,9 +406,9 @@ const models: TsoaRoute.Models = {
     "IVersion": {
         "dataType": "refObject",
         "properties": {
-            "name": { "dataType": "string", "required": true },
-            "code": { "dataType": "double", "required": true },
-            "version": { "dataType": "string", "required": true },
+            "name": {"dataType":"string","required":true},
+            "code": {"dataType":"double","required":true},
+            "version": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
@@ -416,11 +416,11 @@ const models: TsoaRoute.Models = {
     "IApplicationInfo": {
         "dataType": "refObject",
         "properties": {
-            "id": { "dataType": "string", "required": true },
-            "name": { "dataType": "string", "required": true },
-            "description": { "dataType": "string", "required": true },
-            "version": { "ref": "IVersion", "required": true },
-            "lastUpdate": { "dataType": "datetime", "required": true },
+            "id": {"dataType":"string","required":true},
+            "name": {"dataType":"string","required":true},
+            "description": {"dataType":"string","required":true},
+            "version": {"ref":"IVersion","required":true},
+            "lastUpdate": {"dataType":"datetime","required":true},
         },
         "additionalProperties": false,
     },
@@ -428,9 +428,9 @@ const models: TsoaRoute.Models = {
     "ApplicationsGetResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "ref": "IApplicationInfoMeta" },
-            "data": { "dataType": "array", "array": { "ref": "IApplicationInfo" } },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"ref":"IApplicationInfoMeta"},
+            "data": {"dataType":"array","array":{"ref":"IApplicationInfo"}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -438,9 +438,9 @@ const models: TsoaRoute.Models = {
     "ApplicationResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "ref": "IApplicationInfoMeta" },
-            "data": { "ref": "IApplicationInfo" },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"ref":"IApplicationInfoMeta"},
+            "data": {"ref":"IApplicationInfo"},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -448,9 +448,9 @@ const models: TsoaRoute.Models = {
     "ICreateApplicationParams": {
         "dataType": "refObject",
         "properties": {
-            "name": { "dataType": "string", "required": true },
-            "description": { "dataType": "string" },
-            "version": { "ref": "IVersion", "required": true },
+            "name": {"dataType":"string","required":true},
+            "description": {"dataType":"string"},
+            "version": {"ref":"IVersion","required":true},
         },
         "additionalProperties": false,
     },
@@ -458,9 +458,9 @@ const models: TsoaRoute.Models = {
     "IUpdateApplicationParams": {
         "dataType": "refObject",
         "properties": {
-            "name": { "dataType": "string" },
-            "description": { "dataType": "string" },
-            "version": { "ref": "IVersion" },
+            "name": {"dataType":"string"},
+            "description": {"dataType":"string"},
+            "version": {"ref":"IVersion"},
         },
         "additionalProperties": false,
     },
@@ -468,9 +468,9 @@ const models: TsoaRoute.Models = {
     "GetCaptchaResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "dataType": "nestedObjectLiteral", "nestedProperties": {} },
-            "data": { "dataType": "nestedObjectLiteral", "nestedProperties": { "svg": { "dataType": "string", "required": true }, "id": { "dataType": "string", "required": true } } },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"dataType":"nestedObjectLiteral","nestedProperties":{}},
+            "data": {"dataType":"nestedObjectLiteral","nestedProperties":{"svg":{"dataType":"string","required":true},"id":{"dataType":"string","required":true}}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -478,9 +478,9 @@ const models: TsoaRoute.Models = {
     "SignupResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "dataType": "nestedObjectLiteral", "nestedProperties": {} },
-            "data": { "dataType": "nestedObjectLiteral", "nestedProperties": { "clientId": { "dataType": "string", "required": true } } },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"dataType":"nestedObjectLiteral","nestedProperties":{}},
+            "data": {"dataType":"nestedObjectLiteral","nestedProperties":{"clientId":{"dataType":"string","required":true}}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -488,12 +488,12 @@ const models: TsoaRoute.Models = {
     "ISignupParams": {
         "dataType": "refObject",
         "properties": {
-            "captchaId": { "dataType": "string", "required": true },
-            "captchaValue": { "dataType": "string", "required": true },
-            "firstName": { "dataType": "string", "required": true },
-            "lastName": { "dataType": "string", "required": true },
-            "email": { "dataType": "string", "required": true },
-            "password": { "dataType": "string", "required": true },
+            "captchaId": {"dataType":"string","required":true},
+            "captchaValue": {"dataType":"string","required":true},
+            "firstName": {"dataType":"string","required":true},
+            "lastName": {"dataType":"string","required":true},
+            "email": {"dataType":"string","required":true},
+            "password": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
@@ -501,9 +501,9 @@ const models: TsoaRoute.Models = {
     "SigninResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "dataType": "nestedObjectLiteral", "nestedProperties": {} },
-            "data": { "dataType": "nestedObjectLiteral", "nestedProperties": { "rights": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "action": { "dataType": "string", "required": true }, "obj": { "dataType": "string", "required": true } } }, "required": true }, "token": { "dataType": "string", "required": true }, "account": { "dataType": "nestedObjectLiteral", "nestedProperties": { "language": { "dataType": "string", "required": true }, "name": { "dataType": "string", "required": true }, "position": { "dataType": "string", "required": true }, "phone": { "dataType": "string", "required": true }, "patronymicName": { "dataType": "string", "required": true }, "lastName": { "dataType": "string", "required": true }, "email": { "dataType": "string", "required": true }, "id": { "dataType": "string", "required": true } }, "required": true } } },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"dataType":"nestedObjectLiteral","nestedProperties":{}},
+            "data": {"dataType":"nestedObjectLiteral","nestedProperties":{"rights":{"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"action":{"dataType":"string","required":true},"obj":{"dataType":"string","required":true}}},"required":true},"token":{"dataType":"string","required":true},"account":{"dataType":"nestedObjectLiteral","nestedProperties":{"language":{"dataType":"string","required":true},"name":{"dataType":"string","required":true},"position":{"dataType":"string","required":true},"phone":{"dataType":"string","required":true},"patronymicName":{"dataType":"string","required":true},"lastName":{"dataType":"string","required":true},"email":{"dataType":"string","required":true},"id":{"dataType":"string","required":true}},"required":true}}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -511,8 +511,8 @@ const models: TsoaRoute.Models = {
     "ISigninParams": {
         "dataType": "refObject",
         "properties": {
-            "email": { "dataType": "string", "required": true },
-            "password": { "dataType": "string", "required": true },
+            "email": {"dataType":"string","required":true},
+            "password": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
@@ -520,9 +520,9 @@ const models: TsoaRoute.Models = {
     "ResetPasswordResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "dataType": "nestedObjectLiteral", "nestedProperties": {} },
-            "data": { "dataType": "nestedObjectLiteral", "nestedProperties": {} },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"dataType":"nestedObjectLiteral","nestedProperties":{}},
+            "data": {"dataType":"nestedObjectLiteral","nestedProperties":{}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -530,8 +530,8 @@ const models: TsoaRoute.Models = {
     "IResetPasswordParams": {
         "dataType": "refObject",
         "properties": {
-            "restorePassCode": { "dataType": "string", "required": true },
-            "password": { "dataType": "string", "required": true },
+            "restorePassCode": {"dataType":"string","required":true},
+            "password": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
@@ -539,9 +539,9 @@ const models: TsoaRoute.Models = {
     "ForgotPasswordResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "dataType": "nestedObjectLiteral", "nestedProperties": {} },
-            "data": { "dataType": "nestedObjectLiteral", "nestedProperties": {} },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"dataType":"nestedObjectLiteral","nestedProperties":{}},
+            "data": {"dataType":"nestedObjectLiteral","nestedProperties":{}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -549,9 +549,9 @@ const models: TsoaRoute.Models = {
     "VerifyResetPasswordTokenResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "dataType": "nestedObjectLiteral", "nestedProperties": {} },
-            "data": { "dataType": "nestedObjectLiteral", "nestedProperties": {} },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"dataType":"nestedObjectLiteral","nestedProperties":{}},
+            "data": {"dataType":"nestedObjectLiteral","nestedProperties":{}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -559,7 +559,7 @@ const models: TsoaRoute.Models = {
     "IBusinessPeriodMeta": {
         "dataType": "refObject",
         "properties": {
-            "ref": { "ref": "IRefItem", "required": true },
+            "ref": {"ref":"IRefItem","required":true},
         },
         "additionalProperties": false,
     },
@@ -567,9 +567,9 @@ const models: TsoaRoute.Models = {
     "IBusinessPeriodContentsItem": {
         "dataType": "refObject",
         "properties": {
-            "name": { "dataType": "string", "required": true },
-            "description": { "dataType": "string", "required": true },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+            "name": {"dataType":"string","required":true},
+            "description": {"dataType":"string","required":true},
+            "extra": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
     },
@@ -578,14 +578,14 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
         },
-        "additionalProperties": { "ref": "IBusinessPeriodContentsItem" },
+        "additionalProperties": {"ref":"IBusinessPeriodContentsItem"},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "IScheduleTimeRange": {
         "dataType": "refObject",
         "properties": {
-            "start": { "dataType": "double", "required": true },
-            "end": { "dataType": "double", "required": true },
+            "start": {"dataType":"double","required":true},
+            "end": {"dataType":"double","required":true},
         },
         "additionalProperties": false,
     },
@@ -593,10 +593,10 @@ const models: TsoaRoute.Models = {
     "ISchedule": {
         "dataType": "refObject",
         "properties": {
-            "active": { "dataType": "boolean", "required": true },
-            "time": { "ref": "IScheduleTimeRange" },
-            "weekDays": { "dataType": "array", "array": { "dataType": "double" } },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+            "active": {"dataType":"boolean","required":true},
+            "time": {"ref":"IScheduleTimeRange"},
+            "weekDays": {"dataType":"array","array":{"dataType":"double"}},
+            "extra": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
     },
@@ -604,12 +604,12 @@ const models: TsoaRoute.Models = {
     "IBusinessPeriodItem": {
         "dataType": "refObject",
         "properties": {
-            "id": { "dataType": "string" },
-            "name": { "dataType": "string" },
-            "active": { "dataType": "boolean", "required": true },
-            "contents": { "ref": "IBusinessPeriodContents", "required": true },
-            "schedule": { "dataType": "array", "array": { "ref": "ISchedule" }, "required": true },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+            "id": {"dataType":"string"},
+            "name": {"dataType":"string"},
+            "active": {"dataType":"boolean","required":true},
+            "contents": {"ref":"IBusinessPeriodContents","required":true},
+            "schedule": {"dataType":"array","array":{"ref":"ISchedule"},"required":true},
+            "extra": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
     },
@@ -617,9 +617,9 @@ const models: TsoaRoute.Models = {
     "IBusinessPeriodsResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "ref": "IBusinessPeriodMeta" },
-            "data": { "dataType": "array", "array": { "ref": "IBusinessPeriodItem" } },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"ref":"IBusinessPeriodMeta"},
+            "data": {"dataType":"array","array":{"ref":"IBusinessPeriodItem"}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -627,9 +627,9 @@ const models: TsoaRoute.Models = {
     "IBusinessPeriodResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "ref": "IBusinessPeriodMeta" },
-            "data": { "ref": "IBusinessPeriodItem" },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"ref":"IBusinessPeriodMeta"},
+            "data": {"ref":"IBusinessPeriodItem"},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -637,11 +637,11 @@ const models: TsoaRoute.Models = {
     "IBusinessPeriodCreateRequest": {
         "dataType": "refObject",
         "properties": {
-            "active": { "dataType": "boolean", "required": true },
-            "name": { "dataType": "string" },
-            "contents": { "dataType": "union", "subSchemas": [{ "ref": "IBusinessPeriodContents" }, { "dataType": "any" }] },
-            "schedule": { "dataType": "array", "array": { "ref": "ISchedule" }, "required": true },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+            "active": {"dataType":"boolean","required":true},
+            "name": {"dataType":"string"},
+            "contents": {"dataType":"union","subSchemas":[{"ref":"IBusinessPeriodContents"},{"dataType":"any"}]},
+            "schedule": {"dataType":"array","array":{"ref":"ISchedule"},"required":true},
+            "extra": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
     },
@@ -649,7 +649,7 @@ const models: TsoaRoute.Models = {
     "ICheckueMeta": {
         "dataType": "refObject",
         "properties": {
-            "ref": { "ref": "IRefItem", "required": true },
+            "ref": {"ref":"IRefItem","required":true},
         },
         "additionalProperties": false,
     },
@@ -661,54 +661,54 @@ const models: TsoaRoute.Models = {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ScenarioCommonActionTypes": {
         "dataType": "refEnum",
-        "enums": ["visible-by-terminal", "visible-by-store", "visible-by-business-period", "visible-by-order-type"],
+        "enums": ["visible-by-terminal","visible-by-store","visible-by-business-period","visible-by-order-type"],
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ScenarioProductActionTypes": {
         "dataType": "refEnum",
-        "enums": ["up-limit", "down-limit"],
+        "enums": ["up-limit","down-limit"],
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ScenarioSelectorActionTypes": {
         "dataType": "refEnum",
-        "enums": ["max-usage", "min-usage", "default-products"],
+        "enums": ["max-usage","min-usage","default-products"],
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ScenarioProgrammActionTypes": {
         "dataType": "refEnum",
-        "enums": ["switch", "expression"],
+        "enums": ["switch","expression"],
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ScenarioPriceActionTypes": {
         "dataType": "refEnum",
-        "enums": ["price", "price-by-business-period", "price-by-order-type"],
+        "enums": ["price","price-by-business-period","price-by-order-type"],
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ScenarioEntityTypes": {
         "dataType": "refEnum",
-        "enums": ["business-period", "product", "selector", "order-type", "currency", "checkue"],
+        "enums": ["business-period","product","selector","order-type","currency","checkue"],
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "IScenarioPropertyAccessor": {
         "dataType": "refObject",
         "properties": {
-            "entity": { "ref": "ScenarioEntityTypes", "required": true },
-            "prop": { "dataType": "string", "required": true },
+            "entity": {"ref":"ScenarioEntityTypes","required":true},
+            "prop": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ScenarioProgramOperations": {
         "dataType": "refEnum",
-        "enums": ["or", "xor", "and"],
+        "enums": ["or","xor","and"],
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "IScenarioExpression": {
         "dataType": "refObject",
         "properties": {
-            "prop1": { "ref": "IScenarioPropertyAccessor", "required": true },
-            "prop2": { "ref": "IScenarioPropertyAccessor", "required": true },
-            "operation": { "ref": "ScenarioProgramOperations", "required": true },
+            "prop1": {"ref":"IScenarioPropertyAccessor","required":true},
+            "prop2": {"ref":"IScenarioPropertyAccessor","required":true},
+            "operation": {"ref":"ScenarioProgramOperations","required":true},
         },
         "additionalProperties": false,
     },
@@ -716,10 +716,11 @@ const models: TsoaRoute.Models = {
     "IScenarioPriceValue": {
         "dataType": "refObject",
         "properties": {
-            "currency": { "dataType": "string", "required": true },
-            "value": { "dataType": "double", "required": true },
-            "isStatic": { "dataType": "boolean", "required": true },
-            "isPersentage": { "dataType": "boolean", "required": true },
+            "currency": {"dataType":"string","required":true},
+            "value": {"dataType":"double","required":true},
+            "isStatic": {"dataType":"boolean","required":true},
+            "isPersentage": {"dataType":"boolean","required":true},
+            "entities": {"dataType":"array","array":{"dataType":"string"}},
         },
         "additionalProperties": false,
     },
@@ -727,10 +728,10 @@ const models: TsoaRoute.Models = {
     "IScenario": {
         "dataType": "refObject",
         "properties": {
-            "active": { "dataType": "boolean", "required": true },
-            "action": { "dataType": "union", "subSchemas": [{ "ref": "ScenarioIntroActionTypes" }, { "ref": "ScenarioCommonActionTypes" }, { "ref": "ScenarioProductActionTypes" }, { "ref": "ScenarioSelectorActionTypes" }, { "ref": "ScenarioProgrammActionTypes" }, { "ref": "ScenarioPriceActionTypes" }], "required": true },
-            "value": { "dataType": "union", "subSchemas": [{ "dataType": "double" }, { "dataType": "string" }, { "dataType": "array", "array": { "dataType": "string" } }, { "dataType": "array", "array": { "dataType": "double" } }, { "dataType": "array", "array": { "ref": "IScenarioExpression" } }, { "ref": "IScenarioPriceValue" }, { "ref": "IScenarioSwitch" }, { "dataType": "enum", "enums": [null] }] },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+            "active": {"dataType":"boolean","required":true},
+            "action": {"dataType":"union","subSchemas":[{"ref":"ScenarioIntroActionTypes"},{"ref":"ScenarioCommonActionTypes"},{"ref":"ScenarioProductActionTypes"},{"ref":"ScenarioSelectorActionTypes"},{"ref":"ScenarioProgrammActionTypes"},{"ref":"ScenarioPriceActionTypes"}],"required":true},
+            "value": {"dataType":"union","subSchemas":[{"dataType":"double"},{"dataType":"string"},{"dataType":"array","array":{"dataType":"string"}},{"dataType":"array","array":{"dataType":"double"}},{"dataType":"array","array":{"ref":"IScenarioExpression"}},{"ref":"IScenarioPriceValue"},{"ref":"IScenarioSwitch"},{"dataType":"enum","enums":[null]}]},
+            "extra": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
     },
@@ -738,9 +739,9 @@ const models: TsoaRoute.Models = {
     "IScenarioSwitch": {
         "dataType": "refObject",
         "properties": {
-            "condition": { "dataType": "array", "array": { "ref": "IScenarioExpression" }, "required": true },
-            "expressionPositive": { "ref": "IScenario", "required": true },
-            "expressionNegative": { "ref": "IScenario", "required": true },
+            "condition": {"dataType":"array","array":{"ref":"IScenarioExpression"},"required":true},
+            "expressionPositive": {"ref":"IScenario","required":true},
+            "expressionNegative": {"ref":"IScenario","required":true},
         },
         "additionalProperties": false,
     },
@@ -748,11 +749,11 @@ const models: TsoaRoute.Models = {
     "ICheckueItem": {
         "dataType": "refObject",
         "properties": {
-            "id": { "dataType": "string", "required": true },
-            "active": { "dataType": "boolean", "required": true },
-            "name": { "dataType": "string", "required": true },
-            "scenarios": { "dataType": "array", "array": { "ref": "IScenario" }, "required": true },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+            "id": {"dataType":"string","required":true},
+            "active": {"dataType":"boolean","required":true},
+            "name": {"dataType":"string","required":true},
+            "scenarios": {"dataType":"array","array":{"ref":"IScenario"},"required":true},
+            "extra": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
     },
@@ -760,9 +761,9 @@ const models: TsoaRoute.Models = {
     "CheckuesResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "ref": "ICheckueMeta" },
-            "data": { "dataType": "array", "array": { "ref": "ICheckueItem" } },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"ref":"ICheckueMeta"},
+            "data": {"dataType":"array","array":{"ref":"ICheckueItem"}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -770,9 +771,9 @@ const models: TsoaRoute.Models = {
     "CheckueResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "ref": "ICheckueMeta" },
-            "data": { "ref": "ICheckueItem" },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"ref":"ICheckueMeta"},
+            "data": {"ref":"ICheckueItem"},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -780,10 +781,10 @@ const models: TsoaRoute.Models = {
     "CheckueCreateRequest": {
         "dataType": "refObject",
         "properties": {
-            "active": { "dataType": "boolean" },
-            "name": { "dataType": "string", "required": true },
-            "scenarios": { "dataType": "array", "array": { "ref": "IScenario" } },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+            "active": {"dataType":"boolean"},
+            "name": {"dataType":"string","required":true},
+            "scenarios": {"dataType":"array","array":{"ref":"IScenario"}},
+            "extra": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
     },
@@ -791,10 +792,10 @@ const models: TsoaRoute.Models = {
     "CheckueUpdateRequest": {
         "dataType": "refObject",
         "properties": {
-            "active": { "dataType": "boolean" },
-            "name": { "dataType": "string" },
-            "scenarios": { "dataType": "array", "array": { "ref": "IScenario" } },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+            "active": {"dataType":"boolean"},
+            "name": {"dataType":"string"},
+            "scenarios": {"dataType":"array","array":{"ref":"IScenario"}},
+            "extra": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
     },
@@ -802,7 +803,7 @@ const models: TsoaRoute.Models = {
     "ICurrencyMeta": {
         "dataType": "refObject",
         "properties": {
-            "ref": { "ref": "IRefItem", "required": true },
+            "ref": {"ref":"IRefItem","required":true},
         },
         "additionalProperties": false,
     },
@@ -810,13 +811,13 @@ const models: TsoaRoute.Models = {
     "ICurrencyItem": {
         "dataType": "refObject",
         "properties": {
-            "id": { "dataType": "string", "required": true },
-            "isDefault": { "dataType": "boolean", "required": true },
-            "active": { "dataType": "boolean", "required": true },
-            "code": { "dataType": "string", "required": true },
-            "name": { "dataType": "string", "required": true },
-            "symbol": { "dataType": "string", "required": true },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+            "id": {"dataType":"string","required":true},
+            "isDefault": {"dataType":"boolean","required":true},
+            "active": {"dataType":"boolean","required":true},
+            "code": {"dataType":"string","required":true},
+            "name": {"dataType":"string","required":true},
+            "symbol": {"dataType":"string","required":true},
+            "extra": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
     },
@@ -824,9 +825,9 @@ const models: TsoaRoute.Models = {
     "CurrenciesResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "ref": "ICurrencyMeta" },
-            "data": { "dataType": "array", "array": { "ref": "ICurrencyItem" } },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"ref":"ICurrencyMeta"},
+            "data": {"dataType":"array","array":{"ref":"ICurrencyItem"}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -834,9 +835,9 @@ const models: TsoaRoute.Models = {
     "CurrencyResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "ref": "ICurrencyMeta" },
-            "data": { "ref": "ICurrencyItem" },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"ref":"ICurrencyMeta"},
+            "data": {"ref":"ICurrencyItem"},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -844,12 +845,12 @@ const models: TsoaRoute.Models = {
     "CurrencyCreateRequest": {
         "dataType": "refObject",
         "properties": {
-            "active": { "dataType": "boolean" },
-            "isDefault": { "dataType": "boolean" },
-            "code": { "dataType": "string", "required": true },
-            "name": { "dataType": "string", "required": true },
-            "symbol": { "dataType": "string", "required": true },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+            "active": {"dataType":"boolean"},
+            "isDefault": {"dataType":"boolean"},
+            "code": {"dataType":"string","required":true},
+            "name": {"dataType":"string","required":true},
+            "symbol": {"dataType":"string","required":true},
+            "extra": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
     },
@@ -857,12 +858,12 @@ const models: TsoaRoute.Models = {
     "CurrencyUpdateRequest": {
         "dataType": "refObject",
         "properties": {
-            "active": { "dataType": "boolean" },
-            "isDefault": { "dataType": "boolean" },
-            "code": { "dataType": "string" },
-            "name": { "dataType": "string" },
-            "symbol": { "dataType": "string" },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+            "active": {"dataType":"boolean"},
+            "isDefault": {"dataType":"boolean"},
+            "code": {"dataType":"string"},
+            "name": {"dataType":"string"},
+            "symbol": {"dataType":"string"},
+            "extra": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
     },
@@ -870,25 +871,25 @@ const models: TsoaRoute.Models = {
     "IIntegrationInfoMeta": {
         "dataType": "refObject",
         "properties": {
-            "ref": { "ref": "IRefItem", "required": true },
+            "ref": {"ref":"IRefItem","required":true},
         },
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "IntegrationStates": {
         "dataType": "refEnum",
-        "enums": [0, 1],
+        "enums": [0,1],
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "IIntegrationInfo": {
         "dataType": "refObject",
         "properties": {
-            "id": { "dataType": "string", "required": true },
-            "name": { "dataType": "string", "required": true },
-            "description": { "dataType": "string", "required": true },
-            "version": { "ref": "IVersion", "required": true },
-            "state": { "ref": "IntegrationStates", "required": true },
-            "lastUpdate": { "dataType": "datetime", "required": true },
+            "id": {"dataType":"string","required":true},
+            "name": {"dataType":"string","required":true},
+            "description": {"dataType":"string","required":true},
+            "version": {"ref":"IVersion","required":true},
+            "state": {"ref":"IntegrationStates","required":true},
+            "lastUpdate": {"dataType":"datetime","required":true},
         },
         "additionalProperties": false,
     },
@@ -896,9 +897,9 @@ const models: TsoaRoute.Models = {
     "IntegrationsGetResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "ref": "IIntegrationInfoMeta" },
-            "data": { "dataType": "array", "array": { "ref": "IIntegrationInfo" } },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"ref":"IIntegrationInfoMeta"},
+            "data": {"dataType":"array","array":{"ref":"IIntegrationInfo"}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -906,9 +907,9 @@ const models: TsoaRoute.Models = {
     "IntegrationResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "ref": "IIntegrationInfoMeta" },
-            "data": { "ref": "IIntegrationInfo" },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"ref":"IIntegrationInfoMeta"},
+            "data": {"ref":"IIntegrationInfo"},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -916,11 +917,11 @@ const models: TsoaRoute.Models = {
     "IUpdateIntegrationParams": {
         "dataType": "refObject",
         "properties": {
-            "name": { "dataType": "string" },
-            "description": { "dataType": "string" },
-            "version": { "ref": "IVersion" },
-            "state": { "ref": "IntegrationStates" },
-            "lastUpdate": { "dataType": "datetime" },
+            "name": {"dataType":"string"},
+            "description": {"dataType":"string"},
+            "version": {"ref":"IVersion"},
+            "state": {"ref":"IntegrationStates"},
+            "lastUpdate": {"dataType":"datetime"},
         },
         "additionalProperties": false,
     },
@@ -928,7 +929,7 @@ const models: TsoaRoute.Models = {
     "LanguageMeta": {
         "dataType": "refObject",
         "properties": {
-            "ref": { "ref": "IRefItem", "required": true },
+            "ref": {"ref":"IRefItem","required":true},
         },
         "additionalProperties": false,
     },
@@ -936,15 +937,15 @@ const models: TsoaRoute.Models = {
     "ILanguageItem": {
         "dataType": "refObject",
         "properties": {
-            "id": { "dataType": "string", "required": true },
-            "isDefault": { "dataType": "boolean" },
-            "active": { "dataType": "boolean", "required": true },
-            "code": { "dataType": "string", "required": true },
-            "name": { "dataType": "string", "required": true },
-            "assets": { "dataType": "array", "array": { "dataType": "string" } },
-            "resources": { "dataType": "nestedObjectLiteral", "nestedProperties": { "main": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }] } } },
-            "translation": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }] },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+            "id": {"dataType":"string","required":true},
+            "isDefault": {"dataType":"boolean"},
+            "active": {"dataType":"boolean","required":true},
+            "code": {"dataType":"string","required":true},
+            "name": {"dataType":"string","required":true},
+            "assets": {"dataType":"array","array":{"dataType":"string"}},
+            "resources": {"dataType":"nestedObjectLiteral","nestedProperties":{"main":{"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}]}}},
+            "translation": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}]},
+            "extra": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
     },
@@ -952,9 +953,9 @@ const models: TsoaRoute.Models = {
     "LanguagesResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "ref": "LanguageMeta" },
-            "data": { "dataType": "array", "array": { "ref": "ILanguageItem" } },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"ref":"LanguageMeta"},
+            "data": {"dataType":"array","array":{"ref":"ILanguageItem"}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -962,9 +963,9 @@ const models: TsoaRoute.Models = {
     "LanguageResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "ref": "LanguageMeta" },
-            "data": { "ref": "ILanguageItem" },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"ref":"LanguageMeta"},
+            "data": {"ref":"ILanguageItem"},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -972,14 +973,14 @@ const models: TsoaRoute.Models = {
     "LanguageCreateRequest": {
         "dataType": "refObject",
         "properties": {
-            "active": { "dataType": "boolean" },
-            "isDefault": { "dataType": "boolean" },
-            "code": { "dataType": "string", "required": true },
-            "name": { "dataType": "string", "required": true },
-            "assets": { "dataType": "array", "array": { "dataType": "string" } },
-            "resources": { "dataType": "nestedObjectLiteral", "nestedProperties": { "main": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }] } } },
-            "translation": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }] },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+            "active": {"dataType":"boolean"},
+            "isDefault": {"dataType":"boolean"},
+            "code": {"dataType":"string","required":true},
+            "name": {"dataType":"string","required":true},
+            "assets": {"dataType":"array","array":{"dataType":"string"}},
+            "resources": {"dataType":"nestedObjectLiteral","nestedProperties":{"main":{"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}]}}},
+            "translation": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}]},
+            "extra": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
     },
@@ -987,14 +988,14 @@ const models: TsoaRoute.Models = {
     "LanguageUpdateRequest": {
         "dataType": "refObject",
         "properties": {
-            "active": { "dataType": "boolean" },
-            "isDefault": { "dataType": "boolean" },
-            "code": { "dataType": "string" },
-            "name": { "dataType": "string" },
-            "assets": { "dataType": "array", "array": { "dataType": "string" } },
-            "resources": { "dataType": "nestedObjectLiteral", "nestedProperties": { "main": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }] } } },
-            "translation": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }] },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+            "active": {"dataType":"boolean"},
+            "isDefault": {"dataType":"boolean"},
+            "code": {"dataType":"string"},
+            "name": {"dataType":"string"},
+            "assets": {"dataType":"array","array":{"dataType":"string"}},
+            "resources": {"dataType":"nestedObjectLiteral","nestedProperties":{"main":{"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}]}}},
+            "translation": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}]},
+            "extra": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
     },
@@ -1002,13 +1003,13 @@ const models: TsoaRoute.Models = {
     "ILanguageAsset": {
         "dataType": "refObject",
         "properties": {
-            "id": { "dataType": "string", "required": true },
-            "active": { "dataType": "boolean", "required": true },
-            "lastUpdate": { "dataType": "datetime", "required": true },
-            "name": { "dataType": "string", "required": true },
-            "ext": { "ref": "AssetExtensions", "required": true },
-            "path": { "dataType": "string", "required": true },
-            "mipmap": { "dataType": "nestedObjectLiteral", "nestedProperties": { "x32": { "dataType": "string", "required": true }, "x128": { "dataType": "string", "required": true } }, "required": true },
+            "id": {"dataType":"string","required":true},
+            "active": {"dataType":"boolean","required":true},
+            "lastUpdate": {"dataType":"datetime","required":true},
+            "name": {"dataType":"string","required":true},
+            "ext": {"ref":"AssetExtensions","required":true},
+            "path": {"dataType":"string","required":true},
+            "mipmap": {"dataType":"nestedObjectLiteral","nestedProperties":{"x32":{"dataType":"string","required":true},"x128":{"dataType":"string","required":true}},"required":true},
         },
         "additionalProperties": false,
     },
@@ -1016,9 +1017,9 @@ const models: TsoaRoute.Models = {
     "ILanguageGetAssetsResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "dataType": "nestedObjectLiteral", "nestedProperties": {} },
-            "data": { "dataType": "array", "array": { "ref": "ILanguageAsset" } },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"dataType":"nestedObjectLiteral","nestedProperties":{}},
+            "data": {"dataType":"array","array":{"ref":"ILanguageAsset"}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -1026,9 +1027,9 @@ const models: TsoaRoute.Models = {
     "ILanguageCreateAssetsResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "dataType": "nestedObjectLiteral", "nestedProperties": { "asset": { "dataType": "nestedObjectLiteral", "nestedProperties": { "ref": { "ref": "IRefItem", "required": true } }, "required": true }, "language": { "dataType": "nestedObjectLiteral", "nestedProperties": { "ref": { "ref": "IRefItem", "required": true } }, "required": true } } },
-            "data": { "dataType": "nestedObjectLiteral", "nestedProperties": { "language": { "ref": "ILanguageItem", "required": true }, "asset": { "ref": "ILanguageAsset", "required": true } } },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"dataType":"nestedObjectLiteral","nestedProperties":{"asset":{"dataType":"nestedObjectLiteral","nestedProperties":{"ref":{"ref":"IRefItem","required":true}},"required":true},"language":{"dataType":"nestedObjectLiteral","nestedProperties":{"ref":{"ref":"IRefItem","required":true}},"required":true}}},
+            "data": {"dataType":"nestedObjectLiteral","nestedProperties":{"language":{"ref":"ILanguageItem","required":true},"asset":{"ref":"ILanguageAsset","required":true}}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -1041,8 +1042,8 @@ const models: TsoaRoute.Models = {
     "ILanguageUpdateAssetsRequest": {
         "dataType": "refObject",
         "properties": {
-            "name": { "dataType": "string", "required": true },
-            "active": { "dataType": "boolean", "required": true },
+            "name": {"dataType":"string","required":true},
+            "active": {"dataType":"boolean","required":true},
         },
         "additionalProperties": false,
     },
@@ -1050,9 +1051,9 @@ const models: TsoaRoute.Models = {
     "ILanguageDeleteAssetsResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "dataType": "nestedObjectLiteral", "nestedProperties": { "asset": { "dataType": "nestedObjectLiteral", "nestedProperties": { "ref": { "ref": "IRefItem", "required": true } }, "required": true }, "language": { "dataType": "nestedObjectLiteral", "nestedProperties": { "ref": { "ref": "IRefItem", "required": true } }, "required": true } } },
-            "data": { "dataType": "nestedObjectLiteral", "nestedProperties": {} },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"dataType":"nestedObjectLiteral","nestedProperties":{"asset":{"dataType":"nestedObjectLiteral","nestedProperties":{"ref":{"ref":"IRefItem","required":true}},"required":true},"language":{"dataType":"nestedObjectLiteral","nestedProperties":{"ref":{"ref":"IRefItem","required":true}},"required":true}}},
+            "data": {"dataType":"nestedObjectLiteral","nestedProperties":{}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -1060,7 +1061,7 @@ const models: TsoaRoute.Models = {
     "ILicenseInfoMeta": {
         "dataType": "refObject",
         "properties": {
-            "ref": { "ref": "IRefItem", "required": true },
+            "ref": {"ref":"IRefItem","required":true},
         },
         "additionalProperties": false,
     },
@@ -1068,42 +1069,42 @@ const models: TsoaRoute.Models = {
     "ILicenseType": {
         "dataType": "refObject",
         "properties": {
-            "id": { "dataType": "string" },
-            "name": { "dataType": "string", "required": true },
-            "description": { "dataType": "string", "required": true },
-            "price": { "dataType": "double", "required": true },
-            "payNotice": { "dataType": "string", "required": true },
-            "integrationId": { "dataType": "string", "required": true },
+            "id": {"dataType":"string"},
+            "name": {"dataType":"string","required":true},
+            "description": {"dataType":"string","required":true},
+            "price": {"dataType":"double","required":true},
+            "payNotice": {"dataType":"string","required":true},
+            "integrationId": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "LicenseStates": {
         "dataType": "refEnum",
-        "enums": [-1, 0, 1],
+        "enums": [-1,0,1],
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "LicenseStatuses": {
         "dataType": "refEnum",
-        "enums": ["NEW", "DEMO", "ACTIVE", "WITHDRAWN"],
+        "enums": ["NEW","DEMO","ACTIVE","WITHDRAWN"],
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ILicenseAccountInfo": {
         "dataType": "refObject",
         "properties": {
-            "id": { "dataType": "string", "required": true },
-            "clientId": { "dataType": "string", "required": true },
-            "dateEnd": { "dataType": "datetime", "required": true },
-            "dateStart": { "dataType": "datetime", "required": true },
-            "key": { "dataType": "string", "required": true },
-            "md5key": { "dataType": "string", "required": true },
-            "lastUpdate": { "dataType": "datetime", "required": true },
-            "licType": { "ref": "ILicenseType", "required": true },
-            "licTypeId": { "dataType": "string", "required": true },
-            "state": { "ref": "LicenseStates", "required": true },
-            "status": { "ref": "LicenseStatuses", "required": true },
-            "imei": { "dataType": "string", "required": true },
-            "terminalId": { "dataType": "string", "required": true },
+            "id": {"dataType":"string","required":true},
+            "clientId": {"dataType":"string","required":true},
+            "dateEnd": {"dataType":"datetime","required":true},
+            "dateStart": {"dataType":"datetime","required":true},
+            "key": {"dataType":"string","required":true},
+            "md5key": {"dataType":"string","required":true},
+            "lastUpdate": {"dataType":"datetime","required":true},
+            "licType": {"ref":"ILicenseType","required":true},
+            "licTypeId": {"dataType":"string","required":true},
+            "state": {"ref":"LicenseStates","required":true},
+            "status": {"ref":"LicenseStatuses","required":true},
+            "imei": {"dataType":"string","required":true},
+            "terminalId": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
@@ -1111,9 +1112,9 @@ const models: TsoaRoute.Models = {
     "LicensesAccountResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "ref": "ILicenseInfoMeta" },
-            "data": { "dataType": "array", "array": { "ref": "ILicenseAccountInfo" } },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"ref":"ILicenseInfoMeta"},
+            "data": {"dataType":"array","array":{"ref":"ILicenseAccountInfo"}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -1121,9 +1122,9 @@ const models: TsoaRoute.Models = {
     "LicenseAccountResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "ref": "ILicenseInfoMeta" },
-            "data": { "ref": "ILicenseAccountInfo" },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"ref":"ILicenseInfoMeta"},
+            "data": {"ref":"ILicenseAccountInfo"},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -1131,18 +1132,18 @@ const models: TsoaRoute.Models = {
     "ILicenseInfo": {
         "dataType": "refObject",
         "properties": {
-            "id": { "dataType": "string", "required": true },
-            "clientId": { "dataType": "string", "required": true },
-            "dateEnd": { "dataType": "datetime", "required": true },
-            "dateStart": { "dataType": "datetime", "required": true },
-            "key": { "dataType": "string", "required": true },
-            "md5key": { "dataType": "string", "required": true },
-            "lastUpdate": { "dataType": "datetime", "required": true },
-            "licType": { "ref": "ILicenseType", "required": true },
-            "licTypeId": { "dataType": "string", "required": true },
-            "state": { "ref": "LicenseStates", "required": true },
-            "status": { "ref": "LicenseStatuses", "required": true },
-            "imei": { "dataType": "string", "required": true },
+            "id": {"dataType":"string","required":true},
+            "clientId": {"dataType":"string","required":true},
+            "dateEnd": {"dataType":"datetime","required":true},
+            "dateStart": {"dataType":"datetime","required":true},
+            "key": {"dataType":"string","required":true},
+            "md5key": {"dataType":"string","required":true},
+            "lastUpdate": {"dataType":"datetime","required":true},
+            "licType": {"ref":"ILicenseType","required":true},
+            "licTypeId": {"dataType":"string","required":true},
+            "state": {"ref":"LicenseStates","required":true},
+            "status": {"ref":"LicenseStatuses","required":true},
+            "imei": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
@@ -1150,9 +1151,9 @@ const models: TsoaRoute.Models = {
     "LicensesResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "ref": "ILicenseInfoMeta" },
-            "data": { "dataType": "array", "array": { "ref": "ILicenseInfo" } },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"ref":"ILicenseInfoMeta"},
+            "data": {"dataType":"array","array":{"ref":"ILicenseInfo"}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -1160,12 +1161,12 @@ const models: TsoaRoute.Models = {
     "ICreateLicenseParams": {
         "dataType": "refObject",
         "properties": {
-            "clientId": { "dataType": "string", "required": true },
-            "dateStart": { "dataType": "datetime", "required": true },
-            "dateEnd": { "dataType": "datetime", "required": true },
-            "state": { "ref": "LicenseStates", "required": true },
-            "status": { "ref": "LicenseStatuses", "required": true },
-            "licTypeId": { "dataType": "string", "required": true },
+            "clientId": {"dataType":"string","required":true},
+            "dateStart": {"dataType":"datetime","required":true},
+            "dateEnd": {"dataType":"datetime","required":true},
+            "state": {"ref":"LicenseStates","required":true},
+            "status": {"ref":"LicenseStatuses","required":true},
+            "licTypeId": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
@@ -1173,12 +1174,12 @@ const models: TsoaRoute.Models = {
     "IUpdateLicenseParams": {
         "dataType": "refObject",
         "properties": {
-            "clientId": { "dataType": "string" },
-            "dateStart": { "dataType": "datetime" },
-            "dateEnd": { "dataType": "datetime" },
-            "state": { "ref": "LicenseStates" },
-            "status": { "ref": "LicenseStatuses" },
-            "licTypeId": { "dataType": "string" },
+            "clientId": {"dataType":"string"},
+            "dateStart": {"dataType":"datetime"},
+            "dateEnd": {"dataType":"datetime"},
+            "state": {"ref":"LicenseStates"},
+            "status": {"ref":"LicenseStatuses"},
+            "licTypeId": {"dataType":"string"},
         },
         "additionalProperties": false,
     },
@@ -1186,9 +1187,9 @@ const models: TsoaRoute.Models = {
     "LicenseResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "ref": "ILicenseInfoMeta" },
-            "data": { "ref": "ILicenseInfo" },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"ref":"ILicenseInfoMeta"},
+            "data": {"ref":"ILicenseInfo"},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -1196,7 +1197,7 @@ const models: TsoaRoute.Models = {
     "ILicenseTypeInfoMeta": {
         "dataType": "refObject",
         "properties": {
-            "ref": { "ref": "IRefItem", "required": true },
+            "ref": {"ref":"IRefItem","required":true},
         },
         "additionalProperties": false,
     },
@@ -1204,13 +1205,13 @@ const models: TsoaRoute.Models = {
     "ILicenseTypeInfo": {
         "dataType": "refObject",
         "properties": {
-            "id": { "dataType": "string", "required": true },
-            "name": { "dataType": "string", "required": true },
-            "description": { "dataType": "string", "required": true },
-            "price": { "dataType": "double", "required": true },
-            "payNotice": { "dataType": "string", "required": true },
-            "integrationId": { "dataType": "string", "required": true },
-            "lastUpdate": { "dataType": "datetime", "required": true },
+            "id": {"dataType":"string","required":true},
+            "name": {"dataType":"string","required":true},
+            "description": {"dataType":"string","required":true},
+            "price": {"dataType":"double","required":true},
+            "payNotice": {"dataType":"string","required":true},
+            "integrationId": {"dataType":"string","required":true},
+            "lastUpdate": {"dataType":"datetime","required":true},
         },
         "additionalProperties": false,
     },
@@ -1218,9 +1219,9 @@ const models: TsoaRoute.Models = {
     "LicenseTypesGetResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "ref": "ILicenseTypeInfoMeta" },
-            "data": { "dataType": "array", "array": { "ref": "ILicenseTypeInfo" } },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"ref":"ILicenseTypeInfoMeta"},
+            "data": {"dataType":"array","array":{"ref":"ILicenseTypeInfo"}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -1228,9 +1229,9 @@ const models: TsoaRoute.Models = {
     "LicenseTypeResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "ref": "ILicenseTypeInfoMeta" },
-            "data": { "ref": "ILicenseTypeInfo" },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"ref":"ILicenseTypeInfoMeta"},
+            "data": {"ref":"ILicenseTypeInfo"},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -1238,12 +1239,12 @@ const models: TsoaRoute.Models = {
     "ICreateLicenseTypeParams": {
         "dataType": "refObject",
         "properties": {
-            "name": { "dataType": "string", "required": true },
-            "description": { "dataType": "string" },
-            "price": { "dataType": "double", "required": true },
-            "payNotice": { "dataType": "string", "required": true },
-            "integrationId": { "dataType": "string", "required": true },
-            "lastUpdate": { "dataType": "string" },
+            "name": {"dataType":"string","required":true},
+            "description": {"dataType":"string"},
+            "price": {"dataType":"double","required":true},
+            "payNotice": {"dataType":"string","required":true},
+            "integrationId": {"dataType":"string","required":true},
+            "lastUpdate": {"dataType":"string"},
         },
         "additionalProperties": false,
     },
@@ -1251,11 +1252,11 @@ const models: TsoaRoute.Models = {
     "IUpdateLicenseTypeParams": {
         "dataType": "refObject",
         "properties": {
-            "name": { "dataType": "string" },
-            "description": { "dataType": "string" },
-            "price": { "dataType": "double" },
-            "payNotice": { "dataType": "string" },
-            "integrationId": { "dataType": "string" },
+            "name": {"dataType":"string"},
+            "description": {"dataType":"string"},
+            "price": {"dataType":"double"},
+            "payNotice": {"dataType":"string"},
+            "integrationId": {"dataType":"string"},
         },
         "additionalProperties": false,
     },
@@ -1263,27 +1264,27 @@ const models: TsoaRoute.Models = {
     "INodesMeta": {
         "dataType": "refObject",
         "properties": {
-            "ref": { "ref": "IRefItem", "required": true },
+            "ref": {"ref":"IRefItem","required":true},
         },
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "NodeTypes": {
         "dataType": "refEnum",
-        "enums": ["kiosk-root", "kiosk-presets-root", "selector", "product", "product-joint", "selector-joint", "selector-node"],
+        "enums": ["kiosk-root","kiosk-presets-root","selector","product","product-joint","selector-joint","selector-node"],
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "INodeItem": {
         "dataType": "refObject",
         "properties": {
-            "id": { "dataType": "string", "required": true },
-            "active": { "dataType": "boolean", "required": true },
-            "type": { "ref": "NodeTypes", "required": true },
-            "parentId": { "dataType": "string", "required": true },
-            "contentId": { "dataType": "string", "required": true },
-            "children": { "dataType": "array", "array": { "dataType": "string" }, "required": true },
-            "scenarios": { "dataType": "array", "array": { "ref": "IScenario" } },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+            "id": {"dataType":"string","required":true},
+            "active": {"dataType":"boolean","required":true},
+            "type": {"ref":"NodeTypes","required":true},
+            "parentId": {"dataType":"string","required":true},
+            "contentId": {"dataType":"string","required":true},
+            "children": {"dataType":"array","array":{"dataType":"string"},"required":true},
+            "scenarios": {"dataType":"array","array":{"ref":"IScenario"}},
+            "extra": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
     },
@@ -1291,9 +1292,9 @@ const models: TsoaRoute.Models = {
     "INodesResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "ref": "INodesMeta" },
-            "data": { "dataType": "array", "array": { "ref": "INodeItem" } },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"ref":"INodesMeta"},
+            "data": {"dataType":"array","array":{"ref":"INodeItem"}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -1301,9 +1302,9 @@ const models: TsoaRoute.Models = {
     "INodeResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "ref": "INodesMeta" },
-            "data": { "ref": "INodeItem" },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"ref":"INodesMeta"},
+            "data": {"ref":"INodeItem"},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -1311,9 +1312,9 @@ const models: TsoaRoute.Models = {
     "ICreateNodeResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "ref": "INodesMeta" },
-            "data": { "dataType": "nestedObjectLiteral", "nestedProperties": { "created": { "ref": "INodeItem", "required": true }, "changed": { "ref": "INodeItem", "required": true } } },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"ref":"INodesMeta"},
+            "data": {"dataType":"nestedObjectLiteral","nestedProperties":{"created":{"ref":"INodeItem","required":true},"changed":{"ref":"INodeItem","required":true}}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -1321,13 +1322,13 @@ const models: TsoaRoute.Models = {
     "INodeCreateRequest": {
         "dataType": "refObject",
         "properties": {
-            "type": { "ref": "NodeTypes", "required": true },
-            "active": { "dataType": "boolean", "required": true },
-            "parentId": { "dataType": "string", "required": true },
-            "contentId": { "dataType": "string", "required": true },
-            "children": { "dataType": "array", "array": { "dataType": "string" }, "required": true },
-            "scenarios": { "dataType": "array", "array": { "ref": "IScenario" }, "required": true },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+            "type": {"ref":"NodeTypes","required":true},
+            "active": {"dataType":"boolean","required":true},
+            "parentId": {"dataType":"string","required":true},
+            "contentId": {"dataType":"string","required":true},
+            "children": {"dataType":"array","array":{"dataType":"string"},"required":true},
+            "scenarios": {"dataType":"array","array":{"ref":"IScenario"},"required":true},
+            "extra": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
     },
@@ -1335,13 +1336,13 @@ const models: TsoaRoute.Models = {
     "INodeUpdateRequest": {
         "dataType": "refObject",
         "properties": {
-            "type": { "ref": "NodeTypes", "required": true },
-            "active": { "dataType": "boolean", "required": true },
-            "parentId": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }], "required": true },
-            "contentId": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }], "required": true },
-            "children": { "dataType": "array", "array": { "dataType": "string" }, "required": true },
-            "scenarios": { "dataType": "array", "array": { "ref": "IScenario" }, "required": true },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+            "type": {"ref":"NodeTypes","required":true},
+            "active": {"dataType":"boolean","required":true},
+            "parentId": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},
+            "contentId": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},
+            "children": {"dataType":"array","array":{"dataType":"string"},"required":true},
+            "scenarios": {"dataType":"array","array":{"ref":"IScenario"},"required":true},
+            "extra": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
     },
@@ -1349,9 +1350,9 @@ const models: TsoaRoute.Models = {
     "IDeleteNodeResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "ref": "INodesMeta" },
-            "data": { "dataType": "nestedObjectLiteral", "nestedProperties": { "deleted": { "dataType": "array", "array": { "dataType": "string" }, "required": true }, "changed": { "ref": "INodeItem", "required": true } } },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"ref":"INodesMeta"},
+            "data": {"dataType":"nestedObjectLiteral","nestedProperties":{"deleted":{"dataType":"array","array":{"dataType":"string"},"required":true},"changed":{"ref":"INodeItem","required":true}}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -1359,7 +1360,7 @@ const models: TsoaRoute.Models = {
     "IOrderTypeMeta": {
         "dataType": "refObject",
         "properties": {
-            "ref": { "ref": "IRefItem", "required": true },
+            "ref": {"ref":"IRefItem","required":true},
         },
         "additionalProperties": false,
     },
@@ -1367,8 +1368,8 @@ const models: TsoaRoute.Models = {
     "IOrderTypeResources": {
         "dataType": "refObject",
         "properties": {
-            "main": { "dataType": "string", "required": true },
-            "icon": { "dataType": "string", "required": true },
+            "main": {"dataType":"string","required":true},
+            "icon": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
@@ -1376,12 +1377,12 @@ const models: TsoaRoute.Models = {
     "IOrderTypeContentsItem": {
         "dataType": "refObject",
         "properties": {
-            "name": { "dataType": "string", "required": true },
-            "description": { "dataType": "string", "required": true },
-            "color": { "dataType": "string", "required": true },
-            "resources": { "ref": "IOrderTypeResources", "required": true },
-            "assets": { "dataType": "array", "array": { "dataType": "string" }, "required": true },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+            "name": {"dataType":"string","required":true},
+            "description": {"dataType":"string","required":true},
+            "color": {"dataType":"string","required":true},
+            "resources": {"ref":"IOrderTypeResources","required":true},
+            "assets": {"dataType":"array","array":{"dataType":"string"},"required":true},
+            "extra": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
     },
@@ -1390,17 +1391,17 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
         },
-        "additionalProperties": { "ref": "IOrderTypeContentsItem" },
+        "additionalProperties": {"ref":"IOrderTypeContentsItem"},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "IOrderTypeItem": {
         "dataType": "refObject",
         "properties": {
-            "id": { "dataType": "string", "required": true },
-            "active": { "dataType": "boolean", "required": true },
-            "name": { "dataType": "string" },
-            "contents": { "ref": "IOrderTypeContents", "required": true },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+            "id": {"dataType":"string","required":true},
+            "active": {"dataType":"boolean","required":true},
+            "name": {"dataType":"string"},
+            "contents": {"ref":"IOrderTypeContents","required":true},
+            "extra": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
     },
@@ -1408,9 +1409,9 @@ const models: TsoaRoute.Models = {
     "OrderTypesResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "ref": "IOrderTypeMeta" },
-            "data": { "dataType": "array", "array": { "ref": "IOrderTypeItem" } },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"ref":"IOrderTypeMeta"},
+            "data": {"dataType":"array","array":{"ref":"IOrderTypeItem"}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -1418,9 +1419,9 @@ const models: TsoaRoute.Models = {
     "OrderTypeResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "ref": "IOrderTypeMeta" },
-            "data": { "ref": "IOrderTypeItem" },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"ref":"IOrderTypeMeta"},
+            "data": {"ref":"IOrderTypeItem"},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -1428,10 +1429,10 @@ const models: TsoaRoute.Models = {
     "OrderTypeCreateRequest": {
         "dataType": "refObject",
         "properties": {
-            "active": { "dataType": "boolean", "required": true },
-            "isDefault": { "dataType": "boolean" },
-            "contents": { "dataType": "union", "subSchemas": [{ "ref": "IOrderTypeContents" }, { "dataType": "any" }] },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+            "active": {"dataType":"boolean","required":true},
+            "isDefault": {"dataType":"boolean"},
+            "contents": {"dataType":"union","subSchemas":[{"ref":"IOrderTypeContents"},{"dataType":"any"}]},
+            "extra": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
     },
@@ -1439,13 +1440,13 @@ const models: TsoaRoute.Models = {
     "IOrderTypeAsset": {
         "dataType": "refObject",
         "properties": {
-            "id": { "dataType": "string", "required": true },
-            "active": { "dataType": "boolean", "required": true },
-            "lastUpdate": { "dataType": "datetime", "required": true },
-            "name": { "dataType": "string", "required": true },
-            "ext": { "ref": "AssetExtensions", "required": true },
-            "path": { "dataType": "string", "required": true },
-            "mipmap": { "dataType": "nestedObjectLiteral", "nestedProperties": { "x32": { "dataType": "string", "required": true }, "x128": { "dataType": "string", "required": true } }, "required": true },
+            "id": {"dataType":"string","required":true},
+            "active": {"dataType":"boolean","required":true},
+            "lastUpdate": {"dataType":"datetime","required":true},
+            "name": {"dataType":"string","required":true},
+            "ext": {"ref":"AssetExtensions","required":true},
+            "path": {"dataType":"string","required":true},
+            "mipmap": {"dataType":"nestedObjectLiteral","nestedProperties":{"x32":{"dataType":"string","required":true},"x128":{"dataType":"string","required":true}},"required":true},
         },
         "additionalProperties": false,
     },
@@ -1453,9 +1454,9 @@ const models: TsoaRoute.Models = {
     "IOrderTypeGetAllAssetsResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "dataType": "nestedObjectLiteral", "nestedProperties": {} },
-            "data": { "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "array", "array": { "ref": "IOrderTypeAsset" } } },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"dataType":"nestedObjectLiteral","nestedProperties":{}},
+            "data": {"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"array","array":{"ref":"IOrderTypeAsset"}}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -1463,9 +1464,9 @@ const models: TsoaRoute.Models = {
     "IOrderTypeGetAssetsResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "dataType": "nestedObjectLiteral", "nestedProperties": {} },
-            "data": { "dataType": "array", "array": { "ref": "IOrderTypeAsset" } },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"dataType":"nestedObjectLiteral","nestedProperties":{}},
+            "data": {"dataType":"array","array":{"ref":"IOrderTypeAsset"}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -1473,23 +1474,23 @@ const models: TsoaRoute.Models = {
     "IOrderTypeCreateAssetsResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "dataType": "nestedObjectLiteral", "nestedProperties": { "asset": { "dataType": "nestedObjectLiteral", "nestedProperties": { "ref": { "ref": "IRefItem", "required": true } }, "required": true }, "orderType": { "dataType": "nestedObjectLiteral", "nestedProperties": { "ref": { "ref": "IRefItem", "required": true } }, "required": true } } },
-            "data": { "dataType": "nestedObjectLiteral", "nestedProperties": { "orderType": { "ref": "IOrderTypeItem", "required": true }, "asset": { "ref": "IOrderTypeAsset", "required": true } } },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"dataType":"nestedObjectLiteral","nestedProperties":{"asset":{"dataType":"nestedObjectLiteral","nestedProperties":{"ref":{"ref":"IRefItem","required":true}},"required":true},"orderType":{"dataType":"nestedObjectLiteral","nestedProperties":{"ref":{"ref":"IRefItem","required":true}},"required":true}}},
+            "data": {"dataType":"nestedObjectLiteral","nestedProperties":{"orderType":{"ref":"IOrderTypeItem","required":true},"asset":{"ref":"IOrderTypeAsset","required":true}}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "OrderTypeImageTypes": {
         "dataType": "refEnum",
-        "enums": ["main", "icon"],
+        "enums": ["main","icon"],
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "IOrderTypeAssetUpdateRequest": {
         "dataType": "refObject",
         "properties": {
-            "active": { "dataType": "boolean", "required": true },
-            "name": { "dataType": "string", "required": true },
+            "active": {"dataType":"boolean","required":true},
+            "name": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
@@ -1497,9 +1498,9 @@ const models: TsoaRoute.Models = {
     "IOrderTypeDeleteAssetsResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "dataType": "nestedObjectLiteral", "nestedProperties": { "asset": { "dataType": "nestedObjectLiteral", "nestedProperties": { "ref": { "ref": "IRefItem", "required": true } }, "required": true }, "orderType": { "dataType": "nestedObjectLiteral", "nestedProperties": { "ref": { "ref": "IRefItem", "required": true } }, "required": true } } },
-            "data": { "dataType": "nestedObjectLiteral", "nestedProperties": {} },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"dataType":"nestedObjectLiteral","nestedProperties":{"asset":{"dataType":"nestedObjectLiteral","nestedProperties":{"ref":{"ref":"IRefItem","required":true}},"required":true},"orderType":{"dataType":"nestedObjectLiteral","nestedProperties":{"ref":{"ref":"IRefItem","required":true}},"required":true}}},
+            "data": {"dataType":"nestedObjectLiteral","nestedProperties":{}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -1507,7 +1508,7 @@ const models: TsoaRoute.Models = {
     "IProductsMeta": {
         "dataType": "refObject",
         "properties": {
-            "ref": { "ref": "IRefItem", "required": true },
+            "ref": {"ref":"IRefItem","required":true},
         },
         "additionalProperties": false,
     },
@@ -1515,8 +1516,8 @@ const models: TsoaRoute.Models = {
     "IProductResources": {
         "dataType": "refObject",
         "properties": {
-            "main": { "dataType": "string", "required": true },
-            "icon": { "dataType": "string", "required": true },
+            "main": {"dataType":"string","required":true},
+            "icon": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
@@ -1524,13 +1525,13 @@ const models: TsoaRoute.Models = {
     "IProductContentsItem": {
         "dataType": "refObject",
         "properties": {
-            "name": { "dataType": "string", "required": true },
-            "description": { "dataType": "string", "required": true },
-            "color": { "dataType": "string", "required": true },
-            "resources": { "ref": "IProductResources", "required": true },
-            "assets": { "dataType": "array", "array": { "dataType": "string" }, "required": true },
-            "gallery": { "dataType": "array", "array": { "dataType": "string" }, "required": true },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+            "name": {"dataType":"string","required":true},
+            "description": {"dataType":"string","required":true},
+            "color": {"dataType":"string","required":true},
+            "resources": {"ref":"IProductResources","required":true},
+            "assets": {"dataType":"array","array":{"dataType":"string"},"required":true},
+            "gallery": {"dataType":"array","array":{"dataType":"string"},"required":true},
+            "extra": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
     },
@@ -1539,14 +1540,14 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
         },
-        "additionalProperties": { "ref": "IProductContentsItem" },
+        "additionalProperties": {"ref":"IProductContentsItem"},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "IPrice": {
         "dataType": "refObject",
         "properties": {
-            "currency": { "dataType": "string", "required": true },
-            "value": { "dataType": "double", "required": true },
+            "currency": {"dataType":"string","required":true},
+            "value": {"dataType":"double","required":true},
         },
         "additionalProperties": false,
     },
@@ -1554,11 +1555,11 @@ const models: TsoaRoute.Models = {
     "IReceiptItem": {
         "dataType": "refObject",
         "properties": {
-            "name": { "dataType": "string", "required": true },
-            "description": { "dataType": "string", "required": true },
-            "calories": { "dataType": "double", "required": true },
-            "quantity": { "dataType": "double", "required": true },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+            "name": {"dataType":"string","required":true},
+            "description": {"dataType":"string","required":true},
+            "calories": {"dataType":"double","required":true},
+            "quantity": {"dataType":"double","required":true},
+            "extra": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
     },
@@ -1566,14 +1567,14 @@ const models: TsoaRoute.Models = {
     "IProductItem": {
         "dataType": "refObject",
         "properties": {
-            "id": { "dataType": "string" },
-            "active": { "dataType": "boolean", "required": true },
-            "contents": { "ref": "IProductContents", "required": true },
-            "prices": { "dataType": "array", "array": { "ref": "IPrice" }, "required": true },
-            "receipt": { "dataType": "array", "array": { "ref": "IReceiptItem" }, "required": true },
-            "tags": { "dataType": "array", "array": { "dataType": "string" }, "required": true },
-            "joint": { "dataType": "string" },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+            "id": {"dataType":"string"},
+            "active": {"dataType":"boolean","required":true},
+            "contents": {"ref":"IProductContents","required":true},
+            "prices": {"dataType":"array","array":{"ref":"IPrice"},"required":true},
+            "receipt": {"dataType":"array","array":{"ref":"IReceiptItem"},"required":true},
+            "tags": {"dataType":"array","array":{"dataType":"string"},"required":true},
+            "joint": {"dataType":"string"},
+            "extra": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
     },
@@ -1581,9 +1582,9 @@ const models: TsoaRoute.Models = {
     "IProductsResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "ref": "IProductsMeta" },
-            "data": { "dataType": "array", "array": { "ref": "IProductItem" } },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"ref":"IProductsMeta"},
+            "data": {"dataType":"array","array":{"ref":"IProductItem"}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -1591,9 +1592,9 @@ const models: TsoaRoute.Models = {
     "IProductResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "ref": "IProductsMeta" },
-            "data": { "ref": "IProductItem" },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"ref":"IProductsMeta"},
+            "data": {"ref":"IProductItem"},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -1601,13 +1602,13 @@ const models: TsoaRoute.Models = {
     "IProductCreateRequest": {
         "dataType": "refObject",
         "properties": {
-            "active": { "dataType": "boolean", "required": true },
-            "contents": { "dataType": "union", "subSchemas": [{ "ref": "IProductContents" }, { "dataType": "any" }] },
-            "prices": { "dataType": "array", "array": { "ref": "IPrice" }, "required": true },
-            "receipt": { "dataType": "array", "array": { "ref": "IReceiptItem" }, "required": true },
-            "tags": { "dataType": "array", "array": { "dataType": "string" }, "required": true },
-            "joint": { "dataType": "string" },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+            "active": {"dataType":"boolean","required":true},
+            "contents": {"dataType":"union","subSchemas":[{"ref":"IProductContents"},{"dataType":"any"}]},
+            "prices": {"dataType":"array","array":{"ref":"IPrice"},"required":true},
+            "receipt": {"dataType":"array","array":{"ref":"IReceiptItem"},"required":true},
+            "tags": {"dataType":"array","array":{"dataType":"string"},"required":true},
+            "joint": {"dataType":"string"},
+            "extra": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
     },
@@ -1615,13 +1616,13 @@ const models: TsoaRoute.Models = {
     "IProductUpdateRequest": {
         "dataType": "refObject",
         "properties": {
-            "active": { "dataType": "boolean" },
-            "contents": { "dataType": "union", "subSchemas": [{ "ref": "IProductContents" }, { "dataType": "any" }] },
-            "prices": { "dataType": "array", "array": { "ref": "IPrice" } },
-            "receipt": { "dataType": "array", "array": { "ref": "IReceiptItem" } },
-            "tags": { "dataType": "array", "array": { "dataType": "string" } },
-            "joint": { "dataType": "string" },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+            "active": {"dataType":"boolean"},
+            "contents": {"dataType":"union","subSchemas":[{"ref":"IProductContents"},{"dataType":"any"}]},
+            "prices": {"dataType":"array","array":{"ref":"IPrice"}},
+            "receipt": {"dataType":"array","array":{"ref":"IReceiptItem"}},
+            "tags": {"dataType":"array","array":{"dataType":"string"}},
+            "joint": {"dataType":"string"},
+            "extra": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
     },
@@ -1629,13 +1630,13 @@ const models: TsoaRoute.Models = {
     "IProductAsset": {
         "dataType": "refObject",
         "properties": {
-            "id": { "dataType": "string", "required": true },
-            "active": { "dataType": "boolean", "required": true },
-            "lastUpdate": { "dataType": "datetime", "required": true },
-            "name": { "dataType": "string", "required": true },
-            "ext": { "ref": "AssetExtensions", "required": true },
-            "path": { "dataType": "string", "required": true },
-            "mipmap": { "dataType": "nestedObjectLiteral", "nestedProperties": { "x32": { "dataType": "string", "required": true }, "x128": { "dataType": "string", "required": true } }, "required": true },
+            "id": {"dataType":"string","required":true},
+            "active": {"dataType":"boolean","required":true},
+            "lastUpdate": {"dataType":"datetime","required":true},
+            "name": {"dataType":"string","required":true},
+            "ext": {"ref":"AssetExtensions","required":true},
+            "path": {"dataType":"string","required":true},
+            "mipmap": {"dataType":"nestedObjectLiteral","nestedProperties":{"x32":{"dataType":"string","required":true},"x128":{"dataType":"string","required":true}},"required":true},
         },
         "additionalProperties": false,
     },
@@ -1643,9 +1644,9 @@ const models: TsoaRoute.Models = {
     "IProductGetAllAssetsResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "dataType": "nestedObjectLiteral", "nestedProperties": {} },
-            "data": { "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "array", "array": { "ref": "IProductAsset" } } },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"dataType":"nestedObjectLiteral","nestedProperties":{}},
+            "data": {"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"array","array":{"ref":"IProductAsset"}}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -1653,9 +1654,9 @@ const models: TsoaRoute.Models = {
     "IProductGetAssetsResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "dataType": "nestedObjectLiteral", "nestedProperties": {} },
-            "data": { "dataType": "array", "array": { "ref": "IProductAsset" } },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"dataType":"nestedObjectLiteral","nestedProperties":{}},
+            "data": {"dataType":"array","array":{"ref":"IProductAsset"}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -1663,23 +1664,23 @@ const models: TsoaRoute.Models = {
     "IProductCreateAssetsResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "dataType": "nestedObjectLiteral", "nestedProperties": { "asset": { "dataType": "nestedObjectLiteral", "nestedProperties": { "ref": { "ref": "IRefItem", "required": true } }, "required": true }, "product": { "dataType": "nestedObjectLiteral", "nestedProperties": { "ref": { "ref": "IRefItem", "required": true } }, "required": true } } },
-            "data": { "dataType": "nestedObjectLiteral", "nestedProperties": { "product": { "ref": "IProductItem", "required": true }, "asset": { "ref": "IProductAsset", "required": true } } },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"dataType":"nestedObjectLiteral","nestedProperties":{"asset":{"dataType":"nestedObjectLiteral","nestedProperties":{"ref":{"ref":"IRefItem","required":true}},"required":true},"product":{"dataType":"nestedObjectLiteral","nestedProperties":{"ref":{"ref":"IRefItem","required":true}},"required":true}}},
+            "data": {"dataType":"nestedObjectLiteral","nestedProperties":{"product":{"ref":"IProductItem","required":true},"asset":{"ref":"IProductAsset","required":true}}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ProductImageTypes": {
         "dataType": "refEnum",
-        "enums": ["main", "icon"],
+        "enums": ["main","icon"],
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "IProductAssetUpdateRequest": {
         "dataType": "refObject",
         "properties": {
-            "active": { "dataType": "boolean", "required": true },
-            "name": { "dataType": "string", "required": true },
+            "active": {"dataType":"boolean","required":true},
+            "name": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
@@ -1687,9 +1688,9 @@ const models: TsoaRoute.Models = {
     "IProductDeleteAssetsResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "dataType": "nestedObjectLiteral", "nestedProperties": { "asset": { "dataType": "nestedObjectLiteral", "nestedProperties": { "ref": { "ref": "IRefItem", "required": true } }, "required": true }, "product": { "dataType": "nestedObjectLiteral", "nestedProperties": { "ref": { "ref": "IRefItem", "required": true } }, "required": true } } },
-            "data": { "dataType": "nestedObjectLiteral", "nestedProperties": {} },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"dataType":"nestedObjectLiteral","nestedProperties":{"asset":{"dataType":"nestedObjectLiteral","nestedProperties":{"ref":{"ref":"IRefItem","required":true}},"required":true},"product":{"dataType":"nestedObjectLiteral","nestedProperties":{"ref":{"ref":"IRefItem","required":true}},"required":true}}},
+            "data": {"dataType":"nestedObjectLiteral","nestedProperties":{}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -1697,21 +1698,21 @@ const models: TsoaRoute.Models = {
     "ISelectorsMeta": {
         "dataType": "refObject",
         "properties": {
-            "ref": { "ref": "IRefItem", "required": true },
+            "ref": {"ref":"IRefItem","required":true},
         },
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "SelectorTypes": {
         "dataType": "refEnum",
-        "enums": ["menu-category", "schema-category"],
+        "enums": ["menu-category","schema-category"],
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ISelectorResources": {
         "dataType": "refObject",
         "properties": {
-            "main": { "dataType": "string", "required": true },
-            "icon": { "dataType": "string", "required": true },
+            "main": {"dataType":"string","required":true},
+            "icon": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
@@ -1719,12 +1720,12 @@ const models: TsoaRoute.Models = {
     "ISelectorContentsItem": {
         "dataType": "refObject",
         "properties": {
-            "name": { "dataType": "string", "required": true },
-            "description": { "dataType": "string", "required": true },
-            "color": { "dataType": "string", "required": true },
-            "resources": { "ref": "ISelectorResources", "required": true },
-            "assets": { "dataType": "array", "array": { "dataType": "string" }, "required": true },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+            "name": {"dataType":"string","required":true},
+            "description": {"dataType":"string","required":true},
+            "color": {"dataType":"string","required":true},
+            "resources": {"ref":"ISelectorResources","required":true},
+            "assets": {"dataType":"array","array":{"dataType":"string"},"required":true},
+            "extra": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
     },
@@ -1733,18 +1734,18 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
         },
-        "additionalProperties": { "ref": "ISelectorContentsItem" },
+        "additionalProperties": {"ref":"ISelectorContentsItem"},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ISelectorItem": {
         "dataType": "refObject",
         "properties": {
-            "id": { "dataType": "string" },
-            "type": { "ref": "SelectorTypes", "required": true },
-            "active": { "dataType": "boolean", "required": true },
-            "contents": { "ref": "ISelectorContents", "required": true },
-            "joint": { "dataType": "string", "required": true },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+            "id": {"dataType":"string"},
+            "type": {"ref":"SelectorTypes","required":true},
+            "active": {"dataType":"boolean","required":true},
+            "contents": {"ref":"ISelectorContents","required":true},
+            "joint": {"dataType":"string","required":true},
+            "extra": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
     },
@@ -1752,9 +1753,9 @@ const models: TsoaRoute.Models = {
     "ISelectorsResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "ref": "ISelectorsMeta" },
-            "data": { "dataType": "array", "array": { "ref": "ISelectorItem" } },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"ref":"ISelectorsMeta"},
+            "data": {"dataType":"array","array":{"ref":"ISelectorItem"}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -1762,9 +1763,9 @@ const models: TsoaRoute.Models = {
     "ISelectorResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "ref": "ISelectorsMeta" },
-            "data": { "ref": "ISelectorItem" },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"ref":"ISelectorsMeta"},
+            "data": {"ref":"ISelectorItem"},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -1772,10 +1773,10 @@ const models: TsoaRoute.Models = {
     "ISelectorCreateRequest": {
         "dataType": "refObject",
         "properties": {
-            "active": { "dataType": "boolean", "required": true },
-            "type": { "ref": "SelectorTypes", "required": true },
-            "contents": { "dataType": "union", "subSchemas": [{ "ref": "ISelectorContents" }, { "dataType": "any" }] },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+            "active": {"dataType":"boolean","required":true},
+            "type": {"ref":"SelectorTypes","required":true},
+            "contents": {"dataType":"union","subSchemas":[{"ref":"ISelectorContents"},{"dataType":"any"}]},
+            "extra": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
     },
@@ -1783,10 +1784,10 @@ const models: TsoaRoute.Models = {
     "ISelectorUpdateRequest": {
         "dataType": "refObject",
         "properties": {
-            "active": { "dataType": "boolean" },
-            "type": { "ref": "SelectorTypes" },
-            "contents": { "dataType": "union", "subSchemas": [{ "ref": "ISelectorContents" }, { "dataType": "any" }] },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+            "active": {"dataType":"boolean"},
+            "type": {"ref":"SelectorTypes"},
+            "contents": {"dataType":"union","subSchemas":[{"ref":"ISelectorContents"},{"dataType":"any"}]},
+            "extra": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
     },
@@ -1794,13 +1795,13 @@ const models: TsoaRoute.Models = {
     "ISelectorAsset": {
         "dataType": "refObject",
         "properties": {
-            "id": { "dataType": "string", "required": true },
-            "active": { "dataType": "boolean", "required": true },
-            "lastUpdate": { "dataType": "datetime", "required": true },
-            "name": { "dataType": "string", "required": true },
-            "ext": { "ref": "AssetExtensions", "required": true },
-            "path": { "dataType": "string", "required": true },
-            "mipmap": { "dataType": "nestedObjectLiteral", "nestedProperties": { "x32": { "dataType": "string", "required": true }, "x128": { "dataType": "string", "required": true } }, "required": true },
+            "id": {"dataType":"string","required":true},
+            "active": {"dataType":"boolean","required":true},
+            "lastUpdate": {"dataType":"datetime","required":true},
+            "name": {"dataType":"string","required":true},
+            "ext": {"ref":"AssetExtensions","required":true},
+            "path": {"dataType":"string","required":true},
+            "mipmap": {"dataType":"nestedObjectLiteral","nestedProperties":{"x32":{"dataType":"string","required":true},"x128":{"dataType":"string","required":true}},"required":true},
         },
         "additionalProperties": false,
     },
@@ -1808,9 +1809,9 @@ const models: TsoaRoute.Models = {
     "ISelectorGetAllAssetsResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "dataType": "nestedObjectLiteral", "nestedProperties": {} },
-            "data": { "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "array", "array": { "ref": "ISelectorAsset" } } },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"dataType":"nestedObjectLiteral","nestedProperties":{}},
+            "data": {"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"array","array":{"ref":"ISelectorAsset"}}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -1818,9 +1819,9 @@ const models: TsoaRoute.Models = {
     "ISelectorGetAssetsResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "dataType": "nestedObjectLiteral", "nestedProperties": {} },
-            "data": { "dataType": "array", "array": { "ref": "ISelectorAsset" } },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"dataType":"nestedObjectLiteral","nestedProperties":{}},
+            "data": {"dataType":"array","array":{"ref":"ISelectorAsset"}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -1828,23 +1829,23 @@ const models: TsoaRoute.Models = {
     "ISelectorCreateAssetsResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "dataType": "nestedObjectLiteral", "nestedProperties": { "asset": { "dataType": "nestedObjectLiteral", "nestedProperties": { "ref": { "ref": "IRefItem", "required": true } }, "required": true }, "selector": { "dataType": "nestedObjectLiteral", "nestedProperties": { "ref": { "ref": "IRefItem", "required": true } }, "required": true } } },
-            "data": { "dataType": "nestedObjectLiteral", "nestedProperties": { "selector": { "ref": "ISelectorItem", "required": true }, "asset": { "ref": "ISelectorAsset", "required": true } } },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"dataType":"nestedObjectLiteral","nestedProperties":{"asset":{"dataType":"nestedObjectLiteral","nestedProperties":{"ref":{"ref":"IRefItem","required":true}},"required":true},"selector":{"dataType":"nestedObjectLiteral","nestedProperties":{"ref":{"ref":"IRefItem","required":true}},"required":true}}},
+            "data": {"dataType":"nestedObjectLiteral","nestedProperties":{"selector":{"ref":"ISelectorItem","required":true},"asset":{"ref":"ISelectorAsset","required":true}}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "SelectorImageTypes": {
         "dataType": "refEnum",
-        "enums": ["main", "icon"],
+        "enums": ["main","icon"],
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ISelectorAssetUpdateRequest": {
         "dataType": "refObject",
         "properties": {
-            "active": { "dataType": "boolean", "required": true },
-            "name": { "dataType": "string", "required": true },
+            "active": {"dataType":"boolean","required":true},
+            "name": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
@@ -1852,9 +1853,9 @@ const models: TsoaRoute.Models = {
     "ISelectorDeleteAssetsResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "dataType": "nestedObjectLiteral", "nestedProperties": { "asset": { "dataType": "nestedObjectLiteral", "nestedProperties": { "ref": { "ref": "IRefItem", "required": true } }, "required": true }, "selector": { "dataType": "nestedObjectLiteral", "nestedProperties": { "ref": { "ref": "IRefItem", "required": true } }, "required": true } } },
-            "data": { "dataType": "nestedObjectLiteral", "nestedProperties": {} },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"dataType":"nestedObjectLiteral","nestedProperties":{"asset":{"dataType":"nestedObjectLiteral","nestedProperties":{"ref":{"ref":"IRefItem","required":true}},"required":true},"selector":{"dataType":"nestedObjectLiteral","nestedProperties":{"ref":{"ref":"IRefItem","required":true}},"required":true}}},
+            "data": {"dataType":"nestedObjectLiteral","nestedProperties":{}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -1862,7 +1863,7 @@ const models: TsoaRoute.Models = {
     "IStoreMeta": {
         "dataType": "refObject",
         "properties": {
-            "ref": { "ref": "IRefItem", "required": true },
+            "ref": {"ref":"IRefItem","required":true},
         },
         "additionalProperties": false,
     },
@@ -1870,10 +1871,10 @@ const models: TsoaRoute.Models = {
     "IStoreItem": {
         "dataType": "refObject",
         "properties": {
-            "id": { "dataType": "string" },
-            "name": { "dataType": "string", "required": true },
-            "address": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }], "required": true },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+            "id": {"dataType":"string"},
+            "name": {"dataType":"string","required":true},
+            "address": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},
+            "extra": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
     },
@@ -1881,9 +1882,9 @@ const models: TsoaRoute.Models = {
     "IStoresResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "ref": "IStoreMeta" },
-            "data": { "dataType": "array", "array": { "ref": "IStoreItem" } },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"ref":"IStoreMeta"},
+            "data": {"dataType":"array","array":{"ref":"IStoreItem"}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -1891,9 +1892,9 @@ const models: TsoaRoute.Models = {
     "IStoreResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "ref": "IStoreMeta" },
-            "data": { "ref": "IStoreItem" },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"ref":"IStoreMeta"},
+            "data": {"ref":"IStoreItem"},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -1901,9 +1902,9 @@ const models: TsoaRoute.Models = {
     "IStoreCreateRequest": {
         "dataType": "refObject",
         "properties": {
-            "name": { "dataType": "string", "required": true },
-            "address": { "dataType": "union", "subSchemas": [{ "dataType": "string" }, { "dataType": "enum", "enums": [null] }], "required": true },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+            "name": {"dataType":"string","required":true},
+            "address": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},
+            "extra": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
     },
@@ -1911,9 +1912,9 @@ const models: TsoaRoute.Models = {
     "IStoreUpdateRequest": {
         "dataType": "refObject",
         "properties": {
-            "name": { "dataType": "string" },
-            "address": { "dataType": "string" },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+            "name": {"dataType":"string"},
+            "address": {"dataType":"string"},
+            "extra": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
     },
@@ -1921,7 +1922,7 @@ const models: TsoaRoute.Models = {
     "ITagMeta": {
         "dataType": "refObject",
         "properties": {
-            "ref": { "ref": "IRefItem", "required": true },
+            "ref": {"ref":"IRefItem","required":true},
         },
         "additionalProperties": false,
     },
@@ -1929,8 +1930,8 @@ const models: TsoaRoute.Models = {
     "ITagResources": {
         "dataType": "refObject",
         "properties": {
-            "main": { "dataType": "string", "required": true },
-            "icon": { "dataType": "string", "required": true },
+            "main": {"dataType":"string","required":true},
+            "icon": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
@@ -1938,12 +1939,12 @@ const models: TsoaRoute.Models = {
     "ITagContentsItem": {
         "dataType": "refObject",
         "properties": {
-            "name": { "dataType": "string", "required": true },
-            "description": { "dataType": "string", "required": true },
-            "color": { "dataType": "string", "required": true },
-            "resources": { "ref": "ITagResources", "required": true },
-            "assets": { "dataType": "array", "array": { "dataType": "string" }, "required": true },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+            "name": {"dataType":"string","required":true},
+            "description": {"dataType":"string","required":true},
+            "color": {"dataType":"string","required":true},
+            "resources": {"ref":"ITagResources","required":true},
+            "assets": {"dataType":"array","array":{"dataType":"string"},"required":true},
+            "extra": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
     },
@@ -1952,17 +1953,17 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
         },
-        "additionalProperties": { "ref": "ITagContentsItem" },
+        "additionalProperties": {"ref":"ITagContentsItem"},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ITagItem": {
         "dataType": "refObject",
         "properties": {
-            "id": { "dataType": "string", "required": true },
-            "active": { "dataType": "boolean", "required": true },
-            "name": { "dataType": "string" },
-            "contents": { "ref": "ITagContents", "required": true },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+            "id": {"dataType":"string","required":true},
+            "active": {"dataType":"boolean","required":true},
+            "name": {"dataType":"string"},
+            "contents": {"ref":"ITagContents","required":true},
+            "extra": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
     },
@@ -1970,9 +1971,9 @@ const models: TsoaRoute.Models = {
     "TagsResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "ref": "ITagMeta" },
-            "data": { "dataType": "array", "array": { "ref": "ITagItem" } },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"ref":"ITagMeta"},
+            "data": {"dataType":"array","array":{"ref":"ITagItem"}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -1980,9 +1981,9 @@ const models: TsoaRoute.Models = {
     "TagResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "ref": "ITagMeta" },
-            "data": { "ref": "ITagItem" },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"ref":"ITagMeta"},
+            "data": {"ref":"ITagItem"},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -1990,10 +1991,10 @@ const models: TsoaRoute.Models = {
     "TagCreateRequest": {
         "dataType": "refObject",
         "properties": {
-            "active": { "dataType": "boolean", "required": true },
-            "name": { "dataType": "string" },
-            "contents": { "dataType": "union", "subSchemas": [{ "ref": "ITagContents" }, { "dataType": "any" }] },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+            "active": {"dataType":"boolean","required":true},
+            "name": {"dataType":"string"},
+            "contents": {"dataType":"union","subSchemas":[{"ref":"ITagContents"},{"dataType":"any"}]},
+            "extra": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
     },
@@ -2001,13 +2002,13 @@ const models: TsoaRoute.Models = {
     "ITagAsset": {
         "dataType": "refObject",
         "properties": {
-            "id": { "dataType": "string", "required": true },
-            "active": { "dataType": "boolean", "required": true },
-            "lastUpdate": { "dataType": "datetime", "required": true },
-            "name": { "dataType": "string", "required": true },
-            "ext": { "ref": "AssetExtensions", "required": true },
-            "path": { "dataType": "string", "required": true },
-            "mipmap": { "dataType": "nestedObjectLiteral", "nestedProperties": { "x32": { "dataType": "string", "required": true }, "x128": { "dataType": "string", "required": true } }, "required": true },
+            "id": {"dataType":"string","required":true},
+            "active": {"dataType":"boolean","required":true},
+            "lastUpdate": {"dataType":"datetime","required":true},
+            "name": {"dataType":"string","required":true},
+            "ext": {"ref":"AssetExtensions","required":true},
+            "path": {"dataType":"string","required":true},
+            "mipmap": {"dataType":"nestedObjectLiteral","nestedProperties":{"x32":{"dataType":"string","required":true},"x128":{"dataType":"string","required":true}},"required":true},
         },
         "additionalProperties": false,
     },
@@ -2015,9 +2016,9 @@ const models: TsoaRoute.Models = {
     "ITagGetAllAssetsResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "dataType": "nestedObjectLiteral", "nestedProperties": {} },
-            "data": { "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "array", "array": { "ref": "ITagAsset" } } },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"dataType":"nestedObjectLiteral","nestedProperties":{}},
+            "data": {"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"array","array":{"ref":"ITagAsset"}}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -2025,9 +2026,9 @@ const models: TsoaRoute.Models = {
     "ITagGetAssetsResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "dataType": "nestedObjectLiteral", "nestedProperties": {} },
-            "data": { "dataType": "array", "array": { "ref": "ITagAsset" } },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"dataType":"nestedObjectLiteral","nestedProperties":{}},
+            "data": {"dataType":"array","array":{"ref":"ITagAsset"}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -2035,23 +2036,23 @@ const models: TsoaRoute.Models = {
     "ITagCreateAssetsResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "dataType": "nestedObjectLiteral", "nestedProperties": { "asset": { "dataType": "nestedObjectLiteral", "nestedProperties": { "ref": { "ref": "IRefItem", "required": true } }, "required": true }, "tag": { "dataType": "nestedObjectLiteral", "nestedProperties": { "ref": { "ref": "IRefItem", "required": true } }, "required": true } } },
-            "data": { "dataType": "nestedObjectLiteral", "nestedProperties": { "tag": { "ref": "ITagItem", "required": true }, "asset": { "ref": "ITagAsset", "required": true } } },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"dataType":"nestedObjectLiteral","nestedProperties":{"asset":{"dataType":"nestedObjectLiteral","nestedProperties":{"ref":{"ref":"IRefItem","required":true}},"required":true},"tag":{"dataType":"nestedObjectLiteral","nestedProperties":{"ref":{"ref":"IRefItem","required":true}},"required":true}}},
+            "data": {"dataType":"nestedObjectLiteral","nestedProperties":{"tag":{"ref":"ITagItem","required":true},"asset":{"ref":"ITagAsset","required":true}}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "TagImageTypes": {
         "dataType": "refEnum",
-        "enums": ["main", "icon"],
+        "enums": ["main","icon"],
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ITagAssetUpdateRequest": {
         "dataType": "refObject",
         "properties": {
-            "active": { "dataType": "boolean", "required": true },
-            "name": { "dataType": "string", "required": true },
+            "active": {"dataType":"boolean","required":true},
+            "name": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
@@ -2059,9 +2060,9 @@ const models: TsoaRoute.Models = {
     "ITagDeleteAssetsResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "dataType": "nestedObjectLiteral", "nestedProperties": { "asset": { "dataType": "nestedObjectLiteral", "nestedProperties": { "ref": { "ref": "IRefItem", "required": true } }, "required": true }, "tag": { "dataType": "nestedObjectLiteral", "nestedProperties": { "ref": { "ref": "IRefItem", "required": true } }, "required": true } } },
-            "data": { "dataType": "nestedObjectLiteral", "nestedProperties": {} },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"dataType":"nestedObjectLiteral","nestedProperties":{"asset":{"dataType":"nestedObjectLiteral","nestedProperties":{"ref":{"ref":"IRefItem","required":true}},"required":true},"tag":{"dataType":"nestedObjectLiteral","nestedProperties":{"ref":{"ref":"IRefItem","required":true}},"required":true}}},
+            "data": {"dataType":"nestedObjectLiteral","nestedProperties":{}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -2069,34 +2070,34 @@ const models: TsoaRoute.Models = {
     "ITerminalMeta": {
         "dataType": "refObject",
         "properties": {
-            "ref": { "ref": "IRefItem", "required": true },
+            "ref": {"ref":"IRefItem","required":true},
         },
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "TerminalStatusTypes": {
         "dataType": "refEnum",
-        "enums": ["online", "unavailable"],
+        "enums": ["online","unavailable"],
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "TerminalTypes": {
         "dataType": "refEnum",
-        "enums": ["kiosk", "cashbox", "equeue", "emenu", "guest-screen", "menu-board", "collector"],
+        "enums": ["kiosk","cashbox","equeue","emenu","guest-screen","menu-board","collector"],
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ITerminalItem": {
         "dataType": "refObject",
         "properties": {
-            "id": { "dataType": "string" },
-            "clientId": { "dataType": "string", "required": true },
-            "status": { "ref": "TerminalStatusTypes", "required": true },
-            "type": { "ref": "TerminalTypes", "required": true },
-            "name": { "dataType": "string", "required": true },
-            "storeId": { "dataType": "string", "required": true },
-            "lastwork": { "dataType": "datetime", "required": true },
-            "imei": { "dataType": "string", "required": true },
-            "licenseId": { "dataType": "string", "required": true },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+            "id": {"dataType":"string"},
+            "clientId": {"dataType":"string","required":true},
+            "status": {"ref":"TerminalStatusTypes","required":true},
+            "type": {"ref":"TerminalTypes","required":true},
+            "name": {"dataType":"string","required":true},
+            "storeId": {"dataType":"string","required":true},
+            "lastwork": {"dataType":"datetime","required":true},
+            "imei": {"dataType":"string","required":true},
+            "licenseId": {"dataType":"string","required":true},
+            "extra": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
     },
@@ -2104,9 +2105,9 @@ const models: TsoaRoute.Models = {
     "ITerminalResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "ref": "ITerminalMeta" },
-            "data": { "ref": "ITerminalItem" },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"ref":"ITerminalMeta"},
+            "data": {"ref":"ITerminalItem"},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -2114,8 +2115,8 @@ const models: TsoaRoute.Models = {
     "ITerminalRegisterRequest": {
         "dataType": "refObject",
         "properties": {
-            "name": { "dataType": "string" },
-            "type": { "ref": "TerminalTypes" },
+            "name": {"dataType":"string"},
+            "type": {"ref":"TerminalTypes"},
         },
         "additionalProperties": false,
     },
@@ -2123,9 +2124,9 @@ const models: TsoaRoute.Models = {
     "ITerminalsResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "ref": "ITerminalMeta" },
-            "data": { "dataType": "array", "array": { "ref": "ITerminalItem" } },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"ref":"ITerminalMeta"},
+            "data": {"dataType":"array","array":{"ref":"ITerminalItem"}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -2133,9 +2134,9 @@ const models: TsoaRoute.Models = {
     "ITerminalUpdateRequest": {
         "dataType": "refObject",
         "properties": {
-            "name": { "dataType": "string" },
-            "storeId": { "dataType": "string" },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+            "name": {"dataType":"string"},
+            "storeId": {"dataType":"string"},
+            "extra": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
     },
@@ -2143,7 +2144,7 @@ const models: TsoaRoute.Models = {
     "TranslationMeta": {
         "dataType": "refObject",
         "properties": {
-            "ref": { "ref": "IRefItem", "required": true },
+            "ref": {"ref":"IRefItem","required":true},
         },
         "additionalProperties": false,
     },
@@ -2151,8 +2152,8 @@ const models: TsoaRoute.Models = {
     "ITranslateItem": {
         "dataType": "refObject",
         "properties": {
-            "key": { "dataType": "string", "required": true },
-            "value": { "dataType": "string" },
+            "key": {"dataType":"string","required":true},
+            "value": {"dataType":"string"},
         },
         "additionalProperties": false,
     },
@@ -2160,10 +2161,10 @@ const models: TsoaRoute.Models = {
     "ITranslationItem": {
         "dataType": "refObject",
         "properties": {
-            "id": { "dataType": "string", "required": true },
-            "language": { "dataType": "string", "required": true },
-            "items": { "dataType": "array", "array": { "ref": "ITranslateItem" }, "required": true },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+            "id": {"dataType":"string","required":true},
+            "language": {"dataType":"string","required":true},
+            "items": {"dataType":"array","array":{"ref":"ITranslateItem"},"required":true},
+            "extra": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
     },
@@ -2171,9 +2172,9 @@ const models: TsoaRoute.Models = {
     "TranslationsResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "ref": "TranslationMeta" },
-            "data": { "dataType": "array", "array": { "ref": "ITranslationItem" } },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"ref":"TranslationMeta"},
+            "data": {"dataType":"array","array":{"ref":"ITranslationItem"}},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -2181,9 +2182,9 @@ const models: TsoaRoute.Models = {
     "TranslationResponse": {
         "dataType": "refObject",
         "properties": {
-            "meta": { "ref": "TranslationMeta" },
-            "data": { "ref": "ITranslationItem" },
-            "error": { "dataType": "array", "array": { "dataType": "nestedObjectLiteral", "nestedProperties": { "message": { "dataType": "string", "required": true }, "code": { "dataType": "double", "required": true } } } },
+            "meta": {"ref":"TranslationMeta"},
+            "data": {"ref":"ITranslationItem"},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -2191,9 +2192,9 @@ const models: TsoaRoute.Models = {
     "ITranslate": {
         "dataType": "refObject",
         "properties": {
-            "key": { "dataType": "string", "required": true },
-            "value": { "dataType": "string", "required": true },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+            "key": {"dataType":"string","required":true},
+            "value": {"dataType":"string","required":true},
+            "extra": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
     },
@@ -2201,9 +2202,9 @@ const models: TsoaRoute.Models = {
     "TranslationUpdateRequest": {
         "dataType": "refObject",
         "properties": {
-            "language": { "dataType": "string", "required": true },
-            "items": { "dataType": "array", "array": { "ref": "ITranslate" } },
-            "extra": { "dataType": "union", "subSchemas": [{ "dataType": "nestedObjectLiteral", "nestedProperties": {}, "additionalProperties": { "dataType": "any" } }, { "dataType": "enum", "enums": [null] }] },
+            "language": {"dataType":"string","required":true},
+            "items": {"dataType":"array","array":{"ref":"ITranslate"}},
+            "extra": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
     },
@@ -2213,23 +2214,23 @@ const validationService = new ValidationService(models);
 
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
-export function RegisterRoutes(app: express.Express) {
+export function RegisterRoutes(app: express.Router) {
     // ###########################################################################################################
     //  NOTE: If you do not see routes for all of your controllers in this file, then you might not have informed tsoa of where to look
     //      Please look into the "controllerPathGlobs" config option described in the readme: https://github.com/lukeautry/tsoa
     // ###########################################################################################################
-    app.get('/api/v1/refs',
-        authenticateMiddleware([{ "clientAccessToken": [] }, { "terminalAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        app.get('/api/v1/refs',
+            authenticateMiddleware([{"clientAccessToken":[]},{"terminalAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -2238,22 +2239,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getAll.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/ref/:name',
-        authenticateMiddleware([{ "clientAccessToken": [] }, { "terminalAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/ref/:name',
+            authenticateMiddleware([{"clientAccessToken":[]},{"terminalAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                name: { "in": "path", "name": "name", "required": true, "dataType": "string" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    name: {"in":"path","name":"name","required":true,"dataType":"string"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -2262,12 +2263,12 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getOne.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/accounts',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/accounts',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
             };
 
@@ -2275,7 +2276,7 @@ export function RegisterRoutes(app: express.Express) {
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -2284,22 +2285,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getAccount.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/account/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/account/:id',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -2308,23 +2309,23 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getAccount.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.put('/api/v1/account/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/api/v1/account/:id',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                body: { "in": "body", "name": "body", "required": true, "ref": "IUpdateAccountParams" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    body: {"in":"body","name":"body","required":true,"ref":"IUpdateAccountParams"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -2333,21 +2334,21 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.updateAccount.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/assets',
-        authenticateMiddleware([{ "clientAccessToken": [] }, { "terminalAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/assets',
+            authenticateMiddleware([{"clientAccessToken":[]},{"terminalAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -2356,22 +2357,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getAll.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/ads',
-        authenticateMiddleware([{ "clientAccessToken": [] }, { "terminalAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/ads',
+            authenticateMiddleware([{"clientAccessToken":[]},{"terminalAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
-                type: { "in": "query", "name": "type", "ref": "AdTypes" },
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
+                    type: {"in":"query","name":"type","ref":"AdTypes"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -2380,22 +2381,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getAll.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/ad/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }, { "terminalAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/ad/:id',
+            authenticateMiddleware([{"clientAccessToken":[]},{"terminalAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -2404,22 +2405,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getOne.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/v1/ad',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/api/v1/ad',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                body: { "in": "body", "name": "body", "required": true, "ref": "IAdCreateRequest" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    body: {"in":"body","name":"body","required":true,"ref":"IAdCreateRequest"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -2428,23 +2429,23 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.create.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.put('/api/v1/ad/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/api/v1/ad/:id',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                body: { "in": "body", "name": "body", "required": true, "ref": "IAdUpdateRequest" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    body: {"in":"body","name":"body","required":true,"ref":"IAdUpdateRequest"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -2453,22 +2454,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.update.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.delete('/api/v1/ad/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.delete('/api/v1/ad/:id',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -2477,21 +2478,21 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.delete.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/ad/:adId/assets',
-        authenticateMiddleware([{ "clientAccessToken": [] }, { "terminalAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/ad/:adId/assets',
+            authenticateMiddleware([{"clientAccessToken":[]},{"terminalAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                adId: { "in": "path", "name": "adId", "required": true, "dataType": "string" },
+                    adId: {"in":"path","name":"adId","required":true,"dataType":"string"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -2500,22 +2501,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getAllAssets.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/ad/:adId/assets/:langCode',
-        authenticateMiddleware([{ "clientAccessToken": [] }, { "terminalAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/ad/:adId/assets/:langCode',
+            authenticateMiddleware([{"clientAccessToken":[]},{"terminalAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                adId: { "in": "path", "name": "adId", "required": true, "dataType": "string" },
-                langCode: { "in": "path", "name": "langCode", "required": true, "dataType": "string" },
+                    adId: {"in":"path","name":"adId","required":true,"dataType":"string"},
+                    langCode: {"in":"path","name":"langCode","required":true,"dataType":"string"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -2524,24 +2525,24 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getAssets.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/v1/ad/:adId/resource/:langCode/:resourceType',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/api/v1/ad/:adId/resource/:langCode/:resourceType',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                adId: { "in": "path", "name": "adId", "required": true, "dataType": "string" },
-                langCode: { "in": "path", "name": "langCode", "required": true, "dataType": "string" },
-                resourceType: { "in": "path", "name": "resourceType", "required": true, "ref": "AdImageTypes" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    adId: {"in":"path","name":"adId","required":true,"dataType":"string"},
+                    langCode: {"in":"path","name":"langCode","required":true,"dataType":"string"},
+                    resourceType: {"in":"path","name":"resourceType","required":true,"ref":"AdImageTypes"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -2550,25 +2551,25 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.resource.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.put('/api/v1/ad/:adId/asset/:langCode/:assetId',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/api/v1/ad/:adId/asset/:langCode/:assetId',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                adId: { "in": "path", "name": "adId", "required": true, "dataType": "string" },
-                langCode: { "in": "path", "name": "langCode", "required": true, "dataType": "string" },
-                assetId: { "in": "path", "name": "assetId", "required": true, "dataType": "string" },
-                body: { "in": "body", "name": "body", "required": true, "ref": "IAdAssetUpdateRequest" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    adId: {"in":"path","name":"adId","required":true,"dataType":"string"},
+                    langCode: {"in":"path","name":"langCode","required":true,"dataType":"string"},
+                    assetId: {"in":"path","name":"assetId","required":true,"dataType":"string"},
+                    body: {"in":"body","name":"body","required":true,"ref":"IAdAssetUpdateRequest"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -2577,24 +2578,24 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.update.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.delete('/api/v1/ad/:adId/asset/:langCode/:assetId',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.delete('/api/v1/ad/:adId/asset/:langCode/:assetId',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                adId: { "in": "path", "name": "adId", "required": true, "dataType": "string" },
-                langCode: { "in": "path", "name": "langCode", "required": true, "dataType": "string" },
-                assetId: { "in": "path", "name": "assetId", "required": true, "dataType": "string" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    adId: {"in":"path","name":"adId","required":true,"dataType":"string"},
+                    langCode: {"in":"path","name":"langCode","required":true,"dataType":"string"},
+                    assetId: {"in":"path","name":"assetId","required":true,"dataType":"string"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -2603,21 +2604,21 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.delete.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/applications',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/applications',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -2626,22 +2627,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getApplication.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/application/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/application/:id',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -2650,22 +2651,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getApplication.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/v1/application',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/api/v1/application',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                body: { "in": "body", "name": "body", "required": true, "ref": "ICreateApplicationParams" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    body: {"in":"body","name":"body","required":true,"ref":"ICreateApplicationParams"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -2674,23 +2675,23 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.createApplication.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.put('/api/v1/application/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/api/v1/application/:id',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                body: { "in": "body", "name": "body", "required": true, "ref": "IUpdateApplicationParams" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    body: {"in":"body","name":"body","required":true,"ref":"IUpdateApplicationParams"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -2699,22 +2700,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.updateApplication.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.delete('/api/v1/application/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.delete('/api/v1/application/:id',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -2723,20 +2724,20 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.deleteApplication.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/auth/captcha',
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/auth/captcha',
+            function (request: any, response: any, next: any) {
             const args = {
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -2745,20 +2746,20 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getCaptcha.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/v1/auth/signup',
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/api/v1/auth/signup',
+            function (request: any, response: any, next: any) {
             const args = {
-                body: { "in": "body", "name": "body", "required": true, "ref": "ISignupParams" },
+                    body: {"in":"body","name":"body","required":true,"ref":"ISignupParams"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -2767,21 +2768,21 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.signup.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/v1/auth/signin',
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/api/v1/auth/signin',
+            function (request: any, response: any, next: any) {
             const args = {
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
-                body: { "in": "body", "name": "body", "required": true, "ref": "ISigninParams" },
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
+                    body: {"in":"body","name":"body","required":true,"ref":"ISigninParams"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -2790,21 +2791,21 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.signin.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/v1/auth/reset-password',
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/api/v1/auth/reset-password',
+            function (request: any, response: any, next: any) {
             const args = {
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
-                body: { "in": "body", "name": "body", "required": true, "ref": "IResetPasswordParams" },
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
+                    body: {"in":"body","name":"body","required":true,"ref":"IResetPasswordParams"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -2813,23 +2814,23 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.resetPassword.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/auth/forgot-password',
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/auth/forgot-password',
+            function (request: any, response: any, next: any) {
             const args = {
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
-                email: { "in": "query", "name": "email", "required": true, "dataType": "string" },
-                captchaId: { "in": "query", "name": "captchaId", "required": true, "dataType": "string" },
-                captchaVal: { "in": "query", "name": "captchaVal", "required": true, "dataType": "any" },
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
+                    email: {"in":"query","name":"email","required":true,"dataType":"string"},
+                    captchaId: {"in":"query","name":"captchaId","required":true,"dataType":"string"},
+                    captchaVal: {"in":"query","name":"captchaVal","required":true,"dataType":"any"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -2838,21 +2839,21 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.forgotPassword.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/auth/verify-reset-password-token',
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/auth/verify-reset-password-token',
+            function (request: any, response: any, next: any) {
             const args = {
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
-                restorePassCode: { "in": "query", "name": "restorePassCode", "required": true, "dataType": "string" },
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
+                    restorePassCode: {"in":"query","name":"restorePassCode","required":true,"dataType":"string"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -2861,21 +2862,21 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.verifyResetPasswordToken.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/business-periods',
-        authenticateMiddleware([{ "clientAccessToken": [] }, { "terminalAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/business-periods',
+            authenticateMiddleware([{"clientAccessToken":[]},{"terminalAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -2884,22 +2885,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getAll.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/business-period/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }, { "terminalAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/business-period/:id',
+            authenticateMiddleware([{"clientAccessToken":[]},{"terminalAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -2908,22 +2909,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getOne.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/v1/business-period',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/api/v1/business-period',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                body: { "in": "body", "name": "body", "required": true, "ref": "IBusinessPeriodCreateRequest" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    body: {"in":"body","name":"body","required":true,"ref":"IBusinessPeriodCreateRequest"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -2932,23 +2933,23 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.create.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.put('/api/v1/business-period/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/api/v1/business-period/:id',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                body: { "in": "body", "name": "body", "required": true, "ref": "IBusinessPeriodCreateRequest" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    body: {"in":"body","name":"body","required":true,"ref":"IBusinessPeriodCreateRequest"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -2957,22 +2958,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.update.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.delete('/api/v1/business-period/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.delete('/api/v1/business-period/:id',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -2981,21 +2982,21 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.delete.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/checkues',
-        authenticateMiddleware([{ "clientAccessToken": [] }, { "terminalAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/checkues',
+            authenticateMiddleware([{"clientAccessToken":[]},{"terminalAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -3004,22 +3005,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getAll.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/checkue/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }, { "terminalAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/checkue/:id',
+            authenticateMiddleware([{"clientAccessToken":[]},{"terminalAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -3028,22 +3029,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getOne.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/v1/checkue',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/api/v1/checkue',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                body: { "in": "body", "name": "body", "required": true, "ref": "CheckueCreateRequest" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    body: {"in":"body","name":"body","required":true,"ref":"CheckueCreateRequest"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -3052,23 +3053,23 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.create.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.put('/api/v1/checkue/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/api/v1/checkue/:id',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                body: { "in": "body", "name": "body", "required": true, "ref": "CheckueUpdateRequest" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    body: {"in":"body","name":"body","required":true,"ref":"CheckueUpdateRequest"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -3077,22 +3078,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.update.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.delete('/api/v1/checkue/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.delete('/api/v1/checkue/:id',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -3101,21 +3102,21 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.delete.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/currencies',
-        authenticateMiddleware([{ "clientAccessToken": [] }, { "terminalAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/currencies',
+            authenticateMiddleware([{"clientAccessToken":[]},{"terminalAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -3124,22 +3125,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getAll.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/currency/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }, { "terminalAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/currency/:id',
+            authenticateMiddleware([{"clientAccessToken":[]},{"terminalAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -3148,22 +3149,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getOne.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/v1/currency',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/api/v1/currency',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                body: { "in": "body", "name": "body", "required": true, "ref": "CurrencyCreateRequest" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    body: {"in":"body","name":"body","required":true,"ref":"CurrencyCreateRequest"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -3172,23 +3173,23 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.create.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.put('/api/v1/currency/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/api/v1/currency/:id',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                body: { "in": "body", "name": "body", "required": true, "ref": "CurrencyUpdateRequest" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    body: {"in":"body","name":"body","required":true,"ref":"CurrencyUpdateRequest"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -3197,22 +3198,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.update.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.delete('/api/v1/currency/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.delete('/api/v1/currency/:id',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -3221,21 +3222,21 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.delete.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/integrations',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/integrations',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -3244,22 +3245,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getIntegration.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/integration/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/integration/:id',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -3268,23 +3269,23 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getIntegration.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.put('/api/v1/integration/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/api/v1/integration/:id',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                body: { "in": "body", "name": "body", "required": true, "ref": "IUpdateIntegrationParams" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    body: {"in":"body","name":"body","required":true,"ref":"IUpdateIntegrationParams"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -3293,21 +3294,21 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.updateIntegration.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/languages',
-        authenticateMiddleware([{ "clientAccessToken": [] }, { "terminalAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/languages',
+            authenticateMiddleware([{"clientAccessToken":[]},{"terminalAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -3316,22 +3317,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getAll.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/language/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }, { "terminalAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/language/:id',
+            authenticateMiddleware([{"clientAccessToken":[]},{"terminalAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -3340,22 +3341,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getOne.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/v1/language',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/api/v1/language',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                body: { "in": "body", "name": "body", "required": true, "ref": "LanguageCreateRequest" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    body: {"in":"body","name":"body","required":true,"ref":"LanguageCreateRequest"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -3364,23 +3365,23 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.create.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.put('/api/v1/language/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/api/v1/language/:id',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                body: { "in": "body", "name": "body", "required": true, "ref": "LanguageUpdateRequest" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    body: {"in":"body","name":"body","required":true,"ref":"LanguageUpdateRequest"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -3389,22 +3390,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.update.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.delete('/api/v1/language/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.delete('/api/v1/language/:id',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -3413,21 +3414,21 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.delete.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/language/:languageId/assets',
-        authenticateMiddleware([{ "clientAccessToken": [] }, { "terminalAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/language/:languageId/assets',
+            authenticateMiddleware([{"clientAccessToken":[]},{"terminalAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                languageId: { "in": "path", "name": "languageId", "required": true, "dataType": "string" },
+                    languageId: {"in":"path","name":"languageId","required":true,"dataType":"string"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -3436,22 +3437,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getAssets.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/v1/language/:languageId/asset',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/api/v1/language/:languageId/asset',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                languageId: { "in": "path", "name": "languageId", "required": true, "dataType": "string" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    languageId: {"in":"path","name":"languageId","required":true,"dataType":"string"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -3460,23 +3461,23 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.create.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/v1/language/:languageId/resource/:resourceType',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/api/v1/language/:languageId/resource/:resourceType',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                languageId: { "in": "path", "name": "languageId", "required": true, "dataType": "string" },
-                resourceType: { "in": "path", "name": "resourceType", "required": true, "ref": "LanguageImageTypes" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    languageId: {"in":"path","name":"languageId","required":true,"dataType":"string"},
+                    resourceType: {"in":"path","name":"resourceType","required":true,"ref":"LanguageImageTypes"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -3485,24 +3486,24 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.resource.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.put('/api/v1/language/:languageId/asset/:assetId',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/api/v1/language/:languageId/asset/:assetId',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                languageId: { "in": "path", "name": "languageId", "required": true, "dataType": "string" },
-                assetId: { "in": "path", "name": "assetId", "required": true, "dataType": "string" },
-                body: { "in": "body", "name": "body", "required": true, "ref": "ILanguageUpdateAssetsRequest" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    languageId: {"in":"path","name":"languageId","required":true,"dataType":"string"},
+                    assetId: {"in":"path","name":"assetId","required":true,"dataType":"string"},
+                    body: {"in":"body","name":"body","required":true,"ref":"ILanguageUpdateAssetsRequest"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -3511,23 +3512,23 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.update.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.delete('/api/v1/language/:languageId/asset/:assetId',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.delete('/api/v1/language/:languageId/asset/:assetId',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                languageId: { "in": "path", "name": "languageId", "required": true, "dataType": "string" },
-                assetId: { "in": "path", "name": "assetId", "required": true, "dataType": "string" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    languageId: {"in":"path","name":"languageId","required":true,"dataType":"string"},
+                    assetId: {"in":"path","name":"assetId","required":true,"dataType":"string"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -3536,21 +3537,21 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.delete.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/licenses/forClient',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/licenses/forClient',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -3559,22 +3560,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getLicense.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/license/forClient/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/license/forClient/:id',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -3583,21 +3584,21 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getLicense.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/licenses',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/licenses',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -3606,22 +3607,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getLicenses.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/license/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/license/:id',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -3630,22 +3631,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getLicense.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/v1/license',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/api/v1/license',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                body: { "in": "body", "name": "body", "required": true, "ref": "ICreateLicenseParams" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    body: {"in":"body","name":"body","required":true,"ref":"ICreateLicenseParams"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -3654,23 +3655,23 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.createLicense.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.put('/api/v1/license/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/api/v1/license/:id',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                body: { "in": "body", "name": "body", "required": true, "ref": "IUpdateLicenseParams" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    body: {"in":"body","name":"body","required":true,"ref":"IUpdateLicenseParams"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -3679,21 +3680,21 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.updateLicense.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.delete('/api/v1/license/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.delete('/api/v1/license/:id',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -3702,21 +3703,21 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.deleteLicense.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/license-types',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/license-types',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -3725,22 +3726,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getLicenseType.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/license-type/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/license-type/:id',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -3749,22 +3750,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getLicenseType.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/v1/license-type',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/api/v1/license-type',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                body: { "in": "body", "name": "body", "required": true, "ref": "ICreateLicenseTypeParams" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    body: {"in":"body","name":"body","required":true,"ref":"ICreateLicenseTypeParams"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -3773,23 +3774,23 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.createLicenseType.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.put('/api/v1/license-type/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/api/v1/license-type/:id',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                body: { "in": "body", "name": "body", "required": true, "ref": "IUpdateLicenseTypeParams" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    body: {"in":"body","name":"body","required":true,"ref":"IUpdateLicenseTypeParams"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -3798,22 +3799,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.updateLicenseType.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.delete('/api/v1/license-type/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.delete('/api/v1/license-type/:id',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -3822,21 +3823,21 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.deleteLicenseType.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/root-nodes',
-        authenticateMiddleware([{ "clientAccessToken": [] }, { "terminalAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/root-nodes',
+            authenticateMiddleware([{"clientAccessToken":[]},{"terminalAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -3845,21 +3846,21 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getAll.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/nodes',
-        authenticateMiddleware([{ "clientAccessToken": [] }, { "terminalAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/nodes',
+            authenticateMiddleware([{"clientAccessToken":[]},{"terminalAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -3868,22 +3869,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getAll.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/nodes/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }, { "terminalAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/nodes/:id',
+            authenticateMiddleware([{"clientAccessToken":[]},{"terminalAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -3892,22 +3893,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getAllById.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/node/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }, { "terminalAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/node/:id',
+            authenticateMiddleware([{"clientAccessToken":[]},{"terminalAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -3916,22 +3917,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getOne.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/v1/node',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/api/v1/node',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                body: { "in": "body", "name": "body", "required": true, "ref": "INodeCreateRequest" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    body: {"in":"body","name":"body","required":true,"ref":"INodeCreateRequest"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -3940,23 +3941,23 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.create.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.put('/api/v1/node/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/api/v1/node/:id',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                body: { "in": "body", "name": "body", "required": true, "ref": "INodeUpdateRequest" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    body: {"in":"body","name":"body","required":true,"ref":"INodeUpdateRequest"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -3965,22 +3966,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.update.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.delete('/api/v1/node/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.delete('/api/v1/node/:id',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -3989,21 +3990,21 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.delete.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/order-types',
-        authenticateMiddleware([{ "clientAccessToken": [] }, { "terminalAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/order-types',
+            authenticateMiddleware([{"clientAccessToken":[]},{"terminalAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -4012,22 +4013,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getAll.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/order-type/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }, { "terminalAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/order-type/:id',
+            authenticateMiddleware([{"clientAccessToken":[]},{"terminalAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -4036,22 +4037,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getOne.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/v1/order-type',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/api/v1/order-type',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                body: { "in": "body", "name": "body", "required": true, "ref": "OrderTypeCreateRequest" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    body: {"in":"body","name":"body","required":true,"ref":"OrderTypeCreateRequest"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -4060,23 +4061,23 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.create.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.put('/api/v1/order-type/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/api/v1/order-type/:id',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                body: { "in": "body", "name": "body", "required": true, "ref": "OrderTypeCreateRequest" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    body: {"in":"body","name":"body","required":true,"ref":"OrderTypeCreateRequest"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -4085,22 +4086,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.update.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.delete('/api/v1/order-type/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.delete('/api/v1/order-type/:id',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -4109,21 +4110,21 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.delete.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/order-type/:orderTypeId/assets',
-        authenticateMiddleware([{ "clientAccessToken": [] }, { "terminalAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/order-type/:orderTypeId/assets',
+            authenticateMiddleware([{"clientAccessToken":[]},{"terminalAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                orderTypeId: { "in": "path", "name": "orderTypeId", "required": true, "dataType": "string" },
+                    orderTypeId: {"in":"path","name":"orderTypeId","required":true,"dataType":"string"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -4132,22 +4133,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getAllAssets.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/order-type/:orderTypeId/assets/:langCode',
-        authenticateMiddleware([{ "clientAccessToken": [] }, { "terminalAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/order-type/:orderTypeId/assets/:langCode',
+            authenticateMiddleware([{"clientAccessToken":[]},{"terminalAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                orderTypeId: { "in": "path", "name": "orderTypeId", "required": true, "dataType": "string" },
-                langCode: { "in": "path", "name": "langCode", "required": true, "dataType": "string" },
+                    orderTypeId: {"in":"path","name":"orderTypeId","required":true,"dataType":"string"},
+                    langCode: {"in":"path","name":"langCode","required":true,"dataType":"string"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -4156,24 +4157,24 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getAssets.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/v1/order-type/:orderTypeId/resource/:langCode/:resourceType',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/api/v1/order-type/:orderTypeId/resource/:langCode/:resourceType',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                orderTypeId: { "in": "path", "name": "orderTypeId", "required": true, "dataType": "string" },
-                langCode: { "in": "path", "name": "langCode", "required": true, "dataType": "string" },
-                resourceType: { "in": "path", "name": "resourceType", "required": true, "ref": "OrderTypeImageTypes" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    orderTypeId: {"in":"path","name":"orderTypeId","required":true,"dataType":"string"},
+                    langCode: {"in":"path","name":"langCode","required":true,"dataType":"string"},
+                    resourceType: {"in":"path","name":"resourceType","required":true,"ref":"OrderTypeImageTypes"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -4182,25 +4183,25 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.resource.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.put('/api/v1/order-type/:orderTypeId/asset/:langCode/:assetId',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/api/v1/order-type/:orderTypeId/asset/:langCode/:assetId',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                orderTypeId: { "in": "path", "name": "orderTypeId", "required": true, "dataType": "string" },
-                langCode: { "in": "path", "name": "langCode", "required": true, "dataType": "string" },
-                assetId: { "in": "path", "name": "assetId", "required": true, "dataType": "string" },
-                body: { "in": "body", "name": "body", "required": true, "ref": "IOrderTypeAssetUpdateRequest" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    orderTypeId: {"in":"path","name":"orderTypeId","required":true,"dataType":"string"},
+                    langCode: {"in":"path","name":"langCode","required":true,"dataType":"string"},
+                    assetId: {"in":"path","name":"assetId","required":true,"dataType":"string"},
+                    body: {"in":"body","name":"body","required":true,"ref":"IOrderTypeAssetUpdateRequest"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -4209,24 +4210,24 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.update.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.delete('/api/v1/order-type/:orderTypeId/asset/:langCode/:assetId',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.delete('/api/v1/order-type/:orderTypeId/asset/:langCode/:assetId',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                orderTypeId: { "in": "path", "name": "orderTypeId", "required": true, "dataType": "string" },
-                langCode: { "in": "path", "name": "langCode", "required": true, "dataType": "string" },
-                assetId: { "in": "path", "name": "assetId", "required": true, "dataType": "string" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    orderTypeId: {"in":"path","name":"orderTypeId","required":true,"dataType":"string"},
+                    langCode: {"in":"path","name":"langCode","required":true,"dataType":"string"},
+                    assetId: {"in":"path","name":"assetId","required":true,"dataType":"string"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -4235,21 +4236,21 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.delete.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/products',
-        authenticateMiddleware([{ "clientAccessToken": [] }, { "terminalAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/products',
+            authenticateMiddleware([{"clientAccessToken":[]},{"terminalAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -4258,22 +4259,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getAll.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/product/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }, { "terminalAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/product/:id',
+            authenticateMiddleware([{"clientAccessToken":[]},{"terminalAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -4282,22 +4283,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getOne.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/v1/product',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/api/v1/product',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                body: { "in": "body", "name": "body", "required": true, "ref": "IProductCreateRequest" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    body: {"in":"body","name":"body","required":true,"ref":"IProductCreateRequest"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -4306,23 +4307,23 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.create.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.put('/api/v1/product/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/api/v1/product/:id',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                body: { "in": "body", "name": "body", "required": true, "ref": "IProductUpdateRequest" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    body: {"in":"body","name":"body","required":true,"ref":"IProductUpdateRequest"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -4331,22 +4332,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.update.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.delete('/api/v1/product/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.delete('/api/v1/product/:id',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -4355,21 +4356,21 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.delete.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/product/:productId/assets',
-        authenticateMiddleware([{ "clientAccessToken": [] }, { "terminalAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/product/:productId/assets',
+            authenticateMiddleware([{"clientAccessToken":[]},{"terminalAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                productId: { "in": "path", "name": "productId", "required": true, "dataType": "string" },
+                    productId: {"in":"path","name":"productId","required":true,"dataType":"string"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -4378,22 +4379,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getAllAssets.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/product/:productId/assets/:langCode',
-        authenticateMiddleware([{ "clientAccessToken": [] }, { "terminalAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/product/:productId/assets/:langCode',
+            authenticateMiddleware([{"clientAccessToken":[]},{"terminalAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                productId: { "in": "path", "name": "productId", "required": true, "dataType": "string" },
-                langCode: { "in": "path", "name": "langCode", "required": true, "dataType": "string" },
+                    productId: {"in":"path","name":"productId","required":true,"dataType":"string"},
+                    langCode: {"in":"path","name":"langCode","required":true,"dataType":"string"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -4402,23 +4403,23 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getAssets.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/v1/product/:productId/asset/:langCode',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/api/v1/product/:productId/asset/:langCode',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                productId: { "in": "path", "name": "productId", "required": true, "dataType": "string" },
-                langCode: { "in": "path", "name": "langCode", "required": true, "dataType": "string" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    productId: {"in":"path","name":"productId","required":true,"dataType":"string"},
+                    langCode: {"in":"path","name":"langCode","required":true,"dataType":"string"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -4427,24 +4428,24 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.create.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/v1/product/:productId/resource/:langCode/:resourceType',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/api/v1/product/:productId/resource/:langCode/:resourceType',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                productId: { "in": "path", "name": "productId", "required": true, "dataType": "string" },
-                langCode: { "in": "path", "name": "langCode", "required": true, "dataType": "string" },
-                resourceType: { "in": "path", "name": "resourceType", "required": true, "ref": "ProductImageTypes" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    productId: {"in":"path","name":"productId","required":true,"dataType":"string"},
+                    langCode: {"in":"path","name":"langCode","required":true,"dataType":"string"},
+                    resourceType: {"in":"path","name":"resourceType","required":true,"ref":"ProductImageTypes"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -4453,25 +4454,25 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.resource.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.put('/api/v1/product/:productId/asset/:langCode/:assetId',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/api/v1/product/:productId/asset/:langCode/:assetId',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                productId: { "in": "path", "name": "productId", "required": true, "dataType": "string" },
-                langCode: { "in": "path", "name": "langCode", "required": true, "dataType": "string" },
-                assetId: { "in": "path", "name": "assetId", "required": true, "dataType": "string" },
-                body: { "in": "body", "name": "body", "required": true, "ref": "IProductAssetUpdateRequest" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    productId: {"in":"path","name":"productId","required":true,"dataType":"string"},
+                    langCode: {"in":"path","name":"langCode","required":true,"dataType":"string"},
+                    assetId: {"in":"path","name":"assetId","required":true,"dataType":"string"},
+                    body: {"in":"body","name":"body","required":true,"ref":"IProductAssetUpdateRequest"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -4480,24 +4481,24 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.update.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.delete('/api/v1/product/:productId/asset/:langCode/:assetId',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.delete('/api/v1/product/:productId/asset/:langCode/:assetId',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                productId: { "in": "path", "name": "productId", "required": true, "dataType": "string" },
-                langCode: { "in": "path", "name": "langCode", "required": true, "dataType": "string" },
-                assetId: { "in": "path", "name": "assetId", "required": true, "dataType": "string" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    productId: {"in":"path","name":"productId","required":true,"dataType":"string"},
+                    langCode: {"in":"path","name":"langCode","required":true,"dataType":"string"},
+                    assetId: {"in":"path","name":"assetId","required":true,"dataType":"string"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -4506,21 +4507,21 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.delete.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/selectors',
-        authenticateMiddleware([{ "clientAccessToken": [] }, { "terminalAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/selectors',
+            authenticateMiddleware([{"clientAccessToken":[]},{"terminalAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -4529,22 +4530,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getAll.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/selector/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }, { "terminalAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/selector/:id',
+            authenticateMiddleware([{"clientAccessToken":[]},{"terminalAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -4553,22 +4554,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getOne.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/v1/selector',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/api/v1/selector',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                body: { "in": "body", "name": "body", "required": true, "ref": "ISelectorCreateRequest" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    body: {"in":"body","name":"body","required":true,"ref":"ISelectorCreateRequest"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -4577,23 +4578,23 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.create.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.put('/api/v1/selector/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/api/v1/selector/:id',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                body: { "in": "body", "name": "body", "required": true, "ref": "ISelectorUpdateRequest" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    body: {"in":"body","name":"body","required":true,"ref":"ISelectorUpdateRequest"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -4602,22 +4603,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.update.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.delete('/api/v1/selector/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.delete('/api/v1/selector/:id',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -4626,21 +4627,21 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.delete.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/selector/:selectorId/assets',
-        authenticateMiddleware([{ "clientAccessToken": [] }, { "terminalAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/selector/:selectorId/assets',
+            authenticateMiddleware([{"clientAccessToken":[]},{"terminalAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                selectorId: { "in": "path", "name": "selectorId", "required": true, "dataType": "string" },
+                    selectorId: {"in":"path","name":"selectorId","required":true,"dataType":"string"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -4649,22 +4650,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getAllAssets.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/selector/:selectorId/assets/:langCode',
-        authenticateMiddleware([{ "clientAccessToken": [] }, { "terminalAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/selector/:selectorId/assets/:langCode',
+            authenticateMiddleware([{"clientAccessToken":[]},{"terminalAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                selectorId: { "in": "path", "name": "selectorId", "required": true, "dataType": "string" },
-                langCode: { "in": "path", "name": "langCode", "required": true, "dataType": "string" },
+                    selectorId: {"in":"path","name":"selectorId","required":true,"dataType":"string"},
+                    langCode: {"in":"path","name":"langCode","required":true,"dataType":"string"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -4673,24 +4674,24 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getAssets.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/v1/selector/:selectorId/resource/:langCode/:resourceType',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/api/v1/selector/:selectorId/resource/:langCode/:resourceType',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                selectorId: { "in": "path", "name": "selectorId", "required": true, "dataType": "string" },
-                langCode: { "in": "path", "name": "langCode", "required": true, "dataType": "string" },
-                resourceType: { "in": "path", "name": "resourceType", "required": true, "ref": "SelectorImageTypes" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    selectorId: {"in":"path","name":"selectorId","required":true,"dataType":"string"},
+                    langCode: {"in":"path","name":"langCode","required":true,"dataType":"string"},
+                    resourceType: {"in":"path","name":"resourceType","required":true,"ref":"SelectorImageTypes"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -4699,25 +4700,25 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.resource.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.put('/api/v1/selector/:selectorId/asset/:langCode/:assetId',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/api/v1/selector/:selectorId/asset/:langCode/:assetId',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                selectorId: { "in": "path", "name": "selectorId", "required": true, "dataType": "string" },
-                langCode: { "in": "path", "name": "langCode", "required": true, "dataType": "string" },
-                assetId: { "in": "path", "name": "assetId", "required": true, "dataType": "string" },
-                body: { "in": "body", "name": "body", "required": true, "ref": "ISelectorAssetUpdateRequest" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    selectorId: {"in":"path","name":"selectorId","required":true,"dataType":"string"},
+                    langCode: {"in":"path","name":"langCode","required":true,"dataType":"string"},
+                    assetId: {"in":"path","name":"assetId","required":true,"dataType":"string"},
+                    body: {"in":"body","name":"body","required":true,"ref":"ISelectorAssetUpdateRequest"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -4726,24 +4727,24 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.update.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.delete('/api/v1/selector/:selectorId/asset/:langCode/:assetId',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.delete('/api/v1/selector/:selectorId/asset/:langCode/:assetId',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                selectorId: { "in": "path", "name": "selectorId", "required": true, "dataType": "string" },
-                langCode: { "in": "path", "name": "langCode", "required": true, "dataType": "string" },
-                assetId: { "in": "path", "name": "assetId", "required": true, "dataType": "string" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    selectorId: {"in":"path","name":"selectorId","required":true,"dataType":"string"},
+                    langCode: {"in":"path","name":"langCode","required":true,"dataType":"string"},
+                    assetId: {"in":"path","name":"assetId","required":true,"dataType":"string"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -4752,21 +4753,21 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.delete.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/stores',
-        authenticateMiddleware([{ "clientAccessToken": [] }, { "terminalAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/stores',
+            authenticateMiddleware([{"clientAccessToken":[]},{"terminalAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -4775,22 +4776,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getAll.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/store/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }, { "terminalAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/store/:id',
+            authenticateMiddleware([{"clientAccessToken":[]},{"terminalAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -4799,22 +4800,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getOne.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/v1/store',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/api/v1/store',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                body: { "in": "body", "name": "body", "required": true, "ref": "IStoreCreateRequest" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    body: {"in":"body","name":"body","required":true,"ref":"IStoreCreateRequest"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -4823,23 +4824,23 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.create.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.put('/api/v1/store/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }, { "terminalAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/api/v1/store/:id',
+            authenticateMiddleware([{"clientAccessToken":[]},{"terminalAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                body: { "in": "body", "name": "body", "required": true, "ref": "IStoreUpdateRequest" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    body: {"in":"body","name":"body","required":true,"ref":"IStoreUpdateRequest"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -4848,22 +4849,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.update.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.delete('/api/v1/store/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.delete('/api/v1/store/:id',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -4872,21 +4873,21 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.delete.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/tags',
-        authenticateMiddleware([{ "clientAccessToken": [] }, { "terminalAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/tags',
+            authenticateMiddleware([{"clientAccessToken":[]},{"terminalAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -4895,22 +4896,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getAll.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/tag/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }, { "terminalAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/tag/:id',
+            authenticateMiddleware([{"clientAccessToken":[]},{"terminalAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -4919,22 +4920,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getOne.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/v1/tag',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/api/v1/tag',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                body: { "in": "body", "name": "body", "required": true, "ref": "TagCreateRequest" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    body: {"in":"body","name":"body","required":true,"ref":"TagCreateRequest"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -4943,23 +4944,23 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.create.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.put('/api/v1/tag/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/api/v1/tag/:id',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                body: { "in": "body", "name": "body", "required": true, "ref": "TagCreateRequest" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    body: {"in":"body","name":"body","required":true,"ref":"TagCreateRequest"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -4968,22 +4969,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.update.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.delete('/api/v1/tag/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.delete('/api/v1/tag/:id',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -4992,21 +4993,21 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.delete.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/tag/:tagId/assets',
-        authenticateMiddleware([{ "clientAccessToken": [] }, { "terminalAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/tag/:tagId/assets',
+            authenticateMiddleware([{"clientAccessToken":[]},{"terminalAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                tagId: { "in": "path", "name": "tagId", "required": true, "dataType": "string" },
+                    tagId: {"in":"path","name":"tagId","required":true,"dataType":"string"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -5015,22 +5016,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getAllAssets.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/tag/:tagId/assets/:langCode',
-        authenticateMiddleware([{ "clientAccessToken": [] }, { "terminalAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/tag/:tagId/assets/:langCode',
+            authenticateMiddleware([{"clientAccessToken":[]},{"terminalAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                tagId: { "in": "path", "name": "tagId", "required": true, "dataType": "string" },
-                langCode: { "in": "path", "name": "langCode", "required": true, "dataType": "string" },
+                    tagId: {"in":"path","name":"tagId","required":true,"dataType":"string"},
+                    langCode: {"in":"path","name":"langCode","required":true,"dataType":"string"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -5039,24 +5040,24 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getAssets.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/v1/tag/:tagId/resource/:langCode/:resourceType',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/api/v1/tag/:tagId/resource/:langCode/:resourceType',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                tagId: { "in": "path", "name": "tagId", "required": true, "dataType": "string" },
-                langCode: { "in": "path", "name": "langCode", "required": true, "dataType": "string" },
-                resourceType: { "in": "path", "name": "resourceType", "required": true, "ref": "TagImageTypes" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    tagId: {"in":"path","name":"tagId","required":true,"dataType":"string"},
+                    langCode: {"in":"path","name":"langCode","required":true,"dataType":"string"},
+                    resourceType: {"in":"path","name":"resourceType","required":true,"ref":"TagImageTypes"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -5065,25 +5066,25 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.resource.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.put('/api/v1/tag/:tagId/asset/:langCode/:assetId',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/api/v1/tag/:tagId/asset/:langCode/:assetId',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                tagId: { "in": "path", "name": "tagId", "required": true, "dataType": "string" },
-                langCode: { "in": "path", "name": "langCode", "required": true, "dataType": "string" },
-                assetId: { "in": "path", "name": "assetId", "required": true, "dataType": "string" },
-                body: { "in": "body", "name": "body", "required": true, "ref": "ITagAssetUpdateRequest" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    tagId: {"in":"path","name":"tagId","required":true,"dataType":"string"},
+                    langCode: {"in":"path","name":"langCode","required":true,"dataType":"string"},
+                    assetId: {"in":"path","name":"assetId","required":true,"dataType":"string"},
+                    body: {"in":"body","name":"body","required":true,"ref":"ITagAssetUpdateRequest"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -5092,24 +5093,24 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.update.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.delete('/api/v1/tag/:tagId/asset/:langCode/:assetId',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.delete('/api/v1/tag/:tagId/asset/:langCode/:assetId',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                tagId: { "in": "path", "name": "tagId", "required": true, "dataType": "string" },
-                langCode: { "in": "path", "name": "langCode", "required": true, "dataType": "string" },
-                assetId: { "in": "path", "name": "assetId", "required": true, "dataType": "string" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    tagId: {"in":"path","name":"tagId","required":true,"dataType":"string"},
+                    langCode: {"in":"path","name":"langCode","required":true,"dataType":"string"},
+                    assetId: {"in":"path","name":"assetId","required":true,"dataType":"string"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -5118,21 +5119,21 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.delete.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/device/license-verify',
-        authenticateMiddleware([{ "terminalAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/device/license-verify',
+            authenticateMiddleware([{"terminalAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -5141,22 +5142,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.licenseVerify.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.post('/api/v1/device/registration',
-        authenticateMiddleware([{ "terminalAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/api/v1/device/registration',
+            authenticateMiddleware([{"terminalAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                body: { "in": "body", "name": "body", "required": true, "ref": "ITerminalRegisterRequest" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    body: {"in":"body","name":"body","required":true,"ref":"ITerminalRegisterRequest"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -5165,21 +5166,21 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.registration.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/terminals',
-        authenticateMiddleware([{ "clientAccessToken": [] }, { "terminalAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/terminals',
+            authenticateMiddleware([{"clientAccessToken":[]},{"terminalAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -5188,22 +5189,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getAll.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/terminal/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }, { "terminalAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/terminal/:id',
+            authenticateMiddleware([{"clientAccessToken":[]},{"terminalAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -5212,23 +5213,23 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getOne.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.put('/api/v1/terminal/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }, { "terminalAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/api/v1/terminal/:id',
+            authenticateMiddleware([{"clientAccessToken":[]},{"terminalAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                body: { "in": "body", "name": "body", "required": true, "ref": "ITerminalUpdateRequest" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    body: {"in":"body","name":"body","required":true,"ref":"ITerminalUpdateRequest"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -5237,21 +5238,21 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.update.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/translations',
-        authenticateMiddleware([{ "clientAccessToken": [] }, { "terminalAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/translations',
+            authenticateMiddleware([{"clientAccessToken":[]},{"terminalAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -5260,22 +5261,22 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getAll.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.get('/api/v1/translation/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }, { "terminalAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/v1/translation/:id',
+            authenticateMiddleware([{"clientAccessToken":[]},{"terminalAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -5284,23 +5285,23 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.getOne.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    app.put('/api/v1/translation/:id',
-        authenticateMiddleware([{ "clientAccessToken": [] }]),
-        function(request: any, response: any, next: any) {
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/api/v1/translation/:id',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
             const args = {
-                id: { "in": "path", "name": "id", "required": true, "dataType": "string" },
-                body: { "in": "body", "name": "body", "required": true, "ref": "TranslationUpdateRequest" },
-                request: { "in": "request", "name": "request", "required": true, "dataType": "object" },
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    body: {"in":"body","name":"body","required":true,"ref":"TranslationUpdateRequest"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = getValidatedArgs(args, request);
+                validatedArgs = getValidatedArgs(args, request, response);
             } catch (err) {
                 return next(err);
             }
@@ -5309,9 +5310,9 @@ export function RegisterRoutes(app: express.Express) {
 
 
             const promise = controller.update.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
+            promiseHandler(controller, promise, response, undefined, next);
         });
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
@@ -5369,51 +5370,67 @@ export function RegisterRoutes(app: express.Express) {
         return 'getHeaders' in object && 'getStatus' in object && 'setStatus' in object;
     }
 
-    function promiseHandler(controllerObj: any, promise: any, response: any, next: any) {
+    function promiseHandler(controllerObj: any, promise: any, response: any, successStatus: any, next: any) {
         return Promise.resolve(promise)
             .then((data: any) => {
-                let statusCode;
+                let statusCode = successStatus;
+                let headers;
                 if (isController(controllerObj)) {
-                    const headers = controllerObj.getHeaders();
-                    Object.keys(headers).forEach((name: string) => {
-                        response.set(name, headers[name]);
-                    });
-
+                    headers = controllerObj.getHeaders();
                     statusCode = controllerObj.getStatus();
                 }
 
                 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
-                if (data && typeof data.pipe === 'function' && data.readable && typeof data._read === 'function') {
-                    data.pipe(response);
-                } else if (data || data === false) { // === false allows boolean result
-                    response.status(statusCode || 200).json(data);
-                } else {
-                    response.status(statusCode || 204).end();
-                }
+                returnHandler(response, statusCode, data, headers)
             })
             .catch((error: any) => next(error));
     }
 
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
-    function getValidatedArgs(args: any, request: any): any[] {
-        const fieldErrors: FieldErrors = {};
+    function returnHandler(response: any, statusCode?: number, data?: any, headers: any = {}) {
+        Object.keys(headers).forEach((name: string) => {
+            response.set(name, headers[name]);
+        });
+        if (data && typeof data.pipe === 'function' && data.readable && typeof data._read === 'function') {
+            data.pipe(response);
+        } else if (data !== null && data !== undefined) {
+            response.status(statusCode || 200).json(data);
+        } else {
+            response.status(statusCode || 204).end();
+        }
+    }
+    
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+    function responder(response: any): TsoaResponse<HttpStatusCodeLiteral, unknown>  {
+        return function(status, data, headers) {
+            returnHandler(response, status, data, headers);
+        };
+    };
+
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+    function getValidatedArgs(args: any, request: any, response: any): any[] {
+        const fieldErrors: FieldErrors  = {};
         const values = Object.keys(args).map((key) => {
             const name = args[key].name;
             switch (args[key].in) {
                 case 'request':
                     return request;
                 case 'query':
-                    return validationService.ValidateParam(args[key], request.query[name], name, fieldErrors, undefined, { "noImplicitAdditionalProperties": "throw-on-extras" });
+                    return validationService.ValidateParam(args[key], request.query[name], name, fieldErrors, undefined, {"noImplicitAdditionalProperties":"throw-on-extras"});
                 case 'path':
-                    return validationService.ValidateParam(args[key], request.params[name], name, fieldErrors, undefined, { "noImplicitAdditionalProperties": "throw-on-extras" });
+                    return validationService.ValidateParam(args[key], request.params[name], name, fieldErrors, undefined, {"noImplicitAdditionalProperties":"throw-on-extras"});
                 case 'header':
-                    return validationService.ValidateParam(args[key], request.header(name), name, fieldErrors, undefined, { "noImplicitAdditionalProperties": "throw-on-extras" });
+                    return validationService.ValidateParam(args[key], request.header(name), name, fieldErrors, undefined, {"noImplicitAdditionalProperties":"throw-on-extras"});
                 case 'body':
-                    return validationService.ValidateParam(args[key], request.body, name, fieldErrors, undefined, { "noImplicitAdditionalProperties": "throw-on-extras" });
+                    return validationService.ValidateParam(args[key], request.body, name, fieldErrors, undefined, {"noImplicitAdditionalProperties":"throw-on-extras"});
                 case 'body-prop':
-                    return validationService.ValidateParam(args[key], request.body[name], name, fieldErrors, 'body.', { "noImplicitAdditionalProperties": "throw-on-extras" });
+                    return validationService.ValidateParam(args[key], request.body[name], name, fieldErrors, 'body.', {"noImplicitAdditionalProperties":"throw-on-extras"});
+                case 'res':
+                    return responder(response);
             }
         });
 
