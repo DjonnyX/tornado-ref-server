@@ -263,8 +263,6 @@ export class LanguageController extends Controller {
                 }
             }
             isDefault = item.isDefault;
-
-            await item.save();
         } catch (err) {
             this.setStatus(500);
             return {

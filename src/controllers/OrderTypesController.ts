@@ -150,7 +150,24 @@ export class OrderTypeController extends Controller {
         data: RESPONSE_TEMPLATE,
     })
     public async create(@Body() body: OrderTypeCreateRequest, @Request() request: IAuthRequest): Promise<OrderTypeResponse> {
+        let orderTypes: Array<IOrderType>;
+
         try {
+            orderTypes = await OrderTypeModel.find({ client: request.account.id });
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Get OrderTypes error. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        try {
+            body.isDefault = orderTypes.length === 0;
             const item = new OrderTypeModel({ ...body, client: request.account.id });
             const savedItem = await item.save();
             const ref = await riseRefVersion(request.account.id, RefTypes.ORDER_TYPES);
@@ -188,14 +205,18 @@ export class OrderTypeController extends Controller {
                 error: [
                     {
                         code: 500,
-                        message: `Default language error. ${err}`,
+                        message: `Get default language error. ${err}`,
                     }
                 ]
             };
         }
 
+        let isDefault: boolean;
+
+        let item: IOrderType;
+
         try {
-            const item = await OrderTypeModel.findById(id);
+            item = await OrderTypeModel.findById(id);
 
             let lastContents: IOrderTypeContents;
             for (const key in body) {
@@ -212,6 +233,8 @@ export class OrderTypeController extends Controller {
                     item.markModified(key);
                 }
             }
+
+            isDefault = item.isDefault;
 
             // удаление ассетов из разности resources
             const deletedAssetsFromImages = getDeletedImagesFromDifferense(lastContents, item.contents);
@@ -261,7 +284,82 @@ export class OrderTypeController extends Controller {
                     }
                 }
             }
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Caught error. ${err}`,
+                    }
+                ]
+            };
+        }
 
+        try {
+            const orderTypes: Array<IOrderType> = await OrderTypeModel.find({ client: request.account.id });
+
+            const promises = new Array<Promise<void>>();
+
+            if (isDefault) {
+                orderTypes.forEach(orderType => {
+                    if (orderType.id !== item.id) {
+                        if (!!orderType.isDefault) {
+                            orderType.isDefault = false;
+                            promises.push(new Promise<void>(async (resolve, reject) => {
+                                try {
+                                    await orderType.save();
+                                } catch (err) {
+                                    reject(err);
+                                }
+                                resolve();
+                            }));
+                        }
+                    }
+                });
+            } else {
+                let needSetupDefault = true;
+                let firstOrderType: IOrderType;
+
+                orderTypes.forEach(orderType => {
+                    if (!firstOrderType) {
+                        firstOrderType = orderType;
+                    }
+
+                    if (orderType.isDefault) {
+                        needSetupDefault = false;
+                    }
+                });
+
+                if (needSetupDefault && firstOrderType) {
+                    firstOrderType.isDefault = true;
+
+                    promises.push(new Promise<void>(async (resolve, reject) => {
+                        try {
+                            await firstOrderType.save();
+                        } catch (err) {
+                            reject(err);
+                        }
+                        resolve();
+                    }));
+                }
+            }
+
+            await Promise.all(promises);
+
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Set default OrderType error. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        try {
             await item.save();
 
             const ref = await riseRefVersion(request.account.id, RefTypes.ORDER_TYPES);
@@ -289,6 +387,23 @@ export class OrderTypeController extends Controller {
         meta: META_TEMPLATE,
     })
     public async delete(id: string, @Request() request: IAuthRequest): Promise<OrderTypeResponse> {
+        let orderTypes: Array<IOrderType>;
+        try {
+            orderTypes = await OrderTypeModel.find({ client: request.account.id });
+        } catch (err) { }
+
+        if (orderTypes && orderTypes.length === 1) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: "There must be at least one OrderType left.",
+                    }
+                ]
+            };
+        }
+
         let orderType: IOrderType;
         try {
             orderType = await OrderTypeModel.findByIdAndDelete(id);
