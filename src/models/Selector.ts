@@ -7,7 +7,7 @@ interface ISelector extends Document {
     active: boolean;
     type: SelectorTypes;
     contents: ISelectorContents;
-    joint: string;
+    joint?: string;
     extra?: { [key: string]: any } | null;
 }
 
@@ -21,7 +21,7 @@ const SelectorSchema = new Schema({
         ], required: true
     },
     contents: { type: Schema.Types.Mixed, default: {} },
-    joint: { type: Schema.Types.ObjectId, required: true },
+    joint: { type: Schema.Types.ObjectId, required: false },
     extra: { type: Schema.Types.Mixed, required: false },
 });
 

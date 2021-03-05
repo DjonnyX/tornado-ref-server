@@ -1,4 +1,4 @@
-import { NodeModel, INode } from "../models/index";
+import { NodeModel, INodeDocument } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Request } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import * as joi from "@hapi/joi";
@@ -110,7 +110,7 @@ const RESPONSE_TEMPLATE: INodeItem = {
     }]
 };
 
-const formatModel = (model: INode): INodeItem => ({
+const formatModel = (model: INodeDocument): INodeItem => ({
     id: model._id,
     active: model.active,
     type: model.type,
@@ -353,7 +353,7 @@ export class NodeController extends Controller {
             };
         }
 
-        let savedItem: INode;
+        let savedItem: INodeDocument;
         try {
             const item = new NodeModel({ ...body, client: request.account.id });
             savedItem = await item.save();
@@ -384,7 +384,7 @@ export class NodeController extends Controller {
             };
         }
 
-        let parentNode: INode;
+        let parentNode: INodeDocument;
 
         try {
             parentNode = await NodeModel.findOne({ client: request.account.id, _id: savedItem.parentId });
@@ -521,7 +521,7 @@ export class NodeController extends Controller {
     public async delete(id: string, @Request() request: IAuthRequest): Promise<IDeleteNodeResponse> {
         let ids: Array<string>;
 
-        let parentNode: INode;
+        let parentNode: INodeDocument;
         try {
             const item = await NodeModel.findById(id);
             parentNode = await NodeModel.findById(item.parentId);
