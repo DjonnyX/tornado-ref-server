@@ -1,7 +1,7 @@
 import { ProductModel, IProduct, IReceiptItem } from "./Product";
 import { TagModel, ITag } from "./Tag";
 import { RefModel, IRef } from "./Ref";
-import { INode, NodeModel } from "./Node";
+import { INodeDocument, NodeModel } from "./Node";
 import { ISelector, SelectorModel } from "./Selector";
 import { IBusinessPeriod, BusinessPeriodModel } from "./BusinessPeriod";
 import { ICurrency, CurrencyModel } from "./Currency";
@@ -14,7 +14,7 @@ import { ITerminalDocument, TerminalModel } from "./Terminal";
 import { ICheckueDocument, CheckueModel } from "./Checkue";
 
 export {
-    NodeModel, INode,
+    NodeModel, INodeDocument,
     SelectorModel, ISelector,
     IReceiptItem,
     ProductModel, IProduct,

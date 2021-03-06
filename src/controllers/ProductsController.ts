@@ -199,6 +199,7 @@ export class ProductController extends Controller {
                 children: [],
             });
             const jointRootNode = await jointNode.save();
+            await riseRefVersion(request.account.id, RefTypes.NODES);
 
             params = {
                 ...body,
@@ -211,7 +212,7 @@ export class ProductController extends Controller {
                 error: [
                     {
                         code: 500,
-                        message: `Error in creation joint node. ${err}`,
+                        message: `Error when creation joint node of Product. ${err}`,
                     }
                 ]
             };

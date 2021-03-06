@@ -1744,7 +1744,7 @@ const models: TsoaRoute.Models = {
             "type": {"ref":"SelectorTypes","required":true},
             "active": {"dataType":"boolean","required":true},
             "contents": {"ref":"ISelectorContents","required":true},
-            "joint": {"dataType":"string","required":true},
+            "joint": {"dataType":"string"},
             "extra": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,

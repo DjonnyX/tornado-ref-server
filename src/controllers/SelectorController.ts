@@ -1,4 +1,4 @@
-import { SelectorModel, ISelector, NodeModel, ILanguage, LanguageModel } from "../models/index";
+import { SelectorModel, ISelector, NodeModel, ILanguage, LanguageModel, INodeDocument } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Query, Request } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { deleteNodesChain } from "../utils/node";
@@ -16,7 +16,7 @@ export interface ISelectorItem {
     type: SelectorTypes;
     active: boolean;
     contents: ISelectorContents;
-    joint: string;
+    joint?: string;
     extra?: { [key: string]: any } | null;
 }
 
@@ -158,39 +158,55 @@ export class SelectorController extends Controller {
     })
     public async create(@Body() body: ISelectorCreateRequest, @Request() request: IAuthRequest): Promise<ISelectorResponse> {
         let params: ISelectorItem;
-        try {
+        
+        let jointNode: INodeDocument;
 
-            // создается корневой нод
-            const jointNode = new NodeModel({
-                client: request.account.id,
-                active: true,
-                type: NodeTypes.SELECTOR_JOINT,
-                parentId: null,
-                contentId: null,
-                children: [],
-            });
-            const savedJointNode = await jointNode.save();
+        if (body.type === SelectorTypes.SCHEMA_CATEGORY) {
+            try {
+                // создается корневой нод
+                jointNode = new NodeModel({
+                    client: request.account.id,
+                    active: true,
+                    type: NodeTypes.SELECTOR_JOINT,
+                    parentId: null,
+                    contentId: null,
+                    children: [],
+                });
+                const savedJointNode = await jointNode.save();
 
+                params = {
+                    ...body,
+                    joint: savedJointNode._id,
+                    client: request.account.id,
+                } as any;
+            } catch (err) {
+                this.setStatus(500);
+                return {
+                    error: [
+                        {
+                            code: 500,
+                            message: `Error in creation joint node of selector. ${err}`,
+                        }
+                    ]
+                };
+            }
+        } else {
             params = {
                 ...body,
-                joint: savedJointNode._id,
                 client: request.account.id,
             } as any;
-        } catch (err) {
-            this.setStatus(500);
-            return {
-                error: [
-                    {
-                        code: 500,
-                        message: `Error in creation joint node. ${err}`,
-                    }
-                ]
-            };
         }
 
         try {
             const item = new SelectorModel(params);
+
             const savedItem = await item.save();
+            if (!!jointNode) {
+                jointNode.contentId = item.id;
+                await jointNode.save();
+                await riseRefVersion(request.account.id, RefTypes.NODES);
+            }
+
             const ref = await riseRefVersion(request.account.id, RefTypes.SELECTORS);
             return {
                 meta: { ref },
