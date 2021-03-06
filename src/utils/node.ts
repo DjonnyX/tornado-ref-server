@@ -1,11 +1,11 @@
-import { INode, NodeModel } from "../models";
+import { INodeDocument, NodeModel } from "../models";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 interface IDictionary<T = any> {
     [_id: string]: T;
 }
 
-const getMapOfCollection = <T extends INode>(collection: Array<T>): IDictionary<T> => {
+const getMapOfCollection = <T extends INodeDocument>(collection: Array<T>): IDictionary<T> => {
     const result: IDictionary<T> = {};
 
     collection.forEach(item => {
@@ -15,7 +15,7 @@ const getMapOfCollection = <T extends INode>(collection: Array<T>): IDictionary<
     return result;
 };
 
-const extractNodeChain = <T extends INode>(dictionary: IDictionary<T>, item: T): Array<T> => {
+const extractNodeChain = <T extends INodeDocument>(dictionary: IDictionary<T>, item: T): Array<T> => {
     let result = new Array<T>();
 
     item.children.forEach(id => {
@@ -27,7 +27,7 @@ const extractNodeChain = <T extends INode>(dictionary: IDictionary<T>, item: T):
     return result;
 };
 
-const extractNodeInvokeChain = <T extends INode>(dictionary: IDictionary<T>, id: string): Array<T> => {
+const extractNodeInvokeChain = <T extends INodeDocument>(dictionary: IDictionary<T>, id: string): Array<T> => {
     let result = new Array<T>();
 
     const entity = dictionary[id];
@@ -46,8 +46,8 @@ const extractNodeInvokeChain = <T extends INode>(dictionary: IDictionary<T>, id:
  * Возвращает список всех дочерних нодов.
  * Сбор нодов происходит от последних элементов в цепи.
  */
-export const getNodesChain = async (id: string): Promise<Array<INode>> => {
-    let items: Array<INode>;
+export const getNodesChain = async (id: string): Promise<Array<INodeDocument>> => {
+    let items: Array<INodeDocument>;
     try {
         items = await NodeModel.find();
     } catch (err) {
@@ -82,7 +82,7 @@ export const deleteNodesChain = async (id: string): Promise<Array<string>> => {
 };
 
 export const checkOnRecursion = async (client: string, id: string, contentId: string): Promise<boolean> => {
-    let items: Array<INode>;
+    let items: Array<INodeDocument>;
     try {
         items = await NodeModel.find({ client });
     } catch (err) {

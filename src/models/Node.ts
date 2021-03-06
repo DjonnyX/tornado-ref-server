@@ -3,7 +3,7 @@ import * as mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
 import { ScenarioSchema } from "./Scenario";
 
-interface INode extends Document {
+interface INodeDocument extends Document {
     client: string;
     active: boolean;
     /**
@@ -50,6 +50,6 @@ const NodeSchema = new Schema({
     extra: { type: Schema.Types.Mixed, required: false },
 });
 
-const NodeModel = mongoose.model<INode>("Node", NodeSchema);
+const NodeModel = mongoose.model<INodeDocument>("Node", NodeSchema);
 
-export { NodeModel, INode, IScenario };
+export { NodeModel, INodeDocument, IScenario };
