@@ -51,6 +51,10 @@ const checkApiKey = async (apikey: string, request: express.Request) => {
         throw ServerError.from(licenseResponse.error);
       }
     } catch (err) {
+      if (ServerError.isServerError(err)) {
+        throw ServerError.from(err);
+      }
+
       return reject(new ServerError("Check license error.", ErrorCodes.TERMINAL_TOKEN_CHECK_LICENSE_ERROR, 401));
     }
 
