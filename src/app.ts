@@ -5,6 +5,7 @@ import { requestLoggerMiddleware } from "./middlewares/requestLoggerMiddleware";
 import { RegisterRoutes } from "./routes";
 import * as swaggerUI from "swagger-ui-express";
 import * as config from "./config";
+import { ServerError } from "./error";
 
 const app = express();
 app.use("/assets", express.static("assets"));
@@ -14,7 +15,7 @@ app.use((req, res, next) => {
         "Access-Control-Allow-Headers",
         "Origin, x-www-form-urlencoded, X-Requested-With, Content-Type, Accept, x-authorization, x-access-token",
     );
-    
+
     next();
 });
 app.use(cors());
@@ -27,6 +28,19 @@ if (process.env.NODE_ENV !== "production") {
     app.use(requestLoggerMiddleware);
     RegisterRoutes(app);
 }
+
+app.use((err: any | ServerError, _req: express.Request, res: express.Response, next: express.NextFunction) => {
+    const status = err.status || 500;
+    const serverError = ServerError.from(err, status);
+    const body = {
+        error: [{
+            message: serverError.message,
+            code: serverError.code,
+        }]
+    };
+    res.status(status).json(body);
+    next();
+});
 
 try {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
