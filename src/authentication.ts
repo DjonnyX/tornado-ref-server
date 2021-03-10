@@ -3,21 +3,21 @@ import * as express from "express";
 import * as jwt from "jsonwebtoken";
 import { IAuthRequest, IClientJWTBody, ITerminalJWTBody } from "./interfaces";
 import { ICheckLicenseResponse, licServerApiService } from "./services";
-import { extractError } from "./utils/error";
+import { ErrorCodes, ServerError } from "./error";
 
 const checkClientToken = async (token: string, request: express.Request) => {
   return new Promise<void>((resolve, reject) => {
     if (!token) {
-      return reject(new Error("Token is empty."));
+      return reject(new ServerError("Token is empty.", ErrorCodes.CLIENT_TOKEN_EMPTY_TOKEN, 401));
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     jwt.verify(token, config.AUTH_PRIVATE_KEY, async function (err: any, decoded: IClientJWTBody) {
       if (err) {
-        return reject(err);
+        return reject(new ServerError(err.message, ErrorCodes.CLIENT_TOKEN_VERIFICATION, 401));
       }
 
       if (!decoded.id || !decoded.email) {
-        return reject(new Error("Client access token bad format."))
+        return reject(new ServerError(err.message, ErrorCodes.CLIENT_TOKEN_BAD_FORMAT, 401));
       }
 
       (request as IAuthRequest).account = {
@@ -33,26 +33,25 @@ const checkClientToken = async (token: string, request: express.Request) => {
 const checkApiKey = async (apikey: string, request: express.Request) => {
   return new Promise<void>(async (resolve, reject) => {
     if (!apikey) {
-      return reject(new Error("Apikey is empty."));
+      return reject(new ServerError("Token is empty.", ErrorCodes.TERMINAL_TOKEN_EMPTY_TOKEN, 401));
     }
     const payload = jwt.decode(apikey, {
       json: true,
     }) as ITerminalJWTBody;
 
     if (!payload.imei || !payload.hash) {
-      return reject(new Error("apikey bad format."));
+      return reject(new ServerError("Token bad format.", ErrorCodes.TERMINAL_TOKEN_BAD_FORMAT, 401));
     }
 
     let licenseResponse: ICheckLicenseResponse;
     try {
       licenseResponse = await licServerApiService.checkLicense(apikey);
 
-      const err = extractError(licenseResponse.error);
-      if (!!err) {
-        throw new Error(err);
+      if (ServerError.isServerError(licenseResponse.error)) {
+        throw ServerError.from(licenseResponse.error);
       }
     } catch (err) {
-      return reject(err);
+      return reject(new ServerError("Check license error.", ErrorCodes.TERMINAL_TOKEN_CHECK_LICENSE_ERROR, 401));
     }
 
     (request as IAuthRequest).terminal = {
