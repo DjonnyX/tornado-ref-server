@@ -2734,11 +2734,28 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"TerminalTypes": {
+				"enum": [
+					0,
+					1,
+					2,
+					3,
+					4,
+					5,
+					6,
+					7,
+					8
+				],
+				"type": "number"
+			},
 			"ILicenseType": {
 				"properties": {
 					"id": {
 						"type": "string",
 						"description": "Идентификатор сущности"
+					},
+					"appType": {
+						"$ref": "#/components/schemas/TerminalTypes"
 					},
 					"name": {
 						"type": "string"
@@ -2758,6 +2775,7 @@
 					}
 				},
 				"required": [
+					"appType",
 					"name",
 					"description",
 					"price",
@@ -5850,18 +5868,6 @@
 				],
 				"type": "string"
 			},
-			"TerminalTypes": {
-				"enum": [
-					"kiosk",
-					"cashbox",
-					"equeue",
-					"emenu",
-					"guest-screen",
-					"menu-board",
-					"collector"
-				],
-				"type": "string"
-			},
 			"ITerminalItem": {
 				"properties": {
 					"id": {
@@ -6220,32 +6226,32 @@
 												{
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:11.753Z"
+													"lastUpdate": "2021-03-12T16:00:29.783Z"
 												},
 												{
 													"name": "products",
 													"version": 3,
-													"lastUpdate": "2021-03-10T21:34:11.753Z"
+													"lastUpdate": "2021-03-12T16:00:29.783Z"
 												},
 												{
 													"name": "selectors",
 													"version": 4,
-													"lastUpdate": "2021-03-10T21:34:11.754Z"
+													"lastUpdate": "2021-03-12T16:00:29.784Z"
 												},
 												{
 													"name": "tags",
 													"version": 5,
-													"lastUpdate": "2021-03-10T21:34:11.754Z"
+													"lastUpdate": "2021-03-12T16:00:29.784Z"
 												},
 												{
 													"name": "business-periods",
 													"version": 3,
-													"lastUpdate": "2021-03-10T21:34:11.754Z"
+													"lastUpdate": "2021-03-12T16:00:29.784Z"
 												},
 												{
 													"name": "ads",
 													"version": 3,
-													"lastUpdate": "2021-03-10T21:34:11.754Z"
+													"lastUpdate": "2021-03-12T16:00:29.784Z"
 												}
 											]
 										}
@@ -6286,7 +6292,7 @@
 											"data": {
 												"name": "products",
 												"version": 1,
-												"lastUpdate": "2021-03-10T21:34:11.763Z"
+												"lastUpdate": "2021-03-12T16:00:29.796Z"
 											}
 										}
 									}
@@ -6336,7 +6342,7 @@
 												"ref": {
 													"name": "accounts",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:11.793Z"
+													"lastUpdate": "2021-03-12T16:00:29.832Z"
 												}
 											},
 											"data": [
@@ -6383,7 +6389,7 @@
 												"ref": {
 													"name": "accounts",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:11.799Z"
+													"lastUpdate": "2021-03-12T16:00:29.838Z"
 												}
 											},
 											"data": {
@@ -6435,7 +6441,7 @@
 												"ref": {
 													"name": "accounts",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:11.800Z"
+													"lastUpdate": "2021-03-12T16:00:29.840Z"
 												}
 											},
 											"data": {
@@ -6499,14 +6505,14 @@
 												"ref": {
 													"name": "assets",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:11.819Z"
+													"lastUpdate": "2021-03-12T16:00:29.871Z"
 												}
 											},
 											"data": [
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-03-10T21:34:11.819Z",
+													"lastUpdate": "2021-03-12T16:00:29.871Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"path": "assets/some_3d_model.fbx",
@@ -6555,7 +6561,7 @@
 												"ref": {
 													"name": "ads",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:11.839Z"
+													"lastUpdate": "2021-03-12T16:00:29.898Z"
 												}
 											},
 											"data": [
@@ -6629,7 +6635,7 @@
 												"ref": {
 													"name": "ads",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:11.857Z"
+													"lastUpdate": "2021-03-12T16:00:29.912Z"
 												}
 											},
 											"data": {
@@ -6699,7 +6705,7 @@
 												"ref": {
 													"name": "ads",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:11.865Z"
+													"lastUpdate": "2021-03-12T16:00:29.943Z"
 												}
 											},
 											"data": {
@@ -6776,7 +6782,7 @@
 												"ref": {
 													"name": "ads",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:11.871Z"
+													"lastUpdate": "2021-03-12T16:00:29.954Z"
 												}
 											}
 										}
@@ -6824,7 +6830,7 @@
 												"ref": {
 													"name": "ads",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:11.859Z"
+													"lastUpdate": "2021-03-12T16:00:29.916Z"
 												}
 											},
 											"data": {
@@ -6895,14 +6901,14 @@
 													"ref": {
 														"name": "ads",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:11.879Z"
+														"lastUpdate": "2021-03-12T16:00:29.979Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:11.879Z"
+														"lastUpdate": "2021-03-12T16:00:29.979Z"
 													}
 												}
 											},
@@ -6911,7 +6917,7 @@
 													{
 														"id": "107c7f79bcf86cd7994f6c0e",
 														"active": true,
-														"lastUpdate": "2021-03-10T21:34:11.879Z",
+														"lastUpdate": "2021-03-12T16:00:29.979Z",
 														"name": "some_3d_model",
 														"ext": ".fbx",
 														"mipmap": {
@@ -6971,14 +6977,14 @@
 													"ref": {
 														"name": "ads",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:11.883Z"
+														"lastUpdate": "2021-03-12T16:00:29.994Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:11.883Z"
+														"lastUpdate": "2021-03-12T16:00:29.994Z"
 													}
 												}
 											},
@@ -6986,7 +6992,7 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-03-10T21:34:11.883Z",
+													"lastUpdate": "2021-03-12T16:00:29.994Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -7053,14 +7059,14 @@
 													"ref": {
 														"name": "ads",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:11.890Z"
+														"lastUpdate": "2021-03-12T16:00:30.018Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:11.890Z"
+														"lastUpdate": "2021-03-12T16:00:30.018Z"
 													}
 												}
 											},
@@ -7068,7 +7074,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-03-10T21:34:11.890Z",
+													"lastUpdate": "2021-03-12T16:00:30.018Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -7140,14 +7146,14 @@
 													"ref": {
 														"name": "ads",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:11.893Z"
+														"lastUpdate": "2021-03-12T16:00:30.028Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:11.893Z"
+														"lastUpdate": "2021-03-12T16:00:30.028Z"
 													}
 												}
 											},
@@ -7155,7 +7161,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-03-10T21:34:11.893Z",
+													"lastUpdate": "2021-03-12T16:00:30.028Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -7235,14 +7241,14 @@
 													"ref": {
 														"name": "ads",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:11.901Z"
+														"lastUpdate": "2021-03-12T16:00:30.046Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:11.901Z"
+														"lastUpdate": "2021-03-12T16:00:30.046Z"
 													}
 												}
 											}
@@ -7307,7 +7313,7 @@
 												"ref": {
 													"name": "applications",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:11.912Z"
+													"lastUpdate": "2021-03-12T16:00:30.075Z"
 												}
 											},
 											"data": [
@@ -7320,7 +7326,7 @@
 														"code": 1,
 														"version": "1.0.23"
 													},
-													"lastUpdate": "2021-03-10T21:34:11.912Z"
+													"lastUpdate": "2021-03-12T16:00:30.076Z"
 												}
 											]
 										}
@@ -7359,7 +7365,7 @@
 												"ref": {
 													"name": "applications",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:11.917Z"
+													"lastUpdate": "2021-03-12T16:00:30.090Z"
 												}
 											},
 											"data": {
@@ -7371,7 +7377,7 @@
 													"code": 1,
 													"version": "1.0.23"
 												},
-												"lastUpdate": "2021-03-10T21:34:11.917Z"
+												"lastUpdate": "2021-03-12T16:00:30.090Z"
 											}
 										}
 									}
@@ -7416,7 +7422,7 @@
 												"ref": {
 													"name": "applications",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:11.923Z"
+													"lastUpdate": "2021-03-12T16:00:30.110Z"
 												}
 											},
 											"data": {
@@ -7428,7 +7434,7 @@
 													"code": 1,
 													"version": "1.0.23"
 												},
-												"lastUpdate": "2021-03-10T21:34:11.923Z"
+												"lastUpdate": "2021-03-12T16:00:30.110Z"
 											}
 										}
 									}
@@ -7483,7 +7489,7 @@
 												"ref": {
 													"name": "applications",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:11.928Z"
+													"lastUpdate": "2021-03-12T16:00:30.121Z"
 												}
 											}
 										}
@@ -7531,7 +7537,7 @@
 												"ref": {
 													"name": "applications",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:11.919Z"
+													"lastUpdate": "2021-03-12T16:00:30.094Z"
 												}
 											},
 											"data": {
@@ -7543,7 +7549,7 @@
 													"code": 1,
 													"version": "1.0.23"
 												},
-												"lastUpdate": "2021-03-10T21:34:11.919Z"
+												"lastUpdate": "2021-03-12T16:00:30.095Z"
 											}
 										}
 									}
@@ -7858,7 +7864,7 @@
 												"ref": {
 													"name": "business-periods",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:11.975Z"
+													"lastUpdate": "2021-03-12T16:00:30.265Z"
 												}
 											},
 											"data": [
@@ -7926,7 +7932,7 @@
 												"ref": {
 													"name": "business-periods",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:11.980Z"
+													"lastUpdate": "2021-03-12T16:00:30.284Z"
 												}
 											},
 											"data": {
@@ -7999,7 +8005,7 @@
 												"ref": {
 													"name": "business-periods",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:11.987Z"
+													"lastUpdate": "2021-03-12T16:00:30.315Z"
 												}
 											},
 											"data": {
@@ -8079,7 +8085,7 @@
 												"ref": {
 													"name": "business-periods",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:11.989Z"
+													"lastUpdate": "2021-03-12T16:00:30.321Z"
 												}
 											}
 										}
@@ -8127,7 +8133,7 @@
 												"ref": {
 													"name": "business-periods",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:11.981Z"
+													"lastUpdate": "2021-03-12T16:00:30.287Z"
 												}
 											},
 											"data": {
@@ -8200,7 +8206,7 @@
 												"ref": {
 													"name": "checkues",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.032Z"
+													"lastUpdate": "2021-03-12T16:00:30.435Z"
 												}
 											},
 											"data": [
@@ -8253,7 +8259,7 @@
 												"ref": {
 													"name": "checkues",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.037Z"
+													"lastUpdate": "2021-03-12T16:00:30.452Z"
 												}
 											},
 											"data": {
@@ -8311,7 +8317,7 @@
 												"ref": {
 													"name": "checkues",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.044Z"
+													"lastUpdate": "2021-03-12T16:00:30.464Z"
 												}
 											},
 											"data": {
@@ -8376,7 +8382,7 @@
 												"ref": {
 													"name": "checkues",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.049Z"
+													"lastUpdate": "2021-03-12T16:00:30.470Z"
 												}
 											}
 										}
@@ -8424,7 +8430,7 @@
 												"ref": {
 													"name": "checkues",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.038Z"
+													"lastUpdate": "2021-03-12T16:00:30.455Z"
 												}
 											},
 											"data": {
@@ -8482,7 +8488,7 @@
 												"ref": {
 													"name": "currencies",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.058Z"
+													"lastUpdate": "2021-03-12T16:00:30.487Z"
 												}
 											},
 											"data": [
@@ -8537,7 +8543,7 @@
 												"ref": {
 													"name": "currencies",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.063Z"
+													"lastUpdate": "2021-03-12T16:00:30.498Z"
 												}
 											},
 											"data": {
@@ -8597,7 +8603,7 @@
 												"ref": {
 													"name": "currencies",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.068Z"
+													"lastUpdate": "2021-03-12T16:00:30.509Z"
 												}
 											},
 											"data": {
@@ -8664,7 +8670,7 @@
 												"ref": {
 													"name": "currencies",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.071Z"
+													"lastUpdate": "2021-03-12T16:00:30.517Z"
 												}
 											}
 										}
@@ -8712,7 +8718,7 @@
 												"ref": {
 													"name": "currencies",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.064Z"
+													"lastUpdate": "2021-03-12T16:00:30.501Z"
 												}
 											},
 											"data": {
@@ -8772,7 +8778,7 @@
 												"ref": {
 													"name": "integrations",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.082Z"
+													"lastUpdate": "2021-03-12T16:00:30.535Z"
 												}
 											},
 											"data": [
@@ -8786,7 +8792,7 @@
 														"version": "1.0.23"
 													},
 													"state": 1,
-													"lastUpdate": "2021-03-10T21:34:12.083Z"
+													"lastUpdate": "2021-03-12T16:00:30.536Z"
 												}
 											]
 										}
@@ -8825,7 +8831,7 @@
 												"ref": {
 													"name": "integrations",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.088Z"
+													"lastUpdate": "2021-03-12T16:00:30.544Z"
 												}
 											},
 											"data": {
@@ -8838,7 +8844,7 @@
 													"version": "1.0.23"
 												},
 												"state": 1,
-												"lastUpdate": "2021-03-10T21:34:12.088Z"
+												"lastUpdate": "2021-03-12T16:00:30.544Z"
 											}
 										}
 									}
@@ -8883,7 +8889,7 @@
 												"ref": {
 													"name": "integrations",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.089Z"
+													"lastUpdate": "2021-03-12T16:00:30.546Z"
 												}
 											},
 											"data": {
@@ -8896,7 +8902,7 @@
 													"version": "1.0.23"
 												},
 												"state": 1,
-												"lastUpdate": "2021-03-10T21:34:12.089Z"
+												"lastUpdate": "2021-03-12T16:00:30.546Z"
 											}
 										}
 									}
@@ -8953,7 +8959,7 @@
 												"ref": {
 													"name": "languages",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.106Z"
+													"lastUpdate": "2021-03-12T16:00:30.568Z"
 												}
 											},
 											"data": [
@@ -9013,7 +9019,7 @@
 												"ref": {
 													"name": "languages",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.113Z"
+													"lastUpdate": "2021-03-12T16:00:30.577Z"
 												}
 											},
 											"data": {
@@ -9078,7 +9084,7 @@
 												"ref": {
 													"name": "languages",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.120Z"
+													"lastUpdate": "2021-03-12T16:00:30.588Z"
 												}
 											},
 											"data": {
@@ -9150,7 +9156,7 @@
 												"ref": {
 													"name": "languages",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.124Z"
+													"lastUpdate": "2021-03-12T16:00:30.596Z"
 												}
 											}
 										}
@@ -9198,7 +9204,7 @@
 												"ref": {
 													"name": "languages",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.115Z"
+													"lastUpdate": "2021-03-12T16:00:30.580Z"
 												}
 											},
 											"data": {
@@ -9264,14 +9270,14 @@
 													"ref": {
 														"name": "languages",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.132Z"
+														"lastUpdate": "2021-03-12T16:00:30.607Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.132Z"
+														"lastUpdate": "2021-03-12T16:00:30.607Z"
 													}
 												}
 											},
@@ -9279,7 +9285,7 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-03-10T21:34:12.132Z",
+													"lastUpdate": "2021-03-12T16:00:30.607Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -9338,14 +9344,14 @@
 													"ref": {
 														"name": "languages",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.141Z"
+														"lastUpdate": "2021-03-12T16:00:30.619Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.141Z"
+														"lastUpdate": "2021-03-12T16:00:30.619Z"
 													}
 												}
 											},
@@ -9353,7 +9359,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-03-10T21:34:12.141Z",
+													"lastUpdate": "2021-03-12T16:00:30.619Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -9409,14 +9415,14 @@
 													"ref": {
 														"name": "languages",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.142Z"
+														"lastUpdate": "2021-03-12T16:00:30.621Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.142Z"
+														"lastUpdate": "2021-03-12T16:00:30.621Z"
 													}
 												}
 											},
@@ -9424,7 +9430,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-03-10T21:34:12.142Z",
+													"lastUpdate": "2021-03-12T16:00:30.621Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -9488,14 +9494,14 @@
 													"ref": {
 														"name": "languages",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.145Z"
+														"lastUpdate": "2021-03-12T16:00:30.627Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.145Z"
+														"lastUpdate": "2021-03-12T16:00:30.627Z"
 													}
 												}
 											},
@@ -9503,7 +9509,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-03-10T21:34:12.145Z",
+													"lastUpdate": "2021-03-12T16:00:30.627Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -9575,14 +9581,14 @@
 													"ref": {
 														"name": "languages",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.153Z"
+														"lastUpdate": "2021-03-12T16:00:30.638Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.153Z"
+														"lastUpdate": "2021-03-12T16:00:30.638Z"
 													}
 												}
 											}
@@ -9639,7 +9645,7 @@
 												"ref": {
 													"name": "licenses",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.182Z"
+													"lastUpdate": "2021-03-12T16:00:30.685Z"
 												}
 											},
 											"data": [
@@ -9647,14 +9653,15 @@
 													"id": "507c7f79bcf86cd7994f6c0e",
 													"clientId": "507c7f79bcf86cd7994f6c0e",
 													"terminalId": "507c7f79bcf86cd7994f6c0e",
-													"dateStart": "2021-03-10T21:34:12.182Z",
-													"dateEnd": "2021-03-10T21:34:12.182Z",
+													"dateStart": "2021-03-12T16:00:30.685Z",
+													"dateEnd": "2021-03-12T16:00:30.685Z",
 													"state": 0,
 													"status": "NEW",
 													"key": "0000-1111-2222-3333",
 													"md5key": "1e0328629e0b73cfcb5cca8bdefb0b76",
 													"imei": "3425t42t543yt45t",
 													"licType": {
+														"appType": 0,
 														"description": "Киоск с кассой r-keeper",
 														"name": "Киоск с кассой r-keeper",
 														"payNotice": "оплата лицензии осуществляется в личном кабинете пользователя",
@@ -9662,7 +9669,7 @@
 														"integrationId": "507c7f79bcf86cd7994f6c0e"
 													},
 													"licTypeId": "ecbbfd40-62ba-49bf-8620-75d8c5ed3953",
-													"lastUpdate": "2021-03-10T21:34:12.183Z"
+													"lastUpdate": "2021-03-12T16:00:30.686Z"
 												}
 											]
 										}
@@ -9701,21 +9708,22 @@
 												"ref": {
 													"name": "licenses",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.189Z"
+													"lastUpdate": "2021-03-12T16:00:30.693Z"
 												}
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"clientId": "507c7f79bcf86cd7994f6c0e",
 												"terminalId": "507c7f79bcf86cd7994f6c0e",
-												"dateStart": "2021-03-10T21:34:12.189Z",
-												"dateEnd": "2021-03-10T21:34:12.189Z",
+												"dateStart": "2021-03-12T16:00:30.694Z",
+												"dateEnd": "2021-03-12T16:00:30.694Z",
 												"state": 0,
 												"status": "NEW",
 												"key": "0000-1111-2222-3333",
 												"md5key": "1e0328629e0b73cfcb5cca8bdefb0b76",
 												"imei": "3425t42t543yt45t",
 												"licType": {
+													"appType": 0,
 													"description": "Киоск с кассой r-keeper",
 													"name": "Киоск с кассой r-keeper",
 													"payNotice": "оплата лицензии осуществляется в личном кабинете пользователя",
@@ -9723,7 +9731,7 @@
 													"integrationId": "507c7f79bcf86cd7994f6c0e"
 												},
 												"licTypeId": "ecbbfd40-62ba-49bf-8620-75d8c5ed3953",
-												"lastUpdate": "2021-03-10T21:34:12.189Z"
+												"lastUpdate": "2021-03-12T16:00:30.694Z"
 											}
 										}
 									}
@@ -9770,21 +9778,22 @@
 												"ref": {
 													"name": "licenses",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.197Z"
+													"lastUpdate": "2021-03-12T16:00:30.708Z"
 												}
 											},
 											"data": [
 												{
 													"id": "507c7f79bcf86cd7994f6c0e",
 													"clientId": "507c7f79bcf86cd7994f6c0e",
-													"dateStart": "2021-03-10T21:34:12.197Z",
-													"dateEnd": "2021-03-10T21:34:12.197Z",
+													"dateStart": "2021-03-12T16:00:30.708Z",
+													"dateEnd": "2021-03-12T16:00:30.708Z",
 													"state": 0,
 													"status": "NEW",
 													"key": "0000-1111-2222-3333",
 													"md5key": "1e0328629e0b73cfcb5cca8bdefb0b76",
 													"imei": "3425t42t543yt45t",
 													"licType": {
+														"appType": 0,
 														"description": "Киоск с кассой r-keeper",
 														"name": "Киоск с кассой r-keeper",
 														"payNotice": "оплата лицензии осуществляется в личном кабинете пользователя",
@@ -9792,7 +9801,7 @@
 														"integrationId": "507c7f79bcf86cd7994f6c0e"
 													},
 													"licTypeId": "ecbbfd40-62ba-49bf-8620-75d8c5ed3953",
-													"lastUpdate": "2021-03-10T21:34:12.197Z"
+													"lastUpdate": "2021-03-12T16:00:30.708Z"
 												}
 											]
 										}
@@ -9831,21 +9840,22 @@
 												"ref": {
 													"name": "licenses",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.198Z"
+													"lastUpdate": "2021-03-12T16:00:30.711Z"
 												}
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"clientId": "507c7f79bcf86cd7994f6c0e",
 												"terminalId": "507c7f79bcf86cd7994f6c0e",
-												"dateStart": "2021-03-10T21:34:12.198Z",
-												"dateEnd": "2021-03-10T21:34:12.198Z",
+												"dateStart": "2021-03-12T16:00:30.711Z",
+												"dateEnd": "2021-03-12T16:00:30.711Z",
 												"state": 0,
 												"status": "NEW",
 												"key": "0000-1111-2222-3333",
 												"md5key": "1e0328629e0b73cfcb5cca8bdefb0b76",
 												"imei": "3425t42t543yt45t",
 												"licType": {
+													"appType": 0,
 													"description": "Киоск с кассой r-keeper",
 													"name": "Киоск с кассой r-keeper",
 													"payNotice": "оплата лицензии осуществляется в личном кабинете пользователя",
@@ -9853,7 +9863,7 @@
 													"integrationId": "507c7f79bcf86cd7994f6c0e"
 												},
 												"licTypeId": "ecbbfd40-62ba-49bf-8620-75d8c5ed3953",
-												"lastUpdate": "2021-03-10T21:34:12.198Z"
+												"lastUpdate": "2021-03-12T16:00:30.711Z"
 											}
 										}
 									}
@@ -9898,21 +9908,22 @@
 												"ref": {
 													"name": "licenses",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.206Z"
+													"lastUpdate": "2021-03-12T16:00:30.723Z"
 												}
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"clientId": "507c7f79bcf86cd7994f6c0e",
 												"terminalId": "507c7f79bcf86cd7994f6c0e",
-												"dateStart": "2021-03-10T21:34:12.206Z",
-												"dateEnd": "2021-03-10T21:34:12.206Z",
+												"dateStart": "2021-03-12T16:00:30.724Z",
+												"dateEnd": "2021-03-12T16:00:30.724Z",
 												"state": 0,
 												"status": "NEW",
 												"key": "0000-1111-2222-3333",
 												"md5key": "1e0328629e0b73cfcb5cca8bdefb0b76",
 												"imei": "3425t42t543yt45t",
 												"licType": {
+													"appType": 0,
 													"description": "Киоск с кассой r-keeper",
 													"name": "Киоск с кассой r-keeper",
 													"payNotice": "оплата лицензии осуществляется в личном кабинете пользователя",
@@ -9920,7 +9931,7 @@
 													"integrationId": "507c7f79bcf86cd7994f6c0e"
 												},
 												"licTypeId": "ecbbfd40-62ba-49bf-8620-75d8c5ed3953",
-												"lastUpdate": "2021-03-10T21:34:12.206Z"
+												"lastUpdate": "2021-03-12T16:00:30.724Z"
 											}
 										}
 									}
@@ -9975,7 +9986,7 @@
 												"ref": {
 													"name": "licenses",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.215Z"
+													"lastUpdate": "2021-03-12T16:00:30.739Z"
 												}
 											}
 										}
@@ -10023,21 +10034,22 @@
 												"ref": {
 													"name": "licenses",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.200Z"
+													"lastUpdate": "2021-03-12T16:00:30.714Z"
 												}
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"clientId": "507c7f79bcf86cd7994f6c0e",
 												"terminalId": "507c7f79bcf86cd7994f6c0e",
-												"dateStart": "2021-03-10T21:34:12.200Z",
-												"dateEnd": "2021-03-10T21:34:12.200Z",
+												"dateStart": "2021-03-12T16:00:30.715Z",
+												"dateEnd": "2021-03-12T16:00:30.715Z",
 												"state": 0,
 												"status": "NEW",
 												"key": "0000-1111-2222-3333",
 												"md5key": "1e0328629e0b73cfcb5cca8bdefb0b76",
 												"imei": "3425t42t543yt45t",
 												"licType": {
+													"appType": 0,
 													"description": "Киоск с кассой r-keeper",
 													"name": "Киоск с кассой r-keeper",
 													"payNotice": "оплата лицензии осуществляется в личном кабинете пользователя",
@@ -10045,7 +10057,7 @@
 													"integrationId": "507c7f79bcf86cd7994f6c0e"
 												},
 												"licTypeId": "ecbbfd40-62ba-49bf-8620-75d8c5ed3953",
-												"lastUpdate": "2021-03-10T21:34:12.200Z"
+												"lastUpdate": "2021-03-12T16:00:30.715Z"
 											}
 										}
 									}
@@ -10093,7 +10105,7 @@
 												"ref": {
 													"name": "license_types",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.223Z"
+													"lastUpdate": "2021-03-12T16:00:30.754Z"
 												}
 											},
 											"data": [
@@ -10104,7 +10116,7 @@
 													"price": 180000,
 													"payNotice": "Оплата через терминал Эвотор",
 													"integrationId": "507c7f79bcf86cd7994f6c0e",
-													"lastUpdate": "2021-03-10T21:34:12.223Z"
+													"lastUpdate": "2021-03-12T16:00:30.754Z"
 												}
 											]
 										}
@@ -10143,7 +10155,7 @@
 												"ref": {
 													"name": "license_types",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.228Z"
+													"lastUpdate": "2021-03-12T16:00:30.764Z"
 												}
 											},
 											"data": {
@@ -10153,7 +10165,7 @@
 												"price": 180000,
 												"payNotice": "Оплата через терминал Эвотор",
 												"integrationId": "507c7f79bcf86cd7994f6c0e",
-												"lastUpdate": "2021-03-10T21:34:12.228Z"
+												"lastUpdate": "2021-03-12T16:00:30.764Z"
 											}
 										}
 									}
@@ -10198,7 +10210,7 @@
 												"ref": {
 													"name": "license_types",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.233Z"
+													"lastUpdate": "2021-03-12T16:00:30.771Z"
 												}
 											},
 											"data": {
@@ -10208,7 +10220,7 @@
 												"price": 180000,
 												"payNotice": "Оплата через терминал Эвотор",
 												"integrationId": "507c7f79bcf86cd7994f6c0e",
-												"lastUpdate": "2021-03-10T21:34:12.233Z"
+												"lastUpdate": "2021-03-12T16:00:30.772Z"
 											}
 										}
 									}
@@ -10263,7 +10275,7 @@
 												"ref": {
 													"name": "license_types",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.237Z"
+													"lastUpdate": "2021-03-12T16:00:30.779Z"
 												}
 											}
 										}
@@ -10311,7 +10323,7 @@
 												"ref": {
 													"name": "license_types",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.229Z"
+													"lastUpdate": "2021-03-12T16:00:30.766Z"
 												}
 											},
 											"data": {
@@ -10321,7 +10333,7 @@
 												"price": 180000,
 												"payNotice": "Оплата через терминал Эвотор",
 												"integrationId": "507c7f79bcf86cd7994f6c0e",
-												"lastUpdate": "2021-03-10T21:34:12.229Z"
+												"lastUpdate": "2021-03-12T16:00:30.766Z"
 											}
 										}
 									}
@@ -10369,7 +10381,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.247Z"
+													"lastUpdate": "2021-03-12T16:00:30.798Z"
 												}
 											},
 											"data": [
@@ -10429,7 +10441,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.249Z"
+													"lastUpdate": "2021-03-12T16:00:30.800Z"
 												}
 											},
 											"data": [
@@ -10489,7 +10501,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.250Z"
+													"lastUpdate": "2021-03-12T16:00:30.802Z"
 												}
 											},
 											"data": [
@@ -10558,7 +10570,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.255Z"
+													"lastUpdate": "2021-03-12T16:00:30.809Z"
 												}
 											},
 											"data": {
@@ -10623,7 +10635,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.266Z"
+													"lastUpdate": "2021-03-12T16:00:30.828Z"
 												}
 											},
 											"data": {
@@ -10695,7 +10707,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.275Z"
+													"lastUpdate": "2021-03-12T16:00:30.841Z"
 												}
 											}
 										}
@@ -10743,7 +10755,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.260Z"
+													"lastUpdate": "2021-03-12T16:00:30.818Z"
 												}
 											},
 											"data": {
@@ -10808,7 +10820,7 @@
 												"ref": {
 													"name": "order-types",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.290Z"
+													"lastUpdate": "2021-03-12T16:00:30.864Z"
 												}
 											},
 											"data": [
@@ -10874,7 +10886,7 @@
 												"ref": {
 													"name": "order-types",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.294Z"
+													"lastUpdate": "2021-03-12T16:00:30.871Z"
 												}
 											},
 											"data": {
@@ -10945,7 +10957,7 @@
 												"ref": {
 													"name": "order-types",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.300Z"
+													"lastUpdate": "2021-03-12T16:00:30.881Z"
 												}
 											},
 											"data": {
@@ -11023,7 +11035,7 @@
 												"ref": {
 													"name": "order-types",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.303Z"
+													"lastUpdate": "2021-03-12T16:00:30.884Z"
 												}
 											}
 										}
@@ -11071,7 +11083,7 @@
 												"ref": {
 													"name": "order-types",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.296Z"
+													"lastUpdate": "2021-03-12T16:00:30.873Z"
 												}
 											},
 											"data": {
@@ -11143,14 +11155,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.312Z"
+														"lastUpdate": "2021-03-12T16:00:30.894Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.312Z"
+														"lastUpdate": "2021-03-12T16:00:30.894Z"
 													}
 												}
 											},
@@ -11159,7 +11171,7 @@
 													{
 														"id": "107c7f79bcf86cd7994f6c0e",
 														"active": true,
-														"lastUpdate": "2021-03-10T21:34:12.313Z",
+														"lastUpdate": "2021-03-12T16:00:30.895Z",
 														"name": "some_3d_model",
 														"ext": ".fbx",
 														"mipmap": {
@@ -11219,14 +11231,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.317Z"
+														"lastUpdate": "2021-03-12T16:00:30.901Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.317Z"
+														"lastUpdate": "2021-03-12T16:00:30.901Z"
 													}
 												}
 											},
@@ -11234,7 +11246,7 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-03-10T21:34:12.317Z",
+													"lastUpdate": "2021-03-12T16:00:30.901Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -11301,14 +11313,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.324Z"
+														"lastUpdate": "2021-03-12T16:00:30.910Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.324Z"
+														"lastUpdate": "2021-03-12T16:00:30.910Z"
 													}
 												}
 											},
@@ -11316,7 +11328,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-03-10T21:34:12.325Z",
+													"lastUpdate": "2021-03-12T16:00:30.910Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -11388,14 +11400,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.328Z"
+														"lastUpdate": "2021-03-12T16:00:30.915Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.328Z"
+														"lastUpdate": "2021-03-12T16:00:30.915Z"
 													}
 												}
 											},
@@ -11403,7 +11415,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-03-10T21:34:12.328Z",
+													"lastUpdate": "2021-03-12T16:00:30.915Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -11483,14 +11495,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.335Z"
+														"lastUpdate": "2021-03-12T16:00:30.927Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.335Z"
+														"lastUpdate": "2021-03-12T16:00:30.927Z"
 													}
 												}
 											}
@@ -11555,7 +11567,7 @@
 												"ref": {
 													"name": "products",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.355Z"
+													"lastUpdate": "2021-03-12T16:00:30.957Z"
 												}
 											},
 											"data": [
@@ -11648,7 +11660,7 @@
 												"ref": {
 													"name": "products",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.359Z"
+													"lastUpdate": "2021-03-12T16:00:30.965Z"
 												}
 											},
 											"data": {
@@ -11746,7 +11758,7 @@
 												"ref": {
 													"name": "products",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.369Z"
+													"lastUpdate": "2021-03-12T16:00:30.980Z"
 												}
 											},
 											"data": {
@@ -11851,7 +11863,7 @@
 												"ref": {
 													"name": "products",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.376Z"
+													"lastUpdate": "2021-03-12T16:00:30.994Z"
 												}
 											}
 										}
@@ -11899,7 +11911,7 @@
 												"ref": {
 													"name": "products",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.362Z"
+													"lastUpdate": "2021-03-12T16:00:30.967Z"
 												}
 											},
 											"data": {
@@ -11998,14 +12010,14 @@
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.383Z"
+														"lastUpdate": "2021-03-12T16:00:31.006Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.383Z"
+														"lastUpdate": "2021-03-12T16:00:31.007Z"
 													}
 												}
 											},
@@ -12014,7 +12026,7 @@
 													{
 														"id": "107c7f79bcf86cd7994f6c0e",
 														"active": true,
-														"lastUpdate": "2021-03-10T21:34:12.383Z",
+														"lastUpdate": "2021-03-12T16:00:31.007Z",
 														"name": "some_3d_model",
 														"ext": ".fbx",
 														"mipmap": {
@@ -12074,14 +12086,14 @@
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.387Z"
+														"lastUpdate": "2021-03-12T16:00:31.012Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.387Z"
+														"lastUpdate": "2021-03-12T16:00:31.012Z"
 													}
 												}
 											},
@@ -12089,7 +12101,7 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-03-10T21:34:12.387Z",
+													"lastUpdate": "2021-03-12T16:00:31.012Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -12156,14 +12168,14 @@
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.394Z"
+														"lastUpdate": "2021-03-12T16:00:31.022Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.394Z"
+														"lastUpdate": "2021-03-12T16:00:31.022Z"
 													}
 												}
 											},
@@ -12171,7 +12183,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-03-10T21:34:12.394Z",
+													"lastUpdate": "2021-03-12T16:00:31.022Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -12235,14 +12247,14 @@
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.395Z"
+														"lastUpdate": "2021-03-12T16:00:31.024Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.395Z"
+														"lastUpdate": "2021-03-12T16:00:31.024Z"
 													}
 												}
 											},
@@ -12250,7 +12262,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-03-10T21:34:12.395Z",
+													"lastUpdate": "2021-03-12T16:00:31.024Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -12322,14 +12334,14 @@
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.398Z"
+														"lastUpdate": "2021-03-12T16:00:31.028Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.398Z"
+														"lastUpdate": "2021-03-12T16:00:31.028Z"
 													}
 												}
 											},
@@ -12337,7 +12349,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-03-10T21:34:12.398Z",
+													"lastUpdate": "2021-03-12T16:00:31.028Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -12417,14 +12429,14 @@
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.405Z"
+														"lastUpdate": "2021-03-12T16:00:31.037Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.405Z"
+														"lastUpdate": "2021-03-12T16:00:31.037Z"
 													}
 												}
 											}
@@ -12489,7 +12501,7 @@
 												"ref": {
 													"name": "selectors",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.422Z"
+													"lastUpdate": "2021-03-12T16:00:31.062Z"
 												}
 											},
 											"data": [
@@ -12556,7 +12568,7 @@
 												"ref": {
 													"name": "selectors",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.427Z"
+													"lastUpdate": "2021-03-12T16:00:31.069Z"
 												}
 											},
 											"data": {
@@ -12628,7 +12640,7 @@
 												"ref": {
 													"name": "selectors",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.434Z"
+													"lastUpdate": "2021-03-12T16:00:31.078Z"
 												}
 											},
 											"data": {
@@ -12707,7 +12719,7 @@
 												"ref": {
 													"name": "selectors",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.440Z"
+													"lastUpdate": "2021-03-12T16:00:31.088Z"
 												}
 											}
 										}
@@ -12755,7 +12767,7 @@
 												"ref": {
 													"name": "selectors",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.428Z"
+													"lastUpdate": "2021-03-12T16:00:31.070Z"
 												}
 											},
 											"data": {
@@ -12828,14 +12840,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.448Z"
+														"lastUpdate": "2021-03-12T16:00:31.101Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.448Z"
+														"lastUpdate": "2021-03-12T16:00:31.102Z"
 													}
 												}
 											},
@@ -12844,7 +12856,7 @@
 													{
 														"id": "107c7f79bcf86cd7994f6c0e",
 														"active": true,
-														"lastUpdate": "2021-03-10T21:34:12.448Z",
+														"lastUpdate": "2021-03-12T16:00:31.102Z",
 														"name": "some_3d_model",
 														"ext": ".fbx",
 														"mipmap": {
@@ -12904,14 +12916,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.452Z"
+														"lastUpdate": "2021-03-12T16:00:31.107Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.452Z"
+														"lastUpdate": "2021-03-12T16:00:31.107Z"
 													}
 												}
 											},
@@ -12919,7 +12931,7 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-03-10T21:34:12.452Z",
+													"lastUpdate": "2021-03-12T16:00:31.107Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -12986,14 +12998,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.458Z"
+														"lastUpdate": "2021-03-12T16:00:31.117Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.458Z"
+														"lastUpdate": "2021-03-12T16:00:31.117Z"
 													}
 												}
 											},
@@ -13001,7 +13013,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-03-10T21:34:12.458Z",
+													"lastUpdate": "2021-03-12T16:00:31.117Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -13073,14 +13085,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.461Z"
+														"lastUpdate": "2021-03-12T16:00:31.120Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.461Z"
+														"lastUpdate": "2021-03-12T16:00:31.120Z"
 													}
 												}
 											},
@@ -13088,7 +13100,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-03-10T21:34:12.461Z",
+													"lastUpdate": "2021-03-12T16:00:31.120Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -13168,14 +13180,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.468Z"
+														"lastUpdate": "2021-03-12T16:00:31.130Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.468Z"
+														"lastUpdate": "2021-03-12T16:00:31.130Z"
 													}
 												}
 											}
@@ -13240,7 +13252,7 @@
 												"ref": {
 													"name": "stores",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.483Z"
+													"lastUpdate": "2021-03-12T16:00:31.148Z"
 												}
 											},
 											"data": [
@@ -13291,7 +13303,7 @@
 												"ref": {
 													"name": "stores",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.487Z"
+													"lastUpdate": "2021-03-12T16:00:31.155Z"
 												}
 											},
 											"data": {
@@ -13347,7 +13359,7 @@
 												"ref": {
 													"name": "stores",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.493Z"
+													"lastUpdate": "2021-03-12T16:00:31.161Z"
 												}
 											},
 											"data": {
@@ -13413,7 +13425,7 @@
 												"ref": {
 													"name": "stores",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.497Z"
+													"lastUpdate": "2021-03-12T16:00:31.167Z"
 												}
 											}
 										}
@@ -13461,7 +13473,7 @@
 												"ref": {
 													"name": "stores",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.489Z"
+													"lastUpdate": "2021-03-12T16:00:31.156Z"
 												}
 											},
 											"data": {
@@ -13517,7 +13529,7 @@
 												"ref": {
 													"name": "tags",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.512Z"
+													"lastUpdate": "2021-03-12T16:00:31.187Z"
 												}
 											},
 											"data": [
@@ -13582,7 +13594,7 @@
 												"ref": {
 													"name": "tags",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.516Z"
+													"lastUpdate": "2021-03-12T16:00:31.193Z"
 												}
 											},
 											"data": {
@@ -13652,7 +13664,7 @@
 												"ref": {
 													"name": "tags",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.524Z"
+													"lastUpdate": "2021-03-12T16:00:31.202Z"
 												}
 											},
 											"data": {
@@ -13729,7 +13741,7 @@
 												"ref": {
 													"name": "tags",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.526Z"
+													"lastUpdate": "2021-03-12T16:00:31.205Z"
 												}
 											}
 										}
@@ -13777,7 +13789,7 @@
 												"ref": {
 													"name": "tags",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.518Z"
+													"lastUpdate": "2021-03-12T16:00:31.195Z"
 												}
 											},
 											"data": {
@@ -13848,14 +13860,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.533Z"
+														"lastUpdate": "2021-03-12T16:00:31.215Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.533Z"
+														"lastUpdate": "2021-03-12T16:00:31.216Z"
 													}
 												}
 											},
@@ -13864,7 +13876,7 @@
 													{
 														"id": "107c7f79bcf86cd7994f6c0e",
 														"active": true,
-														"lastUpdate": "2021-03-10T21:34:12.533Z",
+														"lastUpdate": "2021-03-12T16:00:31.216Z",
 														"name": "some_3d_model",
 														"ext": ".fbx",
 														"mipmap": {
@@ -13924,14 +13936,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.538Z"
+														"lastUpdate": "2021-03-12T16:00:31.221Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.538Z"
+														"lastUpdate": "2021-03-12T16:00:31.221Z"
 													}
 												}
 											},
@@ -13939,7 +13951,7 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-03-10T21:34:12.538Z",
+													"lastUpdate": "2021-03-12T16:00:31.221Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -14006,14 +14018,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.544Z"
+														"lastUpdate": "2021-03-12T16:00:31.231Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.544Z"
+														"lastUpdate": "2021-03-12T16:00:31.231Z"
 													}
 												}
 											},
@@ -14021,7 +14033,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-03-10T21:34:12.544Z",
+													"lastUpdate": "2021-03-12T16:00:31.231Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -14093,14 +14105,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.547Z"
+														"lastUpdate": "2021-03-12T16:00:31.236Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.547Z"
+														"lastUpdate": "2021-03-12T16:00:31.236Z"
 													}
 												}
 											},
@@ -14108,7 +14120,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-03-10T21:34:12.547Z",
+													"lastUpdate": "2021-03-12T16:00:31.236Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -14188,14 +14200,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.555Z"
+														"lastUpdate": "2021-03-12T16:00:31.246Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-10T21:34:12.555Z"
+														"lastUpdate": "2021-03-12T16:00:31.246Z"
 													}
 												}
 											}
@@ -14260,16 +14272,16 @@
 												"ref": {
 													"name": "terminals",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.572Z"
+													"lastUpdate": "2021-03-12T16:00:31.269Z"
 												}
 											},
 											"data": {
 												"clientId": "f234r34r-34r23-4t32-43434",
 												"status": "online",
-												"type": "kiosk",
+												"type": 0,
 												"name": "My terminal",
 												"storeId": "g234r34r-34r23-4t32-43434",
-												"lastwork": "2021-03-10T21:34:12.573Z",
+												"lastwork": "2021-03-12T16:00:31.269Z",
 												"imei": "00001-000000000034",
 												"licenseId": "34r34r-34r23-4t32-43434",
 												"extra": {
@@ -14312,16 +14324,16 @@
 												"ref": {
 													"name": "terminals",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.574Z"
+													"lastUpdate": "2021-03-12T16:00:31.271Z"
 												}
 											},
 											"data": {
 												"clientId": "f234r34r-34r23-4t32-43434",
 												"status": "online",
-												"type": "kiosk",
+												"type": 0,
 												"name": "My terminal",
 												"storeId": "g234r34r-34r23-4t32-43434",
-												"lastwork": "2021-03-10T21:34:12.574Z",
+												"lastwork": "2021-03-12T16:00:31.271Z",
 												"imei": "00001-000000000034",
 												"licenseId": "34r34r-34r23-4t32-43434",
 												"extra": {
@@ -14374,17 +14386,17 @@
 												"ref": {
 													"name": "terminals",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.582Z"
+													"lastUpdate": "2021-03-12T16:00:31.282Z"
 												}
 											},
 											"data": [
 												{
 													"clientId": "f234r34r-34r23-4t32-43434",
 													"status": "online",
-													"type": "kiosk",
+													"type": 0,
 													"name": "My terminal",
 													"storeId": "g234r34r-34r23-4t32-43434",
-													"lastwork": "2021-03-10T21:34:12.583Z",
+													"lastwork": "2021-03-12T16:00:31.282Z",
 													"imei": "00001-000000000034",
 													"licenseId": "34r34r-34r23-4t32-43434",
 													"extra": {
@@ -14431,16 +14443,16 @@
 												"ref": {
 													"name": "terminals",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.584Z"
+													"lastUpdate": "2021-03-12T16:00:31.284Z"
 												}
 											},
 											"data": {
 												"clientId": "f234r34r-34r23-4t32-43434",
 												"status": "online",
-												"type": "kiosk",
+												"type": 0,
 												"name": "My terminal",
 												"storeId": "g234r34r-34r23-4t32-43434",
-												"lastwork": "2021-03-10T21:34:12.584Z",
+												"lastwork": "2021-03-12T16:00:31.284Z",
 												"imei": "00001-000000000034",
 												"licenseId": "34r34r-34r23-4t32-43434",
 												"extra": {
@@ -14493,16 +14505,16 @@
 												"ref": {
 													"name": "terminals",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.586Z"
+													"lastUpdate": "2021-03-12T16:00:31.285Z"
 												}
 											},
 											"data": {
 												"clientId": "f234r34r-34r23-4t32-43434",
 												"status": "online",
-												"type": "kiosk",
+												"type": 0,
 												"name": "My terminal",
 												"storeId": "g234r34r-34r23-4t32-43434",
-												"lastwork": "2021-03-10T21:34:12.586Z",
+												"lastwork": "2021-03-12T16:00:31.285Z",
 												"imei": "00001-000000000034",
 												"licenseId": "34r34r-34r23-4t32-43434",
 												"extra": {
@@ -14567,7 +14579,7 @@
 												"ref": {
 													"name": "translations",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.599Z"
+													"lastUpdate": "2021-03-12T16:00:31.303Z"
 												}
 											},
 											"data": [
@@ -14624,7 +14636,7 @@
 												"ref": {
 													"name": "translations",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.604Z"
+													"lastUpdate": "2021-03-12T16:00:31.309Z"
 												}
 											},
 											"data": {
@@ -14686,7 +14698,7 @@
 												"ref": {
 													"name": "translations",
 													"version": 1,
-													"lastUpdate": "2021-03-10T21:34:12.605Z"
+													"lastUpdate": "2021-03-12T16:00:31.310Z"
 												}
 											},
 											"data": {

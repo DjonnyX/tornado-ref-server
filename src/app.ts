@@ -30,6 +30,7 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 app.use((err: any | ServerError, _req: express.Request, res: express.Response, next: express.NextFunction) => {
+    console.error(err);
     const status = err.status || 500;
     const serverError = ServerError.from(err, status);
     const body = {
