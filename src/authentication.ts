@@ -60,6 +60,7 @@ const checkApiKey = async (apikey: string, request: express.Request) => {
 
     (request as IAuthRequest).terminal = {
       license: licenseResponse.data,
+      type: payload.type,
       imei: payload.imei,
       key: payload.hash,
     };

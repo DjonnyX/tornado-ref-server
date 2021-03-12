@@ -1212,6 +1212,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "id": {"dataType":"string","required":true},
+            "appType": {"ref":"TerminalTypes","required":true},
             "name": {"dataType":"string","required":true},
             "description": {"dataType":"string","required":true},
             "price": {"dataType":"double","required":true},
@@ -1246,6 +1247,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "name": {"dataType":"string","required":true},
+            "appType": {"ref":"TerminalTypes","required":true},
             "description": {"dataType":"string"},
             "price": {"dataType":"double","required":true},
             "payNotice": {"dataType":"string","required":true},
@@ -1258,6 +1260,7 @@ const models: TsoaRoute.Models = {
     "IUpdateLicenseTypeParams": {
         "dataType": "refObject",
         "properties": {
+            "appType": {"ref":"TerminalTypes"},
             "name": {"dataType":"string"},
             "description": {"dataType":"string"},
             "price": {"dataType":"double"},

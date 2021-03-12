@@ -1,5 +1,5 @@
 import * as express from "express";
-import { ILicense } from "@djonnyx/tornado-types";
+import { ILicense, TerminalTypes } from "@djonnyx/tornado-types";
 
 export interface IAuthRequest extends express.Request {
     account?: IAuthInfo;
@@ -14,5 +14,6 @@ export interface IAuthInfo {
 export interface ITerminalAuthInfo {
     imei: string;
     key: string;
+    type: TerminalTypes;
     license: ILicense;
 }
