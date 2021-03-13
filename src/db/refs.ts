@@ -10,7 +10,8 @@ export const getRef = async (client: string, name: string): Promise<IRefItem> =>
     }
 
     if (!ref) {
-        throw Error(`Ref "${name}" not found.`)
+        ref = new RefModel({ client, name, version: 1, lastUpdate: new Date(Date.now()) });
+        await ref.save();
     }
 
     return {

@@ -1,6 +1,6 @@
-import { TerminalStatusTypes, TerminalTypes } from "@djonnyx/tornado-types";
 import * as mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
+import { TerminalStatusTypes, TerminalTypes } from "@djonnyx/tornado-types";
 
 interface ITerminalDocument extends Document {
     clientId: string;
@@ -24,15 +24,17 @@ const TerminalSchema = new Schema({
         ]
     },
     type: {
-        type: String,
+        type: TerminalTypes,
         enum: [
             TerminalTypes.KIOSK,
-            TerminalTypes.CASHBOX,
+            TerminalTypes.ORDER_PICKER,
             TerminalTypes.EQUEUE,
+            TerminalTypes.EQUEUE_CONTROLLER,
             TerminalTypes.EMENU,
             TerminalTypes.GUEST_SCREEN,
             TerminalTypes.MENU_BOARD,
-            TerminalTypes.COLLECTOR,
+            TerminalTypes.CASHBOX,
+            TerminalTypes.CASH_INTERFACE,
         ]
     },
     name: { type: String },

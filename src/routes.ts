@@ -1066,10 +1066,16 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "TerminalTypes": {
+        "dataType": "refEnum",
+        "enums": [0,1,2,3,4,5,6,7,8],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ILicenseType": {
         "dataType": "refObject",
         "properties": {
             "id": {"dataType":"string"},
+            "appType": {"ref":"TerminalTypes","required":true},
             "name": {"dataType":"string","required":true},
             "description": {"dataType":"string","required":true},
             "price": {"dataType":"double","required":true},
@@ -1206,6 +1212,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "id": {"dataType":"string","required":true},
+            "appType": {"ref":"TerminalTypes","required":true},
             "name": {"dataType":"string","required":true},
             "description": {"dataType":"string","required":true},
             "price": {"dataType":"double","required":true},
@@ -1240,6 +1247,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "name": {"dataType":"string","required":true},
+            "appType": {"ref":"TerminalTypes","required":true},
             "description": {"dataType":"string"},
             "price": {"dataType":"double","required":true},
             "payNotice": {"dataType":"string","required":true},
@@ -1252,6 +1260,7 @@ const models: TsoaRoute.Models = {
     "IUpdateLicenseTypeParams": {
         "dataType": "refObject",
         "properties": {
+            "appType": {"ref":"TerminalTypes"},
             "name": {"dataType":"string"},
             "description": {"dataType":"string"},
             "price": {"dataType":"double"},
@@ -2078,11 +2087,6 @@ const models: TsoaRoute.Models = {
     "TerminalStatusTypes": {
         "dataType": "refEnum",
         "enums": ["online","unavailable"],
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "TerminalTypes": {
-        "dataType": "refEnum",
-        "enums": ["kiosk","cashbox","equeue","emenu","guest-screen","menu-board","collector"],
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ITerminalItem": {

@@ -4,7 +4,7 @@ import { LicenseStatuses } from "@djonnyx/tornado-types/dist/interfaces/raw/Lice
 import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "../interfaces";
 import { licServerApiService } from "../services";
-import { ILicense, RefTypes, ILicenseAccount } from "@djonnyx/tornado-types";
+import { ILicense, RefTypes, ILicenseAccount, TerminalTypes } from "@djonnyx/tornado-types";
 import { ITerminalDocument, TerminalModel } from "../models";
 
 interface ILicenseInfo extends ILicense { }
@@ -97,6 +97,7 @@ const LICENSE_RESPONSE_TEMPLATE: ILicenseInfo = {
     md5key: "1e0328629e0b73cfcb5cca8bdefb0b76",
     imei: "3425t42t543yt45t",
     licType: {
+        appType: TerminalTypes.KIOSK,
         description: "Киоск с кассой r-keeper",
         name: "Киоск с кассой r-keeper",
         payNotice: "оплата лицензии осуществляется в личном кабинете пользователя",
@@ -119,6 +120,7 @@ const LICENSE_ACCOUNT_RESPONSE_TEMPLATE: ILicenseAccountInfo = {
     md5key: "1e0328629e0b73cfcb5cca8bdefb0b76",
     imei: "3425t42t543yt45t",
     licType: {
+        appType: TerminalTypes.KIOSK,
         description: "Киоск с кассой r-keeper",
         name: "Киоск с кассой r-keeper",
         payNotice: "оплата лицензии осуществляется в личном кабинете пользователя",

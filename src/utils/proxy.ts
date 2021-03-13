@@ -2,7 +2,7 @@ import { Controller } from "tsoa";
 import * as got from "got";
 import * as express from "express";
 import * as config from "../config";
-import { extract401Error } from "./error";
+import { ServerError } from "../error";
 
 export async function makeRequest<T = any>(request: got.GotPromise<any>): Promise<T> {
     let r: got.Response<any>;
@@ -19,7 +19,7 @@ export async function makeRequest<T = any>(request: got.GotPromise<any>): Promis
                     throw Error(err1);
                 }
             } else if (err.statusCode === 401) {
-                throw Error(extract401Error(String(err.body)));
+                throw ServerError.from(err.body);
             }
         }
         throw Error(!!authServerResp && !!authServerResp.error && !!authServerResp.error.length

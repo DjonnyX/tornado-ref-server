@@ -131,21 +131,21 @@ export class Deviceontroller extends Controller {
             };
         }
 
-        let existsTrminal: ITerminalDocument;
+        let existsTerminal: ITerminalDocument;
         try {
-            existsTrminal = await TerminalModel.findOne({ imei: setDeviceResponse.data.imei });
+            existsTerminal = await TerminalModel.findOne({ imei: setDeviceResponse.data.imei });
         } catch (err) { }
 
-        if (!!existsTrminal) {
-            existsTrminal.clientId = setDeviceResponse.data.clientId;
-            existsTrminal.status = TerminalStatusTypes.ONLINE;
-            existsTrminal.type = body.type;
-            existsTrminal.name = body.name;
-            existsTrminal.lastwork = new Date(Date.now());
-            existsTrminal.licenseId = setDeviceResponse.data.id;
+        if (!!existsTerminal) {
+            existsTerminal.clientId = setDeviceResponse.data.clientId;
+            existsTerminal.status = TerminalStatusTypes.ONLINE;
+            existsTerminal.type = request.terminal.type;
+            existsTerminal.name = body.name;
+            existsTerminal.lastwork = new Date(Date.now());
+            existsTerminal.licenseId = setDeviceResponse.data.id;
 
             try {
-                const savedItem = await existsTrminal.save();
+                const savedItem = await existsTerminal.save();
                 const ref = await riseRefVersion(setDeviceResponse.data.clientId, RefTypes.TERMINALS);
                 return {
                     meta: { ref },
