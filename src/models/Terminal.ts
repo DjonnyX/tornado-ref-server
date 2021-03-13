@@ -24,7 +24,7 @@ const TerminalSchema = new Schema({
         ]
     },
     type: {
-        type: String,
+        type: TerminalTypes,
         enum: [
             TerminalTypes.KIOSK,
             TerminalTypes.ORDER_PICKER,
