@@ -173,12 +173,12 @@ export class Deviceontroller extends Controller {
             const item = new TerminalModel({
                 clientId: setDeviceResponse.data.clientId,
                 status: TerminalStatusTypes.ONLINE,
-                type: body.type,
+                type: request.terminal.type,
                 name: body.name,
                 lastwork: new Date(Date.now()),
                 imei: setDeviceResponse.data.imei,
                 licenseId: setDeviceResponse.data.id,
-                config: createTerminalConfig(body.type),
+                config: createTerminalConfig(request.terminal.type),
                 extra: {},
             });
             const savedItem = await item.save();
