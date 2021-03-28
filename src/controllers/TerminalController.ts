@@ -1,8 +1,8 @@
 import { ITerminalDocument, TerminalModel } from "../models";
 import { Controller, Route, Get, Tags, OperationId, Example, Security, Put, Body, Delete, Request, Post } from "tsoa";
-import { ITerminal, TerminalStatusTypes, TerminalTypes, RefTypes } from "@djonnyx/tornado-types";
+import { ITerminal, TerminalStatusTypes, TerminalTypes, RefTypes, TerminalConfig } from "@djonnyx/tornado-types";
 import { getRef, riseRefVersion } from "../db/refs";
-import { formatTerminalModel } from "../utils/terminal";
+import { createTerminalConfig, formatTerminalModel } from "../utils/terminal";
 import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "../interfaces";
 import { ISetDeviceResponse, licServerApiService } from "../services";
@@ -41,6 +41,7 @@ interface ITerminalRegisterRequest {
 interface ITerminalUpdateRequest {
     name?: string;
     storeId?: string;
+    config?: TerminalConfig;
     extra?: { [key: string]: any } | null;
 }
 
@@ -53,6 +54,10 @@ const RESPONSE_TEMPLATE: ITerminalItem = {
     lastwork: new Date(),
     imei: "00001-000000000034",
     licenseId: "34r34r-34r23-4t32-43434",
+    config: {
+        theme: "light",
+        suffix: "K",
+    },
     extra: {
         key: "value",
     }
@@ -173,6 +178,7 @@ export class Deviceontroller extends Controller {
                 lastwork: new Date(Date.now()),
                 imei: setDeviceResponse.data.imei,
                 licenseId: setDeviceResponse.data.id,
+                config: createTerminalConfig(body.type),
                 extra: {},
             });
             const savedItem = await item.save();
@@ -277,6 +283,9 @@ export class TerminalController extends Controller {
             for (const key in body) {
                 item[key] = body[key];
                 if (key === "extra") {
+                    item.markModified(key);
+                }
+                if (key === "config") {
                     item.markModified(key);
                 }
             }

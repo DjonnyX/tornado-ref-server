@@ -1,6 +1,6 @@
 import * as mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
-import { TerminalStatusTypes, TerminalTypes } from "@djonnyx/tornado-types";
+import { TerminalConfig, TerminalStatusTypes, TerminalTypes } from "@djonnyx/tornado-types";
 
 interface ITerminalDocument extends Document {
     clientId: string;
@@ -11,6 +11,7 @@ interface ITerminalDocument extends Document {
     lastwork: Date;
     imei: string;
     licenseId: string;
+    config: TerminalConfig;
     extra?: { [key: string]: any } | null;
 }
 
@@ -42,6 +43,10 @@ const TerminalSchema = new Schema({
     lastwork: { type: Date },
     imei: { type: String, unique: true, required: true },
     licenseId: { type: String, unique: true, required: true },
+    config: {
+        type: Schema.Types.Mixed,
+        required: true,
+    },
     extra: { type: Schema.Types.Mixed, required: false, default: {} },
 });
 
