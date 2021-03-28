@@ -55,7 +55,7 @@ const checkApiKey = async (apikey: string, request: express.Request) => {
         throw ServerError.from(err);
       }
 
-      return reject(new ServerError("Check license error.", ErrorCodes.TERMINAL_TOKEN_CHECK_LICENSE_ERROR, 401));
+      return reject(new ServerError(`Check license error. ${err}`, ErrorCodes.TERMINAL_TOKEN_CHECK_LICENSE_ERROR, 401));
     }
 
     (request as IAuthRequest).terminal = {

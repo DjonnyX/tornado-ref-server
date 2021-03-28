@@ -5879,6 +5879,114 @@
 				],
 				"type": "string"
 			},
+			"ITerminalKioskConfig": {
+				"properties": {
+					"theme": {
+						"type": "string",
+						"description": "Тема оформления"
+					},
+					"suffix": {
+						"type": "string",
+						"description": "Суффикс киоска"
+					}
+				},
+				"required": [
+					"theme",
+					"suffix"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ITerminalOrderPickerConfig": {
+				"properties": {
+					"theme": {
+						"type": "string",
+						"description": "Тема оформления"
+					}
+				},
+				"required": [
+					"theme"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ITerminalEQConfig": {
+				"properties": {
+					"theme": {
+						"type": "string",
+						"description": "Тема оформления"
+					},
+					"layout": {
+						"properties": {
+							"complete": {
+								"properties": {
+									"rows": {
+										"type": "number",
+										"format": "double",
+										"description": "Количество элементов по вертикали"
+									},
+									"columns": {
+										"type": "number",
+										"format": "double",
+										"description": "Количество столбцов"
+									}
+								},
+								"required": [
+									"rows",
+									"columns"
+								],
+								"type": "object",
+								"description": "Готовые заказы"
+							},
+							"new": {
+								"properties": {
+									"rows": {
+										"type": "number",
+										"format": "double",
+										"description": "Количество элементов по вертикали"
+									},
+									"columns": {
+										"type": "number",
+										"format": "double",
+										"description": "Количество столбцов"
+									}
+								},
+								"required": [
+									"rows",
+									"columns"
+								],
+								"type": "object",
+								"description": "Новые заказы"
+							}
+						},
+						"required": [
+							"complete",
+							"new"
+						],
+						"type": "object",
+						"description": "Верстка"
+					}
+				},
+				"required": [
+					"theme",
+					"layout"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"TerminalConfig": {
+				"anyOf": [
+					{
+						"$ref": "#/components/schemas/ITerminalKioskConfig"
+					},
+					{
+						"$ref": "#/components/schemas/ITerminalOrderPickerConfig"
+					},
+					{
+						"$ref": "#/components/schemas/ITerminalEQConfig"
+					}
+				]
+			},
 			"ITerminalItem": {
 				"properties": {
 					"id": {
@@ -5910,6 +6018,9 @@
 					"licenseId": {
 						"type": "string"
 					},
+					"config": {
+						"$ref": "#/components/schemas/TerminalConfig"
+					},
 					"extra": {
 						"properties": {},
 						"additionalProperties": {},
@@ -5925,7 +6036,8 @@
 					"storeId",
 					"lastwork",
 					"imei",
-					"licenseId"
+					"licenseId",
+					"config"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -6014,6 +6126,9 @@
 					},
 					"storeId": {
 						"type": "string"
+					},
+					"config": {
+						"$ref": "#/components/schemas/TerminalConfig"
 					},
 					"extra": {
 						"properties": {},
@@ -6208,7 +6323,7 @@
 	},
 	"info": {
 		"title": "tornado-server",
-		"version": "1.1.0",
+		"version": "1.1.1-alpha1",
 		"license": {
 			"name": "Commercial"
 		},
@@ -6237,32 +6352,32 @@
 												{
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:02.812Z"
+													"lastUpdate": "2021-03-28T08:37:58.753Z"
 												},
 												{
 													"name": "products",
 													"version": 3,
-													"lastUpdate": "2021-03-16T12:50:02.813Z"
+													"lastUpdate": "2021-03-28T08:37:58.754Z"
 												},
 												{
 													"name": "selectors",
 													"version": 4,
-													"lastUpdate": "2021-03-16T12:50:02.813Z"
+													"lastUpdate": "2021-03-28T08:37:58.754Z"
 												},
 												{
 													"name": "tags",
 													"version": 5,
-													"lastUpdate": "2021-03-16T12:50:02.814Z"
+													"lastUpdate": "2021-03-28T08:37:58.755Z"
 												},
 												{
 													"name": "business-periods",
 													"version": 3,
-													"lastUpdate": "2021-03-16T12:50:02.814Z"
+													"lastUpdate": "2021-03-28T08:37:58.755Z"
 												},
 												{
 													"name": "ads",
 													"version": 3,
-													"lastUpdate": "2021-03-16T12:50:02.814Z"
+													"lastUpdate": "2021-03-28T08:37:58.755Z"
 												}
 											]
 										}
@@ -6303,7 +6418,7 @@
 											"data": {
 												"name": "products",
 												"version": 1,
-												"lastUpdate": "2021-03-16T12:50:02.827Z"
+												"lastUpdate": "2021-03-28T08:37:58.789Z"
 											}
 										}
 									}
@@ -6353,7 +6468,7 @@
 												"ref": {
 													"name": "accounts",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:02.866Z"
+													"lastUpdate": "2021-03-28T08:37:58.847Z"
 												}
 											},
 											"data": [
@@ -6400,7 +6515,7 @@
 												"ref": {
 													"name": "accounts",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:02.875Z"
+													"lastUpdate": "2021-03-28T08:37:58.860Z"
 												}
 											},
 											"data": {
@@ -6452,7 +6567,7 @@
 												"ref": {
 													"name": "accounts",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:02.878Z"
+													"lastUpdate": "2021-03-28T08:37:58.882Z"
 												}
 											},
 											"data": {
@@ -6516,14 +6631,14 @@
 												"ref": {
 													"name": "assets",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:02.908Z"
+													"lastUpdate": "2021-03-28T08:37:58.919Z"
 												}
 											},
 											"data": [
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-03-16T12:50:02.909Z",
+													"lastUpdate": "2021-03-28T08:37:58.920Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"path": "assets/some_3d_model.fbx",
@@ -6572,7 +6687,7 @@
 												"ref": {
 													"name": "ads",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:02.963Z"
+													"lastUpdate": "2021-03-28T08:37:58.993Z"
 												}
 											},
 											"data": [
@@ -6646,7 +6761,7 @@
 												"ref": {
 													"name": "ads",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:02.981Z"
+													"lastUpdate": "2021-03-28T08:37:59.022Z"
 												}
 											},
 											"data": {
@@ -6716,7 +6831,7 @@
 												"ref": {
 													"name": "ads",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:02.995Z"
+													"lastUpdate": "2021-03-28T08:37:59.071Z"
 												}
 											},
 											"data": {
@@ -6793,7 +6908,7 @@
 												"ref": {
 													"name": "ads",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.008Z"
+													"lastUpdate": "2021-03-28T08:37:59.096Z"
 												}
 											}
 										}
@@ -6841,7 +6956,7 @@
 												"ref": {
 													"name": "ads",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:02.984Z"
+													"lastUpdate": "2021-03-28T08:37:59.026Z"
 												}
 											},
 											"data": {
@@ -6912,14 +7027,14 @@
 													"ref": {
 														"name": "ads",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:03.023Z"
+														"lastUpdate": "2021-03-28T08:37:59.128Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:03.023Z"
+														"lastUpdate": "2021-03-28T08:37:59.128Z"
 													}
 												}
 											},
@@ -6928,7 +7043,7 @@
 													{
 														"id": "107c7f79bcf86cd7994f6c0e",
 														"active": true,
-														"lastUpdate": "2021-03-16T12:50:03.023Z",
+														"lastUpdate": "2021-03-28T08:37:59.128Z",
 														"name": "some_3d_model",
 														"ext": ".fbx",
 														"mipmap": {
@@ -6988,14 +7103,14 @@
 													"ref": {
 														"name": "ads",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:03.032Z"
+														"lastUpdate": "2021-03-28T08:37:59.149Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:03.032Z"
+														"lastUpdate": "2021-03-28T08:37:59.149Z"
 													}
 												}
 											},
@@ -7003,7 +7118,7 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-03-16T12:50:03.032Z",
+													"lastUpdate": "2021-03-28T08:37:59.149Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -7070,14 +7185,14 @@
 													"ref": {
 														"name": "ads",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:03.047Z"
+														"lastUpdate": "2021-03-28T08:37:59.178Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:03.047Z"
+														"lastUpdate": "2021-03-28T08:37:59.178Z"
 													}
 												}
 											},
@@ -7085,7 +7200,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-03-16T12:50:03.047Z",
+													"lastUpdate": "2021-03-28T08:37:59.178Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -7157,14 +7272,14 @@
 													"ref": {
 														"name": "ads",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:03.052Z"
+														"lastUpdate": "2021-03-28T08:37:59.193Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:03.052Z"
+														"lastUpdate": "2021-03-28T08:37:59.193Z"
 													}
 												}
 											},
@@ -7172,7 +7287,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-03-16T12:50:03.052Z",
+													"lastUpdate": "2021-03-28T08:37:59.193Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -7252,14 +7367,14 @@
 													"ref": {
 														"name": "ads",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:03.065Z"
+														"lastUpdate": "2021-03-28T08:37:59.224Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:03.065Z"
+														"lastUpdate": "2021-03-28T08:37:59.224Z"
 													}
 												}
 											}
@@ -7324,7 +7439,7 @@
 												"ref": {
 													"name": "applications",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.089Z"
+													"lastUpdate": "2021-03-28T08:37:59.276Z"
 												}
 											},
 											"data": [
@@ -7337,7 +7452,7 @@
 														"code": 1,
 														"version": "1.0.23"
 													},
-													"lastUpdate": "2021-03-16T12:50:03.089Z"
+													"lastUpdate": "2021-03-28T08:37:59.276Z"
 												}
 											]
 										}
@@ -7376,7 +7491,7 @@
 												"ref": {
 													"name": "applications",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.097Z"
+													"lastUpdate": "2021-03-28T08:37:59.287Z"
 												}
 											},
 											"data": {
@@ -7388,7 +7503,7 @@
 													"code": 1,
 													"version": "1.0.23"
 												},
-												"lastUpdate": "2021-03-16T12:50:03.097Z"
+												"lastUpdate": "2021-03-28T08:37:59.287Z"
 											}
 										}
 									}
@@ -7433,7 +7548,7 @@
 												"ref": {
 													"name": "applications",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.111Z"
+													"lastUpdate": "2021-03-28T08:37:59.300Z"
 												}
 											},
 											"data": {
@@ -7445,7 +7560,7 @@
 													"code": 1,
 													"version": "1.0.23"
 												},
-												"lastUpdate": "2021-03-16T12:50:03.111Z"
+												"lastUpdate": "2021-03-28T08:37:59.300Z"
 											}
 										}
 									}
@@ -7500,7 +7615,7 @@
 												"ref": {
 													"name": "applications",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.121Z"
+													"lastUpdate": "2021-03-28T08:37:59.315Z"
 												}
 											}
 										}
@@ -7548,7 +7663,7 @@
 												"ref": {
 													"name": "applications",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.099Z"
+													"lastUpdate": "2021-03-28T08:37:59.290Z"
 												}
 											},
 											"data": {
@@ -7560,7 +7675,7 @@
 													"code": 1,
 													"version": "1.0.23"
 												},
-												"lastUpdate": "2021-03-16T12:50:03.099Z"
+												"lastUpdate": "2021-03-28T08:37:59.290Z"
 											}
 										}
 									}
@@ -7875,7 +7990,7 @@
 												"ref": {
 													"name": "business-periods",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.211Z"
+													"lastUpdate": "2021-03-28T08:37:59.511Z"
 												}
 											},
 											"data": [
@@ -7943,7 +8058,7 @@
 												"ref": {
 													"name": "business-periods",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.222Z"
+													"lastUpdate": "2021-03-28T08:37:59.550Z"
 												}
 											},
 											"data": {
@@ -8016,7 +8131,7 @@
 												"ref": {
 													"name": "business-periods",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.234Z"
+													"lastUpdate": "2021-03-28T08:37:59.574Z"
 												}
 											},
 											"data": {
@@ -8096,7 +8211,7 @@
 												"ref": {
 													"name": "business-periods",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.240Z"
+													"lastUpdate": "2021-03-28T08:37:59.580Z"
 												}
 											}
 										}
@@ -8144,7 +8259,7 @@
 												"ref": {
 													"name": "business-periods",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.225Z"
+													"lastUpdate": "2021-03-28T08:37:59.553Z"
 												}
 											},
 											"data": {
@@ -8217,7 +8332,7 @@
 												"ref": {
 													"name": "checkues",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.312Z"
+													"lastUpdate": "2021-03-28T08:37:59.720Z"
 												}
 											},
 											"data": [
@@ -8270,7 +8385,7 @@
 												"ref": {
 													"name": "checkues",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.320Z"
+													"lastUpdate": "2021-03-28T08:37:59.733Z"
 												}
 											},
 											"data": {
@@ -8328,7 +8443,7 @@
 												"ref": {
 													"name": "checkues",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.331Z"
+													"lastUpdate": "2021-03-28T08:37:59.750Z"
 												}
 											},
 											"data": {
@@ -8393,7 +8508,7 @@
 												"ref": {
 													"name": "checkues",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.339Z"
+													"lastUpdate": "2021-03-28T08:37:59.768Z"
 												}
 											}
 										}
@@ -8441,7 +8556,7 @@
 												"ref": {
 													"name": "checkues",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.323Z"
+													"lastUpdate": "2021-03-28T08:37:59.737Z"
 												}
 											},
 											"data": {
@@ -8499,7 +8614,7 @@
 												"ref": {
 													"name": "currencies",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.354Z"
+													"lastUpdate": "2021-03-28T08:37:59.789Z"
 												}
 											},
 											"data": [
@@ -8554,7 +8669,7 @@
 												"ref": {
 													"name": "currencies",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.362Z"
+													"lastUpdate": "2021-03-28T08:37:59.800Z"
 												}
 											},
 											"data": {
@@ -8614,7 +8729,7 @@
 												"ref": {
 													"name": "currencies",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.369Z"
+													"lastUpdate": "2021-03-28T08:37:59.811Z"
 												}
 											},
 											"data": {
@@ -8681,7 +8796,7 @@
 												"ref": {
 													"name": "currencies",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.377Z"
+													"lastUpdate": "2021-03-28T08:37:59.822Z"
 												}
 											}
 										}
@@ -8729,7 +8844,7 @@
 												"ref": {
 													"name": "currencies",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.364Z"
+													"lastUpdate": "2021-03-28T08:37:59.803Z"
 												}
 											},
 											"data": {
@@ -8789,7 +8904,7 @@
 												"ref": {
 													"name": "integrations",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.398Z"
+													"lastUpdate": "2021-03-28T08:37:59.857Z"
 												}
 											},
 											"data": [
@@ -8803,7 +8918,7 @@
 														"version": "1.0.23"
 													},
 													"state": 1,
-													"lastUpdate": "2021-03-16T12:50:03.399Z"
+													"lastUpdate": "2021-03-28T08:37:59.858Z"
 												}
 											]
 										}
@@ -8842,7 +8957,7 @@
 												"ref": {
 													"name": "integrations",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.406Z"
+													"lastUpdate": "2021-03-28T08:37:59.887Z"
 												}
 											},
 											"data": {
@@ -8855,7 +8970,7 @@
 													"version": "1.0.23"
 												},
 												"state": 1,
-												"lastUpdate": "2021-03-16T12:50:03.406Z"
+												"lastUpdate": "2021-03-28T08:37:59.887Z"
 											}
 										}
 									}
@@ -8900,7 +9015,7 @@
 												"ref": {
 													"name": "integrations",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.409Z"
+													"lastUpdate": "2021-03-28T08:37:59.890Z"
 												}
 											},
 											"data": {
@@ -8913,7 +9028,7 @@
 													"version": "1.0.23"
 												},
 												"state": 1,
-												"lastUpdate": "2021-03-16T12:50:03.409Z"
+												"lastUpdate": "2021-03-28T08:37:59.890Z"
 											}
 										}
 									}
@@ -8970,7 +9085,7 @@
 												"ref": {
 													"name": "languages",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.438Z"
+													"lastUpdate": "2021-03-28T08:37:59.928Z"
 												}
 											},
 											"data": [
@@ -9030,7 +9145,7 @@
 												"ref": {
 													"name": "languages",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.449Z"
+													"lastUpdate": "2021-03-28T08:37:59.939Z"
 												}
 											},
 											"data": {
@@ -9095,7 +9210,7 @@
 												"ref": {
 													"name": "languages",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.461Z"
+													"lastUpdate": "2021-03-28T08:37:59.951Z"
 												}
 											},
 											"data": {
@@ -9167,7 +9282,7 @@
 												"ref": {
 													"name": "languages",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.469Z"
+													"lastUpdate": "2021-03-28T08:37:59.978Z"
 												}
 											}
 										}
@@ -9215,7 +9330,7 @@
 												"ref": {
 													"name": "languages",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.452Z"
+													"lastUpdate": "2021-03-28T08:37:59.942Z"
 												}
 											},
 											"data": {
@@ -9281,14 +9396,14 @@
 													"ref": {
 														"name": "languages",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:03.484Z"
+														"lastUpdate": "2021-03-28T08:37:59.995Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:03.484Z"
+														"lastUpdate": "2021-03-28T08:37:59.995Z"
 													}
 												}
 											},
@@ -9296,7 +9411,7 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-03-16T12:50:03.484Z",
+													"lastUpdate": "2021-03-28T08:37:59.995Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -9355,14 +9470,14 @@
 													"ref": {
 														"name": "languages",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:03.495Z"
+														"lastUpdate": "2021-03-28T08:38:00.020Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:03.495Z"
+														"lastUpdate": "2021-03-28T08:38:00.020Z"
 													}
 												}
 											},
@@ -9370,7 +9485,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-03-16T12:50:03.495Z",
+													"lastUpdate": "2021-03-28T08:38:00.020Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -9426,14 +9541,14 @@
 													"ref": {
 														"name": "languages",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:03.497Z"
+														"lastUpdate": "2021-03-28T08:38:00.023Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:03.498Z"
+														"lastUpdate": "2021-03-28T08:38:00.023Z"
 													}
 												}
 											},
@@ -9441,7 +9556,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-03-16T12:50:03.498Z",
+													"lastUpdate": "2021-03-28T08:38:00.023Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -9505,14 +9620,14 @@
 													"ref": {
 														"name": "languages",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:03.503Z"
+														"lastUpdate": "2021-03-28T08:38:00.031Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:03.503Z"
+														"lastUpdate": "2021-03-28T08:38:00.031Z"
 													}
 												}
 											},
@@ -9520,7 +9635,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-03-16T12:50:03.503Z",
+													"lastUpdate": "2021-03-28T08:38:00.031Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -9592,14 +9707,14 @@
 													"ref": {
 														"name": "languages",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:03.520Z"
+														"lastUpdate": "2021-03-28T08:38:00.050Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:03.520Z"
+														"lastUpdate": "2021-03-28T08:38:00.050Z"
 													}
 												}
 											}
@@ -9656,7 +9771,7 @@
 												"ref": {
 													"name": "licenses",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.567Z"
+													"lastUpdate": "2021-03-28T08:38:00.140Z"
 												}
 											},
 											"data": [
@@ -9664,8 +9779,8 @@
 													"id": "507c7f79bcf86cd7994f6c0e",
 													"clientId": "507c7f79bcf86cd7994f6c0e",
 													"terminalId": "507c7f79bcf86cd7994f6c0e",
-													"dateStart": "2021-03-16T12:50:03.567Z",
-													"dateEnd": "2021-03-16T12:50:03.567Z",
+													"dateStart": "2021-03-28T08:38:00.140Z",
+													"dateEnd": "2021-03-28T08:38:00.140Z",
 													"state": 0,
 													"status": "NEW",
 													"key": "0000-1111-2222-3333",
@@ -9680,7 +9795,7 @@
 														"integrationId": "507c7f79bcf86cd7994f6c0e"
 													},
 													"licTypeId": "ecbbfd40-62ba-49bf-8620-75d8c5ed3953",
-													"lastUpdate": "2021-03-16T12:50:03.569Z"
+													"lastUpdate": "2021-03-28T08:38:00.141Z"
 												}
 											]
 										}
@@ -9719,15 +9834,15 @@
 												"ref": {
 													"name": "licenses",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.580Z"
+													"lastUpdate": "2021-03-28T08:38:00.156Z"
 												}
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"clientId": "507c7f79bcf86cd7994f6c0e",
 												"terminalId": "507c7f79bcf86cd7994f6c0e",
-												"dateStart": "2021-03-16T12:50:03.580Z",
-												"dateEnd": "2021-03-16T12:50:03.580Z",
+												"dateStart": "2021-03-28T08:38:00.156Z",
+												"dateEnd": "2021-03-28T08:38:00.156Z",
 												"state": 0,
 												"status": "NEW",
 												"key": "0000-1111-2222-3333",
@@ -9742,7 +9857,7 @@
 													"integrationId": "507c7f79bcf86cd7994f6c0e"
 												},
 												"licTypeId": "ecbbfd40-62ba-49bf-8620-75d8c5ed3953",
-												"lastUpdate": "2021-03-16T12:50:03.580Z"
+												"lastUpdate": "2021-03-28T08:38:00.156Z"
 											}
 										}
 									}
@@ -9789,15 +9904,15 @@
 												"ref": {
 													"name": "licenses",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.592Z"
+													"lastUpdate": "2021-03-28T08:38:00.174Z"
 												}
 											},
 											"data": [
 												{
 													"id": "507c7f79bcf86cd7994f6c0e",
 													"clientId": "507c7f79bcf86cd7994f6c0e",
-													"dateStart": "2021-03-16T12:50:03.592Z",
-													"dateEnd": "2021-03-16T12:50:03.592Z",
+													"dateStart": "2021-03-28T08:38:00.174Z",
+													"dateEnd": "2021-03-28T08:38:00.174Z",
 													"state": 0,
 													"status": "NEW",
 													"key": "0000-1111-2222-3333",
@@ -9812,7 +9927,7 @@
 														"integrationId": "507c7f79bcf86cd7994f6c0e"
 													},
 													"licTypeId": "ecbbfd40-62ba-49bf-8620-75d8c5ed3953",
-													"lastUpdate": "2021-03-16T12:50:03.593Z"
+													"lastUpdate": "2021-03-28T08:38:00.175Z"
 												}
 											]
 										}
@@ -9851,15 +9966,15 @@
 												"ref": {
 													"name": "licenses",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.595Z"
+													"lastUpdate": "2021-03-28T08:38:00.177Z"
 												}
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"clientId": "507c7f79bcf86cd7994f6c0e",
 												"terminalId": "507c7f79bcf86cd7994f6c0e",
-												"dateStart": "2021-03-16T12:50:03.595Z",
-												"dateEnd": "2021-03-16T12:50:03.595Z",
+												"dateStart": "2021-03-28T08:38:00.177Z",
+												"dateEnd": "2021-03-28T08:38:00.177Z",
 												"state": 0,
 												"status": "NEW",
 												"key": "0000-1111-2222-3333",
@@ -9874,7 +9989,7 @@
 													"integrationId": "507c7f79bcf86cd7994f6c0e"
 												},
 												"licTypeId": "ecbbfd40-62ba-49bf-8620-75d8c5ed3953",
-												"lastUpdate": "2021-03-16T12:50:03.595Z"
+												"lastUpdate": "2021-03-28T08:38:00.177Z"
 											}
 										}
 									}
@@ -9919,15 +10034,15 @@
 												"ref": {
 													"name": "licenses",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.605Z"
+													"lastUpdate": "2021-03-28T08:38:00.197Z"
 												}
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"clientId": "507c7f79bcf86cd7994f6c0e",
 												"terminalId": "507c7f79bcf86cd7994f6c0e",
-												"dateStart": "2021-03-16T12:50:03.605Z",
-												"dateEnd": "2021-03-16T12:50:03.605Z",
+												"dateStart": "2021-03-28T08:38:00.197Z",
+												"dateEnd": "2021-03-28T08:38:00.197Z",
 												"state": 0,
 												"status": "NEW",
 												"key": "0000-1111-2222-3333",
@@ -9942,7 +10057,7 @@
 													"integrationId": "507c7f79bcf86cd7994f6c0e"
 												},
 												"licTypeId": "ecbbfd40-62ba-49bf-8620-75d8c5ed3953",
-												"lastUpdate": "2021-03-16T12:50:03.605Z"
+												"lastUpdate": "2021-03-28T08:38:00.197Z"
 											}
 										}
 									}
@@ -9997,7 +10112,7 @@
 												"ref": {
 													"name": "licenses",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.625Z"
+													"lastUpdate": "2021-03-28T08:38:00.222Z"
 												}
 											}
 										}
@@ -10045,15 +10160,15 @@
 												"ref": {
 													"name": "licenses",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.596Z"
+													"lastUpdate": "2021-03-28T08:38:00.182Z"
 												}
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"clientId": "507c7f79bcf86cd7994f6c0e",
 												"terminalId": "507c7f79bcf86cd7994f6c0e",
-												"dateStart": "2021-03-16T12:50:03.596Z",
-												"dateEnd": "2021-03-16T12:50:03.596Z",
+												"dateStart": "2021-03-28T08:38:00.182Z",
+												"dateEnd": "2021-03-28T08:38:00.182Z",
 												"state": 0,
 												"status": "NEW",
 												"key": "0000-1111-2222-3333",
@@ -10068,7 +10183,7 @@
 													"integrationId": "507c7f79bcf86cd7994f6c0e"
 												},
 												"licTypeId": "ecbbfd40-62ba-49bf-8620-75d8c5ed3953",
-												"lastUpdate": "2021-03-16T12:50:03.597Z"
+												"lastUpdate": "2021-03-28T08:38:00.183Z"
 											}
 										}
 									}
@@ -10116,7 +10231,7 @@
 												"ref": {
 													"name": "license_types",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.640Z"
+													"lastUpdate": "2021-03-28T08:38:00.253Z"
 												}
 											},
 											"data": [
@@ -10128,7 +10243,7 @@
 													"price": 180000,
 													"payNotice": "Оплата через терминал Эвотор",
 													"integrationId": "507c7f79bcf86cd7994f6c0e",
-													"lastUpdate": "2021-03-16T12:50:03.640Z"
+													"lastUpdate": "2021-03-28T08:38:00.253Z"
 												}
 											]
 										}
@@ -10167,7 +10282,7 @@
 												"ref": {
 													"name": "license_types",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.648Z"
+													"lastUpdate": "2021-03-28T08:38:00.280Z"
 												}
 											},
 											"data": {
@@ -10178,7 +10293,7 @@
 												"price": 180000,
 												"payNotice": "Оплата через терминал Эвотор",
 												"integrationId": "507c7f79bcf86cd7994f6c0e",
-												"lastUpdate": "2021-03-16T12:50:03.648Z"
+												"lastUpdate": "2021-03-28T08:38:00.280Z"
 											}
 										}
 									}
@@ -10223,7 +10338,7 @@
 												"ref": {
 													"name": "license_types",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.658Z"
+													"lastUpdate": "2021-03-28T08:38:00.293Z"
 												}
 											},
 											"data": {
@@ -10234,7 +10349,7 @@
 												"price": 180000,
 												"payNotice": "Оплата через терминал Эвотор",
 												"integrationId": "507c7f79bcf86cd7994f6c0e",
-												"lastUpdate": "2021-03-16T12:50:03.658Z"
+												"lastUpdate": "2021-03-28T08:38:00.293Z"
 											}
 										}
 									}
@@ -10289,7 +10404,7 @@
 												"ref": {
 													"name": "license_types",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.665Z"
+													"lastUpdate": "2021-03-28T08:38:00.304Z"
 												}
 											}
 										}
@@ -10337,7 +10452,7 @@
 												"ref": {
 													"name": "license_types",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.650Z"
+													"lastUpdate": "2021-03-28T08:38:00.283Z"
 												}
 											},
 											"data": {
@@ -10348,7 +10463,7 @@
 												"price": 180000,
 												"payNotice": "Оплата через терминал Эвотор",
 												"integrationId": "507c7f79bcf86cd7994f6c0e",
-												"lastUpdate": "2021-03-16T12:50:03.650Z"
+												"lastUpdate": "2021-03-28T08:38:00.283Z"
 											}
 										}
 									}
@@ -10396,7 +10511,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.685Z"
+													"lastUpdate": "2021-03-28T08:38:00.345Z"
 												}
 											},
 											"data": [
@@ -10456,7 +10571,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.688Z"
+													"lastUpdate": "2021-03-28T08:38:00.353Z"
 												}
 											},
 											"data": [
@@ -10516,7 +10631,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.692Z"
+													"lastUpdate": "2021-03-28T08:38:00.356Z"
 												}
 											},
 											"data": [
@@ -10585,7 +10700,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.705Z"
+													"lastUpdate": "2021-03-28T08:38:00.376Z"
 												}
 											},
 											"data": {
@@ -10650,7 +10765,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.728Z"
+													"lastUpdate": "2021-03-28T08:38:00.409Z"
 												}
 											},
 											"data": {
@@ -10722,7 +10837,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.760Z"
+													"lastUpdate": "2021-03-28T08:38:00.432Z"
 												}
 											}
 										}
@@ -10770,7 +10885,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.716Z"
+													"lastUpdate": "2021-03-28T08:38:00.393Z"
 												}
 											},
 											"data": {
@@ -10835,7 +10950,7 @@
 												"ref": {
 													"name": "order-types",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.811Z"
+													"lastUpdate": "2021-03-28T08:38:00.466Z"
 												}
 											},
 											"data": [
@@ -10901,7 +11016,7 @@
 												"ref": {
 													"name": "order-types",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.830Z"
+													"lastUpdate": "2021-03-28T08:38:00.496Z"
 												}
 											},
 											"data": {
@@ -10972,7 +11087,7 @@
 												"ref": {
 													"name": "order-types",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.847Z"
+													"lastUpdate": "2021-03-28T08:38:00.524Z"
 												}
 											},
 											"data": {
@@ -11050,7 +11165,7 @@
 												"ref": {
 													"name": "order-types",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.853Z"
+													"lastUpdate": "2021-03-28T08:38:00.529Z"
 												}
 											}
 										}
@@ -11098,7 +11213,7 @@
 												"ref": {
 													"name": "order-types",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.834Z"
+													"lastUpdate": "2021-03-28T08:38:00.507Z"
 												}
 											},
 											"data": {
@@ -11170,14 +11285,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:03.870Z"
+														"lastUpdate": "2021-03-28T08:38:00.544Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:03.870Z"
+														"lastUpdate": "2021-03-28T08:38:00.544Z"
 													}
 												}
 											},
@@ -11186,7 +11301,7 @@
 													{
 														"id": "107c7f79bcf86cd7994f6c0e",
 														"active": true,
-														"lastUpdate": "2021-03-16T12:50:03.870Z",
+														"lastUpdate": "2021-03-28T08:38:00.545Z",
 														"name": "some_3d_model",
 														"ext": ".fbx",
 														"mipmap": {
@@ -11246,14 +11361,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:03.881Z"
+														"lastUpdate": "2021-03-28T08:38:00.552Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:03.881Z"
+														"lastUpdate": "2021-03-28T08:38:00.553Z"
 													}
 												}
 											},
@@ -11261,7 +11376,7 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-03-16T12:50:03.881Z",
+													"lastUpdate": "2021-03-28T08:38:00.553Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -11328,14 +11443,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:03.895Z"
+														"lastUpdate": "2021-03-28T08:38:00.567Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:03.895Z"
+														"lastUpdate": "2021-03-28T08:38:00.567Z"
 													}
 												}
 											},
@@ -11343,7 +11458,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-03-16T12:50:03.897Z",
+													"lastUpdate": "2021-03-28T08:38:00.567Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -11415,14 +11530,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:03.903Z"
+														"lastUpdate": "2021-03-28T08:38:00.581Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:03.903Z"
+														"lastUpdate": "2021-03-28T08:38:00.581Z"
 													}
 												}
 											},
@@ -11430,7 +11545,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-03-16T12:50:03.903Z",
+													"lastUpdate": "2021-03-28T08:38:00.581Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -11510,14 +11625,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:03.915Z"
+														"lastUpdate": "2021-03-28T08:38:00.599Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:03.915Z"
+														"lastUpdate": "2021-03-28T08:38:00.601Z"
 													}
 												}
 											}
@@ -11582,7 +11697,7 @@
 												"ref": {
 													"name": "products",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.946Z"
+													"lastUpdate": "2021-03-28T08:38:00.695Z"
 												}
 											},
 											"data": [
@@ -11675,7 +11790,7 @@
 												"ref": {
 													"name": "products",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.953Z"
+													"lastUpdate": "2021-03-28T08:38:00.705Z"
 												}
 											},
 											"data": {
@@ -11773,7 +11888,7 @@
 												"ref": {
 													"name": "products",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.968Z"
+													"lastUpdate": "2021-03-28T08:38:00.746Z"
 												}
 											},
 											"data": {
@@ -11878,7 +11993,7 @@
 												"ref": {
 													"name": "products",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.979Z"
+													"lastUpdate": "2021-03-28T08:38:00.760Z"
 												}
 											}
 										}
@@ -11926,7 +12041,7 @@
 												"ref": {
 													"name": "products",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:03.956Z"
+													"lastUpdate": "2021-03-28T08:38:00.708Z"
 												}
 											},
 											"data": {
@@ -12025,14 +12140,14 @@
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:03.995Z"
+														"lastUpdate": "2021-03-28T08:38:00.782Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:03.996Z"
+														"lastUpdate": "2021-03-28T08:38:00.783Z"
 													}
 												}
 											},
@@ -12041,7 +12156,7 @@
 													{
 														"id": "107c7f79bcf86cd7994f6c0e",
 														"active": true,
-														"lastUpdate": "2021-03-16T12:50:03.996Z",
+														"lastUpdate": "2021-03-28T08:38:00.783Z",
 														"name": "some_3d_model",
 														"ext": ".fbx",
 														"mipmap": {
@@ -12101,14 +12216,14 @@
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:04.005Z"
+														"lastUpdate": "2021-03-28T08:38:00.796Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:04.005Z"
+														"lastUpdate": "2021-03-28T08:38:00.796Z"
 													}
 												}
 											},
@@ -12116,7 +12231,7 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-03-16T12:50:04.005Z",
+													"lastUpdate": "2021-03-28T08:38:00.796Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -12183,14 +12298,14 @@
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:04.020Z"
+														"lastUpdate": "2021-03-28T08:38:00.810Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:04.020Z"
+														"lastUpdate": "2021-03-28T08:38:00.810Z"
 													}
 												}
 											},
@@ -12198,7 +12313,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-03-16T12:50:04.020Z",
+													"lastUpdate": "2021-03-28T08:38:00.810Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -12262,14 +12377,14 @@
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:04.023Z"
+														"lastUpdate": "2021-03-28T08:38:00.813Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:04.023Z"
+														"lastUpdate": "2021-03-28T08:38:00.813Z"
 													}
 												}
 											},
@@ -12277,7 +12392,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-03-16T12:50:04.023Z",
+													"lastUpdate": "2021-03-28T08:38:00.813Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -12349,14 +12464,14 @@
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:04.030Z"
+														"lastUpdate": "2021-03-28T08:38:00.823Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:04.030Z"
+														"lastUpdate": "2021-03-28T08:38:00.824Z"
 													}
 												}
 											},
@@ -12364,7 +12479,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-03-16T12:50:04.030Z",
+													"lastUpdate": "2021-03-28T08:38:00.824Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -12444,14 +12559,14 @@
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:04.045Z"
+														"lastUpdate": "2021-03-28T08:38:00.841Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:04.045Z"
+														"lastUpdate": "2021-03-28T08:38:00.841Z"
 													}
 												}
 											}
@@ -12516,7 +12631,7 @@
 												"ref": {
 													"name": "selectors",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:04.071Z"
+													"lastUpdate": "2021-03-28T08:38:00.880Z"
 												}
 											},
 											"data": [
@@ -12583,7 +12698,7 @@
 												"ref": {
 													"name": "selectors",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:04.079Z"
+													"lastUpdate": "2021-03-28T08:38:00.929Z"
 												}
 											},
 											"data": {
@@ -12655,7 +12770,7 @@
 												"ref": {
 													"name": "selectors",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:04.092Z"
+													"lastUpdate": "2021-03-28T08:38:00.945Z"
 												}
 											},
 											"data": {
@@ -12734,7 +12849,7 @@
 												"ref": {
 													"name": "selectors",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:04.102Z"
+													"lastUpdate": "2021-03-28T08:38:00.956Z"
 												}
 											}
 										}
@@ -12782,7 +12897,7 @@
 												"ref": {
 													"name": "selectors",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:04.081Z"
+													"lastUpdate": "2021-03-28T08:38:00.932Z"
 												}
 											},
 											"data": {
@@ -12855,14 +12970,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:04.118Z"
+														"lastUpdate": "2021-03-28T08:38:00.973Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:04.118Z"
+														"lastUpdate": "2021-03-28T08:38:00.973Z"
 													}
 												}
 											},
@@ -12871,7 +12986,7 @@
 													{
 														"id": "107c7f79bcf86cd7994f6c0e",
 														"active": true,
-														"lastUpdate": "2021-03-16T12:50:04.118Z",
+														"lastUpdate": "2021-03-28T08:38:00.973Z",
 														"name": "some_3d_model",
 														"ext": ".fbx",
 														"mipmap": {
@@ -12931,14 +13046,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:04.125Z"
+														"lastUpdate": "2021-03-28T08:38:00.981Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:04.126Z"
+														"lastUpdate": "2021-03-28T08:38:00.981Z"
 													}
 												}
 											},
@@ -12946,7 +13061,7 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-03-16T12:50:04.126Z",
+													"lastUpdate": "2021-03-28T08:38:00.982Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -13013,14 +13128,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:04.138Z"
+														"lastUpdate": "2021-03-28T08:38:01.000Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:04.138Z"
+														"lastUpdate": "2021-03-28T08:38:01.000Z"
 													}
 												}
 											},
@@ -13028,7 +13143,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-03-16T12:50:04.138Z",
+													"lastUpdate": "2021-03-28T08:38:01.002Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -13100,14 +13215,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:04.142Z"
+														"lastUpdate": "2021-03-28T08:38:01.009Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:04.142Z"
+														"lastUpdate": "2021-03-28T08:38:01.009Z"
 													}
 												}
 											},
@@ -13115,7 +13230,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-03-16T12:50:04.142Z",
+													"lastUpdate": "2021-03-28T08:38:01.009Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -13195,14 +13310,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:04.156Z"
+														"lastUpdate": "2021-03-28T08:38:01.027Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:04.156Z"
+														"lastUpdate": "2021-03-28T08:38:01.027Z"
 													}
 												}
 											}
@@ -13267,7 +13382,7 @@
 												"ref": {
 													"name": "stores",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:04.183Z"
+													"lastUpdate": "2021-03-28T08:38:01.066Z"
 												}
 											},
 											"data": [
@@ -13318,7 +13433,7 @@
 												"ref": {
 													"name": "stores",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:04.190Z"
+													"lastUpdate": "2021-03-28T08:38:01.078Z"
 												}
 											},
 											"data": {
@@ -13374,7 +13489,7 @@
 												"ref": {
 													"name": "stores",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:04.198Z"
+													"lastUpdate": "2021-03-28T08:38:01.087Z"
 												}
 											},
 											"data": {
@@ -13440,7 +13555,7 @@
 												"ref": {
 													"name": "stores",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:04.203Z"
+													"lastUpdate": "2021-03-28T08:38:01.094Z"
 												}
 											}
 										}
@@ -13488,7 +13603,7 @@
 												"ref": {
 													"name": "stores",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:04.192Z"
+													"lastUpdate": "2021-03-28T08:38:01.080Z"
 												}
 											},
 											"data": {
@@ -13544,7 +13659,7 @@
 												"ref": {
 													"name": "tags",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:04.231Z"
+													"lastUpdate": "2021-03-28T08:38:01.127Z"
 												}
 											},
 											"data": [
@@ -13609,7 +13724,7 @@
 												"ref": {
 													"name": "tags",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:04.238Z"
+													"lastUpdate": "2021-03-28T08:38:01.137Z"
 												}
 											},
 											"data": {
@@ -13679,7 +13794,7 @@
 												"ref": {
 													"name": "tags",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:04.250Z"
+													"lastUpdate": "2021-03-28T08:38:01.152Z"
 												}
 											},
 											"data": {
@@ -13756,7 +13871,7 @@
 												"ref": {
 													"name": "tags",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:04.253Z"
+													"lastUpdate": "2021-03-28T08:38:01.157Z"
 												}
 											}
 										}
@@ -13804,7 +13919,7 @@
 												"ref": {
 													"name": "tags",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:04.241Z"
+													"lastUpdate": "2021-03-28T08:38:01.139Z"
 												}
 											},
 											"data": {
@@ -13875,14 +13990,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:04.266Z"
+														"lastUpdate": "2021-03-28T08:38:01.175Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:04.266Z"
+														"lastUpdate": "2021-03-28T08:38:01.175Z"
 													}
 												}
 											},
@@ -13891,7 +14006,7 @@
 													{
 														"id": "107c7f79bcf86cd7994f6c0e",
 														"active": true,
-														"lastUpdate": "2021-03-16T12:50:04.266Z",
+														"lastUpdate": "2021-03-28T08:38:01.176Z",
 														"name": "some_3d_model",
 														"ext": ".fbx",
 														"mipmap": {
@@ -13951,14 +14066,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:04.274Z"
+														"lastUpdate": "2021-03-28T08:38:01.186Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:04.274Z"
+														"lastUpdate": "2021-03-28T08:38:01.186Z"
 													}
 												}
 											},
@@ -13966,7 +14081,7 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-03-16T12:50:04.274Z",
+													"lastUpdate": "2021-03-28T08:38:01.186Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -14033,14 +14148,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:04.286Z"
+														"lastUpdate": "2021-03-28T08:38:01.201Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:04.286Z"
+														"lastUpdate": "2021-03-28T08:38:01.201Z"
 													}
 												}
 											},
@@ -14048,7 +14163,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-03-16T12:50:04.287Z",
+													"lastUpdate": "2021-03-28T08:38:01.201Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -14120,14 +14235,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:04.293Z"
+														"lastUpdate": "2021-03-28T08:38:01.206Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:04.293Z"
+														"lastUpdate": "2021-03-28T08:38:01.206Z"
 													}
 												}
 											},
@@ -14135,7 +14250,7 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-03-16T12:50:04.293Z",
+													"lastUpdate": "2021-03-28T08:38:01.206Z",
 													"name": "some_3d_model",
 													"ext": ".fbx",
 													"mipmap": {
@@ -14215,14 +14330,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:04.309Z"
+														"lastUpdate": "2021-03-28T08:38:01.221Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-03-16T12:50:04.309Z"
+														"lastUpdate": "2021-03-28T08:38:01.221Z"
 													}
 												}
 											}
@@ -14287,7 +14402,7 @@
 												"ref": {
 													"name": "terminals",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:04.348Z"
+													"lastUpdate": "2021-03-28T08:38:01.389Z"
 												}
 											},
 											"data": {
@@ -14296,9 +14411,13 @@
 												"type": 0,
 												"name": "My terminal",
 												"storeId": "g234r34r-34r23-4t32-43434",
-												"lastwork": "2021-03-16T12:50:04.348Z",
+												"lastwork": "2021-03-28T08:38:01.390Z",
 												"imei": "00001-000000000034",
 												"licenseId": "34r34r-34r23-4t32-43434",
+												"config": {
+													"theme": "light",
+													"suffix": "K"
+												},
 												"extra": {
 													"key": "value"
 												}
@@ -14339,7 +14458,7 @@
 												"ref": {
 													"name": "terminals",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:04.350Z"
+													"lastUpdate": "2021-03-28T08:38:01.393Z"
 												}
 											},
 											"data": {
@@ -14348,9 +14467,13 @@
 												"type": 0,
 												"name": "My terminal",
 												"storeId": "g234r34r-34r23-4t32-43434",
-												"lastwork": "2021-03-16T12:50:04.350Z",
+												"lastwork": "2021-03-28T08:38:01.393Z",
 												"imei": "00001-000000000034",
 												"licenseId": "34r34r-34r23-4t32-43434",
+												"config": {
+													"theme": "light",
+													"suffix": "K"
+												},
 												"extra": {
 													"key": "value"
 												}
@@ -14401,7 +14524,7 @@
 												"ref": {
 													"name": "terminals",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:04.364Z"
+													"lastUpdate": "2021-03-28T08:38:01.414Z"
 												}
 											},
 											"data": [
@@ -14411,9 +14534,13 @@
 													"type": 0,
 													"name": "My terminal",
 													"storeId": "g234r34r-34r23-4t32-43434",
-													"lastwork": "2021-03-16T12:50:04.364Z",
+													"lastwork": "2021-03-28T08:38:01.414Z",
 													"imei": "00001-000000000034",
 													"licenseId": "34r34r-34r23-4t32-43434",
+													"config": {
+														"theme": "light",
+														"suffix": "K"
+													},
 													"extra": {
 														"key": "value"
 													}
@@ -14458,7 +14585,7 @@
 												"ref": {
 													"name": "terminals",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:04.366Z"
+													"lastUpdate": "2021-03-28T08:38:01.426Z"
 												}
 											},
 											"data": {
@@ -14467,9 +14594,13 @@
 												"type": 0,
 												"name": "My terminal",
 												"storeId": "g234r34r-34r23-4t32-43434",
-												"lastwork": "2021-03-16T12:50:04.366Z",
+												"lastwork": "2021-03-28T08:38:01.426Z",
 												"imei": "00001-000000000034",
 												"licenseId": "34r34r-34r23-4t32-43434",
+												"config": {
+													"theme": "light",
+													"suffix": "K"
+												},
 												"extra": {
 													"key": "value"
 												}
@@ -14520,7 +14651,7 @@
 												"ref": {
 													"name": "terminals",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:04.368Z"
+													"lastUpdate": "2021-03-28T08:38:01.429Z"
 												}
 											},
 											"data": {
@@ -14529,9 +14660,13 @@
 												"type": 0,
 												"name": "My terminal",
 												"storeId": "g234r34r-34r23-4t32-43434",
-												"lastwork": "2021-03-16T12:50:04.368Z",
+												"lastwork": "2021-03-28T08:38:01.429Z",
 												"imei": "00001-000000000034",
 												"licenseId": "34r34r-34r23-4t32-43434",
+												"config": {
+													"theme": "light",
+													"suffix": "K"
+												},
 												"extra": {
 													"key": "value"
 												}
@@ -14594,7 +14729,7 @@
 												"ref": {
 													"name": "translations",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:04.392Z"
+													"lastUpdate": "2021-03-28T08:38:01.491Z"
 												}
 											},
 											"data": [
@@ -14651,7 +14786,7 @@
 												"ref": {
 													"name": "translations",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:04.399Z"
+													"lastUpdate": "2021-03-28T08:38:01.502Z"
 												}
 											},
 											"data": {
@@ -14713,7 +14848,7 @@
 												"ref": {
 													"name": "translations",
 													"version": 1,
-													"lastUpdate": "2021-03-16T12:50:04.401Z"
+													"lastUpdate": "2021-03-28T08:38:01.504Z"
 												}
 											},
 											"data": {

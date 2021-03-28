@@ -2089,6 +2089,37 @@ const models: TsoaRoute.Models = {
         "enums": ["online","unavailable"],
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ITerminalKioskConfig": {
+        "dataType": "refObject",
+        "properties": {
+            "theme": {"dataType":"string","required":true},
+            "suffix": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ITerminalOrderPickerConfig": {
+        "dataType": "refObject",
+        "properties": {
+            "theme": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ITerminalEQConfig": {
+        "dataType": "refObject",
+        "properties": {
+            "theme": {"dataType":"string","required":true},
+            "layout": {"dataType":"nestedObjectLiteral","nestedProperties":{"complete":{"dataType":"nestedObjectLiteral","nestedProperties":{"rows":{"dataType":"double","required":true},"columns":{"dataType":"double","required":true}},"required":true},"new":{"dataType":"nestedObjectLiteral","nestedProperties":{"rows":{"dataType":"double","required":true},"columns":{"dataType":"double","required":true}},"required":true}},"required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "TerminalConfig": {
+        "dataType": "refAlias",
+        "type": {"dataType":"union","subSchemas":[{"ref":"ITerminalKioskConfig"},{"ref":"ITerminalOrderPickerConfig"},{"ref":"ITerminalEQConfig"}],"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ITerminalItem": {
         "dataType": "refObject",
         "properties": {
@@ -2101,6 +2132,7 @@ const models: TsoaRoute.Models = {
             "lastwork": {"dataType":"datetime","required":true},
             "imei": {"dataType":"string","required":true},
             "licenseId": {"dataType":"string","required":true},
+            "config": {"ref":"TerminalConfig","required":true},
             "extra": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
@@ -2140,6 +2172,7 @@ const models: TsoaRoute.Models = {
         "properties": {
             "name": {"dataType":"string"},
             "storeId": {"dataType":"string"},
+            "config": {"ref":"TerminalConfig"},
             "extra": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
