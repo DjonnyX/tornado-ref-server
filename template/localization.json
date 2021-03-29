@@ -8,7 +8,7 @@
                 "kiosk_menu_cancel_button": "Назад",
                 "kiosk_menu_confirm_button": "Далее",
                 "kiosk_menu_root_title": "Меню",
-                "kiosk_menu_change_message": "Изменение в меню. Некоорые позиции в заказе могут стать не доступны.",
+                "kiosk_menu_change_message": "Изменение в меню. Некоторые позиции в заказе могут стать не доступны.",
                 "kiosk_add_product_message": "\"${[1]}\" добавлен в заказ!",
                 "kiosk_remove_product_title": "Внимание!",
                 "kiosk_remove_product_message": "Вы действительно хотите удалить позицию?",
