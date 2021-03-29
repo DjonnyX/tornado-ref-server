@@ -27,7 +27,7 @@ export const createTerminalConfig = (type: TerminalTypes) => {
         }
         case TerminalTypes.ORDER_PICKER: {
             const orderPickerDefaultConfig: ITerminalOrderPickerConfig = {
-                theme: "light",
+                theme: "dark",
             };
 
             return orderPickerDefaultConfig;
