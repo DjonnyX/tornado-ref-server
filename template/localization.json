@@ -8,7 +8,7 @@
                 "kiosk_menu_cancel_button": "Назад",
                 "kiosk_menu_confirm_button": "Далее",
                 "kiosk_menu_root_title": "Меню",
-                "kiosk_menu_change_message": "Изменение в меню. Некоорые позиции в заказе могут стать не доступны.",
+                "kiosk_menu_change_message": "Изменение в меню. Некоторые позиции в заказе могут стать не доступны.",
                 "kiosk_add_product_message": "\"${[1]}\" добавлен в заказ!",
                 "kiosk_remove_product_title": "Внимание!",
                 "kiosk_remove_product_message": "Вы действительно хотите удалить позицию?",
@@ -34,7 +34,9 @@
                 "kiosk_pay_success_order_num_title": "Номер Вашего заказ",
                 "kiosk_pay_success_order_description": "Вы оформили заказ на сумму ${[1]}",
                 "kiosk_pay_success_order_qrcode_description": "Отсканируйте QR-код, чтобы следить за статусом Вашего заказа",
-                "kiosk_pay_success_order_button_close": "Закрыть (${[1]} сек)"
+                "kiosk_pay_success_order_button_close": "Закрыть (${[1]} сек)",
+                "equeue_new_items_title": "Готовятся",
+                "equeue_ready_items_title": "Готовые"
             }
         },
         {
@@ -70,7 +72,9 @@
                 "kiosk_pay_success_order_num_title": "Your order number",
                 "kiosk_pay_success_order_description": "You have placed an order for the amount ${[1]}",
                 "kiosk_pay_success_order_qrcode_description": "Scan the QR code to follow the status of your order",
-                "kiosk_pay_success_order_button_close": "Close (${[1]}s)"
+                "kiosk_pay_success_order_button_close": "Close (${[1]}s)",
+                "equeue_new_items_title": "New",
+                "equeue_ready_items_title": "Ready"
             }
         }
     ]
