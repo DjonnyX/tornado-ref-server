@@ -161,6 +161,9 @@ export class SignupController extends Controller {
 
         try {
             res = await licServerApiService.signup<SignupResponse>(body);
+
+            // Инициализация БД под клиента
+            await initRefs(res.data.clientId);
         } catch (err) {
             this.setStatus(500);
             return {
