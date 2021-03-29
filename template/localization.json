@@ -34,7 +34,9 @@
                 "kiosk_pay_success_order_num_title": "Номер Вашего заказ",
                 "kiosk_pay_success_order_description": "Вы оформили заказ на сумму ${[1]}",
                 "kiosk_pay_success_order_qrcode_description": "Отсканируйте QR-код, чтобы следить за статусом Вашего заказа",
-                "kiosk_pay_success_order_button_close": "Закрыть (${[1]} сек)"
+                "kiosk_pay_success_order_button_close": "Закрыть (${[1]} сек)",
+                "equeue_new_items_title": "Готовятся",
+                "equeue_ready_items_title": "Готовые"
             }
         },
         {
@@ -70,7 +72,9 @@
                 "kiosk_pay_success_order_num_title": "Your order number",
                 "kiosk_pay_success_order_description": "You have placed an order for the amount ${[1]}",
                 "kiosk_pay_success_order_qrcode_description": "Scan the QR code to follow the status of your order",
-                "kiosk_pay_success_order_button_close": "Close (${[1]}s)"
+                "kiosk_pay_success_order_button_close": "Close (${[1]}s)",
+                "equeue_new_items_title": "New",
+                "equeue_ready_items_title": "Ready"
             }
         }
     ]
