@@ -11,6 +11,7 @@ import { ILanguage, LanguageModel } from "./Language";
 import { TranslationModel } from "./Translation";
 import { IStoreDocument, StoreModel } from "./Store";
 import { ITerminalDocument, TerminalModel } from "./Terminal";
+import { IAppThemeDocument, AppThemeModel } from "./AppTheme";
 import { ICheckueDocument, CheckueModel } from "./Checkue";
 
 export {
@@ -28,5 +29,6 @@ export {
     TranslationModel,
     IStoreDocument, StoreModel,
     ITerminalDocument, TerminalModel,
+    IAppThemeDocument, AppThemeModel,
     ICheckueDocument, CheckueModel,
 };

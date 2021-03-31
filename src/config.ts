@@ -15,6 +15,9 @@ export const PORT = Number.parseInt(process.env["PORT"]);
 export const SWAGGER_ROUTE = process.env["SWAGGER_ROUTE"];
 export const LOCALIZATION_TEMPLATE_PATH = path.normalize("template/localization.json");
 export const CURRENCY_TEMPLATE_PATH = path.normalize("template/currency.json");
+export const THEMES_KIOSK_TEMPLATE_PATH = path.normalize("template/themes/kiosk.json");
+export const THEMES_ORDER_PICKER_TEMPLATE_PATH = path.normalize("template/themes/order-picker.json");
+export const THEMES_EQ_TEMPLATE_PATH = path.normalize("template/themes/eq.json");
 export const LIC_SERVER_HOST = process.env["LIC_SERVER_HOST"];
 export const AUTH_LIC_SERVER_API_KEY = process.env["AUTH_LIC_SERVER_API_KEY"];
 
