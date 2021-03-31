@@ -1,11 +1,15 @@
 import * as fs from "fs";
-import { RefModel, NodeModel, TranslationModel, LanguageModel, ILanguage, CurrencyModel } from "../models/index";
+import { IKioskTheme, NodeTypes, RefTypes, TerminalTypes } from "@djonnyx/tornado-types";
+import { RefModel, NodeModel, TranslationModel, LanguageModel, ILanguage, CurrencyModel, AppThemeModel } from "../models";
 import { mergeTranslation, getTemplateLangs } from "../utils/translation";
-import { LOCALIZATION_TEMPLATE_PATH, CURRENCY_TEMPLATE_PATH } from "../config";
+import {
+    LOCALIZATION_TEMPLATE_PATH, CURRENCY_TEMPLATE_PATH, THEMES_KIOSK_TEMPLATE_PATH,
+    THEMES_ORDER_PICKER_TEMPLATE_PATH, THEMES_EQ_TEMPLATE_PATH
+} from "../config";
 import { ITranslationTemplate } from "../interfaces/ITranslationTemplate";
 import { ICurrencyTemplate } from "../interfaces";
 import { riseRefVersion } from "./refs";
-import { NodeTypes, RefTypes } from "@djonnyx/tornado-types";
+import { deepMergeObjects } from "../utils/object";
 
 const createRootNode = async (client: string) => {
     const existsRootNode = await NodeModel.findOne({ client, type: NodeTypes.KIOSK_ROOT });
@@ -22,6 +26,74 @@ const createRootNode = async (client: string) => {
             extra: {},
         });
         await rootMenuNode.save();
+    }
+};
+
+const mergeDefaultTheme = async (clientId: string, templatePath: string, type: TerminalTypes) => {
+    const template: IKioskTheme = JSON.parse(fs.readFileSync(templatePath).toString("utf-8"));
+
+    const promises = new Array<Promise<void>>();
+
+    for (const themeName in template) {
+        const themeData = template[themeName];
+        promises.push(new Promise(async (resolve, reject) => {
+            try {
+                let theme = await AppThemeModel.findOne({
+                    clientId,
+                    type,
+                    name: themeName,
+                });
+
+                if (!theme) {
+                    theme = new AppThemeModel({
+                        clientId,
+                        type,
+                        name: themeName,
+                        version: 1,
+                        lastUpdate: new Date(Date.now()),
+                        data: themeData,
+                    });
+
+                    await theme.save();
+
+                    return resolve();
+                }
+
+                const data = deepMergeObjects(themeData, theme.data, true);
+                theme.data = data;
+                theme.version = (Number(theme.version) || 1) + 1;
+                theme.lastUpdate = new Date(Date.now());
+                theme.markModified("data");
+
+                await theme.save();
+
+                resolve();
+            } catch (err) {
+                reject(err);
+            }
+        }));
+    }
+
+    return Promise.all(promises);
+};
+
+const mergeDefaultThemes = async (client: string) => {
+    try {
+        await mergeDefaultTheme(client, THEMES_KIOSK_TEMPLATE_PATH, TerminalTypes.KIOSK);
+    } catch (err) {
+        console.error(err);
+    }
+
+    try {
+        await mergeDefaultTheme(client, THEMES_ORDER_PICKER_TEMPLATE_PATH, TerminalTypes.ORDER_PICKER);
+    } catch (err) {
+        console.error(err);
+    }
+
+    try {
+        await mergeDefaultTheme(client, THEMES_EQ_TEMPLATE_PATH, TerminalTypes.EQUEUE);
+    } catch (err) {
+        console.error(err);
     }
 };
 
@@ -181,6 +253,21 @@ export const initRefs = async (client: string): Promise<void> => {
             name: RefTypes.CHECKUES,
             version: 1,
             lastUpdate,
+        }, {
+            client,
+            name: RefTypes.THEME_KIOSK,
+            version: 1,
+            lastUpdate,
+        }, {
+            client,
+            name: RefTypes.THEME_ORDERPICKER,
+            version: 1,
+            lastUpdate,
+        }, {
+            client,
+            name: RefTypes.THEME_EQUEUE,
+            version: 1,
+            lastUpdate,
         },
     ];
 
@@ -199,6 +286,9 @@ export const initRefs = async (client: string): Promise<void> => {
 
     // root node
     await createRootNode(client);
+
+    // themes
+    await mergeDefaultThemes(client);
 
     // translations
     await mergeDefaultTranslations(client);
