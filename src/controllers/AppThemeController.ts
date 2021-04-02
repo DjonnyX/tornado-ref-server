@@ -5,7 +5,7 @@ import { IAuthRequest } from "../interfaces";
 import { findAllWithFilter } from "../utils/requestOptions";
 import { getRef, riseRefVersion } from "../db/refs";
 import { IRefItem } from "./RefsController";
-import { formatAppThemeModel, getAppThemeRefTypeByTerminalType } from "../utils/appTheme";
+import { formatAppThemeModel } from "../utils/appTheme";
 
 export interface IAppThemeItem extends IAppTheme { }
 
@@ -52,7 +52,7 @@ const RESPONSE_TEMPLATE: IAppThemeItem = {
 
 const META_TEMPLATE: IAppThemeMeta = {
     ref: {
-        name: RefTypes.THEME_KIOSK,
+        name: RefTypes.THEMES,
         version: 1,
         lastUpdate: new Date(),
     }
@@ -71,23 +71,11 @@ export class AppThemesController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest, @Query() type: TerminalTypes): Promise<IAppThemesResponse> {
         try {
-            const items = await findAllWithFilter(AppThemeModel.find({ client: request.account.id }), request);
+            const items = await findAllWithFilter(AppThemeModel.find({ clientId: request.account.id, type }), request);
 
-            const refType = getAppThemeRefTypeByTerminalType(type);
-
-            if (!refType) {
-                this.setStatus(500);
-                return {
-                    error: [
-                        {
-                            code: 500,
-                            message: "Incorrect ref type.",
-                        }
-                    ]
-                };
-            }
-
-            const ref = await getRef(request.account.id, refType);
+            const ref = await getRef(request.account.id, RefTypes.THEMES, {
+                "extra.type.equals": Number(type),
+            });
             return {
                 meta: { ref },
                 data: items.map(v => formatAppThemeModel(v))
@@ -119,8 +107,13 @@ export class AppThemeController extends Controller {
     })
     public async getOne(name: string, @Request() request: IAuthRequest, @Query() type: TerminalTypes): Promise<IAppThemeResponse> {
         try {
-            const item = await AppThemeModel.findOne({ name, type, client: request.account.id });
+            const item = await AppThemeModel.findOne({ name, type, clientId: request.account.id });
+
+            const ref = await getRef(request.account.id, RefTypes.THEMES, {
+                "extra.type.equals": item.type,
+            });
             return {
+                meta: { ref },
                 data: formatAppThemeModel(item)
             };
         } catch (err) {
@@ -161,21 +154,9 @@ export class AppThemeController extends Controller {
 
                 await item.save();
 
-                const refType = getAppThemeRefTypeByTerminalType(item.type);
-
-                if (!refType) {
-                    this.setStatus(500);
-                    return {
-                        error: [
-                            {
-                                code: 500,
-                                message: "Incorrect ref type.",
-                            }
-                        ]
-                    };
-                }
-
-                const ref = await riseRefVersion(request.account.id, refType);
+                const ref = await riseRefVersion(request.account.id, RefTypes.THEMES, {
+                    "extra.type.equals": item.type,
+                });
                 return {
                     meta: { ref },
                     data: formatAppThemeModel(item),

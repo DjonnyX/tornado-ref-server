@@ -1,10 +1,13 @@
 import { RefModel, IRef } from "../models/index";
 import { IRefItem } from "../controllers/RefsController";
+import { findAllWithFilter } from "../utils/requestOptions";
 
-export const getRef = async (client: string, name: string): Promise<IRefItem> => {
+export const getRef = async (client: string, name: string,
+    additionalSearch?: { [prop: string]: string | number }): Promise<IRefItem> => {
+
     let ref: IRef;
     try {
-        ref = await RefModel.findOne({ client, name });
+        ref = await findAllWithFilter(RefModel.findOne({ client, name }), { query: additionalSearch || {} });
     } catch (e) {
         throw Error("Error in getting reference.");
     }
@@ -21,10 +24,12 @@ export const getRef = async (client: string, name: string): Promise<IRefItem> =>
     };
 };
 
-export const riseRefVersion = async (client: string, name: string): Promise<IRefItem> => {
+export const riseRefVersion = async (client: string, name: string,
+    additionalSearch?: { [prop: string]: string | number }): Promise<IRefItem> => {
+
     let ref: IRef;
     try {
-        ref = await RefModel.findOne({ client, name });
+        ref = await findAllWithFilter(RefModel.findOne({ client, name }), { query: additionalSearch || {} });
     } catch (e) {
         throw Error("Error in getting reference.");
     }
