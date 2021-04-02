@@ -1,9 +1,10 @@
 import { QueryWithHelpers } from "mongoose";
-import { IAuthRequest } from "../interfaces";
 
 const FILTER_PATTERN = /([\w.])*\.(equals|contain|notequals|lt|gt){1,}$/;
 
-export function findAllWithFilter<T, D, Q>(document: QueryWithHelpers<Array<T>, any, any>, request: IAuthRequest): QueryWithHelpers<Array<T>, any, any> {
+export function findAllWithFilter<T, D, Q>(document: QueryWithHelpers<Array<T>, any, any>, request: {
+    query: any,
+}): QueryWithHelpers<Array<T>, any, any> {
     let result = document;
     for (const pName in request.query) {
         const pFilterSegments = pName.match(FILTER_PATTERN);

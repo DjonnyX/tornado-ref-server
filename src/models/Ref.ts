@@ -7,6 +7,7 @@ interface IRef extends Document {
     name: string;
     version: number;
     lastUpdate: Date;
+    extra?: any;
 }
 
 const RefSchema = new Schema({
@@ -28,12 +29,11 @@ const RefSchema = new Schema({
         RefTypes.TAGS,
         RefTypes.TERMINALS,
         RefTypes.TRANSLATIONS,
-        RefTypes.THEME_KIOSK,
-        RefTypes.THEME_ORDERPICKER,
-        RefTypes.THEME_EQUEUE,
+        RefTypes.THEMES,
     ], required: true },
     version: { type: Number, required: true },
     lastUpdate: { type: Date, required: true },
+    extra: { type: Schema.Types.Mixed },
 });
 
 const RefModel = mongoose.model<IRef>("Ref", RefSchema);

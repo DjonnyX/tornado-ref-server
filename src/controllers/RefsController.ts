@@ -1,7 +1,8 @@
+import { RefTypes } from "@djonnyx/tornado-types";
 import { RefModel, IRef } from "../models/index";
 import { Controller, Route, Get, Tags, OperationId, Example, Security, Request } from "tsoa";
-import { IAuthRequest } from "src/interfaces";
-import { RefTypes } from "@djonnyx/tornado-types";
+import { IAuthRequest } from "../interfaces";
+import { findAllWithFilter } from "../utils/requestOptions";
 
 export interface IRefItem {
     name: string;
@@ -79,7 +80,7 @@ export class RefsController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<RefsResponse> {
         try {
-            const items = await RefModel.find({ client: request.account.id });
+            const items = await findAllWithFilter(RefModel.find({ client: request.account.id }), request);
             return {
                 data: items.map(v => formatModel(v))
             };
