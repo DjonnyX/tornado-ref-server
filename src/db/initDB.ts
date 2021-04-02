@@ -253,21 +253,34 @@ export const initRefs = async (client: string): Promise<void> => {
             name: RefTypes.CHECKUES,
             version: 1,
             lastUpdate,
-        }, {
+        },
+    ];
+
+    const THEMES = [
+        {
             client,
-            name: RefTypes.THEME_KIOSK,
+            name: RefTypes.THEMES,
             version: 1,
             lastUpdate,
+            extra: {
+                type: TerminalTypes.KIOSK,
+            },
         }, {
             client,
-            name: RefTypes.THEME_ORDERPICKER,
+            name: RefTypes.THEMES,
             version: 1,
             lastUpdate,
+            extra: {
+                type: TerminalTypes.ORDER_PICKER,
+            },
         }, {
             client,
-            name: RefTypes.THEME_EQUEUE,
+            name: RefTypes.THEMES,
             version: 1,
             lastUpdate,
+            extra: {
+                type: TerminalTypes.EQUEUE,
+            },
         },
     ];
 
@@ -276,6 +289,22 @@ export const initRefs = async (client: string): Promise<void> => {
         const existsRef = await RefModel.findOne({
             client,
             name: refData.name,
+        });
+        if (!!existsRef) {
+            continue;
+        }
+        const model = new RefModel(refData);
+        await model.save();
+    }
+
+    for (let i = 0, l = THEMES.length; i < l; i++) {
+        const refData = THEMES[i];
+        const existsRef = await RefModel.findOne({
+            client,
+            name: refData.name,
+            extra: {
+                type: refData.extra.type,
+            },
         });
         if (!!existsRef) {
             continue;
