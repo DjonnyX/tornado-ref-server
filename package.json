@@ -1,6 +1,6 @@
 {
-  "name": "tornado-server",
-  "version": "1.1.1-alpha6",
+  "name": "tornado-ref-server",
+  "version": "1.1.1-alpha7",
   "author": {
     "email": "djonnyx@gmail.com",
     "name": "Eugene Grebennikov"
@@ -13,9 +13,17 @@
     "gendoc": "tsoa routes && tsoa swagger",
     "lint": "tsc --noEmit && eslint \"**/*.{js,ts}\" --quiet --fix"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DjonnyX/tornado-ref-server.git"
+  },
+  "bugs": {
+    "url": "https://github.com/DjonnyX/tornado-ref-server/issues"
+  },
+  "homepage": "https://github.com/DjonnyX/tornado-ref-server#readme",
   "license": "Commercial",
   "dependencies": {
-    "@djonnyx/tornado-types": "^1.4.29",
+    "@djonnyx/tornado-types": "^1.4.32",
     "@hapi/joi": "^17.1.1",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",

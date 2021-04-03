@@ -16,6 +16,7 @@ const AdSchema = new Schema({
     type: {
         type: String,
         enum: [
+            AdTypes.SERVICE_UNAVAILABLE,
             AdTypes.BANNER,
             AdTypes.INTRO,
         ],
