@@ -1,3 +1,4 @@
+import { IAdContents } from "@djonnyx/tornado-types";
 import { IVisualEntityContents, IVisualEntityContentsItem, IVisualEntity } from "../models/interfaces";
 
 export const normalizeContents = (contents: IVisualEntityContents, defaultLang: string) => {
@@ -116,3 +117,26 @@ export const getEntityAssets = (entity: IVisualEntity) => {
 
     return result;
 };
+
+export const contentsToDefault = (contents: IAdContents, langCode: string) => {
+    let result = { ...contents };
+    if (!result) {
+        result = {};
+    }
+
+    if (!result[langCode]) {
+        result[langCode] = {} as any;
+    }
+
+    if (!result[langCode].resources) {
+        result[langCode].resources = {
+            main: null,
+        };
+    }
+
+    if (!result[langCode].assets) {
+        result[langCode].assets = [];
+    }
+
+    return result;
+}

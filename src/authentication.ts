@@ -91,7 +91,6 @@ export async function expressAuthentication(
 
   if (securityName === "terminalAccessToken") {
     const token = request.headers["x-access-token"] ? String(request.headers["x-access-token"]) : undefined;
-    console.log(token)
     return await checkApiKey(token, request);
   }
 }

@@ -1,11 +1,11 @@
-import { AdModel, IAd, ILanguage, LanguageModel } from "../models/index";
+import { AdModel, IAdDocument, ILanguage, LanguageModel } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Query, Request } from "tsoa";
 import { AdTypes, IAdContents, RefTypes } from "@djonnyx/tornado-types";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatAdModel } from "../utils/ad";
 import { normalizeContents, getDeletedImagesFromDifferense, getEntityAssets } from "../utils/entity";
 import { AssetModel } from "../models/Asset";
-import { deleteAsset } from "./AssetsController";
+import { deleteAsset, uploadAsset } from "./AssetsController";
 import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "../interfaces";
 import { findAllWithFilter } from "../utils/requestOptions";
@@ -79,6 +79,86 @@ const META_TEMPLATE: IAdsMeta = {
         lastUpdate: new Date(),
     }
 };
+
+export const updateAd = async (id: string, client: string, params: IAdUpdateRequest): Promise<IAdDocument> => {
+    let defaultLanguage: ILanguage;
+    try {
+        defaultLanguage = await LanguageModel.findOne({ client, isDefault: true });
+    } catch (err) {
+        throw Error(`Default language error. ${err}`);
+    }
+
+    const item = await AdModel.findById(id);
+
+    let lastContents: IAdContents;
+    for (const key in params) {
+        if (key === "contents") {
+            lastContents = item.contents;
+        }
+
+        item[key] = params[key];
+
+        if (key === "extra" || key === "contents") {
+            if (key === "contents") {
+                normalizeContents(item.contents, defaultLanguage.code);
+            }
+            item.markModified(key);
+        }
+    }
+
+    // удаление ассетов из разности resources
+    const deletedAssetsFromImages = getDeletedImagesFromDifferense(lastContents, item.contents);
+    const promises = new Array<Promise<void>>();
+    let isAssetsChanged = false;
+    deletedAssetsFromImages.forEach(assetId => {
+        promises.push(new Promise<void>(async (resolve, reject) => {
+            // удаление из списка assets
+            if (item.contents) {
+                for (const lang in item.contents) {
+                    const content = item.contents[lang];
+                    if (!!content && !!content.assets) {
+                        const index = content.assets.indexOf(assetId);
+                        if (index !== -1) {
+                            content.assets.splice(index, 1);
+                        }
+                    }
+                }
+            }
+
+            // физическое удаление asset'а
+            const asset = await AssetModel.findByIdAndDelete(assetId);
+            if (!!asset) {
+                await deleteAsset(asset.path);
+                await deleteAsset(asset.mipmap.x128);
+                await deleteAsset(asset.mipmap.x32);
+                isAssetsChanged = true;
+            }
+            resolve();
+        }));
+    });
+    await Promise.all(promises);
+
+    if (isAssetsChanged) {
+        await riseRefVersion(client, RefTypes.ASSETS);
+    }
+
+    // выставление ассетов от предыдущего состояния
+    // ассеты неьзя перезаписывать напрямую!
+    if (!!lastContents) {
+        for (const lang in lastContents) {
+            if (!item.contents[lang]) {
+                item.contents[lang] = {} as any;
+            }
+            if (lastContents[lang]) {
+                item.contents[lang].assets = lastContents[lang].assets;
+            }
+        }
+    }
+
+    await item.save();
+
+    return item;
+}
 
 @Route("/ads")
 @Tags("Ad")
@@ -182,90 +262,20 @@ export class AdController extends Controller {
         data: RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() body: IAdUpdateRequest, @Request() request: IAuthRequest): Promise<IAdResponse> {
-        let defaultLanguage: ILanguage;
-        try {
-            defaultLanguage = await LanguageModel.findOne({ client: request.account.id, isDefault: true });
-        } catch (err) {
-            this.setStatus(500);
-            return {
-                error: [
-                    {
-                        code: 500,
-                        message: `Default language error. ${err}`,
-                    }
-                ]
-            };
+        if (body.active === false) {
+            const item = await AdModel.findById(id);
+
+            if (item.type !== AdTypes.BANNER) {
+                const ads = await AdModel.find({ client: request.account.id, type: item.type });
+
+                if (ads.length <= 1) {
+                    body.active = true;
+                }
+            }
         }
 
         try {
-            const item = await AdModel.findById(id);
-
-            let lastContents: IAdContents;
-            for (const key in body) {
-                if (key === "contents") {
-                    lastContents = item.contents;
-                }
-
-                item[key] = body[key];
-
-                if (key === "extra" || key === "contents") {
-                    if (key === "contents") {
-                        normalizeContents(item.contents, defaultLanguage.code);
-                    }
-                    item.markModified(key);
-                }
-            }
-
-            // удаление ассетов из разности resources
-            const deletedAssetsFromImages = getDeletedImagesFromDifferense(lastContents, item.contents);
-            const promises = new Array<Promise<void>>();
-            let isAssetsChanged = false;
-            deletedAssetsFromImages.forEach(assetId => {
-                promises.push(new Promise<void>(async (resolve, reject) => {
-                    // удаление из списка assets
-                    if (item.contents) {
-                        for (const lang in item.contents) {
-                            const content = item.contents[lang];
-                            if (!!content && !!content.assets) {
-                                const index = content.assets.indexOf(assetId);
-                                if (index !== -1) {
-                                    content.assets.splice(index, 1);
-                                }
-                            }
-                        }
-                    }
-
-                    // физическое удаление asset'а
-                    const asset = await AssetModel.findByIdAndDelete(assetId);
-                    if (!!asset) {
-                        await deleteAsset(asset.path);
-                        await deleteAsset(asset.mipmap.x128);
-                        await deleteAsset(asset.mipmap.x32);
-                        isAssetsChanged = true;
-                    }
-                    resolve();
-                }));
-            });
-            await Promise.all(promises);
-
-            if (isAssetsChanged) {
-                await riseRefVersion(request.account.id, RefTypes.ASSETS);
-            }
-
-            // выставление ассетов от предыдущего состояния
-            // ассеты неьзя перезаписывать напрямую!
-            if (!!lastContents) {
-                for (const lang in lastContents) {
-                    if (!item.contents[lang]) {
-                        item.contents[lang] = {} as any;
-                    }
-                    if (lastContents[lang]) {
-                        item.contents[lang].assets = lastContents[lang].assets;
-                    }
-                }
-            }
-
-            await item.save();
+            const item = await updateAd(id, request.account.id, body);
 
             const ref = await riseRefVersion(request.account.id, RefTypes.ADS);
             return {
@@ -292,7 +302,24 @@ export class AdController extends Controller {
         meta: META_TEMPLATE,
     })
     public async delete(id: string, @Request() request: IAuthRequest): Promise<IAdResponse> {
-        let ad: IAd;
+        const item = await AdModel.findById(id);
+        if (item.type !== AdTypes.BANNER) {
+            const ads = await AdModel.find({ client: request.account.id, type: item.type });
+
+            if (ads.length <= 1) {
+                this.setStatus(500);
+                return {
+                    error: [
+                        {
+                            code: 500,
+                            message: "The last ad cannot be removed.",
+                        }
+                    ]
+                };
+            }
+        }
+
+        let ad: IAdDocument;
         try {
             ad = await AdModel.findByIdAndDelete(id);
         } catch (err) {

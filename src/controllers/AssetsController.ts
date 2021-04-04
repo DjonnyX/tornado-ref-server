@@ -134,12 +134,13 @@ export const uploadAsset = async (request: IAuthRequest, allowedExtensions: Arra
 export const deleteAsset = (assetPath: string): Promise<IAsset | void> => {
     return new Promise((resolve, reject) => {
         fs.unlink(path.normalize(assetPath), (err) => {
-            if (!!err && err.code === "ENOENT") {
+            /*if (!!err && err.code === "ENOENT") {
                 return reject(Error("File doesn't exist, won't remove it."));
             } else
                 if (!!err) {
                     return reject(err);
                 }
+            */
 
             return resolve();
         });

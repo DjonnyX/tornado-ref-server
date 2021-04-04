@@ -2,7 +2,7 @@ import * as mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
 import { AdTypes, IAdContents } from "@djonnyx/tornado-types";
 
-interface IAd extends Document {
+interface IAdDocument extends Document {
     client: string;
     active: boolean;
     type: AdTypes;
@@ -16,6 +16,7 @@ const AdSchema = new Schema({
     type: {
         type: String,
         enum: [
+            AdTypes.SERVICE_UNAVAILABLE,
             AdTypes.BANNER,
             AdTypes.INTRO,
         ],
@@ -24,6 +25,6 @@ const AdSchema = new Schema({
     extra: { type: Schema.Types.Mixed, required: false, default: {} },
 });
 
-const AdModel = mongoose.model<IAd>("Ad", AdSchema);
+const AdModel = mongoose.model<IAdDocument>("Ad", AdSchema);
 
-export { AdModel, IAd };
+export { AdModel, IAdDocument };
