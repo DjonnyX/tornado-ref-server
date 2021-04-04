@@ -1,15 +1,15 @@
-import { AdModel, IAd, ILanguage, LanguageModel } from "../models/index";
+import { AssetExtensions, IAdContents, RefTypes } from "@djonnyx/tornado-types";
+import { AdModel, IAdDocument, ILanguage, LanguageModel } from "../models/index";
 import { Controller, Route, Post, Tags, OperationId, Example, Request, Security, Get, Delete, Body, Put } from "tsoa";
 import { riseRefVersion, getRef } from "../db/refs";
 import { IAdItem, RESPONSE_TEMPLATE as AD_RESPONSE_TEMPLATE } from "./AdController";
 import { formatAdModel } from "../utils/ad";
-import { normalizeContents } from "../utils/entity";
+import { contentsToDefault, normalizeContents } from "../utils/entity";
 import { IRefItem } from "./RefsController";
 import { uploadAsset, deleteAsset, IAssetItem, ICreateAssetsResponse } from "./AssetsController";
 import { AssetModel, IAsset } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
 import { IAuthRequest } from "../interfaces";
-import { AssetExtensions, IAdContents, RefTypes } from "@djonnyx/tornado-types";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IAdAsset extends IAssetItem { }
@@ -78,29 +78,6 @@ export enum AdImageTypes {
     MAIN = "main",
 }
 
-const contentsToDefault = (contents: IAdContents, langCode: string) => {
-    let result = { ...contents };
-    if (!result) {
-        result = {};
-    }
-
-    if (!result[langCode]) {
-        result[langCode] = {} as any;
-    }
-
-    if (!result[langCode].resources) {
-        result[langCode].resources = {
-            main: null,
-        };
-    }
-
-    if (!result[langCode].assets) {
-        result[langCode].assets = [];
-    }
-
-    return result;
-}
-
 const META_TEMPLATE = {
     ad: {
         ref: {
@@ -145,7 +122,7 @@ export class AdAssetsController extends Controller {
         },
     })
     public async getAllAssets(adId: string): Promise<IAdGetAllAssetsResponse> {
-        let ad: IAd;
+        let ad: IAdDocument;
         try {
             ad = await AdModel.findById(adId);
         } catch (err) {
@@ -205,7 +182,7 @@ export class AdAssetsController extends Controller {
         data: [RESPONSE_TEMPLATE],
     })
     public async getAssets(adId: string, langCode: string): Promise<IAdGetAssetsResponse> {
-        let ad: IAd;
+        let ad: IAdDocument;
         try {
             ad = await AdModel.findById(adId);
         } catch (err) {
@@ -347,7 +324,7 @@ export class AdAssetsController extends Controller {
             };
         }
 
-        let ad: IAd;
+        let ad: IAdDocument;
         let deletedAsset: string;
         try {
             ad = await AdModel.findById(adId);
@@ -430,7 +407,7 @@ export class AdAssetsController extends Controller {
         }
 
         let adRef: IRefItem;
-        let savedAd: IAd;
+        let savedAd: IAdDocument;
         try {
             const assetId = assetsInfo.data.id.toString();
             contents[langCode].resources[resourceType] = assetId;
@@ -484,7 +461,7 @@ export class AdAssetsController extends Controller {
     })
     public async update(adId: string, langCode: string, assetId: string, @Body() body: IAdAssetUpdateRequest, @Request() request: IAuthRequest): Promise<IAdCreateAssetsResponse> {
 
-        let ad: IAd;
+        let ad: IAdDocument;
         try {
             ad = await AdModel.findById(adId);
         } catch (err) {
@@ -558,7 +535,7 @@ export class AdAssetsController extends Controller {
         meta: META_TEMPLATE
     })
     public async delete(adId: string, langCode: string, assetId: string, @Request() request: IAuthRequest): Promise<IAdDeleteAssetsResponse> {
-        let ad: IAd;
+        let ad: IAdDocument;
         try {
             ad = await AdModel.findById(adId);
         } catch (err) {

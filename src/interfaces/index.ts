@@ -7,6 +7,7 @@ import { IAuthInfo, IAuthRequest } from "./IAuthRequest";
 import { IClientJWTBody } from "./IClientJWTBody";
 import { ITerminalJWTBody } from "./ITerminalJWTBody";
 import { IRequestOptions } from "./IRequestOptions";
+import { IScreenSaverManifest } from "./IScreenSaverManifest";
 
 export {
     IError,
@@ -19,4 +20,5 @@ export {
     IClientJWTBody,
     ITerminalJWTBody,
     IRequestOptions,
+    IScreenSaverManifest
 };
