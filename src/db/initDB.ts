@@ -1,15 +1,48 @@
 import * as fs from "fs";
-import { IKioskTheme, NodeTypes, RefTypes, TerminalTypes } from "@djonnyx/tornado-types";
-import { RefModel, NodeModel, TranslationModel, LanguageModel, ILanguage, CurrencyModel, AppThemeModel } from "../models";
+import { AdTypes, IKioskTheme, NodeTypes, RefTypes, TerminalTypes } from "@djonnyx/tornado-types";
+import { RefModel, NodeModel, TranslationModel, LanguageModel, ILanguage, CurrencyModel, AppThemeModel, AdModel } from "../models";
 import { mergeTranslation, getTemplateLangs } from "../utils/translation";
 import {
     LOCALIZATION_TEMPLATE_PATH, CURRENCY_TEMPLATE_PATH, THEMES_KIOSK_TEMPLATE_PATH,
-    THEMES_ORDER_PICKER_TEMPLATE_PATH, THEMES_EQ_TEMPLATE_PATH
+    THEMES_ORDER_PICKER_TEMPLATE_PATH, THEMES_EQ_TEMPLATE_PATH, DEFAULT_INTRO_TEMPLATE_MANIFEST_PATH, DEFAULT_INTRO_TEMPLATE_DATA_PATH, DEFAULT_SCREENSAVER_SERVICE_UNAVAILABLE_TEMPLATE_MANIFEST_PATH, DEFAULT_SCREENSAVER_SERVICE_UNAVAILABLE_TEMPLATE_DATA_PATH
 } from "../config";
 import { ITranslationTemplate } from "../interfaces/ITranslationTemplate";
-import { ICurrencyTemplate } from "../interfaces";
+import { ICurrencyTemplate, IScreenSaverManifest } from "../interfaces";
 import { riseRefVersion } from "./refs";
 import { deepMergeObjects } from "../utils/object";
+import { createAd } from "../utils/ad";
+
+const createDefaultIntroIfNeed = async (client: string) => {
+    const ads = await AdModel.find({ client, type: AdTypes.INTRO });
+
+    if (ads.length > 0) {
+        return;
+    }
+
+    const template: IScreenSaverManifest = await readFileJSONAsync<IScreenSaverManifest>(DEFAULT_INTRO_TEMPLATE_MANIFEST_PATH);
+
+    try {
+        createAd(client, template.name, template.duration, AdTypes.INTRO, DEFAULT_INTRO_TEMPLATE_DATA_PATH);
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+const createDefaultServiceUnavailableScreensaverIfNeed = async (client: string) => {
+    const ads = await AdModel.find({ client, type: AdTypes.SERVICE_UNAVAILABLE });
+
+    if (ads.length > 0) {
+        return;
+    }
+
+    const template: IScreenSaverManifest = await readFileJSONAsync<IScreenSaverManifest>(DEFAULT_SCREENSAVER_SERVICE_UNAVAILABLE_TEMPLATE_MANIFEST_PATH);
+
+    try {
+        createAd(client, template.name, template.duration, AdTypes.SERVICE_UNAVAILABLE, DEFAULT_SCREENSAVER_SERVICE_UNAVAILABLE_TEMPLATE_DATA_PATH);
+    } catch (err) {
+        console.error(err);
+    }
+};
 
 const createRootNode = async (client: string) => {
     const existsRootNode = await NodeModel.findOne({ client, type: NodeTypes.KIOSK_ROOT });
@@ -29,8 +62,27 @@ const createRootNode = async (client: string) => {
     }
 };
 
+function readFileJSONAsync<T = any>(path: string): Promise<T> {
+    return new Promise<T>((resolve, reject) => {
+        fs.readFile(path, {
+            encoding: "utf-8",
+        }, (err, data) => {
+            if (!!err) {
+                return reject(err);
+            }
+
+            try {
+                const json = JSON.parse(data) as T;
+                resolve(json);
+            } catch (err) {
+                reject(err);
+            }
+        });
+    });
+}
+
 const mergeDefaultTheme = async (clientId: string, templatePath: string, type: TerminalTypes) => {
-    const template: IKioskTheme = JSON.parse(fs.readFileSync(templatePath).toString("utf-8"));
+    const template: IKioskTheme = await readFileJSONAsync<IKioskTheme>(templatePath);
 
     const promises = new Array<Promise<void>>();
 
@@ -98,7 +150,7 @@ const mergeDefaultThemes = async (client: string) => {
 };
 
 const mergeDefaultTranslations = async (client: string) => {
-    const template: ITranslationTemplate = JSON.parse(fs.readFileSync(LOCALIZATION_TEMPLATE_PATH).toString("utf-8"));
+    const template: ITranslationTemplate = await readFileJSONAsync<ITranslationTemplate>(LOCALIZATION_TEMPLATE_PATH);
     const availableLangs = getTemplateLangs(template);
 
     const dictionary: { [key: string]: ILanguage } = {};
@@ -147,7 +199,7 @@ const mergeDefaultTranslations = async (client: string) => {
 }
 
 const createDefaultCurrencyFromTemplate = async (client: string) => {
-    const template: ICurrencyTemplate = JSON.parse(fs.readFileSync(CURRENCY_TEMPLATE_PATH).toString("utf-8"));
+    const template: ICurrencyTemplate = await readFileJSONAsync<ICurrencyTemplate>(CURRENCY_TEMPLATE_PATH);
 
     const currencies = await CurrencyModel.find({ client });
     let isDefaultSetted = false;
@@ -312,6 +364,10 @@ export const initRefs = async (client: string): Promise<void> => {
         const model = new RefModel(refData);
         await model.save();
     }
+
+    await createDefaultIntroIfNeed(client);
+
+    await createDefaultServiceUnavailableScreensaverIfNeed(client);
 
     // root node
     await createRootNode(client);
