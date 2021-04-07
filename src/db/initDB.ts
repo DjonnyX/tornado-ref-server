@@ -230,7 +230,33 @@ const createDefaultCurrencyFromTemplate = async (client: string) => {
     }
 }
 
+const makeDirIfEmpty = (src: string): Promise<void> => {
+    return new Promise((resolve, reject) => {
+        fs.stat(src, (err, stats) => {
+            if (!!err) {
+                fs.mkdir(src, () => {
+                    resolve();
+                });
+
+                return;
+            }
+
+            resolve();
+        });
+    });
+}
+
+const initEnvironment = async (client: string): Promise<void> => {
+    try {
+        await makeDirIfEmpty("assets");
+        await makeDirIfEmpty(`assets/${client}`);
+    } catch (err) {
+        console.error(`Init environment fail. ${err}`);
+    }
+}
+
 export const initRefs = async (client: string): Promise<void> => {
+    await initEnvironment(client);
 
     const lastUpdate = Date.now();
 
