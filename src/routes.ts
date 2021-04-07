@@ -550,6 +550,7 @@ const models: TsoaRoute.Models = {
         "properties": {
             "captchaId": {"dataType":"string","required":true},
             "captchaValue": {"dataType":"string","required":true},
+            "integrationId": {"dataType":"string","required":true},
             "firstName": {"dataType":"string","required":true},
             "lastName": {"dataType":"string","required":true},
             "email": {"dataType":"string","required":true},
@@ -558,11 +559,16 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "UserRights": {
+        "dataType": "refEnum",
+        "enums": [0,1,2,3,4,5,6,7,8,9,10,11],
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "SigninResponse": {
         "dataType": "refObject",
         "properties": {
             "meta": {"dataType":"nestedObjectLiteral","nestedProperties":{}},
-            "data": {"dataType":"nestedObjectLiteral","nestedProperties":{"rights":{"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"action":{"dataType":"string","required":true},"obj":{"dataType":"string","required":true}}},"required":true},"token":{"dataType":"string","required":true},"account":{"dataType":"nestedObjectLiteral","nestedProperties":{"language":{"dataType":"string","required":true},"name":{"dataType":"string","required":true},"position":{"dataType":"string","required":true},"phone":{"dataType":"string","required":true},"patronymicName":{"dataType":"string","required":true},"lastName":{"dataType":"string","required":true},"email":{"dataType":"string","required":true},"id":{"dataType":"string","required":true}},"required":true}}},
+            "data": {"dataType":"nestedObjectLiteral","nestedProperties":{"role":{"dataType":"string","required":true},"token":{"dataType":"string","required":true},"account":{"dataType":"nestedObjectLiteral","nestedProperties":{"rights":{"dataType":"array","array":{"dataType":"refEnum","enums":[0,1,2,3,4,5,6,7,8,9,10,11]},"required":true},"email":{"dataType":"string","required":true},"integrationId":{"dataType":"string","required":true},"lastName":{"dataType":"string","required":true},"firstName":{"dataType":"string","required":true},"id":{"dataType":"string","required":true}},"required":true}}},
             "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,

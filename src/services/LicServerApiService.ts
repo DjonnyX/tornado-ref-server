@@ -92,7 +92,7 @@ class LicServerApiService {
 
     public async signup<T = any>(params: IRegistrationParams, options?: IRequestOptions): Promise<T> {
         return await makeRequest<T>(
-            got.post(`${config.LIC_SERVER_HOST}/${BASE_URL}registration`, {
+            got.post(`${config.LIC_SERVER_HOST}/${BASE_URL}auth/registration`, {
                 headers: {
                     "content-type": "application/json",
                     "authorization": this.getToken(options),

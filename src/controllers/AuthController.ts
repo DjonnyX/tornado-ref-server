@@ -11,6 +11,7 @@ interface ISigninParams {
 interface ISignupParams {
     captchaId: string;
     captchaValue: string;
+    integrationId: string;
     firstName: string;
     lastName: string;
     email: string;
@@ -37,19 +38,14 @@ interface SigninResponse {
     data?: {
         account: {
             id: string;
-            email: string;
+            firstName: string;
             lastName: string;
-            patronymicName: string;
-            phone: string;
-            position: string;
-            name: string;
-            language: string;
+            integrationId: string;
+            email: string;
+            rights: Array<UserRights>,
         },
         token: string;
-        rights: Array<{
-            obj: string;
-            action: string;
-        }>;
+        role: string;
     };
     error?: Array<{
         code: number;
@@ -189,21 +185,13 @@ export class SigninController extends Controller {
         data: {
             account: {
                 id: "507c7f79bcf86cd7994f6c0e",
-                email: "test@test.com",
+                firstName: "First name",
                 lastName: "Last name",
-                patronymicName: "Patronymic name",
-                phone: "+79999999999",
-                position: "1",
-                name: "First name",
-                language: "RU"
+                integrationId: "507c7f79bcf86cd7994f6c0e",
+                email: "test@test.com",
             },
             token: "507c7f79bcf86cd7994f6c0e",
-            rights: [
-                {
-                    obj: "terminals",
-                    action: "ALLOW"
-                }
-            ]
+            role: "user",
         }
     })
     public async signin(@Request() request: express.Request, @Body() body: ISigninParams): Promise<SigninResponse> {
@@ -226,8 +214,14 @@ export class SigninController extends Controller {
             };
         }
 
-        // Инициализация БД под клиента
-        await initRefs(res.data.account.id);
+        if (res?.data?.role === "admin") {
+            return res;
+        }
+
+        try {
+            // Инициализация БД под клиента
+            await initRefs(res.data.account.id);
+        } catch (err) { }
 
         return res;
     }
