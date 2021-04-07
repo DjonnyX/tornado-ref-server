@@ -2,6 +2,7 @@ import { Controller, Route, Post, Tags, Example, Request, Body, Get, Query } fro
 import * as express from "express";
 import { initRefs } from "../db/initDB";
 import { licServerApiService } from "../services";
+import { UserRights } from "@djonnyx/tornado-types";
 
 interface ISigninParams {
     email: string;
@@ -189,6 +190,10 @@ export class SigninController extends Controller {
                 lastName: "Last name",
                 integrationId: "507c7f79bcf86cd7994f6c0e",
                 email: "test@test.com",
+                rights: [
+                    UserRights.CREATE_CURRENCY,
+                    UserRights.CREATE_PRODUCT,
+                ]
             },
             token: "507c7f79bcf86cd7994f6c0e",
             role: "user",
