@@ -953,6 +953,7 @@ const models: TsoaRoute.Models = {
             "id": {"dataType":"string","required":true},
             "name": {"dataType":"string","required":true},
             "description": {"dataType":"string","required":true},
+            "rights": {"dataType":"array","array":{"dataType":"refEnum","enums":[0,1,2,3,4,5,6,7,8,9,10,11]},"required":true},
             "version": {"ref":"IVersion","required":true},
             "state": {"ref":"IntegrationStates","required":true},
             "lastUpdate": {"dataType":"datetime","required":true},
@@ -980,11 +981,25 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ICreateIntegrationParams": {
+        "dataType": "refObject",
+        "properties": {
+            "name": {"dataType":"string","required":true},
+            "description": {"dataType":"string"},
+            "rights": {"dataType":"array","array":{"dataType":"refEnum","enums":[0,1,2,3,4,5,6,7,8,9,10,11]},"required":true},
+            "version": {"ref":"IVersion","required":true},
+            "state": {"ref":"IntegrationStates","required":true},
+            "lastUpdate": {"dataType":"datetime"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "IUpdateIntegrationParams": {
         "dataType": "refObject",
         "properties": {
             "name": {"dataType":"string"},
             "description": {"dataType":"string"},
+            "rights": {"dataType":"array","array":{"dataType":"refEnum","enums":[0,1,2,3,4,5,6,7,8,9,10,11]}},
             "version": {"ref":"IVersion"},
             "state": {"ref":"IntegrationStates"},
             "lastUpdate": {"dataType":"datetime"},
@@ -3398,7 +3413,6 @@ export function RegisterRoutes(app: express.Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/api/v1/integrations',
-            authenticateMiddleware([{"clientAccessToken":[]}]),
             function (request: any, response: any, next: any) {
             const args = {
                     request: {"in":"request","name":"request","required":true,"dataType":"object"},
@@ -3444,6 +3458,30 @@ export function RegisterRoutes(app: express.Router) {
             promiseHandler(controller, promise, response, undefined, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/api/v1/integration',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
+            const args = {
+                    body: {"in":"body","name":"body","required":true,"ref":"ICreateIntegrationParams"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new IntegrationController();
+
+
+            const promise = controller.createIntegration.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, undefined, next);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.put('/api/v1/integration/:id',
             authenticateMiddleware([{"clientAccessToken":[]}]),
             function (request: any, response: any, next: any) {
@@ -3466,6 +3504,30 @@ export function RegisterRoutes(app: express.Router) {
 
 
             const promise = controller.updateIntegration.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, undefined, next);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.delete('/api/v1/integration/:id',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function (request: any, response: any, next: any) {
+            const args = {
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new IntegrationController();
+
+
+            const promise = controller.deleteIntegration.apply(controller, validatedArgs as any);
             promiseHandler(controller, promise, response, undefined, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
