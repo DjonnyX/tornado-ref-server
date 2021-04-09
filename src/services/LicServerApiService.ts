@@ -244,6 +244,17 @@ class LicServerApiService {
         );
     }
 
+    public async unbindLicense<T = any>(id: string): Promise<T> {
+        return await makeRequest<T>(
+            got.put(`${config.LIC_SERVER_HOST}/${BASE_URL}license/scope/unbind/${id}`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": this.getToken(),
+                },
+            }),
+        );
+    }
+
     public async deleteLicense<T = any>(id: String): Promise<T> {
         return await makeRequest<T>(
             got.delete(`${config.LIC_SERVER_HOST}/${BASE_URL}license/scope/${id}`, {
