@@ -1,4 +1,4 @@
-import { AdModel, IAdDocument, ILanguage, LanguageModel } from "../models/index";
+import { AdModel, IAdDocument, ILanguageDocument, LanguageModel } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Query, Request } from "tsoa";
 import { AdTypes, IAdContents, RefTypes } from "@djonnyx/tornado-types";
 import { getRef, riseRefVersion } from "../db/refs";
@@ -81,7 +81,7 @@ const META_TEMPLATE: IAdsMeta = {
 };
 
 export const updateAd = async (id: string, client: string, params: IAdUpdateRequest): Promise<IAdDocument> => {
-    let defaultLanguage: ILanguage;
+    let defaultLanguage: ILanguageDocument;
     try {
         defaultLanguage = await LanguageModel.findOne({ client, isDefault: true });
     } catch (err) {

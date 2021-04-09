@@ -1,5 +1,5 @@
 import { AssetExtensions, IAdContents, RefTypes } from "@djonnyx/tornado-types";
-import { AdModel, IAdDocument, ILanguage, LanguageModel } from "../models/index";
+import { AdModel, IAdDocument, ILanguageDocument, LanguageModel } from "../models/index";
 import { Controller, Route, Post, Tags, OperationId, Example, Request, Security, Get, Delete, Body, Put } from "tsoa";
 import { riseRefVersion, getRef } from "../db/refs";
 import { IAdItem, RESPONSE_TEMPLATE as AD_RESPONSE_TEMPLATE } from "./AdController";
@@ -340,7 +340,7 @@ export class AdAssetsController extends Controller {
             };
         }
 
-        let defaultLanguage: ILanguage;
+        let defaultLanguage: ILanguageDocument;
         try {
             defaultLanguage = await LanguageModel.findOne({ client: request.account.id, isDefault: true });
         } catch (err) {

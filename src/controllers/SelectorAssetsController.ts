@@ -1,4 +1,4 @@
-import { SelectorModel, ISelector, ILanguage, LanguageModel } from "../models/index";
+import { SelectorModel, ISelector, ILanguageDocument, LanguageModel } from "../models/index";
 import { Controller, Route, Post, Tags, OperationId, Example, Request, Security, Get, Delete, Body, Put } from "tsoa";
 import { riseRefVersion, getRef } from "../db/refs";
 import { ISelectorItem, RESPONSE_TEMPLATE as SELECTOR_RESPONSE_TEMPLATE } from "./SelectorController";
@@ -365,7 +365,7 @@ export class SelectorAssetsController extends Controller {
             };
         }
 
-        let defaultLanguage: ILanguage;
+        let defaultLanguage: ILanguageDocument;
         try {
             defaultLanguage = await LanguageModel.findOne({ isDefault: true });
         } catch (err) {

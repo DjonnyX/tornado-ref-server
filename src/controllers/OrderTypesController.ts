@@ -1,23 +1,17 @@
-import { OrderTypeModel, LanguageModel, ILanguage } from "../models/index";
+import { OrderTypeModel, LanguageModel, ILanguageDocument } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Request } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatOrderTypeModel } from "../utils/orderType";
-import { IOrderType } from "../models/OrderTypes";
+import { IOrderTypeDocument } from "../models/OrderTypes";
 import { AssetModel } from "../models/Asset";
 import { deleteAsset } from "./AssetsController";
 import { normalizeContents, getDeletedImagesFromDifferense, getEntityAssets } from "../utils/entity";
 import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "src/interfaces";
-import { IOrderTypeContents, RefTypes } from "@djonnyx/tornado-types";
+import { IOrderType, IOrderTypeContents, RefTypes } from "@djonnyx/tornado-types";
 import { findAllWithFilter } from "../utils/requestOptions";
 
-export interface IOrderTypeItem {
-    id: string;
-    active: boolean;
-    name?: string;
-    contents: IOrderTypeContents;
-    extra?: { [key: string]: any } | null;
-}
+export interface IOrderTypeItem extends IOrderType { }
 
 interface IOrderTypeMeta {
     ref: IRefItem;
@@ -58,6 +52,7 @@ const META_TEMPLATE: IOrderTypeMeta = {
 
 export const RESPONSE_TEMPLATE: IOrderTypeItem = {
     id: "507c7f79bcf86cd7994f6c0e",
+    isDefault: true,
     active: true,
     contents: {
         "RU": {
@@ -150,7 +145,7 @@ export class OrderTypeController extends Controller {
         data: RESPONSE_TEMPLATE,
     })
     public async create(@Body() body: OrderTypeCreateRequest, @Request() request: IAuthRequest): Promise<OrderTypeResponse> {
-        let orderTypes: Array<IOrderType>;
+        let orderTypes: Array<IOrderTypeDocument>;
 
         try {
             orderTypes = await OrderTypeModel.find({ client: request.account.id });
@@ -196,7 +191,7 @@ export class OrderTypeController extends Controller {
         data: RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() body: OrderTypeCreateRequest, @Request() request: IAuthRequest): Promise<OrderTypeResponse> {
-        let defaultLanguage: ILanguage;
+        let defaultLanguage: ILanguageDocument;
         try {
             defaultLanguage = await LanguageModel.findOne({ client: request.account.id, isDefault: true });
         } catch (err) {
@@ -213,7 +208,7 @@ export class OrderTypeController extends Controller {
 
         let isDefault: boolean;
 
-        let item: IOrderType;
+        let item: IOrderTypeDocument;
 
         try {
             item = await OrderTypeModel.findById(id);
@@ -297,7 +292,7 @@ export class OrderTypeController extends Controller {
         }
 
         try {
-            const orderTypes: Array<IOrderType> = await OrderTypeModel.find({ client: request.account.id });
+            const orderTypes: Array<IOrderTypeDocument> = await OrderTypeModel.find({ client: request.account.id });
 
             const promises = new Array<Promise<void>>();
 
@@ -319,7 +314,7 @@ export class OrderTypeController extends Controller {
                 });
             } else {
                 let needSetupDefault = true;
-                let firstOrderType: IOrderType;
+                let firstOrderType: IOrderTypeDocument;
 
                 orderTypes.forEach(orderType => {
                     if (!firstOrderType) {
@@ -387,7 +382,7 @@ export class OrderTypeController extends Controller {
         meta: META_TEMPLATE,
     })
     public async delete(id: string, @Request() request: IAuthRequest): Promise<OrderTypeResponse> {
-        let orderTypes: Array<IOrderType>;
+        let orderTypes: Array<IOrderTypeDocument>;
         try {
             orderTypes = await OrderTypeModel.find({ client: request.account.id });
         } catch (err) { }
@@ -404,7 +399,7 @@ export class OrderTypeController extends Controller {
             };
         }
 
-        let orderType: IOrderType;
+        let orderType: IOrderTypeDocument;
         try {
             orderType = await OrderTypeModel.findByIdAndDelete(id);
         } catch (err) {

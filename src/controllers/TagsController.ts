@@ -1,4 +1,4 @@
-import { TagModel, LanguageModel, ILanguage, ProductModel, IProduct } from "../models/index";
+import { TagModel, LanguageModel, ILanguageDocument, ProductModel, IProduct } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Request } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatTagModel } from "../utils/tag";
@@ -178,7 +178,7 @@ export class TagController extends Controller {
         data: RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() body: TagCreateRequest, @Request() request: IAuthRequest): Promise<TagResponse> {
-        let defaultLanguage: ILanguage;
+        let defaultLanguage: ILanguageDocument;
         try {
             defaultLanguage = await LanguageModel.findOne({ client: request.account.id, isDefault: true });
         } catch (err) {

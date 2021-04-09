@@ -1,5 +1,5 @@
 import * as express from "express";
-import { OrderTypeModel, IOrderType, ILanguage, LanguageModel } from "../models/index";
+import { OrderTypeModel, IOrderTypeDocument, ILanguageDocument, LanguageModel } from "../models";
 import { Controller, Route, Post, Tags, OperationId, Example, Request, Security, Get, Delete, Body, Put } from "tsoa";
 import { riseRefVersion, getRef } from "../db/refs";
 import { IOrderTypeItem, RESPONSE_TEMPLATE as SELECTOR_RESPONSE_TEMPLATE } from "./OrderTypesController";
@@ -148,7 +148,7 @@ export class OrderTypeAssetsController extends Controller {
         },
     })
     public async getAllAssets(orderTypeId: string): Promise<IOrderTypeGetAllAssetsResponse> {
-        let orderType: IOrderType;
+        let orderType: IOrderTypeDocument;
         try {
             orderType = await OrderTypeModel.findById(orderTypeId);
         } catch (err) {
@@ -208,7 +208,7 @@ export class OrderTypeAssetsController extends Controller {
         data: [RESPONSE_TEMPLATE],
     })
     public async getAssets(orderTypeId: string, langCode: string): Promise<IOrderTypeGetAssetsResponse> {
-        let orderType: IOrderType;
+        let orderType: IOrderTypeDocument;
         try {
             orderType = await OrderTypeModel.findById(orderTypeId);
         } catch (err) {
@@ -350,7 +350,7 @@ export class OrderTypeAssetsController extends Controller {
             };
         }
 
-        let orderType: IOrderType;
+        let orderType: IOrderTypeDocument;
         let deletedAsset: string;
         try {
             orderType = await OrderTypeModel.findById(orderTypeId);
@@ -366,7 +366,7 @@ export class OrderTypeAssetsController extends Controller {
             };
         }
 
-        let defaultLanguage: ILanguage;
+        let defaultLanguage: ILanguageDocument;
         try {
             defaultLanguage = await LanguageModel.findOne({ client: request.account.id, isDefault: true });
         } catch (err) {
@@ -433,7 +433,7 @@ export class OrderTypeAssetsController extends Controller {
         }
 
         let orderTypeRef: IRefItem;
-        let savedOrderType: IOrderType;
+        let savedOrderType: IOrderTypeDocument;
         try {
             const assetId = assetsInfo.data.id.toString();
             contents[langCode].resources[resourceType] = assetId;
@@ -487,7 +487,7 @@ export class OrderTypeAssetsController extends Controller {
     })
     public async update(orderTypeId: string, langCode: string, assetId: string, @Body() body: IOrderTypeAssetUpdateRequest, @Request() request: IAuthRequest): Promise<IOrderTypeCreateAssetsResponse> {
 
-        let orderType: IOrderType;
+        let orderType: IOrderTypeDocument;
         try {
             orderType = await OrderTypeModel.findById(orderTypeId);
         } catch (err) {
@@ -561,7 +561,7 @@ export class OrderTypeAssetsController extends Controller {
         meta: META_TEMPLATE
     })
     public async delete(orderTypeId: string, langCode: string, assetId: string, @Request() request: IAuthRequest): Promise<IOrderTypeDeleteAssetsResponse> {
-        let orderType: IOrderType;
+        let orderType: IOrderTypeDocument;
         try {
             orderType = await OrderTypeModel.findById(orderTypeId);
         } catch (err) {
