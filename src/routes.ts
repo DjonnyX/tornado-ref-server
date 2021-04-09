@@ -1015,17 +1015,25 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ILanguageResources": {
+        "dataType": "refObject",
+        "properties": {
+            "main": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ILanguageItem": {
         "dataType": "refObject",
         "properties": {
-            "id": {"dataType":"string","required":true},
-            "isDefault": {"dataType":"boolean"},
+            "id": {"dataType":"string"},
             "active": {"dataType":"boolean","required":true},
+            "isDefault": {"dataType":"boolean","required":true},
             "code": {"dataType":"string","required":true},
             "name": {"dataType":"string","required":true},
-            "assets": {"dataType":"array","array":{"dataType":"string"}},
-            "resources": {"dataType":"nestedObjectLiteral","nestedProperties":{"main":{"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}]}}},
-            "translation": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}]},
+            "assets": {"dataType":"array","array":{"dataType":"string"},"required":true},
+            "resources": {"ref":"ILanguageResources","required":true},
+            "translation": {"dataType":"string","required":true},
             "extra": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
@@ -1482,9 +1490,9 @@ const models: TsoaRoute.Models = {
     "IOrderTypeItem": {
         "dataType": "refObject",
         "properties": {
-            "id": {"dataType":"string","required":true},
+            "id": {"dataType":"string"},
+            "isDefault": {"dataType":"boolean","required":true},
             "active": {"dataType":"boolean","required":true},
-            "name": {"dataType":"string"},
             "contents": {"ref":"IOrderTypeContents","required":true},
             "extra": {"dataType":"union","subSchemas":[{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"any"}},{"dataType":"enum","enums":[null]}]},
         },

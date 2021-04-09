@@ -1,6 +1,7 @@
-import { ILanguage } from "@models";
+import { ILanguage } from "@djonnyx/tornado-types";
+import { ILanguageDocument } from "@models";
 
-export const formatLanguageModel = (model: ILanguage) => ({
+export const formatLanguageModel = (model: ILanguageDocument): ILanguage => ({
     id: model._id,
     active: model.active,
     isDefault: model.isDefault,

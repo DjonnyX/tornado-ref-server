@@ -1,4 +1,4 @@
-import { SelectorModel, ISelector, NodeModel, ILanguage, LanguageModel, INodeDocument } from "../models/index";
+import { SelectorModel, ISelector, NodeModel, ILanguageDocument, LanguageModel, INodeDocument } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Query, Request } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { deleteNodesChain } from "../utils/node";
@@ -233,7 +233,7 @@ export class SelectorController extends Controller {
         data: RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() body: ISelectorUpdateRequest, @Request() request: IAuthRequest): Promise<ISelectorResponse> {
-        let defaultLanguage: ILanguage;
+        let defaultLanguage: ILanguageDocument;
         try {
             defaultLanguage = await LanguageModel.findOne({ client: request.account.id, isDefault: true });
         } catch (err) {

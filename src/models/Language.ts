@@ -1,7 +1,7 @@
 import * as mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
 
-interface ILanguage extends Document {
+interface ILanguageDocument extends Document {
     client: string;
     active: boolean;
     isDefault: boolean;
@@ -29,6 +29,6 @@ const LanguageSchema = new Schema({
     extra: { type: Schema.Types.Mixed, required: false },
 });
 
-const LanguageModel = mongoose.model<ILanguage>("Language", LanguageSchema);
+const LanguageModel = mongoose.model<ILanguageDocument>("Language", LanguageSchema);
 
-export { LanguageModel, ILanguage };
+export { LanguageModel, ILanguageDocument };

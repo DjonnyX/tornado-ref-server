@@ -1,5 +1,4 @@
-import * as express from "express";
-import { ILanguage, LanguageModel } from "../models/index";
+import { ILanguageDocument, LanguageModel } from "../models/index";
 import { Controller, Route, Post, Tags, OperationId, Example, Request, Security, Get, Delete, Body, Put } from "tsoa";
 import { riseRefVersion, getRef } from "../db/refs";
 import { IRefItem } from "./RefsController";
@@ -110,7 +109,7 @@ export class LanguageAssetsController extends Controller {
         data: [RESPONSE_TEMPLATE],
     })
     public async getAssets(languageId: string): Promise<ILanguageGetAssetsResponse> {
-        let language: ILanguage;
+        let language: ILanguageDocument;
         try {
             language = await LanguageModel.findById(languageId);
         } catch (err) {
@@ -158,7 +157,7 @@ export class LanguageAssetsController extends Controller {
     public async create(languageId: string, @Request() request: IAuthRequest): Promise<ILanguageCreateAssetsResponse> {
         const assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA]);
 
-        let language: ILanguage;
+        let language: ILanguageDocument;
         try {
             language = await LanguageModel.findById(languageId);
         } catch (err) {
@@ -219,7 +218,7 @@ export class LanguageAssetsController extends Controller {
     public async resource(languageId: string, resourceType: LanguageImageTypes, @Request() request: IAuthRequest): Promise<ILanguageCreateAssetsResponse> {
         const assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA], false);
 
-        let language: ILanguage;
+        let language: ILanguageDocument;
         let deletedAsset: string;
         try {
             language = await LanguageModel.findById(languageId);
@@ -306,7 +305,7 @@ export class LanguageAssetsController extends Controller {
     })
     public async update(languageId: string, assetId: string, @Body() body: ILanguageUpdateAssetsRequest, @Request() request: IAuthRequest): Promise<ILanguageCreateAssetsResponse> {
 
-        let language: ILanguage;
+        let language: ILanguageDocument;
         try {
             language = await LanguageModel.findById(languageId);
         } catch (err) {
@@ -380,7 +379,7 @@ export class LanguageAssetsController extends Controller {
         meta: META_TEMPLATE
     })
     public async delete(languageId: string, assetId: string, @Request() request: IAuthRequest): Promise<ILanguageDeleteAssetsResponse> {
-        let language: ILanguage;
+        let language: ILanguageDocument;
         try {
             language = await LanguageModel.findById(languageId);
         } catch (err) {

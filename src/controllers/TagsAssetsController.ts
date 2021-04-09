@@ -1,4 +1,4 @@
-import { TagModel, ITag, ILanguage, LanguageModel } from "../models/index";
+import { TagModel, ITag, ILanguageDocument, LanguageModel } from "../models/index";
 import { Controller, Route, Post, Tags, OperationId, Example, Request, Security, Get, Delete, Body, Put } from "tsoa";
 import { riseRefVersion, getRef } from "../db/refs";
 import { ITagItem, RESPONSE_TEMPLATE as SELECTOR_RESPONSE_TEMPLATE } from "./TagsController";
@@ -365,7 +365,7 @@ export class TagAssetsController extends Controller {
             };
         }
 
-        let defaultLanguage: ILanguage;
+        let defaultLanguage: ILanguageDocument;
         try {
             defaultLanguage = await LanguageModel.findOne({ client: request.account.id, isDefault: true });
         } catch (err) {

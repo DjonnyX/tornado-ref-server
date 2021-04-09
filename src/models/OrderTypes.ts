@@ -2,7 +2,7 @@ import { IOrderTypeContents } from "@djonnyx/tornado-types";
 import * as mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
 
-interface IOrderType extends Document {
+interface IOrderTypeDocument extends Document {
     client: string;
     active: boolean;
     isDefault: boolean;
@@ -18,6 +18,6 @@ const OrderTypeSchema = new Schema({
     extra: { type: Schema.Types.Mixed, required: false },
 });
 
-const OrderTypeModel = mongoose.model<IOrderType>("OrderType", OrderTypeSchema);
+const OrderTypeModel = mongoose.model<IOrderTypeDocument>("OrderType", OrderTypeSchema);
 
-export { OrderTypeModel, IOrderType };
+export { OrderTypeModel, IOrderTypeDocument };

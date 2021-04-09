@@ -5,9 +5,9 @@ import { INodeDocument, NodeModel } from "./Node";
 import { ISelector, SelectorModel } from "./Selector";
 import { IBusinessPeriod, BusinessPeriodModel } from "./BusinessPeriod";
 import { ICurrency, CurrencyModel } from "./Currency";
-import { IOrderType, OrderTypeModel } from "./OrderTypes";
+import { IOrderTypeDocument, OrderTypeModel } from "./OrderTypes";
 import { IAdDocument, AdModel } from "./Ad";
-import { ILanguage, LanguageModel } from "./Language";
+import { ILanguageDocument, LanguageModel } from "./Language";
 import { TranslationModel } from "./Translation";
 import { IStoreDocument, StoreModel } from "./Store";
 import { ITerminalDocument, TerminalModel } from "./Terminal";
@@ -24,9 +24,9 @@ export {
     TagModel, ITag,
     IBusinessPeriod, BusinessPeriodModel,
     RefModel, IRef,
-    OrderTypeModel, IOrderType,
+    OrderTypeModel, IOrderTypeDocument,
     IAdDocument, AdModel,
-    ILanguage, LanguageModel,
+    ILanguageDocument, LanguageModel,
     TranslationModel,
     IStoreDocument, StoreModel,
     ITerminalDocument, TerminalModel,

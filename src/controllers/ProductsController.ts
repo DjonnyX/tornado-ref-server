@@ -1,4 +1,4 @@
-import { ProductModel, IProduct, IReceiptItem, NodeModel, ILanguage, LanguageModel } from "../models/index";
+import { ProductModel, IProduct, IReceiptItem, NodeModel, ILanguageDocument, LanguageModel } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Request } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { deleteNodesChain } from "../utils/node";
@@ -247,7 +247,7 @@ export class ProductController extends Controller {
         data: RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() body: IProductUpdateRequest, @Request() request: IAuthRequest): Promise<IProductResponse> {
-        let defaultLanguage: ILanguage;
+        let defaultLanguage: ILanguageDocument;
         try {
             defaultLanguage = await LanguageModel.findOne({ client: request.account.id, isDefault: true });
         } catch (err) {
