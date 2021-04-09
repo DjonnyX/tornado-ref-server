@@ -383,4 +383,41 @@ export class LicenseController extends Controller {
     public async deleteLicense(id: string): Promise<LicenseResponse> {
         return await licServerApiService.deleteLicense(id);
     }
+
+    @Put("unbind/{id}")
+    @Security("clientAccessToken")
+    @OperationId("Unbind")
+    @Example<LicenseAccountResponse>({
+        meta: META_TEMPLATE,
+        data: LICENSE_ACCOUNT_RESPONSE_TEMPLATE,
+    })
+    public async unbindLicense(id: string, @Request() request: IAuthRequest): Promise<LicenseAccountResponse> {
+        const response = await licServerApiService.unbindLicense(id);
+
+        if (!response.error) {
+            let terminal: ITerminalDocument;
+            try {
+                terminal = await TerminalModel.findOne({ licenseId: response.data.id });
+                terminal.licenseId = undefined;
+                await terminal.save();
+            } catch (err) {
+                this.setStatus(500);
+                return {
+                    error: [
+                        {
+                            code: 500,
+                            message: `Caught error. ${err}`,
+                        }
+                    ]
+                };
+            }
+
+            return {
+                meta: response.meta,
+                data: ({ ...response.data, terminalId: !!terminal ? terminal._id : undefined }),
+            }
+        }
+
+        return response as LicenseAccountResponse;
+    }
 }
