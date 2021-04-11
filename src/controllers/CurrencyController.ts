@@ -1,24 +1,15 @@
-import { CurrencyModel, ICurrency } from "../models/index";
+import { CurrencyModel, ICurrencyDocument } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Request } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatCurrencyModel } from "../utils/currency";
-import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "../interfaces";
-import { RefTypes } from "@djonnyx/tornado-types";
+import { ICurrency, IRef, RefTypes } from "@djonnyx/tornado-types";
 import { findAllWithFilter } from "../utils/requestOptions";
 
-interface ICurrencyItem {
-    id: string;
-    isDefault: boolean;
-    active: boolean;
-    code: string;
-    name: string;
-    symbol: string;
-    extra?: { [key: string]: any } | null;
-}
+interface ICurrencyItem extends ICurrency { }
 
 interface ICurrencyMeta {
-    ref: IRefItem;
+    ref: IRef;
 }
 
 interface CurrenciesResponse {
@@ -194,7 +185,7 @@ export class CurrencyController extends Controller {
         data: RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() body: CurrencyUpdateRequest, @Request() request: IAuthRequest): Promise<CurrencyResponse> {
-        let item: ICurrency;
+        let item: ICurrencyDocument;
 
         let isDefault: boolean;
 
@@ -228,7 +219,7 @@ export class CurrencyController extends Controller {
         }
 
         try {
-            const currencies: Array<ICurrency> = await CurrencyModel.find({ client: request.account.id });
+            const currencies: Array<ICurrencyDocument> = await CurrencyModel.find({ client: request.account.id });
 
             const promises = new Array<Promise<void>>();
 
@@ -250,7 +241,7 @@ export class CurrencyController extends Controller {
                 });
             } else {
                 let needSetupDefault = true;
-                let firstCurrency: ICurrency;
+                let firstCurrency: ICurrencyDocument;
 
                 currencies.forEach(currency => {
                     if (!firstCurrency) {

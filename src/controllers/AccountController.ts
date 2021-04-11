@@ -1,8 +1,7 @@
 import { Controller, Route, Post, Tags, Example, Request, Body, Get, Put, Delete, OperationId, Security } from "tsoa";
-import { IRefItem } from "./RefsController";
 import { licServerApiService } from "../services";
 import { IAuthRequest } from "../interfaces";
-import { IAccount, RefTypes } from "@djonnyx/tornado-types";
+import { IAccount, IRef, RefTypes } from "@djonnyx/tornado-types";
 
 interface IAccountInfo extends IAccount { }
 
@@ -31,7 +30,7 @@ interface AccountResponse {
 }
 
 interface IAccountInfoMeta {
-    ref: IRefItem;
+    ref: IRef;
 }
 
 const APPLICATION_RESPONSE_TEMPLATE: IAccountInfo = {

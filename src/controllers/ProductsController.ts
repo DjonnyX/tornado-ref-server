@@ -1,4 +1,4 @@
-import { ProductModel, IProduct, IReceiptItem, NodeModel, ILanguageDocument, LanguageModel } from "../models/index";
+import { ProductModel, IProductDocument, IReceiptItem, NodeModel, ILanguageDocument, LanguageModel } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Request } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { deleteNodesChain } from "../utils/node";
@@ -6,24 +6,14 @@ import { formatProductModel } from "../utils/product";
 import { getEntityAssets, getDeletedImagesFromDifferense, normalizeContents } from "../utils/entity";
 import { AssetModel } from "../models/Asset";
 import { deleteAsset } from "./AssetsController";
-import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "../interfaces";
-import { IPrice, IProductContents, NodeTypes, RefTypes } from "@djonnyx/tornado-types";
+import { IPrice, IProduct, IProductContents, IRef, NodeTypes, RefTypes } from "@djonnyx/tornado-types";
 import { findAllWithFilter } from "../utils/requestOptions";
 
-export interface IProductItem {
-    id?: string;
-    active: boolean;
-    contents: IProductContents;
-    prices: Array<IPrice>;
-    receipt: Array<IReceiptItem>;
-    tags: Array<string>;
-    joint?: string;
-    extra?: { [key: string]: any } | null;
-}
+export interface IProductItem extends IProduct { }
 
 export interface IProductsMeta {
-    ref: IRefItem;
+    ref: IRef;
 }
 
 interface IProductsResponse {
@@ -361,7 +351,7 @@ export class ProductController extends Controller {
         meta: META_TEMPLATE,
     })
     public async delete(id: string, @Request() request: IAuthRequest): Promise<IProductResponse> {
-        let product: IProduct;
+        let product: IProductDocument;
         try {
             product = await ProductModel.findByIdAndDelete(id);
         } catch (err) {

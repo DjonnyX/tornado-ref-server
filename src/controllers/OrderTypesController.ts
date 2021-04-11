@@ -6,15 +6,14 @@ import { IOrderTypeDocument } from "../models/OrderTypes";
 import { AssetModel } from "../models/Asset";
 import { deleteAsset } from "./AssetsController";
 import { normalizeContents, getDeletedImagesFromDifferense, getEntityAssets } from "../utils/entity";
-import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "src/interfaces";
-import { IOrderType, IOrderTypeContents, RefTypes } from "@djonnyx/tornado-types";
+import { IOrderType, IOrderTypeContents, IRef, RefTypes } from "@djonnyx/tornado-types";
 import { findAllWithFilter } from "../utils/requestOptions";
 
 export interface IOrderTypeItem extends IOrderType { }
 
 interface IOrderTypeMeta {
-    ref: IRefItem;
+    ref: IRef;
 }
 
 interface OrderTypesResponse {

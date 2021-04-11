@@ -1,17 +1,11 @@
-import { RefTypes } from "@djonnyx/tornado-types";
-import { RefModel, IRef } from "../models/index";
+import { IRef, RefTypes } from "@djonnyx/tornado-types";
+import { RefModel, IRefDocument } from "../models/index";
 import { Controller, Route, Get, Tags, OperationId, Example, Security, Request } from "tsoa";
 import { IAuthRequest } from "../interfaces";
 import { findAllWithFilter } from "../utils/requestOptions";
 
-export interface IRefItem {
-    name: string;
-    version: number;
-    lastUpdate: Date;
-}
-
 interface RefsResponse {
-    data?: Array<IRefItem>;
+    data?: Array<IRef>;
     error?: Array<{
         code: number;
         message: string;
@@ -19,7 +13,7 @@ interface RefsResponse {
 }
 
 interface RefResponse {
-    data?: IRefItem;
+    data?: IRef;
     error?: Array<{
         code: number;
         message: string;
@@ -28,7 +22,7 @@ interface RefResponse {
 
 const date = new Date();
 
-const RESPONSE_TEMPLATE: Array<IRefItem> = [
+const RESPONSE_TEMPLATE: Array<IRef> = [
     {
         name: RefTypes.NODES,
         version: 1,
@@ -56,13 +50,13 @@ const RESPONSE_TEMPLATE: Array<IRefItem> = [
     }
 ];
 
-const RESPONSE_SINGLE_TEMPLATE: IRefItem = {
+const RESPONSE_SINGLE_TEMPLATE: IRef = {
     name: RefTypes.PRODUCTS,
     version: 1,
     lastUpdate: date,
 };
 
-const formatModel = (model: IRef): IRefItem => ({
+const formatModel = (model: IRefDocument): IRef => ({
     name: model.name,
     version: model.version,
     lastUpdate: model.lastUpdate

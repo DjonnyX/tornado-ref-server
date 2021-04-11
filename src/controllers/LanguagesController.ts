@@ -1,19 +1,18 @@
 import { ILanguageDocument, LanguageModel, TranslationModel } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Request } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
-import { IRefItem } from "./RefsController";
 import { formatLanguageModel } from "../utils/language";
 import { mergeTranslation } from "../utils/translation";
 import { AssetModel } from "../models/Asset";
 import { deleteAsset } from "./AssetsController";
 import { IAuthRequest } from "../interfaces";
-import { ILanguage, RefTypes } from "@djonnyx/tornado-types";
+import { ILanguage, IRef, RefTypes } from "@djonnyx/tornado-types";
 import { findAllWithFilter } from "../utils/requestOptions";
 
 export interface ILanguageItem extends ILanguage { }
 
 interface LanguageMeta {
-    ref: IRefItem;
+    ref: IRef;
 }
 
 interface LanguagesResponse {
@@ -175,7 +174,7 @@ export class LanguageController extends Controller {
 
         let item: ILanguageDocument;
         let savedItem: ILanguageDocument;
-        let ref: IRefItem;
+        let ref: IRef;
         try {
             body.isDefault = langs.length === 0;
             item = new LanguageModel({ ...body, client: request.account.id });

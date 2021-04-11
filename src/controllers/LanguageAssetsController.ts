@@ -1,14 +1,13 @@
 import { ILanguageDocument, LanguageModel } from "../models/index";
 import { Controller, Route, Post, Tags, OperationId, Example, Request, Security, Get, Delete, Body, Put } from "tsoa";
 import { riseRefVersion, getRef } from "../db/refs";
-import { IRefItem } from "./RefsController";
 import { uploadAsset, deleteAsset, IAssetItem } from "./AssetsController";
 import { AssetModel } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
 import { ILanguageItem, LANGUAGE_RESPONSE_TEMPLATE } from "./LanguagesController";
 import { formatLanguageModel } from "../utils/language";
 import { IAuthRequest } from "../interfaces";
-import { AssetExtensions } from "@djonnyx/tornado-types";
+import { AssetExtensions, IRef } from "@djonnyx/tornado-types";
 import { RefTypes } from "@djonnyx/tornado-types";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -26,10 +25,10 @@ interface ILanguageGetAssetsResponse {
 interface ILanguageCreateAssetsResponse {
     meta?: {
         language: {
-            ref: IRefItem;
+            ref: IRef;
         };
         asset: {
-            ref: IRefItem;
+            ref: IRef;
         };
     };
     data?: {
@@ -45,10 +44,10 @@ interface ILanguageCreateAssetsResponse {
 interface ILanguageDeleteAssetsResponse {
     meta?: {
         language: {
-            ref: IRefItem;
+            ref: IRef;
         };
         asset: {
-            ref: IRefItem;
+            ref: IRef;
         };
     };
     data?: {};
@@ -172,7 +171,7 @@ export class LanguageAssetsController extends Controller {
             };
         }
 
-        let languageRef: IRefItem;
+        let languageRef: IRef;
         try {
             language.assets.push(assetsInfo.data.id);
             languageRef = await riseRefVersion(request.account.id, RefTypes.LANGUAGES);
@@ -259,7 +258,7 @@ export class LanguageAssetsController extends Controller {
         // удаление предыдущего ассета
         language.assets = language.assets.filter(asset => asset.toString() !== deletedAsset.toString());
 
-        let languageRef: IRefItem;
+        let languageRef: IRef;
         try {
             language.resources[resourceType] = assetsInfo.data.id;
             language.assets.push(assetsInfo.data.id);
@@ -320,7 +319,7 @@ export class LanguageAssetsController extends Controller {
             };
         }
 
-        let languageRef: IRefItem;
+        let languageRef: IRef;
         try {
             languageRef = await getRef(request.account.id, RefTypes.LANGUAGES);
         } catch (err) {
@@ -394,7 +393,7 @@ export class LanguageAssetsController extends Controller {
             };
         }
 
-        let assetRef: IRefItem;
+        let assetRef: IRef;
         const assetIndex = language.assets.indexOf(assetId);
         if (assetIndex > -1) {
             try {
@@ -416,7 +415,7 @@ export class LanguageAssetsController extends Controller {
             }
         }
 
-        let languagesRef: IRefItem;
+        let languagesRef: IRef;
         try {
             language.assets.splice(assetIndex, 1);
             await language.save();

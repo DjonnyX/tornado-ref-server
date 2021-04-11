@@ -1,9 +1,8 @@
 import { ITerminalDocument, TerminalModel } from "../models";
 import { Controller, Route, Get, Tags, OperationId, Example, Security, Put, Body, Delete, Request, Post } from "tsoa";
-import { ITerminal, TerminalStatusTypes, TerminalTypes, RefTypes, TerminalConfig } from "@djonnyx/tornado-types";
+import { ITerminal, TerminalStatusTypes, TerminalTypes, RefTypes, TerminalConfig, IRef } from "@djonnyx/tornado-types";
 import { getRef, riseRefVersion } from "../db/refs";
 import { createTerminalConfig, formatTerminalModel } from "../utils/terminal";
-import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "../interfaces";
 import { ISetDeviceResponse, licServerApiService } from "../services";
 import { extractError } from "../utils/error";
@@ -12,7 +11,7 @@ import { findAllWithFilter } from "../utils/requestOptions";
 interface ITerminalItem extends ITerminal { }
 
 interface ITerminalMeta {
-    ref: IRefItem;
+    ref: IRef;
 }
 
 interface ITerminalsResponse {

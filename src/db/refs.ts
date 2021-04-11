@@ -1,11 +1,11 @@
-import { RefModel, IRef } from "../models/index";
-import { IRefItem } from "../controllers/RefsController";
+import { IRef } from "@djonnyx/tornado-types";
+import { RefModel, IRefDocument } from "../models/index";
 import { findAllWithFilter } from "../utils/requestOptions";
 
 export const getRef = async (client: string, name: string,
-    additionalSearch?: { [prop: string]: string | number }): Promise<IRefItem> => {
+    additionalSearch?: { [prop: string]: string | number }): Promise<IRef> => {
 
-    let ref: IRef;
+    let ref: IRefDocument;
     try {
         ref = await findAllWithFilter(RefModel.findOne({ client, name }), { query: additionalSearch || {} });
     } catch (e) {
@@ -25,9 +25,9 @@ export const getRef = async (client: string, name: string,
 };
 
 export const riseRefVersion = async (client: string, name: string,
-    additionalSearch?: { [prop: string]: string | number }): Promise<IRefItem> => {
+    additionalSearch?: { [prop: string]: string | number }): Promise<IRef> => {
 
-    let ref: IRef;
+    let ref: IRefDocument;
     try {
         ref = await findAllWithFilter(RefModel.findOne({ client, name }), { query: additionalSearch || {} });
     } catch (e) {

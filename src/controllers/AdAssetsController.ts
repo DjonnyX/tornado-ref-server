@@ -1,13 +1,12 @@
-import { AssetExtensions, IAdContents, RefTypes } from "@djonnyx/tornado-types";
+import { AssetExtensions, IAdContents, IRef, RefTypes } from "@djonnyx/tornado-types";
 import { AdModel, IAdDocument, ILanguageDocument, LanguageModel } from "../models/index";
 import { Controller, Route, Post, Tags, OperationId, Example, Request, Security, Get, Delete, Body, Put } from "tsoa";
 import { riseRefVersion, getRef } from "../db/refs";
 import { IAdItem, RESPONSE_TEMPLATE as AD_RESPONSE_TEMPLATE } from "./AdController";
 import { formatAdModel } from "../utils/ad";
 import { contentsToDefault, normalizeContents } from "../utils/entity";
-import { IRefItem } from "./RefsController";
 import { uploadAsset, deleteAsset, IAssetItem, ICreateAssetsResponse } from "./AssetsController";
-import { AssetModel, IAsset } from "../models/Asset";
+import { AssetModel, IAssetDocument } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
 import { IAuthRequest } from "../interfaces";
 
@@ -37,10 +36,10 @@ interface IAdGetAssetsResponse {
 interface IAdCreateAssetsResponse {
     meta?: {
         ad: {
-            ref: IRefItem;
+            ref: IRef;
         };
         asset: {
-            ref: IRefItem;
+            ref: IRef;
         };
     };
     data?: {
@@ -56,10 +55,10 @@ interface IAdCreateAssetsResponse {
 interface IAdDeleteAssetsResponse {
     meta?: {
         ad: {
-            ref: IRefItem;
+            ref: IRef;
         };
         asset: {
-            ref: IRefItem;
+            ref: IRef;
         };
     };
     data?: {};
@@ -137,7 +136,7 @@ export class AdAssetsController extends Controller {
             };
         }
 
-        const promises = new Array<Promise<{ assets: Array<IAsset>, langCode: string }>>();
+        const promises = new Array<Promise<{ assets: Array<IAssetDocument>, langCode: string }>>();
 
         for (const langCode in ad.contents) {
             promises.push(new Promise(async (resolve) => {
@@ -260,7 +259,7 @@ export class AdAssetsController extends Controller {
 
         const contents: IAdContents = contentsToDefault(ad.contents, langCode);
 
-        let adRef: IRefItem;
+        let adRef: IRef;
         try {
             const assetId = assetsInfo.data.id.toString();
             contents[langCode].assets.push(assetId);
@@ -406,7 +405,7 @@ export class AdAssetsController extends Controller {
             });
         }
 
-        let adRef: IRefItem;
+        let adRef: IRef;
         let savedAd: IAdDocument;
         try {
             const assetId = assetsInfo.data.id.toString();
@@ -476,7 +475,7 @@ export class AdAssetsController extends Controller {
             };
         }
 
-        let adRef: IRefItem;
+        let adRef: IRef;
         try {
             adRef = await getRef(request.account.id, RefTypes.ADS);
         } catch (err) {
@@ -552,7 +551,7 @@ export class AdAssetsController extends Controller {
 
         let contents: IAdContents = contentsToDefault(ad.contents, langCode);
 
-        let assetRef: IRefItem;
+        let assetRef: IRef;
         const assetIndex = contents[langCode].assets.indexOf(assetId);
         if (assetIndex > -1) {
             try {
@@ -576,7 +575,7 @@ export class AdAssetsController extends Controller {
             }
         }
 
-        let adsRef: IRefItem;
+        let adsRef: IRef;
         try {
             contents[langCode].assets.splice(assetIndex, 1);
 

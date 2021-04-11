@@ -4,12 +4,11 @@ import { riseRefVersion, getRef } from "../db/refs";
 import { ISelectorItem, RESPONSE_TEMPLATE as SELECTOR_RESPONSE_TEMPLATE } from "./SelectorController";
 import { formatSelectorModel } from "../utils/selector";
 import { normalizeContents } from "../utils/entity";
-import { IRefItem } from "./RefsController";
 import { uploadAsset, deleteAsset, IAssetItem, ICreateAssetsResponse } from "./AssetsController";
-import { AssetModel, IAsset } from "../models/Asset";
+import { AssetModel, IAssetDocument } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
 import { IAuthRequest } from "src/interfaces";
-import { AssetExtensions, ISelectorContents, RefTypes } from "@djonnyx/tornado-types";
+import { AssetExtensions, IRef, ISelectorContents, RefTypes } from "@djonnyx/tornado-types";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface ISelectorAsset extends IAssetItem { }
@@ -37,10 +36,10 @@ interface ISelectorGetAssetsResponse {
 interface ISelectorCreateAssetsResponse {
     meta?: {
         selector: {
-            ref: IRefItem;
+            ref: IRef;
         };
         asset: {
-            ref: IRefItem;
+            ref: IRef;
         };
     };
     data?: {
@@ -56,10 +55,10 @@ interface ISelectorCreateAssetsResponse {
 interface ISelectorDeleteAssetsResponse {
     meta?: {
         selector: {
-            ref: IRefItem;
+            ref: IRef;
         };
         asset: {
-            ref: IRefItem;
+            ref: IRef;
         };
     };
     data?: {};
@@ -162,7 +161,7 @@ export class SelectorAssetsController extends Controller {
             };
         }
 
-        const promises = new Array<Promise<{ assets: Array<IAsset>, langCode: string }>>();
+        const promises = new Array<Promise<{ assets: Array<IAssetDocument>, langCode: string }>>();
 
         for (const langCode in selector.contents) {
             promises.push(new Promise(async (resolve) => {
@@ -285,7 +284,7 @@ export class SelectorAssetsController extends Controller {
 
         const contents: ISelectorContents = contentsToDefault(selector.contents, langCode);
 
-        let selectorRef: IRefItem;
+        let selectorRef: IRef;
         try {
             const assetId = assetsInfo.data.id.toString();
             contents[langCode].assets.push(assetId);
@@ -431,7 +430,7 @@ export class SelectorAssetsController extends Controller {
             });
         }
 
-        let selectorRef: IRefItem;
+        let selectorRef: IRef;
         let savedSelector: ISelector;
         try {
             const assetId = assetsInfo.data.id.toString();
@@ -501,7 +500,7 @@ export class SelectorAssetsController extends Controller {
             };
         }
 
-        let selectorRef: IRefItem;
+        let selectorRef: IRef;
         try {
             selectorRef = await getRef(request.account.id, RefTypes.SELECTORS);
         } catch (err) {
@@ -577,7 +576,7 @@ export class SelectorAssetsController extends Controller {
 
         let contents: ISelectorContents = contentsToDefault(selector.contents, langCode);
 
-        let assetRef: IRefItem;
+        let assetRef: IRef;
         const assetIndex = contents[langCode].assets.indexOf(assetId);
         if (assetIndex > -1) {
             try {
@@ -601,7 +600,7 @@ export class SelectorAssetsController extends Controller {
             }
         }
 
-        let selectorsRef: IRefItem;
+        let selectorsRef: IRef;
         try {
             contents[langCode].assets.splice(assetIndex, 1);
 

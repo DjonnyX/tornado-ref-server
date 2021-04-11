@@ -1,6 +1,7 @@
-import { ICurrency } from "@models";
+import { ICurrency } from "@djonnyx/tornado-types";
+import { ICurrencyDocument } from "@models";
 
-export const formatCurrencyModel = (model: ICurrency) => ({
+export const formatCurrencyModel = (model: ICurrencyDocument): ICurrency => ({
     id: model._id,
     isDefault: model.isDefault,
     active: model.active,

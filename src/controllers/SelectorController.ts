@@ -6,9 +6,8 @@ import { formatSelectorModel } from "../utils/selector";
 import { normalizeContents, getDeletedImagesFromDifferense, getEntityAssets } from "../utils/entity";
 import { AssetModel } from "../models/Asset";
 import { deleteAsset } from "./AssetsController";
-import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "../interfaces";
-import { ISelectorContents, NodeTypes, SelectorTypes, RefTypes } from "@djonnyx/tornado-types";
+import { ISelectorContents, NodeTypes, SelectorTypes, RefTypes, IRef } from "@djonnyx/tornado-types";
 import { findAllWithFilter } from "../utils/requestOptions";
 
 export interface ISelectorItem {
@@ -21,7 +20,7 @@ export interface ISelectorItem {
 }
 
 interface ISelectorsMeta {
-    ref: IRefItem;
+    ref: IRef;
 }
 
 interface ISelectorsResponse {
