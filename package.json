@@ -1,16 +1,23 @@
 {
   "name": "tornado-ref-server",
-  "version": "1.1.1-alpha9",
+  "version": "1.1.1-alpha11",
   "author": {
     "email": "djonnyx@gmail.com",
     "name": "Eugene Grebennikov"
   },
   "description": "",
   "scripts": {
-    "start": "npm run gendoc && npm run build && node ./build/main.js",
+    "start": "node ./build/main.js",
     "serve": "nodemon -x ts-node src/main.ts",
     "build": "tsc",
     "gendoc": "tsoa routes && tsoa swagger",
+    "compile": "npm run gendoc && npm run build",
+    "docker:build": "npm run compile && docker build -t djonnyx/tornadosst-ref-server .",
+    "docker:run": "docker run -p 8080:8080 djonnyx/tornadosst-ref-server",
+    "docker:deploy": "docker push djonnyx/tornadosst-ref-server",
+    "docker-compose:build": "npm run compile && docker-compose build",
+    "docker-compose:run": "docker-compose up",
+    "docker-compose:deploy": "docker-compose push djonnyx/tornadosst-ref-server",
     "lint": "tsc --noEmit && eslint \"**/*.{js,ts}\" --quiet --fix"
   },
   "repository": {
@@ -23,7 +30,7 @@
   "homepage": "https://github.com/DjonnyX/tornado-ref-server#readme",
   "license": "Commercial",
   "dependencies": {
-    "@djonnyx/tornado-types": "^1.4.35",
+    "@djonnyx/tornado-types": "^1.4.37",
     "@hapi/joi": "^17.1.1",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
@@ -37,7 +44,7 @@
     "mongodb": "^3.6.4",
     "mongoose": "^5.11.19",
     "multer": "^1.4.2",
-    "sharp": "^0.27.2",
+    "sharp": "^0.28.1",
     "swagger-ui-express": "^4.1.6",
     "ts-node": "^9.1.1",
     "tsoa": "^3.5.2",
@@ -58,7 +65,7 @@
     "@types/mongodb": "^3.6.9",
     "@types/multer": "^1.4.5",
     "@types/node": "^14.14.33",
-    "@types/sharp": "^0.27.1",
+    "@types/sharp": "^0.28.0",
     "@types/swagger-ui-express": "^4.1.2",
     "@types/winston": "^2.4.4",
     "@typescript-eslint/eslint-plugin": "^4.17.0",

@@ -7,7 +7,7 @@ import * as mongoose from "mongoose";
 import * as config from "./config";
 
 const PORT = config.PORT;
-const MONGO_URI = `${config.DB_URI}/${config.DB_NAME}`;
+const MONGO_URI = `mongodb://${config.DB_URI}`;
 
 const httpsOptions = {
     key: fs.readFileSync("keystore/key.pem"),
