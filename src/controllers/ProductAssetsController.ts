@@ -1,15 +1,14 @@
-import { ProductModel, IProduct, ILanguage, LanguageModel } from "../models/index";
+import { ProductModel, IProductDocument, ILanguageDocument, LanguageModel } from "../models/index";
 import { Controller, Route, Post, Tags, OperationId, Example, Request, Security, Get, Delete, Body, Put } from "tsoa";
 import { riseRefVersion, getRef } from "../db/refs";
 import { IProductItem, RESPONSE_TEMPLATE as PRODUCT_RESPONSE_TEMPLATE } from "./ProductsController";
 import { formatProductModel } from "../utils/product";
 import { normalizeContents } from "../utils/entity";
-import { IRefItem } from "./RefsController";
 import { uploadAsset, deleteAsset, IAssetItem, ICreateAssetsResponse } from "./AssetsController";
-import { AssetModel, IAsset } from "../models/Asset";
+import { AssetModel, IAssetDocument } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
 import { IAuthRequest } from "src/interfaces";
-import { AssetExtensions, IProductContents, RefTypes } from "@djonnyx/tornado-types";
+import { AssetExtensions, IProductContents, IRef, RefTypes } from "@djonnyx/tornado-types";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProductAsset extends IAssetItem { }
@@ -37,10 +36,10 @@ interface IProductGetAssetsResponse {
 interface IProductCreateAssetsResponse {
     meta?: {
         product: {
-            ref: IRefItem;
+            ref: IRef;
         };
         asset: {
-            ref: IRefItem;
+            ref: IRef;
         };
     };
     data?: {
@@ -56,10 +55,10 @@ interface IProductCreateAssetsResponse {
 interface IProductDeleteAssetsResponse {
     meta?: {
         product: {
-            ref: IRefItem;
+            ref: IRef;
         };
         asset: {
-            ref: IRefItem;
+            ref: IRef;
         };
     };
     data?: {};
@@ -151,7 +150,7 @@ export class ProductAssetsController extends Controller {
         },
     })
     public async getAllAssets(productId: string): Promise<IProductGetAllAssetsResponse> {
-        let product: IProduct;
+        let product: IProductDocument;
         try {
             product = await ProductModel.findById(productId);
         } catch (err) {
@@ -166,7 +165,7 @@ export class ProductAssetsController extends Controller {
             };
         }
 
-        const promises = new Array<Promise<{ assets: Array<IAsset>, langCode: string }>>();
+        const promises = new Array<Promise<{ assets: Array<IAssetDocument>, langCode: string }>>();
 
         for (const langCode in product.contents) {
             promises.push(new Promise(async (resolve) => {
@@ -211,7 +210,7 @@ export class ProductAssetsController extends Controller {
         data: [RESPONSE_TEMPLATE],
     })
     public async getAssets(productId: string, langCode: string): Promise<IProductGetAssetsResponse> {
-        let product: IProduct;
+        let product: IProductDocument;
         try {
             product = await ProductModel.findById(productId);
         } catch (err) {
@@ -272,7 +271,7 @@ export class ProductAssetsController extends Controller {
             };
         }
 
-        let product: IProduct;
+        let product: IProductDocument;
         try {
             product = await ProductModel.findById(productId);
         } catch (err) {
@@ -289,7 +288,7 @@ export class ProductAssetsController extends Controller {
 
         const contents: IProductContents = contentsToDefault(product.contents, langCode);
 
-        let productRef: IRefItem;
+        let productRef: IRef;
         try {
             const assetId = assetsInfo.data.id.toString();
             contents[langCode].assets.push(assetId);
@@ -354,7 +353,7 @@ export class ProductAssetsController extends Controller {
             };
         }
 
-        let product: IProduct;
+        let product: IProductDocument;
         let deletedAsset: string;
         try {
             product = await ProductModel.findById(productId);
@@ -370,7 +369,7 @@ export class ProductAssetsController extends Controller {
             };
         }
 
-        let defaultLanguage: ILanguage;
+        let defaultLanguage: ILanguageDocument;
         try {
             defaultLanguage = await LanguageModel.findOne({ client: request.account.id, isDefault: true });
         } catch (err) {
@@ -436,8 +435,8 @@ export class ProductAssetsController extends Controller {
             });
         }
 
-        let productRef: IRefItem;
-        let savedProduct: IProduct;
+        let productRef: IRef;
+        let savedProduct: IProductDocument;
         try {
             const assetId = assetsInfo.data.id.toString();
             contents[langCode].resources[resourceType] = assetId;
@@ -492,7 +491,7 @@ export class ProductAssetsController extends Controller {
     })
     public async update(productId: string, langCode: string, assetId: string, @Body() body: IProductAssetUpdateRequest, @Request() request: IAuthRequest): Promise<IProductCreateAssetsResponse> {
 
-        let product: IProduct;
+        let product: IProductDocument;
         try {
             product = await ProductModel.findById(productId);
         } catch (err) {
@@ -507,7 +506,7 @@ export class ProductAssetsController extends Controller {
             };
         }
 
-        let productRef: IRefItem;
+        let productRef: IRef;
         try {
             productRef = await getRef(request.account.id, RefTypes.PRODUCTS);
         } catch (err) {
@@ -566,7 +565,7 @@ export class ProductAssetsController extends Controller {
         meta: META_TEMPLATE
     })
     public async delete(productId: string, langCode: string, assetId: string, @Request() request: IAuthRequest): Promise<IProductDeleteAssetsResponse> {
-        let product: IProduct;
+        let product: IProductDocument;
         try {
             product = await ProductModel.findById(productId);
         } catch (err) {
@@ -583,7 +582,7 @@ export class ProductAssetsController extends Controller {
 
         let contents: IProductContents = contentsToDefault(product.contents, langCode);
 
-        let assetRef: IRefItem;
+        let assetRef: IRef;
         const assetIndex = contents[langCode].assets.indexOf(assetId);
         if (assetIndex > -1) {
             try {
@@ -607,7 +606,7 @@ export class ProductAssetsController extends Controller {
             }
         }
 
-        let productsRef: IRefItem;
+        let productsRef: IRef;
         try {
             contents[langCode].assets.splice(assetIndex, 1);
             contents[langCode].gallery.splice(assetIndex, 1);

@@ -1,6 +1,7 @@
-import { IOrderType } from "@models";
+import { IOrderType } from "@djonnyx/tornado-types";
+import { IOrderTypeDocument } from "@models";
 
-export const formatOrderTypeModel = (model: IOrderType) => ({
+export const formatOrderTypeModel = (model: IOrderTypeDocument): IOrderType => ({
     id: model._id,
     isDefault: model.isDefault,
     active: model.active,

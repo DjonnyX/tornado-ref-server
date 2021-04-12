@@ -2,9 +2,8 @@ import { CheckueModel, ICheckueDocument } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Request } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatCheckueModel } from "../utils/checkue";
-import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "../interfaces";
-import { IScenario, RefTypes } from "@djonnyx/tornado-types";
+import { IRef, IScenario, RefTypes } from "@djonnyx/tornado-types";
 import { findAllWithFilter } from "../utils/requestOptions";
 
 interface ICheckueItem {
@@ -16,7 +15,7 @@ interface ICheckueItem {
 }
 
 interface ICheckueMeta {
-    ref: IRefItem;
+    ref: IRef;
 }
 
 interface CheckuesResponse {

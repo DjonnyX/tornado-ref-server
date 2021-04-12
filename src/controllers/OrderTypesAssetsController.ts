@@ -1,16 +1,14 @@
-import * as express from "express";
-import { OrderTypeModel, IOrderType, ILanguage, LanguageModel } from "../models/index";
+import { OrderTypeModel, IOrderTypeDocument, ILanguageDocument, LanguageModel } from "../models";
 import { Controller, Route, Post, Tags, OperationId, Example, Request, Security, Get, Delete, Body, Put } from "tsoa";
 import { riseRefVersion, getRef } from "../db/refs";
 import { IOrderTypeItem, RESPONSE_TEMPLATE as SELECTOR_RESPONSE_TEMPLATE } from "./OrderTypesController";
-import { formatOrderTypeModel } from "../utils/ordertype";
+import { formatOrderTypeModel } from "../utils/orderType";
 import { normalizeContents } from "../utils/entity";
-import { IRefItem } from "./RefsController";
 import { uploadAsset, deleteAsset, IAssetItem, ICreateAssetsResponse } from "./AssetsController";
-import { AssetModel, IAsset } from "../models/Asset";
+import { AssetModel, IAssetDocument } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
 import { IAuthRequest } from "../interfaces";
-import { AssetExtensions, IOrderTypeContents, RefTypes } from "@djonnyx/tornado-types";
+import { AssetExtensions, IOrderTypeContents, IRef, RefTypes } from "@djonnyx/tornado-types";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IOrderTypeAsset extends IAssetItem { }
@@ -38,10 +36,10 @@ interface IOrderTypeGetAssetsResponse {
 interface IOrderTypeCreateAssetsResponse {
     meta?: {
         orderType: {
-            ref: IRefItem;
+            ref: IRef;
         };
         asset: {
-            ref: IRefItem;
+            ref: IRef;
         };
     };
     data?: {
@@ -57,10 +55,10 @@ interface IOrderTypeCreateAssetsResponse {
 interface IOrderTypeDeleteAssetsResponse {
     meta?: {
         orderType: {
-            ref: IRefItem;
+            ref: IRef;
         };
         asset: {
-            ref: IRefItem;
+            ref: IRef;
         };
     };
     data?: {};
@@ -148,7 +146,7 @@ export class OrderTypeAssetsController extends Controller {
         },
     })
     public async getAllAssets(orderTypeId: string): Promise<IOrderTypeGetAllAssetsResponse> {
-        let orderType: IOrderType;
+        let orderType: IOrderTypeDocument;
         try {
             orderType = await OrderTypeModel.findById(orderTypeId);
         } catch (err) {
@@ -163,7 +161,7 @@ export class OrderTypeAssetsController extends Controller {
             };
         }
 
-        const promises = new Array<Promise<{ assets: Array<IAsset>, langCode: string }>>();
+        const promises = new Array<Promise<{ assets: Array<IAssetDocument>, langCode: string }>>();
 
         for (const langCode in orderType.contents) {
             promises.push(new Promise(async (resolve) => {
@@ -208,7 +206,7 @@ export class OrderTypeAssetsController extends Controller {
         data: [RESPONSE_TEMPLATE],
     })
     public async getAssets(orderTypeId: string, langCode: string): Promise<IOrderTypeGetAssetsResponse> {
-        let orderType: IOrderType;
+        let orderType: IOrderTypeDocument;
         try {
             orderType = await OrderTypeModel.findById(orderTypeId);
         } catch (err) {
@@ -286,7 +284,7 @@ export class OrderTypeAssetsController extends Controller {
 
         const contents: IOrderTypeContents = contentsToDefault(orderType.contents, langCode);
 
-        let orderTypeRef: IRefItem;
+        let orderTypeRef: IRef;
         try {
             const assetId = assetsInfo.data.id.toString();
             contents[langCode].assets.push(assetId);
@@ -350,7 +348,7 @@ export class OrderTypeAssetsController extends Controller {
             };
         }
 
-        let orderType: IOrderType;
+        let orderType: IOrderTypeDocument;
         let deletedAsset: string;
         try {
             orderType = await OrderTypeModel.findById(orderTypeId);
@@ -366,7 +364,7 @@ export class OrderTypeAssetsController extends Controller {
             };
         }
 
-        let defaultLanguage: ILanguage;
+        let defaultLanguage: ILanguageDocument;
         try {
             defaultLanguage = await LanguageModel.findOne({ client: request.account.id, isDefault: true });
         } catch (err) {
@@ -432,8 +430,8 @@ export class OrderTypeAssetsController extends Controller {
             });
         }
 
-        let orderTypeRef: IRefItem;
-        let savedOrderType: IOrderType;
+        let orderTypeRef: IRef;
+        let savedOrderType: IOrderTypeDocument;
         try {
             const assetId = assetsInfo.data.id.toString();
             contents[langCode].resources[resourceType] = assetId;
@@ -487,7 +485,7 @@ export class OrderTypeAssetsController extends Controller {
     })
     public async update(orderTypeId: string, langCode: string, assetId: string, @Body() body: IOrderTypeAssetUpdateRequest, @Request() request: IAuthRequest): Promise<IOrderTypeCreateAssetsResponse> {
 
-        let orderType: IOrderType;
+        let orderType: IOrderTypeDocument;
         try {
             orderType = await OrderTypeModel.findById(orderTypeId);
         } catch (err) {
@@ -502,7 +500,7 @@ export class OrderTypeAssetsController extends Controller {
             };
         }
 
-        let orderTypeRef: IRefItem;
+        let orderTypeRef: IRef;
         try {
             orderTypeRef = await getRef(request.account.id, RefTypes.SELECTORS);
         } catch (err) {
@@ -561,7 +559,7 @@ export class OrderTypeAssetsController extends Controller {
         meta: META_TEMPLATE
     })
     public async delete(orderTypeId: string, langCode: string, assetId: string, @Request() request: IAuthRequest): Promise<IOrderTypeDeleteAssetsResponse> {
-        let orderType: IOrderType;
+        let orderType: IOrderTypeDocument;
         try {
             orderType = await OrderTypeModel.findById(orderTypeId);
         } catch (err) {
@@ -578,7 +576,7 @@ export class OrderTypeAssetsController extends Controller {
 
         let contents: IOrderTypeContents = contentsToDefault(orderType.contents, langCode);
 
-        let assetRef: IRefItem;
+        let assetRef: IRef;
         const assetIndex = contents[langCode].assets.indexOf(assetId);
         if (assetIndex > -1) {
             try {
@@ -602,7 +600,7 @@ export class OrderTypeAssetsController extends Controller {
             }
         }
 
-        let orderTypesRef: IRefItem;
+        let orderTypesRef: IRef;
         try {
             contents[langCode].assets.splice(assetIndex, 1);
 

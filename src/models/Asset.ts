@@ -2,7 +2,7 @@ import { AssetExtensions } from "@djonnyx/tornado-types";
 import * as mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
 
-interface IAsset extends Document {
+interface IAssetDocument extends Document {
     client: string;
     active: boolean;
     name: string;
@@ -38,6 +38,6 @@ const AssetSchema = new Schema({
     path: { type: String, required: true },
 });
 
-const AssetModel = mongoose.model<IAsset>("Asset", AssetSchema);
+const AssetModel = mongoose.model<IAssetDocument>("Asset", AssetSchema);
 
-export { AssetModel, IAsset };
+export { AssetModel, IAssetDocument };

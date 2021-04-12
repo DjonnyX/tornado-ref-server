@@ -1,5 +1,5 @@
-import { ISchedule } from "@djonnyx/tornado-types";
-import { IBusinessPeriod } from "@models";
+import { IBusinessPeriod, ISchedule } from "@djonnyx/tornado-types";
+import { IBusinessPeriodDocument } from "@models";
 
 const formatSchedule = (model: Array<ISchedule>) => {
     if (!model) {
@@ -18,7 +18,7 @@ const formatSchedule = (model: Array<ISchedule>) => {
     });
 }
 
-export const formatModel = (model: IBusinessPeriod) => ({
+export const formatModel = (model: IBusinessPeriodDocument): IBusinessPeriod => ({
     id: model._id,
     active: model.active,
     contents: model.contents,

@@ -1,16 +1,15 @@
 import { Controller, Route, Get, Tags, OperationId, Example, Security, Request, Query, Put, Body } from "tsoa";
-import { IAppTheme, RefTypes, TerminalTypes } from "@djonnyx/tornado-types";
+import { IAppTheme, IRef, RefTypes, TerminalTypes } from "@djonnyx/tornado-types";
 import { AppThemeModel } from "../models";
 import { IAuthRequest } from "../interfaces";
 import { findAllWithFilter } from "../utils/requestOptions";
 import { getRef, riseRefVersion } from "../db/refs";
-import { IRefItem } from "./RefsController";
 import { formatAppThemeModel } from "../utils/appTheme";
 
 export interface IAppThemeItem extends IAppTheme { }
 
 interface IAppThemeMeta {
-    ref: IRefItem;
+    ref: IRef;
 }
 
 interface IAppThemeUpdateRequest {

@@ -10,7 +10,7 @@ interface ITerminalDocument extends Document {
     storeId: string;
     lastwork: Date;
     imei: string;
-    licenseId: string;
+    licenseId?: string;
     config: TerminalConfig;
     extra?: { [key: string]: any } | null;
 }
@@ -42,7 +42,7 @@ const TerminalSchema = new Schema({
     storeId: { type: String },
     lastwork: { type: Date },
     imei: { type: String, unique: true, required: true },
-    licenseId: { type: String, unique: true, required: true },
+    licenseId: { type: String, unique: true },
     config: {
         type: Schema.Types.Mixed,
         required: true,

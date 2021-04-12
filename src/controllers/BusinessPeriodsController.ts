@@ -1,24 +1,16 @@
-import { IBusinessPeriod, BusinessPeriodModel } from "../models";
+import { IBusinessPeriodDocument, BusinessPeriodModel, IScheduleItem } from "../models";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Request } from "tsoa";
 import * as joi from "@hapi/joi";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatModel } from "../utils/businessPeriod";
-import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "../interfaces";
-import { IBusinessPeriodContents, ISchedule, RefTypes } from "@djonnyx/tornado-types";
+import { IBusinessPeriod, IBusinessPeriodContents, IRef, RefTypes } from "@djonnyx/tornado-types";
 import { findAllWithFilter } from "../utils/requestOptions";
 
-interface IBusinessPeriodItem {
-    id?: string;
-    name?: string;
-    active: boolean;
-    contents: IBusinessPeriodContents;
-    schedule: Array<ISchedule>;
-    extra?: { [key: string]: any } | null;
-}
+interface IBusinessPeriodItem extends IBusinessPeriod { }
 
 interface IBusinessPeriodMeta {
-    ref: IRefItem;
+    ref: IRef;
 }
 
 interface IBusinessPeriodsResponse {
@@ -43,7 +35,7 @@ interface IBusinessPeriodCreateRequest {
     active: boolean;
     name?: string;
     contents?: IBusinessPeriodContents | any;
-    schedule: Array<ISchedule>;
+    schedule: Array<IScheduleItem>;
     extra?: { [key: string]: any } | null;
 }
 

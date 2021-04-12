@@ -1,7 +1,7 @@
-import { IAsset } from "src/models/Asset";
-import { IAssetItem } from "src/controllers/AssetsController";
+import { IAssetDocument } from "../models/Asset";
+import { IAssetItem } from "../controllers/AssetsController";
 
-export const formatAssetModel = (model: IAsset): IAssetItem => ({
+export const formatAssetModel = (model: IAssetDocument): IAssetItem => ({
     id: model._id,
     active: model.active,
     lastUpdate: model.lastUpdate,

@@ -10,7 +10,7 @@ interface IReceiptItem {
     extra?: { [key: string]: any } | null;
 }
 
-interface IProduct extends Document {
+interface IProductDocument extends Document {
     client: string;
     active: boolean;
     name: string;
@@ -48,6 +48,6 @@ const ProductSchema = new Schema({
     extra: { type: Schema.Types.Mixed, required: false, default: {} },
 });
 
-const ProductModel = mongoose.model<IProduct>("Product", ProductSchema);
+const ProductModel = mongoose.model<IProductDocument>("Product", ProductSchema);
 
-export { ProductModel, IProduct, IReceiptItem };
+export { ProductModel, IProductDocument, IReceiptItem };

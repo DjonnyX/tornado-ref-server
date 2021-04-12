@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import { AdTypes, IKioskTheme, NodeTypes, RefTypes, TerminalTypes } from "@djonnyx/tornado-types";
-import { RefModel, NodeModel, TranslationModel, LanguageModel, ILanguage, CurrencyModel, AppThemeModel, AdModel } from "../models";
+import { RefModel, NodeModel, TranslationModel, LanguageModel, CurrencyModel, AppThemeModel, AdModel, OrderTypeModel, IOrderTypeDocument, ILanguageDocument } from "../models";
 import { mergeTranslation, getTemplateLangs } from "../utils/translation";
 import {
     LOCALIZATION_TEMPLATE_PATH, CURRENCY_TEMPLATE_PATH, THEMES_KIOSK_TEMPLATE_PATH,
@@ -11,6 +11,40 @@ import { ICurrencyTemplate, IScreenSaverManifest } from "../interfaces";
 import { riseRefVersion } from "./refs";
 import { deepMergeObjects } from "../utils/object";
 import { createAd } from "../utils/ad";
+
+const createDefaultOrderTypeIfNeed = async (client: string) => {
+    const orderTypes = await OrderTypeModel.find({ client });
+
+    if (orderTypes.length > 0) {
+        return;
+    }
+
+    let defaultLang: ILanguageDocument;
+    
+    try {
+        defaultLang = await LanguageModel.findOne({ client, isDefault: true });
+    } catch (err) {
+        console.error(`Default language not found. ${err}`)
+    }
+
+    let orderType: IOrderTypeDocument;
+    try {
+        orderType = new OrderTypeModel({
+            client,
+            active: true,
+            isDefault: true,
+            contents: {
+                [defaultLang.code]: {
+                    name: "In place",
+                },
+            },
+        });
+
+        await orderType.save();
+    } catch (err) {
+        console.error(`Default Order Type can not be created. ${err}`);
+    }
+};
 
 const createDefaultIntroIfNeed = async (client: string) => {
     const ads = await AdModel.find({ client, type: AdTypes.INTRO });
@@ -153,7 +187,7 @@ const mergeDefaultTranslations = async (client: string) => {
     const template: ITranslationTemplate = await readFileJSONAsync<ITranslationTemplate>(LOCALIZATION_TEMPLATE_PATH);
     const availableLangs = getTemplateLangs(template);
 
-    const dictionary: { [key: string]: ILanguage } = {};
+    const dictionary: { [key: string]: ILanguageDocument } = {};
     const langs = await LanguageModel.find({
         client,
     });
@@ -403,6 +437,9 @@ export const initRefs = async (client: string): Promise<void> => {
 
     // translations
     await mergeDefaultTranslations(client);
+
+    // order type
+    await createDefaultOrderTypeIfNeed(client);
 
     // default currency
     await createDefaultCurrencyFromTemplate(client);

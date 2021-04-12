@@ -1,4 +1,4 @@
-import { SelectorModel, ISelector, NodeModel, ILanguage, LanguageModel, INodeDocument } from "../models/index";
+import { SelectorModel, ISelector, NodeModel, ILanguageDocument, LanguageModel, INodeDocument } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Query, Request } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { deleteNodesChain } from "../utils/node";
@@ -6,9 +6,8 @@ import { formatSelectorModel } from "../utils/selector";
 import { normalizeContents, getDeletedImagesFromDifferense, getEntityAssets } from "../utils/entity";
 import { AssetModel } from "../models/Asset";
 import { deleteAsset } from "./AssetsController";
-import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "../interfaces";
-import { ISelectorContents, NodeTypes, SelectorTypes, RefTypes } from "@djonnyx/tornado-types";
+import { ISelectorContents, NodeTypes, SelectorTypes, RefTypes, IRef } from "@djonnyx/tornado-types";
 import { findAllWithFilter } from "../utils/requestOptions";
 
 export interface ISelectorItem {
@@ -21,7 +20,7 @@ export interface ISelectorItem {
 }
 
 interface ISelectorsMeta {
-    ref: IRefItem;
+    ref: IRef;
 }
 
 interface ISelectorsResponse {
@@ -233,7 +232,7 @@ export class SelectorController extends Controller {
         data: RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() body: ISelectorUpdateRequest, @Request() request: IAuthRequest): Promise<ISelectorResponse> {
-        let defaultLanguage: ILanguage;
+        let defaultLanguage: ILanguageDocument;
         try {
             defaultLanguage = await LanguageModel.findOne({ client: request.account.id, isDefault: true });
         } catch (err) {

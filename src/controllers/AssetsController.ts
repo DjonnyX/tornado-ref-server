@@ -2,12 +2,11 @@ import * as fs from "fs";
 import * as path from "path";
 import { Controller, Route, Post, Tags, OperationId, Example, Request, Security, Delete, Put, Body, Get } from "tsoa";
 import { riseRefVersion, getRef } from "../db/refs";
-import { IAsset, AssetModel } from "../models/Asset";
+import { IAssetDocument, AssetModel } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
 import { assetsUploader, IFileInfo } from "../utils/assetUpload";
-import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "../interfaces";
-import { AssetExtensions, RefTypes } from "@djonnyx/tornado-types";
+import { AssetExtensions, IRef, RefTypes } from "@djonnyx/tornado-types";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IAssetItem {
@@ -24,7 +23,7 @@ export interface IAssetItem {
 }
 
 interface IAssetMeta {
-    ref: IRefItem;
+    ref: IRef;
 }
 
 interface IGetAssetsResponse {
@@ -103,8 +102,8 @@ export const uploadAsset = async (request: IAuthRequest, allowedExtensions: Arra
         };
     }
 
-    let asset: IAsset;
-    let assetRef: IRefItem;
+    let asset: IAssetDocument;
+    let assetRef: IRef;
     try {
         asset = new AssetModel({ ...fileInfo, active, client: request.account.id });
         assetRef = await riseRefVersion(request.account.id, RefTypes.ASSETS);
@@ -131,7 +130,7 @@ export const uploadAsset = async (request: IAuthRequest, allowedExtensions: Arra
 /**
  * Возвращает удаленный asset
  */
-export const deleteAsset = (assetPath: string): Promise<IAsset | void> => {
+export const deleteAsset = (assetPath: string): Promise<IAssetDocument | void> => {
     return new Promise((resolve, reject) => {
         fs.unlink(path.normalize(assetPath), (err) => {
             /*if (!!err && err.code === "ENOENT") {
@@ -237,7 +236,7 @@ export class AssetController extends Controller {
         data: {}
     })
     public async delete(id: string): Promise<IDeleteAssetsResponse> {
-        let ref: IRefItem;
+        let ref: IRef;
         try {
             const asset = await AssetModel.findByIdAndDelete(id);
             await deleteAsset(asset.path);

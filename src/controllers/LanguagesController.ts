@@ -1,31 +1,18 @@
-import { ILanguage, LanguageModel, TranslationModel } from "../models/index";
+import { ILanguageDocument, LanguageModel, TranslationModel } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Request } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
-import { IRefItem } from "./RefsController";
 import { formatLanguageModel } from "../utils/language";
 import { mergeTranslation } from "../utils/translation";
 import { AssetModel } from "../models/Asset";
 import { deleteAsset } from "./AssetsController";
 import { IAuthRequest } from "../interfaces";
-import { RefTypes } from "@djonnyx/tornado-types";
+import { ILanguage, IRef, RefTypes } from "@djonnyx/tornado-types";
 import { findAllWithFilter } from "../utils/requestOptions";
 
-export interface ILanguageItem {
-    id: string;
-    isDefault?: boolean;
-    active: boolean;
-    code: string;
-    name: string;
-    assets?: Array<string>;
-    resources?: {
-        main?: string | null;
-    };
-    translation?: string | null;
-    extra?: { [key: string]: any } | null;
-}
+export interface ILanguageItem extends ILanguage { }
 
 interface LanguageMeta {
-    ref: IRefItem;
+    ref: IRef;
 }
 
 interface LanguagesResponse {
@@ -74,6 +61,7 @@ interface LanguageUpdateRequest {
 
 export const LANGUAGE_RESPONSE_TEMPLATE: ILanguageItem = {
     id: "507c7f79bcf86cd7994f6c0e",
+    isDefault: true,
     active: true,
     code: "RU",
     name: "Русский",
@@ -168,7 +156,7 @@ export class LanguageController extends Controller {
         data: LANGUAGE_RESPONSE_TEMPLATE,
     })
     public async create(@Body() body: LanguageCreateRequest, @Request() request: IAuthRequest): Promise<LanguageResponse> {
-        let langs: Array<ILanguage>;
+        let langs: Array<ILanguageDocument>;
 
         try {
             langs = await LanguageModel.find({ client: request.account.id });
@@ -184,9 +172,9 @@ export class LanguageController extends Controller {
             };
         }
 
-        let item: ILanguage;
-        let savedItem: ILanguage;
-        let ref: IRefItem;
+        let item: ILanguageDocument;
+        let savedItem: ILanguageDocument;
+        let ref: IRef;
         try {
             body.isDefault = langs.length === 0;
             item = new LanguageModel({ ...body, client: request.account.id });
@@ -243,7 +231,7 @@ export class LanguageController extends Controller {
         data: LANGUAGE_RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() body: LanguageUpdateRequest, @Request() request: IAuthRequest): Promise<LanguageResponse> {
-        let item: ILanguage;
+        let item: ILanguageDocument;
 
         let isDefault: boolean;
 
@@ -276,7 +264,7 @@ export class LanguageController extends Controller {
         }
 
         try {
-            const langs: Array<ILanguage> = await LanguageModel.find({ client: request.account.id });
+            const langs: Array<ILanguageDocument> = await LanguageModel.find({ client: request.account.id });
 
             const promises = new Array<Promise<void>>();
 
@@ -298,7 +286,7 @@ export class LanguageController extends Controller {
                 });
             } else {
                 let needSetupDefault = true;
-                let firstLang: ILanguage;
+                let firstLang: ILanguageDocument;
 
                 langs.forEach(lang => {
                     if (!firstLang) {
@@ -377,7 +365,7 @@ export class LanguageController extends Controller {
         meta: META_TEMPLATE,
     })
     public async delete(id: string, @Request() request: IAuthRequest): Promise<LanguageResponse> {
-        let langs: Array<ILanguage>;
+        let langs: Array<ILanguageDocument>;
         try {
             langs = await LanguageModel.find({ client: request.account.id });
         } catch (err) { }
@@ -394,7 +382,7 @@ export class LanguageController extends Controller {
             };
         }
 
-        let language: ILanguage;
+        let language: ILanguageDocument;
         try {
             language = await LanguageModel.findByIdAndDelete(id);
         } catch (err) {

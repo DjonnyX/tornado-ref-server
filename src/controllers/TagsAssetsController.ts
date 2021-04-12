@@ -1,15 +1,14 @@
-import { TagModel, ITag, ILanguage, LanguageModel } from "../models/index";
+import { TagModel, ITagDocument, ILanguageDocument, LanguageModel } from "../models/index";
 import { Controller, Route, Post, Tags, OperationId, Example, Request, Security, Get, Delete, Body, Put } from "tsoa";
 import { riseRefVersion, getRef } from "../db/refs";
 import { ITagItem, RESPONSE_TEMPLATE as SELECTOR_RESPONSE_TEMPLATE } from "./TagsController";
 import { formatTagModel } from "../utils/tag";
 import { normalizeContents } from "../utils/entity";
-import { IRefItem } from "./RefsController";
 import { uploadAsset, deleteAsset, IAssetItem, ICreateAssetsResponse } from "./AssetsController";
-import { AssetModel, IAsset } from "../models/Asset";
+import { AssetModel, IAssetDocument } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
 import { IAuthRequest } from "../interfaces";
-import { AssetExtensions, ITagContents, RefTypes } from "@djonnyx/tornado-types";
+import { AssetExtensions, IRef, ITagContents, RefTypes } from "@djonnyx/tornado-types";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface ITagAsset extends IAssetItem { }
@@ -37,10 +36,10 @@ interface ITagGetAssetsResponse {
 interface ITagCreateAssetsResponse {
     meta?: {
         tag: {
-            ref: IRefItem;
+            ref: IRef;
         };
         asset: {
-            ref: IRefItem;
+            ref: IRef;
         };
     };
     data?: {
@@ -56,10 +55,10 @@ interface ITagCreateAssetsResponse {
 interface ITagDeleteAssetsResponse {
     meta?: {
         tag: {
-            ref: IRefItem;
+            ref: IRef;
         };
         asset: {
-            ref: IRefItem;
+            ref: IRef;
         };
     };
     data?: {};
@@ -147,7 +146,7 @@ export class TagAssetsController extends Controller {
         },
     })
     public async getAllAssets(tagId: string): Promise<ITagGetAllAssetsResponse> {
-        let tag: ITag;
+        let tag: ITagDocument;
         try {
             tag = await TagModel.findById(tagId);
         } catch (err) {
@@ -162,7 +161,7 @@ export class TagAssetsController extends Controller {
             };
         }
 
-        const promises = new Array<Promise<{ assets: Array<IAsset>, langCode: string }>>();
+        const promises = new Array<Promise<{ assets: Array<IAssetDocument>, langCode: string }>>();
 
         for (const langCode in tag.contents) {
             promises.push(new Promise(async (resolve) => {
@@ -207,7 +206,7 @@ export class TagAssetsController extends Controller {
         data: [RESPONSE_TEMPLATE],
     })
     public async getAssets(tagId: string, langCode: string): Promise<ITagGetAssetsResponse> {
-        let tag: ITag;
+        let tag: ITagDocument;
         try {
             tag = await TagModel.findById(tagId);
         } catch (err) {
@@ -285,7 +284,7 @@ export class TagAssetsController extends Controller {
 
         const contents: ITagContents = contentsToDefault(tag.contents, langCode);
 
-        let tagRef: IRefItem;
+        let tagRef: IRef;
         try {
             const assetId = assetsInfo.data.id.toString();
             contents[langCode].assets.push(assetId);
@@ -349,7 +348,7 @@ export class TagAssetsController extends Controller {
             };
         }
 
-        let tag: ITag;
+        let tag: ITagDocument;
         let deletedAsset: string;
         try {
             tag = await TagModel.findById(tagId);
@@ -365,7 +364,7 @@ export class TagAssetsController extends Controller {
             };
         }
 
-        let defaultLanguage: ILanguage;
+        let defaultLanguage: ILanguageDocument;
         try {
             defaultLanguage = await LanguageModel.findOne({ client: request.account.id, isDefault: true });
         } catch (err) {
@@ -431,8 +430,8 @@ export class TagAssetsController extends Controller {
             });
         }
 
-        let tagRef: IRefItem;
-        let savedTag: ITag;
+        let tagRef: IRef;
+        let savedTag: ITagDocument;
         try {
             const assetId = assetsInfo.data.id.toString();
             contents[langCode].resources[resourceType] = assetId;
@@ -486,7 +485,7 @@ export class TagAssetsController extends Controller {
     })
     public async update(tagId: string, langCode: string, assetId: string, @Body() body: ITagAssetUpdateRequest, @Request() request: IAuthRequest): Promise<ITagCreateAssetsResponse> {
 
-        let tag: ITag;
+        let tag: ITagDocument;
         try {
             tag = await TagModel.findById(tagId);
         } catch (err) {
@@ -501,7 +500,7 @@ export class TagAssetsController extends Controller {
             };
         }
 
-        let tagRef: IRefItem;
+        let tagRef: IRef;
         try {
             tagRef = await getRef(request.account.id, RefTypes.SELECTORS);
         } catch (err) {
@@ -560,7 +559,7 @@ export class TagAssetsController extends Controller {
         meta: META_TEMPLATE,
     })
     public async delete(tagId: string, langCode: string, assetId: string, @Request() request: IAuthRequest): Promise<ITagDeleteAssetsResponse> {
-        let tag: ITag;
+        let tag: ITagDocument;
         try {
             tag = await TagModel.findById(tagId);
         } catch (err) {
@@ -577,7 +576,7 @@ export class TagAssetsController extends Controller {
 
         let contents: ITagContents = contentsToDefault(tag.contents, langCode);
 
-        let assetRef: IRefItem;
+        let assetRef: IRef;
         const assetIndex = contents[langCode].assets.indexOf(assetId);
         if (assetIndex > -1) {
             try {
@@ -601,7 +600,7 @@ export class TagAssetsController extends Controller {
             }
         }
 
-        let tagsRef: IRefItem;
+        let tagsRef: IRef;
         try {
             contents[langCode].assets.splice(assetIndex, 1);
 

@@ -2,7 +2,7 @@ import { RefTypes } from "@djonnyx/tornado-types";
 import * as mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
 
-interface IRef extends Document {
+interface IRefDocument extends Document {
     client: string;
     name: string;
     version: number;
@@ -36,6 +36,6 @@ const RefSchema = new Schema({
     extra: { type: Schema.Types.Mixed },
 });
 
-const RefModel = mongoose.model<IRef>("Ref", RefSchema);
+const RefModel = mongoose.model<IRefDocument>("Ref", RefSchema);
 
-export { RefModel, IRef };
+export { RefModel, IRefDocument };

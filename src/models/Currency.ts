@@ -1,7 +1,7 @@
 import * as mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
 
-interface ICurrency extends Document {
+interface ICurrencyDocument extends Document {
     client: string;
     active: boolean;
     isDefault: boolean;
@@ -21,6 +21,6 @@ const CurrencySchema = new Schema({
     extra: { type: Schema.Types.Mixed, required: false },
 });
 
-const CurrencyModel = mongoose.model<ICurrency>("Currency", CurrencySchema);
+const CurrencyModel = mongoose.model<ICurrencyDocument>("Currency", CurrencySchema);
 
-export { CurrencyModel, ICurrency };
+export { CurrencyModel, ICurrencyDocument };

@@ -1,26 +1,19 @@
-import { TagModel, LanguageModel, ILanguage, ProductModel, IProduct } from "../models/index";
+import { TagModel, LanguageModel, ILanguageDocument, ProductModel, IProductDocument } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Request } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatTagModel } from "../utils/tag";
-import { ITag } from "../models/Tag";
+import { ITagDocument } from "../models/Tag";
 import { AssetModel } from "../models/Asset";
 import { deleteAsset } from "./AssetsController";
 import { normalizeContents, getDeletedImagesFromDifferense, getEntityAssets } from "../utils/entity";
-import { IRefItem } from "./RefsController";
 import { IAuthRequest } from "../interfaces";
-import { ITagContents, RefTypes } from "@djonnyx/tornado-types";
+import { IRef, ITag, ITagContents, RefTypes } from "@djonnyx/tornado-types";
 import { findAllWithFilter } from "../utils/requestOptions";
 
-export interface ITagItem {
-    id: string;
-    active: boolean;
-    name?: string;
-    contents: ITagContents;
-    extra?: { [key: string]: any } | null;
-}
+export interface ITagItem extends ITag { }
 
 interface ITagMeta {
-    ref: IRefItem;
+    ref: IRef;
 }
 
 interface TagsResponse {
@@ -178,7 +171,7 @@ export class TagController extends Controller {
         data: RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() body: TagCreateRequest, @Request() request: IAuthRequest): Promise<TagResponse> {
-        let defaultLanguage: ILanguage;
+        let defaultLanguage: ILanguageDocument;
         try {
             defaultLanguage = await LanguageModel.findOne({ client: request.account.id, isDefault: true });
         } catch (err) {
@@ -288,7 +281,7 @@ export class TagController extends Controller {
         meta: META_TEMPLATE,
     })
     public async delete(id: string, @Request() request: IAuthRequest): Promise<TagResponse> {
-        let products: Array<IProduct>;
+        let products: Array<IProductDocument>;
         try {
             products = await ProductModel.find({ client: request.account.id, tags: [id] });
         } catch (err) {
@@ -324,7 +317,7 @@ export class TagController extends Controller {
         }
 
 
-        let tag: ITag;
+        let tag: ITagDocument;
         try {
             tag = await TagModel.findByIdAndDelete(id);
         } catch (err) {

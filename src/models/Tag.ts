@@ -2,7 +2,7 @@ import { ITagContents } from "@djonnyx/tornado-types";
 import * as mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
 
-interface ITag extends Document {
+interface ITagDocument extends Document {
     client: string;
     active: boolean;
     contents: ITagContents | {};
@@ -17,6 +17,6 @@ const TagSchema = new Schema({
     extra: { type: Schema.Types.Mixed, required: false },
 });
 
-const TagModel = mongoose.model<ITag>("Tag", TagSchema);
+const TagModel = mongoose.model<ITagDocument>("Tag", TagSchema);
 
-export { TagModel, ITag };
+export { TagModel, ITagDocument };

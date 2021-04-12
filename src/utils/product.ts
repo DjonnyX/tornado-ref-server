@@ -1,6 +1,7 @@
-import { IProduct } from "@models";
+import { IProduct } from "@djonnyx/tornado-types";
+import { IProductDocument } from "@models";
 
-export const formatProductModel = (model: IProduct) => ({
+export const formatProductModel = (model: IProductDocument): IProduct => ({
     id: model._id,
     active: model.active,
     contents: model.contents,

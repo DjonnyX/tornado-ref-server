@@ -1,6 +1,5 @@
 import { Controller, Route, Post, Tags, Example, Request, Body, Get, Put, Delete, OperationId, Security } from "tsoa";
-import { RefTypes, TerminalTypes } from "@djonnyx/tornado-types";
-import { IRefItem } from "./RefsController";
+import { IRef, RefTypes, TerminalTypes } from "@djonnyx/tornado-types";
 import { licServerApiService } from "../services";
 import { IAuthRequest } from "../interfaces";
 
@@ -53,7 +52,7 @@ interface LicenseTypeResponse {
 }
 
 interface ILicenseTypeInfoMeta {
-    ref: IRefItem;
+    ref: IRef;
 }
 
 const LICENSE_TYPE_RESPONSE_TEMPLATE: ILicenseTypeInfo = {
