@@ -1,15 +1,16 @@
-import { IBusinessPeriodContents, ISchedule } from "@djonnyx/tornado-types";
+import { IBusinessPeriodContents } from "@djonnyx/tornado-types";
 import * as mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
+import { IScheduleItem } from "../controllers/BusinessPeriodsController";
 
-interface IScheduleItem extends ISchedule {}
+interface IScheduleDocument extends Document, IScheduleItem {}
 
 interface IBusinessPeriodDocument extends Document {
     client: string;
     active: boolean;
     name: string,
     contents: IBusinessPeriodContents;
-    schedule: Array<IScheduleItem>;
+    schedule: Array<IScheduleDocument>;
     extra?: { [key: string]: any } | null;
 }
 
@@ -37,4 +38,4 @@ const BusinessPeriodSchema = new Schema({
 
 const BusinessPeriodModel = mongoose.model<IBusinessPeriodDocument>("BusinessPeriod", BusinessPeriodSchema);
 
-export { BusinessPeriodModel, IBusinessPeriodDocument, IScheduleItem };
+export { BusinessPeriodModel, IBusinessPeriodDocument, IScheduleDocument };

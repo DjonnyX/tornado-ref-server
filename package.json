@@ -1,13 +1,13 @@
 {
   "name": "tornado-ref-server",
-  "version": "1.1.1-alpha11",
+  "version": "1.1.1-alpha12",
   "author": {
     "email": "djonnyx@gmail.com",
     "name": "Eugene Grebennikov"
   },
   "description": "",
   "scripts": {
-    "start": "node ./build/main.js",
+    "start": "npm run compile && node ./build/main.js",
     "serve": "nodemon -x ts-node src/main.ts",
     "build": "tsc",
     "gendoc": "tsoa routes && tsoa swagger",
@@ -30,7 +30,7 @@
   "homepage": "https://github.com/DjonnyX/tornado-ref-server#readme",
   "license": "Commercial",
   "dependencies": {
-    "@djonnyx/tornado-types": "^1.4.37",
+    "@djonnyx/tornado-types": "^1.4.38",
     "@hapi/joi": "^17.1.1",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",

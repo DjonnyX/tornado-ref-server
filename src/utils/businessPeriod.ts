@@ -1,7 +1,7 @@
-import { IBusinessPeriod, ISchedule } from "@djonnyx/tornado-types";
-import { IBusinessPeriodDocument } from "@models";
+import { IBusinessPeriodDocument, IScheduleDocument } from "@models";
+import { IBusinessPeriodItem } from "../controllers/BusinessPeriodsController";
 
-const formatSchedule = (model: Array<ISchedule>) => {
+const formatSchedule = (model: Array<IScheduleDocument>) => {
     if (!model) {
         return [];
     }
@@ -14,11 +14,12 @@ const formatSchedule = (model: Array<ISchedule>) => {
                 start: schedule.time.start || 0,
             },
             weekDays: schedule.weekDays || [],
+            extra: schedule.extra,
         }
     });
 }
 
-export const formatModel = (model: IBusinessPeriodDocument): IBusinessPeriod => ({
+export const formatModel = (model: IBusinessPeriodDocument): IBusinessPeriodItem => ({
     id: model._id,
     active: model.active,
     contents: model.contents,

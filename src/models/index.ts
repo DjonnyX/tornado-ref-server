@@ -3,7 +3,7 @@ import { TagModel, ITagDocument } from "./Tag";
 import { RefModel, IRefDocument } from "./Ref";
 import { INodeDocument, NodeModel } from "./Node";
 import { ISelector, SelectorModel } from "./Selector";
-import { IBusinessPeriodDocument, BusinessPeriodModel, IScheduleItem } from "./BusinessPeriod";
+import { IBusinessPeriodDocument, BusinessPeriodModel, IScheduleDocument } from "./BusinessPeriod";
 import { ICurrencyDocument, CurrencyModel } from "./Currency";
 import { IOrderTypeDocument, OrderTypeModel } from "./OrderTypes";
 import { IAdDocument, AdModel } from "./Ad";
@@ -22,7 +22,7 @@ export {
     ProductModel, IProductDocument,
     CurrencyModel, ICurrencyDocument,
     TagModel, ITagDocument,
-    IBusinessPeriodDocument, BusinessPeriodModel, IScheduleItem,
+    IBusinessPeriodDocument, BusinessPeriodModel, IScheduleDocument,
     RefModel, IRefDocument,
     OrderTypeModel, IOrderTypeDocument,
     IAdDocument, AdModel,

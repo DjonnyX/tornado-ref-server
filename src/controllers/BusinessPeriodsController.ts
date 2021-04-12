@@ -1,13 +1,33 @@
-import { IBusinessPeriodDocument, BusinessPeriodModel, IScheduleItem } from "../models";
+import { IBusinessPeriodDocument, BusinessPeriodModel, IScheduleDocument } from "../models";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Request } from "tsoa";
 import * as joi from "@hapi/joi";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatModel } from "../utils/businessPeriod";
 import { IAuthRequest } from "../interfaces";
-import { IBusinessPeriod, IBusinessPeriodContents, IRef, RefTypes } from "@djonnyx/tornado-types";
+import { IBusinessPeriod, IBusinessPeriodContents, IRef, ISchedule, IScheduleTimeRange, RefTypes } from "@djonnyx/tornado-types";
 import { findAllWithFilter } from "../utils/requestOptions";
 
-interface IBusinessPeriodItem extends IBusinessPeriod { }
+export interface IScheduleItem {
+    active: boolean;
+    time?: {
+        start: number;
+        end: number;
+    };
+    weekDays?: number[];
+    extra?: {
+        [key: string]: any;
+    } | null;
+}
+
+export interface IBusinessPeriodItem {
+    id: string;
+    active: boolean;
+    contents: IBusinessPeriodContents;
+    schedule: Array<IScheduleItem>;
+    extra?: {
+        [key: string]: any;
+    } | null;
+}
 
 interface IBusinessPeriodMeta {
     ref: IRef;
@@ -35,7 +55,7 @@ interface IBusinessPeriodCreateRequest {
     active: boolean;
     name?: string;
     contents?: IBusinessPeriodContents | any;
-    schedule: Array<IScheduleItem>;
+    schedule: Array<IScheduleDocument>;
     extra?: { [key: string]: any } | null;
 }
 
