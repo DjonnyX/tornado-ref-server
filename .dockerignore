@@ -1,14 +1,10 @@
-package-lock.json
 node_modules
 npm-debug.log
 assets
 logs
-src
-tsconfig.json
 keys.cmd
 Dockerfile
 docker-compose.yml
-.eslintrc
 .dockerignore
 .git
 .gitignore
