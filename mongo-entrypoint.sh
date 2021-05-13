@@ -1,9 +1,3 @@
-mongo <<EOF
-  db.createUser({
-    user: "$MONGO_USERNAME",
-    pwd: "$MONGO_PASSWORD",
-    roles: [
-      { role: 'readWrite', db: "$MONGO_INITDB_DATABASE" }
-    ]
-  })
-EOF
+echo 'Creating application user and db'
+mongo ${MONGO_INITDB_DATABASE} --host 127.0.0.1 -u ${MONGO_INITDB_ROOT_USERNAME} -p ${MONGO_INITDB_ROOT_PASSWORD} --authenticationDatabase admin --eval "db.createUser({user: '${MONGO_INITDB_DATABASE_USERNAME}', pwd: '${MONGO_INITDB_DATABASE_PASSWORD}', roles:[{role:'dbOwner', db: '${MONGO_INITDB_DATABASE}'}]})"
+echo "User for db '${MONGO_INITDB_DATABASE}' created."
