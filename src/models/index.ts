@@ -5,6 +5,7 @@ import { INodeDocument, NodeModel } from "./Node";
 import { ISelector, SelectorModel } from "./Selector";
 import { IBusinessPeriodDocument, BusinessPeriodModel, IScheduleDocument } from "./BusinessPeriod";
 import { ICurrencyDocument, CurrencyModel } from "./Currency";
+import { IEmployeeDocument, EmployeeModel } from "./Employee";
 import { IOrderTypeDocument, OrderTypeModel } from "./OrderTypes";
 import { IAdDocument, AdModel } from "./Ad";
 import { ILanguageDocument, LanguageModel } from "./Language";
@@ -21,6 +22,7 @@ export {
     IReceiptItem,
     ProductModel, IProductDocument,
     CurrencyModel, ICurrencyDocument,
+    EmployeeModel, IEmployeeDocument,
     TagModel, ITagDocument,
     IBusinessPeriodDocument, BusinessPeriodModel, IScheduleDocument,
     RefModel, IRefDocument,
