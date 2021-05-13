@@ -13,6 +13,7 @@ services:
             MONGO_INITDB_ROOT_PASSWORD: dbrootuserpassword
         volumes:
             - ./mongo-entrypoint.sh:/docker-entrypoint-initdb.d/mongo-entrypoint.sh:ro
+            - rs-db:/data/db
 
     mongo-express:
         image: mongo-express
@@ -45,3 +46,10 @@ services:
             LIC_SERVER_HOST: http://192.168.8.110:8078
         ports:
             - 8080:8080
+        volumes:
+            - rs-assets:/assets
+
+volumes:
+    # Configure shared volumes to be used in the services above.
+    rs-db:
+    rs-assets:
