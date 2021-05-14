@@ -1,4 +1,4 @@
-import { SelectorModel, ISelector, ILanguageDocument, LanguageModel } from "../models/index";
+import { SelectorModel, ISelectorDocument, ILanguageDocument, LanguageModel } from "../models/index";
 import { Controller, Route, Post, Tags, OperationId, Example, Request, Security, Get, Delete, Body, Put } from "tsoa";
 import { riseRefVersion, getRef } from "../db/refs";
 import { ISelectorItem, RESPONSE_TEMPLATE as SELECTOR_RESPONSE_TEMPLATE } from "./SelectorController";
@@ -146,7 +146,7 @@ export class SelectorAssetsController extends Controller {
         },
     })
     public async getAllAssets(selectorId: string): Promise<ISelectorGetAllAssetsResponse> {
-        let selector: ISelector;
+        let selector: ISelectorDocument;
         try {
             selector = await SelectorModel.findById(selectorId);
         } catch (err) {
@@ -206,7 +206,7 @@ export class SelectorAssetsController extends Controller {
         data: [RESPONSE_TEMPLATE],
     })
     public async getAssets(selectorId: string, langCode: string): Promise<ISelectorGetAssetsResponse> {
-        let selector: ISelector;
+        let selector: ISelectorDocument;
         try {
             selector = await SelectorModel.findById(selectorId);
         } catch (err) {
@@ -267,7 +267,7 @@ export class SelectorAssetsController extends Controller {
             };
         }
 
-        let selector: ISelector;
+        let selector: ISelectorDocument;
         try {
             selector = await SelectorModel.findById(selectorId);
         } catch (err) {
@@ -348,7 +348,7 @@ export class SelectorAssetsController extends Controller {
             };
         }
 
-        let selector: ISelector;
+        let selector: ISelectorDocument;
         let deletedAsset: string;
         try {
             selector = await SelectorModel.findById(selectorId);
@@ -431,7 +431,7 @@ export class SelectorAssetsController extends Controller {
         }
 
         let selectorRef: IRef;
-        let savedSelector: ISelector;
+        let savedSelector: ISelectorDocument;
         try {
             const assetId = assetsInfo.data.id.toString();
             contents[langCode].resources[resourceType] = assetId;
@@ -485,7 +485,7 @@ export class SelectorAssetsController extends Controller {
     })
     public async update(selectorId: string, langCode: string, assetId: string, @Body() body: ISelectorAssetUpdateRequest, @Request() request: IAuthRequest): Promise<ISelectorCreateAssetsResponse> {
 
-        let selector: ISelector;
+        let selector: ISelectorDocument;
         try {
             selector = await SelectorModel.findById(selectorId);
         } catch (err) {
@@ -559,7 +559,7 @@ export class SelectorAssetsController extends Controller {
         meta: META_TEMPLATE
     })
     public async delete(selectorId: string, langCode: string, assetId: string, @Request() request: IAuthRequest): Promise<ISelectorDeleteAssetsResponse> {
-        let selector: ISelector;
+        let selector: ISelectorDocument;
         try {
             selector = await SelectorModel.findById(selectorId);
         } catch (err) {

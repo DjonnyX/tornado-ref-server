@@ -2,6 +2,8 @@ node_modules/
 npm-debug.log
 assets/
 logs/
+rs-assets/
+rs-db/
 keys.cmd
 Dockerfile
 docker-compose.yml
