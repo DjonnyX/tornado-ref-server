@@ -1,16 +1,22 @@
 import * as fs from "fs";
 import { AdTypes, IKioskTheme, NodeTypes, RefTypes, TerminalTypes } from "@djonnyx/tornado-types";
-import { RefModel, NodeModel, TranslationModel, LanguageModel, CurrencyModel, AppThemeModel, AdModel, OrderTypeModel, IOrderTypeDocument, ILanguageDocument } from "../models";
+import {
+    RefModel, NodeModel, TranslationModel, LanguageModel, CurrencyModel, AppThemeModel, AdModel, OrderTypeModel,
+    ILanguageDocument, IOrderTypeDocument
+} from "../models";
 import { mergeTranslation, getTemplateLangs } from "../utils/translation";
 import {
     LOCALIZATION_TEMPLATE_PATH, CURRENCY_TEMPLATE_PATH, THEMES_KIOSK_TEMPLATE_PATH,
-    THEMES_ORDER_PICKER_TEMPLATE_PATH, THEMES_EQ_TEMPLATE_PATH, DEFAULT_INTRO_TEMPLATE_MANIFEST_PATH, DEFAULT_INTRO_TEMPLATE_DATA_PATH, DEFAULT_SCREENSAVER_SERVICE_UNAVAILABLE_TEMPLATE_MANIFEST_PATH, DEFAULT_SCREENSAVER_SERVICE_UNAVAILABLE_TEMPLATE_DATA_PATH
+    THEMES_ORDER_PICKER_TEMPLATE_PATH, THEMES_EQ_TEMPLATE_PATH, DEFAULT_INTRO_TEMPLATE_MANIFEST_PATH,
+    DEFAULT_INTRO_TEMPLATE_DATA_PATH, DEFAULT_SCREENSAVER_SERVICE_UNAVAILABLE_TEMPLATE_MANIFEST_PATH,
+    DEFAULT_SCREENSAVER_SERVICE_UNAVAILABLE_TEMPLATE_DATA_PATH
 } from "../config";
 import { ITranslationTemplate } from "../interfaces/ITranslationTemplate";
 import { ICurrencyTemplate, IScreenSaverManifest } from "../interfaces";
 import { riseRefVersion } from "./refs";
 import { deepMergeObjects } from "../utils/object";
 import { createAd } from "../utils/ad";
+import { makeDirIfEmpty } from "../utils/archive";
 
 const createDefaultOrderTypeIfNeed = async (client: string) => {
     const orderTypes = await OrderTypeModel.find({ client });
@@ -20,7 +26,7 @@ const createDefaultOrderTypeIfNeed = async (client: string) => {
     }
 
     let defaultLang: ILanguageDocument;
-    
+
     try {
         defaultLang = await LanguageModel.findOne({ client, isDefault: true });
     } catch (err) {
@@ -264,25 +270,13 @@ const createDefaultCurrencyFromTemplate = async (client: string) => {
     }
 }
 
-const makeDirIfEmpty = (src: string): Promise<void> => {
-    return new Promise((resolve, reject) => {
-        fs.stat(src, (err, stats) => {
-            if (!!err) {
-                fs.mkdir(src, () => {
-                    resolve();
-                });
-
-                return;
-            }
-
-            resolve();
-        });
-    });
+export const initRootEnvironment = async (): Promise<void> => {
+    await makeDirIfEmpty("backups");
+    await makeDirIfEmpty("assets");
 }
 
 const initEnvironment = async (client: string): Promise<void> => {
     try {
-        await makeDirIfEmpty("assets");
         await makeDirIfEmpty(`assets/${client}`);
     } catch (err) {
         console.error(`Init environment fail. ${err}`);

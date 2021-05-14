@@ -11,6 +11,7 @@ if (fs.existsSync(".env")) {
 export const AUTH_PRIVATE_KEY = process.env["AUTH_PRIVATE_KEY"];
 export const DB_URI = process.env["DB_URI"];
 export const PORT = Number.parseInt(process.env["PORT"]);
+export const CLIENT_HOST = process.env["CLIENT_HOST"];
 export const SWAGGER_ROUTE = process.env["SWAGGER_ROUTE"];
 export const LOCALIZATION_TEMPLATE_PATH = path.normalize("template/localization.json");
 export const DEFAULT_INTRO_TEMPLATE_DATA_PATH = path.normalize("template/ads/intro/screensaver.mp4");

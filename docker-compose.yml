@@ -13,7 +13,7 @@ services:
             MONGO_INITDB_ROOT_PASSWORD: dbrootuserpassword
         volumes:
             - ./mongo-entrypoint.sh:/docker-entrypoint-initdb.d/mongo-entrypoint.sh:ro
-            - rs-db:/data/db
+            - db:/data/db
 
     mongo-express:
         image: mongo-express
@@ -40,6 +40,8 @@ services:
             DB_URI: dbuser:dbpassword@mongo:27017/appdata
             # Server Port
             PORT: 8080
+            # Client Host
+            CLIENT_HOST: http://127.0.0.1:8080
             # Swagger Doc Path
             SWAGGER_ROUTE: /docs
             # LicServer
@@ -47,9 +49,11 @@ services:
         ports:
             - 8080:8080
         volumes:
-            - rs-assets:/assets
+            - assets/:/app/assets
+            - backups/:/app/backups
 
 volumes:
     # Configure shared volumes to be used in the services above.
-    rs-db:
-    rs-assets:
+    db:
+    assets:
+    backups:

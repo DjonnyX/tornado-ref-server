@@ -1,4 +1,4 @@
-import { SelectorModel, ISelector, NodeModel, ILanguageDocument, LanguageModel, INodeDocument } from "../models/index";
+import { SelectorModel, ISelectorDocument, NodeModel, ILanguageDocument, LanguageModel, INodeDocument } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Query, Request } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { deleteNodesChain } from "../utils/node";
@@ -346,7 +346,7 @@ export class SelectorController extends Controller {
         meta: META_TEMPLATE,
     })
     public async delete(id: string, @Request() request: IAuthRequest): Promise<ISelectorResponse> {
-        let selector: ISelector;
+        let selector: ISelectorDocument;
         try {
             selector = await SelectorModel.findByIdAndDelete(id);
         } catch (err) {

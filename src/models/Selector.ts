@@ -2,7 +2,7 @@ import { ISelectorContents, SelectorTypes } from "@djonnyx/tornado-types";
 import * as mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
 
-interface ISelector extends Document {
+interface ISelectorDocument extends Document {
     client: string;
     active: boolean;
     type: SelectorTypes;
@@ -25,6 +25,6 @@ const SelectorSchema = new Schema({
     extra: { type: Schema.Types.Mixed, required: false },
 });
 
-const SelectorModel = mongoose.model<ISelector>("Selector", SelectorSchema);
+const SelectorModel = mongoose.model<ISelectorDocument>("Selector", SelectorSchema);
 
-export { SelectorModel, ISelector };
+export { SelectorModel, ISelectorDocument };
