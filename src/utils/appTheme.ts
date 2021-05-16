@@ -3,7 +3,7 @@ import { IAppThemeItem } from "../controllers/AppThemeController";
 
 export const formatAppThemeModel = (model: IAppTheme): IAppThemeItem => ({
     id: model.id,
-    clientId: model.clientId,
+    client: model.client,
     type: model.type,
     name: model.name,
     version: model.version,

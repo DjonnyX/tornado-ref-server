@@ -45,7 +45,7 @@ interface ITerminalUpdateRequest {
 }
 
 const RESPONSE_TEMPLATE: ITerminalItem = {
-    clientId: "f234r34r-34r23-4t32-43434",
+    client: "f234r34r-34r23-4t32-43434",
     status: TerminalStatusTypes.ONLINE,
     type: TerminalTypes.KIOSK,
     name: "My terminal",
@@ -141,7 +141,7 @@ export class Deviceontroller extends Controller {
         } catch (err) { }
 
         if (!!existsTerminal) {
-            existsTerminal.clientId = setDeviceResponse.data.clientId;
+            existsTerminal.client = setDeviceResponse.data.clientId;
             existsTerminal.status = TerminalStatusTypes.ONLINE;
             existsTerminal.type = request.terminal.type;
             existsTerminal.name = body.name;
@@ -170,7 +170,7 @@ export class Deviceontroller extends Controller {
 
         try {
             const item = new TerminalModel({
-                clientId: setDeviceResponse.data.clientId,
+                client: setDeviceResponse.data.clientId,
                 status: TerminalStatusTypes.ONLINE,
                 type: request.terminal.type,
                 name: body.name,
@@ -212,7 +212,7 @@ export class TerminalsController extends Controller {
         data: [RESPONSE_TEMPLATE]
     })
     public async getAll(@Request() request: IAuthRequest): Promise<ITerminalsResponse> {
-        let findParams: any = request.terminal ? {} : { clientId: request.account.id };
+        let findParams: any = request.terminal ? {} : { client: request.account.id };
 
         try {
             const items = await findAllWithFilter(TerminalModel.find(findParams), request);

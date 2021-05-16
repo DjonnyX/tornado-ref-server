@@ -1,6 +1,6 @@
 {
   "name": "tornado-ref-server",
-  "version": "1.1.1-alpha14",
+  "version": "1.1.1-alpha15",
   "author": {
     "email": "djonnyx@gmail.com",
     "name": "Eugene Grebennikov"
@@ -27,7 +27,7 @@
   "homepage": "https://github.com/DjonnyX/tornado-ref-server#readme",
   "license": "Commercial",
   "dependencies": {
-    "@djonnyx/tornado-types": "^1.4.40",
+    "@djonnyx/tornado-types": "^1.4.41",
     "@hapi/joi": "^17.1.1",
     "archiver": "^5.3.0",
     "bcrypt": "^5.0.1",
@@ -35,10 +35,13 @@
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "extract-zip": "^2.0.1",
     "ffmpeg-static": "^4.2.7",
     "fluent-ffmpeg": "^2.1.2",
+    "fs-extra": "^10.0.0",
     "got": "^9.6.0",
     "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.1",
     "mongodb": "^3.6.4",
     "mongoose": "^5.11.19",
     "multer": "^1.4.2",
@@ -58,6 +61,7 @@
     "@types/express-serve-static-core": "^4.17.18",
     "@types/ffmpeg-static": "^3.0.0",
     "@types/fluent-ffmpeg": "^2.1.16",
+    "@types/fs-extra": "^9.0.11",
     "@types/got": "^9.6.11",
     "@types/hapi__joi": "^17.1.6",
     "@types/jsonwebtoken": "^8.5.0",

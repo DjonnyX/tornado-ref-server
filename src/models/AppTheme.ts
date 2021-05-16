@@ -3,7 +3,7 @@ import { Schema, Document } from "mongoose";
 import { TerminalTypes } from "@djonnyx/tornado-types";
 
 interface IAppThemeDocument extends Document {
-    clientId: string;
+    client: string;
     type: TerminalTypes;
     name: string;
     version: number;
@@ -12,7 +12,7 @@ interface IAppThemeDocument extends Document {
 }
 
 const AppThemeSchema = new Schema({
-    clientId: { type: String, required: true, index: { unique: false } },
+    client: { type: String, required: true, index: { unique: false } },
     type: {
         type: TerminalTypes,
         enum: [
