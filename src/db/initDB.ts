@@ -16,7 +16,7 @@ import { ICurrencyTemplate, IScreenSaverManifest } from "../interfaces";
 import { riseRefVersion } from "./refs";
 import { deepMergeObjects } from "../utils/object";
 import { createAd } from "../utils/ad";
-import { makeDirIfEmpty } from "../utils/archive";
+import { makeDirIfEmpty } from "../utils/file";
 
 const createDefaultOrderTypeIfNeed = async (client: string) => {
     const orderTypes = await OrderTypeModel.find({ client });
@@ -121,7 +121,7 @@ function readFileJSONAsync<T = any>(path: string): Promise<T> {
     });
 }
 
-const mergeDefaultTheme = async (clientId: string, templatePath: string, type: TerminalTypes) => {
+const mergeDefaultTheme = async (client: string, templatePath: string, type: TerminalTypes) => {
     const template: IKioskTheme = await readFileJSONAsync<IKioskTheme>(templatePath);
 
     const promises = new Array<Promise<void>>();
@@ -131,14 +131,14 @@ const mergeDefaultTheme = async (clientId: string, templatePath: string, type: T
         promises.push(new Promise(async (resolve, reject) => {
             try {
                 let theme = await AppThemeModel.findOne({
-                    clientId,
+                    client,
                     type,
                     name: themeName,
                 });
 
                 if (!theme) {
                     theme = new AppThemeModel({
-                        clientId,
+                        client,
                         type,
                         name: themeName,
                         version: 1,

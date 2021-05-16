@@ -37,7 +37,7 @@ interface IAppThemeResponse {
 
 const RESPONSE_TEMPLATE: IAppThemeItem = {
     id: "g434r34r-34r23-4t32-34215",
-    clientId: "f234r34r-34r23-4t32-43434",
+    client: "f234r34r-34r23-4t32-43434",
     type: TerminalTypes.KIOSK,
     name: "light",
     version: 1,
@@ -70,7 +70,7 @@ export class AppThemesController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest, @Query() type: TerminalTypes): Promise<IAppThemesResponse> {
         try {
-            const items = await findAllWithFilter(AppThemeModel.find({ clientId: request.account.id, type }), request);
+            const items = await findAllWithFilter(AppThemeModel.find({ client: request.account.id, type }), request);
 
             const ref = await getRef(request.account.id, RefTypes.THEMES, {
                 "extra.type.equals": Number(type),
@@ -106,7 +106,7 @@ export class AppThemeController extends Controller {
     })
     public async getOne(name: string, @Request() request: IAuthRequest, @Query() type: TerminalTypes): Promise<IAppThemeResponse> {
         try {
-            const item = await AppThemeModel.findOne({ name, type, clientId: request.account.id });
+            const item = await AppThemeModel.findOne({ name, type, client: request.account.id });
 
             const ref = await getRef(request.account.id, RefTypes.THEMES, {
                 "extra.type.equals": item.type,
