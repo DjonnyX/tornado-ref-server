@@ -580,7 +580,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "id": {"dataType":"string"},
-            "clientId": {"dataType":"string","required":true},
+            "client": {"dataType":"string","required":true},
             "type": {"ref":"TerminalTypes","required":true},
             "name": {"dataType":"string","required":true},
             "version": {"dataType":"double","required":true},
@@ -724,11 +724,30 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IBackup": {
+        "dataType": "refObject",
+        "properties": {
+            "url": {"dataType":"string","required":true},
+            "filename": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ICreateBackupResponse": {
         "dataType": "refObject",
         "properties": {
             "meta": {"ref":"IBackupMeta"},
-            "data": {"dataType":"nestedObjectLiteral","nestedProperties":{"file":{"dataType":"string","required":true}}},
+            "data": {"ref":"IBackup"},
+            "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IUploadBackupResponse": {
+        "dataType": "refObject",
+        "properties": {
+            "meta": {"ref":"IBackupMeta"},
+            "data": {"dataType":"any"},
             "error": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"message":{"dataType":"string","required":true},"code":{"dataType":"double","required":true}}}},
         },
         "additionalProperties": false,
@@ -2320,7 +2339,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "id": {"dataType":"string"},
-            "clientId": {"dataType":"string","required":true},
+            "client": {"dataType":"string","required":true},
             "status": {"ref":"TerminalStatusTypes","required":true},
             "type": {"ref":"TerminalTypes","required":true},
             "name": {"dataType":"string","required":true},
@@ -3265,6 +3284,29 @@ export function RegisterRoutes(app: express.Router) {
 
 
             const promise = controller.create.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, undefined, next);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/api/v1/backup/client/upload',
+            authenticateMiddleware([{"clientAccessToken":[]}]),
+            function BackupController_upload(request: any, response: any, next: any) {
+            const args = {
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new BackupController();
+
+
+            const promise = controller.upload.apply(controller, validatedArgs as any);
             promiseHandler(controller, promise, response, undefined, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

@@ -1,5 +1,5 @@
 import * as archiver from "archiver";
-import * as fs from "fs";
+import * as fs from "fs-extra";
 
 export const zipDirectory = (source: string, out: string): Promise<void> => {
     const archive = archiver('zip', { zlib: { level: 9 } });
@@ -33,21 +33,6 @@ export const zipAppendData = (source: JSON, out: string): Promise<void> => {
     });
 }
 
-export const zipClientBackup = async (client: string, dbData: Object): Promise<void> => {
-
-    await removeFile(`backups/backup_${client}`);
-    await removeDirectory(`backups/${client}`);
-
-    await makeDirIfEmpty(`backups/${client}`);
-
-    await saveDataToFile(JSON.stringify(dbData), `backups/${client}/db`);
-
-    await zipDirectory(`assets/${client}`, `backups/${client}/data`);
-    await zipDirectory(`backups/${client}`, `backups/backup_${client}`);
-
-    await removeDirectory(`backups/${client}`);
-}
-
 export const removeFile = (source: string): Promise<void> => {
     return new Promise<void>((resolve, reject) => {
         fs.unlink(source, (err => {
@@ -68,6 +53,31 @@ export const removeDirectory = (source: string): Promise<void> => {
             }
 
             resolve();
+        }))
+    });
+}
+
+export const copyDirectory = (source: string, target: string): Promise<void> => {
+    return new Promise<void>((resolve, reject) => {
+        fs.copy(source, target, (err => {
+            if (!!err) {
+                // etc
+            }
+
+            resolve();
+        }))
+    });
+}
+
+export const readFile = (source: string): Promise<string> => {
+    return new Promise<string>((resolve, reject) => {
+        fs.readFile(source, ((err, data) => {
+            if (!!err) {
+                reject("Read file fail.");
+                return;
+            }
+
+            resolve(data.toString('utf8'));
         }))
     });
 }
