@@ -1,10 +1,9 @@
-import { IBusinessPeriodDocument, BusinessPeriodModel, IScheduleDocument } from "../models";
+import { BusinessPeriodModel } from "../models";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Request } from "tsoa";
-import * as joi from "@hapi/joi";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatModel } from "../utils/businessPeriod";
 import { IAuthRequest } from "../interfaces";
-import { IBusinessPeriod, IBusinessPeriodContents, IRef, ISchedule, IScheduleTimeRange, RefTypes } from "@djonnyx/tornado-types";
+import { IBusinessPeriod, IBusinessPeriodContents, IRef, RefTypes } from "@djonnyx/tornado-types";
 import { findAllWithFilter } from "../utils/requestOptions";
 
 export interface IScheduleItem {
@@ -55,7 +54,7 @@ interface IBusinessPeriodCreateRequest {
     active: boolean;
     name?: string;
     contents?: IBusinessPeriodContents | any;
-    schedule: Array<IScheduleDocument>;
+    schedule?: Array<IScheduleItem>;
     extra?: { [key: string]: any } | null;
 }
 
@@ -81,18 +80,6 @@ const RESPONSE_TEMPLATE: IBusinessPeriodItem = {
     extra: {
         key: "value",
     }
-};
-
-const validateBP = (node: IBusinessPeriodCreateRequest): joi.ValidationResult => {
-    const schema = joi.object({
-        active: joi.boolean(),
-        name: joi.optional(),
-        contents: joi.optional(),
-        schedule: joi.optional(),
-        extra: joi.optional(),
-    });
-
-    return schema.validate(node);
 };
 
 const META_TEMPLATE: IBusinessPeriodMeta = {
@@ -176,19 +163,6 @@ export class BusinessPeriodController extends Controller {
         data: RESPONSE_TEMPLATE,
     })
     public async create(@Body() body: IBusinessPeriodCreateRequest, @Request() request: IAuthRequest): Promise<IBusinessPeriodResponse> {
-        const validation = validateBP(body);
-        if (validation.error) {
-            this.setStatus(500);
-            return {
-                error: [
-                    {
-                        code: 500,
-                        message: validation.error.message,
-                    }
-                ]
-            };
-        }
-
         try {
             const item = new BusinessPeriodModel({ ...body, client: request.account.id });
             const savedItem = await item.save();
@@ -218,19 +192,6 @@ export class BusinessPeriodController extends Controller {
         data: RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() body: IBusinessPeriodCreateRequest, @Request() request: IAuthRequest): Promise<IBusinessPeriodResponse> {
-        const validation = validateBP(body);
-        if (validation.error) {
-            this.setStatus(500);
-            return {
-                error: [
-                    {
-                        code: 500,
-                        message: validation.error.message,
-                    }
-                ]
-            };
-        }
-
         try {
             const item = await BusinessPeriodModel.findById(id);
 
