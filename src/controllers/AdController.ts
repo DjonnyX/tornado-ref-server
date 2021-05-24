@@ -5,7 +5,7 @@ import { getRef, riseRefVersion } from "../db/refs";
 import { formatAdModel } from "../utils/ad";
 import { normalizeContents, getDeletedImagesFromDifferense, getEntityAssets } from "../utils/entity";
 import { AssetModel } from "../models/Asset";
-import { deleteAsset, uploadAsset } from "./AssetsController";
+import { deleteAsset } from "./AssetsController";
 import { IAuthRequest } from "../interfaces";
 import { findAllWithFilter } from "../utils/requestOptions";
 
@@ -170,7 +170,7 @@ export class AdsController extends Controller {
             const ref = await getRef(request.account.id, RefTypes.ADS);
             return {
                 meta: { ref },
-                data: items.map(v => formatAdModel(v)),
+                data: items.map((v: IAdDocument) => formatAdModel(v)),
             };
         } catch (err) {
             this.setStatus(500);

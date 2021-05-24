@@ -5,6 +5,7 @@ import { IntegrationStates, IRef, IVersion, RefTypes, UserRights } from "@djonny
 
 interface IIntegrationInfo {
     id: string;
+    host: string;
     name: string;
     description: string;
     rights: Array<UserRights>;
@@ -14,6 +15,7 @@ interface IIntegrationInfo {
 }
 
 interface ICreateIntegrationParams {
+    host: string;
     name: string;
     description?: string;
     rights: Array<UserRights>;
@@ -23,6 +25,7 @@ interface ICreateIntegrationParams {
 }
 
 interface IUpdateIntegrationParams {
+    host?: string;
     name?: string;
     description?: string;
     rights?: Array<UserRights>;
@@ -55,6 +58,7 @@ interface IIntegrationInfoMeta {
 
 const APPLICATION_RESPONSE_TEMPLATE: IIntegrationInfo = {
     id: "507c7f79bcf86cd7994f6c0e",
+    host: "http://127.0.0.1:8089/",
     name: "Эвотор",
     description: "Интеграция с товароучетной системой \"Эвотор\"",
     rights: [
