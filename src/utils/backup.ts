@@ -86,25 +86,26 @@ const zipClientBackup = async (client: string, dbData: IClientDBBackup): Promise
     await removeDirectory(`backups/${client}`);
 
     await makeDirIfEmpty(`backups/${client}`);
+    await makeDirIfEmpty(`backups/${client}/archive`);
 
-    await saveDataToFile(JSON.stringify(dbData), `backups/${client}/db`);
+    await saveDataToFile(JSON.stringify(dbData), `backups/${client}/archive/db`);
 
-    await zipDirectory(`assets/${client}`, `backups/${client}/data`);
-    await zipDirectory(`backups/${client}`, outputFileName);
+    await zipDirectory(`assets/${client}`, `backups/${client}/archive/data`);
+    await zipDirectory(`backups/${client}/archive`, outputFileName);
 
-    await removeDirectory(`backups/${client}`);
+    await removeDirectory(`backups/${client}/archive`);
 
     return outputFileName;
 }
 
 export const uploadBackup = async (request: IAuthRequest, allowedExtensions = ['.tdb']): Promise<void> => {
-    await makeDirIfEmpty('backups/tmp');
+    await makeDirIfEmpty('backups/upload');
 
     return new Promise<void>((resolve, reject) => {
         const EXT_PATTERN = new RegExp(`^(${allowedExtensions.map(v => `\\${v}`).join("|")})$`);
         const client = request.account.id;
         multer({
-            dest: "backups/tmp",
+            dest: "backups/upload",
             fileFilter: function (req, file, cb) {
                 const ext = path.extname(file.originalname);
                 if (!EXT_PATTERN.test(ext)) {
@@ -120,37 +121,25 @@ export const uploadBackup = async (request: IAuthRequest, allowedExtensions = ['
             const filePath = request.file.path;
 
             try {
-                await removeDirectory(path.resolve(`backups/tmp/${client}`));
+                await removeDirectory(path.resolve(`backups/upload/${client}`));
             } catch (err) {
                 return reject(Error(`Remove existing assets directory fail. ${err}`));
             }
 
             try {
-                await extractZip(filePath, { dir: path.resolve(`backups/tmp/${client}`) });
+                await extractZip(filePath, { dir: path.resolve(`backups/upload/${client}`) });
             } catch (err) {
                 return reject(Error(`Extract zip fail. ${err}`));
             }
 
             try {
-                await removeFile(filePath);
-            } catch (err) {
-                return reject(Error(`Remove uploaded file fail. ${err}`));
-            }
-
-            try {
-                await removeDirectory(path.resolve(`backups/tmp/${client}/data`));
-            } catch (err) {
-                return reject(Error(`Remove existing assets directory fail. ${err}`));
-            }
-
-            try {
-                await extractZip(`backups/tmp/${client}/data`, { dir: path.resolve(`backups/tmp/${client}/assets`) });
+                await extractZip(`backups/upload/${client}/data`, { dir: path.resolve(`backups/upload/${client}/assets`) });
             } catch (err) {
                 return reject(Error(`Extract zip1 fail. ${err}`));
             }
 
             try {
-                const dbDataRaw = await readFile(`backups/tmp/${client}/db`);
+                const dbDataRaw = await readFile(`backups/upload/${client}/db`);
                 const dbData: IClientDBBackup = JSON.parse(dbDataRaw);
 
                 await replaceDB(client, dbData);
@@ -165,15 +154,21 @@ export const uploadBackup = async (request: IAuthRequest, allowedExtensions = ['
             }
 
             try {
-                await copyDirectory(`backups/tmp/${client}/assets`, `assets/${client}`);
+                await copyDirectory(`backups/upload/${client}/assets`, `assets/${client}`);
             } catch (err) {
                 return reject(Error(`Copy directory fail. ${err}`));
             }
 
             try {
-                await removeDirectory(`backups/tmp/${client}`);
+                await removeDirectory(`backups/upload/${client}`);
             } catch (err) {
-                return reject(Error(`Remove tmp directory fail. ${err}`));
+                return reject(Error(`Remove upload directory fail. ${err}`));
+            }
+
+            try {
+                await removeFile(filePath);
+            } catch (err) {
+                return reject(Error(`Remove original file fail. ${err}`));
             }
 
             resolve();
