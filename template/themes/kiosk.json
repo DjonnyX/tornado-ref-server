@@ -2,22 +2,22 @@
     "light": {
         "common": {
             "modal": {
-                "background": "#e3e3e3",
+                "backgroundColor": "#e3e3e3",
                 "window": {
-                    "background": "transparent"
+                    "backgroundColor": "transparent"
                 }
             },
             "modalTransparent": {
-                "background": "rgba(0,0,0,0.5)",
+                "backgroundColor": "rgba(0,0,0,0.5)",
                 "window": {
-                    "background": "#fff",
+                    "backgroundColor": "#fff",
                     "borderColor": "rgba(0,0,0,0.1)"
                 }
             },
             "modalNotification": {
-                "background": "none",
+                "backgroundColor": "none",
                 "window": {
-                    "background": "rgba(0,0,0,0.75)",
+                    "backgroundColor": "rgba(0,0,0,0.75)",
                     "borderColor": "rgba(0,0,0,0.1)"
                 }
             },
@@ -74,7 +74,7 @@
             }
         },
         "loading": {
-            "background": "#fff",
+            "backgroundColor": "#fff",
             "progressBar": {
                 "thumbColor": "rgba(0,0,0,0.85)",
                 "trackColor": "rgba(0,0,0,0.75)",
@@ -82,12 +82,12 @@
             }
         },
         "intro": {
-            "background": "#fff"
+            "backgroundColor": "#fff"
         },
         "menu": {
-            "background": "#fff",
+            "backgroundColor": "#fff",
             "header": {
-                "background": [
+                "backgroundColor": [
                     "rgba(255, 255, 255, 1)",
                     "rgba(255, 255, 255, 1)",
                     "rgba(255, 255, 255, 1)",
@@ -97,6 +97,7 @@
                 "titleColor": "rgba(0,0,0,0.75)"
             },
             "orderPanel": {
+                "enabled": true,
                 "backgroundColor": "rgba(0,0,0,0.025)"
             },
             "backButton": {
@@ -257,7 +258,7 @@
             }
         },
         "confirmation": {
-            "background": "#fff",
+            "backgroundColor": "#fff",
             "backButton": {
                 "backgroundColor": "#212121",
                 "textColor": "#ffffff"
@@ -311,22 +312,22 @@
     "dark": {
         "common": {
             "modal": {
-                "background": "#000",
+                "backgroundColor": "#000",
                 "window": {
-                    "background": "#000"
+                    "backgroundColor": "#000"
                 }
             },
             "modalTransparent": {
-                "background": "rgba(255,255,255,0.075)",
+                "backgroundColor": "rgba(255,255,255,0.075)",
                 "window": {
-                    "background": "#000",
+                    "backgroundColor": "#000",
                     "borderColor": "rgba(255,255,255,0.1)"
                 }
             },
             "modalNotification": {
-                "background": "none",
+                "backgroundColor": "none",
                 "window": {
-                    "background": "rgba(255,255,255,0.75)",
+                    "backgroundColor": "rgba(255,255,255,0.75)",
                     "borderColor": "rgba(255,255,255,0.1)"
                 }
             },
@@ -383,7 +384,7 @@
             }
         },
         "loading": {
-            "background": "#000",
+            "backgroundColor": "#000",
             "progressBar": {
                 "thumbColor": "rgba(255,255,255,0.85)",
                 "trackColor": "rgba(255,255,255,0.75)",
@@ -391,12 +392,12 @@
             }
         },
         "intro": {
-            "background": "#000"
+            "backgroundColor": "#000"
         },
         "menu": {
-            "background": "#000",
+            "backgroundColor": "#000",
             "header": {
-                "background": [
+                "backgroundColor": [
                     "rgba(0, 0, 0, 1)",
                     "rgba(0, 0, 0, 1)",
                     "rgba(0, 0, 0, 1)",
@@ -566,7 +567,7 @@
             }
         },
         "confirmation": {
-            "background": "#000",
+            "backgroundColor": "#000",
             "backButton": {
                 "backgroundColor": "#212121",
                 "textColor": "#ffffff"

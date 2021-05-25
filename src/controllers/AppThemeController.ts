@@ -1,6 +1,6 @@
-import { Controller, Route, Get, Tags, OperationId, Example, Security, Request, Query, Put, Body } from "tsoa";
+import { Controller, Route, Get, Tags, OperationId, Example, Security, Request, Query, Put, Body, Post, Delete } from "tsoa";
 import { IAppTheme, IRef, RefTypes, TerminalTypes } from "@djonnyx/tornado-types";
-import { AppThemeModel } from "../models";
+import { AppThemeModel, IAppThemeDocument } from "../models";
 import { IAuthRequest } from "../interfaces";
 import { findAllWithFilter } from "../utils/requestOptions";
 import { getRef, riseRefVersion } from "../db/refs";
@@ -12,9 +12,14 @@ interface IAppThemeMeta {
     ref: IRef;
 }
 
+interface IAppThemeCreateRequest {
+    name?: string;
+    data: IAppThemeItem;
+}
+
 interface IAppThemeUpdateRequest {
     name?: string;
-    data?: any;
+    data?: IAppThemeItem;
 }
 
 interface IAppThemesResponse {
@@ -128,6 +133,37 @@ export class AppThemeController extends Controller {
         }
     }
 
+    @Post()
+    @Security("clientAccessToken")
+    @OperationId("Create")
+    @Example<IAppThemeResponse>({
+        meta: META_TEMPLATE,
+        data: RESPONSE_TEMPLATE,
+    })
+    public async create(@Body() body: IAppThemeCreateRequest, @Query() type: TerminalTypes, @Request() request: IAuthRequest): Promise<IAppThemeResponse> {
+        try {
+            const item = new AppThemeModel({ ...body, type, client: request.account.id });
+            const savedItem = await item.save();
+            const ref = await riseRefVersion(request.account.id, RefTypes.THEMES, {
+                "extra.type.equals": item.type,
+            });
+            return {
+                meta: { ref },
+                data: formatAppThemeModel(savedItem),
+            };
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Caught error. ${err}`,
+                    }
+                ]
+            };
+        }
+    }
+
     @Put("{id}")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
@@ -171,6 +207,48 @@ export class AppThemeController extends Controller {
                     ]
                 };
             }
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Caught error. ${err}`,
+                    }
+                ]
+            };
+        }
+    }
+
+    @Delete("{id}")
+    @Security("clientAccessToken")
+    @OperationId("Delete")
+    @Example<IAppThemeResponse>({
+        meta: META_TEMPLATE
+    })
+    public async delete(id: string, @Request() request: IAuthRequest): Promise<IAppThemeResponse> {
+        let theme: IAppThemeDocument;
+        try {
+            theme = await AppThemeModel.findByIdAndDelete(id);
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Caught error. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        try {
+            const ref = await riseRefVersion(request.account.id, RefTypes.THEMES, {
+                "extra.type.equals": theme.type,
+            });
+            return {
+                meta: { ref },
+            };
         } catch (err) {
             this.setStatus(500);
             return {
