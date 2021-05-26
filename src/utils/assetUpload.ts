@@ -31,8 +31,6 @@ const decodeVideo = (ext: string, pathToResource: string): Promise<string> => {
     return new Promise((resolve, reject) => {
         const normalizedPathToResource = `${pathToResource}${ext}`;
         const normalizedTmpPathToResource = `${pathToResource}-tmp${ext}`;
-        console.log(normalizedPathToResource)
-        console.log(normalizedTmpPathToResource)
         try {
             ffmpeg(normalizedPathToResource)
                 .outputOptions("-c:v libx264")
@@ -62,7 +60,7 @@ const makeThumbnail = (ext: string, pathToResource: string, width: number, heigh
         const thumbnailPath = path.normalize(`${pathToResource}_${width}x${height}`);
         const normalizedPathToResource = `${pathToResource}${ext}`
 
-        if (ext === AssetExtensions.JPG || ext === AssetExtensions.PNG) {
+        if (ext === AssetExtensions.JPG || ext === AssetExtensions.PNG || ext === AssetExtensions.GIF || ext === AssetExtensions.WEBP) {
             const normalizedThumbnailPath = `${thumbnailPath}${ext}`
             // создается миниатюра
             try {

@@ -127,13 +127,13 @@ const RESPONSE_TEMPLATE: IAssetItem = {
     id: "107c7f79bcf86cd7994f6c0e",
     active: true,
     lastUpdate: new Date(),
-    name: "some_3d_model",
-    ext: AssetExtensions.FBX,
+    name: "some_image",
+    ext: AssetExtensions.WEBP,
     mipmap: {
-        x128: "assets/some_3d_model_128x128.png",
-        x32: "assets/favicon.png",
+        x128: "assets/some_image_128x128.webp",
+        x32: "assets/favicon.webp",
     },
-    path: "assets/some_3d_model.fbx",
+    path: "assets/some_image.webp",
 };
 
 @Route("/product")
@@ -258,7 +258,12 @@ export class ProductAssetsController extends Controller {
     public async create(productId: string, langCode: string, @Request() request: IAuthRequest): Promise<IProductCreateAssetsResponse> {
         let assetsInfo: ICreateAssetsResponse;
         try {
-            assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA]);
+            assetsInfo = await uploadAsset(request, [
+                AssetExtensions.JPG,
+                AssetExtensions.PNG,
+                AssetExtensions.GIF,
+                AssetExtensions.WEBP,
+            ]);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -340,7 +345,12 @@ export class ProductAssetsController extends Controller {
     public async resource(productId: string, langCode: string, resourceType: ProductImageTypes, @Request() request: IAuthRequest): Promise<IProductCreateAssetsResponse> {
         let assetsInfo: ICreateAssetsResponse;
         try {
-            assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA], false);
+            assetsInfo = await uploadAsset(request, [
+                AssetExtensions.JPG,
+                AssetExtensions.PNG,
+                AssetExtensions.GIF,
+                AssetExtensions.WEBP,
+            ], false);
         } catch (err) {
             this.setStatus(500);
             return {

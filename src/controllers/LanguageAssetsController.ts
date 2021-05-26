@@ -87,13 +87,13 @@ const RESPONSE_TEMPLATE: IAssetItem = {
     id: "107c7f79bcf86cd7994f6c0e",
     active: true,
     lastUpdate: new Date(),
-    name: "some_3d_model",
-    ext: AssetExtensions.FBX,
+    name: "some_image",
+    ext: AssetExtensions.WEBP,
     mipmap: {
-        x128: "assets/some_3d_model_128x128.png",
-        x32: "assets/favicon.png",
+        x128: "assets/some_image_128x128.webp",
+        x32: "assets/favicon.webp",
     },
-    path: "assets/some_3d_model.fbx",
+    path: "assets/some_image.webp",
 };
 
 @Route("/language")
@@ -154,7 +154,12 @@ export class LanguageAssetsController extends Controller {
         }
     })
     public async create(languageId: string, @Request() request: IAuthRequest): Promise<ILanguageCreateAssetsResponse> {
-        const assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA]);
+        const assetsInfo = await uploadAsset(request, [
+            AssetExtensions.JPG,
+            AssetExtensions.PNG,
+            AssetExtensions.GIF,
+            AssetExtensions.WEBP
+        ]);
 
         let language: ILanguageDocument;
         try {
@@ -215,7 +220,12 @@ export class LanguageAssetsController extends Controller {
         }
     })
     public async resource(languageId: string, resourceType: LanguageImageTypes, @Request() request: IAuthRequest): Promise<ILanguageCreateAssetsResponse> {
-        const assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA], false);
+        const assetsInfo = await uploadAsset(request, [
+            AssetExtensions.JPG,
+            AssetExtensions.PNG,
+            AssetExtensions.GIF,
+            AssetExtensions.WEBP,
+        ], false);
 
         let language: ILanguageDocument;
         let deletedAsset: string;

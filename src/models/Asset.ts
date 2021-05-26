@@ -15,7 +15,7 @@ interface IAssetDocument extends Document {
     path: string;
 }
 
-const AssetSchema = new Schema({
+export const AssetSchema = new Schema({
     client: { type: String, required: true, index: { unique: false } },
     active: { type: Boolean, required: true, default: true },
     name: { type: String, required: true },
@@ -24,10 +24,9 @@ const AssetSchema = new Schema({
         type: String, enum: [
             AssetExtensions.JPG,
             AssetExtensions.PNG,
+            AssetExtensions.GIF,
+            AssetExtensions.WEBP,
             AssetExtensions.MP4,
-            AssetExtensions.OBJ,
-            AssetExtensions.FBX,
-            AssetExtensions.COLLADA,
         ],
         required: true,
     },

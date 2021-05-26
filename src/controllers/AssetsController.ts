@@ -78,12 +78,12 @@ const RESPONSE_TEMPLATE: IAssetItem = {
     id: "107c7f79bcf86cd7994f6c0e",
     active: true,
     lastUpdate: new Date(),
-    name: "some_3d_model",
-    ext: AssetExtensions.FBX,
-    path: "assets/some_3d_model.fbx",
+    name: "some_image",
+    ext: AssetExtensions.WEBP,
+    path: "assets/some_image.webp",
     mipmap: {
-        x128: "assets/some_3d_model_128x128.png",
-        x32: "assets/favicon.png",
+        x128: "assets/some_image_128x128.webp",
+        x32: "assets/favicon.webp",
     },
 };
 
