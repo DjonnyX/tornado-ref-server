@@ -1,5 +1,5 @@
 import { Controller, Route, Get, Tags, OperationId, Example, Security, Request, Query, Put, Body, Post, Delete } from "tsoa";
-import { IAppTheme, IRef, RefTypes, TerminalTypes } from "@djonnyx/tornado-types";
+import { IAppTheme, IRef, KioskThemeResourceTypes, RefTypes, TerminalTypes } from "@djonnyx/tornado-types";
 import { AppThemeModel, IAppThemeDocument } from "../models";
 import { IAuthRequest } from "../interfaces";
 import { findAllWithFilter } from "../utils/requestOptions";
@@ -40,13 +40,15 @@ interface IAppThemeResponse {
     }>;
 }
 
-const RESPONSE_TEMPLATE: IAppThemeItem = {
+export const RESPONSE_TEMPLATE: IAppThemeItem = {
     id: "g434r34r-34r23-4t32-34215",
     client: "f234r34r-34r23-4t32-43434",
     type: TerminalTypes.KIOSK,
     name: "light",
     version: 1,
     lastUpdate: new Date(),
+    assets: ["f234r34r-34r23-4t32-43432", "f234r34r-34r23-4t32-43431"],
+    resources: { [KioskThemeResourceTypes.AUTH__BACKGROUND_COLOR]: "f234r34r-34r23-4t32-43431" },
     data: {
         "skinedElement": {
             "skinedProp": "some-value",

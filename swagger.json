@@ -331,38 +331,6 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"_LeanDocument__LeanDocument_T__": {
-				"properties": {},
-				"type": "object"
-			},
-			"Pick__LeanDocument_T_.Exclude_keyof_LeanDocument_T_.Exclude_keyofDocument._id-or-id-or-__v_-or-%24isSingleNested__": {
-				"properties": {
-					"_id": {
-						"$ref": "#/components/schemas/_LeanDocument__LeanDocument_T__",
-						"description": "This documents _id."
-					},
-					"__v": {
-						"type": "number",
-						"format": "double",
-						"description": "This documents __v."
-					},
-					"id": {
-						"description": "The string version of this documents _id."
-					}
-				},
-				"type": "object",
-				"description": "From T, pick a set of properties whose keys are in the union K"
-			},
-			"Omit__LeanDocument_this_.Exclude_keyofDocument._id-or-id-or-__v_-or-%24isSingleNested_": {
-				"$ref": "#/components/schemas/Pick__LeanDocument_T_.Exclude_keyof_LeanDocument_T_.Exclude_keyofDocument._id-or-id-or-__v_-or-%24isSingleNested__",
-				"description": "Construct a type with the properties of T except for those in type K."
-			},
-			"LeanDocument_this_": {
-				"$ref": "#/components/schemas/Omit__LeanDocument_this_.Exclude_keyofDocument._id-or-id-or-__v_-or-%24isSingleNested_"
-			},
-			"IScheduleDocument": {
-				"$ref": "#/components/schemas/LeanDocument_this_"
-			},
 			"IBusinessPeriodCreateRequest": {
 				"properties": {
 					"active": {
@@ -381,7 +349,7 @@
 					},
 					"schedule": {
 						"items": {
-							"$ref": "#/components/schemas/IScheduleDocument"
+							"$ref": "#/components/schemas/IScheduleItem"
 						},
 						"type": "array"
 					},
@@ -393,8 +361,7 @@
 					}
 				},
 				"required": [
-					"active",
-					"schedule"
+					"active"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -416,10 +383,8 @@
 					".jpg",
 					".png",
 					".gif",
-					".mp4",
-					".fbx",
-					".obj",
-					".dae"
+					".webp",
+					".mp4"
 				],
 				"type": "string"
 			},
@@ -1228,6 +1193,19 @@
 						"type": "string",
 						"format": "date-time"
 					},
+					"assets": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"resources": {
+						"properties": {},
+						"additionalProperties": {
+							"type": "string"
+						},
+						"type": "object"
+					},
 					"data": {}
 				},
 				"required": [
@@ -1236,6 +1214,8 @@
 					"name",
 					"version",
 					"lastUpdate",
+					"assets",
+					"resources",
 					"data"
 				],
 				"type": "object",
@@ -1306,12 +1286,273 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"IAppThemeCreateRequest": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"data": {
+						"$ref": "#/components/schemas/IAppThemeItem"
+					}
+				},
+				"required": [
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"IAppThemeUpdateRequest": {
 				"properties": {
 					"name": {
 						"type": "string"
 					},
-					"data": {}
+					"data": {
+						"$ref": "#/components/schemas/IAppThemeItem"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IAppThemeAsset": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"active": {
+						"type": "boolean"
+					},
+					"lastUpdate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"name": {
+						"type": "string"
+					},
+					"ext": {
+						"$ref": "#/components/schemas/AssetExtensions"
+					},
+					"path": {
+						"type": "string"
+					},
+					"mipmap": {
+						"properties": {
+							"x32": {
+								"type": "string"
+							},
+							"x128": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"x32",
+							"x128"
+						],
+						"type": "object"
+					}
+				},
+				"required": [
+					"id",
+					"active",
+					"lastUpdate",
+					"name",
+					"ext",
+					"path",
+					"mipmap"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IAppThemeGetAllAssetsResponse": {
+				"properties": {
+					"meta": {
+						"properties": {},
+						"type": "object"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/IAppThemeAsset"
+						},
+						"type": "array"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IAppThemeCreateAssetsResponse": {
+				"properties": {
+					"meta": {
+						"properties": {
+							"asset": {
+								"properties": {
+									"ref": {
+										"$ref": "#/components/schemas/IRef"
+									}
+								},
+								"required": [
+									"ref"
+								],
+								"type": "object"
+							},
+							"theme": {
+								"properties": {
+									"ref": {
+										"$ref": "#/components/schemas/IRef"
+									}
+								},
+								"required": [
+									"ref"
+								],
+								"type": "object"
+							}
+						},
+						"required": [
+							"asset",
+							"theme"
+						],
+						"type": "object"
+					},
+					"data": {
+						"properties": {
+							"theme": {
+								"$ref": "#/components/schemas/IAppThemeItem"
+							},
+							"asset": {
+								"$ref": "#/components/schemas/IAppThemeAsset"
+							}
+						},
+						"required": [
+							"theme",
+							"asset"
+						],
+						"type": "object"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"KioskThemeResourceTypes": {
+				"enum": [
+					"auth.backgroundColor",
+					"loading.backgroundColor",
+					"intro.backgroundColor",
+					"menu.backgroundColor",
+					"modifiers.backgroundColor",
+					"confirmation.backgroundColor",
+					"payStatus.backgroundColor",
+					"payConfirmation.backgroundColor"
+				],
+				"type": "string"
+			},
+			"IAppThemeAssetUpdateRequest": {
+				"properties": {
+					"active": {
+						"type": "boolean"
+					},
+					"name": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"active",
+					"name"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IAppThemeDeleteAssetsResponse": {
+				"properties": {
+					"meta": {
+						"properties": {
+							"asset": {
+								"properties": {
+									"ref": {
+										"$ref": "#/components/schemas/IRef"
+									}
+								},
+								"required": [
+									"ref"
+								],
+								"type": "object"
+							},
+							"theme": {
+								"properties": {
+									"ref": {
+										"$ref": "#/components/schemas/IRef"
+									}
+								},
+								"required": [
+									"ref"
+								],
+								"type": "object"
+							}
+						},
+						"required": [
+							"asset",
+							"theme"
+						],
+						"type": "object"
+					},
+					"data": {
+						"properties": {},
+						"type": "object"
+					},
+					"error": {
+						"items": {
+							"properties": {
+								"message": {
+									"type": "string"
+								},
+								"code": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"message",
+								"code"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
 				},
 				"type": "object",
 				"additionalProperties": false
@@ -2513,6 +2754,9 @@
 					"id": {
 						"type": "string"
 					},
+					"host": {
+						"type": "string"
+					},
 					"name": {
 						"type": "string"
 					},
@@ -2538,6 +2782,7 @@
 				},
 				"required": [
 					"id",
+					"host",
 					"name",
 					"description",
 					"rights",
@@ -2615,6 +2860,9 @@
 			},
 			"ICreateIntegrationParams": {
 				"properties": {
+					"host": {
+						"type": "string"
+					},
 					"name": {
 						"type": "string"
 					},
@@ -2639,6 +2887,7 @@
 					}
 				},
 				"required": [
+					"host",
 					"name",
 					"rights",
 					"version",
@@ -2649,6 +2898,9 @@
 			},
 			"IUpdateIntegrationParams": {
 				"properties": {
+					"host": {
+						"type": "string"
+					},
 					"name": {
 						"type": "string"
 					},
@@ -6826,7 +7078,7 @@
 	},
 	"info": {
 		"title": "tornado-ref-server",
-		"version": "1.1.1-alpha15",
+		"version": "1.1.1-alpha17",
 		"license": {
 			"name": "Commercial"
 		},
@@ -6855,7 +7107,7 @@
 												"ref": {
 													"name": "accounts",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.726Z"
+													"lastUpdate": "2021-05-27T08:00:56.605Z"
 												}
 											},
 											"data": [
@@ -6902,7 +7154,7 @@
 												"ref": {
 													"name": "accounts",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.729Z"
+													"lastUpdate": "2021-05-27T08:00:56.608Z"
 												}
 											},
 											"data": {
@@ -6954,7 +7206,7 @@
 												"ref": {
 													"name": "accounts",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.730Z"
+													"lastUpdate": "2021-05-27T08:00:56.609Z"
 												}
 											},
 											"data": {
@@ -7018,7 +7270,7 @@
 												"ref": {
 													"name": "business-periods",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.739Z"
+													"lastUpdate": "2021-05-27T08:00:56.620Z"
 												}
 											},
 											"data": [
@@ -7086,7 +7338,7 @@
 												"ref": {
 													"name": "business-periods",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.741Z"
+													"lastUpdate": "2021-05-27T08:00:56.622Z"
 												}
 											},
 											"data": {
@@ -7159,7 +7411,7 @@
 												"ref": {
 													"name": "business-periods",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.766Z"
+													"lastUpdate": "2021-05-27T08:00:56.625Z"
 												}
 											},
 											"data": {
@@ -7239,7 +7491,7 @@
 												"ref": {
 													"name": "business-periods",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.767Z"
+													"lastUpdate": "2021-05-27T08:00:56.627Z"
 												}
 											}
 										}
@@ -7287,7 +7539,7 @@
 												"ref": {
 													"name": "business-periods",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.742Z"
+													"lastUpdate": "2021-05-27T08:00:56.623Z"
 												}
 											},
 											"data": {
@@ -7360,20 +7612,20 @@
 												"ref": {
 													"name": "assets",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.772Z"
+													"lastUpdate": "2021-05-27T08:00:56.632Z"
 												}
 											},
 											"data": [
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-05-16T19:14:57.772Z",
-													"name": "some_3d_model",
-													"ext": ".fbx",
-													"path": "assets/some_3d_model.fbx",
+													"lastUpdate": "2021-05-27T08:00:56.632Z",
+													"name": "some_image",
+													"ext": ".webp",
+													"path": "assets/some_image.webp",
 													"mipmap": {
-														"x128": "assets/some_3d_model_128x128.png",
-														"x32": "assets/favicon.png"
+														"x128": "assets/some_image_128x128.webp",
+														"x32": "assets/favicon.webp"
 													}
 												}
 											]
@@ -7416,7 +7668,7 @@
 												"ref": {
 													"name": "ads",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.782Z"
+													"lastUpdate": "2021-05-27T08:00:56.644Z"
 												}
 											},
 											"data": [
@@ -7490,7 +7742,7 @@
 												"ref": {
 													"name": "ads",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.785Z"
+													"lastUpdate": "2021-05-27T08:00:56.646Z"
 												}
 											},
 											"data": {
@@ -7560,7 +7812,7 @@
 												"ref": {
 													"name": "ads",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.788Z"
+													"lastUpdate": "2021-05-27T08:00:56.651Z"
 												}
 											},
 											"data": {
@@ -7637,7 +7889,7 @@
 												"ref": {
 													"name": "ads",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.795Z"
+													"lastUpdate": "2021-05-27T08:00:56.654Z"
 												}
 											}
 										}
@@ -7685,7 +7937,7 @@
 												"ref": {
 													"name": "ads",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.786Z"
+													"lastUpdate": "2021-05-27T08:00:56.647Z"
 												}
 											},
 											"data": {
@@ -7756,14 +8008,14 @@
 													"ref": {
 														"name": "ads",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:57.798Z"
+														"lastUpdate": "2021-05-27T08:00:56.657Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:57.798Z"
+														"lastUpdate": "2021-05-27T08:00:56.657Z"
 													}
 												}
 											},
@@ -7772,14 +8024,14 @@
 													{
 														"id": "107c7f79bcf86cd7994f6c0e",
 														"active": true,
-														"lastUpdate": "2021-05-16T19:14:57.798Z",
-														"name": "some_3d_model",
-														"ext": ".fbx",
+														"lastUpdate": "2021-05-27T08:00:56.657Z",
+														"name": "some_image",
+														"ext": ".webp",
 														"mipmap": {
-															"x128": "assets/some_3d_model_128x128.png",
+															"x128": "assets/some_image_128x128.png",
 															"x32": "assets/favicon.png"
 														},
-														"path": "assets/some_3d_model.fbx"
+														"path": "assets/some_image.webp"
 													}
 												]
 											}
@@ -7832,14 +8084,14 @@
 													"ref": {
 														"name": "ads",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:57.800Z"
+														"lastUpdate": "2021-05-27T08:00:56.659Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:57.800Z"
+														"lastUpdate": "2021-05-27T08:00:56.659Z"
 													}
 												}
 											},
@@ -7847,14 +8099,14 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-05-16T19:14:57.800Z",
-													"name": "some_3d_model",
-													"ext": ".fbx",
+													"lastUpdate": "2021-05-27T08:00:56.659Z",
+													"name": "some_image",
+													"ext": ".webp",
 													"mipmap": {
-														"x128": "assets/some_3d_model_128x128.png",
+														"x128": "assets/some_image_128x128.png",
 														"x32": "assets/favicon.png"
 													},
-													"path": "assets/some_3d_model.fbx"
+													"path": "assets/some_image.webp"
 												}
 											]
 										}
@@ -7914,14 +8166,14 @@
 													"ref": {
 														"name": "ads",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:57.803Z"
+														"lastUpdate": "2021-05-27T08:00:56.661Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:57.803Z"
+														"lastUpdate": "2021-05-27T08:00:56.661Z"
 													}
 												}
 											},
@@ -7929,14 +8181,14 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-05-16T19:14:57.803Z",
-													"name": "some_3d_model",
-													"ext": ".fbx",
+													"lastUpdate": "2021-05-27T08:00:56.661Z",
+													"name": "some_image",
+													"ext": ".webp",
 													"mipmap": {
-														"x128": "assets/some_3d_model_128x128.png",
+														"x128": "assets/some_image_128x128.png",
 														"x32": "assets/favicon.png"
 													},
-													"path": "assets/some_3d_model.fbx"
+													"path": "assets/some_image.webp"
 												}
 											}
 										}
@@ -8001,14 +8253,14 @@
 													"ref": {
 														"name": "ads",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:57.804Z"
+														"lastUpdate": "2021-05-27T08:00:56.663Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:57.804Z"
+														"lastUpdate": "2021-05-27T08:00:56.663Z"
 													}
 												}
 											},
@@ -8016,14 +8268,14 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-05-16T19:14:57.804Z",
-													"name": "some_3d_model",
-													"ext": ".fbx",
+													"lastUpdate": "2021-05-27T08:00:56.663Z",
+													"name": "some_image",
+													"ext": ".webp",
 													"mipmap": {
-														"x128": "assets/some_3d_model_128x128.png",
+														"x128": "assets/some_image_128x128.png",
 														"x32": "assets/favicon.png"
 													},
-													"path": "assets/some_3d_model.fbx"
+													"path": "assets/some_image.webp"
 												}
 											}
 										}
@@ -8096,14 +8348,14 @@
 													"ref": {
 														"name": "ads",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:57.807Z"
+														"lastUpdate": "2021-05-27T08:00:56.667Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:57.807Z"
+														"lastUpdate": "2021-05-27T08:00:56.667Z"
 													}
 												}
 											}
@@ -8168,7 +8420,7 @@
 												"ref": {
 													"name": "applications",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.812Z"
+													"lastUpdate": "2021-05-27T08:00:56.672Z"
 												}
 											},
 											"data": [
@@ -8181,7 +8433,7 @@
 														"code": 1,
 														"version": "1.0.23"
 													},
-													"lastUpdate": "2021-05-16T19:14:57.812Z"
+													"lastUpdate": "2021-05-27T08:00:56.672Z"
 												}
 											]
 										}
@@ -8220,7 +8472,7 @@
 												"ref": {
 													"name": "applications",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.814Z"
+													"lastUpdate": "2021-05-27T08:00:56.674Z"
 												}
 											},
 											"data": {
@@ -8232,7 +8484,7 @@
 													"code": 1,
 													"version": "1.0.23"
 												},
-												"lastUpdate": "2021-05-16T19:14:57.814Z"
+												"lastUpdate": "2021-05-27T08:00:56.674Z"
 											}
 										}
 									}
@@ -8277,7 +8529,7 @@
 												"ref": {
 													"name": "applications",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.816Z"
+													"lastUpdate": "2021-05-27T08:00:56.676Z"
 												}
 											},
 											"data": {
@@ -8289,7 +8541,7 @@
 													"code": 1,
 													"version": "1.0.23"
 												},
-												"lastUpdate": "2021-05-16T19:14:57.816Z"
+												"lastUpdate": "2021-05-27T08:00:56.676Z"
 											}
 										}
 									}
@@ -8344,7 +8596,7 @@
 												"ref": {
 													"name": "applications",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.818Z"
+													"lastUpdate": "2021-05-27T08:00:56.678Z"
 												}
 											}
 										}
@@ -8392,7 +8644,7 @@
 												"ref": {
 													"name": "applications",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.814Z"
+													"lastUpdate": "2021-05-27T08:00:56.674Z"
 												}
 											},
 											"data": {
@@ -8404,7 +8656,7 @@
 													"code": 1,
 													"version": "1.0.23"
 												},
-												"lastUpdate": "2021-05-16T19:14:57.814Z"
+												"lastUpdate": "2021-05-27T08:00:56.674Z"
 											}
 										}
 									}
@@ -8452,7 +8704,7 @@
 												"ref": {
 													"name": "themes",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.825Z"
+													"lastUpdate": "2021-05-27T08:00:56.687Z"
 												}
 											},
 											"data": [
@@ -8462,7 +8714,14 @@
 													"type": 0,
 													"name": "light",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.825Z",
+													"lastUpdate": "2021-05-27T08:00:56.687Z",
+													"assets": [
+														"f234r34r-34r23-4t32-43432",
+														"f234r34r-34r23-4t32-43431"
+													],
+													"resources": {
+														"undefined": "f234r34r-34r23-4t32-43431"
+													},
 													"data": {
 														"skinedElement": {
 															"skinedProp": "some-value"
@@ -8518,7 +8777,7 @@
 												"ref": {
 													"name": "themes",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.828Z"
+													"lastUpdate": "2021-05-27T08:00:56.689Z"
 												}
 											},
 											"data": {
@@ -8527,7 +8786,14 @@
 												"type": 0,
 												"name": "light",
 												"version": 1,
-												"lastUpdate": "2021-05-16T19:14:57.828Z",
+												"lastUpdate": "2021-05-27T08:00:56.690Z",
+												"assets": [
+													"f234r34r-34r23-4t32-43432",
+													"f234r34r-34r23-4t32-43431"
+												],
+												"resources": {
+													"undefined": "f234r34r-34r23-4t32-43431"
+												},
 												"data": {
 													"skinedElement": {
 														"skinedProp": "some-value"
@@ -8572,6 +8838,84 @@
 				]
 			}
 		},
+		"/app-theme": {
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IAppThemeResponse"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "themes",
+													"version": 1,
+													"lastUpdate": "2021-05-27T08:00:56.690Z"
+												}
+											},
+											"data": {
+												"id": "g434r34r-34r23-4t32-34215",
+												"client": "f234r34r-34r23-4t32-43434",
+												"type": 0,
+												"name": "light",
+												"version": 1,
+												"lastUpdate": "2021-05-27T08:00:56.690Z",
+												"assets": [
+													"f234r34r-34r23-4t32-43432",
+													"f234r34r-34r23-4t32-43431"
+												],
+												"resources": {
+													"undefined": "f234r34r-34r23-4t32-43431"
+												},
+												"data": {
+													"skinedElement": {
+														"skinedProp": "some-value"
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"AppTheme"
+				],
+				"security": [
+					{
+						"clientAccessToken": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "type",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/TerminalTypes"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IAppThemeCreateRequest"
+							}
+						}
+					}
+				}
+			}
+		},
 		"/app-theme/{id}": {
 			"put": {
 				"operationId": "Update",
@@ -8590,7 +8934,7 @@
 												"ref": {
 													"name": "themes",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.829Z"
+													"lastUpdate": "2021-05-27T08:00:56.693Z"
 												}
 											},
 											"data": {
@@ -8599,7 +8943,14 @@
 												"type": 0,
 												"name": "light",
 												"version": 1,
-												"lastUpdate": "2021-05-16T19:14:57.829Z",
+												"lastUpdate": "2021-05-27T08:00:56.693Z",
+												"assets": [
+													"f234r34r-34r23-4t32-43432",
+													"f234r34r-34r23-4t32-43431"
+												],
+												"resources": {
+													"undefined": "f234r34r-34r23-4t32-43431"
+												},
 												"data": {
 													"skinedElement": {
 														"skinedProp": "some-value"
@@ -8644,6 +8995,355 @@
 						}
 					}
 				}
+			},
+			"delete": {
+				"operationId": "Delete",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IAppThemeResponse"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"meta": {
+												"ref": {
+													"name": "themes",
+													"version": 1,
+													"lastUpdate": "2021-05-27T08:00:56.697Z"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"AppTheme"
+				],
+				"security": [
+					{
+						"clientAccessToken": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/app-theme/{appThemeId}/assets": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IAppThemeGetAllAssetsResponse"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"meta": {
+												"theme": {
+													"ref": {
+														"name": "themes",
+														"version": 1,
+														"lastUpdate": "2021-05-27T08:00:56.700Z"
+													}
+												},
+												"asset": {
+													"ref": {
+														"name": "assets",
+														"version": 1,
+														"lastUpdate": "2021-05-27T08:00:56.700Z"
+													}
+												}
+											},
+											"data": [
+												{
+													"id": "107c7f79bcf86cd7994f6c0e",
+													"active": true,
+													"lastUpdate": "2021-05-27T08:00:56.700Z",
+													"name": "some_asset",
+													"ext": ".png",
+													"mipmap": {
+														"x128": "assets/some_asset_128x128.png",
+														"x32": "assets/favicon.png"
+													},
+													"path": "assets/some_asset.png"
+												}
+											]
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"AppTheme assets"
+				],
+				"security": [
+					{
+						"clientAccessToken": []
+					},
+					{
+						"terminalAccessToken": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "appThemeId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/app-theme/{appThemeId}/resource/{resourceType}": {
+			"post": {
+				"operationId": "CreateResource",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IAppThemeCreateAssetsResponse"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"meta": {
+												"theme": {
+													"ref": {
+														"name": "themes",
+														"version": 1,
+														"lastUpdate": "2021-05-27T08:00:56.703Z"
+													}
+												},
+												"asset": {
+													"ref": {
+														"name": "assets",
+														"version": 1,
+														"lastUpdate": "2021-05-27T08:00:56.703Z"
+													}
+												}
+											},
+											"data": {
+												"asset": {
+													"id": "107c7f79bcf86cd7994f6c0e",
+													"active": true,
+													"lastUpdate": "2021-05-27T08:00:56.703Z",
+													"name": "some_asset",
+													"ext": ".png",
+													"mipmap": {
+														"x128": "assets/some_asset_128x128.png",
+														"x32": "assets/favicon.png"
+													},
+													"path": "assets/some_asset.png"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"AppTheme assets"
+				],
+				"security": [
+					{
+						"clientAccessToken": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "appThemeId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "resourceType",
+						"required": true,
+						"schema": {}
+					}
+				]
+			}
+		},
+		"/app-theme/{appThemeId}/asset/{assetId}": {
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IAppThemeCreateAssetsResponse"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"meta": {
+												"theme": {
+													"ref": {
+														"name": "themes",
+														"version": 1,
+														"lastUpdate": "2021-05-27T08:00:56.704Z"
+													}
+												},
+												"asset": {
+													"ref": {
+														"name": "assets",
+														"version": 1,
+														"lastUpdate": "2021-05-27T08:00:56.704Z"
+													}
+												}
+											},
+											"data": {
+												"asset": {
+													"id": "107c7f79bcf86cd7994f6c0e",
+													"active": true,
+													"lastUpdate": "2021-05-27T08:00:56.704Z",
+													"name": "some_asset",
+													"ext": ".png",
+													"mipmap": {
+														"x128": "assets/some_asset_128x128.png",
+														"x32": "assets/favicon.png"
+													},
+													"path": "assets/some_asset.png"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"AppTheme assets"
+				],
+				"security": [
+					{
+						"clientAccessToken": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "appThemeId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "assetId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IAppThemeAssetUpdateRequest"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "Delete",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IAppThemeDeleteAssetsResponse"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"meta": {
+												"theme": {
+													"ref": {
+														"name": "themes",
+														"version": 1,
+														"lastUpdate": "2021-05-27T08:00:56.707Z"
+													}
+												},
+												"asset": {
+													"ref": {
+														"name": "assets",
+														"version": 1,
+														"lastUpdate": "2021-05-27T08:00:56.707Z"
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"AppTheme assets"
+				],
+				"security": [
+					{
+						"clientAccessToken": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "appThemeId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "assetId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		},
 		"/auth/captcha": {
@@ -8924,7 +9624,7 @@
 									"Example 1": {
 										"value": {
 											"meta": {
-												"creationDate": "2021-05-16T19:14:57.848Z"
+												"creationDate": "2021-05-27T08:00:56.726Z"
 											},
 											"data": {
 												"url": "tornado.ru/backups/2sd4fff54ggx23x435h.tdb",
@@ -8963,7 +9663,7 @@
 									"Example 1": {
 										"value": {
 											"meta": {
-												"creationDate": "2021-05-16T19:14:57.850Z"
+												"creationDate": "2021-05-27T08:00:56.729Z"
 											},
 											"data": {}
 										}
@@ -9002,7 +9702,7 @@
 												"ref": {
 													"name": "checkues",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.865Z"
+													"lastUpdate": "2021-05-27T08:00:56.746Z"
 												}
 											},
 											"data": [
@@ -9055,7 +9755,7 @@
 												"ref": {
 													"name": "checkues",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.867Z"
+													"lastUpdate": "2021-05-27T08:00:56.748Z"
 												}
 											},
 											"data": {
@@ -9113,7 +9813,7 @@
 												"ref": {
 													"name": "checkues",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.869Z"
+													"lastUpdate": "2021-05-27T08:00:56.750Z"
 												}
 											},
 											"data": {
@@ -9178,7 +9878,7 @@
 												"ref": {
 													"name": "checkues",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.871Z"
+													"lastUpdate": "2021-05-27T08:00:56.752Z"
 												}
 											}
 										}
@@ -9226,7 +9926,7 @@
 												"ref": {
 													"name": "checkues",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.867Z"
+													"lastUpdate": "2021-05-27T08:00:56.748Z"
 												}
 											},
 											"data": {
@@ -9284,7 +9984,7 @@
 												"ref": {
 													"name": "currencies",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.877Z"
+													"lastUpdate": "2021-05-27T08:00:56.759Z"
 												}
 											},
 											"data": [
@@ -9339,7 +10039,7 @@
 												"ref": {
 													"name": "currencies",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.879Z"
+													"lastUpdate": "2021-05-27T08:00:56.764Z"
 												}
 											},
 											"data": {
@@ -9399,7 +10099,7 @@
 												"ref": {
 													"name": "currencies",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.882Z"
+													"lastUpdate": "2021-05-27T08:00:56.766Z"
 												}
 											},
 											"data": {
@@ -9466,7 +10166,7 @@
 												"ref": {
 													"name": "currencies",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.883Z"
+													"lastUpdate": "2021-05-27T08:00:56.769Z"
 												}
 											}
 										}
@@ -9514,7 +10214,7 @@
 												"ref": {
 													"name": "currencies",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.880Z"
+													"lastUpdate": "2021-05-27T08:00:56.764Z"
 												}
 											},
 											"data": {
@@ -9574,7 +10274,7 @@
 												"ref": {
 													"name": "employees",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.889Z"
+													"lastUpdate": "2021-05-27T08:00:56.777Z"
 												}
 											},
 											"data": [
@@ -9629,7 +10329,7 @@
 												"ref": {
 													"name": "employees",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.891Z"
+													"lastUpdate": "2021-05-27T08:00:56.779Z"
 												}
 											},
 											"data": {
@@ -9689,7 +10389,7 @@
 												"ref": {
 													"name": "employees",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.893Z"
+													"lastUpdate": "2021-05-27T08:00:56.782Z"
 												}
 											},
 											"data": {
@@ -9756,7 +10456,7 @@
 												"ref": {
 													"name": "employees",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.894Z"
+													"lastUpdate": "2021-05-27T08:00:56.783Z"
 												}
 											}
 										}
@@ -9804,7 +10504,7 @@
 												"ref": {
 													"name": "employees",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.891Z"
+													"lastUpdate": "2021-05-27T08:00:56.780Z"
 												}
 											},
 											"data": {
@@ -9864,12 +10564,13 @@
 												"ref": {
 													"name": "integrations",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.900Z"
+													"lastUpdate": "2021-05-27T08:00:56.788Z"
 												}
 											},
 											"data": [
 												{
 													"id": "507c7f79bcf86cd7994f6c0e",
+													"host": "http://127.0.0.1:8089/",
 													"name": "Эвотор",
 													"description": "Интеграция с товароучетной системой \"Эвотор\"",
 													"rights": [
@@ -9882,7 +10583,7 @@
 														"version": "1.0.23"
 													},
 													"state": 1,
-													"lastUpdate": "2021-05-16T19:14:57.900Z"
+													"lastUpdate": "2021-05-27T08:00:56.788Z"
 												}
 											]
 										}
@@ -9917,11 +10618,12 @@
 												"ref": {
 													"name": "integrations",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.902Z"
+													"lastUpdate": "2021-05-27T08:00:56.792Z"
 												}
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
+												"host": "http://127.0.0.1:8089/",
 												"name": "Эвотор",
 												"description": "Интеграция с товароучетной системой \"Эвотор\"",
 												"rights": [
@@ -9934,7 +10636,7 @@
 													"version": "1.0.23"
 												},
 												"state": 1,
-												"lastUpdate": "2021-05-16T19:14:57.902Z"
+												"lastUpdate": "2021-05-27T08:00:56.792Z"
 											}
 										}
 									}
@@ -9979,11 +10681,12 @@
 												"ref": {
 													"name": "integrations",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.905Z"
+													"lastUpdate": "2021-05-27T08:00:56.795Z"
 												}
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
+												"host": "http://127.0.0.1:8089/",
 												"name": "Эвотор",
 												"description": "Интеграция с товароучетной системой \"Эвотор\"",
 												"rights": [
@@ -9996,7 +10699,7 @@
 													"version": "1.0.23"
 												},
 												"state": 1,
-												"lastUpdate": "2021-05-16T19:14:57.905Z"
+												"lastUpdate": "2021-05-27T08:00:56.795Z"
 											}
 										}
 									}
@@ -10051,7 +10754,7 @@
 												"ref": {
 													"name": "integrations",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.908Z"
+													"lastUpdate": "2021-05-27T08:00:56.798Z"
 												}
 											}
 										}
@@ -10099,11 +10802,12 @@
 												"ref": {
 													"name": "integrations",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.903Z"
+													"lastUpdate": "2021-05-27T08:00:56.793Z"
 												}
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
+												"host": "http://127.0.0.1:8089/",
 												"name": "Эвотор",
 												"description": "Интеграция с товароучетной системой \"Эвотор\"",
 												"rights": [
@@ -10116,7 +10820,7 @@
 													"version": "1.0.23"
 												},
 												"state": 1,
-												"lastUpdate": "2021-05-16T19:14:57.903Z"
+												"lastUpdate": "2021-05-27T08:00:56.793Z"
 											}
 										}
 									}
@@ -10164,7 +10868,7 @@
 												"ref": {
 													"name": "languages",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.915Z"
+													"lastUpdate": "2021-05-27T08:00:56.805Z"
 												}
 											},
 											"data": [
@@ -10225,7 +10929,7 @@
 												"ref": {
 													"name": "languages",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.917Z"
+													"lastUpdate": "2021-05-27T08:00:56.808Z"
 												}
 											},
 											"data": {
@@ -10291,7 +10995,7 @@
 												"ref": {
 													"name": "languages",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.919Z"
+													"lastUpdate": "2021-05-27T08:00:56.810Z"
 												}
 											},
 											"data": {
@@ -10364,7 +11068,7 @@
 												"ref": {
 													"name": "languages",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.921Z"
+													"lastUpdate": "2021-05-27T08:00:56.812Z"
 												}
 											}
 										}
@@ -10412,7 +11116,7 @@
 												"ref": {
 													"name": "languages",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.918Z"
+													"lastUpdate": "2021-05-27T08:00:56.808Z"
 												}
 											},
 											"data": {
@@ -10479,14 +11183,14 @@
 													"ref": {
 														"name": "languages",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:57.924Z"
+														"lastUpdate": "2021-05-27T08:00:56.815Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:57.924Z"
+														"lastUpdate": "2021-05-27T08:00:56.815Z"
 													}
 												}
 											},
@@ -10494,14 +11198,14 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-05-16T19:14:57.924Z",
-													"name": "some_3d_model",
-													"ext": ".fbx",
+													"lastUpdate": "2021-05-27T08:00:56.815Z",
+													"name": "some_image",
+													"ext": ".webp",
 													"mipmap": {
-														"x128": "assets/some_3d_model_128x128.png",
-														"x32": "assets/favicon.png"
+														"x128": "assets/some_image_128x128.webp",
+														"x32": "assets/favicon.webp"
 													},
-													"path": "assets/some_3d_model.fbx"
+													"path": "assets/some_image.webp"
 												}
 											]
 										}
@@ -10553,14 +11257,14 @@
 													"ref": {
 														"name": "languages",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:57.927Z"
+														"lastUpdate": "2021-05-27T08:00:56.818Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:57.927Z"
+														"lastUpdate": "2021-05-27T08:00:56.818Z"
 													}
 												}
 											},
@@ -10568,14 +11272,14 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-05-16T19:14:57.927Z",
-													"name": "some_3d_model",
-													"ext": ".fbx",
+													"lastUpdate": "2021-05-27T08:00:56.818Z",
+													"name": "some_image",
+													"ext": ".webp",
 													"mipmap": {
-														"x128": "assets/some_3d_model_128x128.png",
-														"x32": "assets/favicon.png"
+														"x128": "assets/some_image_128x128.webp",
+														"x32": "assets/favicon.webp"
 													},
-													"path": "assets/some_3d_model.fbx"
+													"path": "assets/some_image.webp"
 												}
 											}
 										}
@@ -10624,14 +11328,14 @@
 													"ref": {
 														"name": "languages",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:57.928Z"
+														"lastUpdate": "2021-05-27T08:00:56.818Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:57.928Z"
+														"lastUpdate": "2021-05-27T08:00:56.818Z"
 													}
 												}
 											},
@@ -10639,14 +11343,14 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-05-16T19:14:57.928Z",
-													"name": "some_3d_model",
-													"ext": ".fbx",
+													"lastUpdate": "2021-05-27T08:00:56.818Z",
+													"name": "some_image",
+													"ext": ".webp",
 													"mipmap": {
-														"x128": "assets/some_3d_model_128x128.png",
-														"x32": "assets/favicon.png"
+														"x128": "assets/some_image_128x128.webp",
+														"x32": "assets/favicon.webp"
 													},
-													"path": "assets/some_3d_model.fbx"
+													"path": "assets/some_image.webp"
 												}
 											}
 										}
@@ -10703,14 +11407,14 @@
 													"ref": {
 														"name": "languages",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:57.929Z"
+														"lastUpdate": "2021-05-27T08:00:56.820Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:57.929Z"
+														"lastUpdate": "2021-05-27T08:00:56.820Z"
 													}
 												}
 											},
@@ -10718,14 +11422,14 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-05-16T19:14:57.929Z",
-													"name": "some_3d_model",
-													"ext": ".fbx",
+													"lastUpdate": "2021-05-27T08:00:56.820Z",
+													"name": "some_image",
+													"ext": ".webp",
 													"mipmap": {
-														"x128": "assets/some_3d_model_128x128.png",
-														"x32": "assets/favicon.png"
+														"x128": "assets/some_image_128x128.webp",
+														"x32": "assets/favicon.webp"
 													},
-													"path": "assets/some_3d_model.fbx"
+													"path": "assets/some_image.webp"
 												}
 											}
 										}
@@ -10790,14 +11494,14 @@
 													"ref": {
 														"name": "languages",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:57.932Z"
+														"lastUpdate": "2021-05-27T08:00:56.825Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:57.932Z"
+														"lastUpdate": "2021-05-27T08:00:56.825Z"
 													}
 												}
 											}
@@ -10854,7 +11558,7 @@
 												"ref": {
 													"name": "licenses",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.943Z"
+													"lastUpdate": "2021-05-27T08:00:56.836Z"
 												}
 											},
 											"data": [
@@ -10862,8 +11566,8 @@
 													"id": "507c7f79bcf86cd7994f6c0e",
 													"clientId": "507c7f79bcf86cd7994f6c0e",
 													"terminalId": "507c7f79bcf86cd7994f6c0e",
-													"dateStart": "2021-05-16T19:14:57.943Z",
-													"dateEnd": "2021-05-16T19:14:57.943Z",
+													"dateStart": "2021-05-27T08:00:56.836Z",
+													"dateEnd": "2021-05-27T08:00:56.836Z",
 													"state": 0,
 													"status": "NEW",
 													"key": "0000-1111-2222-3333",
@@ -10878,7 +11582,7 @@
 														"integrationId": "507c7f79bcf86cd7994f6c0e"
 													},
 													"licTypeId": "ecbbfd40-62ba-49bf-8620-75d8c5ed3953",
-													"lastUpdate": "2021-05-16T19:14:57.943Z"
+													"lastUpdate": "2021-05-27T08:00:56.837Z"
 												}
 											]
 										}
@@ -10917,15 +11621,15 @@
 												"ref": {
 													"name": "licenses",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.945Z"
+													"lastUpdate": "2021-05-27T08:00:56.840Z"
 												}
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"clientId": "507c7f79bcf86cd7994f6c0e",
 												"terminalId": "507c7f79bcf86cd7994f6c0e",
-												"dateStart": "2021-05-16T19:14:57.945Z",
-												"dateEnd": "2021-05-16T19:14:57.945Z",
+												"dateStart": "2021-05-27T08:00:56.840Z",
+												"dateEnd": "2021-05-27T08:00:56.840Z",
 												"state": 0,
 												"status": "NEW",
 												"key": "0000-1111-2222-3333",
@@ -10940,7 +11644,7 @@
 													"integrationId": "507c7f79bcf86cd7994f6c0e"
 												},
 												"licTypeId": "ecbbfd40-62ba-49bf-8620-75d8c5ed3953",
-												"lastUpdate": "2021-05-16T19:14:57.945Z"
+												"lastUpdate": "2021-05-27T08:00:56.840Z"
 											}
 										}
 									}
@@ -10987,15 +11691,15 @@
 												"ref": {
 													"name": "licenses",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.948Z"
+													"lastUpdate": "2021-05-27T08:00:56.844Z"
 												}
 											},
 											"data": [
 												{
 													"id": "507c7f79bcf86cd7994f6c0e",
 													"clientId": "507c7f79bcf86cd7994f6c0e",
-													"dateStart": "2021-05-16T19:14:57.948Z",
-													"dateEnd": "2021-05-16T19:14:57.948Z",
+													"dateStart": "2021-05-27T08:00:56.844Z",
+													"dateEnd": "2021-05-27T08:00:56.844Z",
 													"state": 0,
 													"status": "NEW",
 													"key": "0000-1111-2222-3333",
@@ -11010,7 +11714,7 @@
 														"integrationId": "507c7f79bcf86cd7994f6c0e"
 													},
 													"licTypeId": "ecbbfd40-62ba-49bf-8620-75d8c5ed3953",
-													"lastUpdate": "2021-05-16T19:14:57.949Z"
+													"lastUpdate": "2021-05-27T08:00:56.844Z"
 												}
 											]
 										}
@@ -11049,15 +11753,15 @@
 												"ref": {
 													"name": "licenses",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.949Z"
+													"lastUpdate": "2021-05-27T08:00:56.844Z"
 												}
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"clientId": "507c7f79bcf86cd7994f6c0e",
 												"terminalId": "507c7f79bcf86cd7994f6c0e",
-												"dateStart": "2021-05-16T19:14:57.949Z",
-												"dateEnd": "2021-05-16T19:14:57.949Z",
+												"dateStart": "2021-05-27T08:00:56.844Z",
+												"dateEnd": "2021-05-27T08:00:56.844Z",
 												"state": 0,
 												"status": "NEW",
 												"key": "0000-1111-2222-3333",
@@ -11072,7 +11776,7 @@
 													"integrationId": "507c7f79bcf86cd7994f6c0e"
 												},
 												"licTypeId": "ecbbfd40-62ba-49bf-8620-75d8c5ed3953",
-												"lastUpdate": "2021-05-16T19:14:57.949Z"
+												"lastUpdate": "2021-05-27T08:00:56.844Z"
 											}
 										}
 									}
@@ -11117,15 +11821,15 @@
 												"ref": {
 													"name": "licenses",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.952Z"
+													"lastUpdate": "2021-05-27T08:00:56.847Z"
 												}
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"clientId": "507c7f79bcf86cd7994f6c0e",
 												"terminalId": "507c7f79bcf86cd7994f6c0e",
-												"dateStart": "2021-05-16T19:14:57.952Z",
-												"dateEnd": "2021-05-16T19:14:57.952Z",
+												"dateStart": "2021-05-27T08:00:56.847Z",
+												"dateEnd": "2021-05-27T08:00:56.847Z",
 												"state": 0,
 												"status": "NEW",
 												"key": "0000-1111-2222-3333",
@@ -11140,7 +11844,7 @@
 													"integrationId": "507c7f79bcf86cd7994f6c0e"
 												},
 												"licTypeId": "ecbbfd40-62ba-49bf-8620-75d8c5ed3953",
-												"lastUpdate": "2021-05-16T19:14:57.952Z"
+												"lastUpdate": "2021-05-27T08:00:56.847Z"
 											}
 										}
 									}
@@ -11195,7 +11899,7 @@
 												"ref": {
 													"name": "licenses",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.955Z"
+													"lastUpdate": "2021-05-27T08:00:56.851Z"
 												}
 											}
 										}
@@ -11243,15 +11947,15 @@
 												"ref": {
 													"name": "licenses",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.950Z"
+													"lastUpdate": "2021-05-27T08:00:56.845Z"
 												}
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"clientId": "507c7f79bcf86cd7994f6c0e",
 												"terminalId": "507c7f79bcf86cd7994f6c0e",
-												"dateStart": "2021-05-16T19:14:57.950Z",
-												"dateEnd": "2021-05-16T19:14:57.950Z",
+												"dateStart": "2021-05-27T08:00:56.845Z",
+												"dateEnd": "2021-05-27T08:00:56.845Z",
 												"state": 0,
 												"status": "NEW",
 												"key": "0000-1111-2222-3333",
@@ -11266,7 +11970,7 @@
 													"integrationId": "507c7f79bcf86cd7994f6c0e"
 												},
 												"licTypeId": "ecbbfd40-62ba-49bf-8620-75d8c5ed3953",
-												"lastUpdate": "2021-05-16T19:14:57.950Z"
+												"lastUpdate": "2021-05-27T08:00:56.845Z"
 											}
 										}
 									}
@@ -11314,15 +12018,15 @@
 												"ref": {
 													"name": "licenses",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.956Z"
+													"lastUpdate": "2021-05-27T08:00:56.852Z"
 												}
 											},
 											"data": {
 												"id": "507c7f79bcf86cd7994f6c0e",
 												"clientId": "507c7f79bcf86cd7994f6c0e",
 												"terminalId": "507c7f79bcf86cd7994f6c0e",
-												"dateStart": "2021-05-16T19:14:57.956Z",
-												"dateEnd": "2021-05-16T19:14:57.956Z",
+												"dateStart": "2021-05-27T08:00:56.852Z",
+												"dateEnd": "2021-05-27T08:00:56.852Z",
 												"state": 0,
 												"status": "NEW",
 												"key": "0000-1111-2222-3333",
@@ -11337,7 +12041,7 @@
 													"integrationId": "507c7f79bcf86cd7994f6c0e"
 												},
 												"licTypeId": "ecbbfd40-62ba-49bf-8620-75d8c5ed3953",
-												"lastUpdate": "2021-05-16T19:14:57.956Z"
+												"lastUpdate": "2021-05-27T08:00:56.852Z"
 											}
 										}
 									}
@@ -11384,7 +12088,7 @@
 												"ref": {
 													"name": "license_types",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.960Z"
+													"lastUpdate": "2021-05-27T08:00:56.859Z"
 												}
 											},
 											"data": [
@@ -11396,7 +12100,7 @@
 													"price": 180000,
 													"payNotice": "Оплата через терминал Эвотор",
 													"integrationId": "507c7f79bcf86cd7994f6c0e",
-													"lastUpdate": "2021-05-16T19:14:57.960Z"
+													"lastUpdate": "2021-05-27T08:00:56.859Z"
 												}
 											]
 										}
@@ -11435,7 +12139,7 @@
 												"ref": {
 													"name": "license_types",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.962Z"
+													"lastUpdate": "2021-05-27T08:00:56.861Z"
 												}
 											},
 											"data": {
@@ -11446,7 +12150,7 @@
 												"price": 180000,
 												"payNotice": "Оплата через терминал Эвотор",
 												"integrationId": "507c7f79bcf86cd7994f6c0e",
-												"lastUpdate": "2021-05-16T19:14:57.962Z"
+												"lastUpdate": "2021-05-27T08:00:56.861Z"
 											}
 										}
 									}
@@ -11491,7 +12195,7 @@
 												"ref": {
 													"name": "license_types",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.964Z"
+													"lastUpdate": "2021-05-27T08:00:56.863Z"
 												}
 											},
 											"data": {
@@ -11502,7 +12206,7 @@
 												"price": 180000,
 												"payNotice": "Оплата через терминал Эвотор",
 												"integrationId": "507c7f79bcf86cd7994f6c0e",
-												"lastUpdate": "2021-05-16T19:14:57.964Z"
+												"lastUpdate": "2021-05-27T08:00:56.863Z"
 											}
 										}
 									}
@@ -11557,7 +12261,7 @@
 												"ref": {
 													"name": "license_types",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.966Z"
+													"lastUpdate": "2021-05-27T08:00:56.865Z"
 												}
 											}
 										}
@@ -11605,7 +12309,7 @@
 												"ref": {
 													"name": "license_types",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.963Z"
+													"lastUpdate": "2021-05-27T08:00:56.861Z"
 												}
 											},
 											"data": {
@@ -11616,7 +12320,7 @@
 												"price": 180000,
 												"payNotice": "Оплата через терминал Эвотор",
 												"integrationId": "507c7f79bcf86cd7994f6c0e",
-												"lastUpdate": "2021-05-16T19:14:57.963Z"
+												"lastUpdate": "2021-05-27T08:00:56.861Z"
 											}
 										}
 									}
@@ -11664,7 +12368,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.971Z"
+													"lastUpdate": "2021-05-27T08:00:56.871Z"
 												}
 											},
 											"data": [
@@ -11724,7 +12428,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.972Z"
+													"lastUpdate": "2021-05-27T08:00:56.871Z"
 												}
 											},
 											"data": [
@@ -11784,7 +12488,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.972Z"
+													"lastUpdate": "2021-05-27T08:00:56.872Z"
 												}
 											},
 											"data": [
@@ -11853,7 +12557,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.974Z"
+													"lastUpdate": "2021-05-27T08:00:56.874Z"
 												}
 											},
 											"data": {
@@ -11918,7 +12622,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.979Z"
+													"lastUpdate": "2021-05-27T08:00:56.879Z"
 												}
 											},
 											"data": {
@@ -11990,7 +12694,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.983Z"
+													"lastUpdate": "2021-05-27T08:00:56.883Z"
 												}
 											}
 										}
@@ -12038,7 +12742,7 @@
 												"ref": {
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.977Z"
+													"lastUpdate": "2021-05-27T08:00:56.877Z"
 												}
 											},
 											"data": {
@@ -12103,7 +12807,7 @@
 												"ref": {
 													"name": "order-types",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.993Z"
+													"lastUpdate": "2021-05-27T08:00:56.893Z"
 												}
 											},
 											"data": [
@@ -12170,7 +12874,7 @@
 												"ref": {
 													"name": "order-types",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.995Z"
+													"lastUpdate": "2021-05-27T08:00:56.895Z"
 												}
 											},
 											"data": {
@@ -12242,7 +12946,7 @@
 												"ref": {
 													"name": "order-types",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.997Z"
+													"lastUpdate": "2021-05-27T08:00:56.898Z"
 												}
 											},
 											"data": {
@@ -12321,7 +13025,7 @@
 												"ref": {
 													"name": "order-types",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.998Z"
+													"lastUpdate": "2021-05-27T08:00:56.899Z"
 												}
 											}
 										}
@@ -12369,7 +13073,7 @@
 												"ref": {
 													"name": "order-types",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:57.995Z"
+													"lastUpdate": "2021-05-27T08:00:56.896Z"
 												}
 											},
 											"data": {
@@ -12442,14 +13146,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:58.001Z"
+														"lastUpdate": "2021-05-27T08:00:56.902Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:58.001Z"
+														"lastUpdate": "2021-05-27T08:00:56.903Z"
 													}
 												}
 											},
@@ -12458,14 +13162,14 @@
 													{
 														"id": "107c7f79bcf86cd7994f6c0e",
 														"active": true,
-														"lastUpdate": "2021-05-16T19:14:58.001Z",
-														"name": "some_3d_model",
-														"ext": ".fbx",
+														"lastUpdate": "2021-05-27T08:00:56.903Z",
+														"name": "some_image",
+														"ext": ".webp",
 														"mipmap": {
-															"x128": "assets/some_3d_model_128x128.png",
-															"x32": "assets/favicon.png"
+															"x128": "assets/some_image_128x128.webp",
+															"x32": "assets/favicon.webp"
 														},
-														"path": "assets/some_3d_model.fbx"
+														"path": "assets/some_image.webp"
 													}
 												]
 											}
@@ -12518,14 +13222,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:58.003Z"
+														"lastUpdate": "2021-05-27T08:00:56.904Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:58.003Z"
+														"lastUpdate": "2021-05-27T08:00:56.904Z"
 													}
 												}
 											},
@@ -12533,14 +13237,14 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-05-16T19:14:58.003Z",
-													"name": "some_3d_model",
-													"ext": ".fbx",
+													"lastUpdate": "2021-05-27T08:00:56.904Z",
+													"name": "some_image",
+													"ext": ".webp",
 													"mipmap": {
-														"x128": "assets/some_3d_model_128x128.png",
-														"x32": "assets/favicon.png"
+														"x128": "assets/some_image_128x128.webp",
+														"x32": "assets/favicon.webp"
 													},
-													"path": "assets/some_3d_model.fbx"
+													"path": "assets/some_image.webp"
 												}
 											]
 										}
@@ -12600,14 +13304,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:58.006Z"
+														"lastUpdate": "2021-05-27T08:00:56.907Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:58.006Z"
+														"lastUpdate": "2021-05-27T08:00:56.907Z"
 													}
 												}
 											},
@@ -12615,14 +13319,14 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-05-16T19:14:58.006Z",
-													"name": "some_3d_model",
-													"ext": ".fbx",
+													"lastUpdate": "2021-05-27T08:00:56.907Z",
+													"name": "some_image",
+													"ext": ".webp",
 													"mipmap": {
-														"x128": "assets/some_3d_model_128x128.png",
-														"x32": "assets/favicon.png"
+														"x128": "assets/some_image_128x128.webp",
+														"x32": "assets/favicon.webp"
 													},
-													"path": "assets/some_3d_model.fbx"
+													"path": "assets/some_image.webp"
 												}
 											}
 										}
@@ -12687,14 +13391,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:58.008Z"
+														"lastUpdate": "2021-05-27T08:00:56.908Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:58.008Z"
+														"lastUpdate": "2021-05-27T08:00:56.908Z"
 													}
 												}
 											},
@@ -12702,14 +13406,14 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-05-16T19:14:58.008Z",
-													"name": "some_3d_model",
-													"ext": ".fbx",
+													"lastUpdate": "2021-05-27T08:00:56.909Z",
+													"name": "some_image",
+													"ext": ".webp",
 													"mipmap": {
-														"x128": "assets/some_3d_model_128x128.png",
-														"x32": "assets/favicon.png"
+														"x128": "assets/some_image_128x128.webp",
+														"x32": "assets/favicon.webp"
 													},
-													"path": "assets/some_3d_model.fbx"
+													"path": "assets/some_image.webp"
 												}
 											}
 										}
@@ -12782,14 +13486,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:58.011Z"
+														"lastUpdate": "2021-05-27T08:00:56.912Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:58.011Z"
+														"lastUpdate": "2021-05-27T08:00:56.912Z"
 													}
 												}
 											}
@@ -12854,7 +13558,7 @@
 												"ref": {
 													"name": "products",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:58.021Z"
+													"lastUpdate": "2021-05-27T08:00:56.924Z"
 												}
 											},
 											"data": [
@@ -12947,7 +13651,7 @@
 												"ref": {
 													"name": "products",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:58.023Z"
+													"lastUpdate": "2021-05-27T08:00:56.926Z"
 												}
 											},
 											"data": {
@@ -13045,7 +13749,7 @@
 												"ref": {
 													"name": "products",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:58.027Z"
+													"lastUpdate": "2021-05-27T08:00:56.930Z"
 												}
 											},
 											"data": {
@@ -13150,7 +13854,7 @@
 												"ref": {
 													"name": "products",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:58.031Z"
+													"lastUpdate": "2021-05-27T08:00:56.934Z"
 												}
 											}
 										}
@@ -13198,7 +13902,7 @@
 												"ref": {
 													"name": "products",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:58.024Z"
+													"lastUpdate": "2021-05-27T08:00:56.927Z"
 												}
 											},
 											"data": {
@@ -13297,14 +14001,14 @@
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:58.034Z"
+														"lastUpdate": "2021-05-27T08:00:56.937Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:58.034Z"
+														"lastUpdate": "2021-05-27T08:00:56.937Z"
 													}
 												}
 											},
@@ -13313,14 +14017,14 @@
 													{
 														"id": "107c7f79bcf86cd7994f6c0e",
 														"active": true,
-														"lastUpdate": "2021-05-16T19:14:58.034Z",
-														"name": "some_3d_model",
-														"ext": ".fbx",
+														"lastUpdate": "2021-05-27T08:00:56.937Z",
+														"name": "some_image",
+														"ext": ".webp",
 														"mipmap": {
-															"x128": "assets/some_3d_model_128x128.png",
-															"x32": "assets/favicon.png"
+															"x128": "assets/some_image_128x128.webp",
+															"x32": "assets/favicon.webp"
 														},
-														"path": "assets/some_3d_model.fbx"
+														"path": "assets/some_image.webp"
 													}
 												]
 											}
@@ -13373,14 +14077,14 @@
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:58.036Z"
+														"lastUpdate": "2021-05-27T08:00:56.939Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:58.036Z"
+														"lastUpdate": "2021-05-27T08:00:56.939Z"
 													}
 												}
 											},
@@ -13388,14 +14092,14 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-05-16T19:14:58.036Z",
-													"name": "some_3d_model",
-													"ext": ".fbx",
+													"lastUpdate": "2021-05-27T08:00:56.939Z",
+													"name": "some_image",
+													"ext": ".webp",
 													"mipmap": {
-														"x128": "assets/some_3d_model_128x128.png",
-														"x32": "assets/favicon.png"
+														"x128": "assets/some_image_128x128.webp",
+														"x32": "assets/favicon.webp"
 													},
-													"path": "assets/some_3d_model.fbx"
+													"path": "assets/some_image.webp"
 												}
 											]
 										}
@@ -13455,14 +14159,14 @@
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:58.039Z"
+														"lastUpdate": "2021-05-27T08:00:56.942Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:58.039Z"
+														"lastUpdate": "2021-05-27T08:00:56.942Z"
 													}
 												}
 											},
@@ -13470,14 +14174,14 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-05-16T19:14:58.039Z",
-													"name": "some_3d_model",
-													"ext": ".fbx",
+													"lastUpdate": "2021-05-27T08:00:56.942Z",
+													"name": "some_image",
+													"ext": ".webp",
 													"mipmap": {
-														"x128": "assets/some_3d_model_128x128.png",
-														"x32": "assets/favicon.png"
+														"x128": "assets/some_image_128x128.webp",
+														"x32": "assets/favicon.webp"
 													},
-													"path": "assets/some_3d_model.fbx"
+													"path": "assets/some_image.webp"
 												}
 											}
 										}
@@ -13534,14 +14238,14 @@
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:58.039Z"
+														"lastUpdate": "2021-05-27T08:00:56.943Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:58.039Z"
+														"lastUpdate": "2021-05-27T08:00:56.943Z"
 													}
 												}
 											},
@@ -13549,14 +14253,14 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-05-16T19:14:58.040Z",
-													"name": "some_3d_model",
-													"ext": ".fbx",
+													"lastUpdate": "2021-05-27T08:00:56.943Z",
+													"name": "some_image",
+													"ext": ".webp",
 													"mipmap": {
-														"x128": "assets/some_3d_model_128x128.png",
-														"x32": "assets/favicon.png"
+														"x128": "assets/some_image_128x128.webp",
+														"x32": "assets/favicon.webp"
 													},
-													"path": "assets/some_3d_model.fbx"
+													"path": "assets/some_image.webp"
 												}
 											}
 										}
@@ -13621,14 +14325,14 @@
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:58.041Z"
+														"lastUpdate": "2021-05-27T08:00:56.944Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:58.041Z"
+														"lastUpdate": "2021-05-27T08:00:56.944Z"
 													}
 												}
 											},
@@ -13636,14 +14340,14 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-05-16T19:14:58.041Z",
-													"name": "some_3d_model",
-													"ext": ".fbx",
+													"lastUpdate": "2021-05-27T08:00:56.944Z",
+													"name": "some_image",
+													"ext": ".webp",
 													"mipmap": {
-														"x128": "assets/some_3d_model_128x128.png",
-														"x32": "assets/favicon.png"
+														"x128": "assets/some_image_128x128.webp",
+														"x32": "assets/favicon.webp"
 													},
-													"path": "assets/some_3d_model.fbx"
+													"path": "assets/some_image.webp"
 												}
 											}
 										}
@@ -13716,14 +14420,14 @@
 													"ref": {
 														"name": "products",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:58.044Z"
+														"lastUpdate": "2021-05-27T08:00:56.947Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:58.044Z"
+														"lastUpdate": "2021-05-27T08:00:56.947Z"
 													}
 												}
 											}
@@ -13788,32 +14492,32 @@
 												{
 													"name": "nodes",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:58.045Z"
+													"lastUpdate": "2021-05-27T08:00:56.949Z"
 												},
 												{
 													"name": "products",
 													"version": 3,
-													"lastUpdate": "2021-05-16T19:14:58.045Z"
+													"lastUpdate": "2021-05-27T08:00:56.949Z"
 												},
 												{
 													"name": "selectors",
 													"version": 4,
-													"lastUpdate": "2021-05-16T19:14:58.045Z"
+													"lastUpdate": "2021-05-27T08:00:56.949Z"
 												},
 												{
 													"name": "tags",
 													"version": 5,
-													"lastUpdate": "2021-05-16T19:14:58.045Z"
+													"lastUpdate": "2021-05-27T08:00:56.949Z"
 												},
 												{
 													"name": "business-periods",
 													"version": 3,
-													"lastUpdate": "2021-05-16T19:14:58.046Z"
+													"lastUpdate": "2021-05-27T08:00:56.949Z"
 												},
 												{
 													"name": "ads",
 													"version": 3,
-													"lastUpdate": "2021-05-16T19:14:58.046Z"
+													"lastUpdate": "2021-05-27T08:00:56.949Z"
 												}
 											]
 										}
@@ -13854,7 +14558,7 @@
 											"data": {
 												"name": "products",
 												"version": 1,
-												"lastUpdate": "2021-05-16T19:14:58.047Z"
+												"lastUpdate": "2021-05-27T08:00:56.951Z"
 											}
 										}
 									}
@@ -13904,7 +14608,7 @@
 												"ref": {
 													"name": "selectors",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:58.055Z"
+													"lastUpdate": "2021-05-27T08:00:56.958Z"
 												}
 											},
 											"data": [
@@ -13971,7 +14675,7 @@
 												"ref": {
 													"name": "selectors",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:58.057Z"
+													"lastUpdate": "2021-05-27T08:00:56.960Z"
 												}
 											},
 											"data": {
@@ -14043,7 +14747,7 @@
 												"ref": {
 													"name": "selectors",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:58.059Z"
+													"lastUpdate": "2021-05-27T08:00:56.963Z"
 												}
 											},
 											"data": {
@@ -14122,7 +14826,7 @@
 												"ref": {
 													"name": "selectors",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:58.062Z"
+													"lastUpdate": "2021-05-27T08:00:56.966Z"
 												}
 											}
 										}
@@ -14170,7 +14874,7 @@
 												"ref": {
 													"name": "selectors",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:58.057Z"
+													"lastUpdate": "2021-05-27T08:00:56.961Z"
 												}
 											},
 											"data": {
@@ -14243,14 +14947,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:58.065Z"
+														"lastUpdate": "2021-05-27T08:00:56.969Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:58.065Z"
+														"lastUpdate": "2021-05-27T08:00:56.969Z"
 													}
 												}
 											},
@@ -14259,14 +14963,14 @@
 													{
 														"id": "107c7f79bcf86cd7994f6c0e",
 														"active": true,
-														"lastUpdate": "2021-05-16T19:14:58.065Z",
-														"name": "some_3d_model",
-														"ext": ".fbx",
+														"lastUpdate": "2021-05-27T08:00:56.969Z",
+														"name": "some_image",
+														"ext": ".webp",
 														"mipmap": {
-															"x128": "assets/some_3d_model_128x128.png",
-															"x32": "assets/favicon.png"
+															"x128": "assets/some_image_128x128.webp",
+															"x32": "assets/favicon.webp"
 														},
-														"path": "assets/some_3d_model.fbx"
+														"path": "assets/some_image.webp"
 													}
 												]
 											}
@@ -14319,14 +15023,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:58.066Z"
+														"lastUpdate": "2021-05-27T08:00:56.971Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:58.066Z"
+														"lastUpdate": "2021-05-27T08:00:56.971Z"
 													}
 												}
 											},
@@ -14334,14 +15038,14 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-05-16T19:14:58.066Z",
-													"name": "some_3d_model",
-													"ext": ".fbx",
+													"lastUpdate": "2021-05-27T08:00:56.971Z",
+													"name": "some_image",
+													"ext": ".webp",
 													"mipmap": {
-														"x128": "assets/some_3d_model_128x128.png",
-														"x32": "assets/favicon.png"
+														"x128": "assets/some_image_128x128.webp",
+														"x32": "assets/favicon.webp"
 													},
-													"path": "assets/some_3d_model.fbx"
+													"path": "assets/some_image.webp"
 												}
 											]
 										}
@@ -14401,14 +15105,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:58.069Z"
+														"lastUpdate": "2021-05-27T08:00:56.974Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:58.069Z"
+														"lastUpdate": "2021-05-27T08:00:56.974Z"
 													}
 												}
 											},
@@ -14416,14 +15120,14 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-05-16T19:14:58.069Z",
-													"name": "some_3d_model",
-													"ext": ".fbx",
+													"lastUpdate": "2021-05-27T08:00:56.974Z",
+													"name": "some_image",
+													"ext": ".webp",
 													"mipmap": {
-														"x128": "assets/some_3d_model_128x128.png",
-														"x32": "assets/favicon.png"
+														"x128": "assets/some_image_128x128.webp",
+														"x32": "assets/favicon.webp"
 													},
-													"path": "assets/some_3d_model.fbx"
+													"path": "assets/some_image.webp"
 												}
 											}
 										}
@@ -14488,14 +15192,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:58.070Z"
+														"lastUpdate": "2021-05-27T08:00:56.975Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:58.070Z"
+														"lastUpdate": "2021-05-27T08:00:56.975Z"
 													}
 												}
 											},
@@ -14503,14 +15207,14 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-05-16T19:14:58.070Z",
-													"name": "some_3d_model",
-													"ext": ".fbx",
+													"lastUpdate": "2021-05-27T08:00:56.975Z",
+													"name": "some_image",
+													"ext": ".webp",
 													"mipmap": {
-														"x128": "assets/some_3d_model_128x128.png",
-														"x32": "assets/favicon.png"
+														"x128": "assets/some_image_128x128.webp",
+														"x32": "assets/favicon.webp"
 													},
-													"path": "assets/some_3d_model.fbx"
+													"path": "assets/some_image.webp"
 												}
 											}
 										}
@@ -14583,14 +15287,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:58.073Z"
+														"lastUpdate": "2021-05-27T08:00:56.978Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:58.073Z"
+														"lastUpdate": "2021-05-27T08:00:56.978Z"
 													}
 												}
 											}
@@ -14655,7 +15359,7 @@
 												"ref": {
 													"name": "stores",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:58.079Z"
+													"lastUpdate": "2021-05-27T08:00:56.984Z"
 												}
 											},
 											"data": [
@@ -14706,7 +15410,7 @@
 												"ref": {
 													"name": "stores",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:58.081Z"
+													"lastUpdate": "2021-05-27T08:00:56.986Z"
 												}
 											},
 											"data": {
@@ -14762,7 +15466,7 @@
 												"ref": {
 													"name": "stores",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:58.083Z"
+													"lastUpdate": "2021-05-27T08:00:56.988Z"
 												}
 											},
 											"data": {
@@ -14828,7 +15532,7 @@
 												"ref": {
 													"name": "stores",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:58.084Z"
+													"lastUpdate": "2021-05-27T08:00:56.990Z"
 												}
 											}
 										}
@@ -14876,7 +15580,7 @@
 												"ref": {
 													"name": "stores",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:58.081Z"
+													"lastUpdate": "2021-05-27T08:00:56.987Z"
 												}
 											},
 											"data": {
@@ -14932,7 +15636,7 @@
 												"ref": {
 													"name": "tags",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:58.093Z"
+													"lastUpdate": "2021-05-27T08:00:56.999Z"
 												}
 											},
 											"data": [
@@ -14997,7 +15701,7 @@
 												"ref": {
 													"name": "tags",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:58.095Z"
+													"lastUpdate": "2021-05-27T08:00:57.001Z"
 												}
 											},
 											"data": {
@@ -15067,7 +15771,7 @@
 												"ref": {
 													"name": "tags",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:58.097Z"
+													"lastUpdate": "2021-05-27T08:00:57.004Z"
 												}
 											},
 											"data": {
@@ -15144,7 +15848,7 @@
 												"ref": {
 													"name": "tags",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:58.098Z"
+													"lastUpdate": "2021-05-27T08:00:57.005Z"
 												}
 											}
 										}
@@ -15192,7 +15896,7 @@
 												"ref": {
 													"name": "tags",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:58.096Z"
+													"lastUpdate": "2021-05-27T08:00:57.002Z"
 												}
 											},
 											"data": {
@@ -15263,14 +15967,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:58.101Z"
+														"lastUpdate": "2021-05-27T08:00:57.008Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:58.102Z"
+														"lastUpdate": "2021-05-27T08:00:57.008Z"
 													}
 												}
 											},
@@ -15279,14 +15983,14 @@
 													{
 														"id": "107c7f79bcf86cd7994f6c0e",
 														"active": true,
-														"lastUpdate": "2021-05-16T19:14:58.102Z",
-														"name": "some_3d_model",
-														"ext": ".fbx",
+														"lastUpdate": "2021-05-27T08:00:57.008Z",
+														"name": "some_image",
+														"ext": ".webp",
 														"mipmap": {
-															"x128": "assets/some_3d_model_128x128.png",
-															"x32": "assets/favicon.png"
+															"x128": "assets/some_image_128x128.webp",
+															"x32": "assets/favicon.webp"
 														},
-														"path": "assets/some_3d_model.fbx"
+														"path": "assets/some_image.webp"
 													}
 												]
 											}
@@ -15339,14 +16043,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:58.104Z"
+														"lastUpdate": "2021-05-27T08:00:57.010Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:58.104Z"
+														"lastUpdate": "2021-05-27T08:00:57.010Z"
 													}
 												}
 											},
@@ -15354,14 +16058,14 @@
 												{
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-05-16T19:14:58.104Z",
-													"name": "some_3d_model",
-													"ext": ".fbx",
+													"lastUpdate": "2021-05-27T08:00:57.010Z",
+													"name": "some_image",
+													"ext": ".webp",
 													"mipmap": {
-														"x128": "assets/some_3d_model_128x128.png",
-														"x32": "assets/favicon.png"
+														"x128": "assets/some_image_128x128.webp",
+														"x32": "assets/favicon.webp"
 													},
-													"path": "assets/some_3d_model.fbx"
+													"path": "assets/some_image.webp"
 												}
 											]
 										}
@@ -15421,14 +16125,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:58.107Z"
+														"lastUpdate": "2021-05-27T08:00:57.014Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:58.107Z"
+														"lastUpdate": "2021-05-27T08:00:57.014Z"
 													}
 												}
 											},
@@ -15436,14 +16140,14 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-05-16T19:14:58.107Z",
-													"name": "some_3d_model",
-													"ext": ".fbx",
+													"lastUpdate": "2021-05-27T08:00:57.014Z",
+													"name": "some_image",
+													"ext": ".webp",
 													"mipmap": {
-														"x128": "assets/some_3d_model_128x128.png",
-														"x32": "assets/favicon.png"
+														"x128": "assets/some_image_128x128.webp",
+														"x32": "assets/favicon.webp"
 													},
-													"path": "assets/some_3d_model.fbx"
+													"path": "assets/some_image.webp"
 												}
 											}
 										}
@@ -15508,14 +16212,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:58.108Z"
+														"lastUpdate": "2021-05-27T08:00:57.015Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:58.108Z"
+														"lastUpdate": "2021-05-27T08:00:57.015Z"
 													}
 												}
 											},
@@ -15523,14 +16227,14 @@
 												"asset": {
 													"id": "107c7f79bcf86cd7994f6c0e",
 													"active": true,
-													"lastUpdate": "2021-05-16T19:14:58.108Z",
-													"name": "some_3d_model",
-													"ext": ".fbx",
+													"lastUpdate": "2021-05-27T08:00:57.015Z",
+													"name": "some_image",
+													"ext": ".webp",
 													"mipmap": {
-														"x128": "assets/some_3d_model_128x128.png",
-														"x32": "assets/favicon.png"
+														"x128": "assets/some_image_128x128.webp",
+														"x32": "assets/favicon.webp"
 													},
-													"path": "assets/some_3d_model.fbx"
+													"path": "assets/some_image.webp"
 												}
 											}
 										}
@@ -15603,14 +16307,14 @@
 													"ref": {
 														"name": "selectors",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:58.111Z"
+														"lastUpdate": "2021-05-27T08:00:57.020Z"
 													}
 												},
 												"asset": {
 													"ref": {
 														"name": "assets",
 														"version": 1,
-														"lastUpdate": "2021-05-16T19:14:58.111Z"
+														"lastUpdate": "2021-05-27T08:00:57.020Z"
 													}
 												}
 											}
@@ -15675,7 +16379,7 @@
 												"ref": {
 													"name": "terminals",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:58.122Z"
+													"lastUpdate": "2021-05-27T08:00:57.034Z"
 												}
 											},
 											"data": {
@@ -15684,7 +16388,7 @@
 												"type": 0,
 												"name": "My terminal",
 												"storeId": "g234r34r-34r23-4t32-43434",
-												"lastwork": "2021-05-16T19:14:58.122Z",
+												"lastwork": "2021-05-27T08:00:57.034Z",
 												"imei": "00001-000000000034",
 												"licenseId": "34r34r-34r23-4t32-43434",
 												"config": {
@@ -15731,7 +16435,7 @@
 												"ref": {
 													"name": "terminals",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:58.123Z"
+													"lastUpdate": "2021-05-27T08:00:57.035Z"
 												}
 											},
 											"data": {
@@ -15740,7 +16444,7 @@
 												"type": 0,
 												"name": "My terminal",
 												"storeId": "g234r34r-34r23-4t32-43434",
-												"lastwork": "2021-05-16T19:14:58.123Z",
+												"lastwork": "2021-05-27T08:00:57.035Z",
 												"imei": "00001-000000000034",
 												"licenseId": "34r34r-34r23-4t32-43434",
 												"config": {
@@ -15797,7 +16501,7 @@
 												"ref": {
 													"name": "terminals",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:58.126Z"
+													"lastUpdate": "2021-05-27T08:00:57.038Z"
 												}
 											},
 											"data": [
@@ -15807,7 +16511,7 @@
 													"type": 0,
 													"name": "My terminal",
 													"storeId": "g234r34r-34r23-4t32-43434",
-													"lastwork": "2021-05-16T19:14:58.126Z",
+													"lastwork": "2021-05-27T08:00:57.038Z",
 													"imei": "00001-000000000034",
 													"licenseId": "34r34r-34r23-4t32-43434",
 													"config": {
@@ -15858,7 +16562,7 @@
 												"ref": {
 													"name": "terminals",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:58.127Z"
+													"lastUpdate": "2021-05-27T08:00:57.039Z"
 												}
 											},
 											"data": {
@@ -15867,7 +16571,7 @@
 												"type": 0,
 												"name": "My terminal",
 												"storeId": "g234r34r-34r23-4t32-43434",
-												"lastwork": "2021-05-16T19:14:58.127Z",
+												"lastwork": "2021-05-27T08:00:57.039Z",
 												"imei": "00001-000000000034",
 												"licenseId": "34r34r-34r23-4t32-43434",
 												"config": {
@@ -15924,7 +16628,7 @@
 												"ref": {
 													"name": "terminals",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:58.127Z"
+													"lastUpdate": "2021-05-27T08:00:57.044Z"
 												}
 											},
 											"data": {
@@ -15933,7 +16637,7 @@
 												"type": 0,
 												"name": "My terminal",
 												"storeId": "g234r34r-34r23-4t32-43434",
-												"lastwork": "2021-05-16T19:14:58.127Z",
+												"lastwork": "2021-05-27T08:00:57.044Z",
 												"imei": "00001-000000000034",
 												"licenseId": "34r34r-34r23-4t32-43434",
 												"config": {
@@ -16002,7 +16706,7 @@
 												"ref": {
 													"name": "translations",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:58.133Z"
+													"lastUpdate": "2021-05-27T08:00:57.050Z"
 												}
 											},
 											"data": [
@@ -16059,7 +16763,7 @@
 												"ref": {
 													"name": "translations",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:58.135Z"
+													"lastUpdate": "2021-05-27T08:00:57.052Z"
 												}
 											},
 											"data": {
@@ -16121,7 +16825,7 @@
 												"ref": {
 													"name": "translations",
 													"version": 1,
-													"lastUpdate": "2021-05-16T19:14:58.136Z"
+													"lastUpdate": "2021-05-27T08:00:57.053Z"
 												}
 											},
 											"data": {
