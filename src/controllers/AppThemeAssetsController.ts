@@ -1,4 +1,4 @@
-import { AssetExtensions, IRef, RefTypes, KioskThemeResourceTypes } from "@djonnyx/tornado-types";
+import { AssetExtensions, IRef, RefTypes, KioskThemeResourceTypes, TerminalTypes } from "@djonnyx/tornado-types";
 import { AppThemeModel, IAppThemeDocument } from "../models/index";
 import { Controller, Route, Post, Tags, OperationId, Example, Request, Security, Get, Delete, Body, Put } from "tsoa";
 import { riseRefVersion, getRef } from "../db/refs";
@@ -8,6 +8,7 @@ import { uploadAsset, deleteAsset, IAssetItem, ICreateAssetsResponse } from "./A
 import { AssetModel } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
 import { IAuthRequest } from "../interfaces";
+import { findAllWithFilter } from "../utils/requestOptions";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IAppThemeAsset extends IAssetItem { }
@@ -87,7 +88,7 @@ const META_TEMPLATE = {
     },
 };
 
-const RESPONSE_TEMPLATE: IAssetItem = {
+const RESPONSE_TEMPLATE: IAppThemeAsset = {
     id: "107c7f79bcf86cd7994f6c0e",
     active: true,
     lastUpdate: new Date(),
@@ -98,12 +99,16 @@ const RESPONSE_TEMPLATE: IAssetItem = {
         x32: "assets/favicon.png",
     },
     path: "assets/some_asset.png",
+    extra: {
+        themeId: "345345345345345",
+        type: TerminalTypes.EMENU,
+    }
 };
 
-@Route("/app-theme")
+@Route("/app-theme-assets")
 @Tags("AppTheme assets")
 export class AppThemeAssetsController extends Controller {
-    @Get("{appThemeId}/assets")
+    @Get()
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("GetAll")
@@ -111,24 +116,45 @@ export class AppThemeAssetsController extends Controller {
         meta: META_TEMPLATE,
         data: [RESPONSE_TEMPLATE],
     })
-    public async getAllAssets(appThemeId: string): Promise<IAppThemeGetAllAssetsResponse> {
-        let appTheme: IAppThemeDocument;
+    public async getAllAssets(@Request() request: IAuthRequest): Promise<IAppThemeGetAllAssetsResponse> {
+        let appThemes: Array<IAppThemeDocument>;
         try {
-            appTheme = await AppThemeModel.findById(appThemeId);
+            appThemes = await findAllWithFilter(AppThemeModel.find({ client: request.account.id }), request);
         } catch (err) {
             this.setStatus(500);
             return {
                 error: [
                     {
                         code: 500,
-                        message: `AppTheme with id: "${appThemeId}" not found. ${err}`,
+                        message: `AppThemes not found. ${err}`,
                     }
                 ]
             };
         }
 
+        if (!appThemes || appThemes.length === 0) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: "AppThemes not found.",
+                    }
+                ]
+            };
+        }
+
+        const assetsIds = [];
+        appThemes?.forEach(theme => {
+            theme?.assets?.forEach(asset => {
+                if (assetsIds.indexOf(asset) === -1) {
+                    assetsIds.push(asset);
+                }
+            })
+        });
+
         try {
-            const assetsInfo = await AssetModel.find({ _id: appTheme.assets });
+            const assetsInfo = await AssetModel.find({ _id: assetsIds });
 
             return {
                 meta: {},
@@ -159,28 +185,8 @@ export class AppThemeAssetsController extends Controller {
     })
     public async resource(appThemeId: string, resourceType: KioskThemeResourceTypes | string,
         @Request() request: IAuthRequest): Promise<IAppThemeCreateAssetsResponse> {
-        let assetsInfo: ICreateAssetsResponse;
-        try {
-            assetsInfo = await uploadAsset(request, [
-                AssetExtensions.JPG,
-                AssetExtensions.PNG,
-                AssetExtensions.GIF,
-                AssetExtensions.WEBP,
-            ], false);
-        } catch (err) {
-            this.setStatus(500);
-            return {
-                error: [
-                    {
-                        code: 500,
-                        message: `Upload asset error. ${err}`,
-                    }
-                ]
-            };
-        }
 
         let appTheme: IAppThemeDocument;
-        let deletedAsset: string;
         try {
             appTheme = await AppThemeModel.findById(appThemeId);
         } catch (err) {
@@ -195,7 +201,30 @@ export class AppThemeAssetsController extends Controller {
             };
         }
 
-        deletedAsset = appTheme.resources[resourceType];
+        let assetsInfo: ICreateAssetsResponse;
+        try {
+            assetsInfo = await uploadAsset(request, [
+                AssetExtensions.JPG,
+                AssetExtensions.PNG,
+                AssetExtensions.GIF,
+                AssetExtensions.WEBP,
+            ], false, {
+                themeId: appThemeId,
+                type: appTheme.type,
+            });
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Upload asset error. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        let deletedAsset = appTheme.resources[resourceType];
 
         let isAssetExistsInOtherProps = 0;
         // детект количества повторяющихся изображений
@@ -245,6 +274,7 @@ export class AppThemeAssetsController extends Controller {
         try {
             const assetId = assetsInfo.data.id.toString();
             appTheme.resources[resourceType] = assetId;
+            appTheme.markModified("resources");
             appTheme.assets.push(assetId);
 
             savedAppTheme = await appTheme.save();

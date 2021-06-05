@@ -94,6 +94,7 @@ const RESPONSE_TEMPLATE: IAssetItem = {
         x32: "assets/favicon.webp",
     },
     path: "assets/some_image.webp",
+    extra: {},
 };
 
 @Route("/language")

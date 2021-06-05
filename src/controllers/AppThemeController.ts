@@ -2,7 +2,6 @@ import { Controller, Route, Get, Tags, OperationId, Example, Security, Request, 
 import { IAppTheme, IRef, KioskThemeResourceTypes, RefTypes, TerminalTypes } from "@djonnyx/tornado-types";
 import { AppThemeModel, IAppThemeDocument } from "../models";
 import { IAuthRequest } from "../interfaces";
-import { findAllWithFilter } from "../utils/requestOptions";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatAppThemeModel } from "../utils/appTheme";
 
@@ -14,12 +13,12 @@ interface IAppThemeMeta {
 
 interface IAppThemeCreateRequest {
     name?: string;
-    data: IAppThemeItem;
+    data: any;
 }
 
 interface IAppThemeUpdateRequest {
     name?: string;
-    data?: IAppThemeItem;
+    data?: any;
 }
 
 interface IAppThemesResponse {
@@ -77,7 +76,7 @@ export class AppThemesController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest, @Query() type: TerminalTypes): Promise<IAppThemesResponse> {
         try {
-            const items = await findAllWithFilter(AppThemeModel.find({ client: request.account.id, type }), request);
+            const items = await AppThemeModel.find({ client: request.account.id, type: Number(type) });
 
             const ref = await getRef(request.account.id, RefTypes.THEMES, {
                 "extra.type.equals": Number(type),
@@ -103,7 +102,7 @@ export class AppThemesController extends Controller {
 @Route("/app-theme")
 @Tags("AppTheme")
 export class AppThemeController extends Controller {
-    @Get("{name}")
+    @Get("{id}")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("GetOne")
@@ -111,9 +110,9 @@ export class AppThemeController extends Controller {
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE
     })
-    public async getOne(name: string, @Request() request: IAuthRequest, @Query() type: TerminalTypes): Promise<IAppThemeResponse> {
+    public async getOne(id: string, @Request() request: IAuthRequest): Promise<IAppThemeResponse> {
         try {
-            const item = await AppThemeModel.findOne({ name, type, client: request.account.id });
+            const item = await AppThemeModel.findOne({ _id: id, client: request.account.id });
 
             const ref = await getRef(request.account.id, RefTypes.THEMES, {
                 "extra.type.equals": item.type,

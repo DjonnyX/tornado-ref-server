@@ -277,21 +277,17 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "AssetExtensions": {
-        "dataType": "refEnum",
-        "enums": [".jpg",".png",".gif",".webp",".mp4"],
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "IAssetItem": {
         "dataType": "refObject",
         "properties": {
-            "id": {"dataType":"string","required":true},
+            "id": {"dataType":"string"},
             "active": {"dataType":"boolean","required":true},
-            "lastUpdate": {"dataType":"datetime","required":true},
             "name": {"dataType":"string","required":true},
-            "ext": {"ref":"AssetExtensions","required":true},
+            "lastUpdate": {"dataType":"datetime","required":true},
+            "ext": {"dataType":"string","required":true},
             "path": {"dataType":"string","required":true},
             "mipmap": {"dataType":"nestedObjectLiteral","nestedProperties":{"x32":{"dataType":"string","required":true},"x128":{"dataType":"string","required":true}},"required":true},
+            "extra": {"dataType":"any","required":true},
         },
         "additionalProperties": false,
     },
@@ -405,13 +401,14 @@ const models: TsoaRoute.Models = {
     "IAdAsset": {
         "dataType": "refObject",
         "properties": {
-            "id": {"dataType":"string","required":true},
+            "id": {"dataType":"string"},
             "active": {"dataType":"boolean","required":true},
-            "lastUpdate": {"dataType":"datetime","required":true},
             "name": {"dataType":"string","required":true},
-            "ext": {"ref":"AssetExtensions","required":true},
+            "lastUpdate": {"dataType":"datetime","required":true},
+            "ext": {"dataType":"string","required":true},
             "path": {"dataType":"string","required":true},
             "mipmap": {"dataType":"nestedObjectLiteral","nestedProperties":{"x32":{"dataType":"string","required":true},"x128":{"dataType":"string","required":true}},"required":true},
+            "extra": {"dataType":"any","required":true},
         },
         "additionalProperties": false,
     },
@@ -610,13 +607,14 @@ const models: TsoaRoute.Models = {
     "IAppThemeAsset": {
         "dataType": "refObject",
         "properties": {
-            "id": {"dataType":"string","required":true},
+            "id": {"dataType":"string"},
             "active": {"dataType":"boolean","required":true},
-            "lastUpdate": {"dataType":"datetime","required":true},
             "name": {"dataType":"string","required":true},
-            "ext": {"ref":"AssetExtensions","required":true},
+            "lastUpdate": {"dataType":"datetime","required":true},
+            "ext": {"dataType":"string","required":true},
             "path": {"dataType":"string","required":true},
             "mipmap": {"dataType":"nestedObjectLiteral","nestedProperties":{"x32":{"dataType":"string","required":true},"x128":{"dataType":"string","required":true}},"required":true},
+            "extra": {"dataType":"any","required":true},
         },
         "additionalProperties": false,
     },
@@ -1244,13 +1242,14 @@ const models: TsoaRoute.Models = {
     "ILanguageAsset": {
         "dataType": "refObject",
         "properties": {
-            "id": {"dataType":"string","required":true},
+            "id": {"dataType":"string"},
             "active": {"dataType":"boolean","required":true},
-            "lastUpdate": {"dataType":"datetime","required":true},
             "name": {"dataType":"string","required":true},
-            "ext": {"ref":"AssetExtensions","required":true},
+            "lastUpdate": {"dataType":"datetime","required":true},
+            "ext": {"dataType":"string","required":true},
             "path": {"dataType":"string","required":true},
             "mipmap": {"dataType":"nestedObjectLiteral","nestedProperties":{"x32":{"dataType":"string","required":true},"x128":{"dataType":"string","required":true}},"required":true},
+            "extra": {"dataType":"any","required":true},
         },
         "additionalProperties": false,
     },
@@ -1685,13 +1684,14 @@ const models: TsoaRoute.Models = {
     "IOrderTypeAsset": {
         "dataType": "refObject",
         "properties": {
-            "id": {"dataType":"string","required":true},
+            "id": {"dataType":"string"},
             "active": {"dataType":"boolean","required":true},
-            "lastUpdate": {"dataType":"datetime","required":true},
             "name": {"dataType":"string","required":true},
-            "ext": {"ref":"AssetExtensions","required":true},
+            "lastUpdate": {"dataType":"datetime","required":true},
+            "ext": {"dataType":"string","required":true},
             "path": {"dataType":"string","required":true},
             "mipmap": {"dataType":"nestedObjectLiteral","nestedProperties":{"x32":{"dataType":"string","required":true},"x128":{"dataType":"string","required":true}},"required":true},
+            "extra": {"dataType":"any","required":true},
         },
         "additionalProperties": false,
     },
@@ -1886,13 +1886,14 @@ const models: TsoaRoute.Models = {
     "IProductAsset": {
         "dataType": "refObject",
         "properties": {
-            "id": {"dataType":"string","required":true},
+            "id": {"dataType":"string"},
             "active": {"dataType":"boolean","required":true},
-            "lastUpdate": {"dataType":"datetime","required":true},
             "name": {"dataType":"string","required":true},
-            "ext": {"ref":"AssetExtensions","required":true},
+            "lastUpdate": {"dataType":"datetime","required":true},
+            "ext": {"dataType":"string","required":true},
             "path": {"dataType":"string","required":true},
             "mipmap": {"dataType":"nestedObjectLiteral","nestedProperties":{"x32":{"dataType":"string","required":true},"x128":{"dataType":"string","required":true}},"required":true},
+            "extra": {"dataType":"any","required":true},
         },
         "additionalProperties": false,
     },
@@ -2069,13 +2070,14 @@ const models: TsoaRoute.Models = {
     "ISelectorAsset": {
         "dataType": "refObject",
         "properties": {
-            "id": {"dataType":"string","required":true},
+            "id": {"dataType":"string"},
             "active": {"dataType":"boolean","required":true},
-            "lastUpdate": {"dataType":"datetime","required":true},
             "name": {"dataType":"string","required":true},
-            "ext": {"ref":"AssetExtensions","required":true},
+            "lastUpdate": {"dataType":"datetime","required":true},
+            "ext": {"dataType":"string","required":true},
             "path": {"dataType":"string","required":true},
             "mipmap": {"dataType":"nestedObjectLiteral","nestedProperties":{"x32":{"dataType":"string","required":true},"x128":{"dataType":"string","required":true}},"required":true},
+            "extra": {"dataType":"any","required":true},
         },
         "additionalProperties": false,
     },
@@ -2275,13 +2277,14 @@ const models: TsoaRoute.Models = {
     "ITagAsset": {
         "dataType": "refObject",
         "properties": {
-            "id": {"dataType":"string","required":true},
+            "id": {"dataType":"string"},
             "active": {"dataType":"boolean","required":true},
-            "lastUpdate": {"dataType":"datetime","required":true},
             "name": {"dataType":"string","required":true},
-            "ext": {"ref":"AssetExtensions","required":true},
+            "lastUpdate": {"dataType":"datetime","required":true},
+            "ext": {"dataType":"string","required":true},
             "path": {"dataType":"string","required":true},
             "mipmap": {"dataType":"nestedObjectLiteral","nestedProperties":{"x32":{"dataType":"string","required":true},"x128":{"dataType":"string","required":true}},"required":true},
+            "extra": {"dataType":"any","required":true},
         },
         "additionalProperties": false,
     },
@@ -3125,13 +3128,12 @@ export function RegisterRoutes(app: express.Router) {
             promiseHandler(controller, promise, response, undefined, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/api/v1/app-theme/:name',
+        app.get('/api/v1/app-theme/:id',
             authenticateMiddleware([{"clientAccessToken":[]},{"terminalAccessToken":[]}]),
             function AppThemeController_getOne(request: any, response: any, next: any) {
             const args = {
-                    name: {"in":"path","name":"name","required":true,"dataType":"string"},
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
                     request: {"in":"request","name":"request","required":true,"dataType":"object"},
-                    type: {"in":"query","name":"type","required":true,"ref":"TerminalTypes"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -3224,11 +3226,11 @@ export function RegisterRoutes(app: express.Router) {
             promiseHandler(controller, promise, response, undefined, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/api/v1/app-theme/:appThemeId/assets',
+        app.get('/api/v1/app-theme-assets',
             authenticateMiddleware([{"clientAccessToken":[]},{"terminalAccessToken":[]}]),
             function AppThemeAssetsController_getAllAssets(request: any, response: any, next: any) {
             const args = {
-                    appThemeId: {"in":"path","name":"appThemeId","required":true,"dataType":"string"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -3247,7 +3249,7 @@ export function RegisterRoutes(app: express.Router) {
             promiseHandler(controller, promise, response, undefined, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/api/v1/app-theme/:appThemeId/resource/:resourceType',
+        app.post('/api/v1/app-theme-assets/:appThemeId/resource/:resourceType',
             authenticateMiddleware([{"clientAccessToken":[]}]),
             function AppThemeAssetsController_resource(request: any, response: any, next: any) {
             const args = {
@@ -3272,7 +3274,7 @@ export function RegisterRoutes(app: express.Router) {
             promiseHandler(controller, promise, response, undefined, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.put('/api/v1/app-theme/:appThemeId/asset/:assetId',
+        app.put('/api/v1/app-theme-assets/:appThemeId/asset/:assetId',
             authenticateMiddleware([{"clientAccessToken":[]}]),
             function AppThemeAssetsController_update(request: any, response: any, next: any) {
             const args = {
@@ -3298,7 +3300,7 @@ export function RegisterRoutes(app: express.Router) {
             promiseHandler(controller, promise, response, undefined, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.delete('/api/v1/app-theme/:appThemeId/asset/:assetId',
+        app.delete('/api/v1/app-theme-assets/:appThemeId/asset/:assetId',
             authenticateMiddleware([{"clientAccessToken":[]}]),
             function AppThemeAssetsController_delete(request: any, response: any, next: any) {
             const args = {

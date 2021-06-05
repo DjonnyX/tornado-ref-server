@@ -19,6 +19,7 @@ export interface IFileInfo {
         x32: string;
     };
     path: string;
+    extra?: any;
 }
 
 const THUMBNAIL_WIDTH = 128;
@@ -99,7 +100,7 @@ const makeThumbnail = (ext: string, pathToResource: string, width: number, heigh
     });
 };
 
-export const assetsUploader = (name: string, allowedExtensions: Array<AssetExtensions>, request: IAuthRequest): Promise<IFileInfo> => {
+export const assetsUploader = (name: string, allowedExtensions: Array<AssetExtensions>, request: IAuthRequest, extra?: any): Promise<IFileInfo> => {
     return new Promise((resolve, reject) => {
         const EXT_PATTERN = new RegExp(`^(${allowedExtensions.map(v => `\\${v}`).join("|")})$`);
         multer({
@@ -138,6 +139,7 @@ export const assetsUploader = (name: string, allowedExtensions: Array<AssetExten
                                         x32: x32Path,
                                     },
                                     path: filePath,
+                                    extra: extra || {},
                                 });
                             });
                         });
@@ -155,6 +157,7 @@ export const assetsUploader = (name: string, allowedExtensions: Array<AssetExten
                                     x32: x32Path,
                                 },
                                 path: filePath,
+                                extra: extra || {},
                             });
                         });
                     });

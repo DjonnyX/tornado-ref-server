@@ -105,6 +105,7 @@ const RESPONSE_TEMPLATE: IAssetItem = {
         x32: "assets/favicon.png",
     },
     path: "assets/some_image.webp",
+    extra: {},
 };
 
 @Route("/ad")

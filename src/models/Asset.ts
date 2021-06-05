@@ -13,6 +13,7 @@ interface IAssetDocument extends Document {
         x32: string;
     };
     path: string;
+    extra: any;
 }
 
 export const AssetSchema = new Schema({
@@ -35,6 +36,7 @@ export const AssetSchema = new Schema({
         x32: { type: String, required: false, },
     },
     path: { type: String, required: true },
+    extra: { type: Schema.Types.Mixed, default: {} },
 });
 
 const AssetModel = mongoose.model<IAssetDocument>("Asset", AssetSchema);
