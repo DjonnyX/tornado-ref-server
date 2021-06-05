@@ -16,7 +16,7 @@ import { ICurrencyTemplate, IScreenSaverManifest } from "../interfaces";
 import { riseRefVersion } from "./refs";
 import { deepMergeObjects } from "../utils/object";
 import { createAd } from "../utils/ad";
-import { makeDirIfEmpty } from "../utils/file";
+import { makeDirIfEmpty, readFileJSONAsync } from "../utils/file";
 import { assetsUploaderFS } from "../utils/assetUpload";
 
 const createDefaultOrderTypeIfNeed = async (client: string) => {
@@ -102,25 +102,6 @@ const createRootNode = async (client: string) => {
         await rootMenuNode.save();
     }
 };
-
-function readFileJSONAsync<T = any>(path: string): Promise<T> {
-    return new Promise<T>((resolve, reject) => {
-        fs.readFile(path, {
-            encoding: "utf-8",
-        }, (err, data) => {
-            if (!!err) {
-                return reject(err);
-            }
-
-            try {
-                const json = JSON.parse(data) as T;
-                resolve(json);
-            } catch (err) {
-                reject(err);
-            }
-        });
-    });
-}
 
 const mergeDefaultTheme = async (client: string, templatePath: string, type: TerminalTypes) => {
     const template = await readFileJSONAsync(templatePath);

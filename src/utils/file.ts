@@ -1,6 +1,25 @@
 import * as archiver from "archiver";
 import * as fs from "fs-extra";
 
+export function readFileJSONAsync<T = any>(path: string): Promise<T> {
+    return new Promise<T>((resolve, reject) => {
+        fs.readFile(path, {
+            encoding: "utf-8",
+        }, (err, data) => {
+            if (!!err) {
+                return reject(err);
+            }
+
+            try {
+                const json = JSON.parse(data.toString("utf8")) as T;
+                resolve(json);
+            } catch (err) {
+                reject(err);
+            }
+        });
+    });
+}
+
 export const zipDirectory = (source: string, out: string): Promise<void> => {
     const archive = archiver('zip', { zlib: { level: 9 } });
     const stream = fs.createWriteStream(out);

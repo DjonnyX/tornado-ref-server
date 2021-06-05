@@ -4,6 +4,7 @@ import { AppThemeModel, IAppThemeDocument } from "../models";
 import { IAuthRequest } from "../interfaces";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatAppThemeModel } from "../utils/appTheme";
+import { readFileJSONAsync } from "../utils/file";
 
 export interface IAppThemeItem extends IAppTheme { }
 
@@ -12,8 +13,7 @@ interface IAppThemeMeta {
 }
 
 interface IAppThemeCreateRequest {
-    name?: string;
-    data: any;
+    name: string;
 }
 
 interface IAppThemeUpdateRequest {
@@ -63,6 +63,23 @@ const META_TEMPLATE: IAppThemeMeta = {
         lastUpdate: new Date(),
     }
 };
+
+const getThemePathByTerminalType = (type: TerminalTypes): string => {
+    let name: string;
+    switch (type) {
+        case TerminalTypes.KIOSK:
+            name = "kiosk";
+            break;
+        case TerminalTypes.EQUEUE:
+            name = "eq";
+            break;
+        case TerminalTypes.ORDER_PICKER:
+            name = "order-picker";
+            break;
+    }
+
+    return `template/themes/${name}.json`;
+}
 
 @Route("/app-themes")
 @Tags("AppTheme")
@@ -143,8 +160,34 @@ export class AppThemeController extends Controller {
         data: RESPONSE_TEMPLATE,
     })
     public async create(@Body() body: IAppThemeCreateRequest, @Query() type: TerminalTypes, @Request() request: IAuthRequest): Promise<IAppThemeResponse> {
+        let themeData: any;
         try {
-            const item = new AppThemeModel({ ...body, type, client: request.account.id });
+            const template = await readFileJSONAsync(getThemePathByTerminalType(type));
+
+            for (const themeName in template) {
+                themeData = template[themeName].data;
+                break;
+            }
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Read theme template. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        try {
+            const item = new AppThemeModel({
+                ...body,
+                data: themeData,
+                type, client: request.account.id,
+                lastUpdate: new Date(),
+                version: 1,
+            });
             const savedItem = await item.save();
             const ref = await riseRefVersion(request.account.id, RefTypes.THEMES, {
                 "extra.type.equals": item.type,
