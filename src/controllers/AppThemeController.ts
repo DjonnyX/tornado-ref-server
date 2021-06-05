@@ -41,6 +41,7 @@ interface IAppThemeResponse {
 
 export const RESPONSE_TEMPLATE: IAppThemeItem = {
     id: "g434r34r-34r23-4t32-34215",
+    isDefault: true,
     client: "f234r34r-34r23-4t32-43434",
     type: TerminalTypes.KIOSK,
     name: "light",

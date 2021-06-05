@@ -3,6 +3,7 @@ import { Schema, Document } from "mongoose";
 import { IAsset, TerminalTypes } from "@djonnyx/tornado-types";
 
 interface IAppThemeDocument extends Document {
+    isDefault: boolean;
     client: string;
     type: TerminalTypes;
     name: string;
@@ -14,6 +15,7 @@ interface IAppThemeDocument extends Document {
 }
 
 const AppThemeSchema = new Schema({
+    isDefault: { type: Boolean, default: false },
     client: { type: String, required: true, index: { unique: false } },
     type: {
         type: TerminalTypes,

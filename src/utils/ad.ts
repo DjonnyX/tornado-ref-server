@@ -33,6 +33,8 @@ export const createAd = async (client: string, name: string, duration: number, t
     const assetInfo = await assetsUploaderFS(client, adId, [
         AssetExtensions.JPG,
         AssetExtensions.PNG,
+        AssetExtensions.GIF,
+        AssetExtensions.WEBP,
         AssetExtensions.MP4,
     ], src);
 

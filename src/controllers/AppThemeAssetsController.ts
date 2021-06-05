@@ -132,18 +132,6 @@ export class AppThemeAssetsController extends Controller {
             };
         }
 
-        if (!appThemes || appThemes.length === 0) {
-            this.setStatus(500);
-            return {
-                error: [
-                    {
-                        code: 500,
-                        message: "AppThemes not found.",
-                    }
-                ]
-            };
-        }
-
         const assetsIds = [];
         appThemes?.forEach(theme => {
             theme?.assets?.forEach(asset => {
