@@ -1,6 +1,6 @@
 {
     "light": {
-        "preview": "template/themes/preview/order-picker/light.jpg",
+        "preview": "template/themes/preview/order-picker/light.png",
         "data": {
             "common": {
                 "modal": {
@@ -122,7 +122,7 @@
         }
     },
     "dark": {
-        "preview": "template/themes/preview/order-picker/dark.jpg",
+        "preview": "template/themes/preview/order-picker/dark.png",
         "data": {
             "common": {
                 "modal": {

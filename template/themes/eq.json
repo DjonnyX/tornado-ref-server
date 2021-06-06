@@ -1,6 +1,6 @@
 {
     "light": {
-        "preview": "template/themes/preview/eq/light.jpg",
+        "preview": "template/themes/preview/eq/light.png",
         "data": {
             "common": {
                 "modal": {
@@ -88,7 +88,7 @@
         }
     },
     "dark": {
-        "preview": "template/themes/preview/eq/dark.jpg",
+        "preview": "template/themes/preview/eq/dark.png",
         "data": {
             "common": {
                 "modal": {

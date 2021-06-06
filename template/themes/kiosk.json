@@ -1,6 +1,6 @@
 {
     "light": {
-        "preview": "template/themes/preview/kiosk/light.jpg",
+        "preview": "template/themes/preview/kiosk/light.png",
         "data": {
             "common": {
                 "modal": {
@@ -322,7 +322,7 @@
         }
     },
     "dark": {
-        "preview": "template/themes/preview/kiosk/dark.jpg",
+        "preview": "template/themes/preview/kiosk/dark.png",
         "data": {
             "common": {
                 "modal": {
