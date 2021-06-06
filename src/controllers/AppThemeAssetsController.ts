@@ -5,7 +5,7 @@ import { riseRefVersion, getRef } from "../db/refs";
 import { IAppThemeItem, RESPONSE_TEMPLATE as APP_THEME_RESPONSE_TEMPLATE } from "./AppThemeController";
 import { formatAppThemeModel } from "../utils/appTheme";
 import { uploadAsset, deleteAsset, IAssetItem, ICreateAssetsResponse } from "./AssetsController";
-import { AssetModel } from "../models/Asset";
+import { AssetModel, IAssetDocument } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
 import { IAuthRequest } from "../interfaces";
 import { findAllWithFilter } from "../utils/requestOptions";
@@ -59,7 +59,9 @@ interface IAppThemeDeleteAssetsResponse {
             ref: IRef;
         };
     };
-    data?: {};
+    data?: {
+        asset: IAssetItem;
+    };
     error?: Array<{
         code: number;
         message: string;
@@ -171,7 +173,7 @@ export class AppThemeAssetsController extends Controller {
             theme: APP_THEME_RESPONSE_TEMPLATE,
         }
     })
-    public async resource(appThemeId: string, resourceType: KioskThemeResourceTypes | string,
+    public async createResource(appThemeId: string, resourceType: KioskThemeResourceTypes | string,
         @Request() request: IAuthRequest): Promise<IAppThemeCreateAssetsResponse> {
 
         let appTheme: IAppThemeDocument;
@@ -294,6 +296,113 @@ export class AppThemeAssetsController extends Controller {
             data: {
                 theme: formatAppThemeModel(savedAppTheme),
                 asset: assetsInfo.data,
+            }
+        };
+    }
+
+    @Delete("{appThemeId}/resource/{resourceType}")
+    @Security("clientAccessToken")
+    @OperationId("DeleteResource")
+    @Example<IAppThemeDeleteAssetsResponse>({
+        meta: META_TEMPLATE,
+        data: {
+            asset: RESPONSE_TEMPLATE,
+        }
+    })
+    public async deleteResource(appThemeId: string, resourceType: KioskThemeResourceTypes | string,
+        @Request() request: IAuthRequest): Promise<IAppThemeDeleteAssetsResponse> {
+
+        let appTheme: IAppThemeDocument;
+        try {
+            appTheme = await AppThemeModel.findById(appThemeId);
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Find appTheme error. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        let deletedAsset = appTheme.resources[resourceType];
+
+        const assetIndex = !!deletedAsset ? appTheme.assets.indexOf(deletedAsset) : -1;
+        let asset: IAssetDocument;
+        if (assetIndex > -1) {
+            try {
+                asset = await AssetModel.findByIdAndDelete(deletedAsset);
+                if (!!asset) {
+                    await deleteAsset(asset.path);
+                    await deleteAsset(asset.mipmap.x128);
+                    await deleteAsset(asset.mipmap.x32);
+                    await riseRefVersion(request.account.id, RefTypes.ASSETS);
+                }
+            } catch (err) {
+                this.setStatus(500);
+                return {
+                    error: [
+                        {
+                            code: 500,
+                            message: `Delete asset error. ${err}`,
+                        }
+                    ]
+                };
+            }
+        }
+
+        if (!asset) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: "Asset is empty.",
+                    }
+                ]
+            };
+        }
+
+        let appThemeRef: IRef;
+        let assetRef: IRef;
+        let savedAppTheme: IAppThemeDocument;
+        try {
+            const assetId = asset._id.toString();
+            delete appTheme.resources[resourceType];
+            appTheme.markModified("resources");
+            appTheme.assets.splice(assetId, 1);
+
+            savedAppTheme = await appTheme.save();
+
+            assetRef = await riseRefVersion(request.account.id, RefTypes.ASSETS);
+            appThemeRef = await riseRefVersion(request.account.id, RefTypes.THEMES, {
+                "extra.type.equals": appTheme.type,
+            });
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Save asset to appTheme assets list error. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        return {
+            meta: {
+                theme: {
+                    ref: appThemeRef,
+                },
+                asset: {
+                    ref: assetRef,
+                }
+            },
+            data: {
+                asset: asset,
             }
         };
     }
