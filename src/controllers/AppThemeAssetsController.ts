@@ -250,13 +250,13 @@ export class AppThemeAssetsController extends Controller {
                     ]
                 };
             }
-        }
 
-        // удаление предыдущего ассета
-        if (!!deletedAsset) {
-            appTheme.assets = appTheme.assets.filter(asset => {
-                return asset.toString() !== deletedAsset.toString();
-            });
+            // удаление предыдущего ассета
+            if (!!deletedAsset) {
+                appTheme.assets = appTheme.assets.filter(asset => {
+                    return asset.toString() !== deletedAsset.toString();
+                });
+            }
         }
 
         let appThemeRef: IRef;
@@ -513,6 +513,7 @@ export class AppThemeAssetsController extends Controller {
 
         let assetRef: IRef;
         const assetIndex = appTheme.assets.indexOf(assetId);
+
         if (assetIndex > -1) {
             try {
                 const asset = await AssetModel.findByIdAndDelete(assetId);
@@ -533,37 +534,47 @@ export class AppThemeAssetsController extends Controller {
                     ]
                 };
             }
-        }
 
-        let appThemesRef: IRef;
-        try {
-            appTheme.assets.splice(assetIndex, 1);
-            delete appTheme.resources[assetId];
+            let appThemesRef: IRef;
+            try {
+                appTheme.assets.splice(assetIndex, 1);
+                delete appTheme.resources[assetId];
 
-            appTheme.markModified("resources");
+                appTheme.markModified("resources");
 
-            await appTheme.save();
+                await appTheme.save();
 
-            appThemesRef = await riseRefVersion(request.account.id, RefTypes.THEMES, {
-                "extra.type.equals": appTheme.type,
-            });
-            return {
-                meta: {
-                    theme: {
-                        ref: appThemesRef,
-                    },
-                    asset: {
-                        ref: assetRef,
-                    },
-                }
-            };
-        } catch (err) {
+                appThemesRef = await riseRefVersion(request.account.id, RefTypes.THEMES, {
+                    "extra.type.equals": appTheme.type,
+                });
+                return {
+                    meta: {
+                        theme: {
+                            ref: appThemesRef,
+                        },
+                        asset: {
+                            ref: assetRef,
+                        },
+                    }
+                };
+            } catch (err) {
+                this.setStatus(500);
+                return {
+                    error: [
+                        {
+                            code: 500,
+                            message: `Save appTheme error. ${err}`,
+                        }
+                    ]
+                };
+            }
+        } else {
             this.setStatus(500);
             return {
                 error: [
                     {
                         code: 500,
-                        message: `Save appTheme error. ${err}`,
+                        message: "Asset is empty.",
                     }
                 ]
             };
