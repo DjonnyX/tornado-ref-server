@@ -1,6 +1,6 @@
 {
     "light": {
-        "preview": "template/themes/preview/kiosk/light.png",
+        "preview": "template/themes/preview/kiosk/light.jpg",
         "data": {
             "common": {
                 "modal": {
@@ -77,6 +77,7 @@
             },
             "loading": {
                 "backgroundColor": "#fff",
+                "backgroundImage": "",
                 "progressBar": {
                     "thumbColor": "rgba(0,0,0,0.85)",
                     "trackColor": "rgba(0,0,0,0.75)",
@@ -84,10 +85,12 @@
                 }
             },
             "intro": {
-                "backgroundColor": "#fff"
+                "backgroundColor": "#fff",
+                "backgroundImage": ""
             },
             "menu": {
                 "backgroundColor": "#fff",
+                "backgroundImage": "",
                 "header": {
                     "backgroundColor": [
                         "rgba(255, 255, 255, 1)",
@@ -186,6 +189,7 @@
             },
             "modifiers": {
                 "backgroundColor": "#fff",
+                "backgroundImage": "",
                 "nameColor": "rgba(0,0,0,0.75)",
                 "descriptionColor": "rgba(0,0,0,0.75)",
                 "price": {
@@ -261,6 +265,7 @@
             },
             "confirmation": {
                 "backgroundColor": "#fff",
+                "backgroundImage": "",
                 "backButton": {
                     "backgroundColor": "#212121",
                     "textColor": "#ffffff"
@@ -302,10 +307,14 @@
                 }
             },
             "payStatus": {
+                "backgroundColor": "#fff",
+                "backgroundImage": "",
                 "primaryMessageColor": "rgba(0,0,0,0.75)",
                 "secondaryMessageColor": "rgba(0,0,0,0.5)"
             },
             "payConfirmation": {
+                "backgroundColor": "#fff",
+                "backgroundImage": "",
                 "numberColor": "rgba(0,0,0,1)",
                 "primaryMessageColor": "rgba(0,0,0,0.75)",
                 "secondaryMessageColor": "rgba(0,0,0,0.5)"
@@ -313,7 +322,7 @@
         }
     },
     "dark": {
-        "preview": "template/themes/preview/kiosk/dark.png",
+        "preview": "template/themes/preview/kiosk/dark.jpg",
         "data": {
             "common": {
                 "modal": {
@@ -390,6 +399,7 @@
             },
             "loading": {
                 "backgroundColor": "#000",
+                "backgroundImage": "",
                 "progressBar": {
                     "thumbColor": "rgba(255,255,255,0.85)",
                     "trackColor": "rgba(255,255,255,0.75)",
@@ -397,10 +407,12 @@
                 }
             },
             "intro": {
-                "backgroundColor": "#000"
+                "backgroundColor": "#000",
+                "backgroundImage": ""
             },
             "menu": {
                 "backgroundColor": "#000",
+                "backgroundImage": "",
                 "header": {
                     "backgroundColor": [
                         "rgba(0, 0, 0, 1)",
@@ -498,6 +510,7 @@
             },
             "modifiers": {
                 "backgroundColor": "#000",
+                "backgroundImage": "",
                 "nameColor": "rgba(255,255,255,0.75)",
                 "descriptionColor": "rgba(255,255,255,0.5)",
                 "price": {
@@ -573,6 +586,7 @@
             },
             "confirmation": {
                 "backgroundColor": "#000",
+                "backgroundImage": "",
                 "backButton": {
                     "backgroundColor": "#212121",
                     "textColor": "#ffffff"
@@ -614,10 +628,14 @@
                 }
             },
             "payStatus": {
+                "backgroundColor": "#000",
+                "backgroundImage": "",
                 "primaryMessageColor": "rgba(255,255,255,0.75)",
                 "secondaryMessageColor": "rgba(255,255,255,0.5)"
             },
             "payConfirmation": {
+                "backgroundColor": "#000",
+                "backgroundImage": "",
                 "numberColor": "rgba(255,255,255,1)",
                 "primaryMessageColor": "rgba(255,255,255,0.75)",
                 "secondaryMessageColor": "rgba(255,255,255,0.5)"
