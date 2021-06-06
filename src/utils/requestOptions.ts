@@ -1,6 +1,7 @@
 import { QueryWithHelpers } from "mongoose";
 
 const FILTER_PATTERN = /([\w.])*\.(equals|contain|notequals|lt|gt){1,}$/;
+const NUM_PATTERN = /^([0-9])+$/;
 
 export function findAllWithFilter<T, D, Q>(document: QueryWithHelpers<Array<T>, any, any>, request: {
     query: any,
@@ -14,7 +15,11 @@ export function findAllWithFilter<T, D, Q>(document: QueryWithHelpers<Array<T>, 
             const value = request.query[pName];
 
             if (operation === 'equals') {
-                result = result.where(id).equals(value);
+                if (NUM_PATTERN.test(value)) {
+                    result = result.where(id).equals(Number.parseInt(value));
+                } else {
+                    result = result.where(id).equals(value);
+                }
             } else if (operation === 'contain') {
                 // etc
             } else if (operation === 'notequals') {

@@ -1,17 +1,21 @@
 import * as mongoose from "mongoose";
 import { Schema, Document } from "mongoose";
-import { TerminalTypes } from "@djonnyx/tornado-types";
+import { IAsset, TerminalTypes } from "@djonnyx/tornado-types";
 
 interface IAppThemeDocument extends Document {
+    isDefault: boolean;
     client: string;
     type: TerminalTypes;
     name: string;
     version: number;
     lastUpdate: Date;
+    assets: Array<string>;
+    resources: { [name: string]: string };
     data: any;
 }
 
 const AppThemeSchema = new Schema({
+    isDefault: { type: Boolean, default: false },
     client: { type: String, required: true, index: { unique: false } },
     type: {
         type: TerminalTypes,
@@ -30,6 +34,8 @@ const AppThemeSchema = new Schema({
     name: { type: String },
     version: { type: Number, required: true },
     lastUpdate: { type: Date, required: true },
+    assets: { type: [String], required: true, default: [] },
+    resources: { type: Schema.Types.Mixed, required: true, default: {} },
     data: { type: Schema.Types.Mixed, required: true },
 });
 

@@ -19,6 +19,7 @@ export interface IFileInfo {
         x32: string;
     };
     path: string;
+    extra?: any;
 }
 
 const THUMBNAIL_WIDTH = 128;
@@ -31,8 +32,6 @@ const decodeVideo = (ext: string, pathToResource: string): Promise<string> => {
     return new Promise((resolve, reject) => {
         const normalizedPathToResource = `${pathToResource}${ext}`;
         const normalizedTmpPathToResource = `${pathToResource}-tmp${ext}`;
-        console.log(normalizedPathToResource)
-        console.log(normalizedTmpPathToResource)
         try {
             ffmpeg(normalizedPathToResource)
                 .outputOptions("-c:v libx264")
@@ -62,7 +61,7 @@ const makeThumbnail = (ext: string, pathToResource: string, width: number, heigh
         const thumbnailPath = path.normalize(`${pathToResource}_${width}x${height}`);
         const normalizedPathToResource = `${pathToResource}${ext}`
 
-        if (ext === AssetExtensions.JPG || ext === AssetExtensions.PNG) {
+        if (ext === AssetExtensions.JPG || ext === AssetExtensions.PNG || ext === AssetExtensions.GIF || ext === AssetExtensions.WEBP) {
             const normalizedThumbnailPath = `${thumbnailPath}${ext}`
             // создается миниатюра
             try {
@@ -101,7 +100,7 @@ const makeThumbnail = (ext: string, pathToResource: string, width: number, heigh
     });
 };
 
-export const assetsUploader = (name: string, allowedExtensions: Array<AssetExtensions>, request: IAuthRequest): Promise<IFileInfo> => {
+export const assetsUploader = (name: string, allowedExtensions: Array<AssetExtensions>, request: IAuthRequest, extra?: any): Promise<IFileInfo> => {
     return new Promise((resolve, reject) => {
         const EXT_PATTERN = new RegExp(`^(${allowedExtensions.map(v => `\\${v}`).join("|")})$`);
         multer({
@@ -140,6 +139,7 @@ export const assetsUploader = (name: string, allowedExtensions: Array<AssetExten
                                         x32: x32Path,
                                     },
                                     path: filePath,
+                                    extra: extra || {},
                                 });
                             });
                         });
@@ -157,6 +157,7 @@ export const assetsUploader = (name: string, allowedExtensions: Array<AssetExten
                                     x32: x32Path,
                                 },
                                 path: filePath,
+                                extra: extra || {},
                             });
                         });
                     });

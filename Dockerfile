@@ -1,4 +1,4 @@
-FROM node:10-alpine
+FROM node:12-alpine
 
 LABEL Maintainer="Grebennikov Eugene"
 LABEL Name="TornadoSST Ref Server"

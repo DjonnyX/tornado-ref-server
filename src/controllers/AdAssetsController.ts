@@ -98,13 +98,14 @@ const RESPONSE_TEMPLATE: IAssetItem = {
     id: "107c7f79bcf86cd7994f6c0e",
     active: true,
     lastUpdate: new Date(),
-    name: "some_3d_model",
-    ext: AssetExtensions.FBX,
+    name: "some_image",
+    ext: AssetExtensions.WEBP,
     mipmap: {
-        x128: "assets/some_3d_model_128x128.png",
+        x128: "assets/some_image_128x128.png",
         x32: "assets/favicon.png",
     },
-    path: "assets/some_3d_model.fbx",
+    path: "assets/some_image.webp",
+    extra: {},
 };
 
 @Route("/ad")
@@ -310,7 +311,13 @@ export class AdAssetsController extends Controller {
     public async resource(adId: string, langCode: string, resourceType: AdImageTypes, @Request() request: IAuthRequest): Promise<IAdCreateAssetsResponse> {
         let assetsInfo: ICreateAssetsResponse;
         try {
-            assetsInfo = await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.MP4, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA], false);
+            assetsInfo = await uploadAsset(request, [
+                AssetExtensions.JPG,
+                AssetExtensions.PNG,
+                AssetExtensions.GIF,
+                AssetExtensions.WEBP,
+                AssetExtensions.MP4
+            ], false);
         } catch (err) {
             this.setStatus(500);
             return {

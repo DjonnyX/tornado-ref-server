@@ -13,9 +13,10 @@ interface IAssetDocument extends Document {
         x32: string;
     };
     path: string;
+    extra: any;
 }
 
-const AssetSchema = new Schema({
+export const AssetSchema = new Schema({
     client: { type: String, required: true, index: { unique: false } },
     active: { type: Boolean, required: true, default: true },
     name: { type: String, required: true },
@@ -24,10 +25,9 @@ const AssetSchema = new Schema({
         type: String, enum: [
             AssetExtensions.JPG,
             AssetExtensions.PNG,
+            AssetExtensions.GIF,
+            AssetExtensions.WEBP,
             AssetExtensions.MP4,
-            AssetExtensions.OBJ,
-            AssetExtensions.FBX,
-            AssetExtensions.COLLADA,
         ],
         required: true,
     },
@@ -36,6 +36,7 @@ const AssetSchema = new Schema({
         x32: { type: String, required: false, },
     },
     path: { type: String, required: true },
+    extra: { type: Schema.Types.Mixed, default: {} },
 });
 
 const AssetModel = mongoose.model<IAssetDocument>("Asset", AssetSchema);

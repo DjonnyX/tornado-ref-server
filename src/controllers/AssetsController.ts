@@ -6,21 +6,11 @@ import { IAssetDocument, AssetModel } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
 import { assetsUploader, IFileInfo } from "../utils/assetUpload";
 import { IAuthRequest } from "../interfaces";
-import { AssetExtensions, IRef, RefTypes } from "@djonnyx/tornado-types";
+import { AssetExtensions, IRef, RefTypes, IAsset } from "@djonnyx/tornado-types";
+import { findAllWithFilter } from "../utils/requestOptions";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface IAssetItem {
-    id: string;
-    active: boolean;
-    lastUpdate: Date;
-    name: string;
-    ext: AssetExtensions;
-    path: string;
-    mipmap: {
-        x128: string;
-        x32: string;
-    };
-}
+export interface IAssetItem extends IAsset { }
 
 interface IAssetMeta {
     ref: IRef;
@@ -78,19 +68,20 @@ const RESPONSE_TEMPLATE: IAssetItem = {
     id: "107c7f79bcf86cd7994f6c0e",
     active: true,
     lastUpdate: new Date(),
-    name: "some_3d_model",
-    ext: AssetExtensions.FBX,
-    path: "assets/some_3d_model.fbx",
+    name: "some_image",
+    ext: AssetExtensions.WEBP,
+    path: "assets/some_image.webp",
     mipmap: {
-        x128: "assets/some_3d_model_128x128.png",
-        x32: "assets/favicon.png",
+        x128: "assets/some_image_128x128.webp",
+        x32: "assets/favicon.webp",
     },
+    extra: {},
 };
 
-export const uploadAsset = async (request: IAuthRequest, allowedExtensions: Array<AssetExtensions>, active = true): Promise<ICreateAssetsResponse> => {
+export const uploadAsset = async (request: IAuthRequest, allowedExtensions: Array<AssetExtensions>, active = true, extra?: any): Promise<ICreateAssetsResponse> => {
     let fileInfo: IFileInfo;
     try {
-        fileInfo = await assetsUploader("file", allowedExtensions, request);
+        fileInfo = await assetsUploader("file", allowedExtensions, request, extra);
     } catch (err) {
         return {
             error: [
@@ -159,7 +150,7 @@ export class AssetsController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<IGetAssetsResponse> {
         try {
-            const items = await AssetModel.find({ client: request.account.id });
+            const items = await findAllWithFilter(AssetModel.find({ client: request.account.id }), request);
             const ref = await getRef(request.account.id, RefTypes.ASSETS);
             return {
                 meta: { ref },

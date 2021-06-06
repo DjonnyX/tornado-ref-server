@@ -1,8 +1,8 @@
 import * as fs from "fs";
-import { AdTypes, IKioskTheme, NodeTypes, RefTypes, TerminalTypes } from "@djonnyx/tornado-types";
+import { AdTypes, AssetExtensions, IKioskTheme, NodeTypes, RefTypes, TerminalTypes } from "@djonnyx/tornado-types";
 import {
     RefModel, NodeModel, TranslationModel, LanguageModel, CurrencyModel, AppThemeModel, AdModel, OrderTypeModel,
-    ILanguageDocument, IOrderTypeDocument
+    ILanguageDocument, IOrderTypeDocument, AssetModel
 } from "../models";
 import { mergeTranslation, getTemplateLangs } from "../utils/translation";
 import {
@@ -16,7 +16,8 @@ import { ICurrencyTemplate, IScreenSaverManifest } from "../interfaces";
 import { riseRefVersion } from "./refs";
 import { deepMergeObjects } from "../utils/object";
 import { createAd } from "../utils/ad";
-import { makeDirIfEmpty } from "../utils/file";
+import { makeDirIfEmpty, readFileJSONAsync } from "../utils/file";
+import { assetsUploaderFS } from "../utils/assetUpload";
 
 const createDefaultOrderTypeIfNeed = async (client: string) => {
     const orderTypes = await OrderTypeModel.find({ client });
@@ -102,32 +103,13 @@ const createRootNode = async (client: string) => {
     }
 };
 
-function readFileJSONAsync<T = any>(path: string): Promise<T> {
-    return new Promise<T>((resolve, reject) => {
-        fs.readFile(path, {
-            encoding: "utf-8",
-        }, (err, data) => {
-            if (!!err) {
-                return reject(err);
-            }
-
-            try {
-                const json = JSON.parse(data) as T;
-                resolve(json);
-            } catch (err) {
-                reject(err);
-            }
-        });
-    });
-}
-
 const mergeDefaultTheme = async (client: string, templatePath: string, type: TerminalTypes) => {
-    const template: IKioskTheme = await readFileJSONAsync<IKioskTheme>(templatePath);
+    const template = await readFileJSONAsync(templatePath);
 
     const promises = new Array<Promise<void>>();
 
     for (const themeName in template) {
-        const themeData = template[themeName];
+        const themeData = template[themeName].data;
         promises.push(new Promise(async (resolve, reject) => {
             try {
                 let theme = await AppThemeModel.findOne({
@@ -137,16 +119,41 @@ const mergeDefaultTheme = async (client: string, templatePath: string, type: Ter
                 });
 
                 if (!theme) {
+
                     theme = new AppThemeModel({
+                        isDefault: true,
                         client,
                         type,
                         name: themeName,
                         version: 1,
                         lastUpdate: new Date(Date.now()),
+                        assets: [],
+                        resources: {},
                         data: themeData,
                     });
 
-                    await theme.save();
+                    const savedTheme = await theme.save();
+
+                    const themeId = savedTheme._id.toString();
+
+                    const assetInfo = await assetsUploaderFS(client, themeId, [
+                        AssetExtensions.JPG,
+                        AssetExtensions.PNG,
+                        AssetExtensions.GIF,
+                        AssetExtensions.WEBP,
+                    ], template[themeName].preview);
+
+                    const asset = new AssetModel({ client, ...assetInfo });
+
+                    await riseRefVersion(client, RefTypes.ASSETS);
+                    await asset.save();
+
+                    savedTheme.assets.push(asset._id);
+                    savedTheme.resources["thumbnail"] = asset._id;
+
+                    savedTheme.markModified("resources");
+
+                    await savedTheme.save();
 
                     return resolve();
                 }

@@ -1,6 +1,25 @@
 import * as archiver from "archiver";
 import * as fs from "fs-extra";
 
+export function readFileJSONAsync<T = any>(path: string): Promise<T> {
+    return new Promise<T>((resolve, reject) => {
+        fs.readFile(path, {
+            encoding: "utf-8",
+        }, (err, data) => {
+            if (!!err) {
+                return reject(err);
+            }
+
+            try {
+                const json = JSON.parse(data.toString("utf8")) as T;
+                resolve(json);
+            } catch (err) {
+                reject(err);
+            }
+        });
+    });
+}
+
 export const zipDirectory = (source: string, out: string): Promise<void> => {
     const archive = archiver('zip', { zlib: { level: 9 } });
     const stream = fs.createWriteStream(out);
@@ -17,16 +36,16 @@ export const zipDirectory = (source: string, out: string): Promise<void> => {
     });
 }
 
-export const zipAppendData = (source: JSON, out: string): Promise<void> => {
+export const zipAppendData = (source: Array<any>, out: string): Promise<void> => {
     const archive = archiver('zip', { zlib: { level: 9 } });
     const stream = fs.createWriteStream(out);
 
     return new Promise<void>((resolve, reject) => {
-        archive
-            .append(Buffer.from(JSON.stringify(source)), { name: out })
-            .on('error', err => reject(err))
-            .pipe(stream)
-            ;
+
+        source.forEach(source => {
+            archive.append(Buffer.from(JSON.stringify(source)), { name: out });
+        })
+        archive.on('error', err => reject(err)).pipe(stream);
 
         stream.on('close', () => resolve());
         archive.finalize();
@@ -46,15 +65,7 @@ export const removeFile = (source: string): Promise<void> => {
 }
 
 export const removeDirectory = (source: string): Promise<void> => {
-    return new Promise<void>((resolve, reject) => {
-        fs.rmdir(source, (err => {
-            if (!!err) {
-                // etc
-            }
-
-            resolve();
-        }))
-    });
+    return fs.rmdir(source, { recursive: true, maxRetries: 3, retryDelay: 100 })
 }
 
 export const copyDirectory = (source: string, target: string): Promise<void> => {
