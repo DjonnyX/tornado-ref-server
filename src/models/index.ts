@@ -15,6 +15,7 @@ import { ITerminalDocument, TerminalModel } from "./Terminal";
 import { IAppThemeDocument, AppThemeModel } from "./AppTheme";
 import { ICheckueDocument, CheckueModel } from "./Checkue";
 import { IAssetDocument, AssetModel } from "./Asset";
+import { ISystemTagDocument, SystemTagModel } from "./SystemTag";
 
 export {
     NodeModel, INodeDocument,
@@ -35,4 +36,5 @@ export {
     IAppThemeDocument, AppThemeModel,
     ICheckueDocument, CheckueModel,
     IAssetDocument, AssetModel,
+    ISystemTagDocument, SystemTagModel,
 };
