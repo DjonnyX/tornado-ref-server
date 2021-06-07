@@ -366,6 +366,11 @@ export const initRefs = async (client: string): Promise<void> => {
             name: RefTypes.CHECKUES,
             version: 1,
             lastUpdate,
+        }, {
+            client,
+            name: RefTypes.SYSTEM_TAGS,
+            version: 1,
+            lastUpdate,
         },
     ];
 

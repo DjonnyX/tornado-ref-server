@@ -30,6 +30,7 @@ const RefSchema = new Schema({
         RefTypes.TERMINALS,
         RefTypes.TRANSLATIONS,
         RefTypes.THEMES,
+        RefTypes.SYSTEM_TAGS,
     ], required: true },
     version: { type: Number, required: true },
     lastUpdate: { type: Date, required: true },

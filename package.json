@@ -1,6 +1,6 @@
 {
   "name": "tornado-ref-server",
-  "version": "1.1.1-alpha19",
+  "version": "1.1.1-alpha20",
   "author": {
     "email": "djonnyx@gmail.com",
     "name": "Eugene Grebennikov"
@@ -27,7 +27,7 @@
   "homepage": "https://github.com/DjonnyX/tornado-ref-server#readme",
   "license": "Commercial",
   "dependencies": {
-    "@djonnyx/tornado-types": "^1.4.48",
+    "@djonnyx/tornado-types": "^1.4.54",
     "@hapi/joi": "^17.1.1",
     "archiver": "^5.3.0",
     "bcrypt": "^5.0.1",
