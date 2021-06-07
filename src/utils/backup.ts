@@ -139,7 +139,10 @@ export const uploadBackup = async (request: IAuthRequest, allowedExtensions = ['
             }
 
             try {
-                const dbDataRaw = await readFile(`backups/upload/${client}/db`);
+                let dbDataRaw = await readFile(`backups/upload/${client}/db`);
+                dbDataRaw = dbDataRaw.replace(/("client":"[\w|\d]+")/g, `"client":"${client}"`);
+                dbDataRaw = dbDataRaw.replace(/("assets\/[\w|\d]+\/)/g, `"assets/${client}/`);
+
                 const dbData: IClientDBBackup = JSON.parse(dbDataRaw);
 
                 await replaceDB(client, dbData);
