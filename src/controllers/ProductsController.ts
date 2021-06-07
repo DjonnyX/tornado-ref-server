@@ -40,6 +40,8 @@ interface IProductCreateRequest {
     prices: Array<IPrice>;
     receipt: Array<IReceiptItem>;
     tags: Array<string>;
+    weight?: number;
+    systemTag?: string;
     joint?: string;
     extra?: { [key: string]: any } | null;
 }
@@ -50,6 +52,8 @@ interface IProductUpdateRequest {
     prices?: Array<IPrice>;
     receipt?: Array<IReceiptItem>;
     tags?: Array<string>;
+    weight?: number;
+    systemTag?: string;
     joint?: string;
     extra?: { [key: string]: any } | null;
 }
@@ -91,6 +95,8 @@ export const RESPONSE_TEMPLATE: IProductItem = {
         }
     ],
     tags: ["123c7f79bcf86cd7994f6c0e"],
+    weight: 100,
+    systemTag: "78y7ggb28fb28bf2873b7f3",
     joint: "df3c7f79bcf86cd7994f9d8f",
     extra: { key: "value" },
 };

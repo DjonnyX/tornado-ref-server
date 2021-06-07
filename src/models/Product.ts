@@ -18,6 +18,8 @@ interface IProductDocument extends Document {
     prices: Array<IPrice>;
     receipt: Array<IReceiptItem>;
     tags: Array<string>;
+    weight: number;
+    systemTag: string;
     joint: string;
     extra?: { [key: string]: any } | null;
 }
@@ -44,6 +46,8 @@ const ProductSchema = new Schema({
     prices: [PriceSchema],
     receipt: [ReceiptSchema],
     tags: [{ type: Schema.Types.ObjectId }],
+    weight: { type: Schema.Types.Number, require: true, default: 0 },
+    systemTag: { type: Schema.Types.String },
     joint: { type: Schema.Types.ObjectId, required: true },
     extra: { type: Schema.Types.Mixed, required: false, default: {} },
 });
