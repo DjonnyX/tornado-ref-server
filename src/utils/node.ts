@@ -1,3 +1,4 @@
+import { INode } from "@djonnyx/tornado-types";
 import { INodeDocument, NodeModel } from "../models";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -95,3 +96,21 @@ export const checkOnRecursion = async (client: string, id: string, contentId: st
 
     return !!nodeChain.find(item => item._id == contentId);
 };
+
+export const formatModel = (model: INodeDocument): INode => ({
+    id: model._id,
+    active: model.active,
+    type: model.type,
+    parentId: model.parentId,
+    contentId: model.contentId,
+    children: model.children || [],
+    scenarios: model.scenarios.map(scenario => {
+        return {
+            active: scenario.active,
+            action: scenario.action,
+            value: scenario.value,
+            extra: scenario.extra,
+        }
+    }) || [],
+    extra: model.extra,
+});

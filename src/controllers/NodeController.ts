@@ -2,21 +2,12 @@ import { NodeModel, INodeDocument } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Request } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import * as joi from "@hapi/joi";
-import { getNodesChain, deleteNodesChain, checkOnRecursion } from "../utils/node";
+import { getNodesChain, deleteNodesChain, checkOnRecursion, formatModel } from "../utils/node";
 import { IAuthRequest } from "../interfaces";
-import { IScenario, NodeTypes, ScenarioCommonActionTypes, RefTypes, IRef } from "@djonnyx/tornado-types";
+import { IScenario, NodeTypes, ScenarioCommonActionTypes, RefTypes, IRef, INode } from "@djonnyx/tornado-types";
 import { findAllWithFilter } from "../utils/requestOptions";
 
-interface INodeItem {
-    id: string;
-    active: boolean,
-    type: NodeTypes;
-    parentId: string;
-    contentId: string;
-    children: Array<string>;
-    scenarios?: Array<IScenario>;
-    extra?: { [key: string]: any } | null;
-}
+interface INodeItem extends INode { }
 
 interface INodesMeta {
     ref: IRef;
@@ -58,6 +49,24 @@ interface ICreateNodeResponse {
     }>;
 }
 
+interface ICreateNodesResponse {
+    meta?: INodesMeta;
+    data?: {
+        /**
+         * измененный нод
+         */
+        changed: Array<INodeItem>;
+        /**
+         * созданный ребенок
+         */
+        created: Array<INodeItem>;
+    };
+    error?: Array<{
+        code: number;
+        message: string;
+    }>;
+}
+
 interface IDeleteNodeResponse {
     meta?: INodesMeta;
     data?: {
@@ -86,6 +95,18 @@ interface INodeCreateRequest {
     extra?: { [key: string]: any } | null;
 }
 
+interface INodesCreateRequest {
+    nodes: Array<{
+        type: NodeTypes;
+        active: boolean;
+        parentId: string;
+        contentId: string;
+        children: Array<string>;
+        scenarios: Array<IScenario>;
+        extra?: { [key: string]: any } | null;
+    }>;
+}
+
 interface INodeUpdateRequest {
     type: NodeTypes;
     active: boolean;
@@ -108,24 +129,6 @@ const RESPONSE_TEMPLATE: INodeItem = {
         action: ScenarioCommonActionTypes.VISIBLE_BY_BUSINESS_PERIOD,
     }]
 };
-
-const formatModel = (model: INodeDocument): INodeItem => ({
-    id: model._id,
-    active: model.active,
-    type: model.type,
-    parentId: model.parentId,
-    contentId: model.contentId,
-    children: model.children || [],
-    scenarios: model.scenarios.map(scenario => {
-        return {
-            active: scenario.active,
-            action: scenario.action,
-            value: scenario.value,
-            extra: scenario.extra,
-        }
-    }) || [],
-    extra: model.extra,
-});
 
 const META_TEMPLATE: INodesMeta = {
     ref: {
@@ -269,6 +272,112 @@ export class NodesController extends Controller {
                 ]
             };
         }
+    }
+
+    @Post()
+    @Security("clientAccessToken")
+    @OperationId("CreateMany")
+    @Example<INodesResponse>({
+        meta: META_TEMPLATE,
+        data: [RESPONSE_TEMPLATE]
+    })
+    public async createMany(@Body() body: INodesCreateRequest, @Request() request: IAuthRequest): Promise<ICreateNodesResponse> {
+        const promises = new Array<Promise<INodeDocument>>();
+
+        for (let i = 0, l = body.nodes.length; i < l; i++) {
+            const node = body.nodes[i];
+            if (node.type === NodeTypes.SELECTOR_NODE) {
+                const hasRecursion = await checkOnRecursion(request.account.id, node.parentId, node.contentId);
+                if (hasRecursion) {
+                    this.setStatus(500);
+                    return {
+                        error: [
+                            {
+                                code: 500,
+                                message: "Invalid combination. Probably recursion.",
+                            }
+                        ]
+                    };
+                }
+            }
+
+            if (node.type === NodeTypes.SELECTOR_NODE && !!node.children && node.children.length > 0) {
+                this.setStatus(500);
+                return {
+                    error: [
+                        {
+                            code: 500,
+                            message: "Node with type SELECTOR_NODE can not be contains children",
+                        }
+                    ]
+                };
+            }
+
+            const item = new NodeModel({ ...node, client: request.account.id });
+            promises.push(item.save());
+        }
+
+        let savedItems: Array<INodeDocument>;
+        try {
+            savedItems = await Promise.all(promises);
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Can not be save node. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        let ref: IRef;
+        try {
+            ref = await riseRefVersion(request.account.id, RefTypes.NODES);
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Can not be bumped version for node ref. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        const promises1 = new Array<Promise<INodeDocument>>();
+
+        for (let i = 0, l = savedItems.length; i < l; i++) {
+            const node = savedItems[i]
+            const parentNode = await NodeModel.findOne({ client: request.account.id, _id: node.parentId });
+            parentNode.children.push(node._id);
+            promises1.push(parentNode.save());
+        }
+
+        let parentNodes: Array<INodeDocument>;
+        try {
+            parentNodes = await Promise.all(promises1);
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Can not be setted children for parent node. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        return {
+            meta: { ref },
+            data: {
+                changed: parentNodes.map(n => formatModel(n)),
+                created: savedItems.map(n => formatModel(n)),
+            }
+        };
     }
 }
 
