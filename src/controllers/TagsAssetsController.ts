@@ -165,9 +165,16 @@ export class TagAssetsController extends Controller {
         const promises = new Array<Promise<{ assets: Array<IAssetDocument>, langCode: string }>>();
 
         for (const langCode in tag.contents) {
-            promises.push(new Promise(async (resolve) => {
-                const assets = await AssetModel.find({ _id: tag.contents[langCode].assets });
-                resolve({ assets, langCode });
+            promises.push(new Promise(async (resolve, reject) => {
+                let assets: Array<IAssetDocument>;
+                if (tag.contents?.[langCode]?.assets?.length > 0) {
+                    try {
+                        assets = await AssetModel.find({ _id: tag.contents?.[langCode]?.assets });
+                    } catch (err) {
+                        return reject(err);
+                    }
+                }
+                resolve({ assets: assets || [], langCode });
             }));
         }
 

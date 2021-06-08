@@ -165,9 +165,16 @@ export class SelectorAssetsController extends Controller {
         const promises = new Array<Promise<{ assets: Array<IAssetDocument>, langCode: string }>>();
 
         for (const langCode in selector.contents) {
-            promises.push(new Promise(async (resolve) => {
-                const assets = await AssetModel.find({ _id: selector.contents[langCode].assets });
-                resolve({ assets, langCode });
+            promises.push(new Promise(async (resolve, reject) => {
+                let assets: Array<IAssetDocument>;
+                if (selector.contents?.[langCode]?.assets?.length > 0) {
+                    try {
+                        assets = await AssetModel.find({ _id: selector.contents?.[langCode]?.assets });
+                    } catch (err) {
+                        return reject(err);
+                    }
+                }
+                resolve({ assets: assets || [], langCode });
             }));
         }
 
