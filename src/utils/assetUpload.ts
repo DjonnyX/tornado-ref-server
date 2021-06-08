@@ -61,12 +61,12 @@ const makeThumbnail = (ext: string, pathToResource: string, width: number, heigh
         const thumbnailPath = path.normalize(`${pathToResource}_${width}x${height}`);
         const normalizedPathToResource = `${pathToResource}${ext}`
 
-        if (ext === AssetExtensions.JPG || ext === AssetExtensions.PNG || ext === AssetExtensions.GIF || ext === AssetExtensions.WEBP) {
+        if (ext === AssetExtensions.JPG || ext === AssetExtensions.PNG || ext === AssetExtensions.WEBP) {
             const normalizedThumbnailPath = `${thumbnailPath}${ext}`
             // создается миниатюра
             try {
                 sharp(normalizedPathToResource)
-                    .ensureAlpha()
+                    .ensureAlpha(0)
                     .resize(width, height, {
                         fit: "contain",
                         background: { r: 0, g: 0, b: 0, alpha: 0 },
@@ -81,7 +81,7 @@ const makeThumbnail = (ext: string, pathToResource: string, width: number, heigh
             } catch (err) {
                 return reject(err);
             }
-        } else if (ext === AssetExtensions.MP4) {
+        } else if (ext === AssetExtensions.MP4 || ext === AssetExtensions.GIF) {
             try {
                 ffmpeg(normalizedPathToResource)
                     .size(`${width}x${height}`)
