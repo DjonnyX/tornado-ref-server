@@ -2,6 +2,9 @@
     "light": {
         "preview": "template/themes/preview/kiosk/light.png",
         "data": {
+            "configuration": {
+                "showDraftOrders": false
+            },
             "common": {
                 "modal": {
                     "backgroundColor": "#e3e3e3",
@@ -324,6 +327,9 @@
     "dark": {
         "preview": "template/themes/preview/kiosk/dark.png",
         "data": {
+            "configuration": {
+                "showDraftOrders": false
+            },
             "common": {
                 "modal": {
                     "backgroundColor": "#000",
