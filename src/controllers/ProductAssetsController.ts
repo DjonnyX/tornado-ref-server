@@ -169,9 +169,16 @@ export class ProductAssetsController extends Controller {
         const promises = new Array<Promise<{ assets: Array<IAssetDocument>, langCode: string }>>();
 
         for (const langCode in product.contents) {
-            promises.push(new Promise(async (resolve) => {
-                const assets = await AssetModel.find({ _id: product.contents[langCode].assets });
-                resolve({ assets, langCode });
+            promises.push(new Promise(async (resolve, reject) => {
+                let assets: Array<IAssetDocument>;
+                if (product.contents?.[langCode]?.assets?.length > 0) {
+                    try {
+                        assets = await AssetModel.find({ _id: product.contents?.[langCode]?.assets });
+                    } catch (err) {
+                        return reject(err);
+                    }
+                }
+                resolve({ assets: assets || [], langCode });
             }));
         }
 
@@ -181,6 +188,7 @@ export class ProductAssetsController extends Controller {
             const result: {
                 [lang: string]: Array<IProductAsset>,
             } = {};
+
             assetsInfo.forEach(assetInfo => {
                 result[assetInfo.langCode] = assetInfo.assets.map(asset => formatAssetModel(asset));
             });

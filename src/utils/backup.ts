@@ -5,7 +5,7 @@ import { IAuthRequest } from "../interfaces";
 import { IClientDBBackup } from "../controllers/BackupController";
 import {
     AdModel, AppThemeModel, AssetModel, BusinessPeriodModel, CheckueModel, CurrencyModel, EmployeeModel, LanguageModel,
-    NodeModel, OrderTypeModel, ProductModel, SelectorModel, StoreModel, TagModel, TranslationModel
+    NodeModel, OrderTypeModel, ProductModel, SelectorModel, StoreModel, SystemTagModel, TagModel, TranslationModel
 } from "../models";
 import { copyDirectory, makeDirIfEmpty, readFile, removeDirectory, removeFile, saveDataToFile, zipDirectory } from "./file";
 import * as moment from "moment";
@@ -58,6 +58,9 @@ export const generateBackup = async (request: IAuthRequest): Promise<string> => 
     const translations = await TranslationModel.find({ client: client });
     const translationsData = translations.map(translation => translation.toJSON());
 
+    const systemTags = await SystemTagModel.find({ client: client });
+    const systemTagsData = systemTags.map(systemTag => systemTag.toJSON());
+
     const clientDBBackup: IClientDBBackup = {
         ads: adsData,
         themes: themesData,
@@ -74,6 +77,7 @@ export const generateBackup = async (request: IAuthRequest): Promise<string> => 
         stores: storesData,
         tags: tagsData,
         translations: translationsData,
+        systemTags: systemTagsData,
     };
 
     return await zipClientBackup(client, clientDBBackup);
@@ -262,6 +266,11 @@ const deleteDB = async (client: string): Promise<void> => {
         promises.push(await translation.delete());
     });
 
+    const systemTags = await SystemTagModel.find({ client });
+    systemTags.forEach(async (systemTag) => {
+        promises.push(await systemTag.delete());
+    });
+
     await Promise.all(promises);
 };
 
@@ -283,6 +292,7 @@ const storeDB = async (data: IClientDBBackup): Promise<void> => {
     promises.push(StoreModel.create(data.stores));
     promises.push(TagModel.create(data.tags));
     promises.push(TranslationModel.create(data.translations));
+    promises.push(SystemTagModel.create(data.systemTags));
 
     await Promise.all(promises);
 }

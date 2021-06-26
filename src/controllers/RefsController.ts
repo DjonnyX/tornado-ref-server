@@ -1,6 +1,6 @@
-import { IRef, RefTypes } from "@djonnyx/tornado-types";
+import { IRef, RefTypes, TerminalTypes } from "@djonnyx/tornado-types";
 import { RefModel, IRefDocument } from "../models/index";
-import { Controller, Route, Get, Tags, OperationId, Example, Security, Request } from "tsoa";
+import { Controller, Route, Get, Tags, OperationId, Example, Security, Request, Query } from "tsoa";
 import { IAuthRequest } from "../interfaces";
 import { findAllWithFilter } from "../utils/requestOptions";
 
@@ -72,11 +72,11 @@ export class RefsController extends Controller {
     @Example<RefsResponse>({
         data: RESPONSE_TEMPLATE
     })
-    public async getAll(@Request() request: IAuthRequest): Promise<RefsResponse> {
+    public async getAll(@Request() request: IAuthRequest, @Query() theme?: TerminalTypes): Promise<RefsResponse> {
         try {
-            const items = await findAllWithFilter(RefModel.find({ client: request.account.id }), request);
+            const items = await findAllWithFilter(RefModel.find({ client: request.account.id }), request) as Array<IRefDocument>;
             return {
-                data: items.map(v => formatModel(v))
+                data: items.filter(v => v.name !== RefTypes.THEMES || v.extra?.type === theme).map(v => formatModel(v))
             };
         } catch (err) {
             this.setStatus(500);

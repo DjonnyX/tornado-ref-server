@@ -4,28 +4,29 @@ import { IAuthRequest } from "../interfaces";
 import {
     IAdDocument, IAppThemeDocument, IBusinessPeriodDocument,
     ICheckueDocument, ICurrencyDocument, IEmployeeDocument, ILanguageDocument, INodeDocument, IOrderTypeDocument,
-    IProductDocument, ISelectorDocument, IStoreDocument, ITagDocument, ITranslationDocument
+    IProductDocument, ISelectorDocument, IStoreDocument, ISystemTagDocument, ITagDocument, ITranslationDocument
 } from "../models";
 import { LeanDocument } from "mongoose";
 import { generateBackup, uploadBackup } from "../utils/backup";
 import * as config from "../config";
 
 export interface IClientDBBackup {
-    ads: LeanDocument<IAdDocument>[],
-    themes: LeanDocument<IAppThemeDocument>[],
-    assets: LeanDocument<IAssetDocument>[],
-    businessPeriods: LeanDocument<IBusinessPeriodDocument>[],
-    checkues: LeanDocument<ICheckueDocument>[],
-    currencies: LeanDocument<ICurrencyDocument>[],
-    employes: LeanDocument<IEmployeeDocument>[],
-    languages: LeanDocument<ILanguageDocument>[],
-    nodes: LeanDocument<INodeDocument>[],
-    orderTypes: LeanDocument<IOrderTypeDocument>[],
-    products: LeanDocument<IProductDocument>[],
-    selectors: LeanDocument<ISelectorDocument>[],
-    stores: LeanDocument<IStoreDocument>[],
-    tags: LeanDocument<ITagDocument>[],
-    translations: LeanDocument<ITranslationDocument>[],
+    ads: LeanDocument<IAdDocument>[];
+    themes: LeanDocument<IAppThemeDocument>[];
+    assets: LeanDocument<IAssetDocument>[];
+    businessPeriods: LeanDocument<IBusinessPeriodDocument>[];
+    checkues: LeanDocument<ICheckueDocument>[];
+    currencies: LeanDocument<ICurrencyDocument>[];
+    employes: LeanDocument<IEmployeeDocument>[];
+    languages: LeanDocument<ILanguageDocument>[];
+    nodes: LeanDocument<INodeDocument>[];
+    orderTypes: LeanDocument<IOrderTypeDocument>[];
+    products: LeanDocument<IProductDocument>[];
+    selectors: LeanDocument<ISelectorDocument>[];
+    stores: LeanDocument<IStoreDocument>[];
+    tags: LeanDocument<ITagDocument>[];
+    translations: LeanDocument<ITranslationDocument>[];
+    systemTags: LeanDocument<ISystemTagDocument>[];
 }
 
 export interface IBackup {
