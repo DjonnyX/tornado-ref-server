@@ -141,8 +141,14 @@ export const assetsUploader = (name: string, allowedExtensions: Array<AssetExten
                                     path: filePath,
                                     extra: extra || {},
                                 });
+                            }).catch(err => {
+                                reject(err);
                             });
+                        }).catch(err => {
+                            reject(err);
                         });
+                    }).catch(err => {
+                        reject(err);
                     });
                 } else {
                     makeThumbnail(ext, request.file.path, THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT).then(x128Path => {
@@ -159,7 +165,11 @@ export const assetsUploader = (name: string, allowedExtensions: Array<AssetExten
                                 path: filePath,
                                 extra: extra || {},
                             });
+                        }).catch(err => {
+                            reject(err);
                         });
+                    }).catch(err => {
+                        reject(err);
                     });
                 }
             });
@@ -231,7 +241,11 @@ export const assetsUploaderFS = (client: string, id: string, allowedExtensions: 
                     },
                     path: filePath,
                 })
-            );
+            ).catch(err => {
+                reject(err);
+            });
+        }).catch(err => {
+            reject(err);
         });
     });
 };
