@@ -124,7 +124,10 @@
                     "item": {
                         "backgroundColor": "#000",
                         "nameColor": "rgba(0,0,0,0.75)",
-                        "nameFontSize": 14
+                        "nameFontSize": 14,
+                        "select": {
+                            "isLight": true
+                        }
                     }
                 },
                 "navMenu": {
@@ -303,7 +306,7 @@
                 },
                 "summaryPrice": {
                     "textColor": "rgba(0,0,0,0.75)",
-                    "textFontSize": 16
+                    "textFontSize": 34
                 },
                 "nestedItem": {
                     "backgroundColor": "transparent",
@@ -480,7 +483,10 @@
                     "item": {
                         "backgroundColor": "#fff",
                         "nameColor": "rgba(255,255,255,0.75)",
-                        "nameFontSize": 14
+                        "nameFontSize": 14,
+                        "select": {
+                            "isLight": false
+                        }
                     }
                 },
                 "navMenu": {
@@ -659,7 +665,7 @@
                 },
                 "summaryPrice": {
                     "textColor": "#ffffff",
-                    "textFontSize": 16
+                    "textFontSize": 34
                 },
                 "nestedItem": {
                     "backgroundColor": "transparent",
