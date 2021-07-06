@@ -5,7 +5,7 @@
             "code": "RU",
             "name": "Русский",
             "translations": {
-                "kiosk_menu_cancel_button": "Назад",
+                "kiosk_menu_cancel_button": "Отмена",
                 "kiosk_menu_confirm_button": "Далее",
                 "kiosk_menu_root_title": "Меню",
                 "kiosk_menu_change_message": "Изменение в меню. Некоторые позиции в заказе могут стать не доступны.",
@@ -43,7 +43,7 @@
             "code": "ENG",
             "name": "English",
             "translations": {
-                "kiosk_menu_cancel_button": "Back",
+                "kiosk_menu_cancel_button": "Cancel",
                 "kiosk_menu_confirm_button": "Next",
                 "kiosk_menu_root_title": "Menu",
                 "kiosk_menu_change_message": "Change in the menu. Some items in the order may become unavailable.",
