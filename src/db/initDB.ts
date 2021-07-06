@@ -223,7 +223,25 @@ const mergeDefaultTranslations = async (client: string) => {
                 code: lang.code,
                 translation: newTranslation._id,
             });
+
             promises.push(new Promise(async (resolve) => {
+                const assetInfo = await assetsUploaderFS(client, String(newLang._id), [
+                    AssetExtensions.JPG,
+                    AssetExtensions.PNG,
+                    AssetExtensions.GIF,
+                    AssetExtensions.WEBP,
+                ], lang.preview);
+    
+                const asset = new AssetModel({ client, ...assetInfo });
+    
+                await riseRefVersion(client, RefTypes.ASSETS);
+                await asset.save();
+    
+                newLang.assets.push(asset._id);
+                newLang.resources["main"] = asset._id;
+
+                newLang.markModified("resources");
+
                 await newTranslation.save();
                 await newLang.save();
                 resolve();
