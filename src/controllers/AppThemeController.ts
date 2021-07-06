@@ -1,6 +1,6 @@
 import { Controller, Route, Get, Tags, OperationId, Example, Security, Request, Query, Put, Body, Post, Delete } from "tsoa";
 import { IAppTheme, IRef, KioskThemeResourceTypes, RefTypes, TerminalTypes } from "@djonnyx/tornado-types";
-import { AppThemeModel, IAppThemeDocument } from "../models";
+import { AppThemeModel, IAppThemeDocument, ITerminalDocument, TerminalModel } from "../models";
 import { IAuthRequest } from "../interfaces";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatAppThemeModel } from "../utils/appTheme";
@@ -282,6 +282,58 @@ export class AppThemeController extends Controller {
                     {
                         code: 500,
                         message: `Caught error. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        let defaultTheme: IAppThemeDocument;
+        try {
+            defaultTheme = await AppThemeModel.findOne({ client: request.account.id, name: "light" });
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Caught error. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        let terminals: Array<ITerminalDocument>;
+        try {
+            terminals = await TerminalModel.find({ client: request.account.id });
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Terminals not found. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        try {
+            const promises = new Array<Promise<ITerminalDocument>>();
+            for (const terminal of terminals) {
+                if (terminal.config.theme === String(theme._id)) {
+                    terminal.config.theme = String(defaultTheme._id);
+                    terminal.markModified("config");
+                    promises.push(terminal.save());
+                }
+            }
+            await Promise.all(promises);
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Set default theme fail. ${err}`,
                     }
                 ]
             };

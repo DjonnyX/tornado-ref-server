@@ -15,11 +15,11 @@ export const formatTerminalModel = (model: ITerminalDocument) => ({
     extra: model.extra,
 });
 
-export const createTerminalConfig = (type: TerminalTypes) => {
+export const createTerminalConfig = (type: TerminalTypes, theme: string) => {
     switch (type) {
         case TerminalTypes.KIOSK: {
             const kioskDefaultConfig: ITerminalKioskConfig = {
-                theme: "light",
+                theme,
                 suffix: "K",
             };
 
@@ -27,14 +27,14 @@ export const createTerminalConfig = (type: TerminalTypes) => {
         }
         case TerminalTypes.ORDER_PICKER: {
             const orderPickerDefaultConfig: ITerminalOrderPickerConfig = {
-                theme: "dark",
+                theme,
             };
 
             return orderPickerDefaultConfig;
         }
         case TerminalTypes.EQUEUE: {
             const eqDefaultConfig: ITerminalEQConfig = {
-                theme: "light",
+                theme,
                 layout: {
                     new: {
                         columns: 2,

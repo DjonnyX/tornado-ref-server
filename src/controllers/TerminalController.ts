@@ -1,4 +1,4 @@
-import { ITerminalDocument, TerminalModel } from "../models";
+import { AppThemeModel, IAppThemeDocument, ITerminalDocument, TerminalModel } from "../models";
 import { Controller, Route, Get, Tags, OperationId, Example, Security, Put, Body, Delete, Request, Post } from "tsoa";
 import { ITerminal, TerminalStatusTypes, TerminalTypes, RefTypes, TerminalConfig, IRef } from "@djonnyx/tornado-types";
 import { getRef, riseRefVersion } from "../db/refs";
@@ -168,6 +168,21 @@ export class Deviceontroller extends Controller {
             }
         }
 
+        let theme: IAppThemeDocument;
+        try {
+            theme = await AppThemeModel.findOne({ client: setDeviceResponse.data.clientId, name: 'light' });
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Default theme not found. ${err}`,
+                    }
+                ]
+            };
+        }
+
         try {
             const item = new TerminalModel({
                 client: setDeviceResponse.data.clientId,
@@ -177,7 +192,7 @@ export class Deviceontroller extends Controller {
                 lastwork: new Date(Date.now()),
                 imei: setDeviceResponse.data.imei,
                 licenseId: setDeviceResponse.data.id,
-                config: createTerminalConfig(request.terminal.type),
+                config: createTerminalConfig(request.terminal.type, String(theme._id)),
                 extra: {},
             });
             const savedItem = await item.save();
