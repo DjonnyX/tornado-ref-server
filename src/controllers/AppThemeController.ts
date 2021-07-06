@@ -289,7 +289,7 @@ export class AppThemeController extends Controller {
 
         let defaultTheme: IAppThemeDocument;
         try {
-            defaultTheme = await AppThemeModel.findOne({ client: request.account.id, name: "light" });
+            defaultTheme = await AppThemeModel.findOne({ client: request.account.id, type: theme.type, name: "light" });
         } catch (err) {
             this.setStatus(500);
             return {
@@ -304,7 +304,7 @@ export class AppThemeController extends Controller {
 
         let terminals: Array<ITerminalDocument>;
         try {
-            terminals = await TerminalModel.find({ client: request.account.id });
+            terminals = await TerminalModel.find({ client: request.account.id, type: theme.type });
         } catch (err) {
             this.setStatus(500);
             return {

@@ -1,5 +1,4 @@
-import * as fs from "fs";
-import { AdTypes, AssetExtensions, IKioskTheme, NodeTypes, RefTypes, TerminalTypes } from "@djonnyx/tornado-types";
+import { AdTypes, AssetExtensions, NodeTypes, RefTypes, TerminalTypes } from "@djonnyx/tornado-types";
 import {
     RefModel, NodeModel, TranslationModel, LanguageModel, CurrencyModel, AppThemeModel, AdModel, OrderTypeModel,
     ILanguageDocument, IOrderTypeDocument, AssetModel
@@ -18,6 +17,7 @@ import { deepMergeObjects } from "../utils/object";
 import { createAd } from "../utils/ad";
 import { makeDirIfEmpty, readFileJSONAsync } from "../utils/file";
 import { assetsUploaderFS } from "../utils/assetUpload";
+import { normalizeTerminalTheme } from "../utils/terminal";
 
 const createDefaultOrderTypeIfNeed = async (client: string) => {
     const orderTypes = await OrderTypeModel.find({ client });
@@ -173,7 +173,9 @@ const mergeDefaultTheme = async (client: string, templatePath: string, type: Ter
         }));
     }
 
-    return Promise.all(promises);
+    await Promise.all(promises);
+
+    await normalizeTerminalTheme(client, type);
 };
 
 const mergeDefaultThemes = async (client: string) => {
@@ -231,12 +233,12 @@ const mergeDefaultTranslations = async (client: string) => {
                     AssetExtensions.GIF,
                     AssetExtensions.WEBP,
                 ], lang.preview);
-    
+
                 const asset = new AssetModel({ client, ...assetInfo });
-    
+
                 await riseRefVersion(client, RefTypes.ASSETS);
                 await asset.save();
-    
+
                 newLang.assets.push(asset._id);
                 newLang.resources["main"] = asset._id;
 
