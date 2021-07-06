@@ -239,7 +239,7 @@ export const assetsUploaderFS = (client: string, id: string, allowedExtensions: 
                         x128: x128Path,
                         x32: x32Path,
                     },
-                    path: filePath,
+                    path: `${filePath}${ext}`,
                 })
             ).catch(err => {
                 reject(err);
