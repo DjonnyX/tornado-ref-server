@@ -34,6 +34,7 @@ interface IGetClientRestorePasswordParams {
     email: string;
     captchaId: string;
     captchaVal: string;
+    language: string;
 }
 
 export interface ICheckLicenseResponse {
