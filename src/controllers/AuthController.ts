@@ -256,8 +256,8 @@ export class ForgotPasswordController extends Controller {
         meta: {},
         data: {}
     })
-    public async forgotPassword(@Request() request: express.Request, @Query() email: string, @Query() captchaId: string, @Query() captchaVal): Promise<ForgotPasswordResponse> {
-        return await licServerApiService.getClientRestorePassword<ForgotPasswordResponse>({ email, captchaId, captchaVal });
+    public async forgotPassword(@Request() request: express.Request, @Query() email: string, @Query() captchaId: string, @Query() captchaVal, @Query() language): Promise<ForgotPasswordResponse> {
+        return await licServerApiService.getClientRestorePassword<ForgotPasswordResponse>({ email, captchaId, captchaVal, language });
     }
 }
 

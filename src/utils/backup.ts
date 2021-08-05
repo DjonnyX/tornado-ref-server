@@ -9,6 +9,8 @@ import {
 } from "../models";
 import { copyDirectory, makeDirIfEmpty, readFile, removeDirectory, removeFile, saveDataToFile, zipDirectory } from "./file";
 import * as moment from "moment";
+import { TerminalTypes } from "@djonnyx/tornado-types";
+import { normalizeTerminalTheme } from "./terminal";
 
 export const generateBackup = async (request: IAuthRequest): Promise<string> => {
     const client = request.account.id;
@@ -178,6 +180,24 @@ export const uploadBackup = async (request: IAuthRequest, allowedExtensions = ['
                 return reject(Error(`Remove original file fail. ${err}`));
             }
 
+            try {
+                await normalizeTerminalTheme(client, TerminalTypes.KIOSK);
+            } catch (err) {
+                return reject(Error(`Normalization kiosk terminal theme fail. ${err}`));
+            }
+
+            try {
+                await normalizeTerminalTheme(client, TerminalTypes.EQUEUE);
+            } catch (err) {
+                return reject(Error(`Normalization equeue terminal theme fail. ${err}`));
+            }
+
+            try {
+                await normalizeTerminalTheme(client, TerminalTypes.ORDER_PICKER);
+            } catch (err) {
+                return reject(Error(`Normalization order-picker terminal theme fail. ${err}`));
+            }
+
             resolve();
         });
     });
@@ -296,3 +316,4 @@ const storeDB = async (data: IClientDBBackup): Promise<void> => {
 
     await Promise.all(promises);
 }
+
