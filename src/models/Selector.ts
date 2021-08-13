@@ -6,6 +6,7 @@ interface ISelectorDocument extends Document {
     client: string;
     active: boolean;
     type: SelectorTypes;
+    systemTag: string;
     contents: ISelectorContents;
     joint?: string;
     extra?: { [key: string]: any } | null;
@@ -20,6 +21,7 @@ const SelectorSchema = new Schema({
             SelectorTypes.SCHEMA_CATEGORY,
         ], required: true
     },
+    systemTag: { type: Schema.Types.String },
     contents: { type: Schema.Types.Mixed, default: {} },
     joint: { type: Schema.Types.ObjectId, required: false },
     extra: { type: Schema.Types.Mixed, required: false },

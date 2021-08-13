@@ -1,4 +1,4 @@
-import { IProductDocument, ProductModel, SystemTagModel } from "../models";
+import { IProductDocument, ISelectorDocument, ProductModel, SelectorModel, SystemTagModel } from "../models";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Request } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatSystemTagModel } from "../utils/systemTag";
@@ -129,7 +129,7 @@ export class SystemTagController extends Controller {
     })
     public async create(@Body() body: ISystemTagCreateRequest, @Request() request: IAuthRequest): Promise<ISystemTagResponse> {
         try {
-            const existsItems = await SystemTagModel.find({ client: request.account.id, name: body.name });
+            const existsItems = await SystemTagModel.find({ client: request.account.id, name: body.name }).where("extra.entity", body.extra?.entity);
             if (!!existsItems && existsItems.length > 0) {
                 this.setStatus(500);
                 return {
@@ -220,9 +220,9 @@ export class SystemTagController extends Controller {
         meta: META_TEMPLATE
     })
     public async delete(id: string, @Request() request: IAuthRequest): Promise<ISystemTagResponse> {
-        let bp: ISystemTag;
+        let tag: ISystemTag;
         try {
-            bp = await SystemTagModel.findByIdAndDelete(id);
+            tag = await SystemTagModel.findByIdAndDelete(id);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -235,29 +235,61 @@ export class SystemTagController extends Controller {
             };
         }
 
-        const promises = new Array<Promise<IProductDocument>>();
-        try {
-            const products = await ProductModel.find({ client: request.account.id, systemTag: id });
-            for (let i = 0, l = products.length; i < l; i ++) {
-                const product = products[i];
-                product.systemTag = undefined;
-                promises.push(product.save());
-            }
-        } catch (err) {
-            this.setStatus(500);
-            return {
-                error: [
-                    {
-                        code: 500,
-                        message: `Caught error. ${err}`,
+        const promises = new Array<Promise<IProductDocument | ISelectorDocument>>();
+        switch (tag.extra.entity) {
+            case "product":
+                try {
+                    const products = await ProductModel.find({ client: request.account.id, systemTag: id });
+                    for (let i = 0, l = products.length; i < l; i++) {
+                        const product = products[i];
+                        product.systemTag = undefined;
+                        promises.push(product.save());
                     }
-                ]
-            };
+                } catch (err) {
+                    this.setStatus(500);
+                    return {
+                        error: [
+                            {
+                                code: 500,
+                                message: `Caught error. ${err}`,
+                            }
+                        ]
+                    };
+                }
+                break;
+            case "selector":
+                try {
+                    const selectors = await SelectorModel.find({ client: request.account.id, systemTag: id });
+                    for (let i = 0, l = selectors.length; i < l; i++) {
+                        const selector = selectors[i];
+                        selector.systemTag = undefined;
+                        promises.push(selector.save());
+                    }
+                } catch (err) {
+                    this.setStatus(500);
+                    return {
+                        error: [
+                            {
+                                code: 500,
+                                message: `Caught error. ${err}`,
+                            }
+                        ]
+                    };
+                }
+                break;
         }
 
         try {
             await Promise.all(promises);
-            await riseRefVersion(request.account.id, RefTypes.PRODUCTS);
+            switch (tag.extra.entity) {
+                case "product":
+                    await riseRefVersion(request.account.id, RefTypes.PRODUCTS);
+                    break;
+                case "selector":
+                    await riseRefVersion(request.account.id, RefTypes.SELECTORS);
+                    break;
+            }
+
         } catch (err) {
             this.setStatus(500);
             return {
@@ -271,7 +303,7 @@ export class SystemTagController extends Controller {
         }
 
         try {
-            const ref = await riseRefVersion(request.account.id, RefTypes.STORES);
+            const ref = await riseRefVersion(request.account.id, RefTypes.SYSTEM_TAGS);
             return {
                 meta: { ref },
             };
