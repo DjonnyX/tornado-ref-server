@@ -46,7 +46,7 @@ interface ISelectorCreateRequest {
 interface ISelectorUpdateRequest {
     active?: boolean;
     type?: SelectorTypes;
-    systemTag: string;
+    systemTag?: string;
     contents?: ISelectorContents | any;
     extra?: { [key: string]: any } | null;
 }
