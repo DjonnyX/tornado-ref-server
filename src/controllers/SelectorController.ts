@@ -7,17 +7,10 @@ import { normalizeContents, getDeletedImagesFromDifferense, getEntityAssets } fr
 import { AssetModel } from "../models/Asset";
 import { deleteAsset } from "./AssetsController";
 import { IAuthRequest } from "../interfaces";
-import { ISelectorContents, NodeTypes, SelectorTypes, RefTypes, IRef } from "@djonnyx/tornado-types";
+import { ISelectorContents, NodeTypes, SelectorTypes, RefTypes, IRef, ISelector } from "@djonnyx/tornado-types";
 import { findAllWithFilter } from "../utils/requestOptions";
 
-export interface ISelectorItem {
-    id?: string;
-    type: SelectorTypes;
-    active: boolean;
-    contents: ISelectorContents;
-    joint?: string;
-    extra?: { [key: string]: any } | null;
-}
+export interface ISelectorItem extends ISelector { }
 
 interface ISelectorsMeta {
     ref: IRef;
@@ -44,6 +37,7 @@ interface ISelectorResponse {
 interface ISelectorCreateRequest {
     active: boolean;
     type: SelectorTypes;
+    systemTag: string;
     contents?: ISelectorContents | any;
     extra?: { [key: string]: any } | null;
 }
@@ -51,6 +45,7 @@ interface ISelectorCreateRequest {
 interface ISelectorUpdateRequest {
     active?: boolean;
     type?: SelectorTypes;
+    systemTag: string;
     contents?: ISelectorContents | any;
     extra?: { [key: string]: any } | null;
 }
@@ -59,6 +54,7 @@ export const RESPONSE_TEMPLATE: ISelectorItem = {
     id: "507c7f79bcf86cd7994f6c0e",
     active: true,
     type: SelectorTypes.MENU_CATEGORY,
+    systemTag: "17h97f79bcf86cd7994f0i9e",
     contents: {
         "RU": {
             name: "Selectors on concert",
@@ -157,7 +153,7 @@ export class SelectorController extends Controller {
     })
     public async create(@Body() body: ISelectorCreateRequest, @Request() request: IAuthRequest): Promise<ISelectorResponse> {
         let params: ISelectorItem;
-        
+
         let jointNode: INodeDocument;
 
         if (body.type === SelectorTypes.SCHEMA_CATEGORY) {

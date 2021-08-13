@@ -5,6 +5,7 @@ export const formatSelectorModel = (model: ISelectorDocument): ISelector => ({
     id: model._id,
     active: model.active,
     type: model.type,
+    systemTag: model.systemTag,
     contents: model.contents,
     joint: model.joint,
     extra: model.extra,
