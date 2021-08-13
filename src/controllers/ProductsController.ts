@@ -9,6 +9,7 @@ import { deleteAsset } from "./AssetsController";
 import { IAuthRequest } from "../interfaces";
 import { IPrice, IProduct, IProductContents, IRef, NodeTypes, RefTypes } from "@djonnyx/tornado-types";
 import { findAllWithFilter } from "../utils/requestOptions";
+import { getClientId } from "../utils/account";
 
 export interface IProductItem extends IProduct { }
 
@@ -122,8 +123,8 @@ export class ProductsController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<IProductsResponse> {
         try {
-            const items = await findAllWithFilter(ProductModel.find({ client: request.account.id }), request);
-            const ref = await getRef(request.account.id, RefTypes.PRODUCTS);
+            const items = await findAllWithFilter(ProductModel.find({ client: getClientId(request) }), request);
+            const ref = await getRef(getClientId(request), RefTypes.PRODUCTS);
             return {
                 meta: { ref },
                 data: items.map(v => formatProductModel(v)),
@@ -156,7 +157,7 @@ export class ProductController extends Controller {
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<IProductResponse> {
         try {
             const item = await ProductModel.findById(id);
-            const ref = await getRef(request.account.id, RefTypes.PRODUCTS);
+            const ref = await getRef(getClientId(request), RefTypes.PRODUCTS);
             return {
                 meta: { ref },
                 data: formatProductModel(item),
@@ -187,7 +188,7 @@ export class ProductController extends Controller {
 
             // создается корневой нод
             const jointNode = new NodeModel({
-                client: request.account.id,
+                client: getClientId(request),
                 active: true,
                 type: NodeTypes.PRODUCT_JOINT,
                 parentId: null,
@@ -195,11 +196,11 @@ export class ProductController extends Controller {
                 children: [],
             });
             const jointRootNode = await jointNode.save();
-            await riseRefVersion(request.account.id, RefTypes.NODES);
+            await riseRefVersion(getClientId(request), RefTypes.NODES);
 
             params = {
                 ...body,
-                client: request.account.id,
+                client: getClientId(request),
                 joint: jointRootNode._id
             } as any;
         } catch (err) {
@@ -217,7 +218,7 @@ export class ProductController extends Controller {
         try {
             const item = new ProductModel(params);
             const savedItem = await item.save();
-            const ref = await riseRefVersion(request.account.id, RefTypes.PRODUCTS);
+            const ref = await riseRefVersion(getClientId(request), RefTypes.PRODUCTS);
             return {
                 meta: { ref },
                 data: formatProductModel(savedItem),
@@ -245,7 +246,7 @@ export class ProductController extends Controller {
     public async update(id: string, @Body() body: IProductUpdateRequest, @Request() request: IAuthRequest): Promise<IProductResponse> {
         let defaultLanguage: ILanguageDocument;
         try {
-            defaultLanguage = await LanguageModel.findOne({ client: request.account.id, isDefault: true });
+            defaultLanguage = await LanguageModel.findOne({ client: getClientId(request), isDefault: true });
         } catch (err) {
             this.setStatus(500);
             return {
@@ -314,7 +315,7 @@ export class ProductController extends Controller {
             await Promise.all(promises);
 
             if (isAssetsChanged) {
-                await riseRefVersion(request.account.id, RefTypes.ASSETS);
+                await riseRefVersion(getClientId(request), RefTypes.ASSETS);
             }
 
             // выставление ассетов от предыдущего состояния
@@ -332,7 +333,7 @@ export class ProductController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(request.account.id, RefTypes.PRODUCTS);
+            const ref = await riseRefVersion(getClientId(request), RefTypes.PRODUCTS);
             return {
                 meta: { ref },
                 data: formatProductModel(item),
@@ -395,7 +396,7 @@ export class ProductController extends Controller {
             await Promise.all(promises);
 
             if (!!isAssetsChanged) {
-                await riseRefVersion(request.account.id, RefTypes.ASSETS);
+                await riseRefVersion(getClientId(request), RefTypes.ASSETS);
             }
         } catch (err) {
             this.setStatus(500);
@@ -424,7 +425,7 @@ export class ProductController extends Controller {
         }
 
         try {
-            const ref = await riseRefVersion(request.account.id, RefTypes.PRODUCTS);
+            const ref = await riseRefVersion(getClientId(request), RefTypes.PRODUCTS);
             return {
                 meta: { ref }
             };

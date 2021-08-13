@@ -5,6 +5,7 @@ import { IAuthRequest } from "../interfaces";
 import { licServerApiService } from "../services";
 import { ILicense, RefTypes, ILicenseAccount, TerminalTypes, IRef } from "@djonnyx/tornado-types";
 import { ITerminalDocument, TerminalModel } from "../models";
+import { getClientId } from "../utils/account";
 
 interface ILicenseInfo extends ILicense { }
 
@@ -154,7 +155,7 @@ export class LicensesForClientController extends Controller {
         if (!response.error) {
             let terminals: Array<ITerminalDocument>;
             try {
-                terminals = await TerminalModel.find({ clientId: request.account.id });
+                terminals = await TerminalModel.find({ clientId: getClientId(request) });
             } catch (err) {
                 this.setStatus(500);
                 return {
@@ -198,7 +199,7 @@ export class LicenseForClientController extends Controller {
         if (!response.error) {
             let terminal: ITerminalDocument;
             try {
-                terminal = await TerminalModel.findOne({ clientId: request.account.id, licenseId: response.data.id });
+                terminal = await TerminalModel.findOne({ clientId: getClientId(request), licenseId: response.data.id });
             } catch (err) {
                 this.setStatus(500);
                 return {

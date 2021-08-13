@@ -8,6 +8,7 @@ import { deleteAsset } from "./AssetsController";
 import { IAuthRequest } from "../interfaces";
 import { ILanguage, IRef, RefTypes } from "@djonnyx/tornado-types";
 import { findAllWithFilter } from "../utils/requestOptions";
+import { getClientId } from "../utils/account";
 
 export interface ILanguageItem extends ILanguage { }
 
@@ -96,8 +97,8 @@ export class LanguagesController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<LanguagesResponse> {
         try {
-            const items = await findAllWithFilter(LanguageModel.find({ client: request.account.id }), request);
-            const ref = await getRef(request.account.id, RefTypes.LANGUAGES);
+            const items = await findAllWithFilter(LanguageModel.find({ client: getClientId(request) }), request);
+            const ref = await getRef(getClientId(request), RefTypes.LANGUAGES);
             return {
                 meta: { ref },
                 data: items.map(v => formatLanguageModel(v)),
@@ -130,7 +131,7 @@ export class LanguageController extends Controller {
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<LanguageResponse> {
         try {
             const item = await LanguageModel.findById(id);
-            const ref = await getRef(request.account.id, RefTypes.LANGUAGES);
+            const ref = await getRef(getClientId(request), RefTypes.LANGUAGES);
             return {
                 meta: { ref },
                 data: formatLanguageModel(item),
@@ -159,7 +160,7 @@ export class LanguageController extends Controller {
         let langs: Array<ILanguageDocument>;
 
         try {
-            langs = await LanguageModel.find({ client: request.account.id });
+            langs = await LanguageModel.find({ client: getClientId(request) });
         } catch (err) {
             this.setStatus(500);
             return {
@@ -177,7 +178,7 @@ export class LanguageController extends Controller {
         let ref: IRef;
         try {
             body.isDefault = langs.length === 0;
-            item = new LanguageModel({ ...body, client: request.account.id });
+            item = new LanguageModel({ ...body, client: getClientId(request) });
         } catch (err) {
             this.setStatus(500);
             return {
@@ -192,19 +193,19 @@ export class LanguageController extends Controller {
 
         try {
             const translation = new TranslationModel({
-                client: request.account.id,
+                client: getClientId(request),
                 language: item.code,
             });
 
             mergeTranslation(translation, false);
 
             const savedTranslationItem = await translation.save();
-            await riseRefVersion(request.account.id, RefTypes.TRANSLATIONS);
+            await riseRefVersion(getClientId(request), RefTypes.TRANSLATIONS);
 
             item.translation = savedTranslationItem._id;
 
             savedItem = await item.save();
-            ref = await riseRefVersion(request.account.id, RefTypes.LANGUAGES);
+            ref = await riseRefVersion(getClientId(request), RefTypes.LANGUAGES);
 
             return {
                 meta: { ref },
@@ -264,7 +265,7 @@ export class LanguageController extends Controller {
         }
 
         try {
-            const langs: Array<ILanguageDocument> = await LanguageModel.find({ client: request.account.id });
+            const langs: Array<ILanguageDocument> = await LanguageModel.find({ client: getClientId(request) });
 
             const promises = new Array<Promise<void>>();
 
@@ -330,17 +331,17 @@ export class LanguageController extends Controller {
             await item.save();
 
             if (!!languageCode) {
-                const translation = await TranslationModel.findOne({ client: request.account.id, code: item.code });
+                const translation = await TranslationModel.findOne({ client: getClientId(request), code: item.code });
 
                 if (!!translation) {
                     translation.language = languageCode;
 
                     await translation.save();
-                    await riseRefVersion(request.account.id, RefTypes.TRANSLATIONS);
+                    await riseRefVersion(getClientId(request), RefTypes.TRANSLATIONS);
                 }
             }
 
-            const ref = await riseRefVersion(request.account.id, RefTypes.LANGUAGES);
+            const ref = await riseRefVersion(getClientId(request), RefTypes.LANGUAGES);
             return {
                 meta: { ref },
                 data: formatLanguageModel(item),
@@ -367,7 +368,7 @@ export class LanguageController extends Controller {
     public async delete(id: string, @Request() request: IAuthRequest): Promise<LanguageResponse> {
         let langs: Array<ILanguageDocument>;
         try {
-            langs = await LanguageModel.find({ client: request.account.id });
+            langs = await LanguageModel.find({ client: getClientId(request) });
         } catch (err) { }
 
         if (langs && langs.length === 1) {
@@ -420,7 +421,7 @@ export class LanguageController extends Controller {
             await Promise.all(promises);
 
             if (!!isAssetsChanged) {
-                await riseRefVersion(request.account.id, RefTypes.ASSETS);
+                await riseRefVersion(getClientId(request), RefTypes.ASSETS);
             }
         } catch (err) {
             this.setStatus(500);
@@ -436,7 +437,7 @@ export class LanguageController extends Controller {
 
         try {
             await TranslationModel.findOneAndDelete({ _id: language.translation });
-            await riseRefVersion(request.account.id, RefTypes.TRANSLATIONS);
+            await riseRefVersion(getClientId(request), RefTypes.TRANSLATIONS);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -450,7 +451,7 @@ export class LanguageController extends Controller {
         }
 
         try {
-            const ref = await riseRefVersion(request.account.id, RefTypes.LANGUAGES);
+            const ref = await riseRefVersion(getClientId(request), RefTypes.LANGUAGES);
             return {
                 meta: { ref }
             };

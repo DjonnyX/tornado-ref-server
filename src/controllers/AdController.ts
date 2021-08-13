@@ -8,6 +8,7 @@ import { AssetModel } from "../models/Asset";
 import { deleteAsset } from "./AssetsController";
 import { IAuthRequest } from "../interfaces";
 import { findAllWithFilter } from "../utils/requestOptions";
+import { getClientId } from "../utils/account";
 
 export interface IAdItem extends IAd { }
 
@@ -166,8 +167,8 @@ export class AdsController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest, @Query() type?: AdTypes): Promise<IAdsResponse> {
         try {
-            const items = await findAllWithFilter(AdModel.find({ client: request.account.id }), request);
-            const ref = await getRef(request.account.id, RefTypes.ADS);
+            const items = await findAllWithFilter(AdModel.find({ client: getClientId(request) }), request);
+            const ref = await getRef(getClientId(request), RefTypes.ADS);
             return {
                 meta: { ref },
                 data: items.map((v: IAdDocument) => formatAdModel(v)),
@@ -200,7 +201,7 @@ export class AdController extends Controller {
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<IAdResponse> {
         try {
             const item = await AdModel.findById(id);
-            const ref = await getRef(request.account.id, RefTypes.ADS);
+            const ref = await getRef(getClientId(request), RefTypes.ADS);
             return {
                 meta: { ref },
                 data: formatAdModel(item),
@@ -227,9 +228,9 @@ export class AdController extends Controller {
     })
     public async create(@Body() body: IAdCreateRequest, @Request() request: IAuthRequest): Promise<IAdResponse> {
         try {
-            const item = new AdModel({ ...body, client: request.account.id });
+            const item = new AdModel({ ...body, client: getClientId(request) });
             const savedItem = await item.save();
-            const ref = await riseRefVersion(request.account.id, RefTypes.ADS);
+            const ref = await riseRefVersion(getClientId(request), RefTypes.ADS);
             return {
                 meta: { ref },
                 data: formatAdModel(savedItem),
@@ -259,7 +260,7 @@ export class AdController extends Controller {
             const item = await AdModel.findById(id);
 
             if (item.type !== AdTypes.BANNER) {
-                const ads = await AdModel.find({ client: request.account.id, type: item.type });
+                const ads = await AdModel.find({ client: getClientId(request), type: item.type });
 
                 if (ads.length <= 1) {
                     body.active = true;
@@ -268,9 +269,9 @@ export class AdController extends Controller {
         }
 
         try {
-            const item = await updateAd(id, request.account.id, body);
+            const item = await updateAd(id, getClientId(request), body);
 
-            const ref = await riseRefVersion(request.account.id, RefTypes.ADS);
+            const ref = await riseRefVersion(getClientId(request), RefTypes.ADS);
             return {
                 meta: { ref },
                 data: formatAdModel(item),
@@ -297,7 +298,7 @@ export class AdController extends Controller {
     public async delete(id: string, @Request() request: IAuthRequest): Promise<IAdResponse> {
         const item = await AdModel.findById(id);
         if (item.type !== AdTypes.BANNER) {
-            const ads = await AdModel.find({ client: request.account.id, type: item.type });
+            const ads = await AdModel.find({ client: getClientId(request), type: item.type });
 
             if (ads.length <= 1) {
                 this.setStatus(500);
@@ -350,7 +351,7 @@ export class AdController extends Controller {
             await Promise.all(promises);
 
             if (!!isAssetsChanged) {
-                await riseRefVersion(request.account.id, RefTypes.ASSETS);
+                await riseRefVersion(getClientId(request), RefTypes.ASSETS);
             }
         } catch (err) {
             this.setStatus(500);
@@ -365,7 +366,7 @@ export class AdController extends Controller {
         }
 
         try {
-            const ref = await riseRefVersion(request.account.id, RefTypes.ADS);
+            const ref = await riseRefVersion(getClientId(request), RefTypes.ADS);
             return {
                 meta: { ref },
             };

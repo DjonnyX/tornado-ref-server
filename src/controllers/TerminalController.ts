@@ -7,6 +7,7 @@ import { IAuthRequest } from "../interfaces";
 import { ISetDeviceResponse, licServerApiService } from "../services";
 import { extractError } from "../utils/error";
 import { findAllWithFilter } from "../utils/requestOptions";
+import { getClientId } from "../utils/account";
 
 interface ITerminalItem extends ITerminal { }
 
@@ -100,7 +101,7 @@ export class Deviceontroller extends Controller {
             };
         }
 
-        const ref = await getRef(request.account.id, RefTypes.TERMINALS);
+        const ref = await getRef(getClientId(request), RefTypes.TERMINALS);
         return {
             meta: { ref },
             data: formatTerminalModel(terminal),
@@ -227,11 +228,11 @@ export class TerminalsController extends Controller {
         data: [RESPONSE_TEMPLATE]
     })
     public async getAll(@Request() request: IAuthRequest): Promise<ITerminalsResponse> {
-        let findParams: any = request.terminal ? {} : { client: request.account.id };
+        let findParams: any = request.terminal ? {} : { client: getClientId(request) };
 
         try {
             const items = await findAllWithFilter(TerminalModel.find(findParams), request);
-            const ref = await getRef(request.account.id, RefTypes.TERMINALS);
+            const ref = await getRef(getClientId(request), RefTypes.TERMINALS);
             return {
                 meta: { ref },
                 data: items.map(v => formatTerminalModel(v))
@@ -264,7 +265,7 @@ export class TerminalController extends Controller {
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<ITerminalResponse> {
         try {
             const item = await TerminalModel.findById(id);
-            const ref = await getRef(request.account.id, RefTypes.TERMINALS);
+            const ref = await getRef(getClientId(request), RefTypes.TERMINALS);
             return {
                 meta: { ref },
                 data: formatTerminalModel(item),
@@ -306,7 +307,7 @@ export class TerminalController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(request.account.id, RefTypes.TERMINALS);
+            const ref = await riseRefVersion(getClientId(request), RefTypes.TERMINALS);
             return {
                 meta: { ref },
                 data: formatTerminalModel(item),
@@ -347,7 +348,7 @@ export class TerminalController extends Controller {
         }
 
         try {
-            const ref = await riseRefVersion(request.account.id, RefTypes.TERMINALS);
+            const ref = await riseRefVersion(getClientId(request), RefTypes.TERMINALS);
             return {
                 meta: { ref },
             };

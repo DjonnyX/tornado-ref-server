@@ -5,6 +5,7 @@ import { formatCheckueModel } from "../utils/checkue";
 import { IAuthRequest } from "../interfaces";
 import { IRef, IScenario, RefTypes } from "@djonnyx/tornado-types";
 import { findAllWithFilter } from "../utils/requestOptions";
+import { getClientId } from "../utils/account";
 
 interface ICheckueItem {
     id: string;
@@ -79,8 +80,8 @@ export class CheckuesController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<CheckuesResponse> {
         try {
-            const items = await findAllWithFilter(CheckueModel.find({ client: request.account.id }), request);
-            const ref = await getRef(request.account.id, RefTypes.CHECKUES);
+            const items = await findAllWithFilter(CheckueModel.find({ client: getClientId(request) }), request);
+            const ref = await getRef(getClientId(request), RefTypes.CHECKUES);
             return {
                 meta: { ref },
                 data: items.map(v => formatCheckueModel(v)),
@@ -113,7 +114,7 @@ export class CheckueController extends Controller {
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<CheckueResponse> {
         try {
             const item = await CheckueModel.findById(id);
-            const ref = await getRef(request.account.id, RefTypes.CHECKUES);
+            const ref = await getRef(getClientId(request), RefTypes.CHECKUES);
             return {
                 meta: { ref },
                 data: formatCheckueModel(item),
@@ -145,9 +146,9 @@ export class CheckueController extends Controller {
         }
 
         try {
-            const item = new CheckueModel({ ...data, client: request.account.id });
+            const item = new CheckueModel({ ...data, client: getClientId(request) });
             const savedItem = await item.save();
-            const ref = await riseRefVersion(request.account.id, RefTypes.CHECKUES);
+            const ref = await riseRefVersion(getClientId(request), RefTypes.CHECKUES);
             return {
                 meta: { ref },
                 data: formatCheckueModel(savedItem),
@@ -199,7 +200,7 @@ export class CheckueController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(request.account.id, RefTypes.CHECKUES);
+            const ref = await riseRefVersion(getClientId(request), RefTypes.CHECKUES);
 
             return {
                 meta: { ref },
@@ -227,7 +228,7 @@ export class CheckueController extends Controller {
     public async delete(id: string, @Request() request: IAuthRequest): Promise<CheckueResponse> {
         try {
             await CheckueModel.findOneAndDelete({ _id: id });
-            const ref = await riseRefVersion(request.account.id, RefTypes.CHECKUES);
+            const ref = await riseRefVersion(getClientId(request), RefTypes.CHECKUES);
             return {
                 meta: { ref },
             };

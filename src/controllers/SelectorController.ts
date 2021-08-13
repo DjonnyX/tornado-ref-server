@@ -9,6 +9,7 @@ import { deleteAsset } from "./AssetsController";
 import { IAuthRequest } from "../interfaces";
 import { ISelectorContents, NodeTypes, SelectorTypes, RefTypes, IRef, ISelector } from "@djonnyx/tornado-types";
 import { findAllWithFilter } from "../utils/requestOptions";
+import { getClientId } from "../utils/account";
 
 export interface ISelectorItem extends ISelector { }
 
@@ -37,7 +38,7 @@ interface ISelectorResponse {
 interface ISelectorCreateRequest {
     active: boolean;
     type: SelectorTypes;
-    systemTag: string;
+    systemTag?: string;
     contents?: ISelectorContents | any;
     extra?: { [key: string]: any } | null;
 }
@@ -92,8 +93,8 @@ export class SelectorsController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<ISelectorsResponse> {
         try {
-            const items = await findAllWithFilter(SelectorModel.find({ client: request.account.id }), request);
-            const ref = await getRef(request.account.id, RefTypes.SELECTORS);
+            const items = await findAllWithFilter(SelectorModel.find({ client: getClientId(request) }), request);
+            const ref = await getRef(getClientId(request), RefTypes.SELECTORS);
             return {
                 meta: { ref },
                 data: items.map(v => formatSelectorModel(v)),
@@ -126,7 +127,7 @@ export class SelectorController extends Controller {
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<ISelectorResponse> {
         try {
             const item = await SelectorModel.findById(id);
-            const ref = await getRef(request.account.id, RefTypes.SELECTORS);
+            const ref = await getRef(getClientId(request), RefTypes.SELECTORS);
             return {
                 meta: { ref },
                 data: formatSelectorModel(item),
@@ -160,7 +161,7 @@ export class SelectorController extends Controller {
             try {
                 // создается корневой нод
                 jointNode = new NodeModel({
-                    client: request.account.id,
+                    client: getClientId(request),
                     active: true,
                     type: NodeTypes.SELECTOR_JOINT,
                     parentId: null,
@@ -172,7 +173,7 @@ export class SelectorController extends Controller {
                 params = {
                     ...body,
                     joint: savedJointNode._id,
-                    client: request.account.id,
+                    client: getClientId(request),
                 } as any;
             } catch (err) {
                 this.setStatus(500);
@@ -188,7 +189,7 @@ export class SelectorController extends Controller {
         } else {
             params = {
                 ...body,
-                client: request.account.id,
+                client: getClientId(request),
             } as any;
         }
 
@@ -199,10 +200,10 @@ export class SelectorController extends Controller {
             if (!!jointNode) {
                 jointNode.contentId = item.id;
                 await jointNode.save();
-                await riseRefVersion(request.account.id, RefTypes.NODES);
+                await riseRefVersion(getClientId(request), RefTypes.NODES);
             }
 
-            const ref = await riseRefVersion(request.account.id, RefTypes.SELECTORS);
+            const ref = await riseRefVersion(getClientId(request), RefTypes.SELECTORS);
             return {
                 meta: { ref },
                 data: formatSelectorModel(savedItem),
@@ -230,7 +231,7 @@ export class SelectorController extends Controller {
     public async update(id: string, @Body() body: ISelectorUpdateRequest, @Request() request: IAuthRequest): Promise<ISelectorResponse> {
         let defaultLanguage: ILanguageDocument;
         try {
-            defaultLanguage = await LanguageModel.findOne({ client: request.account.id, isDefault: true });
+            defaultLanguage = await LanguageModel.findOne({ client: getClientId(request), isDefault: true });
         } catch (err) {
             this.setStatus(500);
             return {
@@ -299,7 +300,7 @@ export class SelectorController extends Controller {
             await Promise.all(promises);
 
             if (isAssetsChanged) {
-                await riseRefVersion(request.account.id, RefTypes.ASSETS);
+                await riseRefVersion(getClientId(request), RefTypes.ASSETS);
             }
 
             // выставление ассетов от предыдущего состояния
@@ -317,7 +318,7 @@ export class SelectorController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(request.account.id, RefTypes.SELECTORS);
+            const ref = await riseRefVersion(getClientId(request), RefTypes.SELECTORS);
             return {
                 meta: { ref },
                 data: formatSelectorModel(item),
@@ -380,7 +381,7 @@ export class SelectorController extends Controller {
             await Promise.all(promises);
 
             if (!!isAssetsChanged) {
-                await riseRefVersion(request.account.id, RefTypes.ASSETS);
+                await riseRefVersion(getClientId(request), RefTypes.ASSETS);
             }
         } catch (err) {
             this.setStatus(500);
@@ -409,7 +410,7 @@ export class SelectorController extends Controller {
         }
 
         try {
-            const ref = await riseRefVersion(request.account.id, RefTypes.SELECTORS);
+            const ref = await riseRefVersion(getClientId(request), RefTypes.SELECTORS);
             return {
                 meta: { ref },
             };

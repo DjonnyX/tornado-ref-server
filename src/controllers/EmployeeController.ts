@@ -5,6 +5,7 @@ import { formatEmployeeModel } from "../utils/employee";
 import { IAuthRequest } from "../interfaces";
 import { IEmployee, IRef, RefTypes } from "@djonnyx/tornado-types";
 import { findAllWithFilter } from "../utils/requestOptions";
+import { getClientId } from "../utils/account";
 
 interface IEmployeeItem extends IEmployee { }
 
@@ -73,8 +74,8 @@ export class EmployeesController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<EmployeesResponse> {
         try {
-            const items = await findAllWithFilter(EmployeeModel.find({ client: request.account.id }), request);
-            const ref = await getRef(request.account.id, RefTypes.EMPLOYEES);
+            const items = await findAllWithFilter(EmployeeModel.find({ client: getClientId(request) }), request);
+            const ref = await getRef(getClientId(request), RefTypes.EMPLOYEES);
             return {
                 meta: { ref },
                 data: items.map(v => formatEmployeeModel(v)),
@@ -107,7 +108,7 @@ export class EmployeeController extends Controller {
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<EmployeeResponse> {
         try {
             const item = await EmployeeModel.findById(id);
-            const ref = await getRef(request.account.id, RefTypes.EMPLOYEES);
+            const ref = await getRef(getClientId(request), RefTypes.EMPLOYEES);
             return {
                 meta: { ref },
                 data: formatEmployeeModel(item),
@@ -136,7 +137,7 @@ export class EmployeeController extends Controller {
         let employes: Array<IEmployee>;
 
         try {
-            employes = await EmployeeModel.find({ client: request.account.id });
+            employes = await EmployeeModel.find({ client: getClientId(request) });
         } catch (err) {
             this.setStatus(500);
             return {
@@ -150,9 +151,9 @@ export class EmployeeController extends Controller {
         }
 
         try {
-            const item = new EmployeeModel({ ...body, client: request.account.id });
+            const item = new EmployeeModel({ ...body, client: getClientId(request) });
             const savedItem = await item.save();
-            const ref = await riseRefVersion(request.account.id, RefTypes.EMPLOYEES);
+            const ref = await riseRefVersion(getClientId(request), RefTypes.EMPLOYEES);
             return {
                 meta: { ref },
                 data: formatEmployeeModel(savedItem),
@@ -205,7 +206,7 @@ export class EmployeeController extends Controller {
         try {
             await item.save();
 
-            const ref = await riseRefVersion(request.account.id, RefTypes.EMPLOYEES);
+            const ref = await riseRefVersion(getClientId(request), RefTypes.EMPLOYEES);
             return {
                 meta: { ref },
                 data: formatEmployeeModel(item),
@@ -232,7 +233,7 @@ export class EmployeeController extends Controller {
     public async delete(id: string, @Request() request: IAuthRequest): Promise<EmployeeResponse> {
         let employes: Array<IEmployee>;
         try {
-            employes = await EmployeeModel.find({ client: request.account.id });
+            employes = await EmployeeModel.find({ client: getClientId(request) });
         } catch (err) { }
 
         if (employes && employes.length === 1) {
@@ -249,7 +250,7 @@ export class EmployeeController extends Controller {
 
         try {
             await EmployeeModel.findOneAndDelete({ _id: id });
-            const ref = await riseRefVersion(request.account.id, RefTypes.EMPLOYEES);
+            const ref = await riseRefVersion(getClientId(request), RefTypes.EMPLOYEES);
             return {
                 meta: { ref },
             };

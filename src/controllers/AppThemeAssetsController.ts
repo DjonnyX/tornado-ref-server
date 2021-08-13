@@ -9,6 +9,7 @@ import { AssetModel, IAssetDocument } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
 import { IAuthRequest } from "../interfaces";
 import { findAllWithFilter } from "../utils/requestOptions";
+import { getClientId } from "../utils/account";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IAppThemeAsset extends IAssetItem { }
@@ -121,7 +122,7 @@ export class AppThemeAssetsController extends Controller {
     public async getAllAssets(@Request() request: IAuthRequest): Promise<IAppThemeGetAllAssetsResponse> {
         let appThemes: Array<IAppThemeDocument>;
         try {
-            appThemes = await findAllWithFilter(AppThemeModel.find({ client: request.account.id }), request);
+            appThemes = await findAllWithFilter(AppThemeModel.find({ client: getClientId(request) }), request);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -237,7 +238,7 @@ export class AppThemeAssetsController extends Controller {
                     await deleteAsset(asset.path);
                     await deleteAsset(asset.mipmap.x128);
                     await deleteAsset(asset.mipmap.x32);
-                    await riseRefVersion(request.account.id, RefTypes.ASSETS);
+                    await riseRefVersion(getClientId(request), RefTypes.ASSETS);
                 }
             } catch (err) {
                 this.setStatus(500);
@@ -269,7 +270,7 @@ export class AppThemeAssetsController extends Controller {
 
             savedAppTheme = await appTheme.save();
 
-            appThemeRef = await riseRefVersion(request.account.id, RefTypes.THEMES, {
+            appThemeRef = await riseRefVersion(getClientId(request), RefTypes.THEMES, {
                 "extra.type.equals": appTheme.type,
             });
         } catch (err) {
@@ -338,7 +339,7 @@ export class AppThemeAssetsController extends Controller {
                     await deleteAsset(asset.path);
                     await deleteAsset(asset.mipmap.x128);
                     await deleteAsset(asset.mipmap.x32);
-                    await riseRefVersion(request.account.id, RefTypes.ASSETS);
+                    await riseRefVersion(getClientId(request), RefTypes.ASSETS);
                 }
             } catch (err) {
                 this.setStatus(500);
@@ -376,8 +377,8 @@ export class AppThemeAssetsController extends Controller {
 
             savedAppTheme = await appTheme.save();
 
-            assetRef = await riseRefVersion(request.account.id, RefTypes.ASSETS);
-            appThemeRef = await riseRefVersion(request.account.id, RefTypes.THEMES, {
+            assetRef = await riseRefVersion(getClientId(request), RefTypes.ASSETS);
+            appThemeRef = await riseRefVersion(getClientId(request), RefTypes.THEMES, {
                 "extra.type.equals": appTheme.type,
             });
         } catch (err) {
@@ -437,7 +438,7 @@ export class AppThemeAssetsController extends Controller {
 
         let appThemeRef: IRef;
         try {
-            appThemeRef = await getRef(request.account.id, RefTypes.THEMES, {
+            appThemeRef = await getRef(getClientId(request), RefTypes.THEMES, {
                 "extra.type.equals": appTheme.type,
             });
         } catch (err) {
@@ -461,7 +462,7 @@ export class AppThemeAssetsController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(request.account.id, RefTypes.ASSETS);
+            const ref = await riseRefVersion(getClientId(request), RefTypes.ASSETS);
             return {
                 meta: {
                     asset: {
@@ -521,7 +522,7 @@ export class AppThemeAssetsController extends Controller {
                     await deleteAsset(asset.path);
                     await deleteAsset(asset.mipmap.x128);
                     await deleteAsset(asset.mipmap.x32);
-                    assetRef = await riseRefVersion(request.account.id, RefTypes.ASSETS);
+                    assetRef = await riseRefVersion(getClientId(request), RefTypes.ASSETS);
                 }
             } catch (err) {
                 this.setStatus(500);
@@ -544,7 +545,7 @@ export class AppThemeAssetsController extends Controller {
 
                 await appTheme.save();
 
-                appThemesRef = await riseRefVersion(request.account.id, RefTypes.THEMES, {
+                appThemesRef = await riseRefVersion(getClientId(request), RefTypes.THEMES, {
                     "extra.type.equals": appTheme.type,
                 });
                 return {

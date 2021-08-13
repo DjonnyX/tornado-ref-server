@@ -5,6 +5,7 @@ import { formatSystemTagModel } from "../utils/systemTag";
 import { IAuthRequest } from "../interfaces";
 import { IRef, ISystemTag, RefTypes } from "@djonnyx/tornado-types";
 import { findAllWithFilter } from "../utils/requestOptions";
+import { getClientId } from "../utils/account";
 
 interface ISystemTagItem extends ISystemTag { }
 
@@ -68,8 +69,8 @@ export class SystemTagsController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<ISystemTagsResponse> {
         try {
-            const items = await findAllWithFilter(SystemTagModel.find({ client: request.account.id }), request);
-            const ref = await getRef(request.account.id, RefTypes.SYSTEM_TAGS);
+            const items = await findAllWithFilter(SystemTagModel.find({ client: getClientId(request) }), request);
+            const ref = await getRef(getClientId(request), RefTypes.SYSTEM_TAGS);
             return {
                 meta: { ref },
                 data: items.map(v => formatSystemTagModel(v))
@@ -102,7 +103,7 @@ export class SystemTagController extends Controller {
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<ISystemTagResponse> {
         try {
             const item = await SystemTagModel.findById(id);
-            const ref = await getRef(request.account.id, RefTypes.SYSTEM_TAGS);
+            const ref = await getRef(getClientId(request), RefTypes.SYSTEM_TAGS);
             return {
                 meta: { ref },
                 data: formatSystemTagModel(item),
@@ -129,7 +130,7 @@ export class SystemTagController extends Controller {
     })
     public async create(@Body() body: ISystemTagCreateRequest, @Request() request: IAuthRequest): Promise<ISystemTagResponse> {
         try {
-            const existsItems = await SystemTagModel.find({ client: request.account.id, name: body.name }).where("extra.entity", body.extra?.entity);
+            const existsItems = await SystemTagModel.find({ client: getClientId(request), name: body.name }).where("extra.entity", body.extra?.entity);
             if (!!existsItems && existsItems.length > 0) {
                 this.setStatus(500);
                 return {
@@ -154,9 +155,9 @@ export class SystemTagController extends Controller {
         }
 
         try {
-            const item = new SystemTagModel({ ...body, client: request.account.id });
+            const item = new SystemTagModel({ ...body, client: getClientId(request) });
             const savedItem = await item.save();
-            const ref = await riseRefVersion(request.account.id, RefTypes.SYSTEM_TAGS);
+            const ref = await riseRefVersion(getClientId(request), RefTypes.SYSTEM_TAGS);
             return {
                 meta: { ref },
                 data: formatSystemTagModel(savedItem),
@@ -195,7 +196,7 @@ export class SystemTagController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(request.account.id, RefTypes.SYSTEM_TAGS);
+            const ref = await riseRefVersion(getClientId(request), RefTypes.SYSTEM_TAGS);
             return {
                 meta: { ref },
                 data: formatSystemTagModel(item),
@@ -239,7 +240,7 @@ export class SystemTagController extends Controller {
         switch (tag.extra.entity) {
             case "product":
                 try {
-                    const products = await ProductModel.find({ client: request.account.id, systemTag: id });
+                    const products = await ProductModel.find({ client: getClientId(request), systemTag: id });
                     for (let i = 0, l = products.length; i < l; i++) {
                         const product = products[i];
                         product.systemTag = undefined;
@@ -259,7 +260,7 @@ export class SystemTagController extends Controller {
                 break;
             case "selector":
                 try {
-                    const selectors = await SelectorModel.find({ client: request.account.id, systemTag: id });
+                    const selectors = await SelectorModel.find({ client: getClientId(request), systemTag: id });
                     for (let i = 0, l = selectors.length; i < l; i++) {
                         const selector = selectors[i];
                         selector.systemTag = undefined;
@@ -283,10 +284,10 @@ export class SystemTagController extends Controller {
             await Promise.all(promises);
             switch (tag.extra.entity) {
                 case "product":
-                    await riseRefVersion(request.account.id, RefTypes.PRODUCTS);
+                    await riseRefVersion(getClientId(request), RefTypes.PRODUCTS);
                     break;
                 case "selector":
-                    await riseRefVersion(request.account.id, RefTypes.SELECTORS);
+                    await riseRefVersion(getClientId(request), RefTypes.SELECTORS);
                     break;
             }
 
@@ -303,7 +304,7 @@ export class SystemTagController extends Controller {
         }
 
         try {
-            const ref = await riseRefVersion(request.account.id, RefTypes.SYSTEM_TAGS);
+            const ref = await riseRefVersion(getClientId(request), RefTypes.SYSTEM_TAGS);
             return {
                 meta: { ref },
             };
