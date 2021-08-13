@@ -5,6 +5,7 @@ import { IAuthRequest } from "../interfaces";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatAppThemeModel } from "../utils/appTheme";
 import { readFileJSONAsync } from "../utils/file";
+import { getClientId } from "../utils/account";
 
 export interface IAppThemeItem extends IAppTheme { }
 
@@ -94,9 +95,9 @@ export class AppThemesController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest, @Query() type: TerminalTypes): Promise<IAppThemesResponse> {
         try {
-            const items = await AppThemeModel.find({ client: request.account.id, type: Number(type) });
+            const items = await AppThemeModel.find({ client: getClientId(request), type: Number(type) });
 
-            const ref = await getRef(request.account.id, RefTypes.THEMES, {
+            const ref = await getRef(getClientId(request), RefTypes.THEMES, {
                 "extra.type.equals": Number(type),
             });
             return {
@@ -130,9 +131,9 @@ export class AppThemeController extends Controller {
     })
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<IAppThemeResponse> {
         try {
-            const item = await AppThemeModel.findOne({ _id: id, client: request.account.id });
+            const item = await AppThemeModel.findOne({ _id: id, client: getClientId(request) });
 
-            const ref = await getRef(request.account.id, RefTypes.THEMES, {
+            const ref = await getRef(getClientId(request), RefTypes.THEMES, {
                 "extra.type.equals": item.type,
             });
             return {
@@ -184,12 +185,12 @@ export class AppThemeController extends Controller {
             const item = new AppThemeModel({
                 ...body,
                 data: themeData,
-                type, client: request.account.id,
+                type, client: getClientId(request),
                 lastUpdate: new Date(),
                 version: 1,
             });
             const savedItem = await item.save();
-            const ref = await riseRefVersion(request.account.id, RefTypes.THEMES, {
+            const ref = await riseRefVersion(getClientId(request), RefTypes.THEMES, {
                 "extra.type.equals": item.type,
             });
             return {
@@ -234,7 +235,7 @@ export class AppThemeController extends Controller {
 
                 await item.save();
 
-                const ref = await riseRefVersion(request.account.id, RefTypes.THEMES, {
+                const ref = await riseRefVersion(getClientId(request), RefTypes.THEMES, {
                     "extra.type.equals": item.type,
                 });
                 return {
@@ -289,7 +290,7 @@ export class AppThemeController extends Controller {
 
         let defaultTheme: IAppThemeDocument;
         try {
-            defaultTheme = await AppThemeModel.findOne({ client: request.account.id, type: theme.type, name: "light" });
+            defaultTheme = await AppThemeModel.findOne({ client: getClientId(request), type: theme.type, name: "light" });
         } catch (err) {
             this.setStatus(500);
             return {
@@ -304,7 +305,7 @@ export class AppThemeController extends Controller {
 
         let terminals: Array<ITerminalDocument>;
         try {
-            terminals = await TerminalModel.find({ client: request.account.id, type: theme.type });
+            terminals = await TerminalModel.find({ client: getClientId(request), type: theme.type });
         } catch (err) {
             this.setStatus(500);
             return {
@@ -340,7 +341,7 @@ export class AppThemeController extends Controller {
         }
 
         try {
-            const ref = await riseRefVersion(request.account.id, RefTypes.THEMES, {
+            const ref = await riseRefVersion(getClientId(request), RefTypes.THEMES, {
                 "extra.type.equals": theme.type,
             });
             return {

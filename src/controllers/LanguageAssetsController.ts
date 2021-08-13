@@ -9,6 +9,7 @@ import { formatLanguageModel } from "../utils/language";
 import { IAuthRequest } from "../interfaces";
 import { AssetExtensions, IRef } from "@djonnyx/tornado-types";
 import { RefTypes } from "@djonnyx/tornado-types";
+import { getClientId } from "../utils/account";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface ILanguageAsset extends IAssetItem { }
@@ -180,7 +181,7 @@ export class LanguageAssetsController extends Controller {
         let languageRef: IRef;
         try {
             language.assets.push(assetsInfo.data.id);
-            languageRef = await riseRefVersion(request.account.id, RefTypes.LANGUAGES);
+            languageRef = await riseRefVersion(getClientId(request), RefTypes.LANGUAGES);
             await language.save();
         } catch (err) {
             this.setStatus(500);
@@ -273,7 +274,7 @@ export class LanguageAssetsController extends Controller {
         try {
             language.resources[resourceType] = assetsInfo.data.id;
             language.assets.push(assetsInfo.data.id);
-            languageRef = await riseRefVersion(request.account.id, RefTypes.LANGUAGES);
+            languageRef = await riseRefVersion(getClientId(request), RefTypes.LANGUAGES);
             await language.save();
         } catch (err) {
             this.setStatus(500);
@@ -332,7 +333,7 @@ export class LanguageAssetsController extends Controller {
 
         let languageRef: IRef;
         try {
-            languageRef = await getRef(request.account.id, RefTypes.LANGUAGES);
+            languageRef = await getRef(getClientId(request), RefTypes.LANGUAGES);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -354,7 +355,7 @@ export class LanguageAssetsController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(request.account.id, RefTypes.ASSETS);
+            const ref = await riseRefVersion(getClientId(request), RefTypes.ASSETS);
             return {
                 meta: {
                     asset: {
@@ -412,7 +413,7 @@ export class LanguageAssetsController extends Controller {
                 await deleteAsset(asset.path);
                 await deleteAsset(asset.mipmap.x128);
                 await deleteAsset(asset.mipmap.x32);
-                assetRef = await riseRefVersion(request.account.id, RefTypes.ASSETS);
+                assetRef = await riseRefVersion(getClientId(request), RefTypes.ASSETS);
             } catch (err) {
                 this.setStatus(500);
                 return {
@@ -430,7 +431,7 @@ export class LanguageAssetsController extends Controller {
         try {
             language.assets.splice(assetIndex, 1);
             await language.save();
-            languagesRef = await riseRefVersion(request.account.id, RefTypes.LANGUAGES);
+            languagesRef = await riseRefVersion(getClientId(request), RefTypes.LANGUAGES);
             return {
                 meta: {
                     language: {

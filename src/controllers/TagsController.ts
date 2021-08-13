@@ -9,6 +9,7 @@ import { normalizeContents, getDeletedImagesFromDifferense, getEntityAssets } fr
 import { IAuthRequest } from "../interfaces";
 import { IRef, ITag, ITagContents, RefTypes } from "@djonnyx/tornado-types";
 import { findAllWithFilter } from "../utils/requestOptions";
+import { getClientId } from "../utils/account";
 
 export interface ITagItem extends ITag { }
 
@@ -82,8 +83,8 @@ export class TagsController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<TagsResponse> {
         try {
-            const items = await findAllWithFilter(TagModel.find({ client: request.account.id }), request);
-            const ref = await getRef(request.account.id, RefTypes.TAGS);
+            const items = await findAllWithFilter(TagModel.find({ client: getClientId(request) }), request);
+            const ref = await getRef(getClientId(request), RefTypes.TAGS);
             return {
                 meta: { ref },
                 data: items.map(v => formatTagModel(v)),
@@ -116,7 +117,7 @@ export class TagController extends Controller {
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<TagResponse> {
         try {
             const item = await TagModel.findById(id);
-            const ref = await getRef(request.account.id, RefTypes.TAGS);
+            const ref = await getRef(getClientId(request), RefTypes.TAGS);
             return {
                 meta: { ref },
                 data: formatTagModel(item),
@@ -143,9 +144,9 @@ export class TagController extends Controller {
     })
     public async create(@Body() body: TagCreateRequest, @Request() request: IAuthRequest): Promise<TagResponse> {
         try {
-            const item = new TagModel({ ...body, client: request.account.id });
+            const item = new TagModel({ ...body, client: getClientId(request) });
             const savedItem = await item.save();
-            const ref = await riseRefVersion(request.account.id, RefTypes.TAGS);
+            const ref = await riseRefVersion(getClientId(request), RefTypes.TAGS);
             return {
                 meta: { ref },
                 data: formatTagModel(savedItem),
@@ -173,7 +174,7 @@ export class TagController extends Controller {
     public async update(id: string, @Body() body: TagCreateRequest, @Request() request: IAuthRequest): Promise<TagResponse> {
         let defaultLanguage: ILanguageDocument;
         try {
-            defaultLanguage = await LanguageModel.findOne({ client: request.account.id, isDefault: true });
+            defaultLanguage = await LanguageModel.findOne({ client: getClientId(request), isDefault: true });
         } catch (err) {
             this.setStatus(500);
             return {
@@ -238,7 +239,7 @@ export class TagController extends Controller {
             await Promise.all(promises);
 
             if (isAssetsChanged) {
-                await riseRefVersion(request.account.id, RefTypes.ASSETS);
+                await riseRefVersion(getClientId(request), RefTypes.ASSETS);
             }
 
             // выставление ассетов от предыдущего состояния
@@ -256,7 +257,7 @@ export class TagController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(request.account.id, RefTypes.SELECTORS);
+            const ref = await riseRefVersion(getClientId(request), RefTypes.SELECTORS);
             return {
                 meta: { ref },
                 data: formatTagModel(item),
@@ -283,7 +284,7 @@ export class TagController extends Controller {
     public async delete(id: string, @Request() request: IAuthRequest): Promise<TagResponse> {
         let products: Array<IProductDocument>;
         try {
-            products = await ProductModel.find({ client: request.account.id, tags: [id] });
+            products = await ProductModel.find({ client: getClientId(request), tags: [id] });
         } catch (err) {
             console.warn(`Products with contains tag ${id} found error. ${err}`);
         }
@@ -311,7 +312,7 @@ export class TagController extends Controller {
 
         try {
             await Promise.all(promises);
-            await riseRefVersion(request.account.id, RefTypes.PRODUCTS);
+            await riseRefVersion(getClientId(request), RefTypes.PRODUCTS);
         } catch (err) {
             console.warn(`Save products error. ${err}`);
         }
@@ -355,7 +356,7 @@ export class TagController extends Controller {
             await Promise.all(assetsPromises);
 
             if (!!isAssetsChanged) {
-                await riseRefVersion(request.account.id, RefTypes.ASSETS);
+                await riseRefVersion(getClientId(request), RefTypes.ASSETS);
             }
         } catch (err) {
             this.setStatus(500);
@@ -370,7 +371,7 @@ export class TagController extends Controller {
         }
 
         try {
-            const ref = await riseRefVersion(request.account.id, RefTypes.TAGS);
+            const ref = await riseRefVersion(getClientId(request), RefTypes.TAGS);
             return {
                 meta: { ref }
             };

@@ -5,6 +5,7 @@ import { formatModel } from "../utils/businessPeriod";
 import { IAuthRequest } from "../interfaces";
 import { IBusinessPeriod, IBusinessPeriodContents, IRef, RefTypes } from "@djonnyx/tornado-types";
 import { findAllWithFilter } from "../utils/requestOptions";
+import { getClientId } from "../utils/account";
 
 export interface IScheduleItem {
     active: boolean;
@@ -103,8 +104,8 @@ export class BusinessPeriodsController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<IBusinessPeriodsResponse> {
         try {
-            const items = await findAllWithFilter(BusinessPeriodModel.find({ client: request.account.id }), request);
-            const ref = await getRef(request.account.id, RefTypes.BUSINESS_PERIODS);
+            const items = await findAllWithFilter(BusinessPeriodModel.find({ client: getClientId(request) }), request);
+            const ref = await getRef(getClientId(request), RefTypes.BUSINESS_PERIODS);
             return {
                 meta: { ref },
                 data: items.map(v => formatModel(v))
@@ -137,7 +138,7 @@ export class BusinessPeriodController extends Controller {
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<IBusinessPeriodResponse> {
         try {
             const item = await BusinessPeriodModel.findById(id);
-            const ref = await getRef(request.account.id, RefTypes.BUSINESS_PERIODS);
+            const ref = await getRef(getClientId(request), RefTypes.BUSINESS_PERIODS);
             return {
                 meta: { ref },
                 data: formatModel(item),
@@ -164,9 +165,9 @@ export class BusinessPeriodController extends Controller {
     })
     public async create(@Body() body: IBusinessPeriodCreateRequest, @Request() request: IAuthRequest): Promise<IBusinessPeriodResponse> {
         try {
-            const item = new BusinessPeriodModel({ ...body, client: request.account.id });
+            const item = new BusinessPeriodModel({ ...body, client: getClientId(request) });
             const savedItem = await item.save();
-            const ref = await riseRefVersion(request.account.id, RefTypes.BUSINESS_PERIODS);
+            const ref = await riseRefVersion(getClientId(request), RefTypes.BUSINESS_PERIODS);
             return {
                 meta: { ref },
                 data: formatModel(savedItem),
@@ -204,7 +205,7 @@ export class BusinessPeriodController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(request.account.id, RefTypes.BUSINESS_PERIODS);
+            const ref = await riseRefVersion(getClientId(request), RefTypes.BUSINESS_PERIODS);
             return {
                 meta: { ref },
                 data: formatModel(item),
@@ -245,7 +246,7 @@ export class BusinessPeriodController extends Controller {
         }
 
         try {
-            const ref = await riseRefVersion(request.account.id, RefTypes.BUSINESS_PERIODS);
+            const ref = await riseRefVersion(getClientId(request), RefTypes.BUSINESS_PERIODS);
             return {
                 meta: { ref },
             };

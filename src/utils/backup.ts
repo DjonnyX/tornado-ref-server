@@ -11,9 +11,10 @@ import { copyDirectory, makeDirIfEmpty, readFile, removeDirectory, removeFile, s
 import * as moment from "moment";
 import { TerminalTypes } from "@djonnyx/tornado-types";
 import { normalizeTerminalTheme } from "./terminal";
+import { getClientId } from "./account";
 
 export const generateBackup = async (request: IAuthRequest): Promise<string> => {
-    const client = request.account.id;
+    const client = getClientId(request);
 
     const ads = await AdModel.find({ client: client });
     const adsData = ads.map(ad => ad.toJSON());
@@ -109,7 +110,7 @@ export const uploadBackup = async (request: IAuthRequest, allowedExtensions = ['
 
     return new Promise<void>((resolve, reject) => {
         const EXT_PATTERN = new RegExp(`^(${allowedExtensions.map(v => `\\${v}`).join("|")})$`);
-        const client = request.account.id;
+        const client = getClientId(request);
         multer({
             dest: "backups/upload",
             fileFilter: function (req, file, cb) {

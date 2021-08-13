@@ -6,6 +6,7 @@ import * as ffmpegStatic from "ffmpeg-static";
 import * as fs from "fs";
 import { AssetExtensions } from "@djonnyx/tornado-types";
 import { IAuthRequest } from "../interfaces";
+import { getClientId } from "./account";
 
 ffmpeg.setFfmpegPath(ffmpegStatic);
 
@@ -104,7 +105,7 @@ export const assetsUploader = (name: string, allowedExtensions: Array<AssetExten
     return new Promise((resolve, reject) => {
         const EXT_PATTERN = new RegExp(`^(${allowedExtensions.map(v => `\\${v}`).join("|")})$`);
         multer({
-            dest: `assets/${request.account.id}`,
+            dest: `assets/${getClientId(request)}`,
             fileFilter: function (req, file, cb) {
                 const ext = path.extname(file.originalname);
                 if (!EXT_PATTERN.test(ext)) {

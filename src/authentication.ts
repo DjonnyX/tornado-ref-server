@@ -22,6 +22,7 @@ const checkClientToken = async (token: string, request: express.Request) => {
 
       (request as IAuthRequest).account = {
         id: decoded.id,
+        owner: decoded.owner,
       };
       (request as IAuthRequest).token = token;
 
@@ -67,6 +68,7 @@ const checkApiKey = async (apikey: string, request: express.Request) => {
 
     (request as IAuthRequest).account = {
       id: licenseResponse.data.clientId,
+      owner: licenseResponse.data.clientId,
     };
 
     (request as IAuthRequest).token = apikey;

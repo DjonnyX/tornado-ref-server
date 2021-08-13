@@ -9,6 +9,7 @@ export interface IAuthRequest extends express.Request {
 
 export interface IAuthInfo {
     id: string;
+    owner: string;
 }
 
 export interface ITerminalAuthInfo {

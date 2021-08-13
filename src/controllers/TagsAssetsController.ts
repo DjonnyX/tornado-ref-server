@@ -9,6 +9,7 @@ import { AssetModel, IAssetDocument } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
 import { IAuthRequest } from "../interfaces";
 import { AssetExtensions, IRef, ITagContents, RefTypes } from "@djonnyx/tornado-types";
+import { getClientId } from "../utils/account";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface ITagAsset extends IAssetItem { }
@@ -379,7 +380,7 @@ export class TagAssetsController extends Controller {
 
         let defaultLanguage: ILanguageDocument;
         try {
-            defaultLanguage = await LanguageModel.findOne({ client: request.account.id, isDefault: true });
+            defaultLanguage = await LanguageModel.findOne({ client: getClientId(request), isDefault: true });
         } catch (err) {
             this.setStatus(500);
             return {
@@ -421,7 +422,7 @@ export class TagAssetsController extends Controller {
                     await deleteAsset(asset.path);
                     await deleteAsset(asset.mipmap.x128);
                     await deleteAsset(asset.mipmap.x32);
-                    await riseRefVersion(request.account.id, RefTypes.ASSETS);
+                    await riseRefVersion(getClientId(request), RefTypes.ASSETS);
                 }
             } catch (err) {
                 this.setStatus(500);
@@ -457,7 +458,7 @@ export class TagAssetsController extends Controller {
 
             savedTag = await tag.save();
 
-            tagRef = await riseRefVersion(request.account.id, RefTypes.SELECTORS);
+            tagRef = await riseRefVersion(getClientId(request), RefTypes.SELECTORS);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -515,7 +516,7 @@ export class TagAssetsController extends Controller {
 
         let tagRef: IRef;
         try {
-            tagRef = await getRef(request.account.id, RefTypes.SELECTORS);
+            tagRef = await getRef(getClientId(request), RefTypes.SELECTORS);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -537,7 +538,7 @@ export class TagAssetsController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(request.account.id, RefTypes.ASSETS);
+            const ref = await riseRefVersion(getClientId(request), RefTypes.ASSETS);
             return {
                 meta: {
                     asset: {
@@ -598,7 +599,7 @@ export class TagAssetsController extends Controller {
                     await deleteAsset(asset.path);
                     await deleteAsset(asset.mipmap.x128);
                     await deleteAsset(asset.mipmap.x32);
-                    assetRef = await riseRefVersion(request.account.id, RefTypes.ASSETS);
+                    assetRef = await riseRefVersion(getClientId(request), RefTypes.ASSETS);
                 }
             } catch (err) {
                 this.setStatus(500);
@@ -622,7 +623,7 @@ export class TagAssetsController extends Controller {
 
             await tag.save();
 
-            tagsRef = await riseRefVersion(request.account.id, RefTypes.SELECTORS);
+            tagsRef = await riseRefVersion(getClientId(request), RefTypes.SELECTORS);
             return {
                 meta: {
                     tag: {

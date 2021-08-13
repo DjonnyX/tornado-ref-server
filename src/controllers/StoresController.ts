@@ -5,6 +5,7 @@ import { formatStoreModel } from "../utils/store";
 import { IAuthRequest } from "../interfaces";
 import { IRef, IStore, RefTypes } from "@djonnyx/tornado-types";
 import { findAllWithFilter } from "../utils/requestOptions";
+import { getClientId } from "../utils/account";
 
 interface IStoreItem extends IStore { }
 
@@ -71,8 +72,8 @@ export class StoresController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<IStoresResponse> {
         try {
-            const items = await findAllWithFilter(StoreModel.find({ client: request.account.id }), request);
-            const ref = await getRef(request.account.id, RefTypes.STORES);
+            const items = await findAllWithFilter(StoreModel.find({ client: getClientId(request) }), request);
+            const ref = await getRef(getClientId(request), RefTypes.STORES);
             return {
                 meta: { ref },
                 data: items.map(v => formatStoreModel(v))
@@ -105,7 +106,7 @@ export class StoreController extends Controller {
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<IStoreResponse> {
         try {
             const item = await StoreModel.findById(id);
-            const ref = await getRef(request.account.id, RefTypes.STORES);
+            const ref = await getRef(getClientId(request), RefTypes.STORES);
             return {
                 meta: { ref },
                 data: formatStoreModel(item),
@@ -132,9 +133,9 @@ export class StoreController extends Controller {
     })
     public async create(@Body() body: IStoreCreateRequest, @Request() request: IAuthRequest): Promise<IStoreResponse> {
         try {
-            const item = new StoreModel({ ...body, client: request.account.id });
+            const item = new StoreModel({ ...body, client: getClientId(request) });
             const savedItem = await item.save();
-            const ref = await riseRefVersion(request.account.id, RefTypes.STORES);
+            const ref = await riseRefVersion(getClientId(request), RefTypes.STORES);
             return {
                 meta: { ref },
                 data: formatStoreModel(savedItem),
@@ -173,7 +174,7 @@ export class StoreController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(request.account.id, RefTypes.STORES);
+            const ref = await riseRefVersion(getClientId(request), RefTypes.STORES);
             return {
                 meta: { ref },
                 data: formatStoreModel(item),
@@ -214,7 +215,7 @@ export class StoreController extends Controller {
         }
 
         try {
-            const ref = await riseRefVersion(request.account.id, RefTypes.STORES);
+            const ref = await riseRefVersion(getClientId(request), RefTypes.STORES);
             return {
                 meta: { ref },
             };

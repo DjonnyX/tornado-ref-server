@@ -9,6 +9,7 @@ import { uploadAsset, deleteAsset, IAssetItem, ICreateAssetsResponse } from "./A
 import { AssetModel, IAssetDocument } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
 import { IAuthRequest } from "../interfaces";
+import { getClientId } from "../utils/account";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IAdAsset extends IAssetItem { }
@@ -355,7 +356,7 @@ export class AdAssetsController extends Controller {
 
         let defaultLanguage: ILanguageDocument;
         try {
-            defaultLanguage = await LanguageModel.findOne({ client: request.account.id, isDefault: true });
+            defaultLanguage = await LanguageModel.findOne({ client: getClientId(request), isDefault: true });
         } catch (err) {
             this.setStatus(500);
             return {
@@ -397,7 +398,7 @@ export class AdAssetsController extends Controller {
                     await deleteAsset(asset.path);
                     await deleteAsset(asset.mipmap.x128);
                     await deleteAsset(asset.mipmap.x32);
-                    await riseRefVersion(request.account.id, RefTypes.ASSETS);
+                    await riseRefVersion(getClientId(request), RefTypes.ASSETS);
                 }
             } catch (err) {
                 this.setStatus(500);
@@ -433,7 +434,7 @@ export class AdAssetsController extends Controller {
 
             savedAd = await ad.save();
 
-            adRef = await riseRefVersion(request.account.id, RefTypes.ADS);
+            adRef = await riseRefVersion(getClientId(request), RefTypes.ADS);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -491,7 +492,7 @@ export class AdAssetsController extends Controller {
 
         let adRef: IRef;
         try {
-            adRef = await getRef(request.account.id, RefTypes.ADS);
+            adRef = await getRef(getClientId(request), RefTypes.ADS);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -513,7 +514,7 @@ export class AdAssetsController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(request.account.id, RefTypes.ASSETS);
+            const ref = await riseRefVersion(getClientId(request), RefTypes.ASSETS);
             return {
                 meta: {
                     asset: {
@@ -574,7 +575,7 @@ export class AdAssetsController extends Controller {
                     await deleteAsset(asset.path);
                     await deleteAsset(asset.mipmap.x128);
                     await deleteAsset(asset.mipmap.x32);
-                    assetRef = await riseRefVersion(request.account.id, RefTypes.ASSETS);
+                    assetRef = await riseRefVersion(getClientId(request), RefTypes.ASSETS);
                 }
             } catch (err) {
                 this.setStatus(500);
@@ -598,7 +599,7 @@ export class AdAssetsController extends Controller {
 
             await ad.save();
 
-            adsRef = await riseRefVersion(request.account.id, RefTypes.ADS);
+            adsRef = await riseRefVersion(getClientId(request), RefTypes.ADS);
             return {
                 meta: {
                     ad: {

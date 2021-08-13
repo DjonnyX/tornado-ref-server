@@ -8,6 +8,7 @@ import { assetsUploader, IFileInfo } from "../utils/assetUpload";
 import { IAuthRequest } from "../interfaces";
 import { AssetExtensions, IRef, RefTypes, IAsset } from "@djonnyx/tornado-types";
 import { findAllWithFilter } from "../utils/requestOptions";
+import { getClientId } from "../utils/account";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IAssetItem extends IAsset { }
@@ -96,8 +97,8 @@ export const uploadAsset = async (request: IAuthRequest, allowedExtensions: Arra
     let asset: IAssetDocument;
     let assetRef: IRef;
     try {
-        asset = new AssetModel({ ...fileInfo, active, client: request.account.id });
-        assetRef = await riseRefVersion(request.account.id, RefTypes.ASSETS);
+        asset = new AssetModel({ ...fileInfo, active, client: getClientId(request) });
+        assetRef = await riseRefVersion(getClientId(request), RefTypes.ASSETS);
         await asset.save();
     } catch (err) {
         return {
@@ -150,8 +151,8 @@ export class AssetsController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<IGetAssetsResponse> {
         try {
-            const items = await findAllWithFilter(AssetModel.find({ client: request.account.id }), request);
-            const ref = await getRef(request.account.id, RefTypes.ASSETS);
+            const items = await findAllWithFilter(AssetModel.find({ client: getClientId(request) }), request);
+            const ref = await getRef(getClientId(request), RefTypes.ASSETS);
             return {
                 meta: { ref },
                 data: items.map(v => formatAssetModel(v))

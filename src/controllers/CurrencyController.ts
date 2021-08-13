@@ -5,6 +5,7 @@ import { formatCurrencyModel } from "../utils/currency";
 import { IAuthRequest } from "../interfaces";
 import { ICurrency, IRef, RefTypes } from "@djonnyx/tornado-types";
 import { findAllWithFilter } from "../utils/requestOptions";
+import { getClientId } from "../utils/account";
 
 interface ICurrencyItem extends ICurrency { }
 
@@ -79,8 +80,8 @@ export class CurrenciesController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<CurrenciesResponse> {
         try {
-            const items = await findAllWithFilter(CurrencyModel.find({ client: request.account.id }), request);
-            const ref = await getRef(request.account.id, RefTypes.CURRENCIES);
+            const items = await findAllWithFilter(CurrencyModel.find({ client: getClientId(request) }), request);
+            const ref = await getRef(getClientId(request), RefTypes.CURRENCIES);
             return {
                 meta: { ref },
                 data: items.map(v => formatCurrencyModel(v)),
@@ -113,7 +114,7 @@ export class CurrencyController extends Controller {
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<CurrencyResponse> {
         try {
             const item = await CurrencyModel.findById(id);
-            const ref = await getRef(request.account.id, RefTypes.CURRENCIES);
+            const ref = await getRef(getClientId(request), RefTypes.CURRENCIES);
             return {
                 meta: { ref },
                 data: formatCurrencyModel(item),
@@ -142,7 +143,7 @@ export class CurrencyController extends Controller {
         let currencies: Array<ICurrency>;
 
         try {
-            currencies = await CurrencyModel.find({ client: request.account.id });
+            currencies = await CurrencyModel.find({ client: getClientId(request) });
         } catch (err) {
             this.setStatus(500);
             return {
@@ -157,9 +158,9 @@ export class CurrencyController extends Controller {
 
         try {
             body.isDefault = currencies.length === 0;
-            const item = new CurrencyModel({ ...body, client: request.account.id });
+            const item = new CurrencyModel({ ...body, client: getClientId(request) });
             const savedItem = await item.save();
-            const ref = await riseRefVersion(request.account.id, RefTypes.CURRENCIES);
+            const ref = await riseRefVersion(getClientId(request), RefTypes.CURRENCIES);
             return {
                 meta: { ref },
                 data: formatCurrencyModel(savedItem),
@@ -219,7 +220,7 @@ export class CurrencyController extends Controller {
         }
 
         try {
-            const currencies: Array<ICurrencyDocument> = await CurrencyModel.find({ client: request.account.id });
+            const currencies: Array<ICurrencyDocument> = await CurrencyModel.find({ client: getClientId(request) });
 
             const promises = new Array<Promise<void>>();
 
@@ -284,7 +285,7 @@ export class CurrencyController extends Controller {
         try {
             await item.save();
 
-            const ref = await riseRefVersion(request.account.id, RefTypes.CURRENCIES);
+            const ref = await riseRefVersion(getClientId(request), RefTypes.CURRENCIES);
             return {
                 meta: { ref },
                 data: formatCurrencyModel(item),
@@ -311,7 +312,7 @@ export class CurrencyController extends Controller {
     public async delete(id: string, @Request() request: IAuthRequest): Promise<CurrencyResponse> {
         let currencies: Array<ICurrency>;
         try {
-            currencies = await CurrencyModel.find({ client: request.account.id });
+            currencies = await CurrencyModel.find({ client: getClientId(request) });
         } catch (err) { }
 
         if (currencies && currencies.length === 1) {
@@ -328,7 +329,7 @@ export class CurrencyController extends Controller {
 
         try {
             await CurrencyModel.findOneAndDelete({ _id: id });
-            const ref = await riseRefVersion(request.account.id, RefTypes.CURRENCIES);
+            const ref = await riseRefVersion(getClientId(request), RefTypes.CURRENCIES);
             return {
                 meta: { ref },
             };
