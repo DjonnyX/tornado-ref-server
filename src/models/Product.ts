@@ -12,6 +12,7 @@ interface IReceiptItem {
 
 interface IProductDocument extends Document {
     client: string;
+    position: number;
     active: boolean;
     name: string;
     contents: IProductContents;
@@ -25,29 +26,30 @@ interface IProductDocument extends Document {
 }
 
 const ReceiptSchema = new Schema({
-    name: { type: Schema.Types.String, required: true },
-    description: { type: Schema.Types.String, required: false },
-    calories: { type: Schema.Types.Number, required: false },
-    quantity: { type: Schema.Types.Number, required: false },
+    name: { type: String, required: true },
+    description: { type: String, required: false },
+    calories: { type: Number, required: false },
+    quantity: { type: Number, required: false },
     extra: { type: Schema.Types.Mixed, required: false },
 });
 
 const PriceSchema = new Schema({
-    value: { type: Schema.Types.Number, required: true },
-    currency: { type: Schema.Types.String, required: false },
+    value: { type: Number, required: true },
+    currency: { type: String, required: false },
     extra: { type: Schema.Types.Mixed, required: false },
 });
 
 const ProductSchema = new Schema({
     client: { type: String, required: true, index: { unique: false } },
-    active: { type: Schema.Types.Boolean, required: true, default: true },
+    active: { type: Boolean, required: true, default: true },
+    position: { type: Number, require: true },
     name: { type: String, required: false },
     contents: { type: Schema.Types.Mixed, default: {} },
     prices: [PriceSchema],
     receipt: [ReceiptSchema],
     tags: [{ type: Schema.Types.ObjectId }],
-    weight: { type: Schema.Types.Number, require: true, default: 0 },
-    systemTag: { type: Schema.Types.String },
+    weight: { type: Number, require: true, default: 0 },
+    systemTag: { type: String },
     joint: { type: Schema.Types.ObjectId, required: true },
     extra: { type: Schema.Types.Mixed, required: false, default: {} },
 });

@@ -3,12 +3,14 @@ import { Schema, Document } from "mongoose";
 
 interface ISystemTagDocument extends Document {
     client: string;
+    position: number;
     name: string;
     extra?: { [key: string]: any } | null;
 }
 
 const SystemTagSchema = new Schema({
     client: { type: String, required: true, index: { unique: false } },
+    position: { type: Number, require: true },
     name: { type: String, required: false },
     extra: { type: Schema.Types.Mixed, required: false },
 });
