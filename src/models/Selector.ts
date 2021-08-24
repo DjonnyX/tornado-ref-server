@@ -15,7 +15,7 @@ interface ISelectorDocument extends Document {
 
 const SelectorSchema = new Schema({
     client: { type: String, required: true, index: { unique: false } },
-    position: { type: Number, require: true },
+    position: { type: Number, require: true, default: 0 },
     active: { type: Schema.Types.Boolean, required: true, default: true },
     type: {
         type: Schema.Types.String, enum: [

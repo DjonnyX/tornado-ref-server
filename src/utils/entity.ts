@@ -1,4 +1,4 @@
-import { IAdContents, IEntity, RefTypes } from "@djonnyx/tornado-types";
+import { IAdContents, IEntity, IEntityPosition } from "@djonnyx/tornado-types";
 import { IVisualEntityContents, IVisualEntityContentsItem, IVisualEntity } from "../models/interfaces";
 
 export interface ISortedEntity extends IEntity {
@@ -146,7 +146,7 @@ export const contentsToDefault = (contents: IAdContents, langCode: string) => {
     return result;
 }
 
-export const sortEntities = (entities: Array<ISortedEntity>, refType: RefTypes) => {
+export const sortEntities = (entities: Array<ISortedEntity>) => {
     entities.sort((a: ISortedEntity, b: ISortedEntity) => (a?.position || 0) - (b.position || 0));
 
     const promises = new Array<Promise<ISortedEntity>>();
@@ -163,3 +163,8 @@ export const sortEntities = (entities: Array<ISortedEntity>, refType: RefTypes) 
 
     return Promise.all(promises);
 }
+
+export const formatEntityPositionModel = (model: any): IEntityPosition => ({
+    id: model._id,
+    position: model.position,
+});

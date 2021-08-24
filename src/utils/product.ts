@@ -3,6 +3,7 @@ import { IProductDocument } from "@models";
 
 export const formatProductModel = (model: IProductDocument): IProduct => ({
     id: model._id,
+    position: model.position,
     active: model.active,
     contents: model.contents,
     prices: model.prices.map(price => ({

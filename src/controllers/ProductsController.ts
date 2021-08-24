@@ -3,11 +3,11 @@ import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, 
 import { getRef, riseRefVersion } from "../db/refs";
 import { deleteNodesChain } from "../utils/node";
 import { formatProductModel } from "../utils/product";
-import { getEntityAssets, getDeletedImagesFromDifferense, normalizeContents } from "../utils/entity";
+import { getEntityAssets, getDeletedImagesFromDifferense, normalizeContents, sortEntities, formatEntityPositionModel } from "../utils/entity";
 import { AssetModel } from "../models/Asset";
 import { deleteAsset } from "./AssetsController";
 import { IAuthRequest } from "../interfaces";
-import { IPrice, IProduct, IProductContents, IRef, NodeTypes, RefTypes } from "@djonnyx/tornado-types";
+import { IEntityPosition, IPrice, IProduct, IProductContents, IRef, NodeTypes, RefTypes } from "@djonnyx/tornado-types";
 import { findAllWithFilter } from "../utils/requestOptions";
 import { getClientId } from "../utils/account";
 
@@ -15,6 +15,15 @@ export interface IProductItem extends IProduct { }
 
 export interface IProductsMeta {
     ref: IRef;
+}
+
+interface IProductsPositionsResponse {
+    meta?: IProductsMeta;
+    data?: Array<IEntityPosition>;
+    error?: Array<{
+        code: number;
+        message: string;
+    }>;
 }
 
 interface IProductsResponse {
@@ -49,6 +58,7 @@ interface IProductCreateRequest {
 
 interface IProductUpdateRequest {
     active?: boolean;
+    position?: number;
     contents?: IProductContents | any;
     prices?: Array<IPrice>;
     receipt?: Array<IReceiptItem>;
@@ -61,6 +71,7 @@ interface IProductUpdateRequest {
 
 export const RESPONSE_TEMPLATE: IProductItem = {
     id: "507c7f79bcf86cd7994f6c0e",
+    position: 0,
     active: true,
     contents: {
         "RU": {
@@ -122,12 +133,63 @@ export class ProductsController extends Controller {
         data: [RESPONSE_TEMPLATE],
     })
     public async getAll(@Request() request: IAuthRequest): Promise<IProductsResponse> {
+        const client = getClientId(request);
         try {
-            const items = await findAllWithFilter(ProductModel.find({ client: getClientId(request) }), request);
-            const ref = await getRef(getClientId(request), RefTypes.PRODUCTS);
+            const items = await findAllWithFilter(ProductModel.find({ client }), request);
+            const ref = await getRef(client, RefTypes.PRODUCTS);
             return {
                 meta: { ref },
                 data: items.map(v => formatProductModel(v)),
+            };
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Caught error. ${err}`,
+                    }
+                ]
+            };
+        }
+    }
+
+    @Put("/positions")
+    @Security("clientAccessToken")
+    @Security("terminalAccessToken")
+    @OperationId("SetPositions")
+    @Example<IProductsPositionsResponse>({
+        meta: META_TEMPLATE,
+        data: [{
+            id: "32r23f232f334f34f43f",
+            position: 0,
+        }],
+    })
+    public async positions(@Body() body: Array<IEntityPosition>, @Request() request: IAuthRequest): Promise<IProductsPositionsResponse> {
+        const client = getClientId(request);
+        try {
+            const items: Array<IProductDocument> = await findAllWithFilter(ProductModel.find({ client }), request);
+
+            const positionsDictionary: { [id: string]: number } = {};
+            body.forEach(pos => {
+                positionsDictionary[pos.id] = pos.position;
+            });
+
+            const promises = new Array<Promise<IProductDocument>>();
+            items.forEach(item => {
+                const pos = positionsDictionary[item.id];
+                if (pos !== undefined) {
+                    item.position = pos;
+                    promises.push(item.save());
+                }
+            });
+
+            await Promise.all(promises);
+
+            const ref = await getRef(client, RefTypes.PRODUCTS);
+            return {
+                meta: { ref },
+                data: items.map(v => formatEntityPositionModel(v)),
             };
         } catch (err) {
             this.setStatus(500);
@@ -183,12 +245,20 @@ export class ProductController extends Controller {
         data: RESPONSE_TEMPLATE,
     })
     public async create(@Body() body: IProductCreateRequest, @Request() request: IAuthRequest): Promise<IProductResponse> {
+        const client = getClientId(request);
+        let positions: Array<IProductDocument>;
+        try {
+            positions = await ProductModel.find({ client });
+        } catch (err) {
+
+        }
+
         let params: IProductItem;
         try {
 
             // создается корневой нод
             const jointNode = new NodeModel({
-                client: getClientId(request),
+                client,
                 active: true,
                 type: NodeTypes.PRODUCT_JOINT,
                 parentId: null,
@@ -196,11 +266,12 @@ export class ProductController extends Controller {
                 children: [],
             });
             const jointRootNode = await jointNode.save();
-            await riseRefVersion(getClientId(request), RefTypes.NODES);
+            await riseRefVersion(client, RefTypes.NODES);
 
             params = {
                 ...body,
-                client: getClientId(request),
+                position: positions.length,
+                client,
                 joint: jointRootNode._id
             } as any;
         } catch (err) {
@@ -218,7 +289,7 @@ export class ProductController extends Controller {
         try {
             const item = new ProductModel(params);
             const savedItem = await item.save();
-            const ref = await riseRefVersion(getClientId(request), RefTypes.PRODUCTS);
+            const ref = await riseRefVersion(client, RefTypes.PRODUCTS);
             return {
                 meta: { ref },
                 data: formatProductModel(savedItem),
@@ -244,9 +315,10 @@ export class ProductController extends Controller {
         data: RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() body: IProductUpdateRequest, @Request() request: IAuthRequest): Promise<IProductResponse> {
+        const client = getClientId(request);
         let defaultLanguage: ILanguageDocument;
         try {
-            defaultLanguage = await LanguageModel.findOne({ client: getClientId(request), isDefault: true });
+            defaultLanguage = await LanguageModel.findOne({ client, isDefault: true });
         } catch (err) {
             this.setStatus(500);
             return {
@@ -263,7 +335,12 @@ export class ProductController extends Controller {
             const item = await ProductModel.findById(id);
 
             let lastContents: IProductContents;
+            let isPositionsEqual = true;
             for (const key in body) {
+                if (key === "position") {
+                    isPositionsEqual = item.position === body[key];
+                }
+
                 if (key === "joint") {
                     continue;
                 }
@@ -315,7 +392,7 @@ export class ProductController extends Controller {
             await Promise.all(promises);
 
             if (isAssetsChanged) {
-                await riseRefVersion(getClientId(request), RefTypes.ASSETS);
+                await riseRefVersion(client, RefTypes.ASSETS);
             }
 
             // выставление ассетов от предыдущего состояния
@@ -333,7 +410,13 @@ export class ProductController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(getClientId(request), RefTypes.PRODUCTS);
+            const positions1 = await ProductModel.find({ client });
+
+            if (!isPositionsEqual) {
+                await sortEntities(positions1);
+            }
+
+            const ref = await riseRefVersion(client, RefTypes.PRODUCTS);
             return {
                 meta: { ref },
                 data: formatProductModel(item),
@@ -358,6 +441,7 @@ export class ProductController extends Controller {
         meta: META_TEMPLATE,
     })
     public async delete(id: string, @Request() request: IAuthRequest): Promise<IProductResponse> {
+        const client = getClientId(request);
         let product: IProductDocument;
         try {
             product = await ProductModel.findByIdAndDelete(id);
@@ -396,7 +480,7 @@ export class ProductController extends Controller {
             await Promise.all(promises);
 
             if (!!isAssetsChanged) {
-                await riseRefVersion(getClientId(request), RefTypes.ASSETS);
+                await riseRefVersion(client, RefTypes.ASSETS);
             }
         } catch (err) {
             this.setStatus(500);
@@ -425,9 +509,24 @@ export class ProductController extends Controller {
         }
 
         try {
-            const ref = await riseRefVersion(getClientId(request), RefTypes.PRODUCTS);
+            const positions = await ProductModel.find({ client });
+            sortEntities(positions);
+        } catch (err) {
+            this.setStatus(500);
             return {
-                meta: { ref }
+                error: [
+                    {
+                        code: 500,
+                        message: `Sort positions error. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        try {
+            const ref = await riseRefVersion(client, RefTypes.PRODUCTS);
+            return {
+                meta: { ref },
             };
         } catch (err) {
             this.setStatus(500);
