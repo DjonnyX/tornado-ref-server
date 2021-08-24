@@ -315,8 +315,9 @@ export class SelectorController extends Controller {
             };
         }
 
+        let item: ISelectorDocument;
         try {
-            const item = await SelectorModel.findById(id);
+            item = await SelectorModel.findById(id);
 
             let lastContents: ISelectorContents;
             let isPositionsEqual = true;
@@ -394,7 +395,7 @@ export class SelectorController extends Controller {
 
             await item.save();
 
-            const selectors1 = await SelectorModel.find({ client });
+            const selectors1 = await SelectorModel.find({ client, type: item.type });
 
             if (!isPositionsEqual) {
                 await sortEntities(selectors1);
@@ -493,7 +494,7 @@ export class SelectorController extends Controller {
         }
 
         try {
-            const positions = await SelectorModel.find({ client });
+            const positions = await SelectorModel.find({ client, type: selector.type });
             sortEntities(positions);
         } catch (err) {
             this.setStatus(500);

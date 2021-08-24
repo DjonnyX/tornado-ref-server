@@ -10,7 +10,7 @@ interface ISystemTagDocument extends Document {
 
 const SystemTagSchema = new Schema({
     client: { type: String, required: true, index: { unique: false } },
-    position: { type: Number, require: true },
+    position: { type: Number, require: true, default: 0 },
     name: { type: String, required: false },
     extra: { type: Schema.Types.Mixed, required: false },
 });
