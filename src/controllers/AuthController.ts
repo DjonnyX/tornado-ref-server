@@ -92,7 +92,8 @@ interface GetCaptchaResponse {
 interface SignupResponse {
     meta?: {};
     data?: {
-        clientId: string;
+        client: string;
+        owner: string;
     };
     error?: Array<{
         code: number;
@@ -150,7 +151,8 @@ export class SignupController extends Controller {
     @Example<SignupResponse>({
         meta: {},
         data: {
-            clientId: "123456",
+            client: "123456",
+            owner: "123456",
         }
     })
     public async signup(@Body() body: ISignupParams): Promise<SignupResponse> {
@@ -160,7 +162,7 @@ export class SignupController extends Controller {
             res = await licServerApiService.signup<SignupResponse>(body);
 
             // Инициализация БД под клиента
-            await initRefs(res.data.clientId);
+            await initRefs(res.data.client);
         } catch (err) {
             this.setStatus(500);
             return {

@@ -67,8 +67,8 @@ const checkApiKey = async (apikey: string, request: express.Request) => {
     };
 
     (request as IAuthRequest).account = {
-      id: licenseResponse.data.clientId,
-      owner: licenseResponse.data.clientId,
+      id: licenseResponse.data.client,
+      owner: licenseResponse.data.client,
     };
 
     (request as IAuthRequest).token = apikey;

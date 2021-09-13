@@ -12,7 +12,7 @@ interface ILicenseInfo extends ILicense { }
 interface ILicenseAccountInfo extends ILicenseAccount { }
 
 interface ICreateLicenseParams {
-    clientId: string;
+    client: string;
     dateStart: Date;
     dateEnd: Date;
     state: LicenseStates;
@@ -21,7 +21,7 @@ interface ICreateLicenseParams {
 }
 
 interface IUpdateLicenseParams {
-    clientId?: string;
+    client?: string;
     dateStart?: Date;
     dateEnd?: Date;
     state?: LicenseStates;
@@ -88,7 +88,7 @@ interface ILicenseInfoMeta {
 
 const LICENSE_RESPONSE_TEMPLATE: ILicenseInfo = {
     id: "507c7f79bcf86cd7994f6c0e",
-    clientId: "507c7f79bcf86cd7994f6c0e",
+    client: "507c7f79bcf86cd7994f6c0e",
     dateStart: new Date(),
     dateEnd: new Date(),
     state: LicenseStates.ACTIVE,
@@ -110,7 +110,7 @@ const LICENSE_RESPONSE_TEMPLATE: ILicenseInfo = {
 
 const LICENSE_ACCOUNT_RESPONSE_TEMPLATE: ILicenseAccountInfo = {
     id: "507c7f79bcf86cd7994f6c0e",
-    clientId: "507c7f79bcf86cd7994f6c0e",
+    client: "507c7f79bcf86cd7994f6c0e",
     terminalId: "507c7f79bcf86cd7994f6c0e",
     dateStart: new Date(),
     dateEnd: new Date(),
@@ -155,7 +155,7 @@ export class LicensesForClientController extends Controller {
         if (!response.error) {
             let terminals: Array<ITerminalDocument>;
             try {
-                terminals = await TerminalModel.find({ clientId: getClientId(request) });
+                terminals = await TerminalModel.find({ client: getClientId(request) });
             } catch (err) {
                 this.setStatus(500);
                 return {
@@ -199,7 +199,7 @@ export class LicenseForClientController extends Controller {
         if (!response.error) {
             let terminal: ITerminalDocument;
             try {
-                terminal = await TerminalModel.findOne({ clientId: getClientId(request), licenseId: response.data.id });
+                terminal = await TerminalModel.findOne({ client: getClientId(request), licenseId: response.data.id });
             } catch (err) {
                 this.setStatus(500);
                 return {
