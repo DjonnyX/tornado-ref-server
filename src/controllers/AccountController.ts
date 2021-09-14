@@ -3,7 +3,7 @@ import { licServerApiService } from "../services";
 import { IAuthRequest } from "../interfaces";
 import { IAccount, IRef, RefTypes } from "@djonnyx/tornado-types";
 
-interface IAccountInfo extends IAccount { }
+interface IAccountModel extends IAccount { }
 
 interface IUpdateAccountParams {
     firstName?: string;
@@ -12,8 +12,8 @@ interface IUpdateAccountParams {
 }
 
 interface AccountsGetResponse {
-    meta?: IAccountInfoMeta;
-    data?: Array<IAccountInfo>;
+    meta?: IAccountModelMeta;
+    data?: Array<IAccountModel>;
     error?: Array<{
         code: number;
         message: string;
@@ -21,26 +21,27 @@ interface AccountsGetResponse {
 }
 
 interface AccountResponse {
-    meta?: IAccountInfoMeta;
-    data?: IAccountInfo;
+    meta?: IAccountModelMeta;
+    data?: IAccountModel;
     error?: Array<{
         code: number;
         message: string;
     }>;
 }
 
-interface IAccountInfoMeta {
+interface IAccountModelMeta {
     ref: IRef;
 }
 
-const APPLICATION_RESPONSE_TEMPLATE: IAccountInfo = {
+const APPLICATION_RESPONSE_TEMPLATE: IAccountModel = {
     id: "507c7f79bcf86cd7994f6c0e",
+    owner: "507c7f79bcf86cd7994f6c1t",
     firstName: "Bill",
     lastName: "Gates",
     email: "test@test.com",
 };
 
-const META_TEMPLATE: IAccountInfoMeta = {
+const META_TEMPLATE: IAccountModelMeta = {
     ref: {
         name: RefTypes.ACCOUNTS,
         version: 1,
@@ -96,16 +97,16 @@ export class AccountController extends Controller {
         data: APPLICATION_RESPONSE_TEMPLATE,
     })
     public async updateAccount(id: string, @Body() body: IUpdateAccountParams, @Request() request: IAuthRequest): Promise<AccountResponse> {
-        return await licServerApiService.updateAccount(id);
+        return await licServerApiService.updateAccount(id, body);
     }
 
-    /*@Delete("{id}")
+    @Delete("{id}")
     @Security("clientAccessToken")
     @OperationId("Delete")
     @Example<AccountResponse>({
         meta: META_TEMPLATE,
     })
     public async deleteAccount(id: string, @Request() request: IAuthRequest): Promise<AccountResponse> {
-        return await licServerApiService.deleteAccount(id, request.token);
-    }*/
+        return await licServerApiService.deleteAccount(id);
+    }
 }

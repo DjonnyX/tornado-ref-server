@@ -1,9 +1,7 @@
-import { Controller, Route, Post, Tags, Example, Request, Body, Get, Put, Delete, OperationId, Security, Query } from "tsoa";
-import { LicenseStates } from "@djonnyx/tornado-types/dist/interfaces/raw/LicenseStates";
-import { LicenseStatuses } from "@djonnyx/tornado-types/dist/interfaces/raw/LicenseStatuses";
+import { Controller, Route, Post, Tags, Example, Request, Body, Get, Put, Delete, OperationId, Security } from "tsoa";
 import { IAuthRequest } from "../interfaces";
 import { licServerApiService } from "../services";
-import { ILicense, RefTypes, ILicenseAccount, TerminalTypes, IRef } from "@djonnyx/tornado-types";
+import { ILicense, RefTypes, ILicenseAccount, TerminalTypes, IRef, LicenseStates } from "@djonnyx/tornado-types";
 import { ITerminalDocument, TerminalModel } from "../models";
 import { getClientId } from "../utils/account";
 
@@ -16,7 +14,6 @@ interface ICreateLicenseParams {
     dateStart: Date;
     dateEnd: Date;
     state: LicenseStates;
-    status: LicenseStatuses;
     licTypeId: string;
 }
 
@@ -25,7 +22,6 @@ interface IUpdateLicenseParams {
     dateStart?: Date;
     dateEnd?: Date;
     state?: LicenseStates;
-    status?: LicenseStatuses;
     licTypeId?: string;
 }
 
@@ -92,7 +88,6 @@ const LICENSE_RESPONSE_TEMPLATE: ILicenseInfo = {
     dateStart: new Date(),
     dateEnd: new Date(),
     state: LicenseStates.ACTIVE,
-    status: LicenseStatuses.NEW,
     key: "0000-1111-2222-3333",
     md5key: "1e0328629e0b73cfcb5cca8bdefb0b76",
     imei: "3425t42t543yt45t",
@@ -115,7 +110,6 @@ const LICENSE_ACCOUNT_RESPONSE_TEMPLATE: ILicenseAccountInfo = {
     dateStart: new Date(),
     dateEnd: new Date(),
     state: LicenseStates.ACTIVE,
-    status: LicenseStatuses.NEW,
     key: "0000-1111-2222-3333",
     md5key: "1e0328629e0b73cfcb5cca8bdefb0b76",
     imei: "3425t42t543yt45t",

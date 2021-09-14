@@ -70,7 +70,7 @@ const APPLICATION_RESPONSE_TEMPLATE: IIntegrationInfo = {
         code: 1,
         version: "1.0.23",
     },
-    state: IntegrationStates.ACTIVE,
+    state: IntegrationStates.WORK,
     lastUpdate: new Date(),
 };
 
