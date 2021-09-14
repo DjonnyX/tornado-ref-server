@@ -142,7 +142,7 @@ export class Deviceontroller extends Controller {
         } catch (err) { }
 
         if (!!existsTerminal) {
-            existsTerminal.client = setDeviceResponse.data.clientId;
+            existsTerminal.client = setDeviceResponse.data.client;
             existsTerminal.status = TerminalStatusTypes.ONLINE;
             existsTerminal.type = request.terminal.type;
             existsTerminal.name = body.name;
@@ -151,7 +151,7 @@ export class Deviceontroller extends Controller {
 
             try {
                 const savedItem = await existsTerminal.save();
-                const ref = await riseRefVersion(setDeviceResponse.data.clientId, RefTypes.TERMINALS);
+                const ref = await riseRefVersion(setDeviceResponse.data.client, RefTypes.TERMINALS);
                 return {
                     meta: { ref },
                     data: formatTerminalModel(savedItem),
@@ -171,7 +171,7 @@ export class Deviceontroller extends Controller {
 
         let theme: IAppThemeDocument;
         try {
-            theme = await AppThemeModel.findOne({ client: setDeviceResponse.data.clientId, name: 'light' });
+            theme = await AppThemeModel.findOne({ client: setDeviceResponse.data.client, name: 'light' });
         } catch (err) {
             this.setStatus(500);
             return {
@@ -186,7 +186,7 @@ export class Deviceontroller extends Controller {
 
         try {
             const item = new TerminalModel({
-                client: setDeviceResponse.data.clientId,
+                client: setDeviceResponse.data.client,
                 status: TerminalStatusTypes.ONLINE,
                 type: request.terminal.type,
                 name: body.name,
@@ -197,7 +197,7 @@ export class Deviceontroller extends Controller {
                 extra: {},
             });
             const savedItem = await item.save();
-            const ref = await riseRefVersion(setDeviceResponse.data.clientId, RefTypes.TERMINALS);
+            const ref = await riseRefVersion(setDeviceResponse.data.client, RefTypes.TERMINALS);
             return {
                 meta: { ref },
                 data: formatTerminalModel(savedItem),

@@ -3,11 +3,11 @@ import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, 
 import { getRef, riseRefVersion } from "../db/refs";
 import { deleteNodesChain } from "../utils/node";
 import { formatSelectorModel } from "../utils/selector";
-import { normalizeContents, getDeletedImagesFromDifferense, getEntityAssets } from "../utils/entity";
+import { normalizeContents, getDeletedImagesFromDifferense, getEntityAssets, sortEntities, formatEntityPositionModel } from "../utils/entity";
 import { AssetModel } from "../models/Asset";
 import { deleteAsset } from "./AssetsController";
 import { IAuthRequest } from "../interfaces";
-import { ISelectorContents, NodeTypes, SelectorTypes, RefTypes, IRef, ISelector } from "@djonnyx/tornado-types";
+import { ISelectorContents, NodeTypes, SelectorTypes, RefTypes, IRef, ISelector, IEntityPosition } from "@djonnyx/tornado-types";
 import { findAllWithFilter } from "../utils/requestOptions";
 import { getClientId } from "../utils/account";
 
@@ -15,6 +15,15 @@ export interface ISelectorItem extends ISelector { }
 
 interface ISelectorsMeta {
     ref: IRef;
+}
+
+interface ISelectorsPositionsResponse {
+    meta?: ISelectorsMeta;
+    data?: Array<IEntityPosition>;
+    error?: Array<{
+        code: number;
+        message: string;
+    }>;
 }
 
 interface ISelectorsResponse {
@@ -45,14 +54,16 @@ interface ISelectorCreateRequest {
 
 interface ISelectorUpdateRequest {
     active?: boolean;
+    position?: number;
     type?: SelectorTypes;
-    systemTag: string;
+    systemTag?: string;
     contents?: ISelectorContents | any;
     extra?: { [key: string]: any } | null;
 }
 
 export const RESPONSE_TEMPLATE: ISelectorItem = {
     id: "507c7f79bcf86cd7994f6c0e",
+    position: 0,
     active: true,
     type: SelectorTypes.MENU_CATEGORY,
     systemTag: "17h97f79bcf86cd7994f0i9e",
@@ -92,12 +103,63 @@ export class SelectorsController extends Controller {
         data: [RESPONSE_TEMPLATE],
     })
     public async getAll(@Request() request: IAuthRequest): Promise<ISelectorsResponse> {
+        const client = getClientId(request);
         try {
-            const items = await findAllWithFilter(SelectorModel.find({ client: getClientId(request) }), request);
-            const ref = await getRef(getClientId(request), RefTypes.SELECTORS);
+            const items = await findAllWithFilter(SelectorModel.find({ client }), request);
+            const ref = await getRef(client, RefTypes.SELECTORS);
             return {
                 meta: { ref },
                 data: items.map(v => formatSelectorModel(v)),
+            };
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Caught error. ${err}`,
+                    }
+                ]
+            };
+        }
+    }
+
+    @Put("/positions")
+    @Security("clientAccessToken")
+    @Security("terminalAccessToken")
+    @OperationId("SetPositions")
+    @Example<ISelectorsPositionsResponse>({
+        meta: META_TEMPLATE,
+        data: [{
+            id: "32r23f232f334f34f43f",
+            position: 0,
+        }],
+    })
+    public async positions(@Body() body: Array<IEntityPosition>, @Request() request: IAuthRequest): Promise<ISelectorsPositionsResponse> {
+        const client = getClientId(request);
+        try {
+            const items: Array<ISelectorDocument> = await findAllWithFilter(SelectorModel.find({ client }), request);
+
+            const positionsDictionary: { [id: string]: number } = {};
+            body.forEach(pos => {
+                positionsDictionary[pos.id] = pos.position;
+            });
+
+            const promises = new Array<Promise<ISelectorDocument>>();
+            items.forEach(item => {
+                const pos = positionsDictionary[item.id];
+                if (pos !== undefined) {
+                    item.position = pos;
+                    promises.push(item.save());
+                }
+            });
+
+            await Promise.all(promises);
+
+            const ref = await getRef(client, RefTypes.SELECTORS);
+            return {
+                meta: { ref },
+                data: items.map(v => formatEntityPositionModel(v)),
             };
         } catch (err) {
             this.setStatus(500);
@@ -153,6 +215,12 @@ export class SelectorController extends Controller {
         data: RESPONSE_TEMPLATE,
     })
     public async create(@Body() body: ISelectorCreateRequest, @Request() request: IAuthRequest): Promise<ISelectorResponse> {
+        const client = getClientId(request);
+        let selectors: Array<ISelectorDocument>;
+        try {
+            selectors = await SelectorModel.find({ client });
+        } catch (err) { }
+
         let params: ISelectorItem;
 
         let jointNode: INodeDocument;
@@ -161,7 +229,7 @@ export class SelectorController extends Controller {
             try {
                 // создается корневой нод
                 jointNode = new NodeModel({
-                    client: getClientId(request),
+                    client,
                     active: true,
                     type: NodeTypes.SELECTOR_JOINT,
                     parentId: null,
@@ -172,8 +240,9 @@ export class SelectorController extends Controller {
 
                 params = {
                     ...body,
+                    position: selectors.length,
                     joint: savedJointNode._id,
-                    client: getClientId(request),
+                    client,
                 } as any;
             } catch (err) {
                 this.setStatus(500);
@@ -189,7 +258,8 @@ export class SelectorController extends Controller {
         } else {
             params = {
                 ...body,
-                client: getClientId(request),
+                position: selectors.length,
+                client,
             } as any;
         }
 
@@ -200,10 +270,10 @@ export class SelectorController extends Controller {
             if (!!jointNode) {
                 jointNode.contentId = item.id;
                 await jointNode.save();
-                await riseRefVersion(getClientId(request), RefTypes.NODES);
+                await riseRefVersion(client, RefTypes.NODES);
             }
 
-            const ref = await riseRefVersion(getClientId(request), RefTypes.SELECTORS);
+            const ref = await riseRefVersion(client, RefTypes.SELECTORS);
             return {
                 meta: { ref },
                 data: formatSelectorModel(savedItem),
@@ -229,9 +299,10 @@ export class SelectorController extends Controller {
         data: RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() body: ISelectorUpdateRequest, @Request() request: IAuthRequest): Promise<ISelectorResponse> {
+        const client = getClientId(request);
         let defaultLanguage: ILanguageDocument;
         try {
-            defaultLanguage = await LanguageModel.findOne({ client: getClientId(request), isDefault: true });
+            defaultLanguage = await LanguageModel.findOne({ client, isDefault: true });
         } catch (err) {
             this.setStatus(500);
             return {
@@ -244,11 +315,17 @@ export class SelectorController extends Controller {
             };
         }
 
+        let item: ISelectorDocument;
         try {
-            const item = await SelectorModel.findById(id);
+            item = await SelectorModel.findById(id);
 
             let lastContents: ISelectorContents;
+            let isPositionsEqual = true;
             for (const key in body) {
+                if (key === "position") {
+                    isPositionsEqual = item.position === body[key];
+                }
+
                 if (key === "joint") {
                     continue;
                 }
@@ -300,7 +377,7 @@ export class SelectorController extends Controller {
             await Promise.all(promises);
 
             if (isAssetsChanged) {
-                await riseRefVersion(getClientId(request), RefTypes.ASSETS);
+                await riseRefVersion(client, RefTypes.ASSETS);
             }
 
             // выставление ассетов от предыдущего состояния
@@ -318,7 +395,13 @@ export class SelectorController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(getClientId(request), RefTypes.SELECTORS);
+            const selectors1 = await SelectorModel.find({ client, type: item.type });
+
+            if (!isPositionsEqual) {
+                await sortEntities(selectors1);
+            }
+
+            const ref = await riseRefVersion(client, RefTypes.SELECTORS);
             return {
                 meta: { ref },
                 data: formatSelectorModel(item),
@@ -343,6 +426,7 @@ export class SelectorController extends Controller {
         meta: META_TEMPLATE,
     })
     public async delete(id: string, @Request() request: IAuthRequest): Promise<ISelectorResponse> {
+        const client = getClientId(request);
         let selector: ISelectorDocument;
         try {
             selector = await SelectorModel.findByIdAndDelete(id);
@@ -381,7 +465,7 @@ export class SelectorController extends Controller {
             await Promise.all(promises);
 
             if (!!isAssetsChanged) {
-                await riseRefVersion(getClientId(request), RefTypes.ASSETS);
+                await riseRefVersion(client, RefTypes.ASSETS);
             }
         } catch (err) {
             this.setStatus(500);
@@ -410,7 +494,22 @@ export class SelectorController extends Controller {
         }
 
         try {
-            const ref = await riseRefVersion(getClientId(request), RefTypes.SELECTORS);
+            const positions = await SelectorModel.find({ client, type: selector.type });
+            sortEntities(positions);
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Sort positions error. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        try {
+            const ref = await riseRefVersion(client, RefTypes.SELECTORS);
             return {
                 meta: { ref },
             };

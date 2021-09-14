@@ -3,6 +3,7 @@ import { ISelectorDocument } from "@models";
 
 export const formatSelectorModel = (model: ISelectorDocument): ISelector => ({
     id: model._id,
+    position: model.position,
     active: model.active,
     type: model.type,
     systemTag: model.systemTag,

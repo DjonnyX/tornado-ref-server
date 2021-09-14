@@ -1,9 +1,7 @@
-import { Controller, Route, Post, Tags, Example, Request, Body, Get, Put, Delete, OperationId, Security, Query } from "tsoa";
-import { LicenseStates } from "@djonnyx/tornado-types/dist/interfaces/raw/LicenseStates";
-import { LicenseStatuses } from "@djonnyx/tornado-types/dist/interfaces/raw/LicenseStatuses";
+import { Controller, Route, Post, Tags, Example, Request, Body, Get, Put, Delete, OperationId, Security } from "tsoa";
 import { IAuthRequest } from "../interfaces";
 import { licServerApiService } from "../services";
-import { ILicense, RefTypes, ILicenseAccount, TerminalTypes, IRef } from "@djonnyx/tornado-types";
+import { ILicense, RefTypes, ILicenseAccount, TerminalTypes, IRef, LicenseStates } from "@djonnyx/tornado-types";
 import { ITerminalDocument, TerminalModel } from "../models";
 import { getClientId } from "../utils/account";
 
@@ -12,20 +10,18 @@ interface ILicenseInfo extends ILicense { }
 interface ILicenseAccountInfo extends ILicenseAccount { }
 
 interface ICreateLicenseParams {
-    clientId: string;
+    client: string;
     dateStart: Date;
     dateEnd: Date;
     state: LicenseStates;
-    status: LicenseStatuses;
     licTypeId: string;
 }
 
 interface IUpdateLicenseParams {
-    clientId?: string;
+    client?: string;
     dateStart?: Date;
     dateEnd?: Date;
     state?: LicenseStates;
-    status?: LicenseStatuses;
     licTypeId?: string;
 }
 
@@ -88,11 +84,10 @@ interface ILicenseInfoMeta {
 
 const LICENSE_RESPONSE_TEMPLATE: ILicenseInfo = {
     id: "507c7f79bcf86cd7994f6c0e",
-    clientId: "507c7f79bcf86cd7994f6c0e",
+    client: "507c7f79bcf86cd7994f6c0e",
     dateStart: new Date(),
     dateEnd: new Date(),
     state: LicenseStates.ACTIVE,
-    status: LicenseStatuses.NEW,
     key: "0000-1111-2222-3333",
     md5key: "1e0328629e0b73cfcb5cca8bdefb0b76",
     imei: "3425t42t543yt45t",
@@ -110,12 +105,11 @@ const LICENSE_RESPONSE_TEMPLATE: ILicenseInfo = {
 
 const LICENSE_ACCOUNT_RESPONSE_TEMPLATE: ILicenseAccountInfo = {
     id: "507c7f79bcf86cd7994f6c0e",
-    clientId: "507c7f79bcf86cd7994f6c0e",
+    client: "507c7f79bcf86cd7994f6c0e",
     terminalId: "507c7f79bcf86cd7994f6c0e",
     dateStart: new Date(),
     dateEnd: new Date(),
     state: LicenseStates.ACTIVE,
-    status: LicenseStatuses.NEW,
     key: "0000-1111-2222-3333",
     md5key: "1e0328629e0b73cfcb5cca8bdefb0b76",
     imei: "3425t42t543yt45t",
@@ -155,7 +149,7 @@ export class LicensesForClientController extends Controller {
         if (!response.error) {
             let terminals: Array<ITerminalDocument>;
             try {
-                terminals = await TerminalModel.find({ clientId: getClientId(request) });
+                terminals = await TerminalModel.find({ client: getClientId(request) });
             } catch (err) {
                 this.setStatus(500);
                 return {
@@ -199,7 +193,7 @@ export class LicenseForClientController extends Controller {
         if (!response.error) {
             let terminal: ITerminalDocument;
             try {
-                terminal = await TerminalModel.findOne({ clientId: getClientId(request), licenseId: response.data.id });
+                terminal = await TerminalModel.findOne({ client: getClientId(request), licenseId: response.data.id });
             } catch (err) {
                 this.setStatus(500);
                 return {

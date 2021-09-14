@@ -1,4 +1,4 @@
-import { CurrencyModel, ICurrencyDocument } from "../models/index";
+import { CurrencyModel, ICurrencyDocument, ProductModel } from "../models/index";
 import { Controller, Route, Get, Post, Put, Delete, Tags, OperationId, Example, Body, Security, Request } from "tsoa";
 import { getRef, riseRefVersion } from "../db/refs";
 import { formatCurrencyModel } from "../utils/currency";
@@ -310,7 +310,7 @@ export class CurrencyController extends Controller {
         meta: META_TEMPLATE,
     })
     public async delete(id: string, @Request() request: IAuthRequest): Promise<CurrencyResponse> {
-        let currencies: Array<ICurrency>;
+        let currencies: Array<ICurrencyDocument>;
         try {
             currencies = await CurrencyModel.find({ client: getClientId(request) });
         } catch (err) { }
@@ -327,12 +327,11 @@ export class CurrencyController extends Controller {
             };
         }
 
+        let ref: IRef;
+        let currency: ICurrencyDocument;
         try {
-            await CurrencyModel.findOneAndDelete({ _id: id });
-            const ref = await riseRefVersion(getClientId(request), RefTypes.CURRENCIES);
-            return {
-                meta: { ref },
-            };
+            currency = await CurrencyModel.findOneAndDelete({ _id: id });
+            ref = await riseRefVersion(getClientId(request), RefTypes.CURRENCIES);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -344,5 +343,43 @@ export class CurrencyController extends Controller {
                 ]
             };
         }
+
+        try {
+            const promises = new Array<Promise<void>>();
+            const products = await ProductModel.find({ client: getClientId(request) });
+            products.forEach(product => {
+                const deletedProductPrice = product.prices?.find(price => price.currency == currency.id);
+                if (!!deletedProductPrice) {
+                    promises.push(new Promise((resolve, reject) => {
+                        const newPrices = product.prices;
+                        const cIndex = newPrices.indexOf(deletedProductPrice);
+                        if (cIndex > -1) {
+                            newPrices.splice(cIndex, 1);
+                        }
+                        product.prices = newPrices;
+                        product.save().then(p => {
+                            resolve();
+                        }).catch(err => {
+                            reject(err);
+                        });
+                    }));
+                }
+            });
+            await Promise.all(promises);
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Caught error. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        return {
+            meta: { ref },
+        };
     }
 }

@@ -1,7 +1,7 @@
 import { AdTypes, AssetExtensions, NodeTypes, RefTypes, TerminalTypes } from "@djonnyx/tornado-types";
 import {
     RefModel, NodeModel, TranslationModel, LanguageModel, CurrencyModel, AppThemeModel, AdModel, OrderTypeModel,
-    ILanguageDocument, IOrderTypeDocument, AssetModel
+    ILanguageDocument, IOrderTypeDocument, AssetModel, IProductDocument, ProductModel, ISystemTagDocument, SystemTagModel
 } from "../models";
 import { mergeTranslation, getTemplateLangs } from "../utils/translation";
 import {
@@ -102,6 +102,48 @@ const createRootNode = async (client: string) => {
         await rootMenuNode.save();
     }
 };
+
+const deleteUnnecessaryTagsFromProducts = async (client: string) => {
+    let products: Array<IProductDocument>;
+    try {
+        products = await ProductModel.find({ client });
+    } catch (err) {
+        console.warn("Get products error.")
+    }
+
+    let systemTags: Array<ISystemTagDocument>;
+    let systemTagsDictionary = {};
+    try {
+        systemTags = await SystemTagModel.find({ client });
+        systemTags?.forEach(st => {
+            systemTagsDictionary[String(st.id)] = st;
+        });
+    } catch (err) {
+        console.warn("Get systemTags error.")
+    }
+
+    const promises = new Array<Promise<IProductDocument>>();
+    products?.forEach(p => {
+        if (!!p.systemTag && !systemTagsDictionary[p.systemTag]) {
+            p.systemTag = undefined;
+            promises.push(new Promise((resolve, reject) => {
+                p.save().then(p => {
+                    resolve(p);
+                }).catch(err => {
+                    reject(err);
+                })
+            }));
+        }
+    });
+
+    if (promises.length > 0) {
+        try {
+            await Promise.all(promises);
+        } catch (err) {
+            console.warn(`Fix systemTag for product fail. Something went wrong. ${err}`);
+        }
+    }
+}
 
 const mergeDefaultTheme = async (client: string, templatePath: string, type: TerminalTypes) => {
     const template = await readFileJSONAsync(templatePath);
@@ -469,6 +511,9 @@ export const initRefs = async (client: string): Promise<void> => {
 
     // default currency
     await createDefaultCurrencyFromTemplate(client);
+
+    // bug fix
+    await deleteUnnecessaryTagsFromProducts(client);
 
     console.info(`Refs for client "${client}" are initialized.`);
 };

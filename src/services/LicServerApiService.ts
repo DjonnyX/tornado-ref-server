@@ -161,9 +161,21 @@ class LicServerApiService {
         );
     }
 
-    public async updateAccount<T = any>(id: string): Promise<T> {
+    public async updateAccount<T = any>(id: string, body: any): Promise<T> {
         return await makeRequest<T>(
             got.put(`${config.LIC_SERVER_HOST}/${BASE_URL}clients/${id}`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": this.getToken(),
+                },
+                body,
+            }),
+        );
+    }
+
+    public async deleteAccount<T = any>(id: string): Promise<T> {
+        return await makeRequest<T>(
+            got.delete(`${config.LIC_SERVER_HOST}/${BASE_URL}clients/${id}`, {
                 headers: {
                     "content-type": "application/json",
                     "authorization": this.getToken(),

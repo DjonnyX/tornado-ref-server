@@ -1,5 +1,10 @@
-import { IAdContents } from "@djonnyx/tornado-types";
+import { IAdContents, IEntity, IEntityPosition } from "@djonnyx/tornado-types";
 import { IVisualEntityContents, IVisualEntityContentsItem, IVisualEntity } from "../models/interfaces";
+
+export interface ISortedEntity extends IEntity {
+    position: number;
+    save: <T = any>() => Promise<T>;
+}
 
 export const normalizeContents = (contents: IVisualEntityContents, defaultLang: string) => {
     if (!contents) {
@@ -140,3 +145,26 @@ export const contentsToDefault = (contents: IAdContents, langCode: string) => {
 
     return result;
 }
+
+export const sortEntities = (entities: Array<ISortedEntity>) => {
+    entities.sort((a: ISortedEntity, b: ISortedEntity) => (a?.position || 0) - (b.position || 0));
+
+    const promises = new Array<Promise<ISortedEntity>>();
+    entities.forEach((entity, index) => {
+        entity.position = index;
+        promises.push(new Promise((resolve, reject) => {
+            entity.save().then(e => {
+                resolve(e);
+            }).catch(err => {
+                reject(err);
+            });
+        }));
+    });
+
+    return Promise.all(promises);
+}
+
+export const formatEntityPositionModel = (model: any): IEntityPosition => ({
+    id: model._id,
+    position: model.position,
+});
