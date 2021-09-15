@@ -458,6 +458,20 @@ class LicServerApiService {
         );
     }
 
+    public async getIntegrationServerInfo<T = any>(data: {host: string}, token: string): Promise<T> {
+        return await makeRequest<T>(
+            got.post(`${config.LIC_SERVER_HOST}/${BASE_URL}integration/server-info`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": this.getToken({
+                        clientToken: token,
+                    }),
+                },
+                body: JSON.stringify(data),
+            }),
+        );
+    }
+
     public async getIntegration<T = any>(id: string, token: string): Promise<T> {
         return await makeRequest<T>(
             got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}integration/${id}`, {
