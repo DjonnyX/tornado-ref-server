@@ -1,37 +1,18 @@
 import { Controller, Route, Post, Tags, Example, Request, Body, Get, Put, Delete, OperationId, Security } from "tsoa";
 import { licServerApiService } from "../services";
 import { IAuthRequest } from "../interfaces";
-import { IntegrationStates, IRef, IVersion, RefTypes, UserRights } from "@djonnyx/tornado-types";
+import { IIntegration, IntegrationStates, IRef, RefTypes, UserRights } from "@djonnyx/tornado-types";
 
-interface IIntegrationInfo {
-    id: string;
-    host: string;
-    name: string;
-    description: string;
-    rights: Array<UserRights>;
-    version: IVersion;
-    state: IntegrationStates;
-    lastUpdate: Date;
-}
+interface IIntegrationInfo extends IIntegration { }
 
 interface ICreateIntegrationParams {
     host: string;
-    name: string;
-    description?: string;
-    rights: Array<UserRights>;
-    version: IVersion;
-    state: IntegrationStates;
-    lastUpdate?: Date;
+    active: boolean;
 }
 
 interface IUpdateIntegrationParams {
     host?: string;
-    name?: string;
-    description?: string;
-    rights?: Array<UserRights>;
-    version?: IVersion;
-    state?: IntegrationStates;
-    lastUpdate?: Date;
+    active?: boolean;
 }
 
 interface IntegrationsGetResponse {
@@ -60,7 +41,6 @@ const APPLICATION_RESPONSE_TEMPLATE: IIntegrationInfo = {
     id: "507c7f79bcf86cd7994f6c0e",
     host: "http://127.0.0.1:8089/",
     name: "Эвотор",
-    description: "Интеграция с товароучетной системой \"Эвотор\"",
     rights: [
         UserRights.CREATE_PRODUCT,
         UserRights.DELETE_PRODUCT,
@@ -71,7 +51,7 @@ const APPLICATION_RESPONSE_TEMPLATE: IIntegrationInfo = {
         version: "1.0.23",
     },
     state: IntegrationStates.WORK,
-    lastUpdate: new Date(),
+    active: true,
 };
 
 const META_TEMPLATE: IIntegrationInfoMeta = {
