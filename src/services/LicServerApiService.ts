@@ -37,6 +37,22 @@ interface IGetClientRestorePasswordParams {
     language: string;
 }
 
+interface IGetClientCheckRestoreEmailParams {
+    restoreEmailCode: string;
+}
+
+interface IPostClientRestoreEmailParams {
+    restoreEmailCode: string;
+    newEmail: string;
+}
+
+interface IGetClientRestoreEmailParams {
+    email: string;
+    captchaId: string;
+    captchaVal: string;
+    language: string;
+}
+
 export interface ICheckLicenseResponse {
     meta?: any;
     data?: ILicense;
@@ -99,6 +115,42 @@ class LicServerApiService {
                     "authorization": this.getToken(options),
                 },
                 body: JSON.stringify(params),
+            }),
+        );
+    }
+
+    public async postClientRestoreEmail<T = any>(params: IPostClientRestoreEmailParams, options?: IRequestOptions): Promise<T> {
+        return await makeRequest<T>(
+            got.post(`${config.LIC_SERVER_HOST}/${BASE_URL}account/restoreEmail`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": this.getToken(options),
+                },
+                body: JSON.stringify(params),
+            }),
+        );
+    }
+
+    public async getClientRestoreEmail<T = any>(params: IGetClientRestoreEmailParams, options?: IRequestOptions): Promise<T> {
+        return await makeRequest<T>(
+            got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}account/restoreEmail`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": this.getToken(options),
+                },
+                query: params,
+            }),
+        );
+    }
+
+    public async clientCheckRestoreEmailCode<T = any>(params: IGetClientCheckRestoreEmailParams, options?: IRequestOptions): Promise<T> {
+        return await makeRequest<T>(
+            got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}account/checkRestoreEmailCode`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": this.getToken(options),
+                },
+                query: params,
             }),
         );
     }
@@ -168,7 +220,7 @@ class LicServerApiService {
                     "content-type": "application/json",
                     "authorization": this.getToken(),
                 },
-                body,
+                body: JSON.stringify(body),
             }),
         );
     }
@@ -454,6 +506,20 @@ class LicServerApiService {
                         clientToken: token,
                     }),
                 }
+            }),
+        );
+    }
+
+    public async getIntegrationServerInfo<T = any>(data: {host: string}, token: string): Promise<T> {
+        return await makeRequest<T>(
+            got.post(`${config.LIC_SERVER_HOST}/${BASE_URL}integration/server-info`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": this.getToken({
+                        clientToken: token,
+                    }),
+                },
+                body: JSON.stringify(data),
             }),
         );
     }

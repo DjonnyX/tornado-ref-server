@@ -1,7 +1,8 @@
-import { Controller, Route, Post, Tags, Example, Request, Body, Get, Put, Delete, OperationId, Security } from "tsoa";
+import { Controller, Route, Post, Tags, Example, Request, Body, Get, Put, Delete, OperationId, Security, Query } from "tsoa";
 import { licServerApiService } from "../services";
 import { IAuthRequest } from "../interfaces";
 import { IAccount, IRef, RefTypes } from "@djonnyx/tornado-types";
+import express = require("express");
 
 interface IAccountModel extends IAccount { }
 
@@ -48,6 +49,90 @@ const META_TEMPLATE: IAccountModelMeta = {
         lastUpdate: new Date(),
     }
 };
+
+interface IResetEmailParams {
+    restoreEmailCode: string;
+    email: string;
+}
+
+interface IForgotEmailParams {
+    email: string;
+    captchaId: string;
+    captchaVal: string;
+}
+
+interface IVerifyResetEmailTokenParams {
+    token: string;
+}
+
+interface ResetEmailResponse {
+    meta?: {};
+    data?: {};
+    error?: Array<{
+        code: number;
+        message: string;
+    }>;
+}
+
+interface ForgotEmailResponse {
+    meta?: {};
+    data?: {};
+    error?: Array<{
+        code: number;
+        message: string;
+    }>;
+}
+
+interface VerifyResetEmailTokenResponse {
+    meta?: {};
+    data?: {};
+    error?: Array<{
+        code: number;
+        message: string;
+    }>;
+}
+
+@Route("/account/change-email")
+@Tags("Account")
+export class ResetEmailController extends Controller {
+    @Post()
+    @Example<ResetEmailResponse>({
+        meta: {},
+        data: {}
+    })
+    public async resetEmail(@Request() request: express.Request, @Body() body: IResetEmailParams): Promise<ResetEmailResponse> {
+        return await licServerApiService.postClientRestoreEmail<ResetEmailResponse>({
+            restoreEmailCode: body.restoreEmailCode,
+            newEmail: body.email,
+        });
+    }
+}
+
+@Route("/account/change-email")
+@Tags("Account")
+export class ForgotEmailController extends Controller {
+    @Get()
+    @Example<ForgotEmailResponse>({
+        meta: {},
+        data: {}
+    })
+    public async forgotEmail(@Request() request: express.Request, @Query() email: string, @Query() captchaId: string, @Query() captchaVal, @Query() language): Promise<ForgotEmailResponse> {
+        return await licServerApiService.getClientRestoreEmail<ForgotEmailResponse>({ email, captchaId, captchaVal, language });
+    }
+}
+
+@Route("/account/verify-change-email-token")
+@Tags("Account")
+export class VerifyResetEmailTokenController extends Controller {
+    @Get()
+    @Example<VerifyResetEmailTokenResponse>({
+        meta: {},
+        data: {}
+    })
+    public async verifyResetEmailToken(@Request() request: express.Request, @Query() restoreEmailCode: string): Promise<VerifyResetEmailTokenResponse> {
+        return await licServerApiService.clientCheckRestoreEmailCode<VerifyResetEmailTokenResponse>({ restoreEmailCode });
+    }
+}
 
 @Route("/accounts")
 @Tags("Account")

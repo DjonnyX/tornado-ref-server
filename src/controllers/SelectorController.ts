@@ -47,7 +47,7 @@ interface ISelectorResponse {
 interface ISelectorCreateRequest {
     active: boolean;
     type: SelectorTypes;
-    systemTag?: string;
+    systemTag?: string | null;
     contents?: ISelectorContents | any;
     extra?: { [key: string]: any } | null;
 }
@@ -56,7 +56,7 @@ interface ISelectorUpdateRequest {
     active?: boolean;
     position?: number;
     type?: SelectorTypes;
-    systemTag?: string;
+    systemTag?: string | null;
     contents?: ISelectorContents | any;
     extra?: { [key: string]: any } | null;
 }

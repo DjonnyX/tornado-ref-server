@@ -51,7 +51,7 @@ interface IProductCreateRequest {
     receipt: Array<IReceiptItem>;
     tags: Array<string>;
     weight?: number;
-    systemTag?: string;
+    systemTag?: string | null;
     joint?: string;
     extra?: { [key: string]: any } | null;
 }
@@ -64,7 +64,7 @@ interface IProductUpdateRequest {
     receipt?: Array<IReceiptItem>;
     tags?: Array<string>;
     weight?: number;
-    systemTag?: string;
+    systemTag?: string | null;
     joint?: string;
     extra?: { [key: string]: any } | null;
 }
