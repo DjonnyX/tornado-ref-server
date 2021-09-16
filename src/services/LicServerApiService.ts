@@ -220,7 +220,7 @@ class LicServerApiService {
                     "content-type": "application/json",
                     "authorization": this.getToken(),
                 },
-                body,
+                body: JSON.stringify(body),
             }),
         );
     }
