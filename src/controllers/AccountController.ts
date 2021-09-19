@@ -1,20 +1,27 @@
 import { Controller, Route, Post, Tags, Example, Request, Body, Get, Put, Delete, OperationId, Security, Query } from "tsoa";
 import { licServerApiService } from "../services";
 import { IAuthRequest } from "../interfaces";
-import { IAccount, IRef, RefTypes } from "@djonnyx/tornado-types";
+import { DefaultRoleTypes, IAccount, IAccountInfo, IRef, RefTypes } from "@djonnyx/tornado-types";
 import express = require("express");
+import { ROLE_RESPONSE_TEMPLATE } from "./RoleController";
+import { INTEGRATION_RESPONSE_TEMPLATE } from "./IntegrationsController";
 
 interface IAccountModel extends IAccount { }
 
 interface IUpdateAccountParams {
+    roleType: DefaultRoleTypes | string;
     firstName?: string;
     lastName?: string;
+    integrationId?: string;
     email?: string;
+    extra?: {
+        [key: string]: any;
+    } | null;
 }
 
 interface AccountsGetResponse {
     meta?: IAccountModelMeta;
-    data?: Array<IAccountModel>;
+    data?: Array<IAccountInfo>;
     error?: Array<{
         code: number;
         message: string;
@@ -23,7 +30,7 @@ interface AccountsGetResponse {
 
 interface AccountResponse {
     meta?: IAccountModelMeta;
-    data?: IAccountModel;
+    data?: IAccountInfo;
     error?: Array<{
         code: number;
         message: string;
@@ -34,12 +41,17 @@ interface IAccountModelMeta {
     ref: IRef;
 }
 
-const APPLICATION_RESPONSE_TEMPLATE: IAccountModel = {
+export const ACCOUNT_RESPONSE_TEMPLATE: IAccountInfo = {
     id: "507c7f79bcf86cd7994f6c0e",
-    owner: "507c7f79bcf86cd7994f6c1t",
+    owner: "507c7f79bcf86cd7994f6c1f",
+    roleType: DefaultRoleTypes.EMPLOYEE,
+    role: ROLE_RESPONSE_TEMPLATE,
+    integrationId: "507c7f79bcf86cd7994f6c7y",
+    integration: INTEGRATION_RESPONSE_TEMPLATE,
     firstName: "Bill",
     lastName: "Gates",
     email: "test@test.com",
+    extra: { key: "value" },
 };
 
 const META_TEMPLATE: IAccountModelMeta = {
@@ -142,10 +154,10 @@ export class AccountsController extends Controller {
     @OperationId("GetAll")
     @Example<AccountsGetResponse>({
         meta: META_TEMPLATE,
-        data: [APPLICATION_RESPONSE_TEMPLATE],
+        data: [ACCOUNT_RESPONSE_TEMPLATE],
     })
-    public async getAccount(): Promise<AccountsGetResponse> {
-        return await licServerApiService.getAccounts();
+    public async getAccounts(@Query() secure?: boolean): Promise<AccountsGetResponse> {
+        return await licServerApiService.getAccounts(secure);
     }
 }
 
@@ -157,10 +169,10 @@ export class AccountController extends Controller {
     @OperationId("GetOne")
     @Example<AccountResponse>({
         meta: META_TEMPLATE,
-        data: APPLICATION_RESPONSE_TEMPLATE,
+        data: ACCOUNT_RESPONSE_TEMPLATE,
     })
-    public async getAccount(id: string, @Request() request: IAuthRequest): Promise<AccountResponse> {
-        return await licServerApiService.getAccount(id);
+    public async getAccount(id: string, @Request() request: IAuthRequest, @Query() secure?: boolean): Promise<AccountResponse> {
+        return await licServerApiService.getAccount(id, secure);
     }
 
     /*@Post()
@@ -168,7 +180,7 @@ export class AccountController extends Controller {
     @OperationId("Create")
     @Example<AccountResponse>({
         meta: META_TEMPLATE,
-        data: APPLICATION_RESPONSE_TEMPLATE,
+        data: ACCOUNT_RESPONSE_TEMPLATE,
     })
     public async createAccount(@Body() body: ICreateAccountParams, @Request() request: IAuthRequest): Promise<AccountResponse> {
         return await licServerApiService.createAccount(body as any, request.token);
@@ -179,10 +191,10 @@ export class AccountController extends Controller {
     @OperationId("Update")
     @Example<AccountResponse>({
         meta: META_TEMPLATE,
-        data: APPLICATION_RESPONSE_TEMPLATE,
+        data: ACCOUNT_RESPONSE_TEMPLATE,
     })
-    public async updateAccount(id: string, @Body() body: IUpdateAccountParams, @Request() request: IAuthRequest): Promise<AccountResponse> {
-        return await licServerApiService.updateAccount(id, body);
+    public async updateAccount(id: string, @Body() body: IUpdateAccountParams, @Request() request: IAuthRequest, @Query() secure?: boolean): Promise<AccountResponse> {
+        return await licServerApiService.updateAccount(id, body, secure);
     }
 
     @Delete("{id}")
@@ -191,7 +203,7 @@ export class AccountController extends Controller {
     @Example<AccountResponse>({
         meta: META_TEMPLATE,
     })
-    public async deleteAccount(id: string, @Request() request: IAuthRequest): Promise<AccountResponse> {
-        return await licServerApiService.deleteAccount(id);
+    public async deleteAccount(id: string, @Request() request: IAuthRequest, @Query() secure?: boolean): Promise<AccountResponse> {
+        return await licServerApiService.deleteAccount(id, secure);
     }
 }

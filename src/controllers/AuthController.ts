@@ -2,7 +2,9 @@ import { Controller, Route, Post, Tags, Example, Request, Body, Get, Query } fro
 import * as express from "express";
 import { initRefs } from "../db/initDB";
 import { licServerApiService } from "../services";
-import { UserRights } from "@djonnyx/tornado-types";
+import { DefaultRoleTypes, IAccountInfo, UserRights } from "@djonnyx/tornado-types";
+import { IAuthRequest } from "../interfaces";
+import { ACCOUNT_RESPONSE_TEMPLATE } from "./AccountController";
 
 interface ISigninParams {
     email: string;
@@ -37,16 +39,8 @@ interface IVerifyResetPasswordTokenParams {
 interface SigninResponse {
     meta?: {};
     data?: {
-        account: {
-            id: string;
-            firstName: string;
-            lastName: string;
-            integrationId: string;
-            email: string;
-            rights: Array<UserRights>,
-        },
+        account: IAccountInfo,
         token: string;
-        role: string;
     };
     error?: Array<{
         code: number;
@@ -155,11 +149,13 @@ export class SignupController extends Controller {
             owner: "123456",
         }
     })
-    public async signup(@Body() body: ISignupParams): Promise<SignupResponse> {
+    public async signup(@Body() body: ISignupParams, @Request() request: IAuthRequest): Promise<SignupResponse> {
         let res: SignupResponse;
 
         try {
-            res = await licServerApiService.signup<SignupResponse>(body);
+            res = await licServerApiService.signup<SignupResponse>(body, {
+                clientToken: request.token,
+            });
 
             // Инициализация БД под клиента
             await initRefs(res.data.client);
@@ -186,19 +182,8 @@ export class SigninController extends Controller {
     @Example<SigninResponse>({
         meta: {},
         data: {
-            account: {
-                id: "507c7f79bcf86cd7994f6c0e",
-                firstName: "First name",
-                lastName: "Last name",
-                integrationId: "507c7f79bcf86cd7994f6c0e",
-                email: "test@test.com",
-                rights: [
-                    UserRights.CREATE_CURRENCY,
-                    UserRights.CREATE_PRODUCT,
-                ]
-            },
+            account: ACCOUNT_RESPONSE_TEMPLATE,
             token: "507c7f79bcf86cd7994f6c0e",
-            role: "user",
         }
     })
     public async signin(@Request() request: express.Request, @Body() body: ISigninParams): Promise<SigninResponse> {
@@ -221,7 +206,7 @@ export class SigninController extends Controller {
             };
         }
 
-        if (res?.data?.role === "admin") {
+        if (res?.data?.account?.roleType === DefaultRoleTypes.ADMIN) {
             return res;
         }
 
