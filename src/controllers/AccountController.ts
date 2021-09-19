@@ -156,8 +156,8 @@ export class AccountsController extends Controller {
         meta: META_TEMPLATE,
         data: [ACCOUNT_RESPONSE_TEMPLATE],
     })
-    public async getAccounts(@Query() secure?: boolean): Promise<AccountsGetResponse> {
-        return await licServerApiService.getAccounts(secure);
+    public async getAccounts(@Request() request: IAuthRequest, @Query() secure?: boolean): Promise<AccountsGetResponse> {
+        return await licServerApiService.getAccounts(secure, { clientToken: request.token });
     }
 }
 
@@ -172,7 +172,7 @@ export class AccountController extends Controller {
         data: ACCOUNT_RESPONSE_TEMPLATE,
     })
     public async getAccount(id: string, @Request() request: IAuthRequest, @Query() secure?: boolean): Promise<AccountResponse> {
-        return await licServerApiService.getAccount(id, secure);
+        return await licServerApiService.getAccount(id, secure, { clientToken: request.token });
     }
 
     /*@Post()
@@ -194,7 +194,7 @@ export class AccountController extends Controller {
         data: ACCOUNT_RESPONSE_TEMPLATE,
     })
     public async updateAccount(id: string, @Body() body: IUpdateAccountParams, @Request() request: IAuthRequest, @Query() secure?: boolean): Promise<AccountResponse> {
-        return await licServerApiService.updateAccount(id, body, secure);
+        return await licServerApiService.updateAccount(id, body, secure, { clientToken: request.token });
     }
 
     @Delete("{id}")
@@ -204,6 +204,6 @@ export class AccountController extends Controller {
         meta: META_TEMPLATE,
     })
     public async deleteAccount(id: string, @Request() request: IAuthRequest, @Query() secure?: boolean): Promise<AccountResponse> {
-        return await licServerApiService.deleteAccount(id, secure);
+        return await licServerApiService.deleteAccount(id, secure, { clientToken: request.token });
     }
 }
