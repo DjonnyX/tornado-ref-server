@@ -206,14 +206,12 @@ export class SigninController extends Controller {
             };
         }
 
-        if (res?.data?.account?.roleType === DefaultRoleTypes.ADMIN) {
-            return res;
+        if (res?.data?.account?.roleType === DefaultRoleTypes.OWNER) {
+            try {
+                // Инициализация БД под клиента
+                await initRefs(res.data.account.id);
+            } catch (err) { }
         }
-
-        try {
-            // Инициализация БД под клиента
-            await initRefs(res.data.account.id);
-        } catch (err) { }
 
         return res;
     }
