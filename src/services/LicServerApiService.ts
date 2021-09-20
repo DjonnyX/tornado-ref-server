@@ -226,7 +226,7 @@ class LicServerApiService {
 
     public async createAccount<T = any>(body: any, language: string, secure: boolean, options?: IRequestOptions): Promise<T> {
         return await makeRequest<T>(
-            got.put(`${config.LIC_SERVER_HOST}/${BASE_URL}clients`, {
+            got.post(`${config.LIC_SERVER_HOST}/${BASE_URL}clients`, {
                 headers: {
                     "content-type": "application/json",
                     "authorization": this.getToken(options),
