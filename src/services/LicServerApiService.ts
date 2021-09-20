@@ -194,7 +194,7 @@ class LicServerApiService {
         );
     }
 
-    public async getAccounts<T = any>(secure: boolean, options?: IRequestOptions): Promise<T> {
+    public async getAccounts<T = any>(secure: boolean, query: any, options?: IRequestOptions): Promise<T> {
         return await makeRequest<T>(
             got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}clients`, {
                 headers: {
@@ -202,6 +202,7 @@ class LicServerApiService {
                     "authorization": this.getToken(options),
                 },
                 query: {
+                    ...query,
                     secure: String(Boolean(secure)),
                 },
             }),
@@ -294,13 +295,14 @@ class LicServerApiService {
     }
 
     // roles
-    public async getRoles<T = any>(options?: IRequestOptions): Promise<T> {
+    public async getRoles<T = any>(query: any, options?: IRequestOptions): Promise<T> {
         return await makeRequest<T>(
             got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}roles`, {
                 headers: {
                     "content-type": "application/json",
                     "authorization": this.getToken(options),
                 },
+                query,
             }),
         );
     }

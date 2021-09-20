@@ -167,7 +167,7 @@ export class AccountsController extends Controller {
         data: [ACCOUNT_RESPONSE_TEMPLATE],
     })
     public async getAccounts(@Request() request: IAuthRequest, @Query() secure?: boolean): Promise<AccountsGetResponse> {
-        return await licServerApiService.getAccounts(secure, { clientToken: request.token });
+        return await licServerApiService.getAccounts(secure, request.query, { clientToken: request.token });
     }
 }
 

@@ -80,7 +80,7 @@ export class RolesController extends Controller {
         data: [ROLE_RESPONSE_TEMPLATE],
     })
     public async getRoles(@Request() request: IAuthRequest): Promise<RolesGetResponse> {
-        return await licServerApiService.getRoles({ clientToken: request.token });
+        return await licServerApiService.getRoles(request.query, { clientToken: request.token });
     }
 }
 
