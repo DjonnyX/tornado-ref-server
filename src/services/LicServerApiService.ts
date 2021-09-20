@@ -194,7 +194,7 @@ class LicServerApiService {
         );
     }
 
-    public async getAccounts<T = any>(secure: boolean, query: any, options?: IRequestOptions): Promise<T> {
+    public async getAccounts<T = any>(all: boolean, secure: boolean, query: any, options?: IRequestOptions): Promise<T> {
         return await makeRequest<T>(
             got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}clients`, {
                 headers: {
@@ -203,6 +203,7 @@ class LicServerApiService {
                 },
                 query: {
                     ...query,
+                    all: String(Boolean(all)),
                     secure: String(Boolean(secure)),
                 },
             }),
