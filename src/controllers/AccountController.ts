@@ -8,6 +8,15 @@ import { INTEGRATION_RESPONSE_TEMPLATE } from "./IntegrationsController";
 
 interface IAccountModel extends IAccount { }
 
+interface ICreateAccountParams {
+    captchaId: string;
+    captchaValue: string;
+    roleType: DefaultRoleTypes | string;
+    firstName: string;
+    lastName: string;
+    email: string;
+}
+
 interface IUpdateAccountParams {
     roleType: DefaultRoleTypes | string;
     firstName?: string;
@@ -175,16 +184,17 @@ export class AccountController extends Controller {
         return await licServerApiService.getAccount(id, secure, { clientToken: request.token });
     }
 
-    /*@Post()
+    @Post()
     @Security("clientAccessToken")
     @OperationId("Create")
     @Example<AccountResponse>({
         meta: META_TEMPLATE,
         data: ACCOUNT_RESPONSE_TEMPLATE,
     })
-    public async createAccount(@Body() body: ICreateAccountParams, @Request() request: IAuthRequest): Promise<AccountResponse> {
-        return await licServerApiService.createAccount(body as any, request.token);
-    }*/
+    public async createAccount(@Body() body: ICreateAccountParams, @Request() request: IAuthRequest,
+        @Query() language: string, @Query() secure?: boolean): Promise<AccountResponse> {
+        return await licServerApiService.createAccount(body as any, language, secure, { clientToken: request.token });
+    }
 
     @Put("{id}")
     @Security("clientAccessToken")

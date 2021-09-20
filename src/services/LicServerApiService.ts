@@ -219,6 +219,22 @@ class LicServerApiService {
         );
     }
 
+    public async createAccount<T = any>(body: any, language: string, secure: boolean, options?: IRequestOptions): Promise<T> {
+        return await makeRequest<T>(
+            got.put(`${config.LIC_SERVER_HOST}/${BASE_URL}clients`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": this.getToken(options),
+                },
+                query: {
+                    secure: String(Boolean(secure)),
+                    language,
+                },
+                body: JSON.stringify(body),
+            }),
+        );
+    }
+
     public async updateAccount<T = any>(id: string, body: any, secure: boolean, options?: IRequestOptions): Promise<T> {
         return await makeRequest<T>(
             got.put(`${config.LIC_SERVER_HOST}/${BASE_URL}clients/${id}`, {
