@@ -7,6 +7,9 @@ export function findAllWithFilter<T, D, Q>(document: QueryWithHelpers<Array<T>, 
     query: any,
 }): QueryWithHelpers<Array<T>, any, any> {
     let result = document;
+    const notEqualsMap: {
+        [id: string]: Array<any>;
+    } = {};
     for (const pName in request.query) {
         const pFilterSegments = pName.match(FILTER_PATTERN);
         if (pFilterSegments && pFilterSegments.length > 0) {
@@ -23,13 +26,25 @@ export function findAllWithFilter<T, D, Q>(document: QueryWithHelpers<Array<T>, 
             } else if (operation === 'contain') {
                 // etc
             } else if (operation === 'notequals') {
-                // etc
+                const actualValue = value.split(",");
+                if (!notEqualsMap[id]) {
+                    notEqualsMap[id] = [...actualValue.map(v => {
+                        if (NUM_PATTERN.test(v)) {
+                            return Number.parseInt(v);
+                        }
+                        return v;
+                    })];
+                }
             } else if (operation === 'lt') {
                 result = result.where(id).lt(value);
             } else if (operation === 'gt') {
                 result = result.where(id).gt(value);
             }
         }
+    }
+    for (const id in notEqualsMap) {
+        const value = notEqualsMap[id];
+        result = result.where(id, { $nin: value });
     }
     return result;
 }

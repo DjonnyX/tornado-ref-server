@@ -187,9 +187,10 @@ export class SelectorController extends Controller {
         data: RESPONSE_TEMPLATE,
     })
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<ISelectorResponse> {
+        const client = getClientId(request);
         try {
             const item = await SelectorModel.findById(id);
-            const ref = await getRef(getClientId(request), RefTypes.SELECTORS);
+            const ref = await getRef(client, RefTypes.SELECTORS);
             return {
                 meta: { ref },
                 data: formatSelectorModel(item),

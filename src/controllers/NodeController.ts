@@ -193,9 +193,11 @@ export class RootNodesController extends Controller {
         }]
     })
     public async getAll(@Request() request: IAuthRequest): Promise<INodesResponse> {
+        const client = getClientId(request);
+
         try {
-            const items = await NodeModel.find({ client: getClientId(request), type: NodeTypes.KIOSK_ROOT });
-            const ref = await getRef(getClientId(request), RefTypes.NODES);
+            const items = await NodeModel.find({ client, type: NodeTypes.KIOSK_ROOT });
+            const ref = await getRef(client, RefTypes.NODES);
             return {
                 meta: { ref },
                 data: items.map(v => formatModel(v))
@@ -226,8 +228,10 @@ export class NodesController extends Controller {
         data: [RESPONSE_TEMPLATE]
     })
     public async getAll(@Request() request: IAuthRequest): Promise<INodesResponse> {
+        const client = getClientId(request);
+
         try {
-            const items = await findAllWithFilter(NodeModel.find({ client: getClientId(request) }), request);
+            const items = await findAllWithFilter(NodeModel.find({ client }), request);
             const ref = await getRef(getClientId(request), RefTypes.NODES);
             return {
                 meta: { ref },
@@ -255,9 +259,11 @@ export class NodesController extends Controller {
         data: [RESPONSE_TEMPLATE]
     })
     public async getAllById(id: string, @Request() request: IAuthRequest): Promise<INodesResponse> {
+        const client = getClientId(request);
+
         try {
             const items = await getNodesChain(id);
-            const ref = await getRef(getClientId(request), RefTypes.NODES);
+            const ref = await getRef(client, RefTypes.NODES);
             return {
                 meta: { ref },
                 data: items.map(v => formatModel(v))
@@ -283,12 +289,14 @@ export class NodesController extends Controller {
         data: [RESPONSE_TEMPLATE]
     })
     public async createMany(@Body() body: INodesCreateRequest, @Request() request: IAuthRequest): Promise<ICreateNodesResponse> {
+        const client = getClientId(request);
+
         const promises = new Array<Promise<INodeDocument>>();
 
         for (let i = 0, l = body.nodes.length; i < l; i++) {
             const node = body.nodes[i];
             if (node.type === NodeTypes.SELECTOR_NODE) {
-                const hasRecursion = await checkOnRecursion(getClientId(request), node.parentId, node.contentId);
+                const hasRecursion = await checkOnRecursion(client, node.parentId, node.contentId);
                 if (hasRecursion) {
                     this.setStatus(500);
                     return {
@@ -314,7 +322,7 @@ export class NodesController extends Controller {
                 };
             }
 
-            const item = new NodeModel({ ...node, client: getClientId(request) });
+            const item = new NodeModel({ ...node, client });
             promises.push(item.save());
         }
 
@@ -335,7 +343,7 @@ export class NodesController extends Controller {
 
         let ref: IRef;
         try {
-            ref = await riseRefVersion(getClientId(request), RefTypes.NODES);
+            ref = await riseRefVersion(client, RefTypes.NODES);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -352,7 +360,7 @@ export class NodesController extends Controller {
 
         for (let i = 0, l = savedItems.length; i < l; i++) {
             const node = savedItems[i]
-            const parentNode = await NodeModel.findOne({ client: getClientId(request), _id: node.parentId });
+            const parentNode = await NodeModel.findOne({ client, _id: node.parentId });
             parentNode.children.push(node._id);
             promises1.push(parentNode.save());
         }
@@ -394,9 +402,11 @@ export class NodeController extends Controller {
         data: RESPONSE_TEMPLATE
     })
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<INodeResponse> {
+        const client = getClientId(request);
+
         try {
             const item = await NodeModel.findById(id);
-            const ref = await getRef(getClientId(request), RefTypes.NODES);
+            const ref = await getRef(client, RefTypes.NODES);
             return {
                 meta: { ref },
                 data: formatModel(item)
@@ -422,6 +432,8 @@ export class NodeController extends Controller {
         data: RESPONSE_TEMPLATE
     })
     public async create(@Body() body: INodeCreateRequest, @Request() request: IAuthRequest): Promise<ICreateNodeResponse> {
+        const client = getClientId(request);
+
         const validation = validateCreateNode(body);
         if (validation.error) {
             this.setStatus(500);
@@ -464,7 +476,7 @@ export class NodeController extends Controller {
 
         let savedItem: INodeDocument;
         try {
-            const item = new NodeModel({ ...body, client: getClientId(request) });
+            const item = new NodeModel({ ...body, client });
             savedItem = await item.save();
         } catch (err) {
             this.setStatus(500);
@@ -480,7 +492,7 @@ export class NodeController extends Controller {
 
         let ref: IRef;
         try {
-            ref = await riseRefVersion(getClientId(request), RefTypes.NODES);
+            ref = await riseRefVersion(client, RefTypes.NODES);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -496,7 +508,7 @@ export class NodeController extends Controller {
         let parentNode: INodeDocument;
 
         try {
-            parentNode = await NodeModel.findOne({ client: getClientId(request), _id: savedItem.parentId });
+            parentNode = await NodeModel.findOne({ client, _id: savedItem.parentId });
             parentNode.children.push(savedItem._id);
             await parentNode.save();
         } catch (err) {
@@ -528,6 +540,8 @@ export class NodeController extends Controller {
         data: RESPONSE_TEMPLATE
     })
     public async update(id: string, @Body() body: INodeUpdateRequest, @Request() request: IAuthRequest): Promise<INodeResponse> {
+        const client = getClientId(request);
+
         const validation = validateUpdateNode(body);
         if (validation.error) {
             this.setStatus(500);
@@ -542,7 +556,7 @@ export class NodeController extends Controller {
         }
 
         if (body.type === NodeTypes.SELECTOR_NODE) {
-            const hasRecursion = await checkOnRecursion(getClientId(request), body.parentId, body.contentId);
+            const hasRecursion = await checkOnRecursion(client, body.parentId, body.contentId);
             if (hasRecursion) {
                 this.setStatus(500);
                 return {
@@ -603,7 +617,7 @@ export class NodeController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(getClientId(request), RefTypes.NODES);
+            const ref = await riseRefVersion(client, RefTypes.NODES);
             return {
                 meta: { ref },
                 data: formatModel(item),
@@ -628,6 +642,8 @@ export class NodeController extends Controller {
         meta: META_TEMPLATE
     })
     public async delete(id: string, @Request() request: IAuthRequest): Promise<IDeleteNodeResponse> {
+        const client = getClientId(request);
+
         let ids: Array<string>;
 
         let parentNode: INodeDocument;
@@ -655,7 +671,7 @@ export class NodeController extends Controller {
 
         try {
             ids = await deleteNodesChain(id);
-            const ref = await riseRefVersion(getClientId(request), RefTypes.NODES);
+            const ref = await riseRefVersion(client, RefTypes.NODES);
             return {
                 meta: { ref },
                 data: {

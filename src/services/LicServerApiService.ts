@@ -107,12 +107,15 @@ class LicServerApiService {
         );
     }
 
-    public async signup<T = any>(params: IRegistrationParams, options?: IRequestOptions): Promise<T> {
+    public async signup<T = any>(params: IRegistrationParams, language: string, options?: IRequestOptions): Promise<T> {
         return await makeRequest<T>(
             got.post(`${config.LIC_SERVER_HOST}/${BASE_URL}auth/registration`, {
                 headers: {
                     "content-type": "application/json",
                     "authorization": this.getToken(options),
+                },
+                query: {
+                    language,
                 },
                 body: JSON.stringify(params),
             }),
@@ -191,47 +194,77 @@ class LicServerApiService {
         );
     }
 
-    public async getAccounts<T = any>(): Promise<T> {
+    public async getAccounts<T = any>(all: boolean, secure: boolean, query: any, options?: IRequestOptions): Promise<T> {
         return await makeRequest<T>(
             got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}clients`, {
                 headers: {
                     "content-type": "application/json",
-                    "authorization": this.getToken(),
-                }
+                    "authorization": this.getToken(options),
+                },
+                query: {
+                    ...query,
+                    all: String(Boolean(all)),
+                    secure: String(Boolean(secure)),
+                },
             }),
         );
     }
 
-    public async getAccount<T = any>(id: string): Promise<T> {
+    public async getAccount<T = any>(id: string, secure: boolean, options?: IRequestOptions): Promise<T> {
         return await makeRequest<T>(
             got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}clients/${id}`, {
                 headers: {
                     "content-type": "application/json",
-                    "authorization": this.getToken(),
-                }
+                    "authorization": this.getToken(options),
+                },
+                query: {
+                    secure: String(Boolean(secure)),
+                },
             }),
         );
     }
 
-    public async updateAccount<T = any>(id: string, body: any): Promise<T> {
+    public async createAccount<T = any>(body: any, language: string, secure: boolean, options?: IRequestOptions): Promise<T> {
         return await makeRequest<T>(
-            got.put(`${config.LIC_SERVER_HOST}/${BASE_URL}clients/${id}`, {
+            got.post(`${config.LIC_SERVER_HOST}/${BASE_URL}clients`, {
                 headers: {
                     "content-type": "application/json",
-                    "authorization": this.getToken(),
+                    "authorization": this.getToken(options),
+                },
+                query: {
+                    secure: String(Boolean(secure)),
+                    language,
                 },
                 body: JSON.stringify(body),
             }),
         );
     }
 
-    public async deleteAccount<T = any>(id: string): Promise<T> {
+    public async updateAccount<T = any>(id: string, body: any, secure: boolean, options?: IRequestOptions): Promise<T> {
+        return await makeRequest<T>(
+            got.put(`${config.LIC_SERVER_HOST}/${BASE_URL}clients/${id}`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": this.getToken(options),
+                },
+                query: {
+                    secure: String(Boolean(secure)),
+                },
+                body: JSON.stringify(body),
+            }),
+        );
+    }
+
+    public async deleteAccount<T = any>(id: string, secure: boolean, options?: IRequestOptions): Promise<T> {
         return await makeRequest<T>(
             got.delete(`${config.LIC_SERVER_HOST}/${BASE_URL}clients/${id}`, {
                 headers: {
                     "content-type": "application/json",
-                    "authorization": this.getToken(),
-                }
+                    "authorization": this.getToken(options),
+                },
+                query: {
+                    secure: String(Boolean(secure)),
+                },
             }),
         );
     }
@@ -244,7 +277,7 @@ class LicServerApiService {
                     "authorization": this.getToken({
                         clientToken: deviceToken,
                     }),
-                },
+                }
             }),
         );
     }
@@ -257,6 +290,65 @@ class LicServerApiService {
                     "authorization": this.getToken({
                         clientToken: deviceToken,
                     }),
+                },
+            }),
+        );
+    }
+
+    // roles
+    public async getRoles<T = any>(query: any, options?: IRequestOptions): Promise<T> {
+        return await makeRequest<T>(
+            got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}roles`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": this.getToken(options),
+                },
+                query,
+            }),
+        );
+    }
+
+    public async getRole<T = any>(name: string, options?: IRequestOptions): Promise<T> {
+        return await makeRequest<T>(
+            got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}role/${name}`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": this.getToken(options),
+                },
+            }),
+        );
+    }
+
+    public async createRole<T = any>(body: any, options?: IRequestOptions): Promise<T> {
+        return await makeRequest<T>(
+            got.post(`${config.LIC_SERVER_HOST}/${BASE_URL}role`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": this.getToken(options),
+                },
+                body: JSON.stringify(body),
+            }),
+        );
+    }
+
+    public async updateRole<T = any>(name: string, body: any, options?: IRequestOptions): Promise<T> {
+        return await makeRequest<T>(
+            got.put(`${config.LIC_SERVER_HOST}/${BASE_URL}role/${name}`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": this.getToken(options),
+                },
+                body: JSON.stringify(body),
+            }),
+        );
+    }
+
+    public async deleteRole<T = any>(name: string, options?: IRequestOptions): Promise<T> {
+        return await makeRequest<T>(
+            got.delete(`${config.LIC_SERVER_HOST}/${BASE_URL}role/${name}`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": this.getToken(options),
                 },
             }),
         );
@@ -510,7 +602,7 @@ class LicServerApiService {
         );
     }
 
-    public async getIntegrationServerInfo<T = any>(data: {host: string}, token: string): Promise<T> {
+    public async getIntegrationServerInfo<T = any>(data: { host: string }, token: string): Promise<T> {
         return await makeRequest<T>(
             got.post(`${config.LIC_SERVER_HOST}/${BASE_URL}integration/server-info`, {
                 headers: {

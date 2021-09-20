@@ -217,9 +217,10 @@ export class ProductController extends Controller {
         data: RESPONSE_TEMPLATE,
     })
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<IProductResponse> {
+        const client = getClientId(request);
         try {
             const item = await ProductModel.findById(id);
-            const ref = await getRef(getClientId(request), RefTypes.PRODUCTS);
+            const ref = await getRef(client, RefTypes.PRODUCTS);
             return {
                 meta: { ref },
                 data: formatProductModel(item),
