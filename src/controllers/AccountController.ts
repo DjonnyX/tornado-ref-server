@@ -137,7 +137,8 @@ export class ForgotEmailController extends Controller {
         meta: {},
         data: {}
     })
-    public async forgotEmail(@Request() request: express.Request, @Query() email: string, @Query() captchaId: string, @Query() captchaVal, @Query() language): Promise<ForgotEmailResponse> {
+    public async forgotEmail(@Request() request: express.Request, @Query() email: string,
+        @Query() captchaId: string, @Query() captchaVal: string, @Query() language?: string): Promise<ForgotEmailResponse> {
         return await licServerApiService.getClientRestoreEmail<ForgotEmailResponse>({ email, captchaId, captchaVal, language });
     }
 }
@@ -192,7 +193,7 @@ export class AccountController extends Controller {
         data: ACCOUNT_RESPONSE_TEMPLATE,
     })
     public async createAccount(@Body() body: ICreateAccountParams, @Request() request: IAuthRequest,
-        @Query() language: string, @Query() secure?: boolean): Promise<AccountResponse> {
+        @Query() language?: string, @Query() secure?: boolean): Promise<AccountResponse> {
         return await licServerApiService.createAccount(body as any, language, secure, { clientToken: request.token });
     }
 

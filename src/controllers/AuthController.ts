@@ -149,11 +149,11 @@ export class SignupController extends Controller {
             owner: "123456",
         }
     })
-    public async signup(@Body() body: ISignupParams, @Request() request: IAuthRequest): Promise<SignupResponse> {
+    public async signup(@Body() body: ISignupParams, @Request() request: IAuthRequest, @Query() language?: string): Promise<SignupResponse> {
         let res: SignupResponse;
 
         try {
-            res = await licServerApiService.signup<SignupResponse>(body, {
+            res = await licServerApiService.signup<SignupResponse>(body, language, {
                 clientToken: request.token,
             });
 
@@ -243,7 +243,8 @@ export class ForgotPasswordController extends Controller {
         meta: {},
         data: {}
     })
-    public async forgotPassword(@Request() request: express.Request, @Query() email: string, @Query() captchaId: string, @Query() captchaVal, @Query() language): Promise<ForgotPasswordResponse> {
+    public async forgotPassword(@Request() request: express.Request, @Query() email: string,
+        @Query() captchaId: string, @Query() captchaVal: string, @Query() language?: string): Promise<ForgotPasswordResponse> {
         return await licServerApiService.getClientRestorePassword<ForgotPasswordResponse>({ email, captchaId, captchaVal, language });
     }
 }
