@@ -109,24 +109,24 @@ export class RoleController extends Controller {
         return await licServerApiService.createRole(body as any, { clientToken: request.token });
     }
 
-    @Put("{id}")
+    @Put("{name}")
     @Security("clientAccessToken")
     @OperationId("Update")
     @Example<RoleResponse>({
         meta: META_TEMPLATE,
         data: ROLE_RESPONSE_TEMPLATE,
     })
-    public async updateRole(id: string, @Body() body: IUpdateRoleParams, @Request() request: IAuthRequest): Promise<RoleResponse> {
-        return await licServerApiService.updateRole(id, body, { clientToken: request.token });
+    public async updateRole(name: string, @Body() body: IUpdateRoleParams, @Request() request: IAuthRequest): Promise<RoleResponse> {
+        return await licServerApiService.updateRole(name, body, { clientToken: request.token });
     }
 
-    @Delete("{id}")
+    @Delete("{name}")
     @Security("clientAccessToken")
     @OperationId("Delete")
     @Example<RoleResponse>({
         meta: META_TEMPLATE,
     })
-    public async deleteRole(id: string, @Request() request: IAuthRequest): Promise<RoleResponse> {
-        return await licServerApiService.deleteRole(id, { clientToken: request.token });
+    public async deleteRole(name: string, @Request() request: IAuthRequest): Promise<RoleResponse> {
+        return await licServerApiService.deleteRole(name, { clientToken: request.token });
     }
 }
