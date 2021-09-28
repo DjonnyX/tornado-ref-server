@@ -18,7 +18,7 @@ interface ICreateAccountParams {
 }
 
 interface IUpdateAccountParams {
-    roleType: DefaultRoleTypes | string;
+    roleType?: DefaultRoleTypes | string;
     firstName?: string;
     lastName?: string;
     integrationId?: string;

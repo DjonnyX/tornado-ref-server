@@ -308,9 +308,9 @@ class LicServerApiService {
         );
     }
 
-    public async getRole<T = any>(name: string, options?: IRequestOptions): Promise<T> {
+    public async getRole<T = any>(id: string, options?: IRequestOptions): Promise<T> {
         return await makeRequest<T>(
-            got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}role/${name}`, {
+            got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}role/${id}`, {
                 headers: {
                     "content-type": "application/json",
                     "authorization": this.getToken(options),
@@ -331,9 +331,9 @@ class LicServerApiService {
         );
     }
 
-    public async updateRole<T = any>(name: string, body: any, options?: IRequestOptions): Promise<T> {
+    public async updateRole<T = any>(id: string, body: any, options?: IRequestOptions): Promise<T> {
         return await makeRequest<T>(
-            got.put(`${config.LIC_SERVER_HOST}/${BASE_URL}role/${name}`, {
+            got.put(`${config.LIC_SERVER_HOST}/${BASE_URL}role/${id}`, {
                 headers: {
                     "content-type": "application/json",
                     "authorization": this.getToken(options),
@@ -343,9 +343,9 @@ class LicServerApiService {
         );
     }
 
-    public async deleteRole<T = any>(name: string, options?: IRequestOptions): Promise<T> {
+    public async deleteRole<T = any>(id: string, options?: IRequestOptions): Promise<T> {
         return await makeRequest<T>(
-            got.delete(`${config.LIC_SERVER_HOST}/${BASE_URL}role/${name}`, {
+            got.delete(`${config.LIC_SERVER_HOST}/${BASE_URL}role/${id}`, {
                 headers: {
                     "content-type": "application/json",
                     "authorization": this.getToken(options),
