@@ -78,8 +78,8 @@ const META_TEMPLATE: ILicenseTypeInfoMeta = {
 @Tags("LicenseType")
 export class LicenseTypesController extends Controller {
     @Get()
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetAll")
     @Example<LicenseTypesGetResponse>({
         meta: META_TEMPLATE,
@@ -94,8 +94,8 @@ export class LicenseTypesController extends Controller {
 @Tags("LicenseType")
 export class LicenseTypeController extends Controller {
     @Get("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetOne")
     @Example<LicenseTypeResponse>({
         meta: META_TEMPLATE,
@@ -106,8 +106,8 @@ export class LicenseTypeController extends Controller {
     }
 
     @Post()
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Create")
     @Example<LicenseTypeResponse>({
         meta: META_TEMPLATE,
@@ -118,8 +118,8 @@ export class LicenseTypeController extends Controller {
     }
 
     @Put("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Update")
     @Example<LicenseTypeResponse>({
         meta: META_TEMPLATE,
@@ -130,8 +130,8 @@ export class LicenseTypeController extends Controller {
     }
 
     @Delete("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Delete")
     @Example<LicenseTypeResponse>({
         meta: META_TEMPLATE,

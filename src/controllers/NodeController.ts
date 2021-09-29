@@ -174,9 +174,9 @@ const validateUpdateNode = (node: INodeUpdateRequest): joi.ValidationResult => {
 @Tags("Node")
 export class RootNodesController extends Controller {
     @Get()
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetRootNodes")
     @Example<INodesResponse>({
         meta: META_TEMPLATE,
@@ -221,9 +221,9 @@ export class RootNodesController extends Controller {
 @Tags("Node")
 export class NodesController extends Controller {
     @Get()
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetAll")
     @Example<INodesResponse>({
         meta: META_TEMPLATE,
@@ -253,9 +253,9 @@ export class NodesController extends Controller {
     }
 
     @Get("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetAllById")
     @Example<INodesResponse>({
         meta: META_TEMPLATE,
@@ -285,8 +285,8 @@ export class NodesController extends Controller {
     }
 
     @Post()
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("CreateMany")
     @Example<INodesResponse>({
         meta: META_TEMPLATE,
@@ -398,9 +398,9 @@ export class NodesController extends Controller {
 @Tags("Node")
 export class NodeController extends Controller {
     @Get("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetOne")
     @Example<INodeResponse>({
         meta: META_TEMPLATE,
@@ -430,8 +430,8 @@ export class NodeController extends Controller {
     }
 
     @Post()
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Create")
     @Example<INodeResponse>({
         meta: META_TEMPLATE,
@@ -539,8 +539,8 @@ export class NodeController extends Controller {
     }
 
     @Put("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Update")
     @Example<INodeResponse>({
         meta: META_TEMPLATE,
@@ -643,8 +643,8 @@ export class NodeController extends Controller {
     }
 
     @Delete("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Delete")
     @Example<INodeResponse>({
         meta: META_TEMPLATE

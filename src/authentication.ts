@@ -126,18 +126,16 @@ export async function expressAuthentication(
   scopes?: string[],
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<any> {
-  if (securityName === "clientAccessToken") {
+  if (securityName === "clientAccessToken" || securityName === "integrationAccessToken") {
     const authorization = request.headers["authorization"] ? String(request.headers["authorization"]) : undefined;
     let token = authorization ? authorization.replace("Bearer ", "") : undefined;
 
-    try {
-      await checkIntegrationToken(token, request);
-    } catch (err) {
-      return await checkClientToken(token, request);
-    }
-  }
-
-  if (securityName === "terminalAccessToken") {
+    return await checkClientToken(token, request);
+  } else if (securityName === "integrationAccessToken") {
+    const authorization = request.headers["authorization"] ? String(request.headers["authorization"]) : undefined;
+    let token = authorization ? authorization.replace("Bearer ", "") : undefined;
+    return await checkIntegrationToken(token, request);
+  } else if (securityName === "terminalAccessToken") {
     const token = request.headers["x-access-token"] ? String(request.headers["x-access-token"]) : undefined;
     return await checkApiKey(token, request);
   }

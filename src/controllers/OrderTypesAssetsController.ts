@@ -138,9 +138,9 @@ const RESPONSE_TEMPLATE: IAssetItem = {
 @Tags("OrderType assets")
 export class OrderTypeAssetsController extends Controller {
     @Get("{orderTypeId}/assets")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetAll")
     @Example<IOrderTypeGetAllAssetsResponse>({
         meta: META_TEMPLATE,
@@ -208,9 +208,9 @@ export class OrderTypeAssetsController extends Controller {
     }
 
     @Get("{orderTypeId}/assets/{langCode}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Get")
     @Example<IOrderTypeGetAssetsResponse>({
         meta: META_TEMPLATE,
@@ -253,8 +253,8 @@ export class OrderTypeAssetsController extends Controller {
     }
 
     /*@Post("{orderTypeId}/asset/{langCode}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Create")
     @Example<IOrderTypeCreateAssetsResponse>({
         meta: META_TEMPLATE,
@@ -335,8 +335,8 @@ export class OrderTypeAssetsController extends Controller {
     }*/
 
     @Post("{orderTypeId}/resource/{langCode}/{resourceType}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("CreateResource")
     @Example<IOrderTypeCreateAssetsResponse>({
         meta: META_TEMPLATE,
@@ -494,8 +494,8 @@ export class OrderTypeAssetsController extends Controller {
     }
 
     @Put("{orderTypeId}/asset/{langCode}/{assetId}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Update")
     @Example<IOrderTypeCreateAssetsResponse>({
         meta: META_TEMPLATE,
@@ -575,8 +575,8 @@ export class OrderTypeAssetsController extends Controller {
     }
 
     @Delete("{orderTypeId}/asset/{langCode}/{assetId}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Delete")
     @Example<IOrderTypeDeleteAssetsResponse>({
         meta: META_TEMPLATE

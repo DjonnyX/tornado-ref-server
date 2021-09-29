@@ -74,9 +74,9 @@ export const RESPONSE_TEMPLATE: ITagItem = {
 @Tags("Tag")
 export class TagsController extends Controller {
     @Get()
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetAll")
     @Example<TagsResponse>({
         meta: META_TEMPLATE,
@@ -110,9 +110,9 @@ export class TagsController extends Controller {
 @Tags("Tag")
 export class TagController extends Controller {
     @Get("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetOne")
     @Example<TagResponse>({
         meta: META_TEMPLATE,
@@ -142,8 +142,8 @@ export class TagController extends Controller {
     }
 
     @Post()
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Create")
     @Example<TagResponse>({
         meta: META_TEMPLATE,
@@ -174,8 +174,8 @@ export class TagController extends Controller {
     }
 
     @Put("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Update")
     @Example<TagResponse>({
         meta: META_TEMPLATE,
@@ -288,8 +288,8 @@ export class TagController extends Controller {
     }
 
     @Delete("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Delete")
     @Example<TagResponse>({
         meta: META_TEMPLATE,

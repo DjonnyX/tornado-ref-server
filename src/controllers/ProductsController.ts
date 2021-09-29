@@ -125,9 +125,9 @@ const META_TEMPLATE: IProductsMeta = {
 @Tags("Product")
 export class ProductsController extends Controller {
     @Get()
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetAll")
     @Example<IProductsResponse>({
         meta: META_TEMPLATE,
@@ -157,9 +157,9 @@ export class ProductsController extends Controller {
     }
 
     @Put("/positions")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("SetPositions")
     @Example<IProductsPositionsResponse>({
         meta: META_TEMPLATE,
@@ -213,9 +213,9 @@ export class ProductsController extends Controller {
 @Tags("Product")
 export class ProductController extends Controller {
     @Get("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetOne")
     @Example<IProductResponse>({
         meta: META_TEMPLATE,
@@ -245,8 +245,8 @@ export class ProductController extends Controller {
     }
 
     @Post()
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Create")
     @Example<IProductResponse>({
         meta: META_TEMPLATE,
@@ -317,8 +317,8 @@ export class ProductController extends Controller {
     }
 
     @Put("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Update")
     @Example<IProductResponse>({
         meta: META_TEMPLATE,
@@ -446,8 +446,8 @@ export class ProductController extends Controller {
     }
 
     @Delete("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Delete")
     @Example<IProductResponse>({
         meta: META_TEMPLATE,

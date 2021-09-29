@@ -88,8 +88,8 @@ export class RolesController extends Controller {
 @Tags("Role")
 export class RoleController extends Controller {
     @Get("{name}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetOne")
     @Example<RoleResponse>({
         meta: META_TEMPLATE,
@@ -100,8 +100,8 @@ export class RoleController extends Controller {
     }
 
     @Post()
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Create")
     @Example<RoleResponse>({
         meta: META_TEMPLATE,
@@ -112,8 +112,8 @@ export class RoleController extends Controller {
     }
 
     @Put("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Update")
     @Example<RoleResponse>({
         meta: META_TEMPLATE,
@@ -124,8 +124,8 @@ export class RoleController extends Controller {
     }
 
     @Delete("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Delete")
     @Example<RoleResponse>({
         meta: META_TEMPLATE,

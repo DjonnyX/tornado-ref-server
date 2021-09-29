@@ -160,8 +160,8 @@ export class VerifyResetEmailTokenController extends Controller {
 @Tags("Account")
 export class AccountsController extends Controller {
     @Get()
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetAll")
     @Example<AccountsGetResponse>({
         meta: META_TEMPLATE,
@@ -176,8 +176,8 @@ export class AccountsController extends Controller {
 @Tags("Account")
 export class AccountController extends Controller {
     @Get("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetOne")
     @Example<AccountResponse>({
         meta: META_TEMPLATE,
@@ -188,8 +188,8 @@ export class AccountController extends Controller {
     }
 
     @Post()
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Create")
     @Example<AccountResponse>({
         meta: META_TEMPLATE,
@@ -201,8 +201,8 @@ export class AccountController extends Controller {
     }
 
     @Put("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Update")
     @Example<AccountResponse>({
         meta: META_TEMPLATE,
@@ -213,8 +213,8 @@ export class AccountController extends Controller {
     }
 
     @Delete("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Delete")
     @Example<AccountResponse>({
         meta: META_TEMPLATE,

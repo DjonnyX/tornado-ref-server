@@ -69,8 +69,8 @@ const META_TEMPLATE: IApplicationInfoMeta = {
 @Tags("Application")
 export class ApplicationsController extends Controller {
     @Get()
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetAll")
     @Example<ApplicationsGetResponse>({
         meta: META_TEMPLATE,
@@ -85,8 +85,8 @@ export class ApplicationsController extends Controller {
 @Tags("Application")
 export class ApplicationController extends Controller {
     @Get("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetOne")
     @Example<ApplicationResponse>({
         meta: META_TEMPLATE,
@@ -97,8 +97,8 @@ export class ApplicationController extends Controller {
     }
 
     @Post()
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Create")
     @Example<ApplicationResponse>({
         meta: META_TEMPLATE,
@@ -109,8 +109,8 @@ export class ApplicationController extends Controller {
     }
 
     @Put("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Update")
     @Example<ApplicationResponse>({
         meta: META_TEMPLATE,
@@ -121,8 +121,8 @@ export class ApplicationController extends Controller {
     }
 
     @Delete("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Delete")
     @Example<ApplicationResponse>({
         meta: META_TEMPLATE,

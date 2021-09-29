@@ -119,8 +119,8 @@ const META_TEMPLATE: IIntegrationInfoMeta = {
 @Tags("Integration")
 export class IntegrationsController extends Controller {
     @Get()
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetAll")
     @Example<IntegrationsGetResponse>({
         meta: META_TEMPLATE,
@@ -135,8 +135,8 @@ export class IntegrationsController extends Controller {
 @Tags("Integration")
 export class IntegrationController extends Controller {
     @Post("/server-info")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("ServerInfo")
     @Example<IntegrationServerInfoResponse>({
         meta: META_TEMPLATE,
@@ -147,8 +147,8 @@ export class IntegrationController extends Controller {
     }
 
     @Get("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetOne")
     @Example<IntegrationResponse>({
         meta: META_TEMPLATE,
@@ -159,8 +159,8 @@ export class IntegrationController extends Controller {
     }
 
     @Post()
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Create")
     @Example<IntegrationResponse>({
         meta: META_TEMPLATE,
@@ -171,8 +171,8 @@ export class IntegrationController extends Controller {
     }
 
     @Put("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Update")
     @Example<IntegrationResponse>({
         meta: META_TEMPLATE,
@@ -183,8 +183,8 @@ export class IntegrationController extends Controller {
     }
 
     @Delete("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Delete")
     @Example<IntegrationResponse>({
         meta: META_TEMPLATE,

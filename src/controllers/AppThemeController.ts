@@ -86,9 +86,9 @@ const getThemePathByTerminalType = (type: TerminalTypes): string => {
 @Tags("AppTheme")
 export class AppThemesController extends Controller {
     @Get()
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetAll")
     @Example<IAppThemesResponse>({
         meta: META_TEMPLATE,
@@ -125,9 +125,9 @@ export class AppThemesController extends Controller {
 @Tags("AppTheme")
 export class AppThemeController extends Controller {
     @Get("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetOne")
     @Example<IAppThemeResponse>({
         meta: META_TEMPLATE,
@@ -160,8 +160,8 @@ export class AppThemeController extends Controller {
     }
 
     @Post()
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Create")
     @Example<IAppThemeResponse>({
         meta: META_TEMPLATE,
@@ -221,9 +221,9 @@ export class AppThemeController extends Controller {
     }
 
     @Put("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Update")
     @Example<IAppThemeResponse>({
         meta: META_TEMPLATE,
@@ -280,8 +280,8 @@ export class AppThemeController extends Controller {
     }
 
     @Delete("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Delete")
     @Example<IAppThemeResponse>({
         meta: META_TEMPLATE

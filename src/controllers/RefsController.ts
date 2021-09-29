@@ -67,9 +67,9 @@ const formatModel = (model: IRefDocument): IRef => ({
 @Tags("Ref")
 export class RefsController extends Controller {
     @Get()
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetAll")
     @Example<RefsResponse>({
         data: RESPONSE_TEMPLATE
@@ -100,9 +100,9 @@ export class RefsController extends Controller {
 @Tags("Ref")
 export class RefController extends Controller {
     @Get("{name}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetOne")
     @Example<RefResponse>({
         data: RESPONSE_SINGLE_TEMPLATE

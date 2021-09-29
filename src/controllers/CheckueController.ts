@@ -71,9 +71,9 @@ const META_TEMPLATE: ICheckueMeta = {
 @Tags("Checkue")
 export class CheckuesController extends Controller {
     @Get()
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetAll")
     @Example<CheckuesResponse>({
         meta: META_TEMPLATE,
@@ -107,9 +107,9 @@ export class CheckuesController extends Controller {
 @Tags("Checkue")
 export class CheckueController extends Controller {
     @Get("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetOne")
     @Example<CheckueResponse>({
         meta: META_TEMPLATE,
@@ -139,8 +139,8 @@ export class CheckueController extends Controller {
     }
 
     @Post()
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Create")
     @Example<CheckueResponse>({
         meta: META_TEMPLATE,
@@ -176,8 +176,8 @@ export class CheckueController extends Controller {
     }
 
     @Put("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Update")
     @Example<CheckueResponse>({
         meta: META_TEMPLATE,
@@ -232,8 +232,8 @@ export class CheckueController extends Controller {
     }
 
     @Delete("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Delete")
     @Example<CheckueResponse>({
         meta: META_TEMPLATE,

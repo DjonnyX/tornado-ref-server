@@ -76,9 +76,9 @@ export const RESPONSE_TEMPLATE: IOrderTypeItem = {
 @Tags("OrderType")
 export class OrderTypesController extends Controller {
     @Get()
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetAll")
     @Example<OrderTypesResponse>({
         meta: META_TEMPLATE,
@@ -112,9 +112,9 @@ export class OrderTypesController extends Controller {
 @Tags("OrderType")
 export class OrderTypeController extends Controller {
     @Get("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetOne")
     @Example<OrderTypeResponse>({
         meta: META_TEMPLATE,
@@ -144,8 +144,8 @@ export class OrderTypeController extends Controller {
     }
 
     @Post()
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Create")
     @Example<OrderTypeResponse>({
         meta: META_TEMPLATE,
@@ -192,8 +192,8 @@ export class OrderTypeController extends Controller {
     }
 
     @Put("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Update")
     @Example<OrderTypeResponse>({
         meta: META_TEMPLATE,
@@ -387,8 +387,8 @@ export class OrderTypeController extends Controller {
     }
 
     @Delete("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Delete")
     @Example<OrderTypeResponse>({
         meta: META_TEMPLATE,

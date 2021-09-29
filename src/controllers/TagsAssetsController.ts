@@ -138,9 +138,9 @@ const RESPONSE_TEMPLATE: IAssetItem = {
 @Tags("Tag assets")
 export class TagAssetsController extends Controller {
     @Get("{tagId}/assets")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetAll")
     @Example<ITagGetAllAssetsResponse>({
         meta: META_TEMPLATE,
@@ -208,9 +208,9 @@ export class TagAssetsController extends Controller {
     }
 
     @Get("{tagId}/assets/{langCode}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Get")
     @Example<ITagGetAssetsResponse>({
         meta: META_TEMPLATE,
@@ -253,8 +253,8 @@ export class TagAssetsController extends Controller {
     }
 
     /*@Post("{tagId}/asset/{langCode}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Create")
     @Example<ITagCreateAssetsResponse>({
         meta: META_TEMPLATE,
@@ -335,8 +335,8 @@ export class TagAssetsController extends Controller {
     }*/
 
     @Post("{tagId}/resource/{langCode}/{resourceType}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("CreateResource")
     @Example<ITagCreateAssetsResponse>({
         meta: META_TEMPLATE,
@@ -494,8 +494,8 @@ export class TagAssetsController extends Controller {
     }
 
     @Put("{tagId}/asset/{langCode}/{assetId}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Update")
     @Example<ITagCreateAssetsResponse>({
         meta: META_TEMPLATE,
@@ -575,8 +575,8 @@ export class TagAssetsController extends Controller {
     }
 
     @Delete("{tagId}/asset/{langCode}/{assetId}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Delete")
     @Example<ITagDeleteAssetsResponse>({
         meta: META_TEMPLATE,

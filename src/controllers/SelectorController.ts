@@ -95,9 +95,9 @@ const META_TEMPLATE: ISelectorsMeta = {
 @Tags("Selector")
 export class SelectorsController extends Controller {
     @Get()
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetAll")
     @Example<ISelectorsResponse>({
         meta: META_TEMPLATE,
@@ -127,9 +127,9 @@ export class SelectorsController extends Controller {
     }
 
     @Put("/positions")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("SetPositions")
     @Example<ISelectorsPositionsResponse>({
         meta: META_TEMPLATE,
@@ -183,9 +183,9 @@ export class SelectorsController extends Controller {
 @Tags("Selector")
 export class SelectorController extends Controller {
     @Get("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetOne")
     @Example<ISelectorResponse>({
         meta: META_TEMPLATE,
@@ -215,8 +215,8 @@ export class SelectorController extends Controller {
     }
 
     @Post()
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Create")
     @Example<ISelectorResponse>({
         meta: META_TEMPLATE,
@@ -301,8 +301,8 @@ export class SelectorController extends Controller {
     }
 
     @Put("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Update")
     @Example<ISelectorResponse>({
         meta: META_TEMPLATE,
@@ -431,8 +431,8 @@ export class SelectorController extends Controller {
     }
 
     @Delete("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Delete")
     @Example<ISelectorResponse>({
         meta: META_TEMPLATE,

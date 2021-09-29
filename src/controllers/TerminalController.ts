@@ -222,9 +222,9 @@ export class Deviceontroller extends Controller {
 @Tags("Terminal")
 export class TerminalsController extends Controller {
     @Get()
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetAll")
     @Example<ITerminalsResponse>({
         meta: META_TEMPLATE,
@@ -259,9 +259,9 @@ export class TerminalsController extends Controller {
 @Tags("Terminal")
 export class TerminalController extends Controller {
     @Get("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetOne")
     @Example<ITerminalResponse>({
         meta: META_TEMPLATE,
@@ -290,9 +290,9 @@ export class TerminalController extends Controller {
     }
 
     @Put("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Update")
     @Example<ITerminalResponse>({
         meta: META_TEMPLATE,
@@ -335,8 +335,8 @@ export class TerminalController extends Controller {
     }
 
     /*@Delete("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Delete")
     @Example<ITerminalResponse>({
         meta: META_TEMPLATE

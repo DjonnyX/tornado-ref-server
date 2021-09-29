@@ -88,9 +88,9 @@ const META_TEMPLATE: LanguageMeta = {
 @Tags("Language")
 export class LanguagesController extends Controller {
     @Get()
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetAll")
     @Example<LanguagesResponse>({
         meta: META_TEMPLATE,
@@ -124,9 +124,9 @@ export class LanguagesController extends Controller {
 @Tags("Language")
 export class LanguageController extends Controller {
     @Get("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetOne")
     @Example<LanguageResponse>({
         meta: META_TEMPLATE,
@@ -156,8 +156,8 @@ export class LanguageController extends Controller {
     }
 
     @Post()
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Create")
     @Example<LanguageResponse>({
         meta: META_TEMPLATE,
@@ -234,8 +234,8 @@ export class LanguageController extends Controller {
     }
 
     @Put("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Update")
     @Example<LanguageResponse>({
         meta: META_TEMPLATE,
@@ -372,8 +372,8 @@ export class LanguageController extends Controller {
     }
 
     @Delete("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Delete")
     @Example<LanguageResponse>({
         meta: META_TEMPLATE,

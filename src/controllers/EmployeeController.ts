@@ -65,9 +65,9 @@ const META_TEMPLATE: IEmployeeMeta = {
 @Tags("Employee")
 export class EmployeesController extends Controller {
     @Get()
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetAll")
     @Example<EmployeesResponse>({
         meta: META_TEMPLATE,
@@ -101,9 +101,9 @@ export class EmployeesController extends Controller {
 @Tags("Employee")
 export class EmployeeController extends Controller {
     @Get("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetOne")
     @Example<EmployeeResponse>({
         meta: META_TEMPLATE,
@@ -133,8 +133,8 @@ export class EmployeeController extends Controller {
     }
 
     @Post()
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Create")
     @Example<EmployeeResponse>({
         meta: META_TEMPLATE,
@@ -181,8 +181,8 @@ export class EmployeeController extends Controller {
     }
 
     @Put("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Update")
     @Example<EmployeeResponse>({
         meta: META_TEMPLATE,
@@ -237,8 +237,8 @@ export class EmployeeController extends Controller {
     }
 
     @Delete("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Delete")
     @Example<EmployeeResponse>({
         meta: META_TEMPLATE,

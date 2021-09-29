@@ -158,9 +158,9 @@ export const updateAd = async (id: string, client: string, params: IAdUpdateRequ
 @Tags("Ad")
 export class AdsController extends Controller {
     @Get()
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetAll")
     @Example<IAdsResponse>({
         meta: META_TEMPLATE,
@@ -194,9 +194,9 @@ export class AdsController extends Controller {
 @Tags("Ad")
 export class AdController extends Controller {
     @Get("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetOne")
     @Example<IAdResponse>({
         meta: META_TEMPLATE,
@@ -226,8 +226,8 @@ export class AdController extends Controller {
     }
 
     @Post()
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Create")
     @Example<IAdResponse>({
         meta: META_TEMPLATE,
@@ -258,8 +258,8 @@ export class AdController extends Controller {
     }
 
     @Put("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Update")
     @Example<IAdResponse>({
         meta: META_TEMPLATE,
@@ -302,8 +302,8 @@ export class AdController extends Controller {
     }
 
     @Delete("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Delete")
     @Example<IAdResponse>({
         meta: META_TEMPLATE,

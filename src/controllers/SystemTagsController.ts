@@ -72,9 +72,9 @@ const META_TEMPLATE: ISystemTagMeta = {
 @Tags("SystemTag")
 export class SystemTagsController extends Controller {
     @Get()
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetAll")
     @Example<ISystemTagsResponse>({
         meta: META_TEMPLATE,
@@ -104,9 +104,9 @@ export class SystemTagsController extends Controller {
     }
 
     @Put("/positions")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("SetPositions")
     @Example<ISystemTagsPositionsResponse>({
         meta: META_TEMPLATE,
@@ -160,9 +160,9 @@ export class SystemTagsController extends Controller {
 @Tags("SystemTag")
 export class SystemTagController extends Controller {
     @Get("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetOne")
     @Example<ISystemTagResponse>({
         meta: META_TEMPLATE,
@@ -192,8 +192,8 @@ export class SystemTagController extends Controller {
     }
 
     @Post()
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Create")
     @Example<ISystemTagResponse>({
         meta: META_TEMPLATE,
@@ -254,9 +254,9 @@ export class SystemTagController extends Controller {
     }
 
     @Put("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Update")
     @Example<ISystemTagResponse>({
         meta: META_TEMPLATE,
@@ -308,8 +308,8 @@ export class SystemTagController extends Controller {
     }
 
     @Delete("{id}")
-    @Security("integrationAccessToken")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Delete")
     @Example<ISystemTagResponse>({
         meta: META_TEMPLATE
