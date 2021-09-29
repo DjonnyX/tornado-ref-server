@@ -234,7 +234,7 @@ export class NodesController extends Controller {
 
         try {
             const items = await findAllWithFilter(NodeModel.find({ client }), request);
-            const ref = await getRef(getClientId(request), RefTypes.NODES);
+            const ref = await getRef(client, RefTypes.NODES);
             return {
                 meta: { ref },
                 data: items.map(v => formatModel(v))
@@ -454,7 +454,7 @@ export class NodeController extends Controller {
         }
 
         if (body.type === NodeTypes.SELECTOR_NODE) {
-            const hasRecursion = await checkOnRecursion(getClientId(request), body.parentId, body.contentId);
+            const hasRecursion = await checkOnRecursion(client, body.parentId, body.contentId);
             if (hasRecursion) {
                 this.setStatus(500);
                 return {

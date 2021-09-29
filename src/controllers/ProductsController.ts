@@ -135,6 +135,7 @@ export class ProductsController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<IProductsResponse> {
         const client = getClientId(request);
+
         try {
             const items = await findAllWithFilter(ProductModel.find({ client }), request);
             const ref = await getRef(client, RefTypes.PRODUCTS);
@@ -169,6 +170,7 @@ export class ProductsController extends Controller {
     })
     public async positions(@Body() body: Array<IEntityPosition>, @Request() request: IAuthRequest): Promise<IProductsPositionsResponse> {
         const client = getClientId(request);
+
         try {
             const items: Array<IProductDocument> = await findAllWithFilter(ProductModel.find({ client }), request);
 
@@ -221,6 +223,7 @@ export class ProductController extends Controller {
     })
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<IProductResponse> {
         const client = getClientId(request);
+
         try {
             const item = await ProductModel.findById(id);
             const ref = await getRef(client, RefTypes.PRODUCTS);
@@ -251,6 +254,7 @@ export class ProductController extends Controller {
     })
     public async create(@Body() body: IProductCreateRequest, @Request() request: IAuthRequest): Promise<IProductResponse> {
         const client = getClientId(request);
+
         let positions: Array<IProductDocument>;
         try {
             positions = await ProductModel.find({ client });
@@ -322,6 +326,7 @@ export class ProductController extends Controller {
     })
     public async update(id: string, @Body() body: IProductUpdateRequest, @Request() request: IAuthRequest): Promise<IProductResponse> {
         const client = getClientId(request);
+
         let defaultLanguage: ILanguageDocument;
         try {
             defaultLanguage = await LanguageModel.findOne({ client, isDefault: true });
@@ -449,6 +454,7 @@ export class ProductController extends Controller {
     })
     public async delete(id: string, @Request() request: IAuthRequest): Promise<IProductResponse> {
         const client = getClientId(request);
+
         let product: IProductDocument;
         try {
             product = await ProductModel.findByIdAndDelete(id);

@@ -85,9 +85,11 @@ export class OrderTypesController extends Controller {
         data: [RESPONSE_TEMPLATE],
     })
     public async getAll(@Request() request: IAuthRequest): Promise<OrderTypesResponse> {
+        const client = getClientId(request);
+
         try {
-            const items = await findAllWithFilter(OrderTypeModel.find({ client: getClientId(request) }), request);
-            const ref = await getRef(getClientId(request), RefTypes.ORDER_TYPES);
+            const items = await findAllWithFilter(OrderTypeModel.find({ client }), request);
+            const ref = await getRef(client, RefTypes.ORDER_TYPES);
             return {
                 meta: { ref },
                 data: items.map(v => formatOrderTypeModel(v)),
@@ -119,9 +121,11 @@ export class OrderTypeController extends Controller {
         data: RESPONSE_TEMPLATE,
     })
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<OrderTypeResponse> {
+        const client = getClientId(request);
+
         try {
             const item = await OrderTypeModel.findById(id);
-            const ref = await getRef(getClientId(request), RefTypes.ORDER_TYPES);
+            const ref = await getRef(client, RefTypes.ORDER_TYPES);
             return {
                 meta: { ref },
                 data: formatOrderTypeModel(item),
@@ -148,10 +152,11 @@ export class OrderTypeController extends Controller {
         data: RESPONSE_TEMPLATE,
     })
     public async create(@Body() body: OrderTypeCreateRequest, @Request() request: IAuthRequest): Promise<OrderTypeResponse> {
-        let orderTypes: Array<IOrderTypeDocument>;
+        const client = getClientId(request);
 
+        let orderTypes: Array<IOrderTypeDocument>;
         try {
-            orderTypes = await OrderTypeModel.find({ client: getClientId(request) });
+            orderTypes = await OrderTypeModel.find({ client });
         } catch (err) {
             this.setStatus(500);
             return {
@@ -166,9 +171,9 @@ export class OrderTypeController extends Controller {
 
         try {
             body.isDefault = orderTypes.length === 0;
-            const item = new OrderTypeModel({ ...body, client: getClientId(request) });
+            const item = new OrderTypeModel({ ...body, client });
             const savedItem = await item.save();
-            const ref = await riseRefVersion(getClientId(request), RefTypes.ORDER_TYPES);
+            const ref = await riseRefVersion(client, RefTypes.ORDER_TYPES);
             return {
                 meta: { ref },
                 data: formatOrderTypeModel(savedItem),
@@ -195,9 +200,11 @@ export class OrderTypeController extends Controller {
         data: RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() body: OrderTypeCreateRequest, @Request() request: IAuthRequest): Promise<OrderTypeResponse> {
+        const client = getClientId(request);
+
         let defaultLanguage: ILanguageDocument;
         try {
-            defaultLanguage = await LanguageModel.findOne({ client: getClientId(request), isDefault: true });
+            defaultLanguage = await LanguageModel.findOne({ client, isDefault: true });
         } catch (err) {
             this.setStatus(500);
             return {
@@ -268,7 +275,7 @@ export class OrderTypeController extends Controller {
             await Promise.all(promises);
 
             if (isAssetsChanged) {
-                await riseRefVersion(getClientId(request), RefTypes.ASSETS);
+                await riseRefVersion(client, RefTypes.ASSETS);
             }
 
             // выставление ассетов от предыдущего состояния
@@ -296,7 +303,7 @@ export class OrderTypeController extends Controller {
         }
 
         try {
-            const orderTypes: Array<IOrderTypeDocument> = await OrderTypeModel.find({ client: getClientId(request) });
+            const orderTypes: Array<IOrderTypeDocument> = await OrderTypeModel.find({ client });
 
             const promises = new Array<Promise<void>>();
 
@@ -361,7 +368,7 @@ export class OrderTypeController extends Controller {
         try {
             await item.save();
 
-            const ref = await riseRefVersion(getClientId(request), RefTypes.ORDER_TYPES);
+            const ref = await riseRefVersion(client, RefTypes.ORDER_TYPES);
             return {
                 meta: { ref },
                 data: formatOrderTypeModel(item),
@@ -387,9 +394,11 @@ export class OrderTypeController extends Controller {
         meta: META_TEMPLATE,
     })
     public async delete(id: string, @Request() request: IAuthRequest): Promise<OrderTypeResponse> {
+        const client = getClientId(request);
+
         let orderTypes: Array<IOrderTypeDocument>;
         try {
-            orderTypes = await OrderTypeModel.find({ client: getClientId(request) });
+            orderTypes = await OrderTypeModel.find({ client });
         } catch (err) { }
 
         if (orderTypes && orderTypes.length === 1) {
@@ -442,7 +451,7 @@ export class OrderTypeController extends Controller {
             await Promise.all(promises);
 
             if (!!isAssetsChanged) {
-                await riseRefVersion(getClientId(request), RefTypes.ASSETS);
+                await riseRefVersion(client, RefTypes.ASSETS);
             }
         } catch (err) {
             this.setStatus(500);
@@ -457,7 +466,7 @@ export class OrderTypeController extends Controller {
         }
 
         try {
-            const ref = await riseRefVersion(getClientId(request), RefTypes.ORDER_TYPES);
+            const ref = await riseRefVersion(client, RefTypes.ORDER_TYPES);
             return {
                 meta: { ref }
             };

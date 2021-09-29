@@ -80,6 +80,8 @@ const RESPONSE_TEMPLATE: IAssetItem = {
 };
 
 export const uploadAsset = async (request: IAuthRequest, allowedExtensions: Array<AssetExtensions>, active = true, extra?: any): Promise<ICreateAssetsResponse> => {
+    const client = getClientId(request);
+
     let fileInfo: IFileInfo;
     try {
         fileInfo = await assetsUploader("file", allowedExtensions, request, extra);
@@ -97,8 +99,8 @@ export const uploadAsset = async (request: IAuthRequest, allowedExtensions: Arra
     let asset: IAssetDocument;
     let assetRef: IRef;
     try {
-        asset = new AssetModel({ ...fileInfo, active, client: getClientId(request) });
-        assetRef = await riseRefVersion(getClientId(request), RefTypes.ASSETS);
+        asset = new AssetModel({ ...fileInfo, active, client });
+        assetRef = await riseRefVersion(client, RefTypes.ASSETS);
         await asset.save();
     } catch (err) {
         return {
@@ -151,9 +153,11 @@ export class AssetsController extends Controller {
         data: [RESPONSE_TEMPLATE]
     })
     public async getAll(@Request() request: IAuthRequest): Promise<IGetAssetsResponse> {
+        const client = getClientId(request);
+
         try {
-            const items = await findAllWithFilter(AssetModel.find({ client: getClientId(request) }), request);
-            const ref = await getRef(getClientId(request), RefTypes.ASSETS);
+            const items = await findAllWithFilter(AssetModel.find({ client }), request);
+            const ref = await getRef(client, RefTypes.ASSETS);
             return {
                 meta: { ref },
                 data: items.map(v => formatAssetModel(v))

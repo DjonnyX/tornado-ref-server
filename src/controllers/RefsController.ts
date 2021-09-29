@@ -75,8 +75,10 @@ export class RefsController extends Controller {
         data: RESPONSE_TEMPLATE
     })
     public async getAll(@Request() request: IAuthRequest, @Query() theme?: TerminalTypes): Promise<RefsResponse> {
+        const client = getClientId(request);
+
         try {
-            const items = await findAllWithFilter(RefModel.find({ client: getClientId(request) }), request) as Array<IRefDocument>;
+            const items = await findAllWithFilter(RefModel.find({ client }), request) as Array<IRefDocument>;
             return {
                 data: items.filter(v => v.name !== RefTypes.THEMES || v.extra?.type === theme).map(v => formatModel(v))
             };
@@ -106,8 +108,10 @@ export class RefController extends Controller {
         data: RESPONSE_SINGLE_TEMPLATE
     })
     public async getOne(name: string, @Request() request: IAuthRequest): Promise<RefResponse> {
+        const client = getClientId(request);
+
         try {
-            const item = await RefModel.findOne({ name, client: getClientId(request) });
+            const item = await RefModel.findOne({ name, client });
             return {
                 data: formatModel(item)
             };

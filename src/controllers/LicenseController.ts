@@ -145,12 +145,14 @@ export class LicensesForClientController extends Controller {
         data: [LICENSE_ACCOUNT_RESPONSE_TEMPLATE],
     })
     public async getLicense(@Request() request: IAuthRequest): Promise<LicensesAccountResponse> {
+        const client = getClientId(request);
+
         const response = await licServerApiService.getLicensesForClient<LicensesResponse>(request, { clientToken: request.token });
 
         if (!response.error) {
             let terminals: Array<ITerminalDocument>;
             try {
-                terminals = await TerminalModel.find({ client: getClientId(request) });
+                terminals = await TerminalModel.find({ client });
             } catch (err) {
                 this.setStatus(500);
                 return {
@@ -190,12 +192,14 @@ export class LicenseForClientController extends Controller {
         data: LICENSE_ACCOUNT_RESPONSE_TEMPLATE,
     })
     public async getLicense(id: string, @Request() request: IAuthRequest): Promise<LicenseAccountResponse> {
+        const client = getClientId(request);
+
         const response = await licServerApiService.getLicenseForClient<LicenseResponse>(id, request, { clientToken: request.token });
 
         if (!response.error) {
             let terminal: ITerminalDocument;
             try {
-                terminal = await TerminalModel.findOne({ client: getClientId(request), licenseId: response.data.id });
+                terminal = await TerminalModel.findOne({ client, licenseId: response.data.id });
             } catch (err) {
                 this.setStatus(500);
                 return {

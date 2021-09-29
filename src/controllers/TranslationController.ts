@@ -79,9 +79,11 @@ export class TranslationsController extends Controller {
         data: [RESPONSE_TEMPLATE],
     })
     public async getAll(@Request() request: IAuthRequest): Promise<TranslationsResponse> {
+        const client = getClientId(request);
+
         try {
-            const items = await findAllWithFilter(TranslationModel.find({ client: getClientId(request) }), request);
-            const ref = await getRef(getClientId(request), RefTypes.TRANSLATIONS);
+            const items = await findAllWithFilter(TranslationModel.find({ client }), request);
+            const ref = await getRef(client, RefTypes.TRANSLATIONS);
             return {
                 meta: { ref },
                 data: items.map(v => formatTranslationModel(v)),
@@ -113,9 +115,11 @@ export class TranslationController extends Controller {
         data: RESPONSE_TEMPLATE,
     })
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<TranslationResponse> {
+        const client = getClientId(request);
+
         try {
             const item = await TranslationModel.findById(id);
-            const ref = await getRef(getClientId(request), RefTypes.TRANSLATIONS);
+            const ref = await getRef(client, RefTypes.TRANSLATIONS);
             return {
                 meta: { ref },
                 data: formatTranslationModel(item),
@@ -172,6 +176,8 @@ export class TranslationController extends Controller {
         data: RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() body: TranslationUpdateRequest, @Request() request: IAuthRequest): Promise<TranslationResponse> {
+        const client = getClientId(request);
+
         try {
             const item = await TranslationModel.findById(id);
 
@@ -184,7 +190,7 @@ export class TranslationController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(getClientId(request), RefTypes.TRANSLATIONS);
+            const ref = await riseRefVersion(client, RefTypes.TRANSLATIONS);
             return {
                 meta: { ref },
                 data: formatTranslationModel(item),

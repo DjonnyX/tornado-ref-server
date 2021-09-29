@@ -72,9 +72,11 @@ export class StoresController extends Controller {
         data: [RESPONSE_TEMPLATE]
     })
     public async getAll(@Request() request: IAuthRequest): Promise<IStoresResponse> {
+        const client = getClientId(request);
+
         try {
-            const items = await findAllWithFilter(StoreModel.find({ client: getClientId(request) }), request);
-            const ref = await getRef(getClientId(request), RefTypes.STORES);
+            const items = await findAllWithFilter(StoreModel.find({ client }), request);
+            const ref = await getRef(client, RefTypes.STORES);
             return {
                 meta: { ref },
                 data: items.map(v => formatStoreModel(v))
@@ -106,9 +108,11 @@ export class StoreController extends Controller {
         data: RESPONSE_TEMPLATE
     })
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<IStoreResponse> {
+        const client = getClientId(request);
+
         try {
             const item = await StoreModel.findById(id);
-            const ref = await getRef(getClientId(request), RefTypes.STORES);
+            const ref = await getRef(client, RefTypes.STORES);
             return {
                 meta: { ref },
                 data: formatStoreModel(item),
@@ -135,10 +139,12 @@ export class StoreController extends Controller {
         data: RESPONSE_TEMPLATE,
     })
     public async create(@Body() body: IStoreCreateRequest, @Request() request: IAuthRequest): Promise<IStoreResponse> {
+        const client = getClientId(request);
+
         try {
-            const item = new StoreModel({ ...body, client: getClientId(request) });
+            const item = new StoreModel({ ...body, client });
             const savedItem = await item.save();
-            const ref = await riseRefVersion(getClientId(request), RefTypes.STORES);
+            const ref = await riseRefVersion(client, RefTypes.STORES);
             return {
                 meta: { ref },
                 data: formatStoreModel(savedItem),
@@ -166,6 +172,8 @@ export class StoreController extends Controller {
         data: RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() body: IStoreUpdateRequest, @Request() request: IAuthRequest): Promise<IStoreResponse> {
+        const client = getClientId(request);
+
         try {
             const item = await StoreModel.findById(id);
 
@@ -178,7 +186,7 @@ export class StoreController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(getClientId(request), RefTypes.STORES);
+            const ref = await riseRefVersion(client, RefTypes.STORES);
             return {
                 meta: { ref },
                 data: formatStoreModel(item),
@@ -204,6 +212,8 @@ export class StoreController extends Controller {
         meta: META_TEMPLATE
     })
     public async delete(id: string, @Request() request: IAuthRequest): Promise<IStoreResponse> {
+        const client = getClientId(request);
+
         let bp: IStore;
         try {
             bp = await StoreModel.findByIdAndDelete(id);
@@ -220,7 +230,7 @@ export class StoreController extends Controller {
         }
 
         try {
-            const ref = await riseRefVersion(getClientId(request), RefTypes.STORES);
+            const ref = await riseRefVersion(client, RefTypes.STORES);
             return {
                 meta: { ref },
             };

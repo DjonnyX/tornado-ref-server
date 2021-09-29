@@ -321,6 +321,8 @@ export class AdAssetsController extends Controller {
         }
     })
     public async resource(adId: string, langCode: string, resourceType: AdImageTypes, @Request() request: IAuthRequest): Promise<IAdCreateAssetsResponse> {
+        const client = getClientId(request);
+
         let assetsInfo: ICreateAssetsResponse;
         try {
             assetsInfo = await uploadAsset(request, [
@@ -360,7 +362,7 @@ export class AdAssetsController extends Controller {
 
         let defaultLanguage: ILanguageDocument;
         try {
-            defaultLanguage = await LanguageModel.findOne({ client: getClientId(request), isDefault: true });
+            defaultLanguage = await LanguageModel.findOne({ client, isDefault: true });
         } catch (err) {
             this.setStatus(500);
             return {
@@ -402,7 +404,7 @@ export class AdAssetsController extends Controller {
                     await deleteAsset(asset.path);
                     await deleteAsset(asset.mipmap.x128);
                     await deleteAsset(asset.mipmap.x32);
-                    await riseRefVersion(getClientId(request), RefTypes.ASSETS);
+                    await riseRefVersion(client, RefTypes.ASSETS);
                 }
             } catch (err) {
                 this.setStatus(500);
@@ -438,7 +440,7 @@ export class AdAssetsController extends Controller {
 
             savedAd = await ad.save();
 
-            adRef = await riseRefVersion(getClientId(request), RefTypes.ADS);
+            adRef = await riseRefVersion(client, RefTypes.ADS);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -479,6 +481,7 @@ export class AdAssetsController extends Controller {
         }
     })
     public async update(adId: string, langCode: string, assetId: string, @Body() body: IAdAssetUpdateRequest, @Request() request: IAuthRequest): Promise<IAdCreateAssetsResponse> {
+        const client = getClientId(request);
 
         let ad: IAdDocument;
         try {
@@ -497,7 +500,7 @@ export class AdAssetsController extends Controller {
 
         let adRef: IRef;
         try {
-            adRef = await getRef(getClientId(request), RefTypes.ADS);
+            adRef = await getRef(client, RefTypes.ADS);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -519,7 +522,7 @@ export class AdAssetsController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(getClientId(request), RefTypes.ASSETS);
+            const ref = await riseRefVersion(client, RefTypes.ASSETS);
             return {
                 meta: {
                     asset: {
@@ -555,6 +558,8 @@ export class AdAssetsController extends Controller {
         meta: META_TEMPLATE
     })
     public async delete(adId: string, langCode: string, assetId: string, @Request() request: IAuthRequest): Promise<IAdDeleteAssetsResponse> {
+        const client = getClientId(request);
+
         let ad: IAdDocument;
         try {
             ad = await AdModel.findById(adId);
@@ -581,7 +586,7 @@ export class AdAssetsController extends Controller {
                     await deleteAsset(asset.path);
                     await deleteAsset(asset.mipmap.x128);
                     await deleteAsset(asset.mipmap.x32);
-                    assetRef = await riseRefVersion(getClientId(request), RefTypes.ASSETS);
+                    assetRef = await riseRefVersion(client, RefTypes.ASSETS);
                 }
             } catch (err) {
                 this.setStatus(500);
@@ -605,7 +610,7 @@ export class AdAssetsController extends Controller {
 
             await ad.save();
 
-            adsRef = await riseRefVersion(getClientId(request), RefTypes.ADS);
+            adsRef = await riseRefVersion(client, RefTypes.ADS);
             return {
                 meta: {
                     ad: {

@@ -105,6 +105,7 @@ export class SelectorsController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<ISelectorsResponse> {
         const client = getClientId(request);
+
         try {
             const items = await findAllWithFilter(SelectorModel.find({ client }), request);
             const ref = await getRef(client, RefTypes.SELECTORS);
@@ -139,6 +140,7 @@ export class SelectorsController extends Controller {
     })
     public async positions(@Body() body: Array<IEntityPosition>, @Request() request: IAuthRequest): Promise<ISelectorsPositionsResponse> {
         const client = getClientId(request);
+
         try {
             const items: Array<ISelectorDocument> = await findAllWithFilter(SelectorModel.find({ client }), request);
 
@@ -191,6 +193,7 @@ export class SelectorController extends Controller {
     })
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<ISelectorResponse> {
         const client = getClientId(request);
+
         try {
             const item = await SelectorModel.findById(id);
             const ref = await getRef(client, RefTypes.SELECTORS);
@@ -221,6 +224,7 @@ export class SelectorController extends Controller {
     })
     public async create(@Body() body: ISelectorCreateRequest, @Request() request: IAuthRequest): Promise<ISelectorResponse> {
         const client = getClientId(request);
+
         let selectors: Array<ISelectorDocument>;
         try {
             selectors = await SelectorModel.find({ client });
@@ -306,6 +310,7 @@ export class SelectorController extends Controller {
     })
     public async update(id: string, @Body() body: ISelectorUpdateRequest, @Request() request: IAuthRequest): Promise<ISelectorResponse> {
         const client = getClientId(request);
+
         let defaultLanguage: ILanguageDocument;
         try {
             defaultLanguage = await LanguageModel.findOne({ client, isDefault: true });
@@ -434,6 +439,7 @@ export class SelectorController extends Controller {
     })
     public async delete(id: string, @Request() request: IAuthRequest): Promise<ISelectorResponse> {
         const client = getClientId(request);
+
         let selector: ISelectorDocument;
         try {
             selector = await SelectorModel.findByIdAndDelete(id);

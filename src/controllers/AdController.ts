@@ -167,9 +167,11 @@ export class AdsController extends Controller {
         data: [RESPONSE_TEMPLATE],
     })
     public async getAll(@Request() request: IAuthRequest, @Query() type?: AdTypes): Promise<IAdsResponse> {
+        const client = getClientId(request);
+
         try {
-            const items = await findAllWithFilter(AdModel.find({ client: getClientId(request) }), request);
-            const ref = await getRef(getClientId(request), RefTypes.ADS);
+            const items = await findAllWithFilter(AdModel.find({ client }), request);
+            const ref = await getRef(client, RefTypes.ADS);
             return {
                 meta: { ref },
                 data: items.map((v: IAdDocument) => formatAdModel(v)),
@@ -201,9 +203,11 @@ export class AdController extends Controller {
         data: RESPONSE_TEMPLATE,
     })
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<IAdResponse> {
+        const client = getClientId(request);
+
         try {
             const item = await AdModel.findById(id);
-            const ref = await getRef(getClientId(request), RefTypes.ADS);
+            const ref = await getRef(client, RefTypes.ADS);
             return {
                 meta: { ref },
                 data: formatAdModel(item),
@@ -230,10 +234,12 @@ export class AdController extends Controller {
         data: RESPONSE_TEMPLATE,
     })
     public async create(@Body() body: IAdCreateRequest, @Request() request: IAuthRequest): Promise<IAdResponse> {
+        const client = getClientId(request);
+
         try {
-            const item = new AdModel({ ...body, client: getClientId(request) });
+            const item = new AdModel({ ...body, client });
             const savedItem = await item.save();
-            const ref = await riseRefVersion(getClientId(request), RefTypes.ADS);
+            const ref = await riseRefVersion(client, RefTypes.ADS);
             return {
                 meta: { ref },
                 data: formatAdModel(savedItem),
@@ -260,11 +266,13 @@ export class AdController extends Controller {
         data: RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() body: IAdUpdateRequest, @Request() request: IAuthRequest): Promise<IAdResponse> {
+        const client = getClientId(request);
+
         if (body.active === false) {
             const item = await AdModel.findById(id);
 
             if (item.type !== AdTypes.BANNER) {
-                const ads = await AdModel.find({ client: getClientId(request), type: item.type });
+                const ads = await AdModel.find({ client, type: item.type });
 
                 if (ads.length <= 1) {
                     body.active = true;
@@ -273,9 +281,9 @@ export class AdController extends Controller {
         }
 
         try {
-            const item = await updateAd(id, getClientId(request), body);
+            const item = await updateAd(id, client, body);
 
-            const ref = await riseRefVersion(getClientId(request), RefTypes.ADS);
+            const ref = await riseRefVersion(client, RefTypes.ADS);
             return {
                 meta: { ref },
                 data: formatAdModel(item),
@@ -301,9 +309,11 @@ export class AdController extends Controller {
         meta: META_TEMPLATE,
     })
     public async delete(id: string, @Request() request: IAuthRequest): Promise<IAdResponse> {
+        const client = getClientId(request);
+
         const item = await AdModel.findById(id);
         if (item.type !== AdTypes.BANNER) {
-            const ads = await AdModel.find({ client: getClientId(request), type: item.type });
+            const ads = await AdModel.find({ client, type: item.type });
 
             if (ads.length <= 1) {
                 this.setStatus(500);
@@ -356,7 +366,7 @@ export class AdController extends Controller {
             await Promise.all(promises);
 
             if (!!isAssetsChanged) {
-                await riseRefVersion(getClientId(request), RefTypes.ASSETS);
+                await riseRefVersion(client, RefTypes.ASSETS);
             }
         } catch (err) {
             this.setStatus(500);
@@ -371,7 +381,7 @@ export class AdController extends Controller {
         }
 
         try {
-            const ref = await riseRefVersion(getClientId(request), RefTypes.ADS);
+            const ref = await riseRefVersion(client, RefTypes.ADS);
             return {
                 meta: { ref },
             };
