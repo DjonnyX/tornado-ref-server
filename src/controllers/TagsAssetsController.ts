@@ -138,6 +138,7 @@ const RESPONSE_TEMPLATE: IAssetItem = {
 @Tags("Tag assets")
 export class TagAssetsController extends Controller {
     @Get("{tagId}/assets")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("GetAll")
@@ -207,6 +208,7 @@ export class TagAssetsController extends Controller {
     }
 
     @Get("{tagId}/assets/{langCode}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("Get")
@@ -251,6 +253,7 @@ export class TagAssetsController extends Controller {
     }
 
     /*@Post("{tagId}/asset/{langCode}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Create")
     @Example<ITagCreateAssetsResponse>({
@@ -332,6 +335,7 @@ export class TagAssetsController extends Controller {
     }*/
 
     @Post("{tagId}/resource/{langCode}/{resourceType}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("CreateResource")
     @Example<ITagCreateAssetsResponse>({
@@ -488,6 +492,7 @@ export class TagAssetsController extends Controller {
     }
 
     @Put("{tagId}/asset/{langCode}/{assetId}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Update")
     @Example<ITagCreateAssetsResponse>({
@@ -567,6 +572,7 @@ export class TagAssetsController extends Controller {
     }
 
     @Delete("{tagId}/asset/{langCode}/{assetId}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Delete")
     @Example<ITagDeleteAssetsResponse>({

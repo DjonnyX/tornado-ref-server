@@ -80,7 +80,7 @@ export class RolesController extends Controller {
         data: [ROLE_RESPONSE_TEMPLATE],
     })
     public async getRoles(@Request() request: IAuthRequest): Promise<RolesGetResponse> {
-        return await licServerApiService.getRoles(request.query, { clientToken: request.token });
+        return await licServerApiService.getRoles(request, { clientToken: request.token });
     }
 }
 
@@ -88,6 +88,7 @@ export class RolesController extends Controller {
 @Tags("Role")
 export class RoleController extends Controller {
     @Get("{name}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("GetOne")
     @Example<RoleResponse>({
@@ -95,10 +96,11 @@ export class RoleController extends Controller {
         data: ROLE_RESPONSE_TEMPLATE,
     })
     public async getRole(name: string, @Request() request: IAuthRequest): Promise<RoleResponse> {
-        return await licServerApiService.getRole(name, { clientToken: request.token });
+        return await licServerApiService.getRole(name, request, { clientToken: request.token });
     }
 
     @Post()
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Create")
     @Example<RoleResponse>({
@@ -106,10 +108,11 @@ export class RoleController extends Controller {
         data: ROLE_RESPONSE_TEMPLATE,
     })
     public async createRole(@Body() body: ICreateRoleParams, @Request() request: IAuthRequest): Promise<RoleResponse> {
-        return await licServerApiService.createRole(body as any, { clientToken: request.token });
+        return await licServerApiService.createRole(body as any, request, { clientToken: request.token });
     }
 
     @Put("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Update")
     @Example<RoleResponse>({
@@ -117,16 +120,17 @@ export class RoleController extends Controller {
         data: ROLE_RESPONSE_TEMPLATE,
     })
     public async updateRole(id: string, @Body() body: IUpdateRoleParams, @Request() request: IAuthRequest): Promise<RoleResponse> {
-        return await licServerApiService.updateRole(id, body, { clientToken: request.token });
+        return await licServerApiService.updateRole(id, body, request, { clientToken: request.token });
     }
 
     @Delete("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Delete")
     @Example<RoleResponse>({
         meta: META_TEMPLATE,
     })
     public async deleteRole(id: string, @Request() request: IAuthRequest): Promise<RoleResponse> {
-        return await licServerApiService.deleteRole(id, { clientToken: request.token });
+        return await licServerApiService.deleteRole(id, request, { clientToken: request.token });
     }
 }

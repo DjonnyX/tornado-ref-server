@@ -11,6 +11,11 @@
         "scheme": "bearer",
         "bearerFormat": "JWT"
       },
+      "integrationAccessToken": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      },
       "terminalAccessToken": {
         "type": "apiKey",
         "name": "x-access-token",

@@ -158,6 +158,7 @@ export const updateAd = async (id: string, client: string, params: IAdUpdateRequ
 @Tags("Ad")
 export class AdsController extends Controller {
     @Get()
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("GetAll")
@@ -191,6 +192,7 @@ export class AdsController extends Controller {
 @Tags("Ad")
 export class AdController extends Controller {
     @Get("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("GetOne")
@@ -220,6 +222,7 @@ export class AdController extends Controller {
     }
 
     @Post()
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Create")
     @Example<IAdResponse>({
@@ -249,6 +252,7 @@ export class AdController extends Controller {
     }
 
     @Put("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Update")
     @Example<IAdResponse>({
@@ -290,6 +294,7 @@ export class AdController extends Controller {
     }
 
     @Delete("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Delete")
     @Example<IAdResponse>({

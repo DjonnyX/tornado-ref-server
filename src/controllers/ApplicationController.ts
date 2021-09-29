@@ -69,6 +69,7 @@ const META_TEMPLATE: IApplicationInfoMeta = {
 @Tags("Application")
 export class ApplicationsController extends Controller {
     @Get()
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("GetAll")
     @Example<ApplicationsGetResponse>({
@@ -76,7 +77,7 @@ export class ApplicationsController extends Controller {
         data: [APPLICATION_RESPONSE_TEMPLATE],
     })
     public async getApplication(@Request() request: IAuthRequest): Promise<ApplicationsGetResponse> {
-        return await licServerApiService.getApplications(request.token);
+        return await licServerApiService.getApplications(request, { clientToken: request.token });
     }
 }
 
@@ -84,6 +85,7 @@ export class ApplicationsController extends Controller {
 @Tags("Application")
 export class ApplicationController extends Controller {
     @Get("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("GetOne")
     @Example<ApplicationResponse>({
@@ -91,10 +93,11 @@ export class ApplicationController extends Controller {
         data: APPLICATION_RESPONSE_TEMPLATE,
     })
     public async getApplication(id: string, @Request() request: IAuthRequest): Promise<ApplicationResponse> {
-        return await licServerApiService.getApplication(id, request.token);
+        return await licServerApiService.getApplication(id, request, { clientToken: request.token });
     }
 
     @Post()
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Create")
     @Example<ApplicationResponse>({
@@ -102,10 +105,11 @@ export class ApplicationController extends Controller {
         data: APPLICATION_RESPONSE_TEMPLATE,
     })
     public async createApplication(@Body() body: ICreateApplicationParams, @Request() request: IAuthRequest): Promise<ApplicationResponse> {
-        return await licServerApiService.createApplication(body as any, request.token);
+        return await licServerApiService.createApplication(body as any, request, { clientToken: request.token });
     }
 
     @Put("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Update")
     @Example<ApplicationResponse>({
@@ -113,16 +117,17 @@ export class ApplicationController extends Controller {
         data: APPLICATION_RESPONSE_TEMPLATE,
     })
     public async updateApplication(id: string, @Body() body: IUpdateApplicationParams, @Request() request: IAuthRequest): Promise<ApplicationResponse> {
-        return await licServerApiService.updateApplication(id, body as any, request.token);
+        return await licServerApiService.updateApplication(id, body as any, request, { clientToken: request.token });
     }
 
     @Delete("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Delete")
     @Example<ApplicationResponse>({
         meta: META_TEMPLATE,
     })
     public async deleteApplication(id: string, @Request() request: IAuthRequest): Promise<ApplicationResponse> {
-        return await licServerApiService.deleteApplication(id, request.token);
+        return await licServerApiService.deleteApplication(id, request, { clientToken: request.token });
     }
 }

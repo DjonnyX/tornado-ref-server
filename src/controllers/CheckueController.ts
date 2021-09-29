@@ -71,6 +71,7 @@ const META_TEMPLATE: ICheckueMeta = {
 @Tags("Checkue")
 export class CheckuesController extends Controller {
     @Get()
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("GetAll")
@@ -104,6 +105,7 @@ export class CheckuesController extends Controller {
 @Tags("Checkue")
 export class CheckueController extends Controller {
     @Get("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("GetOne")
@@ -133,6 +135,7 @@ export class CheckueController extends Controller {
     }
 
     @Post()
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Create")
     @Example<CheckueResponse>({
@@ -167,6 +170,7 @@ export class CheckueController extends Controller {
     }
 
     @Put("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Update")
     @Example<CheckueResponse>({
@@ -220,6 +224,7 @@ export class CheckueController extends Controller {
     }
 
     @Delete("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Delete")
     @Example<CheckueResponse>({

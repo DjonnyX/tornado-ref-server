@@ -125,6 +125,7 @@ const META_TEMPLATE: IProductsMeta = {
 @Tags("Product")
 export class ProductsController extends Controller {
     @Get()
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("GetAll")
@@ -155,6 +156,7 @@ export class ProductsController extends Controller {
     }
 
     @Put("/positions")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("SetPositions")
@@ -209,6 +211,7 @@ export class ProductsController extends Controller {
 @Tags("Product")
 export class ProductController extends Controller {
     @Get("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("GetOne")
@@ -239,6 +242,7 @@ export class ProductController extends Controller {
     }
 
     @Post()
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Create")
     @Example<IProductResponse>({
@@ -309,6 +313,7 @@ export class ProductController extends Controller {
     }
 
     @Put("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Update")
     @Example<IProductResponse>({
@@ -436,6 +441,7 @@ export class ProductController extends Controller {
     }
 
     @Delete("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Delete")
     @Example<IProductResponse>({

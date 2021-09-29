@@ -67,6 +67,7 @@ const formatModel = (model: IRefDocument): IRef => ({
 @Tags("Ref")
 export class RefsController extends Controller {
     @Get()
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("GetAll")
@@ -97,6 +98,7 @@ export class RefsController extends Controller {
 @Tags("Ref")
 export class RefController extends Controller {
     @Get("{name}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("GetOne")

@@ -174,6 +174,7 @@ const validateUpdateNode = (node: INodeUpdateRequest): joi.ValidationResult => {
 @Tags("Node")
 export class RootNodesController extends Controller {
     @Get()
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("GetRootNodes")
@@ -220,6 +221,7 @@ export class RootNodesController extends Controller {
 @Tags("Node")
 export class NodesController extends Controller {
     @Get()
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("GetAll")
@@ -251,6 +253,7 @@ export class NodesController extends Controller {
     }
 
     @Get("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("GetAllById")
@@ -282,6 +285,7 @@ export class NodesController extends Controller {
     }
 
     @Post()
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("CreateMany")
     @Example<INodesResponse>({
@@ -394,6 +398,7 @@ export class NodesController extends Controller {
 @Tags("Node")
 export class NodeController extends Controller {
     @Get("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("GetOne")
@@ -425,6 +430,7 @@ export class NodeController extends Controller {
     }
 
     @Post()
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Create")
     @Example<INodeResponse>({
@@ -533,6 +539,7 @@ export class NodeController extends Controller {
     }
 
     @Put("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Update")
     @Example<INodeResponse>({
@@ -636,6 +643,7 @@ export class NodeController extends Controller {
     }
 
     @Delete("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Delete")
     @Example<INodeResponse>({

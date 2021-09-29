@@ -88,6 +88,7 @@ const META_TEMPLATE: LanguageMeta = {
 @Tags("Language")
 export class LanguagesController extends Controller {
     @Get()
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("GetAll")
@@ -121,6 +122,7 @@ export class LanguagesController extends Controller {
 @Tags("Language")
 export class LanguageController extends Controller {
     @Get("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("GetOne")
@@ -150,6 +152,7 @@ export class LanguageController extends Controller {
     }
 
     @Post()
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Create")
     @Example<LanguageResponse>({
@@ -225,6 +228,7 @@ export class LanguageController extends Controller {
     }
 
     @Put("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Update")
     @Example<LanguageResponse>({
@@ -360,6 +364,7 @@ export class LanguageController extends Controller {
     }
 
     @Delete("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Delete")
     @Example<LanguageResponse>({

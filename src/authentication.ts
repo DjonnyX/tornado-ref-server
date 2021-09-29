@@ -1,7 +1,7 @@
 import * as config from "./config";
 import * as express from "express";
 import * as jwt from "jsonwebtoken";
-import { IAuthRequest, IClientJWTBody, ITerminalJWTBody } from "./interfaces";
+import { IAuthRequest, IClientJWTBody, IIntegrationJWTBody, ITerminalJWTBody } from "./interfaces";
 import { ICheckLicenseResponse, licServerApiService } from "./services";
 import { ErrorCodes, ServerError } from "./error";
 
@@ -31,6 +31,48 @@ const checkClientToken = async (token: string, request: express.Request) => {
   });
 }
 
+const checkIntegrationToken = async (token: string, request: express.Request) => {
+  return new Promise<void>((resolve, reject) => {
+    if (!token) {
+      return reject(new ServerError("Token is empty.", ErrorCodes.INTEGRATION_TOKEN_EMPTY_TOKEN, 401));
+    }
+
+    try {
+      const payload = jwt.decode(token, {
+        json: true,
+      }) as {
+        integrationId: string;
+        serverName: string;
+      };
+
+      licServerApiService.getIntegration(payload.integrationId, request).then(integration => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        jwt.verify(token, integration.verificationKey, async function (err: any, decoded: IIntegrationJWTBody) {
+          if (err) {
+            return reject(new ServerError(err.message, ErrorCodes.INTEGRATION_TOKEN_VERIFICATION, 401));
+          }
+
+          if (!decoded.integrationId || !decoded.serverName) {
+            return reject(new ServerError("Integration token bad format", ErrorCodes.INTEGRATION_TOKEN_VERIFICATION, 401));
+          }
+
+          (request as IAuthRequest).account = {
+            id: request.query.clientId as string,
+            owner: request.query.clientOwner as string,
+          };
+          (request as IAuthRequest).integration = decoded;
+          (request as IAuthRequest).token = token;
+          return resolve();
+        });
+      }).catch(err => {
+        return reject(new ServerError(err.message, ErrorCodes.INTEGRATION_TOKEN_VERIFICATION, 401));
+      });
+    } catch (err) {
+      return reject(new ServerError(err.message, ErrorCodes.INTEGRATION_TOKEN_VERIFICATION, 401));
+    }
+  });
+}
+
 const checkApiKey = async (apikey: string, request: express.Request) => {
   return new Promise<void>(async (resolve, reject) => {
     if (!apikey) {
@@ -46,7 +88,7 @@ const checkApiKey = async (apikey: string, request: express.Request) => {
 
     let licenseResponse: ICheckLicenseResponse;
     try {
-      licenseResponse = await licServerApiService.checkLicense(apikey);
+      licenseResponse = await licServerApiService.checkLicense(apikey, request);
 
       if (ServerError.isServerError(licenseResponse.error)) {
         throw ServerError.from(licenseResponse.error);
@@ -88,7 +130,11 @@ export async function expressAuthentication(
     const authorization = request.headers["authorization"] ? String(request.headers["authorization"]) : undefined;
     let token = authorization ? authorization.replace("Bearer ", "") : undefined;
 
-    return await checkClientToken(token, request);
+    try {
+      await checkIntegrationToken(token, request);
+    } catch (err) {
+      return await checkClientToken(token, request);
+    }
   }
 
   if (securityName === "terminalAccessToken") {

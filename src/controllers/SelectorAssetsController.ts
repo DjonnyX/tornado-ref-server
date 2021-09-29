@@ -138,6 +138,7 @@ const RESPONSE_TEMPLATE: IAssetItem = {
 @Tags("Selector assets")
 export class SelectorAssetsController extends Controller {
     @Get("{selectorId}/assets")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("GetAll")
@@ -207,6 +208,7 @@ export class SelectorAssetsController extends Controller {
     }
 
     @Get("{selectorId}/assets/{langCode}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("Get")
@@ -251,6 +253,7 @@ export class SelectorAssetsController extends Controller {
     }
 
     /*@Post("{selectorId}/asset/{langCode}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Create")
     @Example<ISelectorCreateAssetsResponse>({
@@ -332,6 +335,7 @@ export class SelectorAssetsController extends Controller {
     }*/
 
     @Post("{selectorId}/resource/{langCode}/{resourceType}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("CreateResource")
     @Example<ISelectorCreateAssetsResponse>({
@@ -488,6 +492,7 @@ export class SelectorAssetsController extends Controller {
     }
 
     @Put("{selectorId}/asset/{langCode}/{assetId}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Update")
     @Example<ISelectorCreateAssetsResponse>({
@@ -567,6 +572,7 @@ export class SelectorAssetsController extends Controller {
     }
 
     @Delete("{selectorId}/asset/{langCode}/{assetId}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Delete")
     @Example<ISelectorDeleteAssetsResponse>({

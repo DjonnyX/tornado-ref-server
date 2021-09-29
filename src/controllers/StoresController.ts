@@ -63,6 +63,7 @@ const META_TEMPLATE: IStoreMeta = {
 @Tags("Store")
 export class StoresController extends Controller {
     @Get()
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("GetAll")
@@ -96,6 +97,7 @@ export class StoresController extends Controller {
 @Tags("Store")
 export class StoreController extends Controller {
     @Get("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("GetOne")
@@ -125,6 +127,7 @@ export class StoreController extends Controller {
     }
 
     @Post()
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Create")
     @Example<IStoreResponse>({
@@ -154,6 +157,7 @@ export class StoreController extends Controller {
     }
 
     @Put("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("Update")
@@ -193,6 +197,7 @@ export class StoreController extends Controller {
     }
 
     @Delete("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Delete")
     @Example<IStoreResponse>({

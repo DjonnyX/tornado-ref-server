@@ -102,6 +102,7 @@ const RESPONSE_TEMPLATE: IAssetItem = {
 @Tags("Language assets")
 export class LanguageAssetsController extends Controller {
     @Get("{languageId}/assets")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("Get")
@@ -146,6 +147,7 @@ export class LanguageAssetsController extends Controller {
     }
 
     @Post("{languageId}/asset")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Create")
     @Example<ILanguageCreateAssetsResponse>({
@@ -212,6 +214,7 @@ export class LanguageAssetsController extends Controller {
     }
 
     @Post("{languageId}/resource/{resourceType}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Create")
     @Example<ILanguageCreateAssetsResponse>({
@@ -305,6 +308,7 @@ export class LanguageAssetsController extends Controller {
     }
 
     @Put("{languageId}/asset/{assetId}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Update")
     @Example<ILanguageCreateAssetsResponse>({
@@ -384,6 +388,7 @@ export class LanguageAssetsController extends Controller {
     }
 
     @Delete("{languageId}/asset/{assetId}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Delete")
     @Example<ILanguageDeleteAssetsResponse>({

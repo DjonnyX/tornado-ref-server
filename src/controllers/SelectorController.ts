@@ -95,6 +95,7 @@ const META_TEMPLATE: ISelectorsMeta = {
 @Tags("Selector")
 export class SelectorsController extends Controller {
     @Get()
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("GetAll")
@@ -125,6 +126,7 @@ export class SelectorsController extends Controller {
     }
 
     @Put("/positions")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("SetPositions")
@@ -179,6 +181,7 @@ export class SelectorsController extends Controller {
 @Tags("Selector")
 export class SelectorController extends Controller {
     @Get("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("GetOne")
@@ -209,6 +212,7 @@ export class SelectorController extends Controller {
     }
 
     @Post()
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Create")
     @Example<ISelectorResponse>({
@@ -293,6 +297,7 @@ export class SelectorController extends Controller {
     }
 
     @Put("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Update")
     @Example<ISelectorResponse>({
@@ -421,6 +426,7 @@ export class SelectorController extends Controller {
     }
 
     @Delete("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Delete")
     @Example<ISelectorResponse>({

@@ -76,6 +76,7 @@ export const RESPONSE_TEMPLATE: IOrderTypeItem = {
 @Tags("OrderType")
 export class OrderTypesController extends Controller {
     @Get()
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("GetAll")
@@ -109,6 +110,7 @@ export class OrderTypesController extends Controller {
 @Tags("OrderType")
 export class OrderTypeController extends Controller {
     @Get("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("GetOne")
@@ -138,6 +140,7 @@ export class OrderTypeController extends Controller {
     }
 
     @Post()
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Create")
     @Example<OrderTypeResponse>({
@@ -184,6 +187,7 @@ export class OrderTypeController extends Controller {
     }
 
     @Put("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Update")
     @Example<OrderTypeResponse>({
@@ -376,6 +380,7 @@ export class OrderTypeController extends Controller {
     }
 
     @Delete("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Delete")
     @Example<OrderTypeResponse>({

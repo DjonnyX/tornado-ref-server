@@ -138,6 +138,7 @@ const RESPONSE_TEMPLATE: IAssetItem = {
 @Tags("OrderType assets")
 export class OrderTypeAssetsController extends Controller {
     @Get("{orderTypeId}/assets")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("GetAll")
@@ -207,6 +208,7 @@ export class OrderTypeAssetsController extends Controller {
     }
 
     @Get("{orderTypeId}/assets/{langCode}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("Get")
@@ -251,6 +253,7 @@ export class OrderTypeAssetsController extends Controller {
     }
 
     /*@Post("{orderTypeId}/asset/{langCode}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Create")
     @Example<IOrderTypeCreateAssetsResponse>({
@@ -332,6 +335,7 @@ export class OrderTypeAssetsController extends Controller {
     }*/
 
     @Post("{orderTypeId}/resource/{langCode}/{resourceType}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("CreateResource")
     @Example<IOrderTypeCreateAssetsResponse>({
@@ -488,6 +492,7 @@ export class OrderTypeAssetsController extends Controller {
     }
 
     @Put("{orderTypeId}/asset/{langCode}/{assetId}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Update")
     @Example<IOrderTypeCreateAssetsResponse>({
@@ -567,6 +572,7 @@ export class OrderTypeAssetsController extends Controller {
     }
 
     @Delete("{orderTypeId}/asset/{langCode}/{assetId}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Delete")
     @Example<IOrderTypeDeleteAssetsResponse>({

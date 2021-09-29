@@ -86,6 +86,7 @@ const getThemePathByTerminalType = (type: TerminalTypes): string => {
 @Tags("AppTheme")
 export class AppThemesController extends Controller {
     @Get()
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("GetAll")
@@ -122,6 +123,7 @@ export class AppThemesController extends Controller {
 @Tags("AppTheme")
 export class AppThemeController extends Controller {
     @Get("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("GetOne")
@@ -154,6 +156,7 @@ export class AppThemeController extends Controller {
     }
 
     @Post()
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Create")
     @Example<IAppThemeResponse>({
@@ -211,6 +214,7 @@ export class AppThemeController extends Controller {
     }
 
     @Put("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("Update")
@@ -267,6 +271,7 @@ export class AppThemeController extends Controller {
     }
 
     @Delete("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Delete")
     @Example<IAppThemeResponse>({

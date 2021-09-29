@@ -142,6 +142,7 @@ export const deleteAsset = (assetPath: string): Promise<IAssetDocument | void> =
 @Tags("Asset")
 export class AssetsController extends Controller {
     @Get()
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("GetAll")
@@ -175,6 +176,7 @@ export class AssetsController extends Controller {
 @Tags("Asset")
 export class AssetController extends Controller {
     @Post()
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Create")
     @Example<ICreateAssetsResponse>({
@@ -221,6 +223,7 @@ export class AssetController extends Controller {
     }
 
     @Delete("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Delete")
     @Example<IDeleteAssetsResponse>({

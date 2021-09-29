@@ -113,6 +113,7 @@ const RESPONSE_TEMPLATE: IAssetItem = {
 @Tags("Ad assets")
 export class AdAssetsController extends Controller {
     @Get("{adId}/assets")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("GetAll")
@@ -182,6 +183,7 @@ export class AdAssetsController extends Controller {
     }
 
     @Get("{adId}/assets/{langCode}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("Get")
@@ -226,6 +228,7 @@ export class AdAssetsController extends Controller {
     }
 
     /*@Post("{adId}/asset/{langCode}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Create")
     @Example<IAdCreateAssetsResponse>({
@@ -307,6 +310,7 @@ export class AdAssetsController extends Controller {
     }*/
 
     @Post("{adId}/resource/{langCode}/{resourceType}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("CreateResource")
     @Example<IAdCreateAssetsResponse>({
@@ -464,6 +468,7 @@ export class AdAssetsController extends Controller {
     }
 
     @Put("{adId}/asset/{langCode}/{assetId}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Update")
     @Example<IAdCreateAssetsResponse>({
@@ -543,6 +548,7 @@ export class AdAssetsController extends Controller {
     }
 
     @Delete("{adId}/asset/{langCode}/{assetId}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Delete")
     @Example<IAdDeleteAssetsResponse>({

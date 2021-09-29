@@ -70,6 +70,7 @@ const META_TEMPLATE: TranslationMeta = {
 @Tags("Translation")
 export class TranslationsController extends Controller {
     @Get()
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("GetAll")
@@ -103,6 +104,7 @@ export class TranslationsController extends Controller {
 @Tags("Translation")
 export class TranslationController extends Controller {
     @Get("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("GetOne")
@@ -132,6 +134,7 @@ export class TranslationController extends Controller {
     }
 
     /*@Post()
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Create")
     @Example<TranslationResponse>({
@@ -161,6 +164,7 @@ export class TranslationController extends Controller {
     }*/
 
     @Put("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Update")
     @Example<TranslationResponse>({
@@ -199,6 +203,7 @@ export class TranslationController extends Controller {
     }
     /*
         @Delete("{id}")
+        @Security("integrationAccessToken")
         @Security("clientAccessToken")
         @OperationId("Delete")
         @Example<TranslationResponse>({

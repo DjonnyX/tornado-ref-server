@@ -65,6 +65,7 @@ const META_TEMPLATE: IEmployeeMeta = {
 @Tags("Employee")
 export class EmployeesController extends Controller {
     @Get()
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("GetAll")
@@ -98,6 +99,7 @@ export class EmployeesController extends Controller {
 @Tags("Employee")
 export class EmployeeController extends Controller {
     @Get("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("GetOne")
@@ -127,6 +129,7 @@ export class EmployeeController extends Controller {
     }
 
     @Post()
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Create")
     @Example<EmployeeResponse>({
@@ -172,6 +175,7 @@ export class EmployeeController extends Controller {
     }
 
     @Put("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Update")
     @Example<EmployeeResponse>({
@@ -225,6 +229,7 @@ export class EmployeeController extends Controller {
     }
 
     @Delete("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Delete")
     @Example<EmployeeResponse>({

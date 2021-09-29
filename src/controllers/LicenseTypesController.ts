@@ -78,6 +78,7 @@ const META_TEMPLATE: ILicenseTypeInfoMeta = {
 @Tags("LicenseType")
 export class LicenseTypesController extends Controller {
     @Get()
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("GetAll")
     @Example<LicenseTypesGetResponse>({
@@ -85,7 +86,7 @@ export class LicenseTypesController extends Controller {
         data: [LICENSE_TYPE_RESPONSE_TEMPLATE],
     })
     public async getLicenseType(@Request() request: IAuthRequest): Promise<LicenseTypesGetResponse> {
-        return await licServerApiService.getLicenseTypes(request.token);
+        return await licServerApiService.getLicenseTypes(request, { clientToken: request.token });
     }
 }
 
@@ -93,6 +94,7 @@ export class LicenseTypesController extends Controller {
 @Tags("LicenseType")
 export class LicenseTypeController extends Controller {
     @Get("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("GetOne")
     @Example<LicenseTypeResponse>({
@@ -100,10 +102,11 @@ export class LicenseTypeController extends Controller {
         data: LICENSE_TYPE_RESPONSE_TEMPLATE,
     })
     public async getLicenseType(id: string, @Request() request: IAuthRequest): Promise<LicenseTypeResponse> {
-        return await licServerApiService.getLicenseType(id, request.token);
+        return await licServerApiService.getLicenseType(id, request, { clientToken: request.token });
     }
 
     @Post()
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Create")
     @Example<LicenseTypeResponse>({
@@ -111,10 +114,11 @@ export class LicenseTypeController extends Controller {
         data: LICENSE_TYPE_RESPONSE_TEMPLATE,
     })
     public async createLicenseType(@Body() body: ICreateLicenseTypeParams, @Request() request: IAuthRequest): Promise<LicenseTypeResponse> {
-        return await licServerApiService.createLicenseType(body as any, request.token);
+        return await licServerApiService.createLicenseType(body as any, request, { clientToken: request.token });
     }
 
     @Put("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Update")
     @Example<LicenseTypeResponse>({
@@ -122,16 +126,17 @@ export class LicenseTypeController extends Controller {
         data: LICENSE_TYPE_RESPONSE_TEMPLATE,
     })
     public async updateLicenseType(id: string, @Body() body: IUpdateLicenseTypeParams, @Request() request: IAuthRequest): Promise<LicenseTypeResponse> {
-        return await licServerApiService.updateLicenseType(id, body as any, request.token);
+        return await licServerApiService.updateLicenseType(id, body as any, request, { clientToken: request.token });
     }
 
     @Delete("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Delete")
     @Example<LicenseTypeResponse>({
         meta: META_TEMPLATE,
     })
     public async deleteLicenseType(id: string, @Request() request: IAuthRequest): Promise<LicenseTypeResponse> {
-        return await licServerApiService.deleteLicenseType(id, request.token);
+        return await licServerApiService.deleteLicenseType(id, request, { clientToken: request.token });
     }
 }

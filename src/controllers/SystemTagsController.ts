@@ -72,6 +72,7 @@ const META_TEMPLATE: ISystemTagMeta = {
 @Tags("SystemTag")
 export class SystemTagsController extends Controller {
     @Get()
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("GetAll")
@@ -101,6 +102,7 @@ export class SystemTagsController extends Controller {
     }
 
     @Put("/positions")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("SetPositions")
@@ -155,6 +157,7 @@ export class SystemTagsController extends Controller {
 @Tags("SystemTag")
 export class SystemTagController extends Controller {
     @Get("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("GetOne")
@@ -184,6 +187,7 @@ export class SystemTagController extends Controller {
     }
 
     @Post()
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Create")
     @Example<ISystemTagResponse>({
@@ -244,6 +248,7 @@ export class SystemTagController extends Controller {
     }
 
     @Put("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("Update")
@@ -296,6 +301,7 @@ export class SystemTagController extends Controller {
     }
 
     @Delete("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Delete")
     @Example<ISystemTagResponse>({

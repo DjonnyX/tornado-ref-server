@@ -142,6 +142,7 @@ const RESPONSE_TEMPLATE: IAssetItem = {
 @Tags("Product assets")
 export class ProductAssetsController extends Controller {
     @Get("{productId}/assets")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("GetAll")
@@ -212,6 +213,7 @@ export class ProductAssetsController extends Controller {
     }
 
     @Get("{productId}/assets/{langCode}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("Get")
@@ -256,6 +258,7 @@ export class ProductAssetsController extends Controller {
     }
 
     @Post("{productId}/asset/{langCode}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Create")
     @Example<IProductCreateAssetsResponse>({
@@ -343,6 +346,7 @@ export class ProductAssetsController extends Controller {
     }
 
     @Post("{productId}/resource/{langCode}/{resourceType}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("CreateResource")
     @Example<IProductCreateAssetsResponse>({
@@ -500,6 +504,7 @@ export class ProductAssetsController extends Controller {
     }
 
     @Put("{productId}/asset/{langCode}/{assetId}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Update")
     @Example<IProductCreateAssetsResponse>({
@@ -579,6 +584,7 @@ export class ProductAssetsController extends Controller {
     }
 
     @Delete("{productId}/asset/{langCode}/{assetId}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Delete")
     @Example<IProductDeleteAssetsResponse>({

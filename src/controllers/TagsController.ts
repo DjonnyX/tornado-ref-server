@@ -74,6 +74,7 @@ export const RESPONSE_TEMPLATE: ITagItem = {
 @Tags("Tag")
 export class TagsController extends Controller {
     @Get()
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("GetAll")
@@ -107,6 +108,7 @@ export class TagsController extends Controller {
 @Tags("Tag")
 export class TagController extends Controller {
     @Get("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("GetOne")
@@ -136,6 +138,7 @@ export class TagController extends Controller {
     }
 
     @Post()
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Create")
     @Example<TagResponse>({
@@ -165,6 +168,7 @@ export class TagController extends Controller {
     }
 
     @Put("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Update")
     @Example<TagResponse>({
@@ -276,6 +280,7 @@ export class TagController extends Controller {
     }
 
     @Delete("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Delete")
     @Example<TagResponse>({

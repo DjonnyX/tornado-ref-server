@@ -118,7 +118,7 @@ export class Deviceontroller extends Controller {
     public async registration(@Body() body: ITerminalRegisterRequest, @Request() request: IAuthRequest): Promise<ITerminalResponse> {
         let setDeviceResponse: ISetDeviceResponse;
         try {
-            setDeviceResponse = await licServerApiService.setDevice(request.token);
+            setDeviceResponse = await licServerApiService.setDevice(request.token, request);
 
             const err = extractError(setDeviceResponse.error);
             if (!!err) {
@@ -220,6 +220,7 @@ export class Deviceontroller extends Controller {
 @Tags("Terminal")
 export class TerminalsController extends Controller {
     @Get()
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("GetAll")
@@ -255,6 +256,7 @@ export class TerminalsController extends Controller {
 @Tags("Terminal")
 export class TerminalController extends Controller {
     @Get("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("GetOne")
@@ -284,6 +286,7 @@ export class TerminalController extends Controller {
     }
 
     @Put("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("Update")
@@ -326,6 +329,7 @@ export class TerminalController extends Controller {
     }
 
     /*@Delete("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Delete")
     @Example<ITerminalResponse>({

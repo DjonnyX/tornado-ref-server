@@ -95,6 +95,7 @@ const META_TEMPLATE: IBusinessPeriodMeta = {
 @Tags("Business Period")
 export class BusinessPeriodsController extends Controller {
     @Get()
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("GetAll")
@@ -128,6 +129,7 @@ export class BusinessPeriodsController extends Controller {
 @Tags("Business Period")
 export class BusinessPeriodController extends Controller {
     @Get("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("GetOne")
@@ -157,6 +159,7 @@ export class BusinessPeriodController extends Controller {
     }
 
     @Post()
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Create")
     @Example<IBusinessPeriodResponse>({
@@ -186,6 +189,7 @@ export class BusinessPeriodController extends Controller {
     }
 
     @Put("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Update")
     @Example<IBusinessPeriodResponse>({
@@ -224,6 +228,7 @@ export class BusinessPeriodController extends Controller {
     }
 
     @Delete("{id}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Delete")
     @Example<IBusinessPeriodResponse>({

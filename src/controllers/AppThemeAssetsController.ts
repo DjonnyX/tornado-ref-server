@@ -112,6 +112,7 @@ const RESPONSE_TEMPLATE: IAppThemeAsset = {
 @Tags("AppTheme assets")
 export class AppThemeAssetsController extends Controller {
     @Get()
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
     @OperationId("GetAll")
@@ -165,6 +166,7 @@ export class AppThemeAssetsController extends Controller {
     }
 
     @Post("{appThemeId}/resource/{resourceType}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("CreateResource")
     @Example<IAppThemeCreateAssetsResponse>({
@@ -302,6 +304,7 @@ export class AppThemeAssetsController extends Controller {
     }
 
     @Delete("{appThemeId}/resource/{resourceType}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("DeleteResource")
     @Example<IAppThemeDeleteAssetsResponse>({
@@ -409,6 +412,7 @@ export class AppThemeAssetsController extends Controller {
     }
 
     @Put("{appThemeId}/asset/{assetId}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Update")
     @Example<IAppThemeCreateAssetsResponse>({
@@ -491,6 +495,7 @@ export class AppThemeAssetsController extends Controller {
     }
 
     @Delete("{appThemeId}/asset/{assetId}")
+    @Security("integrationAccessToken")
     @Security("clientAccessToken")
     @OperationId("Delete")
     @Example<IAppThemeDeleteAssetsResponse>({
