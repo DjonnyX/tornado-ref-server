@@ -200,6 +200,7 @@ export class CheckueController extends Controller {
                     if (key === "scenarios") {
                         const scenarios = body.scenarios.map(scenario => ({
                             active: scenario.active,
+                            lock: scenario.lock,
                             action: scenario.action,
                             value: scenario.value,
                             extra: scenario.extra,

@@ -127,6 +127,7 @@ const RESPONSE_TEMPLATE: INodeItem = {
     children: ["123c7f79bcf86cd7994f6c0e"],
     scenarios: [{
         active: true,
+        lock: false,
         action: ScenarioCommonActionTypes.VISIBLE_BY_BUSINESS_PERIOD,
     }]
 };
@@ -189,6 +190,7 @@ export class RootNodesController extends Controller {
             children: ["123c7f79bcf86cd7994f6c0e"],
             scenarios: [{
                 active: true,
+                lock: false,
                 action: ScenarioCommonActionTypes.VISIBLE_BY_BUSINESS_PERIOD,
             }]
         }]
@@ -600,6 +602,7 @@ export class NodeController extends Controller {
                     if (key === "scenarios") {
                         const scenarios = body.scenarios.map(scenario => ({
                             active: scenario.active,
+                            lock: scenario.lock,
                             action: scenario.action,
                             value: scenario.value,
                             extra: scenario.extra,
