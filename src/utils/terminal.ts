@@ -81,7 +81,7 @@ export const normalizeTerminalTheme = async (client: string, type: TerminalTypes
             const promises1 = new Array<Promise<ITerminalDocument>>();
             for (const terminal of terminals) {
                 if (!themes.find(theme => terminal.config.theme === String(theme._id))) {
-                    terminal.config.theme = String(defaultTheme._id);
+                    terminal.config.theme = String(defaultTheme?._id);
                     terminal.markModified("config");
                     promises1.push(terminal.save());
                 }

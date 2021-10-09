@@ -4,7 +4,7 @@ import multer = require("multer");
 import { IAuthRequest } from "../interfaces";
 import { IClientDBBackup } from "../controllers/BackupController";
 import {
-    AdModel, AppThemeModel, AssetModel, BusinessPeriodModel, CheckueModel, CurrencyModel, EmployeeModel, LanguageModel,
+    AdModel, AppThemeModel, AssetModel, BusinessPeriodModel, CheckueModel, CurrencyModel, EmployeeModel, IAppThemeDocument, LanguageModel,
     NodeModel, OrderTypeModel, ProductModel, SelectorModel, StoreModel, SystemTagModel, TagModel, TranslationModel
 } from "../models";
 import { copyDirectory, makeDirIfEmpty, readFile, removeDirectory, removeFile, saveDataToFile, zipDirectory } from "./file";
@@ -299,7 +299,20 @@ const storeDB = async (data: IClientDBBackup): Promise<void> => {
     const promises = new Array<Promise<any>>();
 
     promises.push(AdModel.create(data.ads));
-    promises.push(AppThemeModel.create(data.themes));
+    const tResources: { [id: string]: any } = {};
+    for (const theme of data.themes) {
+        tResources[theme._id] = theme.resources;
+        theme.resources = {};
+    }
+    promises.push(AppThemeModel.create(data.themes).then(themes => {
+        const promises1 = new Array<Promise<IAppThemeDocument>>();
+        for (const theme of themes) {
+            theme.resources = tResources[theme._id];
+            theme.markModified("resources");
+            promises1.push(theme.save());
+        }
+        return Promise.all(promises1);
+    }));
     promises.push(AssetModel.create(data.assets));
     promises.push(BusinessPeriodModel.create(data.businessPeriods));
     promises.push(CheckueModel.create(data.checkues));
