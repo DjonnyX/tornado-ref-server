@@ -104,6 +104,7 @@ export class LanguageAssetsController extends Controller {
     @Get("{languageId}/assets")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Get")
     @Example<ILanguageGetAssetsResponse>({
         meta: META_TEMPLATE,
@@ -147,6 +148,7 @@ export class LanguageAssetsController extends Controller {
 
     @Post("{languageId}/asset")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Create")
     @Example<ILanguageCreateAssetsResponse>({
         meta: META_TEMPLATE,
@@ -156,6 +158,8 @@ export class LanguageAssetsController extends Controller {
         }
     })
     public async create(languageId: string, @Request() request: IAuthRequest): Promise<ILanguageCreateAssetsResponse> {
+        const client = getClientId(request);
+        
         const assetsInfo = await uploadAsset(request, [
             AssetExtensions.JPG,
             AssetExtensions.PNG,
@@ -181,7 +185,7 @@ export class LanguageAssetsController extends Controller {
         let languageRef: IRef;
         try {
             language.assets.push(assetsInfo.data.id);
-            languageRef = await riseRefVersion(getClientId(request), RefTypes.LANGUAGES);
+            languageRef = await riseRefVersion(client, RefTypes.LANGUAGES);
             await language.save();
         } catch (err) {
             this.setStatus(500);
@@ -213,6 +217,7 @@ export class LanguageAssetsController extends Controller {
 
     @Post("{languageId}/resource/{resourceType}")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Create")
     @Example<ILanguageCreateAssetsResponse>({
         meta: META_TEMPLATE,
@@ -222,6 +227,8 @@ export class LanguageAssetsController extends Controller {
         }
     })
     public async resource(languageId: string, resourceType: LanguageImageTypes, @Request() request: IAuthRequest): Promise<ILanguageCreateAssetsResponse> {
+        const client = getClientId(request);
+        
         const assetsInfo = await uploadAsset(request, [
             AssetExtensions.JPG,
             AssetExtensions.PNG,
@@ -274,7 +281,7 @@ export class LanguageAssetsController extends Controller {
         try {
             language.resources[resourceType] = assetsInfo.data.id;
             language.assets.push(assetsInfo.data.id);
-            languageRef = await riseRefVersion(getClientId(request), RefTypes.LANGUAGES);
+            languageRef = await riseRefVersion(client, RefTypes.LANGUAGES);
             await language.save();
         } catch (err) {
             this.setStatus(500);
@@ -306,6 +313,7 @@ export class LanguageAssetsController extends Controller {
 
     @Put("{languageId}/asset/{assetId}")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Update")
     @Example<ILanguageCreateAssetsResponse>({
         meta: META_TEMPLATE,
@@ -315,6 +323,7 @@ export class LanguageAssetsController extends Controller {
         }
     })
     public async update(languageId: string, assetId: string, @Body() body: ILanguageUpdateAssetsRequest, @Request() request: IAuthRequest): Promise<ILanguageCreateAssetsResponse> {
+        const client = getClientId(request);
 
         let language: ILanguageDocument;
         try {
@@ -333,7 +342,7 @@ export class LanguageAssetsController extends Controller {
 
         let languageRef: IRef;
         try {
-            languageRef = await getRef(getClientId(request), RefTypes.LANGUAGES);
+            languageRef = await getRef(client, RefTypes.LANGUAGES);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -355,7 +364,7 @@ export class LanguageAssetsController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(getClientId(request), RefTypes.ASSETS);
+            const ref = await riseRefVersion(client, RefTypes.ASSETS);
             return {
                 meta: {
                     asset: {
@@ -385,11 +394,14 @@ export class LanguageAssetsController extends Controller {
 
     @Delete("{languageId}/asset/{assetId}")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Delete")
     @Example<ILanguageDeleteAssetsResponse>({
         meta: META_TEMPLATE
     })
     public async delete(languageId: string, assetId: string, @Request() request: IAuthRequest): Promise<ILanguageDeleteAssetsResponse> {
+        const client = getClientId(request);
+
         let language: ILanguageDocument;
         try {
             language = await LanguageModel.findById(languageId);
@@ -413,7 +425,7 @@ export class LanguageAssetsController extends Controller {
                 await deleteAsset(asset.path);
                 await deleteAsset(asset.mipmap.x128);
                 await deleteAsset(asset.mipmap.x32);
-                assetRef = await riseRefVersion(getClientId(request), RefTypes.ASSETS);
+                assetRef = await riseRefVersion(client, RefTypes.ASSETS);
             } catch (err) {
                 this.setStatus(500);
                 return {
@@ -431,7 +443,7 @@ export class LanguageAssetsController extends Controller {
         try {
             language.assets.splice(assetIndex, 1);
             await language.save();
-            languagesRef = await riseRefVersion(getClientId(request), RefTypes.LANGUAGES);
+            languagesRef = await riseRefVersion(client, RefTypes.LANGUAGES);
             return {
                 meta: {
                     language: {

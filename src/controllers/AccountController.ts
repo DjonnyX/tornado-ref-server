@@ -125,7 +125,7 @@ export class ResetEmailController extends Controller {
         return await licServerApiService.postClientRestoreEmail<ResetEmailResponse>({
             restoreEmailCode: body.restoreEmailCode,
             newEmail: body.email,
-        });
+        }, request);
     }
 }
 
@@ -139,7 +139,7 @@ export class ForgotEmailController extends Controller {
     })
     public async forgotEmail(@Request() request: express.Request, @Query() email: string,
         @Query() captchaId: string, @Query() captchaVal: string, @Query() language?: string): Promise<ForgotEmailResponse> {
-        return await licServerApiService.getClientRestoreEmail<ForgotEmailResponse>({ email, captchaId, captchaVal, language });
+        return await licServerApiService.getClientRestoreEmail<ForgotEmailResponse>({ email, captchaId, captchaVal, language }, request);
     }
 }
 
@@ -152,7 +152,7 @@ export class VerifyResetEmailTokenController extends Controller {
         data: {}
     })
     public async verifyResetEmailToken(@Request() request: express.Request, @Query() restoreEmailCode: string): Promise<VerifyResetEmailTokenResponse> {
-        return await licServerApiService.clientCheckRestoreEmailCode<VerifyResetEmailTokenResponse>({ restoreEmailCode });
+        return await licServerApiService.clientCheckRestoreEmailCode<VerifyResetEmailTokenResponse>({ restoreEmailCode }, request);
     }
 }
 
@@ -161,13 +161,14 @@ export class VerifyResetEmailTokenController extends Controller {
 export class AccountsController extends Controller {
     @Get()
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetAll")
     @Example<AccountsGetResponse>({
         meta: META_TEMPLATE,
         data: [ACCOUNT_RESPONSE_TEMPLATE],
     })
-    public async getAccounts(@Request() request: IAuthRequest, @Query() all?: boolean, @Query() secure?: boolean): Promise<AccountsGetResponse> {
-        return await licServerApiService.getAccounts(all, secure, request.query, { clientToken: request.token });
+    public async getAccounts(@Request() request: IAuthRequest, @Query() all?: boolean, @Query() secure?: string): Promise<AccountsGetResponse> {
+        return await licServerApiService.getAccounts(all, secure, request, { clientToken: request.token });
     }
 }
 
@@ -176,45 +177,49 @@ export class AccountsController extends Controller {
 export class AccountController extends Controller {
     @Get("{id}")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetOne")
     @Example<AccountResponse>({
         meta: META_TEMPLATE,
         data: ACCOUNT_RESPONSE_TEMPLATE,
     })
-    public async getAccount(id: string, @Request() request: IAuthRequest, @Query() secure?: boolean): Promise<AccountResponse> {
-        return await licServerApiService.getAccount(id, secure, { clientToken: request.token });
+    public async getAccount(id: string, @Request() request: IAuthRequest, @Query() secure?: string): Promise<AccountResponse> {
+        return await licServerApiService.getAccount(id, secure, request, { clientToken: request.token });
     }
 
     @Post()
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Create")
     @Example<AccountResponse>({
         meta: META_TEMPLATE,
         data: ACCOUNT_RESPONSE_TEMPLATE,
     })
     public async createAccount(@Body() body: ICreateAccountParams, @Request() request: IAuthRequest,
-        @Query() language?: string, @Query() secure?: boolean): Promise<AccountResponse> {
-        return await licServerApiService.createAccount(body as any, language, secure, { clientToken: request.token });
+        @Query() language?: string, @Query() secure?: string): Promise<AccountResponse> {
+        return await licServerApiService.createAccount(body as any, language, secure, request, { clientToken: request.token });
     }
 
     @Put("{id}")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Update")
     @Example<AccountResponse>({
         meta: META_TEMPLATE,
         data: ACCOUNT_RESPONSE_TEMPLATE,
     })
-    public async updateAccount(id: string, @Body() body: IUpdateAccountParams, @Request() request: IAuthRequest, @Query() secure?: boolean): Promise<AccountResponse> {
-        return await licServerApiService.updateAccount(id, body, secure, { clientToken: request.token });
+    public async updateAccount(id: string, @Body() body: IUpdateAccountParams, @Request() request: IAuthRequest, @Query() secure?: string): Promise<AccountResponse> {
+        return await licServerApiService.updateAccount(id, body, secure, request, { clientToken: request.token });
     }
 
     @Delete("{id}")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Delete")
     @Example<AccountResponse>({
         meta: META_TEMPLATE,
     })
-    public async deleteAccount(id: string, @Request() request: IAuthRequest, @Query() secure?: boolean): Promise<AccountResponse> {
-        return await licServerApiService.deleteAccount(id, secure, { clientToken: request.token });
+    public async deleteAccount(id: string, @Request() request: IAuthRequest, @Query() secure?: string): Promise<AccountResponse> {
+        return await licServerApiService.deleteAccount(id, secure, request, { clientToken: request.token });
     }
 }

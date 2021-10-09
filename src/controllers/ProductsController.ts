@@ -127,6 +127,7 @@ export class ProductsController extends Controller {
     @Get()
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetAll")
     @Example<IProductsResponse>({
         meta: META_TEMPLATE,
@@ -134,6 +135,7 @@ export class ProductsController extends Controller {
     })
     public async getAll(@Request() request: IAuthRequest): Promise<IProductsResponse> {
         const client = getClientId(request);
+
         try {
             const items = await findAllWithFilter(ProductModel.find({ client }), request);
             const ref = await getRef(client, RefTypes.PRODUCTS);
@@ -157,6 +159,7 @@ export class ProductsController extends Controller {
     @Put("/positions")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("SetPositions")
     @Example<IProductsPositionsResponse>({
         meta: META_TEMPLATE,
@@ -167,6 +170,7 @@ export class ProductsController extends Controller {
     })
     public async positions(@Body() body: Array<IEntityPosition>, @Request() request: IAuthRequest): Promise<IProductsPositionsResponse> {
         const client = getClientId(request);
+
         try {
             const items: Array<IProductDocument> = await findAllWithFilter(ProductModel.find({ client }), request);
 
@@ -211,6 +215,7 @@ export class ProductController extends Controller {
     @Get("{id}")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetOne")
     @Example<IProductResponse>({
         meta: META_TEMPLATE,
@@ -218,6 +223,7 @@ export class ProductController extends Controller {
     })
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<IProductResponse> {
         const client = getClientId(request);
+
         try {
             const item = await ProductModel.findById(id);
             const ref = await getRef(client, RefTypes.PRODUCTS);
@@ -240,6 +246,7 @@ export class ProductController extends Controller {
 
     @Post()
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Create")
     @Example<IProductResponse>({
         meta: META_TEMPLATE,
@@ -247,6 +254,7 @@ export class ProductController extends Controller {
     })
     public async create(@Body() body: IProductCreateRequest, @Request() request: IAuthRequest): Promise<IProductResponse> {
         const client = getClientId(request);
+
         let positions: Array<IProductDocument>;
         try {
             positions = await ProductModel.find({ client });
@@ -310,6 +318,7 @@ export class ProductController extends Controller {
 
     @Put("{id}")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Update")
     @Example<IProductResponse>({
         meta: META_TEMPLATE,
@@ -317,6 +326,7 @@ export class ProductController extends Controller {
     })
     public async update(id: string, @Body() body: IProductUpdateRequest, @Request() request: IAuthRequest): Promise<IProductResponse> {
         const client = getClientId(request);
+
         let defaultLanguage: ILanguageDocument;
         try {
             defaultLanguage = await LanguageModel.findOne({ client, isDefault: true });
@@ -437,12 +447,14 @@ export class ProductController extends Controller {
 
     @Delete("{id}")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Delete")
     @Example<IProductResponse>({
         meta: META_TEMPLATE,
     })
     public async delete(id: string, @Request() request: IAuthRequest): Promise<IProductResponse> {
         const client = getClientId(request);
+
         let product: IProductDocument;
         try {
             product = await ProductModel.findByIdAndDelete(id);

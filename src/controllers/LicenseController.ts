@@ -138,18 +138,21 @@ const META_TEMPLATE: ILicenseInfoMeta = {
 export class LicensesForClientController extends Controller {
     @Get()
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetAll")
     @Example<LicensesAccountResponse>({
         meta: META_TEMPLATE,
         data: [LICENSE_ACCOUNT_RESPONSE_TEMPLATE],
     })
     public async getLicense(@Request() request: IAuthRequest): Promise<LicensesAccountResponse> {
-        const response = await licServerApiService.getLicensesForClient<LicensesResponse>(request.token);
+        const client = getClientId(request);
+
+        const response = await licServerApiService.getLicensesForClient<LicensesResponse>(request, { clientToken: request.token });
 
         if (!response.error) {
             let terminals: Array<ITerminalDocument>;
             try {
-                terminals = await TerminalModel.find({ client: getClientId(request) });
+                terminals = await TerminalModel.find({ client });
             } catch (err) {
                 this.setStatus(500);
                 return {
@@ -182,18 +185,21 @@ export class LicensesForClientController extends Controller {
 export class LicenseForClientController extends Controller {
     @Get("{id}")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetOne")
     @Example<LicenseAccountResponse>({
         meta: META_TEMPLATE,
         data: LICENSE_ACCOUNT_RESPONSE_TEMPLATE,
     })
     public async getLicense(id: string, @Request() request: IAuthRequest): Promise<LicenseAccountResponse> {
-        const response = await licServerApiService.getLicenseForClient<LicenseResponse>(id, request.token);
+        const client = getClientId(request);
+
+        const response = await licServerApiService.getLicenseForClient<LicenseResponse>(id, request, { clientToken: request.token });
 
         if (!response.error) {
             let terminal: ITerminalDocument;
             try {
-                terminal = await TerminalModel.findOne({ client: getClientId(request), licenseId: response.data.id });
+                terminal = await TerminalModel.findOne({ client, licenseId: response.data.id });
             } catch (err) {
                 this.setStatus(500);
                 return {
@@ -221,13 +227,14 @@ export class LicenseForClientController extends Controller {
 export class LicensesController extends Controller {
     @Get()
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetAll")
     @Example<LicensesResponse>({
         meta: META_TEMPLATE,
         data: [LICENSE_RESPONSE_TEMPLATE],
     })
     public async getLicenses(@Request() request: IAuthRequest): Promise<LicensesResponse> {
-        const response = await licServerApiService.getLicenses();
+        const response = await licServerApiService.getLicenses(request);
 
         if (!response.error) {
             let terminals: Array<ITerminalDocument>;
@@ -265,13 +272,14 @@ export class LicensesController extends Controller {
 export class LicenseController extends Controller {
     @Get("{id}")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetOne")
     @Example<LicenseAccountResponse>({
         meta: META_TEMPLATE,
         data: LICENSE_ACCOUNT_RESPONSE_TEMPLATE,
     })
     public async getLicense(id: string, @Request() request: IAuthRequest): Promise<LicenseAccountResponse> {
-        const response = await licServerApiService.getLicense(id);
+        const response = await licServerApiService.getLicense(id, request);
 
         if (!response.error) {
             let terminal: ITerminalDocument;
@@ -300,13 +308,14 @@ export class LicenseController extends Controller {
 
     @Post()
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Create")
     @Example<LicenseAccountResponse>({
         meta: META_TEMPLATE,
         data: LICENSE_ACCOUNT_RESPONSE_TEMPLATE,
     })
     public async createLicense(@Body() body: ICreateLicenseParams, @Request() request: IAuthRequest): Promise<LicenseAccountResponse> {
-        const response = await licServerApiService.createLicense(body as any);
+        const response = await licServerApiService.createLicense(body as any, request);
 
         if (!response.error) {
             let terminal: ITerminalDocument;
@@ -335,13 +344,14 @@ export class LicenseController extends Controller {
 
     @Put("{id}")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Update")
     @Example<LicenseAccountResponse>({
         meta: META_TEMPLATE,
         data: LICENSE_ACCOUNT_RESPONSE_TEMPLATE,
     })
     public async updateLicense(id: string, @Body() body: IUpdateLicenseParams, @Request() request: IAuthRequest): Promise<LicenseAccountResponse> {
-        const response = await licServerApiService.updateLicense(id, body as any);
+        const response = await licServerApiService.updateLicense(id, body as any, request);
 
         if (!response.error) {
             let terminal: ITerminalDocument;
@@ -370,23 +380,25 @@ export class LicenseController extends Controller {
 
     @Delete("{id}")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Delete")
     @Example<LicenseResponse>({
         meta: META_TEMPLATE,
     })
-    public async deleteLicense(id: string): Promise<LicenseResponse> {
-        return await licServerApiService.deleteLicense(id);
+    public async deleteLicense(id: string, @Request() request: IAuthRequest): Promise<LicenseResponse> {
+        return await licServerApiService.deleteLicense(id, request);
     }
 
     @Put("unbind/{id}")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Unbind")
     @Example<LicenseAccountResponse>({
         meta: META_TEMPLATE,
         data: LICENSE_ACCOUNT_RESPONSE_TEMPLATE,
     })
     public async unbindLicense(id: string, @Request() request: IAuthRequest): Promise<LicenseAccountResponse> {
-        const response = await licServerApiService.unbindLicense(id);
+        const response = await licServerApiService.unbindLicense(id, request);
 
         if (!response.error) {
             let terminal: ITerminalDocument;

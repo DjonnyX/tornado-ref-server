@@ -97,15 +97,18 @@ export class BusinessPeriodsController extends Controller {
     @Get()
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetAll")
     @Example<IBusinessPeriodsResponse>({
         meta: META_TEMPLATE,
         data: [RESPONSE_TEMPLATE]
     })
     public async getAll(@Request() request: IAuthRequest): Promise<IBusinessPeriodsResponse> {
+        const client = getClientId(request);
+
         try {
-            const items = await findAllWithFilter(BusinessPeriodModel.find({ client: getClientId(request) }), request);
-            const ref = await getRef(getClientId(request), RefTypes.BUSINESS_PERIODS);
+            const items = await findAllWithFilter(BusinessPeriodModel.find({ client }), request);
+            const ref = await getRef(client, RefTypes.BUSINESS_PERIODS);
             return {
                 meta: { ref },
                 data: items.map(v => formatModel(v))
@@ -130,15 +133,18 @@ export class BusinessPeriodController extends Controller {
     @Get("{id}")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetOne")
     @Example<IBusinessPeriodResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE
     })
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<IBusinessPeriodResponse> {
+        const client = getClientId(request);
+
         try {
             const item = await BusinessPeriodModel.findById(id);
-            const ref = await getRef(getClientId(request), RefTypes.BUSINESS_PERIODS);
+            const ref = await getRef(client, RefTypes.BUSINESS_PERIODS);
             return {
                 meta: { ref },
                 data: formatModel(item),
@@ -158,16 +164,19 @@ export class BusinessPeriodController extends Controller {
 
     @Post()
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Create")
     @Example<IBusinessPeriodResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
     public async create(@Body() body: IBusinessPeriodCreateRequest, @Request() request: IAuthRequest): Promise<IBusinessPeriodResponse> {
+        const client = getClientId(request);
+
         try {
-            const item = new BusinessPeriodModel({ ...body, client: getClientId(request) });
+            const item = new BusinessPeriodModel({ ...body, client });
             const savedItem = await item.save();
-            const ref = await riseRefVersion(getClientId(request), RefTypes.BUSINESS_PERIODS);
+            const ref = await riseRefVersion(client, RefTypes.BUSINESS_PERIODS);
             return {
                 meta: { ref },
                 data: formatModel(savedItem),
@@ -187,12 +196,15 @@ export class BusinessPeriodController extends Controller {
 
     @Put("{id}")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Update")
     @Example<IBusinessPeriodResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() body: IBusinessPeriodCreateRequest, @Request() request: IAuthRequest): Promise<IBusinessPeriodResponse> {
+        const client = getClientId(request);
+
         try {
             const item = await BusinessPeriodModel.findById(id);
 
@@ -205,7 +217,7 @@ export class BusinessPeriodController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(getClientId(request), RefTypes.BUSINESS_PERIODS);
+            const ref = await riseRefVersion(client, RefTypes.BUSINESS_PERIODS);
             return {
                 meta: { ref },
                 data: formatModel(item),
@@ -225,11 +237,14 @@ export class BusinessPeriodController extends Controller {
 
     @Delete("{id}")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Delete")
     @Example<IBusinessPeriodResponse>({
         meta: META_TEMPLATE
     })
     public async delete(id: string, @Request() request: IAuthRequest): Promise<IBusinessPeriodResponse> {
+        const client = getClientId(request);
+
         let bp: IBusinessPeriod;
         try {
             bp = await BusinessPeriodModel.findByIdAndDelete(id);
@@ -246,7 +261,7 @@ export class BusinessPeriodController extends Controller {
         }
 
         try {
-            const ref = await riseRefVersion(getClientId(request), RefTypes.BUSINESS_PERIODS);
+            const ref = await riseRefVersion(client, RefTypes.BUSINESS_PERIODS);
             return {
                 meta: { ref },
             };

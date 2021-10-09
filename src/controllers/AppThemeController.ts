@@ -88,16 +88,19 @@ export class AppThemesController extends Controller {
     @Get()
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetAll")
     @Example<IAppThemesResponse>({
         meta: META_TEMPLATE,
         data: [RESPONSE_TEMPLATE],
     })
     public async getAll(@Request() request: IAuthRequest, @Query() type: TerminalTypes): Promise<IAppThemesResponse> {
-        try {
-            const items = await AppThemeModel.find({ client: getClientId(request), type: Number(type) });
+        const client = getClientId(request);
 
-            const ref = await getRef(getClientId(request), RefTypes.THEMES, {
+        try {
+            const items = await AppThemeModel.find({ client, type: Number(type) });
+
+            const ref = await getRef(client, RefTypes.THEMES, {
                 "extra.type.equals": Number(type),
             });
             return {
@@ -124,16 +127,19 @@ export class AppThemeController extends Controller {
     @Get("{id}")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetOne")
     @Example<IAppThemeResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE
     })
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<IAppThemeResponse> {
-        try {
-            const item = await AppThemeModel.findOne({ _id: id, client: getClientId(request) });
+        const client = getClientId(request);
 
-            const ref = await getRef(getClientId(request), RefTypes.THEMES, {
+        try {
+            const item = await AppThemeModel.findOne({ _id: id, client });
+
+            const ref = await getRef(client, RefTypes.THEMES, {
                 "extra.type.equals": item.type,
             });
             return {
@@ -155,12 +161,15 @@ export class AppThemeController extends Controller {
 
     @Post()
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Create")
     @Example<IAppThemeResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
     public async create(@Body() body: IAppThemeCreateRequest, @Query() type: TerminalTypes, @Request() request: IAuthRequest): Promise<IAppThemeResponse> {
+        const client = getClientId(request);
+
         let themeData: any;
         try {
             const template = await readFileJSONAsync(getThemePathByTerminalType(type));
@@ -185,12 +194,13 @@ export class AppThemeController extends Controller {
             const item = new AppThemeModel({
                 ...body,
                 data: themeData,
-                type, client: getClientId(request),
+                type,
+                client,
                 lastUpdate: new Date(),
                 version: 1,
             });
             const savedItem = await item.save();
-            const ref = await riseRefVersion(getClientId(request), RefTypes.THEMES, {
+            const ref = await riseRefVersion(client, RefTypes.THEMES, {
                 "extra.type.equals": item.type,
             });
             return {
@@ -213,12 +223,15 @@ export class AppThemeController extends Controller {
     @Put("{id}")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Update")
     @Example<IAppThemeResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() body: IAppThemeUpdateRequest, @Request() request: IAuthRequest): Promise<IAppThemeResponse> {
+        const client = getClientId(request);
+
         try {
             const item = await AppThemeModel.findById(id);
 
@@ -235,7 +248,7 @@ export class AppThemeController extends Controller {
 
                 await item.save();
 
-                const ref = await riseRefVersion(getClientId(request), RefTypes.THEMES, {
+                const ref = await riseRefVersion(client, RefTypes.THEMES, {
                     "extra.type.equals": item.type,
                 });
                 return {
@@ -268,11 +281,14 @@ export class AppThemeController extends Controller {
 
     @Delete("{id}")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Delete")
     @Example<IAppThemeResponse>({
         meta: META_TEMPLATE
     })
     public async delete(id: string, @Request() request: IAuthRequest): Promise<IAppThemeResponse> {
+        const client = getClientId(request);
+
         let theme: IAppThemeDocument;
         try {
             theme = await AppThemeModel.findByIdAndDelete(id);
@@ -290,7 +306,7 @@ export class AppThemeController extends Controller {
 
         let defaultTheme: IAppThemeDocument;
         try {
-            defaultTheme = await AppThemeModel.findOne({ client: getClientId(request), type: theme.type, name: "light" });
+            defaultTheme = await AppThemeModel.findOne({ client, type: theme.type, name: "light" });
         } catch (err) {
             this.setStatus(500);
             return {
@@ -305,7 +321,7 @@ export class AppThemeController extends Controller {
 
         let terminals: Array<ITerminalDocument>;
         try {
-            terminals = await TerminalModel.find({ client: getClientId(request), type: theme.type });
+            terminals = await TerminalModel.find({ client: client, type: theme.type });
         } catch (err) {
             this.setStatus(500);
             return {
@@ -341,7 +357,7 @@ export class AppThemeController extends Controller {
         }
 
         try {
-            const ref = await riseRefVersion(getClientId(request), RefTypes.THEMES, {
+            const ref = await riseRefVersion(client, RefTypes.THEMES, {
                 "extra.type.equals": theme.type,
             });
             return {

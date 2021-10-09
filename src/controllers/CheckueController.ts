@@ -73,15 +73,18 @@ export class CheckuesController extends Controller {
     @Get()
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetAll")
     @Example<CheckuesResponse>({
         meta: META_TEMPLATE,
         data: [RESPONSE_TEMPLATE],
     })
     public async getAll(@Request() request: IAuthRequest): Promise<CheckuesResponse> {
+        const client = getClientId(request);
+
         try {
-            const items = await findAllWithFilter(CheckueModel.find({ client: getClientId(request) }), request);
-            const ref = await getRef(getClientId(request), RefTypes.CHECKUES);
+            const items = await findAllWithFilter(CheckueModel.find({ client }), request);
+            const ref = await getRef(client, RefTypes.CHECKUES);
             return {
                 meta: { ref },
                 data: items.map(v => formatCheckueModel(v)),
@@ -106,15 +109,18 @@ export class CheckueController extends Controller {
     @Get("{id}")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetOne")
     @Example<CheckueResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<CheckueResponse> {
+        const client = getClientId(request);
+
         try {
             const item = await CheckueModel.findById(id);
-            const ref = await getRef(getClientId(request), RefTypes.CHECKUES);
+            const ref = await getRef(client, RefTypes.CHECKUES);
             return {
                 meta: { ref },
                 data: formatCheckueModel(item),
@@ -134,21 +140,24 @@ export class CheckueController extends Controller {
 
     @Post()
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Create")
     @Example<CheckueResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
     public async create(@Body() body: CheckueCreateRequest, @Request() request: IAuthRequest): Promise<CheckueResponse> {
+        const client = getClientId(request);
+
         const data = { ...body };
         if (!data.scenarios) {
             data.scenarios = [];
         }
 
         try {
-            const item = new CheckueModel({ ...data, client: getClientId(request) });
+            const item = new CheckueModel({ ...data, client });
             const savedItem = await item.save();
-            const ref = await riseRefVersion(getClientId(request), RefTypes.CHECKUES);
+            const ref = await riseRefVersion(client, RefTypes.CHECKUES);
             return {
                 meta: { ref },
                 data: formatCheckueModel(savedItem),
@@ -168,12 +177,15 @@ export class CheckueController extends Controller {
 
     @Put("{id}")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Update")
     @Example<CheckueResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() body: CheckueUpdateRequest, @Request() request: IAuthRequest): Promise<CheckueResponse> {
+        const client = getClientId(request);
+
         let item: ICheckueDocument;
 
         try {
@@ -188,6 +200,7 @@ export class CheckueController extends Controller {
                     if (key === "scenarios") {
                         const scenarios = body.scenarios.map(scenario => ({
                             active: scenario.active,
+                            lock: scenario.lock,
                             action: scenario.action,
                             value: scenario.value,
                             extra: scenario.extra,
@@ -200,7 +213,7 @@ export class CheckueController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(getClientId(request), RefTypes.CHECKUES);
+            const ref = await riseRefVersion(client, RefTypes.CHECKUES);
 
             return {
                 meta: { ref },
@@ -221,14 +234,17 @@ export class CheckueController extends Controller {
 
     @Delete("{id}")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Delete")
     @Example<CheckueResponse>({
         meta: META_TEMPLATE,
     })
     public async delete(id: string, @Request() request: IAuthRequest): Promise<CheckueResponse> {
+        const client = getClientId(request);
+
         try {
             await CheckueModel.findOneAndDelete({ _id: id });
-            const ref = await riseRefVersion(getClientId(request), RefTypes.CHECKUES);
+            const ref = await riseRefVersion(client, RefTypes.CHECKUES);
             return {
                 meta: { ref },
             };

@@ -70,6 +70,7 @@ const RESPONSE_TEMPLATE: IBackup = {
 export class BackupController extends Controller {
     @Post("create")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Create")
     @Example<ICreateBackupResponse>({
         meta: META_TEMPLATE,
@@ -104,6 +105,7 @@ export class BackupController extends Controller {
 
     @Post("upload")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Upload")
     @Example<IUploadBackupResponse>({
         meta: META_TEMPLATE,

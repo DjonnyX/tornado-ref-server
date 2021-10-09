@@ -7,11 +7,13 @@ interface IIntegrationInfo extends IIntegration { }
 
 interface ICreateIntegrationParams {
     host: string;
+    verificationKey: string;
     active: boolean;
 }
 
 interface IUpdateIntegrationParams {
     host?: string;
+    verificationKey?: string;
     active?: boolean;
 }
 
@@ -75,6 +77,7 @@ const INTEGRATION_SERVER_INFO_RESPONSE_TEMPLATE: IIntegrationServerInfo = {
 export const INTEGRATION_RESPONSE_TEMPLATE: IIntegration = {
     id: "507c7f79bcf86cd7994f6c0e",
     host: "http://127.0.0.1:8089/",
+    verificationKey: "secure_key",
     name: "Evotor",
     rights: [
         // Backups
@@ -116,13 +119,15 @@ const META_TEMPLATE: IIntegrationInfoMeta = {
 @Tags("Integration")
 export class IntegrationsController extends Controller {
     @Get()
+    @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetAll")
     @Example<IntegrationsGetResponse>({
         meta: META_TEMPLATE,
         data: [INTEGRATION_RESPONSE_TEMPLATE],
     })
     public async getIntegration(@Request() request: IAuthRequest): Promise<IntegrationsGetResponse> {
-        return await licServerApiService.getIntegrations(request.token);
+        return await licServerApiService.getIntegrations(request);
     }
 }
 
@@ -131,55 +136,60 @@ export class IntegrationsController extends Controller {
 export class IntegrationController extends Controller {
     @Post("/server-info")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("ServerInfo")
     @Example<IntegrationServerInfoResponse>({
         meta: META_TEMPLATE,
         data: INTEGRATION_SERVER_INFO_RESPONSE_TEMPLATE,
     })
     public async getServerInfo(@Body() body: { host: string }, @Request() request: IAuthRequest): Promise<IntegrationServerInfoResponse> {
-        return await licServerApiService.getIntegrationServerInfo(body as any, request.token);
+        return await licServerApiService.getIntegrationServerInfo(body as any, request);
     }
 
     @Get("{id}")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetOne")
     @Example<IntegrationResponse>({
         meta: META_TEMPLATE,
         data: INTEGRATION_RESPONSE_TEMPLATE,
     })
     public async getIntegration(id: string, @Request() request: IAuthRequest): Promise<IntegrationResponse> {
-        return await licServerApiService.getIntegration(id, request.token);
+        return await licServerApiService.getIntegration(id, request);
     }
 
     @Post()
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Create")
     @Example<IntegrationResponse>({
         meta: META_TEMPLATE,
         data: INTEGRATION_RESPONSE_TEMPLATE,
     })
     public async createIntegration(@Body() body: ICreateIntegrationParams, @Request() request: IAuthRequest): Promise<IntegrationResponse> {
-        return await licServerApiService.createIntegration(body as any, request.token);
+        return await licServerApiService.createIntegration(body as any, request);
     }
 
     @Put("{id}")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Update")
     @Example<IntegrationResponse>({
         meta: META_TEMPLATE,
         data: INTEGRATION_RESPONSE_TEMPLATE,
     })
     public async updateIntegration(id: string, @Body() body: IUpdateIntegrationParams, @Request() request: IAuthRequest): Promise<IntegrationResponse> {
-        return await licServerApiService.updateIntegration(id, body as any, request.token);
+        return await licServerApiService.updateIntegration(id, body as any, request);
     }
 
     @Delete("{id}")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Delete")
     @Example<IntegrationResponse>({
         meta: META_TEMPLATE,
     })
     public async deleteIntegration(id: string, @Request() request: IAuthRequest): Promise<IntegrationResponse> {
-        return await licServerApiService.deleteIntegration(id, request.token);
+        return await licServerApiService.deleteIntegration(id, request);
     }
 }

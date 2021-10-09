@@ -67,15 +67,18 @@ export class EmployeesController extends Controller {
     @Get()
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetAll")
     @Example<EmployeesResponse>({
         meta: META_TEMPLATE,
         data: [RESPONSE_TEMPLATE],
     })
     public async getAll(@Request() request: IAuthRequest): Promise<EmployeesResponse> {
+        const client = getClientId(request);
+
         try {
-            const items = await findAllWithFilter(EmployeeModel.find({ client: getClientId(request) }), request);
-            const ref = await getRef(getClientId(request), RefTypes.EMPLOYEES);
+            const items = await findAllWithFilter(EmployeeModel.find({ client }), request);
+            const ref = await getRef(client, RefTypes.EMPLOYEES);
             return {
                 meta: { ref },
                 data: items.map(v => formatEmployeeModel(v)),
@@ -100,15 +103,18 @@ export class EmployeeController extends Controller {
     @Get("{id}")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetOne")
     @Example<EmployeeResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<EmployeeResponse> {
+        const client = getClientId(request);
+
         try {
             const item = await EmployeeModel.findById(id);
-            const ref = await getRef(getClientId(request), RefTypes.EMPLOYEES);
+            const ref = await getRef(client, RefTypes.EMPLOYEES);
             return {
                 meta: { ref },
                 data: formatEmployeeModel(item),
@@ -128,16 +134,19 @@ export class EmployeeController extends Controller {
 
     @Post()
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Create")
     @Example<EmployeeResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
     public async create(@Body() body: EmployeeCreateRequest, @Request() request: IAuthRequest): Promise<EmployeeResponse> {
+        const client = getClientId(request);
+
         let employes: Array<IEmployee>;
 
         try {
-            employes = await EmployeeModel.find({ client: getClientId(request) });
+            employes = await EmployeeModel.find({ client });
         } catch (err) {
             this.setStatus(500);
             return {
@@ -151,9 +160,9 @@ export class EmployeeController extends Controller {
         }
 
         try {
-            const item = new EmployeeModel({ ...body, client: getClientId(request) });
+            const item = new EmployeeModel({ ...body, client });
             const savedItem = await item.save();
-            const ref = await riseRefVersion(getClientId(request), RefTypes.EMPLOYEES);
+            const ref = await riseRefVersion(client, RefTypes.EMPLOYEES);
             return {
                 meta: { ref },
                 data: formatEmployeeModel(savedItem),
@@ -173,12 +182,15 @@ export class EmployeeController extends Controller {
 
     @Put("{id}")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Update")
     @Example<EmployeeResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() body: EmployeeUpdateRequest, @Request() request: IAuthRequest): Promise<EmployeeResponse> {
+        const client = getClientId(request);
+
         let item: IEmployeeDocument;
 
         try {
@@ -206,7 +218,7 @@ export class EmployeeController extends Controller {
         try {
             await item.save();
 
-            const ref = await riseRefVersion(getClientId(request), RefTypes.EMPLOYEES);
+            const ref = await riseRefVersion(client, RefTypes.EMPLOYEES);
             return {
                 meta: { ref },
                 data: formatEmployeeModel(item),
@@ -226,14 +238,17 @@ export class EmployeeController extends Controller {
 
     @Delete("{id}")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Delete")
     @Example<EmployeeResponse>({
         meta: META_TEMPLATE,
     })
     public async delete(id: string, @Request() request: IAuthRequest): Promise<EmployeeResponse> {
+        const client = getClientId(request);
+
         let employes: Array<IEmployee>;
         try {
-            employes = await EmployeeModel.find({ client: getClientId(request) });
+            employes = await EmployeeModel.find({ client });
         } catch (err) { }
 
         if (employes && employes.length === 1) {
@@ -250,7 +265,7 @@ export class EmployeeController extends Controller {
 
         try {
             await EmployeeModel.findOneAndDelete({ _id: id });
-            const ref = await riseRefVersion(getClientId(request), RefTypes.EMPLOYEES);
+            const ref = await riseRefVersion(client, RefTypes.EMPLOYEES);
             return {
                 meta: { ref },
             };

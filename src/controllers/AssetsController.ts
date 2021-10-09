@@ -80,6 +80,8 @@ const RESPONSE_TEMPLATE: IAssetItem = {
 };
 
 export const uploadAsset = async (request: IAuthRequest, allowedExtensions: Array<AssetExtensions>, active = true, extra?: any): Promise<ICreateAssetsResponse> => {
+    const client = getClientId(request);
+
     let fileInfo: IFileInfo;
     try {
         fileInfo = await assetsUploader("file", allowedExtensions, request, extra);
@@ -97,8 +99,8 @@ export const uploadAsset = async (request: IAuthRequest, allowedExtensions: Arra
     let asset: IAssetDocument;
     let assetRef: IRef;
     try {
-        asset = new AssetModel({ ...fileInfo, active, client: getClientId(request) });
-        assetRef = await riseRefVersion(getClientId(request), RefTypes.ASSETS);
+        asset = new AssetModel({ ...fileInfo, active, client });
+        assetRef = await riseRefVersion(client, RefTypes.ASSETS);
         await asset.save();
     } catch (err) {
         return {
@@ -144,15 +146,18 @@ export class AssetsController extends Controller {
     @Get()
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetAll")
     @Example<IGetAssetsResponse>({
         meta: META_TEMPLATE,
         data: [RESPONSE_TEMPLATE]
     })
     public async getAll(@Request() request: IAuthRequest): Promise<IGetAssetsResponse> {
+        const client = getClientId(request);
+
         try {
-            const items = await findAllWithFilter(AssetModel.find({ client: getClientId(request) }), request);
-            const ref = await getRef(getClientId(request), RefTypes.ASSETS);
+            const items = await findAllWithFilter(AssetModel.find({ client }), request);
+            const ref = await getRef(client, RefTypes.ASSETS);
             return {
                 meta: { ref },
                 data: items.map(v => formatAssetModel(v))
@@ -176,6 +181,7 @@ export class AssetsController extends Controller {
 export class AssetController extends Controller {
     @Post()
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Create")
     @Example<ICreateAssetsResponse>({
         meta: META_TEMPLATE,
@@ -222,6 +228,7 @@ export class AssetController extends Controller {
 
     @Delete("{id}")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Delete")
     @Example<IDeleteAssetsResponse>({
         meta: META_TEMPLATE,

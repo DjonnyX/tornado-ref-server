@@ -73,15 +73,18 @@ export class CurrenciesController extends Controller {
     @Get()
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetAll")
     @Example<CurrenciesResponse>({
         meta: META_TEMPLATE,
         data: [RESPONSE_TEMPLATE],
     })
     public async getAll(@Request() request: IAuthRequest): Promise<CurrenciesResponse> {
+        const client = getClientId(request);
+
         try {
-            const items = await findAllWithFilter(CurrencyModel.find({ client: getClientId(request) }), request);
-            const ref = await getRef(getClientId(request), RefTypes.CURRENCIES);
+            const items = await findAllWithFilter(CurrencyModel.find({ client }), request);
+            const ref = await getRef(client, RefTypes.CURRENCIES);
             return {
                 meta: { ref },
                 data: items.map(v => formatCurrencyModel(v)),
@@ -106,15 +109,18 @@ export class CurrencyController extends Controller {
     @Get("{id}")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetOne")
     @Example<CurrencyResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<CurrencyResponse> {
+        const client = getClientId(request);
+
         try {
             const item = await CurrencyModel.findById(id);
-            const ref = await getRef(getClientId(request), RefTypes.CURRENCIES);
+            const ref = await getRef(client, RefTypes.CURRENCIES);
             return {
                 meta: { ref },
                 data: formatCurrencyModel(item),
@@ -134,16 +140,19 @@ export class CurrencyController extends Controller {
 
     @Post()
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Create")
     @Example<CurrencyResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
     public async create(@Body() body: CurrencyCreateRequest, @Request() request: IAuthRequest): Promise<CurrencyResponse> {
+        const client = getClientId(request);
+
         let currencies: Array<ICurrency>;
 
         try {
-            currencies = await CurrencyModel.find({ client: getClientId(request) });
+            currencies = await CurrencyModel.find({ client });
         } catch (err) {
             this.setStatus(500);
             return {
@@ -158,9 +167,9 @@ export class CurrencyController extends Controller {
 
         try {
             body.isDefault = currencies.length === 0;
-            const item = new CurrencyModel({ ...body, client: getClientId(request) });
+            const item = new CurrencyModel({ ...body, client });
             const savedItem = await item.save();
-            const ref = await riseRefVersion(getClientId(request), RefTypes.CURRENCIES);
+            const ref = await riseRefVersion(client, RefTypes.CURRENCIES);
             return {
                 meta: { ref },
                 data: formatCurrencyModel(savedItem),
@@ -180,12 +189,15 @@ export class CurrencyController extends Controller {
 
     @Put("{id}")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Update")
     @Example<CurrencyResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() body: CurrencyUpdateRequest, @Request() request: IAuthRequest): Promise<CurrencyResponse> {
+        const client = getClientId(request);
+
         let item: ICurrencyDocument;
 
         let isDefault: boolean;
@@ -220,7 +232,7 @@ export class CurrencyController extends Controller {
         }
 
         try {
-            const currencies: Array<ICurrencyDocument> = await CurrencyModel.find({ client: getClientId(request) });
+            const currencies: Array<ICurrencyDocument> = await CurrencyModel.find({ client });
 
             const promises = new Array<Promise<void>>();
 
@@ -285,7 +297,7 @@ export class CurrencyController extends Controller {
         try {
             await item.save();
 
-            const ref = await riseRefVersion(getClientId(request), RefTypes.CURRENCIES);
+            const ref = await riseRefVersion(client, RefTypes.CURRENCIES);
             return {
                 meta: { ref },
                 data: formatCurrencyModel(item),
@@ -305,14 +317,17 @@ export class CurrencyController extends Controller {
 
     @Delete("{id}")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Delete")
     @Example<CurrencyResponse>({
         meta: META_TEMPLATE,
     })
     public async delete(id: string, @Request() request: IAuthRequest): Promise<CurrencyResponse> {
+        const client = getClientId(request);
+
         let currencies: Array<ICurrencyDocument>;
         try {
-            currencies = await CurrencyModel.find({ client: getClientId(request) });
+            currencies = await CurrencyModel.find({ client });
         } catch (err) { }
 
         if (currencies && currencies.length === 1) {
@@ -331,7 +346,7 @@ export class CurrencyController extends Controller {
         let currency: ICurrencyDocument;
         try {
             currency = await CurrencyModel.findOneAndDelete({ _id: id });
-            ref = await riseRefVersion(getClientId(request), RefTypes.CURRENCIES);
+            ref = await riseRefVersion(client, RefTypes.CURRENCIES);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -346,7 +361,7 @@ export class CurrencyController extends Controller {
 
         try {
             const promises = new Array<Promise<void>>();
-            const products = await ProductModel.find({ client: getClientId(request) });
+            const products = await ProductModel.find({ client: client });
             products.forEach(product => {
                 const deletedProductPrice = product.prices?.find(price => price.currency == currency.id);
                 if (!!deletedProductPrice) {

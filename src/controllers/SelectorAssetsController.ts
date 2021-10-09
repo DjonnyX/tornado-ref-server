@@ -140,6 +140,7 @@ export class SelectorAssetsController extends Controller {
     @Get("{selectorId}/assets")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetAll")
     @Example<ISelectorGetAllAssetsResponse>({
         meta: META_TEMPLATE,
@@ -209,6 +210,7 @@ export class SelectorAssetsController extends Controller {
     @Get("{selectorId}/assets/{langCode}")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Get")
     @Example<ISelectorGetAssetsResponse>({
         meta: META_TEMPLATE,
@@ -252,6 +254,7 @@ export class SelectorAssetsController extends Controller {
 
     /*@Post("{selectorId}/asset/{langCode}")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Create")
     @Example<ISelectorCreateAssetsResponse>({
         meta: META_TEMPLATE,
@@ -333,6 +336,7 @@ export class SelectorAssetsController extends Controller {
 
     @Post("{selectorId}/resource/{langCode}/{resourceType}")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("CreateResource")
     @Example<ISelectorCreateAssetsResponse>({
         meta: META_TEMPLATE,
@@ -342,6 +346,8 @@ export class SelectorAssetsController extends Controller {
         }
     })
     public async resource(selectorId: string, langCode: string, resourceType: SelectorImageTypes, @Request() request: IAuthRequest): Promise<ISelectorCreateAssetsResponse> {
+        const client = getClientId(request);
+
         let assetsInfo: ICreateAssetsResponse;
         try {
             assetsInfo = await uploadAsset(request, [
@@ -422,7 +428,7 @@ export class SelectorAssetsController extends Controller {
                     await deleteAsset(asset.path);
                     await deleteAsset(asset.mipmap.x128);
                     await deleteAsset(asset.mipmap.x32);
-                    await riseRefVersion(getClientId(request), RefTypes.ASSETS);
+                    await riseRefVersion(client, RefTypes.ASSETS);
                 }
             } catch (err) {
                 this.setStatus(500);
@@ -458,7 +464,7 @@ export class SelectorAssetsController extends Controller {
 
             savedSelector = await selector.save();
 
-            selectorRef = await riseRefVersion(getClientId(request), RefTypes.SELECTORS);
+            selectorRef = await riseRefVersion(client, RefTypes.SELECTORS);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -489,6 +495,7 @@ export class SelectorAssetsController extends Controller {
 
     @Put("{selectorId}/asset/{langCode}/{assetId}")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Update")
     @Example<ISelectorCreateAssetsResponse>({
         meta: META_TEMPLATE,
@@ -498,6 +505,7 @@ export class SelectorAssetsController extends Controller {
         }
     })
     public async update(selectorId: string, langCode: string, assetId: string, @Body() body: ISelectorAssetUpdateRequest, @Request() request: IAuthRequest): Promise<ISelectorCreateAssetsResponse> {
+        const client = getClientId(request);
 
         let selector: ISelectorDocument;
         try {
@@ -516,7 +524,7 @@ export class SelectorAssetsController extends Controller {
 
         let selectorRef: IRef;
         try {
-            selectorRef = await getRef(getClientId(request), RefTypes.SELECTORS);
+            selectorRef = await getRef(client, RefTypes.SELECTORS);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -538,7 +546,7 @@ export class SelectorAssetsController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(getClientId(request), RefTypes.ASSETS);
+            const ref = await riseRefVersion(client, RefTypes.ASSETS);
             return {
                 meta: {
                     asset: {
@@ -568,11 +576,14 @@ export class SelectorAssetsController extends Controller {
 
     @Delete("{selectorId}/asset/{langCode}/{assetId}")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Delete")
     @Example<ISelectorDeleteAssetsResponse>({
         meta: META_TEMPLATE
     })
     public async delete(selectorId: string, langCode: string, assetId: string, @Request() request: IAuthRequest): Promise<ISelectorDeleteAssetsResponse> {
+        const client = getClientId(request);
+
         let selector: ISelectorDocument;
         try {
             selector = await SelectorModel.findById(selectorId);
@@ -599,7 +610,7 @@ export class SelectorAssetsController extends Controller {
                     await deleteAsset(asset.path);
                     await deleteAsset(asset.mipmap.x128);
                     await deleteAsset(asset.mipmap.x32);
-                    assetRef = await riseRefVersion(getClientId(request), RefTypes.ASSETS);
+                    assetRef = await riseRefVersion(client, RefTypes.ASSETS);
                 }
             } catch (err) {
                 this.setStatus(500);
@@ -623,7 +634,7 @@ export class SelectorAssetsController extends Controller {
 
             await selector.save();
 
-            selectorsRef = await riseRefVersion(getClientId(request), RefTypes.SELECTORS);
+            selectorsRef = await riseRefVersion(client, RefTypes.SELECTORS);
             return {
                 meta: {
                     selector: {

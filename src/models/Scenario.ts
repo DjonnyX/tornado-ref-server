@@ -6,6 +6,7 @@ import { Schema } from "mongoose";
 
 export const ScenarioSchema = new Schema({
     active: { type: Schema.Types.Boolean, required: true, default: true },
+    lock: { type: Schema.Types.Boolean, require: true, default: false },
     action: {
         type: Schema.Types.String, enum: [
             // program

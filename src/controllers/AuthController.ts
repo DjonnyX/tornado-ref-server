@@ -11,14 +11,17 @@ interface ISigninParams {
     password: string;
 }
 
-interface ISignupParams {
+export interface ISignupParams {
     captchaId: string;
-    captchaValue: string;
-    integrationId: string;
+    captchaValue?: string;
+    integrationId?: string;
     firstName: string;
     lastName: string;
     email: string;
     password: string;
+    extra?: {
+        [key: string]: any;
+    } | null;
 }
 
 interface IResetPasswordParams {
@@ -134,7 +137,7 @@ export class CaptchaController extends Controller {
         }
     })
     public async getCaptcha(@Request() request: express.Request): Promise<GetCaptchaResponse> {
-        return await licServerApiService.getCaptcha();
+        return await licServerApiService.getCaptcha(request);
     }
 }
 
@@ -153,7 +156,7 @@ export class SignupController extends Controller {
         let res: SignupResponse;
 
         try {
-            res = await licServerApiService.signup<SignupResponse>(body, language, {
+            res = await licServerApiService.signup<SignupResponse>(body, language, request, {
                 clientToken: request.token,
             });
 
@@ -229,7 +232,7 @@ export class ResetPasswordController extends Controller {
         return await licServerApiService.postClientRestorePassword<ResetPasswordResponse>({
             restorePassCode: body.restorePassCode,
             newPass: body.password,
-        });
+        }, request);
     }
 }
 
@@ -243,7 +246,7 @@ export class ForgotPasswordController extends Controller {
     })
     public async forgotPassword(@Request() request: express.Request, @Query() email: string,
         @Query() captchaId: string, @Query() captchaVal: string, @Query() language?: string): Promise<ForgotPasswordResponse> {
-        return await licServerApiService.getClientRestorePassword<ForgotPasswordResponse>({ email, captchaId, captchaVal, language });
+        return await licServerApiService.getClientRestorePassword<ForgotPasswordResponse>({ email, captchaId, captchaVal, language }, request);
     }
 }
 
@@ -256,6 +259,6 @@ export class VerifyResetPasswordTokenController extends Controller {
         data: {}
     })
     public async verifyResetPasswordToken(@Request() request: express.Request, @Query() restorePassCode: string): Promise<VerifyResetPasswordTokenResponse> {
-        return await licServerApiService.clientCheckRestorePassCode<VerifyResetPasswordTokenResponse>({ restorePassCode });
+        return await licServerApiService.clientCheckRestorePassCode<VerifyResetPasswordTokenResponse>({ restorePassCode }, request);
     }
 }

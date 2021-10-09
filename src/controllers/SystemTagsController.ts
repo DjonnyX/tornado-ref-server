@@ -74,15 +74,18 @@ export class SystemTagsController extends Controller {
     @Get()
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetAll")
     @Example<ISystemTagsResponse>({
         meta: META_TEMPLATE,
         data: [RESPONSE_TEMPLATE]
     })
     public async getAll(@Request() request: IAuthRequest): Promise<ISystemTagsResponse> {
+        const client = getClientId(request);
+
         try {
-            const items = await findAllWithFilter(SystemTagModel.find({ client: getClientId(request) }), request);
-            const ref = await getRef(getClientId(request), RefTypes.SYSTEM_TAGS);
+            const items = await findAllWithFilter(SystemTagModel.find({ client }), request);
+            const ref = await getRef(client, RefTypes.SYSTEM_TAGS);
             return {
                 meta: { ref },
                 data: items.map(v => formatSystemTagModel(v))
@@ -103,6 +106,7 @@ export class SystemTagsController extends Controller {
     @Put("/positions")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("SetPositions")
     @Example<ISystemTagsPositionsResponse>({
         meta: META_TEMPLATE,
@@ -113,6 +117,7 @@ export class SystemTagsController extends Controller {
     })
     public async positions(@Body() body: Array<IEntityPosition>, @Request() request: IAuthRequest): Promise<ISystemTagsPositionsResponse> {
         const client = getClientId(request);
+
         try {
             const items: Array<ISystemTagDocument> = await findAllWithFilter(SystemTagModel.find({ client }), request);
 
@@ -157,15 +162,18 @@ export class SystemTagController extends Controller {
     @Get("{id}")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetOne")
     @Example<ISystemTagResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE
     })
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<ISystemTagResponse> {
+        const client = getClientId(request);
+
         try {
             const item = await SystemTagModel.findById(id);
-            const ref = await getRef(getClientId(request), RefTypes.SYSTEM_TAGS);
+            const ref = await getRef(client, RefTypes.SYSTEM_TAGS);
             return {
                 meta: { ref },
                 data: formatSystemTagModel(item),
@@ -185,6 +193,7 @@ export class SystemTagController extends Controller {
 
     @Post()
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Create")
     @Example<ISystemTagResponse>({
         meta: META_TEMPLATE,
@@ -192,6 +201,7 @@ export class SystemTagController extends Controller {
     })
     public async create(@Body() body: ISystemTagCreateRequest, @Request() request: IAuthRequest): Promise<ISystemTagResponse> {
         const client = getClientId(request);
+
         let systemTags: Array<ISystemTagDocument>;
         try {
             systemTags = await SystemTagModel.find({ client });
@@ -246,6 +256,7 @@ export class SystemTagController extends Controller {
     @Put("{id}")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Update")
     @Example<ISystemTagResponse>({
         meta: META_TEMPLATE,
@@ -253,6 +264,7 @@ export class SystemTagController extends Controller {
     })
     public async update(id: string, @Body() body: ISystemTagUpdateRequest, @Request() request: IAuthRequest): Promise<ISystemTagResponse> {
         const client = getClientId(request);
+
         try {
             const item = await SystemTagModel.findById(id);
 
@@ -270,7 +282,7 @@ export class SystemTagController extends Controller {
             }
 
             await item.save();
-            
+
             const systemTags = await SystemTagModel.find({ client });
 
             if (!isPositionsEqual) {
@@ -297,12 +309,14 @@ export class SystemTagController extends Controller {
 
     @Delete("{id}")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Delete")
     @Example<ISystemTagResponse>({
         meta: META_TEMPLATE
     })
     public async delete(id: string, @Request() request: IAuthRequest): Promise<ISystemTagResponse> {
         const client = getClientId(request);
+
         let tag: ISystemTag;
         try {
             tag = await SystemTagModel.findByIdAndDelete(id);

@@ -127,6 +127,7 @@ const RESPONSE_TEMPLATE: INodeItem = {
     children: ["123c7f79bcf86cd7994f6c0e"],
     scenarios: [{
         active: true,
+        lock: false,
         action: ScenarioCommonActionTypes.VISIBLE_BY_BUSINESS_PERIOD,
     }]
 };
@@ -176,6 +177,7 @@ export class RootNodesController extends Controller {
     @Get()
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetRootNodes")
     @Example<INodesResponse>({
         meta: META_TEMPLATE,
@@ -188,6 +190,7 @@ export class RootNodesController extends Controller {
             children: ["123c7f79bcf86cd7994f6c0e"],
             scenarios: [{
                 active: true,
+                lock: false,
                 action: ScenarioCommonActionTypes.VISIBLE_BY_BUSINESS_PERIOD,
             }]
         }]
@@ -222,6 +225,7 @@ export class NodesController extends Controller {
     @Get()
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetAll")
     @Example<INodesResponse>({
         meta: META_TEMPLATE,
@@ -232,7 +236,7 @@ export class NodesController extends Controller {
 
         try {
             const items = await findAllWithFilter(NodeModel.find({ client }), request);
-            const ref = await getRef(getClientId(request), RefTypes.NODES);
+            const ref = await getRef(client, RefTypes.NODES);
             return {
                 meta: { ref },
                 data: items.map(v => formatModel(v))
@@ -253,6 +257,7 @@ export class NodesController extends Controller {
     @Get("{id}")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetAllById")
     @Example<INodesResponse>({
         meta: META_TEMPLATE,
@@ -283,6 +288,7 @@ export class NodesController extends Controller {
 
     @Post()
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("CreateMany")
     @Example<INodesResponse>({
         meta: META_TEMPLATE,
@@ -396,6 +402,7 @@ export class NodeController extends Controller {
     @Get("{id}")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetOne")
     @Example<INodeResponse>({
         meta: META_TEMPLATE,
@@ -426,6 +433,7 @@ export class NodeController extends Controller {
 
     @Post()
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Create")
     @Example<INodeResponse>({
         meta: META_TEMPLATE,
@@ -448,7 +456,7 @@ export class NodeController extends Controller {
         }
 
         if (body.type === NodeTypes.SELECTOR_NODE) {
-            const hasRecursion = await checkOnRecursion(getClientId(request), body.parentId, body.contentId);
+            const hasRecursion = await checkOnRecursion(client, body.parentId, body.contentId);
             if (hasRecursion) {
                 this.setStatus(500);
                 return {
@@ -534,6 +542,7 @@ export class NodeController extends Controller {
 
     @Put("{id}")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Update")
     @Example<INodeResponse>({
         meta: META_TEMPLATE,
@@ -593,6 +602,7 @@ export class NodeController extends Controller {
                     if (key === "scenarios") {
                         const scenarios = body.scenarios.map(scenario => ({
                             active: scenario.active,
+                            lock: scenario.lock,
                             action: scenario.action,
                             value: scenario.value,
                             extra: scenario.extra,
@@ -637,6 +647,7 @@ export class NodeController extends Controller {
 
     @Delete("{id}")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Delete")
     @Example<INodeResponse>({
         meta: META_TEMPLATE

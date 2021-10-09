@@ -76,15 +76,18 @@ export class TagsController extends Controller {
     @Get()
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetAll")
     @Example<TagsResponse>({
         meta: META_TEMPLATE,
         data: [RESPONSE_TEMPLATE],
     })
     public async getAll(@Request() request: IAuthRequest): Promise<TagsResponse> {
+        const client = getClientId(request);
+
         try {
-            const items = await findAllWithFilter(TagModel.find({ client: getClientId(request) }), request);
-            const ref = await getRef(getClientId(request), RefTypes.TAGS);
+            const items = await findAllWithFilter(TagModel.find({ client }), request);
+            const ref = await getRef(client, RefTypes.TAGS);
             return {
                 meta: { ref },
                 data: items.map(v => formatTagModel(v)),
@@ -109,15 +112,18 @@ export class TagController extends Controller {
     @Get("{id}")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetOne")
     @Example<TagResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<TagResponse> {
+        const client = getClientId(request);
+
         try {
             const item = await TagModel.findById(id);
-            const ref = await getRef(getClientId(request), RefTypes.TAGS);
+            const ref = await getRef(client, RefTypes.TAGS);
             return {
                 meta: { ref },
                 data: formatTagModel(item),
@@ -137,16 +143,19 @@ export class TagController extends Controller {
 
     @Post()
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Create")
     @Example<TagResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
     public async create(@Body() body: TagCreateRequest, @Request() request: IAuthRequest): Promise<TagResponse> {
+        const client = getClientId(request);
+
         try {
-            const item = new TagModel({ ...body, client: getClientId(request) });
+            const item = new TagModel({ ...body, client });
             const savedItem = await item.save();
-            const ref = await riseRefVersion(getClientId(request), RefTypes.TAGS);
+            const ref = await riseRefVersion(client, RefTypes.TAGS);
             return {
                 meta: { ref },
                 data: formatTagModel(savedItem),
@@ -166,15 +175,18 @@ export class TagController extends Controller {
 
     @Put("{id}")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Update")
     @Example<TagResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() body: TagCreateRequest, @Request() request: IAuthRequest): Promise<TagResponse> {
+        const client = getClientId(request);
+
         let defaultLanguage: ILanguageDocument;
         try {
-            defaultLanguage = await LanguageModel.findOne({ client: getClientId(request), isDefault: true });
+            defaultLanguage = await LanguageModel.findOne({ client, isDefault: true });
         } catch (err) {
             this.setStatus(500);
             return {
@@ -239,7 +251,7 @@ export class TagController extends Controller {
             await Promise.all(promises);
 
             if (isAssetsChanged) {
-                await riseRefVersion(getClientId(request), RefTypes.ASSETS);
+                await riseRefVersion(client, RefTypes.ASSETS);
             }
 
             // выставление ассетов от предыдущего состояния
@@ -257,7 +269,7 @@ export class TagController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(getClientId(request), RefTypes.SELECTORS);
+            const ref = await riseRefVersion(client, RefTypes.SELECTORS);
             return {
                 meta: { ref },
                 data: formatTagModel(item),
@@ -277,14 +289,17 @@ export class TagController extends Controller {
 
     @Delete("{id}")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Delete")
     @Example<TagResponse>({
         meta: META_TEMPLATE,
     })
     public async delete(id: string, @Request() request: IAuthRequest): Promise<TagResponse> {
+        const client = getClientId(request);
+
         let products: Array<IProductDocument>;
         try {
-            products = await ProductModel.find({ client: getClientId(request), tags: [id] });
+            products = await ProductModel.find({ client, tags: [id] });
         } catch (err) {
             console.warn(`Products with contains tag ${id} found error. ${err}`);
         }
@@ -312,7 +327,7 @@ export class TagController extends Controller {
 
         try {
             await Promise.all(promises);
-            await riseRefVersion(getClientId(request), RefTypes.PRODUCTS);
+            await riseRefVersion(client, RefTypes.PRODUCTS);
         } catch (err) {
             console.warn(`Save products error. ${err}`);
         }
@@ -356,7 +371,7 @@ export class TagController extends Controller {
             await Promise.all(assetsPromises);
 
             if (!!isAssetsChanged) {
-                await riseRefVersion(getClientId(request), RefTypes.ASSETS);
+                await riseRefVersion(client, RefTypes.ASSETS);
             }
         } catch (err) {
             this.setStatus(500);
@@ -371,7 +386,7 @@ export class TagController extends Controller {
         }
 
         try {
-            const ref = await riseRefVersion(getClientId(request), RefTypes.TAGS);
+            const ref = await riseRefVersion(client, RefTypes.TAGS);
             return {
                 meta: { ref }
             };

@@ -140,6 +140,7 @@ export class TagAssetsController extends Controller {
     @Get("{tagId}/assets")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetAll")
     @Example<ITagGetAllAssetsResponse>({
         meta: META_TEMPLATE,
@@ -209,6 +210,7 @@ export class TagAssetsController extends Controller {
     @Get("{tagId}/assets/{langCode}")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Get")
     @Example<ITagGetAssetsResponse>({
         meta: META_TEMPLATE,
@@ -252,6 +254,7 @@ export class TagAssetsController extends Controller {
 
     /*@Post("{tagId}/asset/{langCode}")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Create")
     @Example<ITagCreateAssetsResponse>({
         meta: META_TEMPLATE,
@@ -333,6 +336,7 @@ export class TagAssetsController extends Controller {
 
     @Post("{tagId}/resource/{langCode}/{resourceType}")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("CreateResource")
     @Example<ITagCreateAssetsResponse>({
         meta: META_TEMPLATE,
@@ -342,6 +346,8 @@ export class TagAssetsController extends Controller {
         }
     })
     public async resource(tagId: string, langCode: string, resourceType: TagImageTypes, @Request() request: IAuthRequest): Promise<ITagCreateAssetsResponse> {
+        const client = getClientId(request);
+
         let assetsInfo: ICreateAssetsResponse;
         try {
             assetsInfo = await uploadAsset(request, [
@@ -380,7 +386,7 @@ export class TagAssetsController extends Controller {
 
         let defaultLanguage: ILanguageDocument;
         try {
-            defaultLanguage = await LanguageModel.findOne({ client: getClientId(request), isDefault: true });
+            defaultLanguage = await LanguageModel.findOne({ client: client, isDefault: true });
         } catch (err) {
             this.setStatus(500);
             return {
@@ -422,7 +428,7 @@ export class TagAssetsController extends Controller {
                     await deleteAsset(asset.path);
                     await deleteAsset(asset.mipmap.x128);
                     await deleteAsset(asset.mipmap.x32);
-                    await riseRefVersion(getClientId(request), RefTypes.ASSETS);
+                    await riseRefVersion(client, RefTypes.ASSETS);
                 }
             } catch (err) {
                 this.setStatus(500);
@@ -458,7 +464,7 @@ export class TagAssetsController extends Controller {
 
             savedTag = await tag.save();
 
-            tagRef = await riseRefVersion(getClientId(request), RefTypes.SELECTORS);
+            tagRef = await riseRefVersion(client, RefTypes.SELECTORS);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -489,6 +495,7 @@ export class TagAssetsController extends Controller {
 
     @Put("{tagId}/asset/{langCode}/{assetId}")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Update")
     @Example<ITagCreateAssetsResponse>({
         meta: META_TEMPLATE,
@@ -498,6 +505,7 @@ export class TagAssetsController extends Controller {
         }
     })
     public async update(tagId: string, langCode: string, assetId: string, @Body() body: ITagAssetUpdateRequest, @Request() request: IAuthRequest): Promise<ITagCreateAssetsResponse> {
+        const client = getClientId(request);
 
         let tag: ITagDocument;
         try {
@@ -516,7 +524,7 @@ export class TagAssetsController extends Controller {
 
         let tagRef: IRef;
         try {
-            tagRef = await getRef(getClientId(request), RefTypes.SELECTORS);
+            tagRef = await getRef(client, RefTypes.SELECTORS);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -538,7 +546,7 @@ export class TagAssetsController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(getClientId(request), RefTypes.ASSETS);
+            const ref = await riseRefVersion(client, RefTypes.ASSETS);
             return {
                 meta: {
                     asset: {
@@ -568,11 +576,14 @@ export class TagAssetsController extends Controller {
 
     @Delete("{tagId}/asset/{langCode}/{assetId}")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Delete")
     @Example<ITagDeleteAssetsResponse>({
         meta: META_TEMPLATE,
     })
     public async delete(tagId: string, langCode: string, assetId: string, @Request() request: IAuthRequest): Promise<ITagDeleteAssetsResponse> {
+        const client = getClientId(request);
+
         let tag: ITagDocument;
         try {
             tag = await TagModel.findById(tagId);
@@ -599,7 +610,7 @@ export class TagAssetsController extends Controller {
                     await deleteAsset(asset.path);
                     await deleteAsset(asset.mipmap.x128);
                     await deleteAsset(asset.mipmap.x32);
-                    assetRef = await riseRefVersion(getClientId(request), RefTypes.ASSETS);
+                    assetRef = await riseRefVersion(client, RefTypes.ASSETS);
                 }
             } catch (err) {
                 this.setStatus(500);
@@ -623,7 +634,7 @@ export class TagAssetsController extends Controller {
 
             await tag.save();
 
-            tagsRef = await riseRefVersion(getClientId(request), RefTypes.SELECTORS);
+            tagsRef = await riseRefVersion(client, RefTypes.SELECTORS);
             return {
                 meta: {
                     tag: {

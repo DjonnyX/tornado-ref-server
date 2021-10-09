@@ -140,6 +140,7 @@ export class OrderTypeAssetsController extends Controller {
     @Get("{orderTypeId}/assets")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetAll")
     @Example<IOrderTypeGetAllAssetsResponse>({
         meta: META_TEMPLATE,
@@ -209,6 +210,7 @@ export class OrderTypeAssetsController extends Controller {
     @Get("{orderTypeId}/assets/{langCode}")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Get")
     @Example<IOrderTypeGetAssetsResponse>({
         meta: META_TEMPLATE,
@@ -252,6 +254,7 @@ export class OrderTypeAssetsController extends Controller {
 
     /*@Post("{orderTypeId}/asset/{langCode}")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Create")
     @Example<IOrderTypeCreateAssetsResponse>({
         meta: META_TEMPLATE,
@@ -333,6 +336,7 @@ export class OrderTypeAssetsController extends Controller {
 
     @Post("{orderTypeId}/resource/{langCode}/{resourceType}")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("CreateResource")
     @Example<IOrderTypeCreateAssetsResponse>({
         meta: META_TEMPLATE,
@@ -342,6 +346,8 @@ export class OrderTypeAssetsController extends Controller {
         }
     })
     public async resource(orderTypeId: string, langCode: string, resourceType: OrderTypeImageTypes, @Request() request: IAuthRequest): Promise<IOrderTypeCreateAssetsResponse> {
+        const client = getClientId(request);
+
         let assetsInfo: ICreateAssetsResponse;
         try {
             assetsInfo = await uploadAsset(request, [
@@ -380,7 +386,7 @@ export class OrderTypeAssetsController extends Controller {
 
         let defaultLanguage: ILanguageDocument;
         try {
-            defaultLanguage = await LanguageModel.findOne({ client: getClientId(request), isDefault: true });
+            defaultLanguage = await LanguageModel.findOne({ client: client, isDefault: true });
         } catch (err) {
             this.setStatus(500);
             return {
@@ -422,7 +428,7 @@ export class OrderTypeAssetsController extends Controller {
                     await deleteAsset(asset.path);
                     await deleteAsset(asset.mipmap.x128);
                     await deleteAsset(asset.mipmap.x32);
-                    await riseRefVersion(getClientId(request), RefTypes.ASSETS);
+                    await riseRefVersion(client, RefTypes.ASSETS);
                 }
             } catch (err) {
                 this.setStatus(500);
@@ -458,7 +464,7 @@ export class OrderTypeAssetsController extends Controller {
 
             savedOrderType = await orderType.save();
 
-            orderTypeRef = await riseRefVersion(getClientId(request), RefTypes.SELECTORS);
+            orderTypeRef = await riseRefVersion(client, RefTypes.SELECTORS);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -489,6 +495,7 @@ export class OrderTypeAssetsController extends Controller {
 
     @Put("{orderTypeId}/asset/{langCode}/{assetId}")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Update")
     @Example<IOrderTypeCreateAssetsResponse>({
         meta: META_TEMPLATE,
@@ -498,6 +505,7 @@ export class OrderTypeAssetsController extends Controller {
         }
     })
     public async update(orderTypeId: string, langCode: string, assetId: string, @Body() body: IOrderTypeAssetUpdateRequest, @Request() request: IAuthRequest): Promise<IOrderTypeCreateAssetsResponse> {
+        const client = getClientId(request);
 
         let orderType: IOrderTypeDocument;
         try {
@@ -516,7 +524,7 @@ export class OrderTypeAssetsController extends Controller {
 
         let orderTypeRef: IRef;
         try {
-            orderTypeRef = await getRef(getClientId(request), RefTypes.SELECTORS);
+            orderTypeRef = await getRef(client, RefTypes.SELECTORS);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -538,7 +546,7 @@ export class OrderTypeAssetsController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(getClientId(request), RefTypes.ASSETS);
+            const ref = await riseRefVersion(client, RefTypes.ASSETS);
             return {
                 meta: {
                     asset: {
@@ -568,11 +576,14 @@ export class OrderTypeAssetsController extends Controller {
 
     @Delete("{orderTypeId}/asset/{langCode}/{assetId}")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Delete")
     @Example<IOrderTypeDeleteAssetsResponse>({
         meta: META_TEMPLATE
     })
     public async delete(orderTypeId: string, langCode: string, assetId: string, @Request() request: IAuthRequest): Promise<IOrderTypeDeleteAssetsResponse> {
+        const client = getClientId(request);
+
         let orderType: IOrderTypeDocument;
         try {
             orderType = await OrderTypeModel.findById(orderTypeId);
@@ -599,7 +610,7 @@ export class OrderTypeAssetsController extends Controller {
                     await deleteAsset(asset.path);
                     await deleteAsset(asset.mipmap.x128);
                     await deleteAsset(asset.mipmap.x32);
-                    assetRef = await riseRefVersion(getClientId(request), RefTypes.ASSETS);
+                    assetRef = await riseRefVersion(client, RefTypes.ASSETS);
                 }
             } catch (err) {
                 this.setStatus(500);
@@ -623,7 +634,7 @@ export class OrderTypeAssetsController extends Controller {
 
             await orderType.save();
 
-            orderTypesRef = await riseRefVersion(getClientId(request), RefTypes.SELECTORS);
+            orderTypesRef = await riseRefVersion(client, RefTypes.SELECTORS);
             return {
                 meta: {
                     orderType: {

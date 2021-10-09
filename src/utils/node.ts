@@ -107,6 +107,7 @@ export const formatModel = (model: INodeDocument): INode => ({
     scenarios: model.scenarios.map(scenario => {
         return {
             active: scenario.active,
+            lock: scenario.lock,
             action: scenario.action,
             value: scenario.value,
             extra: scenario.extra,

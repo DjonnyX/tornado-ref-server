@@ -83,6 +83,8 @@ export class Deviceontroller extends Controller {
         data: RESPONSE_TEMPLATE,
     })
     public async licenseVerify(@Request() request: IAuthRequest): Promise<ITerminalResponse> {
+        const client = getClientId(request);
+
         let terminal: ITerminalDocument;
         try {
             terminal = await TerminalModel.findOne({
@@ -101,7 +103,7 @@ export class Deviceontroller extends Controller {
             };
         }
 
-        const ref = await getRef(getClientId(request), RefTypes.TERMINALS);
+        const ref = await getRef(client, RefTypes.TERMINALS);
         return {
             meta: { ref },
             data: formatTerminalModel(terminal),
@@ -118,7 +120,7 @@ export class Deviceontroller extends Controller {
     public async registration(@Body() body: ITerminalRegisterRequest, @Request() request: IAuthRequest): Promise<ITerminalResponse> {
         let setDeviceResponse: ISetDeviceResponse;
         try {
-            setDeviceResponse = await licServerApiService.setDevice(request.token);
+            setDeviceResponse = await licServerApiService.setDevice(request.token, request);
 
             const err = extractError(setDeviceResponse.error);
             if (!!err) {
@@ -222,17 +224,19 @@ export class TerminalsController extends Controller {
     @Get()
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetAll")
     @Example<ITerminalsResponse>({
         meta: META_TEMPLATE,
         data: [RESPONSE_TEMPLATE]
     })
     public async getAll(@Request() request: IAuthRequest): Promise<ITerminalsResponse> {
-        let findParams: any = request.terminal ? {} : { client: getClientId(request) };
+        const client = getClientId(request);
+        let findParams: any = request.terminal ? {} : { client };
 
         try {
             const items = await findAllWithFilter(TerminalModel.find(findParams), request);
-            const ref = await getRef(getClientId(request), RefTypes.TERMINALS);
+            const ref = await getRef(client, RefTypes.TERMINALS);
             return {
                 meta: { ref },
                 data: items.map(v => formatTerminalModel(v))
@@ -257,15 +261,17 @@ export class TerminalController extends Controller {
     @Get("{id}")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetOne")
     @Example<ITerminalResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<ITerminalResponse> {
+        const client = getClientId(request);
         try {
             const item = await TerminalModel.findById(id);
-            const ref = await getRef(getClientId(request), RefTypes.TERMINALS);
+            const ref = await getRef(client, RefTypes.TERMINALS);
             return {
                 meta: { ref },
                 data: formatTerminalModel(item),
@@ -286,12 +292,15 @@ export class TerminalController extends Controller {
     @Put("{id}")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Update")
     @Example<ITerminalResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() body: ITerminalUpdateRequest, @Request() request: IAuthRequest): Promise<ITerminalResponse> {
+        const client = getClientId(request);
+
         try {
             const item = await TerminalModel.findById(id);
 
@@ -307,7 +316,7 @@ export class TerminalController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(getClientId(request), RefTypes.TERMINALS);
+            const ref = await riseRefVersion(client, RefTypes.TERMINALS);
             return {
                 meta: { ref },
                 data: formatTerminalModel(item),
@@ -327,6 +336,7 @@ export class TerminalController extends Controller {
 
     /*@Delete("{id}")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Delete")
     @Example<ITerminalResponse>({
         meta: META_TEMPLATE
@@ -348,7 +358,7 @@ export class TerminalController extends Controller {
         }
 
         try {
-            const ref = await riseRefVersion(getClientId(request), RefTypes.TERMINALS);
+            const ref = await riseRefVersion(client, RefTypes.TERMINALS);
             return {
                 meta: { ref },
             };

@@ -72,15 +72,18 @@ export class TranslationsController extends Controller {
     @Get()
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetAll")
     @Example<TranslationsResponse>({
         meta: META_TEMPLATE,
         data: [RESPONSE_TEMPLATE],
     })
     public async getAll(@Request() request: IAuthRequest): Promise<TranslationsResponse> {
+        const client = getClientId(request);
+
         try {
-            const items = await findAllWithFilter(TranslationModel.find({ client: getClientId(request) }), request);
-            const ref = await getRef(getClientId(request), RefTypes.TRANSLATIONS);
+            const items = await findAllWithFilter(TranslationModel.find({ client }), request);
+            const ref = await getRef(client, RefTypes.TRANSLATIONS);
             return {
                 meta: { ref },
                 data: items.map(v => formatTranslationModel(v)),
@@ -105,15 +108,18 @@ export class TranslationController extends Controller {
     @Get("{id}")
     @Security("clientAccessToken")
     @Security("terminalAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("GetOne")
     @Example<TranslationResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<TranslationResponse> {
+        const client = getClientId(request);
+
         try {
             const item = await TranslationModel.findById(id);
-            const ref = await getRef(getClientId(request), RefTypes.TRANSLATIONS);
+            const ref = await getRef(client, RefTypes.TRANSLATIONS);
             return {
                 meta: { ref },
                 data: formatTranslationModel(item),
@@ -133,6 +139,7 @@ export class TranslationController extends Controller {
 
     /*@Post()
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Create")
     @Example<TranslationResponse>({
         meta: META_TEMPLATE,
@@ -162,12 +169,15 @@ export class TranslationController extends Controller {
 
     @Put("{id}")
     @Security("clientAccessToken")
+    @Security("integrationAccessToken")
     @OperationId("Update")
     @Example<TranslationResponse>({
         meta: META_TEMPLATE,
         data: RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() body: TranslationUpdateRequest, @Request() request: IAuthRequest): Promise<TranslationResponse> {
+        const client = getClientId(request);
+
         try {
             const item = await TranslationModel.findById(id);
 
@@ -180,7 +190,7 @@ export class TranslationController extends Controller {
 
             await item.save();
 
-            const ref = await riseRefVersion(getClientId(request), RefTypes.TRANSLATIONS);
+            const ref = await riseRefVersion(client, RefTypes.TRANSLATIONS);
             return {
                 meta: { ref },
                 data: formatTranslationModel(item),
@@ -199,6 +209,7 @@ export class TranslationController extends Controller {
     }
     /*
         @Delete("{id}")
+        @Security("integrationAccessToken")
         @Security("clientAccessToken")
         @OperationId("Delete")
         @Example<TranslationResponse>({
