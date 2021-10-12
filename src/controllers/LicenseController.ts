@@ -15,6 +15,7 @@ interface ICreateLicenseParams {
     dateEnd: Date;
     state: LicenseStates;
     licTypeId: string;
+    extra?: { [key: string]: any } | null;
 }
 
 interface IUpdateLicenseParams {
@@ -23,6 +24,7 @@ interface IUpdateLicenseParams {
     dateEnd?: Date;
     state?: LicenseStates;
     licTypeId?: string;
+    extra?: { [key: string]: any } | null;
 }
 
 interface LicenseVerifyResponse {
@@ -92,12 +94,13 @@ const LICENSE_RESPONSE_TEMPLATE: ILicenseInfo = {
     md5key: "1e0328629e0b73cfcb5cca8bdefb0b76",
     imei: "3425t42t543yt45t",
     licType: {
-        appType: TerminalTypes.KIOSK,
+        applicationId: "507c7f79bcf86cd7994f6c2e",
+        integrationId: "507c7f79bcf86cd7994f6c0e",
         description: "Киоск с кассой r-keeper",
         name: "Киоск с кассой r-keeper",
         payNotice: "оплата лицензии осуществляется в личном кабинете пользователя",
         price: 100000,
-        integrationId: "507c7f79bcf86cd7994f6c0e",
+        extra: {},
     },
     licTypeId: "ecbbfd40-62ba-49bf-8620-75d8c5ed3953",
     lastUpdate: new Date(),
@@ -114,12 +117,13 @@ const LICENSE_ACCOUNT_RESPONSE_TEMPLATE: ILicenseAccountInfo = {
     md5key: "1e0328629e0b73cfcb5cca8bdefb0b76",
     imei: "3425t42t543yt45t",
     licType: {
-        appType: TerminalTypes.KIOSK,
+        applicationId: "507c7f79bcf86cd7994f6c2e",
+        integrationId: "507c7f79bcf86cd7994f6c0e",
         description: "Киоск с кассой r-keeper",
         name: "Киоск с кассой r-keeper",
         payNotice: "оплата лицензии осуществляется в личном кабинете пользователя",
         price: 100000,
-        integrationId: "507c7f79bcf86cd7994f6c0e",
+        extra: {},
     },
     licTypeId: "ecbbfd40-62ba-49bf-8620-75d8c5ed3953",
     lastUpdate: new Date(),

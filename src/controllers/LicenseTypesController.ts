@@ -1,36 +1,28 @@
 import { Controller, Route, Post, Tags, Example, Request, Body, Get, Put, Delete, OperationId, Security } from "tsoa";
-import { IRef, RefTypes, TerminalTypes } from "@djonnyx/tornado-types";
+import { ILicenseType, IRef, RefTypes, TerminalTypes } from "@djonnyx/tornado-types";
 import { licServerApiService } from "../services";
 import { IAuthRequest } from "../interfaces";
 
-interface ILicenseTypeInfo {
-    id: string;
-    appType: TerminalTypes;
-    name: string;
-    description: string;
-    price: number;
-    payNotice: string;
-    integrationId: string;
-    lastUpdate: Date;
-}
+interface ILicenseTypeInfo extends ILicenseType { }
 
 interface ICreateLicenseTypeParams {
     name: string;
-    appType: TerminalTypes;
+    applicationId: string;
+    integrationId: string;
     description?: string;
     price: number;
     payNotice: string;
-    integrationId: string;
-    lastUpdate?: string;
+    extra?: { [key: string]: any } | null;
 }
 
 interface IUpdateLicenseTypeParams {
-    appType?: TerminalTypes;
     name?: string;
+    applicationId?: string;
+    integrationId?: string;
     description?: string;
     price?: number;
     payNotice?: string;
-    integrationId?: string;
+    extra?: { [key: string]: any } | null;
 }
 
 interface LicenseTypesGetResponse {
@@ -57,13 +49,13 @@ interface ILicenseTypeInfoMeta {
 
 const LICENSE_TYPE_RESPONSE_TEMPLATE: ILicenseTypeInfo = {
     id: "507c7f79bcf86cd7994f6c0e",
-    appType: TerminalTypes.KIOSK,
+    applicationId: "23r23r23f43412d33232",
+    integrationId: "507c7f79bcf86cd7994f6c0e",
     name: "Эвотор на 1 терминал",
     description: "Тариф на 3 месяца для интеграции с Эвотор",
     price: 180000,
     payNotice: "Оплата через терминал Эвотор",
-    integrationId: "507c7f79bcf86cd7994f6c0e",
-    lastUpdate: new Date(),
+    extra: {},
 };
 
 const META_TEMPLATE: ILicenseTypeInfoMeta = {
