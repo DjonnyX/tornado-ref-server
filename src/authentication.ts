@@ -1,9 +1,10 @@
 import * as config from "./config";
 import * as express from "express";
 import * as jwt from "jsonwebtoken";
-import { IAuthRequest, IClientJWTBody, IIntegrationJWTBody, ITerminalJWTBody } from "./interfaces";
+import { IAuthRequest, IBaseResponse, IClientJWTBody, IIntegrationJWTBody, ITerminalJWTBody } from "./interfaces";
 import { ICheckLicenseResponse, licServerApiService } from "./services";
 import { ErrorCodes, ServerError } from "./error";
+import { IIntegration } from "@djonnyx/tornado-types";
 
 const checkClientToken = async (token: string, request: express.Request) => {
   return new Promise<void>((resolve, reject) => {
@@ -45,7 +46,16 @@ const checkIntegrationToken = async (token: string, request: express.Request) =>
         serverName: string;
       };
 
-      licServerApiService.getIntegration(payload.integrationId, request).then(integration => {
+      if (!payload?.integrationId) {
+        throw Error("token paiload is fail.");
+      }
+
+      licServerApiService.getIntegration<IBaseResponse<IIntegration, {}>>(payload.integrationId, request, {
+        query: {
+          secure: "true",
+        },
+      }).then(res => {
+        const integration = res?.data;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         jwt.verify(token, integration.verificationKey, async function (err: any, decoded: IIntegrationJWTBody) {
           if (err) {
@@ -126,10 +136,9 @@ export async function expressAuthentication(
   scopes?: string[],
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<any> {
-  if (securityName === "clientAccessToken" || securityName === "integrationAccessToken") {
+  if (securityName === "clientAccessToken") {
     const authorization = request.headers["authorization"] ? String(request.headers["authorization"]) : undefined;
     let token = authorization ? authorization.replace("Bearer ", "") : undefined;
-
     return await checkClientToken(token, request);
   } else if (securityName === "integrationAccessToken") {
     const authorization = request.headers["authorization"] ? String(request.headers["authorization"]) : undefined;

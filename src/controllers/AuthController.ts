@@ -14,7 +14,7 @@ interface ISigninParams {
 export interface ISignupParams {
     captchaId: string;
     captchaValue?: string;
-    integrationId?: string;
+    integrationId?: string | null;
     firstName: string;
     lastName: string;
     email: string;

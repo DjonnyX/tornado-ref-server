@@ -21,7 +21,7 @@ interface IUpdateAccountParams {
     roleType?: DefaultRoleTypes | string;
     firstName?: string;
     lastName?: string;
-    integrationId?: string;
+    integrationId?: string | null;
     email?: string;
     extra?: {
         [key: string]: any;

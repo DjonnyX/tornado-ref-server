@@ -9,3 +9,5 @@ export * from "./IIntegrationJWTBody";
 export * from "./ITerminalJWTBody";
 export * from "./IRequestOptions";
 export * from "./IScreenSaverManifest";
+export * from "./IBaseResponse";
+export * from "./IErrorResponse";

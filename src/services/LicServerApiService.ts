@@ -7,6 +7,7 @@ import { IAuthRequest } from "src/interfaces";
 
 interface IRequestOptions {
     clientToken?: string;
+    query?: Object;
 }
 
 interface ILoginParams {
@@ -212,8 +213,8 @@ class LicServerApiService {
                 },
                 query: {
                     ...request.query,
-                    all: String(Boolean(all)),
-                    secure: String(Boolean(secure)),
+                    all: all ? String(Boolean(all)) : undefined,
+                    secure: secure ? String(Boolean(secure)) : undefined,
                 },
             }),
         );
@@ -228,7 +229,7 @@ class LicServerApiService {
                 },
                 query: {
                     ...request.query,
-                    secure: String(Boolean(secure)),
+                    secure: secure ? String(Boolean(secure)) : undefined,
                 },
             }),
         );
@@ -243,7 +244,7 @@ class LicServerApiService {
                 },
                 query: {
                     ...request.query,
-                    secure: String(Boolean(secure)),
+                    secure: secure ? String(Boolean(secure)) : undefined,
                     language,
                 },
                 body: JSON.stringify(body),
@@ -260,7 +261,7 @@ class LicServerApiService {
                 },
                 query: {
                     ...request.query,
-                    secure: String(Boolean(secure)),
+                    secure: secure ? String(Boolean(secure)) : undefined,
                 },
                 body: JSON.stringify(body),
             }),
@@ -276,7 +277,7 @@ class LicServerApiService {
                 },
                 query: {
                     ...request.query,
-                    secure: String(Boolean(secure)),
+                    secure: secure ? String(Boolean(secure)) : undefined,
                 },
             }),
         );
@@ -634,7 +635,7 @@ class LicServerApiService {
                     "content-type": "application/json",
                     "authorization": this.getToken(options),
                 },
-                query: request.query,
+                query: { ...request.query, ...(options?.query || {}) },
             }),
         );
     }
