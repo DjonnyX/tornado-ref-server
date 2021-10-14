@@ -46,6 +46,10 @@ const checkIntegrationToken = async (token: string, request: express.Request) =>
         serverName: string;
       };
 
+      if (!payload?.integrationId) {
+        throw Error("token paiload is fail.");
+      }
+
       licServerApiService.getIntegration<IBaseResponse<IIntegration, {}>>(payload.integrationId, request, {
         query: {
           secure: "true",
