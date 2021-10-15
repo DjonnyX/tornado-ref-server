@@ -1,26 +1,30 @@
 import { Controller, Route, Post, Tags, Example, Request, Body, Get, Put, Delete, OperationId, Security } from "tsoa";
 import { licServerApiService } from "../services";
-import { IRef, IVersion, RefTypes } from "@djonnyx/tornado-types";
+import { IApplication, IRef, IVersion, RefTypes, TerminalTypes } from "@djonnyx/tornado-types";
 import { IAuthRequest } from "../interfaces";
 
-interface IApplicationInfo {
-    id: string;
-    name: string;
-    description: string;
-    version: IVersion;
-    lastUpdate: Date;
-}
+interface IApplicationInfo extends IApplication { }
 
 interface ICreateApplicationParams {
+    terminalType: number;
+    productId: string;
     name: string;
     description?: string;
     version: IVersion;
+    extra?: {
+        [key: string]: any;
+    } | null;
 }
 
 interface IUpdateApplicationParams {
+    terminalType?: number;
+    productId?: string;
     name?: string;
     description?: string;
     version?: IVersion;
+    extra?: {
+        [key: string]: any;
+    } | null;
 }
 
 interface ApplicationsGetResponse {
@@ -47,14 +51,15 @@ interface IApplicationInfoMeta {
 
 const APPLICATION_RESPONSE_TEMPLATE: IApplicationInfo = {
     id: "507c7f79bcf86cd7994f6c0e",
+    productId: "507c7f79bcf86cd7994f6c0e",
+    terminalType: TerminalTypes.KIOSK,
     name: "Эвотор",
     description: "Интеграция с товароучетной системой \"Эвотор\"",
     version: {
-        name: "Lolipop",
+        name: "Evolution",
         code: 1,
         version: "1.0.23",
     },
-    lastUpdate: new Date(),
 };
 
 const META_TEMPLATE: IApplicationInfoMeta = {
