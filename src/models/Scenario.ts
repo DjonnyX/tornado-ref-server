@@ -33,5 +33,5 @@ export const ScenarioSchema = new Schema({
         required: true,
     },
     value: { type: Schema.Types.Mixed, required: false },
-    extra: { type: Schema.Types.Mixed, required: false },
+    extra: { type: Schema.Types.Mixed, required: false, default: {} },
 });

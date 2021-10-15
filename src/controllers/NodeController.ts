@@ -109,12 +109,12 @@ interface INodesCreateRequest {
 }
 
 interface INodeUpdateRequest {
-    type: NodeTypes;
-    active: boolean;
-    parentId: string | null;
-    contentId: string | null;
-    children: Array<string>;
-    scenarios: Array<IScenario>;
+    type?: NodeTypes;
+    active?: boolean;
+    parentId?: string | null;
+    contentId?: string | null;
+    children?: Array<string>;
+    scenarios?: Array<IScenario>;
     extra?: { [key: string]: any } | null;
 }
 
