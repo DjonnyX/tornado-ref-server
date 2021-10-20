@@ -6,6 +6,7 @@ import * as fs from "fs";
 import * as mongoose from "mongoose";
 import * as config from "./config";
 import { initRootEnvironment } from "./db/initDB";
+import * as cron from "./cron";
 
 const PORT = config.PORT;
 const MONGO_URI = `mongodb://${config.DB_URI}`;
@@ -25,6 +26,8 @@ server.on("listening", () => {
 async function dbConnect() {
     mongoose.connection.on("open", async () => {
         console.info("Connected to Mongo.");
+
+        cron.run();
 
         await initRootEnvironment();
     });

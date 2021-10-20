@@ -47,7 +47,7 @@ const NodeSchema = new Schema({
     contentId: { type: Schema.Types.ObjectId },
     children: [{ type: Schema.Types.ObjectId }],
     scenarios: [ScenarioSchema],
-    extra: { type: Schema.Types.Mixed, required: false },
+    extra: { type: Schema.Types.Mixed, required: false, default: {} },
 });
 
 const NodeModel = mongoose.model<INodeDocument>("Node", NodeSchema);
