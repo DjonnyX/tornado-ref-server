@@ -117,12 +117,14 @@
                     "titleFontSize": 32
                 },
                 "orderPanel": {
-                    "backgroundColor": "rgba(0,0,0,0.025)"
+                    "backgroundColor": "rgba(255,255,255)"
                 },
                 "backButton": {
                     "iconColor": "rgba(0,0,0,0.75)"
                 },
                 "sideMenu": {
+                    "backgroundColor": "rgba(0,0,0,0.025)",
+                    "backgroundImage": null,
                     "item": {
                         "backgroundColor": "#000",
                         "nameColor": "rgba(0,0,0,0.75)",
@@ -133,6 +135,8 @@
                     }
                 },
                 "navMenu": {
+                    "backgroundColor": "rgba(0,0,0,0.025)",
+                    "backgroundImage": null,
                     "item": {
                         "backgroundColor": "transparent",
                         "nameColor": "rgba(0,0,0,0.75)",
@@ -158,13 +162,15 @@
                     }
                 },
                 "draftOrder": {
+                    "backgroundColor": "transparent",
+                    "backgroundImage": null,
                     "item": {
-                        "backgroundColor": "transparent",
+                        "backgroundColor": "white",
                         "nameColor": "rgba(0,0,0,0.75)",
                         "nameFontSize": 14,
                         "price": {
                             "borderColor": "rgba(0,0,0,0.5)",
-                            "textColor": "rgba(0,0,0,0.75)",
+                            "textColor": "rgba(0,0,0,0.45)",
                             "textFontSize": 14
                         },
                         "quantityStepper": {
@@ -488,12 +494,14 @@
                     "titleFontSize": 32
                 },
                 "orderPanel": {
-                    "backgroundColor": "rgba(255,255,255,0.025)"
+                    "backgroundColor": "rgba(0,0,0)"
                 },
                 "backButton": {
                     "iconColor": "rgba(255,255,255,0.75)"
                 },
                 "sideMenu": {
+                    "backgroundColor": "rgba(0,0,0)",
+                    "backgroundImage": null,
                     "item": {
                         "backgroundColor": "#fff",
                         "nameColor": "rgba(255,255,255,0.75)",
@@ -504,6 +512,8 @@
                     }
                 },
                 "navMenu": {
+                    "backgroundColor": "rgba(255,255,255,0.025)",
+                    "backgroundImage": null,
                     "item": {
                         "backgroundColor": "transparent",
                         "nameColor": "rgba(255,255,255,0.75)",
@@ -529,13 +539,15 @@
                     }
                 },
                 "draftOrder": {
+                    "backgroundColor": "transparent",
+                    "backgroundImage": null,
                     "item": {
-                        "backgroundColor": "transparent",
+                        "backgroundColor": "black",
                         "nameColor": "rgba(255,255,255,0.75)",
                         "nameFontSize": 14,
                         "price": {
                             "borderColor": "rgba(255,255,255,0.5)",
-                            "textColor": "rgba(255,255,255,0.75)",
+                            "textColor": "rgba(255,255,255,0.45)",
                             "textFontSize": 14
                         },
                         "quantityStepper": {
