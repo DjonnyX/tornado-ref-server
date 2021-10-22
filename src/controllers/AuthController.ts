@@ -1,10 +1,10 @@
 import { Controller, Route, Post, Tags, Example, Request, Body, Get, Query } from "tsoa";
 import * as express from "express";
-import { initRefs } from "../db/initDB";
 import { licServerApiService } from "../services";
 import { DefaultRoleTypes, IAccountInfo, UserRights } from "@djonnyx/tornado-types";
 import { IAuthRequest } from "../interfaces";
 import { ACCOUNT_RESPONSE_TEMPLATE } from "./AccountController";
+import { initDB } from "../db/initDB";
 
 interface ISigninParams {
     email: string;
@@ -161,7 +161,7 @@ export class SignupController extends Controller {
             });
 
             // Инициализация БД под клиента
-            await initRefs(res.data.client);
+            await initDB(res.data.client);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -212,7 +212,7 @@ export class SigninController extends Controller {
         if (res?.data?.account?.roleType === DefaultRoleTypes.OWNER) {
             try {
                 // Инициализация БД под клиента
-                await initRefs(res.data.account.id);
+                await initDB(res.data.account.id);
             } catch (err) { }
         }
 

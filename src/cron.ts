@@ -2,7 +2,7 @@ import { CronJob } from "cron";
 import { TerminalStatusTypes } from "@djonnyx/tornado-types";
 import { ITerminalDocument, TerminalModel } from "./models";
 
-const terminalsStatusJob = new CronJob('0-59/10 0-23 * * *', async () => {
+const terminalsStatusJob = new CronJob('0-59/2 0-23 * * *', async () => {
     let terminals: Array<ITerminalDocument>;
     try {
         terminals = await TerminalModel.find();
@@ -13,7 +13,7 @@ const terminalsStatusJob = new CronJob('0-59/10 0-23 * * *', async () => {
     const promises = new Array<Promise<ITerminalDocument>>();
     try {
         for (const terminal of terminals) {
-            if (terminal.lastwork?.getTime() + 600000 < new Date().getTime()) {
+            if (terminal.lastwork?.getTime() + 60000 < new Date().getTime()) {
                 terminal.status = TerminalStatusTypes.UNAVAILABLE;
                 promises.push(terminal.save());
             }

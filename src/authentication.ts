@@ -4,7 +4,8 @@ import * as jwt from "jsonwebtoken";
 import { IAuthRequest, IBaseResponse, IClientJWTBody, IIntegrationJWTBody, ITerminalJWTBody } from "./interfaces";
 import { ICheckLicenseResponse, licServerApiService } from "./services";
 import { ErrorCodes, ServerError } from "./error";
-import { IIntegration } from "@djonnyx/tornado-types";
+import { IIntegration, TerminalStatusTypes } from "@djonnyx/tornado-types";
+import { TerminalModel } from "./models";
 
 const checkClientToken = async (token: string, request: express.Request) => {
   return new Promise<void>((resolve, reject) => {
@@ -109,6 +110,17 @@ const checkApiKey = async (apikey: string, request: express.Request) => {
       }
 
       return reject(new ServerError(`Check license error. ${err}`, ErrorCodes.TERMINAL_TOKEN_CHECK_LICENSE_ERROR, 401));
+    }
+
+    try {
+      const device = await TerminalModel.findOne({ imei: payload.imei });
+      if (device) {
+        device.lastwork = new Date();
+        device.status = TerminalStatusTypes.ONLINE;
+        await device.save();
+      }
+    } catch (err) {
+      // etc
     }
 
     (request as IAuthRequest).terminal = {

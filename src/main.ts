@@ -5,7 +5,7 @@ import * as fs from "fs";
 
 import * as mongoose from "mongoose";
 import * as config from "./config";
-import { initRootEnvironment } from "./db/initDB";
+import { initRootEnvironment } from "./db/initRootEnvironment";
 import * as cron from "./cron";
 
 const PORT = config.PORT;
