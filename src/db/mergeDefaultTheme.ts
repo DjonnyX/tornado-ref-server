@@ -5,6 +5,7 @@ import { readFileJSONAsync } from "../utils/file";
 import { riseRefVersion } from "./refs";
 import { deepMergeObjects } from "../utils/object";
 import { normalizeTerminalTheme } from "../utils/terminal";
+import { uploadThemeAssets } from "./uploadThemeAssets";
 
 export const mergeDefaultTheme = async (client: string, templatePath: string, type: TerminalTypes) => {
     const template = await readFileJSONAsync(templatePath);
@@ -22,7 +23,6 @@ export const mergeDefaultTheme = async (client: string, templatePath: string, ty
                 });
 
                 if (!theme) {
-
                     theme = new AppThemeModel({
                         isDefault: true,
                         client,
@@ -57,6 +57,8 @@ export const mergeDefaultTheme = async (client: string, templatePath: string, ty
                     savedTheme.markModified("resources");
 
                     await savedTheme.save();
+
+                    await uploadThemeAssets(client, savedTheme);
 
                     return resolve();
                 }

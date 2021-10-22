@@ -99,12 +99,10 @@
                 }
             },
             "intro": {
-                "backgroundColor": "#fff",
-                "backgroundImage": null
+                "backgroundColor": "#fff"
             },
             "menu": {
                 "backgroundColor": "#fff",
-                "backgroundImage": null,
                 "header": {
                     "backgroundColor": [
                         "rgba(255, 255, 255, 1)",
@@ -124,7 +122,6 @@
                 },
                 "sideMenu": {
                     "backgroundColor": "rgba(0,0,0,0.025)",
-                    "backgroundImage": null,
                     "item": {
                         "backgroundColor": "#000",
                         "nameColor": "rgba(0,0,0,0.75)",
@@ -136,7 +133,6 @@
                 },
                 "navMenu": {
                     "backgroundColor": "rgba(0,0,0,0.025)",
-                    "backgroundImage": null,
                     "item": {
                         "backgroundColor": "transparent",
                         "nameColor": "rgba(0,0,0,0.75)",
@@ -163,7 +159,6 @@
                 },
                 "draftOrder": {
                     "backgroundColor": "transparent",
-                    "backgroundImage": null,
                     "item": {
                         "backgroundColor": "white",
                         "nameColor": "rgba(0,0,0,0.75)",
@@ -215,7 +210,6 @@
             },
             "modifiers": {
                 "backgroundColor": "#fff",
-                "backgroundImage": null,
                 "nameColor": "rgba(0,0,0,0.75)",
                 "nameFontSize": 32,
                 "descriptionColor": "rgba(0,0,0,0.75)",
@@ -303,7 +297,6 @@
             },
             "confirmation": {
                 "backgroundColor": "#fff",
-                "backgroundImage": null,
                 "backButton": {
                     "backgroundColor": "#212121",
                     "textColor": "#ffffff",
@@ -354,18 +347,16 @@
             },
             "payStatus": {
                 "backgroundColor": "#fff",
-                "backgroundImage": null,
                 "primaryMessageColor": "rgba(0,0,0,0.75)",
                 "primaryMessageFontSize": 40,
                 "secondaryMessageColor": "rgba(0,0,0,0.5)",
                 "secondaryMessageFontSize": 20,
                 "processIndicator": {
-                    "backgroundImage": null
+                    "backgroundImage": "template/themes/assets/kiosk/light/processing-indicator.gif"
                 }
             },
             "payConfirmation": {
                 "backgroundColor": "#fff",
-                "backgroundImage": null,
                 "numberColor": "rgba(0,0,0,1)",
                 "nameFontSize": 76,
                 "primaryMessageColor": "rgba(0,0,0,0.75)",
@@ -467,7 +458,6 @@
             },
             "loading": {
                 "backgroundColor": "#000",
-                "backgroundImage": null,
                 "progressBar": {
                     "thumbColor": "rgba(255,255,255,0.85)",
                     "trackColor": "rgba(255,255,255,0.75)",
@@ -476,12 +466,10 @@
                 }
             },
             "intro": {
-                "backgroundColor": "#000",
-                "backgroundImage": null
+                "backgroundColor": "#000"
             },
             "menu": {
                 "backgroundColor": "#000",
-                "backgroundImage": null,
                 "header": {
                     "backgroundColor": [
                         "rgba(0, 0, 0, 1)",
@@ -501,7 +489,6 @@
                 },
                 "sideMenu": {
                     "backgroundColor": "rgba(0,0,0)",
-                    "backgroundImage": null,
                     "item": {
                         "backgroundColor": "#fff",
                         "nameColor": "rgba(255,255,255,0.75)",
@@ -513,7 +500,6 @@
                 },
                 "navMenu": {
                     "backgroundColor": "rgba(255,255,255,0.025)",
-                    "backgroundImage": null,
                     "item": {
                         "backgroundColor": "transparent",
                         "nameColor": "rgba(255,255,255,0.75)",
@@ -540,7 +526,6 @@
                 },
                 "draftOrder": {
                     "backgroundColor": "transparent",
-                    "backgroundImage": null,
                     "item": {
                         "backgroundColor": "black",
                         "nameColor": "rgba(255,255,255,0.75)",
@@ -592,7 +577,6 @@
             },
             "modifiers": {
                 "backgroundColor": "#000",
-                "backgroundImage": null,
                 "nameColor": "rgba(255,255,255,0.75)",
                 "nameFontSize": 32,
                 "descriptionColor": "rgba(255,255,255,0.5)",
@@ -680,7 +664,6 @@
             },
             "confirmation": {
                 "backgroundColor": "#000",
-                "backgroundImage": null,
                 "backButton": {
                     "backgroundColor": "#212121",
                     "textColor": "#ffffff",
@@ -731,18 +714,16 @@
             },
             "payStatus": {
                 "backgroundColor": "#000",
-                "backgroundImage": null,
                 "primaryMessageColor": "rgba(255,255,255,0.75)",
                 "primaryMessageFontSize": 40,
                 "secondaryMessageColor": "rgba(255,255,255,0.5)",
                 "secondaryMessageFontSize": 20,
                 "processIndicator": {
-                    "backgroundImage": null
+                    "backgroundImage": "template/themes/assets/kiosk/dark/processing-indicator.gif"
                 }
             },
             "payConfirmation": {
                 "backgroundColor": "#000",
-                "backgroundImage": null,
                 "numberColor": "rgba(255,255,255,1)",
                 "nameFontSize": 76,
                 "primaryMessageColor": "rgba(255,255,255,0.75)",
