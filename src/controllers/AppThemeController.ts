@@ -6,6 +6,7 @@ import { getRef, riseRefVersion } from "../db/refs";
 import { formatAppThemeModel } from "../utils/appTheme";
 import { readFileJSONAsync } from "../utils/file";
 import { getClientId } from "../utils/account";
+import { findAllWithFilter } from "../utils/requestOptions";
 
 export interface IAppThemeItem extends IAppTheme { }
 
@@ -94,15 +95,18 @@ export class AppThemesController extends Controller {
         meta: META_TEMPLATE,
         data: [RESPONSE_TEMPLATE],
     })
-    public async getAll(@Request() request: IAuthRequest, @Query() type: TerminalTypes): Promise<IAppThemesResponse> {
+    public async getAll(@Request() request: IAuthRequest): Promise<IAppThemesResponse> {
         const client = getClientId(request);
 
         try {
-            const items = await AppThemeModel.find({ client, type: Number(type) });
+            const items: Array<IAppThemeDocument> = await findAllWithFilter(AppThemeModel.find({ client }), request);
 
-            const ref = await getRef(client, RefTypes.THEMES, {
+            const type = request.query.type;
+
+            const refOptions = type !== undefined ? {
                 "extra.type.equals": Number(type),
-            });
+            } : {};
+            const ref = await getRef(client, RefTypes.THEMES, refOptions);
             return {
                 meta: { ref },
                 data: items.map(v => formatAppThemeModel(v))

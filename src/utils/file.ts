@@ -20,6 +20,17 @@ export function readFileJSONAsync<T = any>(path: string): Promise<T> {
     });
 }
 
+export function getFileStat(path: string): Promise<fs.Stats> {
+    return new Promise<fs.Stats>((resolve, reject) => {
+        fs.stat(path, (err, stats) => {
+            if (!!err) {
+                return reject(err);
+            }
+            resolve(stats);
+        });
+    });
+}
+
 export const zipDirectory = (source: string, out: string): Promise<void> => {
     const archive = archiver('zip', { zlib: { level: 9 } });
     const stream = fs.createWriteStream(out);

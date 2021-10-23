@@ -1,5 +1,6 @@
 import * as extractZip from "extract-zip";
 import * as path from "path";
+import * as fs from "fs-extra";
 import multer = require("multer");
 import { IAuthRequest } from "../interfaces";
 import { IClientDBBackup } from "../controllers/BackupController";
@@ -7,13 +8,13 @@ import {
     AdModel, AppThemeModel, AssetModel, BusinessPeriodModel, CheckueModel, CurrencyModel, EmployeeModel, IAppThemeDocument, LanguageModel,
     NodeModel, OrderTypeModel, ProductModel, SelectorModel, StoreModel, SystemTagModel, TagModel, TranslationModel
 } from "../models";
-import { copyDirectory, makeDirIfEmpty, readFile, removeDirectory, removeFile, saveDataToFile, zipDirectory } from "./file";
+import { copyDirectory, makeDirIfEmpty, readFile, removeDirectory, removeFile, saveDataToFile, getFileStat, zipDirectory } from "./file";
 import * as moment from "moment";
 import { TerminalTypes } from "@djonnyx/tornado-types";
 import { normalizeTerminalTheme } from "./terminal";
 import { getClientId } from "./account";
 
-export const generateBackup = async (request: IAuthRequest): Promise<string> => {
+export const generateBackup = async (request: IAuthRequest): Promise<{ name: string, stats: fs.Stats }> => {
     const client = getClientId(request);
 
     const ads = await AdModel.find({ client: client });
@@ -86,7 +87,7 @@ export const generateBackup = async (request: IAuthRequest): Promise<string> => 
     return await zipClientBackup(client, clientDBBackup);
 }
 
-const zipClientBackup = async (client: string, dbData: IClientDBBackup): Promise<string> => {
+const zipClientBackup = async (client: string, dbData: IClientDBBackup): Promise<{ name: string, stats: fs.Stats }> => {
     const date = moment(new Date()).format("yyyy-MM-DD");
     const outputFileName = `backups/${client}/backup_${date}.tdb`;
 
@@ -101,8 +102,13 @@ const zipClientBackup = async (client: string, dbData: IClientDBBackup): Promise
     await zipDirectory(`backups/${client}/archive`, outputFileName);
 
     await removeDirectory(`backups/${client}/archive`);
+    
+    const stats = await getFileStat(outputFileName);
 
-    return outputFileName;
+    return {
+        name: outputFileName,
+        stats,
+    };
 }
 
 export const uploadBackup = async (request: IAuthRequest, allowedExtensions = ['.tdb']): Promise<void> => {
