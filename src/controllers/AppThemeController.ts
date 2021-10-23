@@ -99,7 +99,7 @@ export class AppThemesController extends Controller {
         const client = getClientId(request);
 
         try {
-            const items: Array<IAppThemeDocument> = await findAllWithFilter(await AppThemeModel.find({ client }), request);
+            const items: Array<IAppThemeDocument> = await findAllWithFilter(AppThemeModel.find({ client }), request);
 
             const type = request.query.type;
 
