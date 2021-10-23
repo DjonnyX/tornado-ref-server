@@ -35,7 +35,7 @@ const AppThemeSchema = new Schema({
     version: { type: Number, required: true },
     lastUpdate: { type: Date, required: true },
     assets: { type: [String], required: true, default: [] },
-    resources: { type: Schema.Types.Mixed, required: true, default: {} },
+    resources: { type: Schema.Types.Mixed, required: false, default: {} },
     data: { type: Schema.Types.Mixed, required: true },
 });
 
