@@ -1,14 +1,16 @@
 import { Controller, Route, Post, Tags, OperationId, Example, Request, Security } from "tsoa";
+import * as fs from "fs-extra";
 import { IAssetDocument } from "../models/Asset";
 import { IAuthRequest } from "../interfaces";
 import {
     IAdDocument, IAppThemeDocument, IBusinessPeriodDocument,
     ICheckueDocument, ICurrencyDocument, IEmployeeDocument, ILanguageDocument, INodeDocument, IOrderTypeDocument,
-    IProductDocument, ISelectorDocument, IStoreDocument, ISystemTagDocument, ITagDocument, ITranslationDocument
+    IProductDocument, ISelectorDocument, IServerInfoDocument, IStoreDocument, ISystemTagDocument, ITagDocument, ITranslationDocument, ServerInfoModel
 } from "../models";
 import { LeanDocument } from "mongoose";
 import { generateBackup, uploadBackup } from "../utils/backup";
 import * as config from "../config";
+import { getClientId } from "../utils/account";
 
 export interface IClientDBBackup {
     ads: LeanDocument<IAdDocument>[];
@@ -77,9 +79,11 @@ export class BackupController extends Controller {
         data: RESPONSE_TEMPLATE
     })
     public async create(@Request() request: IAuthRequest): Promise<ICreateBackupResponse> {
-        let fileName: string;
+        const client = getClientId(request);
+
+        let backupInfo: {name: string, stats: fs.Stats};
         try {
-            fileName = await generateBackup(request);
+            backupInfo = await generateBackup(request);
         } catch (err) {
             this.setStatus(500);
             return {
@@ -92,13 +96,25 @@ export class BackupController extends Controller {
             };
         }
 
+        let serverInfo: IServerInfoDocument;
+        try {
+            serverInfo = await ServerInfoModel.findOne({ client });
+            serverInfo.backup.name = backupInfo.name;
+            serverInfo.backup.size = backupInfo.stats.size;
+            serverInfo.backup.lastCreate = new Date();
+
+            await serverInfo.save();
+        } catch (err) {
+            // etc
+        }
+
         return {
             meta: {
                 creationDate: new Date(),
             },
             data: {
-                url: `${config.CLIENT_HOST}/${fileName}`,
-                filename: fileName,
+                url: `${config.CLIENT_HOST}/${backupInfo.name}`,
+                filename: backupInfo.name,
             },
         };
     }
