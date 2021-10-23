@@ -290,6 +290,8 @@ export class OrderTypeController extends Controller {
                     }
                 }
             }
+
+            await item.save();
         } catch (err) {
             this.setStatus(500);
             return {
@@ -366,7 +368,6 @@ export class OrderTypeController extends Controller {
         }
 
         try {
-            await item.save();
 
             const ref = await riseRefVersion(client, RefTypes.ORDER_TYPES);
             return {
