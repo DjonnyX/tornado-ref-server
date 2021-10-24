@@ -267,7 +267,7 @@ export class NodesController extends Controller {
         const client = getClientId(request);
 
         try {
-            const items = await getNodesChain(id);
+            const items = await getNodesChain(client, id);
             const ref = await getRef(client, RefTypes.NODES);
             return {
                 meta: { ref },
@@ -681,7 +681,7 @@ export class NodeController extends Controller {
         }
 
         try {
-            ids = await deleteNodesChain(id);
+            ids = await deleteNodesChain(client, id);
             const ref = await riseRefVersion(client, RefTypes.NODES);
             return {
                 meta: { ref },

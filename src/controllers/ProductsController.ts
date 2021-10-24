@@ -508,7 +508,7 @@ export class ProductController extends Controller {
         }
 
         try {
-            await deleteNodesChain(product.joint);
+            await deleteNodesChain(client, product.joint);
         } catch (err) {
             this.setStatus(500);
             return {
