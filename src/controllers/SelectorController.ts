@@ -493,7 +493,7 @@ export class SelectorController extends Controller {
         }
 
         try {
-            await deleteNodesChain(selector.joint);
+            await deleteNodesChain(client, selector.joint);
         } catch (err) {
             this.setStatus(500);
             return {

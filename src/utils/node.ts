@@ -19,6 +19,10 @@ const getMapOfCollection = <T extends INodeDocument>(collection: Array<T>): IDic
 const extractNodeChain = <T extends INodeDocument>(dictionary: IDictionary<T>, item: T): Array<T> => {
     let result = new Array<T>();
 
+    if (!item) {
+        return result;
+    }
+
     item.children.forEach(id => {
         result = [...result, ...extractNodeChain<T>(dictionary, dictionary[id])];
     });
@@ -47,10 +51,14 @@ const extractNodeInvokeChain = <T extends INodeDocument>(dictionary: IDictionary
  * Возвращает список всех дочерних нодов.
  * Сбор нодов происходит от последних элементов в цепи.
  */
-export const getNodesChain = async (id: string): Promise<Array<INodeDocument>> => {
+export const getNodesChain = async (client: string, id: string): Promise<Array<INodeDocument>> => {
+    if (id === undefined) {
+        return [];
+    }
+
     let items: Array<INodeDocument>;
     try {
-        items = await NodeModel.find();
+        items = await NodeModel.find({ client });
     } catch (err) {
         throw Error(`Could not find nodes. ${err}`);
     }
@@ -68,8 +76,8 @@ export const getNodesChain = async (id: string): Promise<Array<INodeDocument>> =
  * Удаление происходит от последних элементов в цепи, тем самым,
  * если в процессе возникнет exception, то "открепленных" от цепи нодов не образуется!
  */
-export const deleteNodesChain = async (id: string): Promise<Array<string>> => {
-    const nodes = await getNodesChain(id);
+export const deleteNodesChain = async (client: string, id: string): Promise<Array<string>> => {
+    const nodes = await getNodesChain(client, id);
 
     const ids = nodes.map(item => item.id);
 
