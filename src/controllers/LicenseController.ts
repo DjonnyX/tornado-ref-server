@@ -96,16 +96,6 @@ const LICENSE_RESPONSE_TEMPLATE: ILicenseInfo = {
     key: "0000-1111-2222-3333",
     md5key: "1e0328629e0b73cfcb5cca8bdefb0b76",
     imei: "3425t42t543yt45t",
-    licType: {
-        applicationId: "507c7f79bcf86cd7994f6c2e",
-        integrationId: "507c7f79bcf86cd7994f6c0e",
-        description: "Киоск с кассой r-keeper",
-        name: "Киоск с кассой r-keeper",
-        payNotice: "оплата лицензии осуществляется в личном кабинете пользователя",
-        price: 100000,
-        extra: {},
-    },
-    licTypeId: "ecbbfd40-62ba-49bf-8620-75d8c5ed3953",
     lastUpdate: new Date(),
 };
 
@@ -121,16 +111,6 @@ const LICENSE_ACCOUNT_RESPONSE_TEMPLATE: ILicenseAccountInfo = {
     key: "0000-1111-2222-3333",
     md5key: "1e0328629e0b73cfcb5cca8bdefb0b76",
     imei: "3425t42t543yt45t",
-    licType: {
-        applicationId: "507c7f79bcf86cd7994f6c2e",
-        integrationId: "507c7f79bcf86cd7994f6c0e",
-        description: "Киоск с кассой r-keeper",
-        name: "Киоск с кассой r-keeper",
-        payNotice: "оплата лицензии осуществляется в личном кабинете пользователя",
-        price: 100000,
-        extra: {},
-    },
-    licTypeId: "ecbbfd40-62ba-49bf-8620-75d8c5ed3953",
     lastUpdate: new Date(),
 };
 
