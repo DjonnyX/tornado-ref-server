@@ -49,7 +49,7 @@ interface IApplicationInfoMeta {
     ref: IRef;
 }
 
-const APPLICATION_RESPONSE_TEMPLATE: IApplicationInfo = {
+export const APPLICATION_RESPONSE_TEMPLATE: IApplicationInfo = {
     id: "507c7f79bcf86cd7994f6c0e",
     productId: "507c7f79bcf86cd7994f6c0e",
     terminalType: TerminalTypes.KIOSK,

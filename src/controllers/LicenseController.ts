@@ -1,9 +1,10 @@
 import { Controller, Route, Post, Tags, Example, Request, Body, Get, Put, Delete, OperationId, Security } from "tsoa";
 import { IAuthRequest } from "../interfaces";
 import { licServerApiService } from "../services";
-import { ILicense, RefTypes, ILicenseAccount, TerminalTypes, IRef, LicenseStates } from "@djonnyx/tornado-types";
+import { ILicense, RefTypes, ILicenseAccount, IRef, LicenseStates } from "@djonnyx/tornado-types";
 import { ITerminalDocument, TerminalModel } from "../models";
 import { getClientId } from "../utils/account";
+import { TARIF_RESPONSE_TEMPLATE } from "./TarifsController";
 
 interface ILicenseInfo extends ILicense { }
 
@@ -86,6 +87,8 @@ interface ILicenseInfoMeta {
 
 const LICENSE_RESPONSE_TEMPLATE: ILicenseInfo = {
     id: "507c7f79bcf86cd7994f6c0e",
+    tarifId: TARIF_RESPONSE_TEMPLATE.id,
+    tarif: TARIF_RESPONSE_TEMPLATE,
     client: "507c7f79bcf86cd7994f6c0e",
     dateStart: new Date(),
     dateEnd: new Date(),
@@ -109,6 +112,8 @@ const LICENSE_RESPONSE_TEMPLATE: ILicenseInfo = {
 const LICENSE_ACCOUNT_RESPONSE_TEMPLATE: ILicenseAccountInfo = {
     id: "507c7f79bcf86cd7994f6c0e",
     client: "507c7f79bcf86cd7994f6c0e",
+    tarifId: TARIF_RESPONSE_TEMPLATE.id,
+    tarif: TARIF_RESPONSE_TEMPLATE,
     terminalId: "507c7f79bcf86cd7994f6c0e",
     dateStart: new Date(),
     dateEnd: new Date(),

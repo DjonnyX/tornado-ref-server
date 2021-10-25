@@ -1,7 +1,7 @@
 import * as got from "got";
 import { makeRequest } from "../utils/proxy";
 import * as config from "../config";
-import { ILicense, ILicenseType, IApplication, IIntegration } from "@djonnyx/tornado-types";
+import { ILicense, ILicenseType, IApplication, ITarif, IIntegration } from "@djonnyx/tornado-types";
 import { ISignupParams } from "../controllers/AuthController";
 import { IAuthRequest } from "src/interfaces";
 
@@ -593,6 +593,69 @@ class LicServerApiService {
     public async deleteApplication<T = any>(id: string, request: IAuthRequest, options?: IRequestOptions): Promise<T> {
         return await makeRequest<T>(
             got.delete(`${config.LIC_SERVER_HOST}/${BASE_URL}application/${id}`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": this.getToken(options),
+                },
+                query: request.query,
+            }),
+        );
+    }
+
+    // tarifs
+    public async getTarifs<T = any>(request: IAuthRequest, options?: IRequestOptions): Promise<T> {
+        return await makeRequest<T>(
+            got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}tarifs`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": this.getToken(options),
+                },
+                query: request.query,
+            }),
+        );
+    }
+
+    public async getTarif<T = any>(id: string, request: IAuthRequest, options?: IRequestOptions): Promise<T> {
+        return await makeRequest<T>(
+            got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}tarif/${id}`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": this.getToken(options),
+                },
+                query: request.query,
+            }),
+        );
+    }
+
+    public async createTarif<T = any>(tarif: ITarif, request: IAuthRequest, options?: IRequestOptions): Promise<T> {
+        return await makeRequest<T>(
+            got.post(`${config.LIC_SERVER_HOST}/${BASE_URL}tarif`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": this.getToken(options),
+                },
+                query: request.query,
+                body: JSON.stringify(tarif),
+            }),
+        );
+    }
+
+    public async updateTarif<T = any>(id: string, tarif: ITarif, request: IAuthRequest, options?: IRequestOptions): Promise<T> {
+        return await makeRequest<T>(
+            got.put(`${config.LIC_SERVER_HOST}/${BASE_URL}tarif/${id}`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": this.getToken(options),
+                },
+                query: request.query,
+                body: JSON.stringify(tarif),
+            }),
+        );
+    }
+
+    public async deleteTarif<T = any>(id: string, request: IAuthRequest, options?: IRequestOptions): Promise<T> {
+        return await makeRequest<T>(
+            got.delete(`${config.LIC_SERVER_HOST}/${BASE_URL}tarif/${id}`, {
                 headers: {
                     "content-type": "application/json",
                     "authorization": this.getToken(options),
