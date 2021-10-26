@@ -1,31 +1,34 @@
 import { Controller, Route, Post, Tags, Example, Request, Body, Get, Put, Delete, OperationId, Security } from "tsoa";
 import { licServerApiService } from "../services";
-import { ITarif, IRef, IVersion, RefTypes, TarifPaymentPeriods } from "@djonnyx/tornado-types";
+import { ITarif, IRef, RefTypes, TarifPaymentPeriods, ITarifDiscountByDevices } from "@djonnyx/tornado-types";
 import { IAuthRequest } from "../interfaces";
 import { APPLICATION_RESPONSE_TEMPLATE } from "./ApplicationController";
+import { INTEGRATION_RESPONSE_TEMPLATE } from "./IntegrationsController";
 
 interface ITarifInfo extends ITarif { }
 
 interface ICreateTarifParams {
-    terminalType: number;
-    productId: string;
+    applicationId: string;
+    integrationId: string;
+    serviceId: string;
     name: string;
     description?: string;
-    version: IVersion;
-    extra?: {
-        [key: string]: any;
-    } | null;
+    trialPeriodDuration: number;
+    paymentPeriod: TarifPaymentPeriods;
+    costByDevices: Array<ITarifDiscountByDevices>;
+    extra?: { [key: string]: any } | null;
 }
 
 interface IUpdateTarifParams {
-    terminalType?: number;
-    productId?: string;
+    applicationId?: string;
+    integrationId?: string;
+    serviceId?: string;
     name?: string;
     description?: string;
-    version?: IVersion;
-    extra?: {
-        [key: string]: any;
-    } | null;
+    trialPeriodDuration?: number;
+    paymentPeriod?: TarifPaymentPeriods;
+    costByDevices?: Array<ITarifDiscountByDevices>;
+    extra?: { [key: string]: any } | null;
 }
 
 interface TarifsGetResponse {
@@ -54,6 +57,8 @@ export const TARIF_RESPONSE_TEMPLATE: ITarifInfo = {
     id: "435c7f79bcf86cd7994f6c1t",
     applicationId: APPLICATION_RESPONSE_TEMPLATE.id,
     application: APPLICATION_RESPONSE_TEMPLATE,
+    integrationId: INTEGRATION_RESPONSE_TEMPLATE.id,
+    integration: INTEGRATION_RESPONSE_TEMPLATE,
     serviceId: "KIOSK_TARIF_BASE_EVERY_MONTH",
     name: "Базовый",
     description: "Оплата раз в месяц. Если приобретено более 5 терминалов, скидка 10% с терминала.",
