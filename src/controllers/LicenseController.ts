@@ -12,19 +12,19 @@ interface ILicenseAccountInfo extends ILicenseAccount { }
 
 interface ICreateLicenseParams {
     client: string;
+    tarifId: string;
     dateStart: Date;
     dateEnd: Date;
     state: LicenseStates;
-    licTypeId: string;
     extra?: { [key: string]: any } | null;
 }
 
 interface IUpdateLicenseParams {
     client?: string;
+    tarifId?: string;
     dateStart?: Date;
     dateEnd?: Date;
     state?: LicenseStates;
-    licTypeId?: string;
     extra?: { [key: string]: any } | null;
 }
 
