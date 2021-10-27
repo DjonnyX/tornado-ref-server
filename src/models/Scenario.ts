@@ -22,6 +22,7 @@ export const ScenarioSchema = new Schema({
             ScenarioPriceActionTypes.PRICE,
             ScenarioPriceActionTypes.PRICE_BY_BUSINESS_PERIOD,
             ScenarioPriceActionTypes.PRICE_BY_ORDER_TYPE,
+            ScenarioPriceActionTypes.PRICE_BY_STORE,
             // product
             ScenarioProductActionTypes.UP_LIMIT,
             ScenarioProductActionTypes.DOWN_LIMIT,
