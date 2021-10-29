@@ -1,15 +1,16 @@
 import { ProductModel, IProductDocument, ILanguageDocument, LanguageModel } from "../models/index";
 import { Controller, Route, Post, Tags, OperationId, Example, Request, Security, Get, Delete, Body, Put } from "tsoa";
 import { riseRefVersion, getRef } from "../db/refs";
-import { IProductItem, RESPONSE_TEMPLATE as PRODUCT_RESPONSE_TEMPLATE } from "./ProductsController";
+import { IProductItem, PRODUCT_RESPONSE_TEMPLATE } from "./ProductsController";
 import { formatProductModel } from "../utils/product";
 import { normalizeContents } from "../utils/entity";
-import { uploadAsset, deleteAsset, IAssetItem, ICreateAssetsResponse } from "./AssetsController";
+import { uploadAsset, deleteAsset, IAssetItem, ICreateAssetsResponse, ASSET_RESPONSE_TEMPLATE } from "./AssetsController";
 import { AssetModel, IAssetDocument } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
 import { IAuthRequest } from "src/interfaces";
 import { AssetExtensions, IProductContents, IRef, RefTypes } from "@djonnyx/tornado-types";
 import { getClientId } from "../utils/account";
+import { LANGUAGE_RESPONSE_TEMPLATE } from "./LanguagesController";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IProductAsset extends IAssetItem { }
@@ -124,20 +125,6 @@ const META_TEMPLATE = {
     },
 };
 
-const RESPONSE_TEMPLATE: IAssetItem = {
-    id: "107c7f79bcf86cd7994f6c0e",
-    active: true,
-    lastUpdate: new Date(),
-    name: "some_image",
-    ext: AssetExtensions.WEBP,
-    mipmap: {
-        x128: "assets/some_image_128x128.webp",
-        x32: "assets/favicon.webp",
-    },
-    path: "assets/some_image.webp",
-    extra: {},
-};
-
 @Route("/product")
 @Tags("Product assets")
 export class ProductAssetsController extends Controller {
@@ -149,7 +136,7 @@ export class ProductAssetsController extends Controller {
     @Example<IProductGetAllAssetsResponse>({
         meta: META_TEMPLATE,
         data: {
-            "RU": [RESPONSE_TEMPLATE],
+            [LANGUAGE_RESPONSE_TEMPLATE?.code]: [ASSET_RESPONSE_TEMPLATE],
         },
     })
     public async getAllAssets(productId: string): Promise<IProductGetAllAssetsResponse> {
@@ -219,7 +206,7 @@ export class ProductAssetsController extends Controller {
     @OperationId("Get")
     @Example<IProductGetAssetsResponse>({
         meta: META_TEMPLATE,
-        data: [RESPONSE_TEMPLATE],
+        data: [ASSET_RESPONSE_TEMPLATE],
     })
     public async getAssets(productId: string, langCode: string): Promise<IProductGetAssetsResponse> {
         let product: IProductDocument;
@@ -264,7 +251,7 @@ export class ProductAssetsController extends Controller {
     @Example<IProductCreateAssetsResponse>({
         meta: META_TEMPLATE,
         data: {
-            asset: RESPONSE_TEMPLATE,
+            asset: ASSET_RESPONSE_TEMPLATE,
             product: PRODUCT_RESPONSE_TEMPLATE,
         }
     })
@@ -354,7 +341,7 @@ export class ProductAssetsController extends Controller {
     @Example<IProductCreateAssetsResponse>({
         meta: META_TEMPLATE,
         data: {
-            asset: RESPONSE_TEMPLATE,
+            asset: ASSET_RESPONSE_TEMPLATE,
             product: PRODUCT_RESPONSE_TEMPLATE,
         }
     })
@@ -514,7 +501,7 @@ export class ProductAssetsController extends Controller {
     @Example<IProductCreateAssetsResponse>({
         meta: META_TEMPLATE,
         data: {
-            asset: RESPONSE_TEMPLATE,
+            asset: ASSET_RESPONSE_TEMPLATE,
             product: PRODUCT_RESPONSE_TEMPLATE,
         }
     })

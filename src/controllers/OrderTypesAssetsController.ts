@@ -1,15 +1,16 @@
 import { OrderTypeModel, IOrderTypeDocument, ILanguageDocument, LanguageModel } from "../models";
 import { Controller, Route, Post, Tags, OperationId, Example, Request, Security, Get, Delete, Body, Put } from "tsoa";
 import { riseRefVersion, getRef } from "../db/refs";
-import { IOrderTypeItem, RESPONSE_TEMPLATE as SELECTOR_RESPONSE_TEMPLATE } from "./OrderTypesController";
+import { IOrderTypeItem, ORDER_TYPE_RESPONSE_TEMPLATE } from "./OrderTypesController";
 import { formatOrderTypeModel } from "../utils/orderType";
 import { normalizeContents } from "../utils/entity";
-import { uploadAsset, deleteAsset, IAssetItem, ICreateAssetsResponse } from "./AssetsController";
+import { uploadAsset, deleteAsset, IAssetItem, ICreateAssetsResponse, ASSET_RESPONSE_TEMPLATE } from "./AssetsController";
 import { AssetModel, IAssetDocument } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
 import { IAuthRequest } from "../interfaces";
 import { AssetExtensions, IOrderTypeContents, IRef, RefTypes } from "@djonnyx/tornado-types";
 import { getClientId } from "../utils/account";
+import { LANGUAGE_RESPONSE_TEMPLATE } from "./LanguagesController";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IOrderTypeAsset extends IAssetItem { }
@@ -120,20 +121,6 @@ const META_TEMPLATE = {
     },
 };
 
-const RESPONSE_TEMPLATE: IAssetItem = {
-    id: "107c7f79bcf86cd7994f6c0e",
-    active: true,
-    lastUpdate: new Date(),
-    name: "some_image",
-    ext: AssetExtensions.WEBP,
-    mipmap: {
-        x128: "assets/some_image_128x128.webp",
-        x32: "assets/favicon.webp",
-    },
-    path: "assets/some_image.webp",
-    extra: {},
-};
-
 @Route("/order-type")
 @Tags("OrderType assets")
 export class OrderTypeAssetsController extends Controller {
@@ -145,7 +132,7 @@ export class OrderTypeAssetsController extends Controller {
     @Example<IOrderTypeGetAllAssetsResponse>({
         meta: META_TEMPLATE,
         data: {
-            "RU": [RESPONSE_TEMPLATE],
+            [LANGUAGE_RESPONSE_TEMPLATE?.code]: [ASSET_RESPONSE_TEMPLATE],
         },
     })
     public async getAllAssets(orderTypeId: string): Promise<IOrderTypeGetAllAssetsResponse> {
@@ -214,7 +201,7 @@ export class OrderTypeAssetsController extends Controller {
     @OperationId("Get")
     @Example<IOrderTypeGetAssetsResponse>({
         meta: META_TEMPLATE,
-        data: [RESPONSE_TEMPLATE],
+        data: [ASSET_RESPONSE_TEMPLATE],
     })
     public async getAssets(orderTypeId: string, langCode: string): Promise<IOrderTypeGetAssetsResponse> {
         let orderType: IOrderTypeDocument;
@@ -259,8 +246,8 @@ export class OrderTypeAssetsController extends Controller {
     @Example<IOrderTypeCreateAssetsResponse>({
         meta: META_TEMPLATE,
         data: {
-            asset: RESPONSE_TEMPLATE,
-            orderType: SELECTOR_RESPONSE_TEMPLATE,
+            asset: ASSET_RESPONSE_TEMPLATE,
+            orderType: ORDER_TYPE_RESPONSE_TEMPLATE,
         }
     })
     public async create(orderTypeId: string, langCode: string, @Request() request: express.Request): Promise<IOrderTypeCreateAssetsResponse> {
@@ -341,8 +328,8 @@ export class OrderTypeAssetsController extends Controller {
     @Example<IOrderTypeCreateAssetsResponse>({
         meta: META_TEMPLATE,
         data: {
-            asset: RESPONSE_TEMPLATE,
-            orderType: SELECTOR_RESPONSE_TEMPLATE,
+            asset: ASSET_RESPONSE_TEMPLATE,
+            orderType: ORDER_TYPE_RESPONSE_TEMPLATE,
         }
     })
     public async resource(orderTypeId: string, langCode: string, resourceType: OrderTypeImageTypes, @Request() request: IAuthRequest): Promise<IOrderTypeCreateAssetsResponse> {
@@ -500,8 +487,8 @@ export class OrderTypeAssetsController extends Controller {
     @Example<IOrderTypeCreateAssetsResponse>({
         meta: META_TEMPLATE,
         data: {
-            asset: RESPONSE_TEMPLATE,
-            orderType: SELECTOR_RESPONSE_TEMPLATE,
+            asset: ASSET_RESPONSE_TEMPLATE,
+            orderType: ORDER_TYPE_RESPONSE_TEMPLATE,
         }
     })
     public async update(orderTypeId: string, langCode: string, assetId: string, @Body() body: IOrderTypeAssetUpdateRequest, @Request() request: IAuthRequest): Promise<IOrderTypeCreateAssetsResponse> {

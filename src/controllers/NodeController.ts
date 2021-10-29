@@ -7,6 +7,8 @@ import { IAuthRequest } from "../interfaces";
 import { IScenario, NodeTypes, ScenarioCommonActionTypes, RefTypes, IRef, INode } from "@djonnyx/tornado-types";
 import { findAllWithFilter } from "../utils/requestOptions";
 import { getClientId } from "../utils/account";
+import { PRODUCT_RESPONSE_TEMPLATE } from "./ProductsController";
+import { SELECTOR_RESPONSE_TEMPLATE } from "./SelectorController";
 
 interface INodeItem extends INode { }
 
@@ -118,13 +120,13 @@ interface INodeUpdateRequest {
     extra?: { [key: string]: any } | null;
 }
 
-const RESPONSE_TEMPLATE: INodeItem = {
+export const NODE_RESPONSE_TEMPLATE: INodeItem = {
     id: "507c7f79bcf86cd7994f6c0e",
     active: true,
     type: NodeTypes.SELECTOR,
     parentId: "107c7f79bcf86cd7994f6c0e",
-    contentId: "407c7f79bcf86cd7994f6c0e",
-    children: ["123c7f79bcf86cd7994f6c0e"],
+    contentId: SELECTOR_RESPONSE_TEMPLATE?.id,
+    children: [PRODUCT_RESPONSE_TEMPLATE?.id],
     scenarios: [{
         active: true,
         lock: false,
@@ -229,7 +231,7 @@ export class NodesController extends Controller {
     @OperationId("GetAll")
     @Example<INodesResponse>({
         meta: META_TEMPLATE,
-        data: [RESPONSE_TEMPLATE]
+        data: [NODE_RESPONSE_TEMPLATE]
     })
     public async getAll(@Request() request: IAuthRequest): Promise<INodesResponse> {
         const client = getClientId(request);
@@ -261,7 +263,7 @@ export class NodesController extends Controller {
     @OperationId("GetAllById")
     @Example<INodesResponse>({
         meta: META_TEMPLATE,
-        data: [RESPONSE_TEMPLATE]
+        data: [NODE_RESPONSE_TEMPLATE]
     })
     public async getAllById(id: string, @Request() request: IAuthRequest): Promise<INodesResponse> {
         const client = getClientId(request);
@@ -292,7 +294,7 @@ export class NodesController extends Controller {
     @OperationId("CreateMany")
     @Example<INodesResponse>({
         meta: META_TEMPLATE,
-        data: [RESPONSE_TEMPLATE]
+        data: [NODE_RESPONSE_TEMPLATE]
     })
     public async createMany(@Body() body: INodesCreateRequest, @Request() request: IAuthRequest): Promise<ICreateNodesResponse> {
         const client = getClientId(request);
@@ -406,7 +408,7 @@ export class NodeController extends Controller {
     @OperationId("GetOne")
     @Example<INodeResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE
+        data: NODE_RESPONSE_TEMPLATE
     })
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<INodeResponse> {
         const client = getClientId(request);
@@ -437,7 +439,7 @@ export class NodeController extends Controller {
     @OperationId("Create")
     @Example<INodeResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE
+        data: NODE_RESPONSE_TEMPLATE
     })
     public async create(@Body() body: INodeCreateRequest, @Request() request: IAuthRequest): Promise<ICreateNodeResponse> {
         const client = getClientId(request);
@@ -546,7 +548,7 @@ export class NodeController extends Controller {
     @OperationId("Update")
     @Example<INodeResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE
+        data: NODE_RESPONSE_TEMPLATE
     })
     public async update(id: string, @Body() body: INodeUpdateRequest, @Request() request: IAuthRequest): Promise<INodeResponse> {
         const client = getClientId(request);

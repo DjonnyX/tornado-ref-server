@@ -8,6 +8,9 @@ import { ISetDeviceResponse, licServerApiService } from "../services";
 import { extractError } from "../utils/error";
 import { findAllWithFilter } from "../utils/requestOptions";
 import { getClientId } from "../utils/account";
+import { ACCOUNT_RESPONSE_TEMPLATE } from "./AccountController";
+import { STORE_RESPONSE_TEMPLATE } from "./StoresController";
+import { LICENSE_ACCOUNT_RESPONSE_TEMPLATE } from "./LicenseController";
 
 interface ITerminalItem extends ITerminal { }
 
@@ -45,15 +48,15 @@ interface ITerminalUpdateRequest {
     extra?: { [key: string]: any } | null;
 }
 
-const RESPONSE_TEMPLATE: ITerminalItem = {
-    client: "f234r34r-34r23-4t32-43434",
+export const TERMINAL_RESPONSE_TEMPLATE: ITerminalItem = {
+    client: ACCOUNT_RESPONSE_TEMPLATE?.id,
     status: TerminalStatusTypes.ONLINE,
     type: TerminalTypes.KIOSK,
     name: "My terminal",
-    storeId: "g234r34r-34r23-4t32-43434",
+    storeId: STORE_RESPONSE_TEMPLATE?.id,
     lastwork: new Date(),
     imei: "00001-000000000034",
-    licenseId: "34r34r-34r23-4t32-43434",
+    licenseId: LICENSE_ACCOUNT_RESPONSE_TEMPLATE?.id,
     config: {
         theme: "light",
         suffix: "K",
@@ -80,7 +83,7 @@ export class Deviceontroller extends Controller {
     @OperationId("LicenseVerify")
     @Example<ITerminalResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE,
+        data: TERMINAL_RESPONSE_TEMPLATE,
     })
     public async licenseVerify(@Request() request: IAuthRequest): Promise<ITerminalResponse> {
         const client = getClientId(request);
@@ -115,7 +118,7 @@ export class Deviceontroller extends Controller {
     @OperationId("Registration")
     @Example<ITerminalResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE,
+        data: TERMINAL_RESPONSE_TEMPLATE,
     })
     public async registration(@Body() body: ITerminalRegisterRequest, @Request() request: IAuthRequest): Promise<ITerminalResponse> {
         let setDeviceResponse: ISetDeviceResponse;
@@ -228,7 +231,7 @@ export class TerminalsController extends Controller {
     @OperationId("GetAll")
     @Example<ITerminalsResponse>({
         meta: META_TEMPLATE,
-        data: [RESPONSE_TEMPLATE]
+        data: [TERMINAL_RESPONSE_TEMPLATE]
     })
     public async getAll(@Request() request: IAuthRequest): Promise<ITerminalsResponse> {
         const client = getClientId(request);
@@ -265,7 +268,7 @@ export class TerminalController extends Controller {
     @OperationId("GetOne")
     @Example<ITerminalResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE,
+        data: TERMINAL_RESPONSE_TEMPLATE,
     })
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<ITerminalResponse> {
         const client = getClientId(request);
@@ -296,7 +299,7 @@ export class TerminalController extends Controller {
     @OperationId("Update")
     @Example<ITerminalResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE,
+        data: TERMINAL_RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() body: ITerminalUpdateRequest, @Request() request: IAuthRequest): Promise<ITerminalResponse> {
         const client = getClientId(request);

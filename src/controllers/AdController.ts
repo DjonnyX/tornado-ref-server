@@ -9,6 +9,7 @@ import { deleteAsset } from "./AssetsController";
 import { IAuthRequest } from "../interfaces";
 import { findAllWithFilter } from "../utils/requestOptions";
 import { getClientId } from "../utils/account";
+import { LANGUAGE_RESPONSE_TEMPLATE } from "./LanguagesController";
 
 export interface IAdItem extends IAd { }
 
@@ -48,12 +49,12 @@ interface IAdUpdateRequest {
     extra?: { [key: string]: any } | null;
 }
 
-export const RESPONSE_TEMPLATE: IAdItem = {
+export const AD_RESPONSE_TEMPLATE: IAdItem = {
     id: "507c7f79bcf86cd7994f6c0e",
     active: true,
     type: AdTypes.BANNER,
     contents: {
-        "RU": {
+        [LANGUAGE_RESPONSE_TEMPLATE?.code]: {
             name: "Ads on concert",
             duration: 10,
             color: "#000000",
@@ -164,7 +165,7 @@ export class AdsController extends Controller {
     @OperationId("GetAll")
     @Example<IAdsResponse>({
         meta: META_TEMPLATE,
-        data: [RESPONSE_TEMPLATE],
+        data: [AD_RESPONSE_TEMPLATE],
     })
     public async getAll(@Request() request: IAuthRequest, @Query() type?: AdTypes): Promise<IAdsResponse> {
         const client = getClientId(request);
@@ -200,7 +201,7 @@ export class AdController extends Controller {
     @OperationId("GetOne")
     @Example<IAdResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE,
+        data: AD_RESPONSE_TEMPLATE,
     })
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<IAdResponse> {
         const client = getClientId(request);
@@ -231,7 +232,7 @@ export class AdController extends Controller {
     @OperationId("Create")
     @Example<IAdResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE,
+        data: AD_RESPONSE_TEMPLATE,
     })
     public async create(@Body() body: IAdCreateRequest, @Request() request: IAuthRequest): Promise<IAdResponse> {
         const client = getClientId(request);
@@ -263,7 +264,7 @@ export class AdController extends Controller {
     @OperationId("Update")
     @Example<IAdResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE,
+        data: AD_RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() body: IAdUpdateRequest, @Request() request: IAuthRequest): Promise<IAdResponse> {
         const client = getClientId(request);

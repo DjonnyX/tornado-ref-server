@@ -1,15 +1,16 @@
 import { TagModel, ITagDocument, ILanguageDocument, LanguageModel } from "../models/index";
 import { Controller, Route, Post, Tags, OperationId, Example, Request, Security, Get, Delete, Body, Put } from "tsoa";
 import { riseRefVersion, getRef } from "../db/refs";
-import { ITagItem, RESPONSE_TEMPLATE as SELECTOR_RESPONSE_TEMPLATE } from "./TagsController";
+import { ITagItem, TAG_RESPONSE_TEMPLATE } from "./TagsController";
 import { formatTagModel } from "../utils/tag";
 import { normalizeContents } from "../utils/entity";
-import { uploadAsset, deleteAsset, IAssetItem, ICreateAssetsResponse } from "./AssetsController";
+import { uploadAsset, deleteAsset, IAssetItem, ICreateAssetsResponse, ASSET_RESPONSE_TEMPLATE } from "./AssetsController";
 import { AssetModel, IAssetDocument } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
 import { IAuthRequest } from "../interfaces";
 import { AssetExtensions, IRef, ITagContents, RefTypes } from "@djonnyx/tornado-types";
 import { getClientId } from "../utils/account";
+import { LANGUAGE_RESPONSE_TEMPLATE } from "./LanguagesController";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface ITagAsset extends IAssetItem { }
@@ -120,20 +121,6 @@ const META_TEMPLATE = {
     },
 };
 
-const RESPONSE_TEMPLATE: IAssetItem = {
-    id: "107c7f79bcf86cd7994f6c0e",
-    active: true,
-    lastUpdate: new Date(),
-    name: "some_image",
-    ext: AssetExtensions.WEBP,
-    mipmap: {
-        x128: "assets/some_image_128x128.webp",
-        x32: "assets/favicon.webp",
-    },
-    path: "assets/some_image.webp",
-    extra: {},
-};
-
 @Route("/tag")
 @Tags("Tag assets")
 export class TagAssetsController extends Controller {
@@ -145,7 +132,7 @@ export class TagAssetsController extends Controller {
     @Example<ITagGetAllAssetsResponse>({
         meta: META_TEMPLATE,
         data: {
-            "RU": [RESPONSE_TEMPLATE],
+            [LANGUAGE_RESPONSE_TEMPLATE?.code]: [ASSET_RESPONSE_TEMPLATE],
         },
     })
     public async getAllAssets(tagId: string): Promise<ITagGetAllAssetsResponse> {
@@ -214,7 +201,7 @@ export class TagAssetsController extends Controller {
     @OperationId("Get")
     @Example<ITagGetAssetsResponse>({
         meta: META_TEMPLATE,
-        data: [RESPONSE_TEMPLATE],
+        data: [ASSET_RESPONSE_TEMPLATE],
     })
     public async getAssets(tagId: string, langCode: string): Promise<ITagGetAssetsResponse> {
         let tag: ITagDocument;
@@ -259,8 +246,8 @@ export class TagAssetsController extends Controller {
     @Example<ITagCreateAssetsResponse>({
         meta: META_TEMPLATE,
         data: {
-            asset: RESPONSE_TEMPLATE,
-            tag: SELECTOR_RESPONSE_TEMPLATE,
+            asset: ASSET_RESPONSE_TEMPLATE,
+            tag: TAG_RESPONSE_TEMPLATE,
         }
     })
     public async create(tagId: string, langCode: string, @Request() request: express.Request): Promise<ITagCreateAssetsResponse> {
@@ -341,8 +328,8 @@ export class TagAssetsController extends Controller {
     @Example<ITagCreateAssetsResponse>({
         meta: META_TEMPLATE,
         data: {
-            asset: RESPONSE_TEMPLATE,
-            tag: SELECTOR_RESPONSE_TEMPLATE,
+            asset: ASSET_RESPONSE_TEMPLATE,
+            tag: TAG_RESPONSE_TEMPLATE,
         }
     })
     public async resource(tagId: string, langCode: string, resourceType: TagImageTypes, @Request() request: IAuthRequest): Promise<ITagCreateAssetsResponse> {
@@ -500,8 +487,8 @@ export class TagAssetsController extends Controller {
     @Example<ITagCreateAssetsResponse>({
         meta: META_TEMPLATE,
         data: {
-            asset: RESPONSE_TEMPLATE,
-            tag: SELECTOR_RESPONSE_TEMPLATE,
+            asset: ASSET_RESPONSE_TEMPLATE,
+            tag: TAG_RESPONSE_TEMPLATE,
         }
     })
     public async update(tagId: string, langCode: string, assetId: string, @Body() body: ITagAssetUpdateRequest, @Request() request: IAuthRequest): Promise<ITagCreateAssetsResponse> {

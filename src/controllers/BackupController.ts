@@ -62,7 +62,7 @@ const META_TEMPLATE = {
     creationDate: new Date(),
 };
 
-const RESPONSE_TEMPLATE: IBackup = {
+export const BACKUP_RESPONSE_TEMPLATE: IBackup = {
     url: "tornado.ru/backups/2sd4fff54ggx23x435h.tdb",
     filename: "backups/2sd4fff54ggx23x435h.tdb",
 };
@@ -76,7 +76,7 @@ export class BackupController extends Controller {
     @OperationId("Create")
     @Example<ICreateBackupResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE
+        data: BACKUP_RESPONSE_TEMPLATE
     })
     public async create(@Request() request: IAuthRequest): Promise<ICreateBackupResponse> {
         const client = getClientId(request);

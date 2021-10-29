@@ -6,6 +6,7 @@ import { IAuthRequest } from "../interfaces";
 import { IBusinessPeriod, IBusinessPeriodContents, IRef, RefTypes } from "@djonnyx/tornado-types";
 import { findAllWithFilter } from "../utils/requestOptions";
 import { getClientId } from "../utils/account";
+import { LANGUAGE_RESPONSE_TEMPLATE } from "./LanguagesController";
 
 export interface IScheduleItem {
     active: boolean;
@@ -59,11 +60,11 @@ interface IBusinessPeriodCreateRequest {
     extra?: { [key: string]: any } | null;
 }
 
-const RESPONSE_TEMPLATE: IBusinessPeriodItem = {
+export const BUSINESS_PERIOD_RESPONSE_TEMPLATE: IBusinessPeriodItem = {
     id: "507c7f79bcf86cd7994f6c0e",
     active: true,
     contents: {
-        "RU": {
+        [LANGUAGE_RESPONSE_TEMPLATE?.code]: {
             name: "Business period",
             description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
         }
@@ -101,7 +102,7 @@ export class BusinessPeriodsController extends Controller {
     @OperationId("GetAll")
     @Example<IBusinessPeriodsResponse>({
         meta: META_TEMPLATE,
-        data: [RESPONSE_TEMPLATE]
+        data: [BUSINESS_PERIOD_RESPONSE_TEMPLATE]
     })
     public async getAll(@Request() request: IAuthRequest): Promise<IBusinessPeriodsResponse> {
         const client = getClientId(request);
@@ -137,7 +138,7 @@ export class BusinessPeriodController extends Controller {
     @OperationId("GetOne")
     @Example<IBusinessPeriodResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE
+        data: BUSINESS_PERIOD_RESPONSE_TEMPLATE
     })
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<IBusinessPeriodResponse> {
         const client = getClientId(request);
@@ -168,7 +169,7 @@ export class BusinessPeriodController extends Controller {
     @OperationId("Create")
     @Example<IBusinessPeriodResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE,
+        data: BUSINESS_PERIOD_RESPONSE_TEMPLATE,
     })
     public async create(@Body() body: IBusinessPeriodCreateRequest, @Request() request: IAuthRequest): Promise<IBusinessPeriodResponse> {
         const client = getClientId(request);
@@ -200,7 +201,7 @@ export class BusinessPeriodController extends Controller {
     @OperationId("Update")
     @Example<IBusinessPeriodResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE,
+        data: BUSINESS_PERIOD_RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() body: IBusinessPeriodCreateRequest, @Request() request: IAuthRequest): Promise<IBusinessPeriodResponse> {
         const client = getClientId(request);

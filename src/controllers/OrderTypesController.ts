@@ -4,12 +4,13 @@ import { getRef, riseRefVersion } from "../db/refs";
 import { formatOrderTypeModel } from "../utils/orderType";
 import { IOrderTypeDocument } from "../models/OrderTypes";
 import { AssetModel } from "../models/Asset";
-import { deleteAsset } from "./AssetsController";
+import { ASSET_RESPONSE_TEMPLATE, deleteAsset } from "./AssetsController";
 import { normalizeContents, getDeletedImagesFromDifferense, getEntityAssets } from "../utils/entity";
 import { IAuthRequest } from "src/interfaces";
 import { IOrderType, IOrderTypeContents, IRef, RefTypes } from "@djonnyx/tornado-types";
 import { findAllWithFilter } from "../utils/requestOptions";
 import { getClientId } from "../utils/account";
+import { LANGUAGE_RESPONSE_TEMPLATE } from "./LanguagesController";
 
 export interface IOrderTypeItem extends IOrderType { }
 
@@ -50,22 +51,22 @@ const META_TEMPLATE: IOrderTypeMeta = {
     }
 };
 
-export const RESPONSE_TEMPLATE: IOrderTypeItem = {
+export const ORDER_TYPE_RESPONSE_TEMPLATE: IOrderTypeItem = {
     id: "507c7f79bcf86cd7994f6c0e",
     isDefault: true,
     active: true,
     contents: {
-        "RU": {
+        [LANGUAGE_RESPONSE_TEMPLATE?.code]: {
             name: "Take away",
             description: "description",
             color: "#000000",
             assets: [
-                "gt7h7f79bcf86cd7994f9d6u",
-                "gt7h7f79bcf86cd7994f9d6u",
+                ASSET_RESPONSE_TEMPLATE?.id,
+                ASSET_RESPONSE_TEMPLATE?.id,
             ],
             resources: {
-                main: "gt7h7f79bcf86cd7994f9d6u",
-                icon: "gt7h7f79bcf86cd7994f9d6u",
+                main: ASSET_RESPONSE_TEMPLATE?.id,
+                icon: ASSET_RESPONSE_TEMPLATE?.id,
             },
         }
     },
@@ -82,7 +83,7 @@ export class OrderTypesController extends Controller {
     @OperationId("GetAll")
     @Example<OrderTypesResponse>({
         meta: META_TEMPLATE,
-        data: [RESPONSE_TEMPLATE],
+        data: [ORDER_TYPE_RESPONSE_TEMPLATE],
     })
     public async getAll(@Request() request: IAuthRequest): Promise<OrderTypesResponse> {
         const client = getClientId(request);
@@ -118,7 +119,7 @@ export class OrderTypeController extends Controller {
     @OperationId("GetOne")
     @Example<OrderTypeResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE,
+        data: ORDER_TYPE_RESPONSE_TEMPLATE,
     })
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<OrderTypeResponse> {
         const client = getClientId(request);
@@ -149,7 +150,7 @@ export class OrderTypeController extends Controller {
     @OperationId("Create")
     @Example<OrderTypeResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE,
+        data: ORDER_TYPE_RESPONSE_TEMPLATE,
     })
     public async create(@Body() body: OrderTypeCreateRequest, @Request() request: IAuthRequest): Promise<OrderTypeResponse> {
         const client = getClientId(request);
@@ -197,7 +198,7 @@ export class OrderTypeController extends Controller {
     @OperationId("Update")
     @Example<OrderTypeResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE,
+        data: ORDER_TYPE_RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() body: OrderTypeCreateRequest, @Request() request: IAuthRequest): Promise<OrderTypeResponse> {
         const client = getClientId(request);

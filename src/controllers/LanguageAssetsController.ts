@@ -1,7 +1,7 @@
 import { ILanguageDocument, LanguageModel } from "../models/index";
 import { Controller, Route, Post, Tags, OperationId, Example, Request, Security, Get, Delete, Body, Put } from "tsoa";
 import { riseRefVersion, getRef } from "../db/refs";
-import { uploadAsset, deleteAsset, IAssetItem } from "./AssetsController";
+import { uploadAsset, deleteAsset, IAssetItem, ASSET_RESPONSE_TEMPLATE } from "./AssetsController";
 import { AssetModel } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
 import { ILanguageItem, LANGUAGE_RESPONSE_TEMPLATE } from "./LanguagesController";
@@ -84,20 +84,6 @@ const META_TEMPLATE = {
     },
 };
 
-const RESPONSE_TEMPLATE: IAssetItem = {
-    id: "107c7f79bcf86cd7994f6c0e",
-    active: true,
-    lastUpdate: new Date(),
-    name: "some_image",
-    ext: AssetExtensions.WEBP,
-    mipmap: {
-        x128: "assets/some_image_128x128.webp",
-        x32: "assets/favicon.webp",
-    },
-    path: "assets/some_image.webp",
-    extra: {},
-};
-
 @Route("/language")
 @Tags("Language assets")
 export class LanguageAssetsController extends Controller {
@@ -108,7 +94,7 @@ export class LanguageAssetsController extends Controller {
     @OperationId("Get")
     @Example<ILanguageGetAssetsResponse>({
         meta: META_TEMPLATE,
-        data: [RESPONSE_TEMPLATE],
+        data: [ASSET_RESPONSE_TEMPLATE],
     })
     public async getAssets(languageId: string): Promise<ILanguageGetAssetsResponse> {
         let language: ILanguageDocument;
@@ -153,7 +139,7 @@ export class LanguageAssetsController extends Controller {
     @Example<ILanguageCreateAssetsResponse>({
         meta: META_TEMPLATE,
         data: {
-            asset: RESPONSE_TEMPLATE,
+            asset: ASSET_RESPONSE_TEMPLATE,
             language: LANGUAGE_RESPONSE_TEMPLATE,
         }
     })
@@ -222,7 +208,7 @@ export class LanguageAssetsController extends Controller {
     @Example<ILanguageCreateAssetsResponse>({
         meta: META_TEMPLATE,
         data: {
-            asset: RESPONSE_TEMPLATE,
+            asset: ASSET_RESPONSE_TEMPLATE,
             language: LANGUAGE_RESPONSE_TEMPLATE,
         }
     })
@@ -318,7 +304,7 @@ export class LanguageAssetsController extends Controller {
     @Example<ILanguageCreateAssetsResponse>({
         meta: META_TEMPLATE,
         data: {
-            asset: RESPONSE_TEMPLATE,
+            asset: ASSET_RESPONSE_TEMPLATE,
             language: LANGUAGE_RESPONSE_TEMPLATE,
         }
     })

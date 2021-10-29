@@ -43,7 +43,8 @@ interface IStoreUpdateRequest {
     extra?: { [key: string]: any } | null;
 }
 
-const RESPONSE_TEMPLATE: IStoreItem = {
+export const STORE_RESPONSE_TEMPLATE: IStoreItem = {
+    id: "566c7f79bcf86cd7994f6c1e",
     name: "My store",
     address: "Moscow",
     extra: {
@@ -69,7 +70,7 @@ export class StoresController extends Controller {
     @OperationId("GetAll")
     @Example<IStoresResponse>({
         meta: META_TEMPLATE,
-        data: [RESPONSE_TEMPLATE]
+        data: [STORE_RESPONSE_TEMPLATE]
     })
     public async getAll(@Request() request: IAuthRequest): Promise<IStoresResponse> {
         const client = getClientId(request);
@@ -105,7 +106,7 @@ export class StoreController extends Controller {
     @OperationId("GetOne")
     @Example<IStoreResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE
+        data: STORE_RESPONSE_TEMPLATE
     })
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<IStoreResponse> {
         const client = getClientId(request);
@@ -136,7 +137,7 @@ export class StoreController extends Controller {
     @OperationId("Create")
     @Example<IStoreResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE,
+        data: STORE_RESPONSE_TEMPLATE,
     })
     public async create(@Body() body: IStoreCreateRequest, @Request() request: IAuthRequest): Promise<IStoreResponse> {
         const client = getClientId(request);
@@ -169,7 +170,7 @@ export class StoreController extends Controller {
     @OperationId("Update")
     @Example<IStoreResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE,
+        data: STORE_RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() body: IStoreUpdateRequest, @Request() request: IAuthRequest): Promise<IStoreResponse> {
         const client = getClientId(request);

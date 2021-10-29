@@ -5,11 +5,12 @@ import { deleteNodesChain } from "../utils/node";
 import { formatSelectorModel } from "../utils/selector";
 import { normalizeContents, getDeletedImagesFromDifferense, getEntityAssets, sortEntities, formatEntityPositionModel } from "../utils/entity";
 import { AssetModel } from "../models/Asset";
-import { deleteAsset } from "./AssetsController";
+import { ASSET_RESPONSE_TEMPLATE, deleteAsset } from "./AssetsController";
 import { IAuthRequest } from "../interfaces";
 import { ISelectorContents, NodeTypes, SelectorTypes, RefTypes, IRef, ISelector, IEntityPosition } from "@djonnyx/tornado-types";
 import { findAllWithFilter } from "../utils/requestOptions";
 import { getClientId } from "../utils/account";
+import { LANGUAGE_RESPONSE_TEMPLATE } from "./LanguagesController";
 
 export interface ISelectorItem extends ISelector { }
 
@@ -61,22 +62,22 @@ interface ISelectorUpdateRequest {
     extra?: { [key: string]: any } | null;
 }
 
-export const RESPONSE_TEMPLATE: ISelectorItem = {
+export const SELECTOR_RESPONSE_TEMPLATE: ISelectorItem = {
     id: "507c7f79bcf86cd7994f6c0e",
     position: 0,
     active: true,
     type: SelectorTypes.MENU_CATEGORY,
     systemTag: "17h97f79bcf86cd7994f0i9e",
     contents: {
-        "RU": {
+        [LANGUAGE_RESPONSE_TEMPLATE?.code]: {
             name: "Selectors on concert",
             description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             color: "#000000",
             resources: {
-                main: "g8h07f79bcf86cd7994f9d7k",
-                icon: "k7h97f79bcf86cd7994f0i9e",
+                main: ASSET_RESPONSE_TEMPLATE?.id,
+                icon: ASSET_RESPONSE_TEMPLATE?.id,
             },
-            assets: ["g8h07f79bcf86cd7994f9d7k"],
+            assets: [ASSET_RESPONSE_TEMPLATE?.id],
         }
     },
     joint: "890c7f79bcf86cd7994f3t8y",
@@ -101,7 +102,7 @@ export class SelectorsController extends Controller {
     @OperationId("GetAll")
     @Example<ISelectorsResponse>({
         meta: META_TEMPLATE,
-        data: [RESPONSE_TEMPLATE],
+        data: [SELECTOR_RESPONSE_TEMPLATE],
     })
     public async getAll(@Request() request: IAuthRequest): Promise<ISelectorsResponse> {
         const client = getClientId(request);
@@ -189,7 +190,7 @@ export class SelectorController extends Controller {
     @OperationId("GetOne")
     @Example<ISelectorResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE,
+        data: SELECTOR_RESPONSE_TEMPLATE,
     })
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<ISelectorResponse> {
         const client = getClientId(request);
@@ -220,7 +221,7 @@ export class SelectorController extends Controller {
     @OperationId("Create")
     @Example<ISelectorResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE,
+        data: SELECTOR_RESPONSE_TEMPLATE,
     })
     public async create(@Body() body: ISelectorCreateRequest, @Request() request: IAuthRequest): Promise<ISelectorResponse> {
         const client = getClientId(request);
@@ -306,7 +307,7 @@ export class SelectorController extends Controller {
     @OperationId("Update")
     @Example<ISelectorResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE,
+        data: SELECTOR_RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() body: ISelectorUpdateRequest, @Request() request: IAuthRequest): Promise<ISelectorResponse> {
         const client = getClientId(request);

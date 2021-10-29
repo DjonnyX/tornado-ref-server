@@ -2,14 +2,15 @@ import { AssetExtensions, IAdContents, IRef, RefTypes } from "@djonnyx/tornado-t
 import { AdModel, IAdDocument, ILanguageDocument, LanguageModel } from "../models/index";
 import { Controller, Route, Post, Tags, OperationId, Example, Request, Security, Get, Delete, Body, Put } from "tsoa";
 import { riseRefVersion, getRef } from "../db/refs";
-import { IAdItem, RESPONSE_TEMPLATE as AD_RESPONSE_TEMPLATE } from "./AdController";
+import { AD_RESPONSE_TEMPLATE, IAdItem } from "./AdController";
 import { formatAdModel } from "../utils/ad";
 import { contentsToDefault, normalizeContents } from "../utils/entity";
-import { uploadAsset, deleteAsset, IAssetItem, ICreateAssetsResponse } from "./AssetsController";
+import { uploadAsset, deleteAsset, IAssetItem, ICreateAssetsResponse, ASSET_RESPONSE_TEMPLATE } from "./AssetsController";
 import { AssetModel, IAssetDocument } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
 import { IAuthRequest } from "../interfaces";
 import { getClientId } from "../utils/account";
+import { LANGUAGE_RESPONSE_TEMPLATE } from "./LanguagesController";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IAdAsset extends IAssetItem { }
@@ -95,20 +96,6 @@ const META_TEMPLATE = {
     },
 };
 
-const RESPONSE_TEMPLATE: IAssetItem = {
-    id: "107c7f79bcf86cd7994f6c0e",
-    active: true,
-    lastUpdate: new Date(),
-    name: "some_image",
-    ext: AssetExtensions.WEBP,
-    mipmap: {
-        x128: "assets/some_image_128x128.png",
-        x32: "assets/favicon.png",
-    },
-    path: "assets/some_image.webp",
-    extra: {},
-};
-
 @Route("/ad")
 @Tags("Ad assets")
 export class AdAssetsController extends Controller {
@@ -120,7 +107,7 @@ export class AdAssetsController extends Controller {
     @Example<IAdGetAllAssetsResponse>({
         meta: META_TEMPLATE,
         data: {
-            "RU": [RESPONSE_TEMPLATE],
+            [LANGUAGE_RESPONSE_TEMPLATE?.code]: [ASSET_RESPONSE_TEMPLATE],
         },
     })
     public async getAllAssets(adId: string): Promise<IAdGetAllAssetsResponse> {
@@ -189,7 +176,7 @@ export class AdAssetsController extends Controller {
     @OperationId("Get")
     @Example<IAdGetAssetsResponse>({
         meta: META_TEMPLATE,
-        data: [RESPONSE_TEMPLATE],
+        data: [ASSET_RESPONSE_TEMPLATE],
     })
     public async getAssets(adId: string, langCode: string): Promise<IAdGetAssetsResponse> {
         let ad: IAdDocument;
@@ -316,7 +303,7 @@ export class AdAssetsController extends Controller {
     @Example<IAdCreateAssetsResponse>({
         meta: META_TEMPLATE,
         data: {
-            asset: RESPONSE_TEMPLATE,
+            asset: ASSET_RESPONSE_TEMPLATE,
             ad: AD_RESPONSE_TEMPLATE,
         }
     })
@@ -476,7 +463,7 @@ export class AdAssetsController extends Controller {
     @Example<IAdCreateAssetsResponse>({
         meta: META_TEMPLATE,
         data: {
-            asset: RESPONSE_TEMPLATE,
+            asset: ASSET_RESPONSE_TEMPLATE,
             ad: AD_RESPONSE_TEMPLATE,
         }
     })

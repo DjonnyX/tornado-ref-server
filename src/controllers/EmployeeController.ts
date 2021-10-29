@@ -6,6 +6,7 @@ import { IAuthRequest } from "../interfaces";
 import { IEmployee, IRef, RefTypes } from "@djonnyx/tornado-types";
 import { findAllWithFilter } from "../utils/requestOptions";
 import { getClientId } from "../utils/account";
+import { TERMINAL_RESPONSE_TEMPLATE } from "./TerminalController";
 
 interface IEmployeeItem extends IEmployee { }
 
@@ -45,11 +46,11 @@ interface EmployeeUpdateRequest {
     extra?: { [key: string]: any } | null;
 }
 
-const RESPONSE_TEMPLATE: IEmployeeItem = {
+export const EMPLOYEE_RESPONSE_TEMPLATE: IEmployeeItem = {
     id: "507c7f79bcf86cd7994f6c0e",
     active: true,
-    name: "Рубль",
-    devices: ["507c7f79bcf86cd7994f6c0e"],
+    name: "Backuper",
+    devices: [TERMINAL_RESPONSE_TEMPLATE?.id],
     extra: { key: "value" },
 };
 
@@ -71,7 +72,7 @@ export class EmployeesController extends Controller {
     @OperationId("GetAll")
     @Example<EmployeesResponse>({
         meta: META_TEMPLATE,
-        data: [RESPONSE_TEMPLATE],
+        data: [EMPLOYEE_RESPONSE_TEMPLATE],
     })
     public async getAll(@Request() request: IAuthRequest): Promise<EmployeesResponse> {
         const client = getClientId(request);
@@ -107,7 +108,7 @@ export class EmployeeController extends Controller {
     @OperationId("GetOne")
     @Example<EmployeeResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE,
+        data: EMPLOYEE_RESPONSE_TEMPLATE,
     })
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<EmployeeResponse> {
         const client = getClientId(request);
@@ -138,7 +139,7 @@ export class EmployeeController extends Controller {
     @OperationId("Create")
     @Example<EmployeeResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE,
+        data: EMPLOYEE_RESPONSE_TEMPLATE,
     })
     public async create(@Body() body: EmployeeCreateRequest, @Request() request: IAuthRequest): Promise<EmployeeResponse> {
         const client = getClientId(request);
@@ -186,7 +187,7 @@ export class EmployeeController extends Controller {
     @OperationId("Update")
     @Example<EmployeeResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE,
+        data: EMPLOYEE_RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() body: EmployeeUpdateRequest, @Request() request: IAuthRequest): Promise<EmployeeResponse> {
         const client = getClientId(request);

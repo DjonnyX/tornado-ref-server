@@ -5,11 +5,15 @@ import { deleteNodesChain } from "../utils/node";
 import { formatProductModel } from "../utils/product";
 import { getEntityAssets, getDeletedImagesFromDifferense, normalizeContents, sortEntities, formatEntityPositionModel } from "../utils/entity";
 import { AssetModel } from "../models/Asset";
-import { deleteAsset } from "./AssetsController";
+import { ASSET_RESPONSE_TEMPLATE, deleteAsset } from "./AssetsController";
 import { IAuthRequest } from "../interfaces";
 import { IEntityPosition, IPrice, IProduct, IProductContents, IRef, NodeTypes, RefTypes } from "@djonnyx/tornado-types";
 import { findAllWithFilter } from "../utils/requestOptions";
 import { getClientId } from "../utils/account";
+import { TAG_RESPONSE_TEMPLATE } from "./TagsController";
+import { LANGUAGE_RESPONSE_TEMPLATE } from "./LanguagesController";
+import { SYSTEM_TAG_RESPONSE_TEMPLATE } from "./SystemTagsController";
+import { CURRENCY_RESPONSE_TEMPLATE } from "./CurrencyController";
 
 export interface IProductItem extends IProduct { }
 
@@ -69,26 +73,26 @@ interface IProductUpdateRequest {
     extra?: { [key: string]: any } | null;
 }
 
-export const RESPONSE_TEMPLATE: IProductItem = {
+export const PRODUCT_RESPONSE_TEMPLATE: IProductItem = {
     id: "507c7f79bcf86cd7994f6c0e",
     position: 0,
     active: true,
     contents: {
-        "RU": {
+        [LANGUAGE_RESPONSE_TEMPLATE?.code]: {
             name: "Products on concert",
             description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
             color: "#000000",
             resources: {
-                main: "g8h07f79bcf86cd7994f9d7k",
-                icon: "gt7h7f79bcf86cd7994f9d6u",
+                main: ASSET_RESPONSE_TEMPLATE?.id,
+                icon: ASSET_RESPONSE_TEMPLATE?.id,
             },
-            gallery: ["gt7h7f79bcf86cd7994f9d6u", "g8h07f79bcf86cd7994f9d7k",],
-            assets: ["g8h07f79bcf86cd7994f9d7k",],
+            gallery: [ASSET_RESPONSE_TEMPLATE?.id],
+            assets: [ASSET_RESPONSE_TEMPLATE?.id],
         },
     },
     prices: [
         {
-            currency: "657c7f79bcf86cd7994f6c5h",
+            currency: CURRENCY_RESPONSE_TEMPLATE.id,
             value: 12000,
         }
     ],
@@ -106,9 +110,9 @@ export const RESPONSE_TEMPLATE: IProductItem = {
             calories: 346,
         }
     ],
-    tags: ["123c7f79bcf86cd7994f6c0e"],
+    tags: [TAG_RESPONSE_TEMPLATE.id],
     weight: 100,
-    systemTag: "78y7ggb28fb28bf2873b7f3",
+    systemTag: SYSTEM_TAG_RESPONSE_TEMPLATE.id,
     joint: "df3c7f79bcf86cd7994f9d8f",
     extra: { key: "value" },
 };
@@ -131,7 +135,7 @@ export class ProductsController extends Controller {
     @OperationId("GetAll")
     @Example<IProductsResponse>({
         meta: META_TEMPLATE,
-        data: [RESPONSE_TEMPLATE],
+        data: [PRODUCT_RESPONSE_TEMPLATE],
     })
     public async getAll(@Request() request: IAuthRequest): Promise<IProductsResponse> {
         const client = getClientId(request);
@@ -219,7 +223,7 @@ export class ProductController extends Controller {
     @OperationId("GetOne")
     @Example<IProductResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE,
+        data: PRODUCT_RESPONSE_TEMPLATE,
     })
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<IProductResponse> {
         const client = getClientId(request);
@@ -250,7 +254,7 @@ export class ProductController extends Controller {
     @OperationId("Create")
     @Example<IProductResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE,
+        data: PRODUCT_RESPONSE_TEMPLATE,
     })
     public async create(@Body() body: IProductCreateRequest, @Request() request: IAuthRequest): Promise<IProductResponse> {
         const client = getClientId(request);
@@ -322,7 +326,7 @@ export class ProductController extends Controller {
     @OperationId("Update")
     @Example<IProductResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE,
+        data: PRODUCT_RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() body: IProductUpdateRequest, @Request() request: IAuthRequest): Promise<IProductResponse> {
         const client = getClientId(request);

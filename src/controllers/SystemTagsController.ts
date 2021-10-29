@@ -52,7 +52,7 @@ interface ISystemTagUpdateRequest {
     extra?: { [key: string]: any } | null;
 }
 
-const RESPONSE_TEMPLATE: ISystemTagItem = {
+export const SYSTEM_TAG_RESPONSE_TEMPLATE: ISystemTagItem = {
     name: "My system tag",
     position: 0,
     extra: {
@@ -78,7 +78,7 @@ export class SystemTagsController extends Controller {
     @OperationId("GetAll")
     @Example<ISystemTagsResponse>({
         meta: META_TEMPLATE,
-        data: [RESPONSE_TEMPLATE]
+        data: [SYSTEM_TAG_RESPONSE_TEMPLATE]
     })
     public async getAll(@Request() request: IAuthRequest): Promise<ISystemTagsResponse> {
         const client = getClientId(request);
@@ -166,7 +166,7 @@ export class SystemTagController extends Controller {
     @OperationId("GetOne")
     @Example<ISystemTagResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE
+        data: SYSTEM_TAG_RESPONSE_TEMPLATE
     })
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<ISystemTagResponse> {
         const client = getClientId(request);
@@ -197,7 +197,7 @@ export class SystemTagController extends Controller {
     @OperationId("Create")
     @Example<ISystemTagResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE,
+        data: SYSTEM_TAG_RESPONSE_TEMPLATE,
     })
     public async create(@Body() body: ISystemTagCreateRequest, @Request() request: IAuthRequest): Promise<ISystemTagResponse> {
         const client = getClientId(request);
@@ -260,7 +260,7 @@ export class SystemTagController extends Controller {
     @OperationId("Update")
     @Example<ISystemTagResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE,
+        data: SYSTEM_TAG_RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() body: ISystemTagUpdateRequest, @Request() request: IAuthRequest): Promise<ISystemTagResponse> {
         const client = getClientId(request);

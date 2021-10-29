@@ -4,11 +4,12 @@ import { getRef, riseRefVersion } from "../db/refs";
 import { formatLanguageModel } from "../utils/language";
 import { mergeTranslation } from "../utils/translation";
 import { AssetModel } from "../models/Asset";
-import { deleteAsset } from "./AssetsController";
+import { ASSET_RESPONSE_TEMPLATE, deleteAsset } from "./AssetsController";
 import { IAuthRequest } from "../interfaces";
 import { ILanguage, IRef, RefTypes } from "@djonnyx/tornado-types";
 import { findAllWithFilter } from "../utils/requestOptions";
 import { getClientId } from "../utils/account";
+import { TRANSLATION_RESPONSE_TEMPLATE } from "./TranslationController";
 
 export interface ILanguageItem extends ILanguage { }
 
@@ -67,12 +68,12 @@ export const LANGUAGE_RESPONSE_TEMPLATE: ILanguageItem = {
     code: "RU",
     name: "Русский",
     assets: [
-        "g8h07f79bcf86cd7994f9d7k",
+        ASSET_RESPONSE_TEMPLATE?.id,
     ],
     resources: {
-        main: "g8h07f79bcf86cd7994f9d7k",
+        main: ASSET_RESPONSE_TEMPLATE?.id,
     },
-    translation: "409c7f79bcf86cd7994f6g1t",
+    translation: TRANSLATION_RESPONSE_TEMPLATE?.id,
     extra: { key: "value" },
 };
 

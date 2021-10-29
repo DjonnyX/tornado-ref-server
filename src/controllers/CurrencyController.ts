@@ -49,7 +49,7 @@ interface CurrencyUpdateRequest {
     extra?: { [key: string]: any } | null;
 }
 
-const RESPONSE_TEMPLATE: ICurrencyItem = {
+export const CURRENCY_RESPONSE_TEMPLATE: ICurrencyItem = {
     id: "507c7f79bcf86cd7994f6c0e",
     isDefault: true,
     active: true,
@@ -77,7 +77,7 @@ export class CurrenciesController extends Controller {
     @OperationId("GetAll")
     @Example<CurrenciesResponse>({
         meta: META_TEMPLATE,
-        data: [RESPONSE_TEMPLATE],
+        data: [CURRENCY_RESPONSE_TEMPLATE],
     })
     public async getAll(@Request() request: IAuthRequest): Promise<CurrenciesResponse> {
         const client = getClientId(request);
@@ -113,7 +113,7 @@ export class CurrencyController extends Controller {
     @OperationId("GetOne")
     @Example<CurrencyResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE,
+        data: CURRENCY_RESPONSE_TEMPLATE,
     })
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<CurrencyResponse> {
         const client = getClientId(request);
@@ -144,7 +144,7 @@ export class CurrencyController extends Controller {
     @OperationId("Create")
     @Example<CurrencyResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE,
+        data: CURRENCY_RESPONSE_TEMPLATE,
     })
     public async create(@Body() body: CurrencyCreateRequest, @Request() request: IAuthRequest): Promise<CurrencyResponse> {
         const client = getClientId(request);
@@ -193,7 +193,7 @@ export class CurrencyController extends Controller {
     @OperationId("Update")
     @Example<CurrencyResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE,
+        data: CURRENCY_RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() body: CurrencyUpdateRequest, @Request() request: IAuthRequest): Promise<CurrencyResponse> {
         const client = getClientId(request);

@@ -55,7 +55,7 @@ export const ACCOUNT_RESPONSE_TEMPLATE: IAccountInfo = {
     owner: "507c7f79bcf86cd7994f6c1f",
     roleType: DefaultRoleTypes.EMPLOYEE,
     role: ROLE_RESPONSE_TEMPLATE,
-    integrationId: "507c7f79bcf86cd7994f6c7y",
+    integrationId: INTEGRATION_RESPONSE_TEMPLATE?.id,
     integration: INTEGRATION_RESPONSE_TEMPLATE,
     firstName: "Bill",
     lastName: "Gates",
