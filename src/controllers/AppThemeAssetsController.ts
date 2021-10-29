@@ -4,7 +4,7 @@ import { Controller, Route, Post, Tags, OperationId, Example, Request, Security,
 import { riseRefVersion, getRef } from "../db/refs";
 import { IAppThemeItem, RESPONSE_TEMPLATE as APP_THEME_RESPONSE_TEMPLATE } from "./AppThemeController";
 import { formatAppThemeModel } from "../utils/appTheme";
-import { uploadAsset, deleteAsset, IAssetItem, ICreateAssetsResponse } from "./AssetsController";
+import { uploadAsset, deleteAsset, IAssetItem, ICreateAssetsResponse, ASSET_RESPONSE_TEMPLATE } from "./AssetsController";
 import { AssetModel, IAssetDocument } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
 import { IAuthRequest } from "../interfaces";
@@ -91,23 +91,6 @@ const META_TEMPLATE = {
     },
 };
 
-const RESPONSE_TEMPLATE: IAppThemeAsset = {
-    id: "107c7f79bcf86cd7994f6c0e",
-    active: true,
-    lastUpdate: new Date(),
-    name: "some_asset",
-    ext: AssetExtensions.PNG,
-    mipmap: {
-        x128: "assets/some_asset_128x128.png",
-        x32: "assets/favicon.png",
-    },
-    path: "assets/some_asset.png",
-    extra: {
-        themeId: "345345345345345",
-        type: TerminalTypes.EMENU,
-    }
-};
-
 @Route("/app-theme-assets")
 @Tags("AppTheme assets")
 export class AppThemeAssetsController extends Controller {
@@ -118,7 +101,7 @@ export class AppThemeAssetsController extends Controller {
     @OperationId("GetAll")
     @Example<IAppThemeGetAllAssetsResponse>({
         meta: META_TEMPLATE,
-        data: [RESPONSE_TEMPLATE],
+        data: [ASSET_RESPONSE_TEMPLATE],
     })
     public async getAllAssets(@Request() request: IAuthRequest): Promise<IAppThemeGetAllAssetsResponse> {
         const client = getClientId(request);
@@ -174,7 +157,7 @@ export class AppThemeAssetsController extends Controller {
     @Example<IAppThemeCreateAssetsResponse>({
         meta: META_TEMPLATE,
         data: {
-            asset: RESPONSE_TEMPLATE,
+            asset: ASSET_RESPONSE_TEMPLATE,
             theme: APP_THEME_RESPONSE_TEMPLATE,
         }
     })
@@ -313,7 +296,7 @@ export class AppThemeAssetsController extends Controller {
     @Example<IAppThemeDeleteAssetsResponse>({
         meta: META_TEMPLATE,
         data: {
-            asset: RESPONSE_TEMPLATE,
+            asset: ASSET_RESPONSE_TEMPLATE,
         }
     })
     public async deleteResource(appThemeId: string, resourceType: KioskThemeResourceTypes | string,
@@ -422,7 +405,7 @@ export class AppThemeAssetsController extends Controller {
     @Example<IAppThemeCreateAssetsResponse>({
         meta: META_TEMPLATE,
         data: {
-            asset: RESPONSE_TEMPLATE,
+            asset: ASSET_RESPONSE_TEMPLATE,
             theme: APP_THEME_RESPONSE_TEMPLATE,
         }
     })

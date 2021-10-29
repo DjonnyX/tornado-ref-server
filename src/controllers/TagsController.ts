@@ -4,12 +4,13 @@ import { getRef, riseRefVersion } from "../db/refs";
 import { formatTagModel } from "../utils/tag";
 import { ITagDocument } from "../models/Tag";
 import { AssetModel } from "../models/Asset";
-import { deleteAsset } from "./AssetsController";
+import { ASSET_RESPONSE_TEMPLATE, deleteAsset } from "./AssetsController";
 import { normalizeContents, getDeletedImagesFromDifferense, getEntityAssets } from "../utils/entity";
 import { IAuthRequest } from "../interfaces";
 import { IRef, ITag, ITagContents, RefTypes } from "@djonnyx/tornado-types";
 import { findAllWithFilter } from "../utils/requestOptions";
 import { getClientId } from "../utils/account";
+import { LANGUAGE_RESPONSE_TEMPLATE } from "./LanguagesController";
 
 export interface ITagItem extends ITag { }
 
@@ -50,20 +51,20 @@ const META_TEMPLATE: ITagMeta = {
     }
 };
 
-export const RESPONSE_TEMPLATE: ITagItem = {
+export const TAG_RESPONSE_TEMPLATE: ITagItem = {
     id: "507c7f79bcf86cd7994f6c0e",
     active: true,
     contents: {
-        "RU": {
+        [LANGUAGE_RESPONSE_TEMPLATE?.code]: {
             name: "Cold",
             description: "description",
             color: "#000000",
             assets: [
-                "gt7h7f79bcf86cd7994f9d6u",
+                ASSET_RESPONSE_TEMPLATE?.id,
             ],
             resources: {
-                main: "gt7h7f79bcf86cd7994f9d6u",
-                icon: "gt7h7f79bcf86cd7994f9d6u",
+                main: ASSET_RESPONSE_TEMPLATE?.id,
+                icon: ASSET_RESPONSE_TEMPLATE?.id,
             },
         }
     },
@@ -80,7 +81,7 @@ export class TagsController extends Controller {
     @OperationId("GetAll")
     @Example<TagsResponse>({
         meta: META_TEMPLATE,
-        data: [RESPONSE_TEMPLATE],
+        data: [TAG_RESPONSE_TEMPLATE],
     })
     public async getAll(@Request() request: IAuthRequest): Promise<TagsResponse> {
         const client = getClientId(request);
@@ -116,7 +117,7 @@ export class TagController extends Controller {
     @OperationId("GetOne")
     @Example<TagResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE,
+        data: TAG_RESPONSE_TEMPLATE,
     })
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<TagResponse> {
         const client = getClientId(request);
@@ -147,7 +148,7 @@ export class TagController extends Controller {
     @OperationId("Create")
     @Example<TagResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE,
+        data: TAG_RESPONSE_TEMPLATE,
     })
     public async create(@Body() body: TagCreateRequest, @Request() request: IAuthRequest): Promise<TagResponse> {
         const client = getClientId(request);
@@ -179,7 +180,7 @@ export class TagController extends Controller {
     @OperationId("Update")
     @Example<TagResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE,
+        data: TAG_RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() body: TagCreateRequest, @Request() request: IAuthRequest): Promise<TagResponse> {
         const client = getClientId(request);

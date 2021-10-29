@@ -4,6 +4,8 @@ import * as config from "../config";
 import { ILicense, IApplication, ITarif, IIntegration } from "@djonnyx/tornado-types";
 import { ISignupParams } from "../controllers/AuthController";
 import { IAuthRequest } from "src/interfaces";
+import { ICreateSubscriptionParams, IUpdateSubscriptionParams } from "../controllers/SubscriptionController";
+import { ICreateLicenseParams, IUpdateLicenseParams } from "../controllers/LicenseController";
 
 interface IRequestOptions {
     clientToken?: string;
@@ -399,7 +401,7 @@ class LicServerApiService {
         );
     }
 
-    public async createLicense<T = any>(license: ILicense, request: IAuthRequest, options?: IRequestOptions): Promise<T> {
+    public async createLicense<T = any>(license: ICreateLicenseParams, request: IAuthRequest, options?: IRequestOptions): Promise<T> {
         return await makeRequest<T>(
             got.post(`${config.LIC_SERVER_HOST}/${BASE_URL}license/scope/`, {
                 headers: {
@@ -412,7 +414,7 @@ class LicServerApiService {
         );
     }
 
-    public async updateLicense<T = any>(id: string, license: ILicense, request: IAuthRequest, options?: IRequestOptions): Promise<T> {
+    public async updateLicense<T = any>(id: string, license: IUpdateLicenseParams, request: IAuthRequest, options?: IRequestOptions): Promise<T> {
         return await makeRequest<T>(
             got.put(`${config.LIC_SERVER_HOST}/${BASE_URL}license/scope/${id}`, {
                 headers: {
@@ -530,6 +532,69 @@ class LicServerApiService {
     public async deleteApplication<T = any>(id: string, request: IAuthRequest, options?: IRequestOptions): Promise<T> {
         return await makeRequest<T>(
             got.delete(`${config.LIC_SERVER_HOST}/${BASE_URL}application/${id}`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": this.getToken(options),
+                },
+                query: request.query,
+            }),
+        );
+    }
+
+    // subscriptions
+    public async getSubscriptions<T = any>(request: IAuthRequest, options?: IRequestOptions): Promise<T> {
+        return await makeRequest<T>(
+            got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}subscriptions`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": this.getToken(options),
+                },
+                query: request.query,
+            }),
+        );
+    }
+
+    public async getSubscription<T = any>(id: string, request: IAuthRequest, options?: IRequestOptions): Promise<T> {
+        return await makeRequest<T>(
+            got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}subscriptions/${id}`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": this.getToken(options),
+                },
+                query: request.query,
+            }),
+        );
+    }
+
+    public async createSubscription<T = any>(subscription: ICreateSubscriptionParams, request: IAuthRequest, options?: IRequestOptions): Promise<T> {
+        return await makeRequest<T>(
+            got.post(`${config.LIC_SERVER_HOST}/${BASE_URL}subscriptions`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": this.getToken(options),
+                },
+                query: request.query,
+                body: JSON.stringify(subscription),
+            }),
+        );
+    }
+
+    public async updateSubscription<T = any>(id: string, subscription: IUpdateSubscriptionParams, request: IAuthRequest, options?: IRequestOptions): Promise<T> {
+        return await makeRequest<T>(
+            got.put(`${config.LIC_SERVER_HOST}/${BASE_URL}subscriptions/${id}`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": this.getToken(options),
+                },
+                query: request.query,
+                body: JSON.stringify(subscription),
+            }),
+        );
+    }
+
+    public async deleteSubscription<T = any>(id: string, request: IAuthRequest, options?: IRequestOptions): Promise<T> {
+        return await makeRequest<T>(
+            got.delete(`${config.LIC_SERVER_HOST}/${BASE_URL}subscriptions/${id}`, {
                 headers: {
                     "content-type": "application/json",
                     "authorization": this.getToken(options),

@@ -1,30 +1,30 @@
 import { Controller, Route, Post, Tags, Example, Request, Body, Get, Put, Delete, OperationId, Security } from "tsoa";
 import { IAuthRequest } from "../interfaces";
 import { licServerApiService } from "../services";
-import { ILicense, RefTypes, ILicenseAccount, IRef, LicenseStates } from "@djonnyx/tornado-types";
+import { ILicense, RefTypes, ILicenseAccount, IRef } from "@djonnyx/tornado-types";
 import { ITerminalDocument, TerminalModel } from "../models";
 import { getClientId } from "../utils/account";
-import { TARIF_RESPONSE_TEMPLATE } from "./TarifsController";
+import { ACCOUNT_RESPONSE_TEMPLATE } from "./AccountController";
+import { TERMINAL_RESPONSE_TEMPLATE } from "./TerminalController";
+import { SUBSCRIPTION_RESPONSE_TEMPLATE } from "./SubscriptionController";
 
 interface ILicenseInfo extends ILicense { }
 
 interface ILicenseAccountInfo extends ILicenseAccount { }
 
-interface ICreateLicenseParams {
+export interface ICreateLicenseParams {
     client: string;
     tarifId: string;
     dateStart: Date;
     dateEnd: Date;
-    state: LicenseStates;
     extra?: { [key: string]: any } | null;
 }
 
-interface IUpdateLicenseParams {
+export interface IUpdateLicenseParams {
     client?: string;
     tarifId?: string;
     dateStart?: Date;
     dateEnd?: Date;
-    state?: LicenseStates;
     extra?: { [key: string]: any } | null;
 }
 
@@ -85,33 +85,31 @@ interface ILicenseInfoMeta {
     ref: IRef;
 }
 
-const LICENSE_RESPONSE_TEMPLATE: ILicenseInfo = {
+export const LICENSE_RESPONSE_TEMPLATE: ILicenseInfo = {
     id: "507c7f79bcf86cd7994f6c0e",
-    tarifId: TARIF_RESPONSE_TEMPLATE.id,
-    tarif: TARIF_RESPONSE_TEMPLATE,
-    client: "507c7f79bcf86cd7994f6c0e",
-    dateStart: new Date(),
-    dateEnd: new Date(),
-    state: LicenseStates.ACTIVE,
+    client: ACCOUNT_RESPONSE_TEMPLATE.id,
+    subscriptionId: SUBSCRIPTION_RESPONSE_TEMPLATE?.id,
+    subscription: SUBSCRIPTION_RESPONSE_TEMPLATE,
+    createdDate: new Date(),
     key: "0000-1111-2222-3333",
     md5key: "1e0328629e0b73cfcb5cca8bdefb0b76",
     imei: "3425t42t543yt45t",
     lastUpdate: new Date(),
+    extra: { key: "value" },
 };
 
-const LICENSE_ACCOUNT_RESPONSE_TEMPLATE: ILicenseAccountInfo = {
+export const LICENSE_ACCOUNT_RESPONSE_TEMPLATE: ILicenseAccountInfo = {
     id: "507c7f79bcf86cd7994f6c0e",
-    client: "507c7f79bcf86cd7994f6c0e",
-    tarifId: TARIF_RESPONSE_TEMPLATE.id,
-    tarif: TARIF_RESPONSE_TEMPLATE,
-    terminalId: "507c7f79bcf86cd7994f6c0e",
-    dateStart: new Date(),
-    dateEnd: new Date(),
-    state: LicenseStates.ACTIVE,
+    client: ACCOUNT_RESPONSE_TEMPLATE?.id,
+    terminalId: TERMINAL_RESPONSE_TEMPLATE?.id,
+    subscriptionId: SUBSCRIPTION_RESPONSE_TEMPLATE?.id,
+    subscription: SUBSCRIPTION_RESPONSE_TEMPLATE,
+    createdDate: new Date(),
     key: "0000-1111-2222-3333",
     md5key: "1e0328629e0b73cfcb5cca8bdefb0b76",
     imei: "3425t42t543yt45t",
     lastUpdate: new Date(),
+    extra: { key: "value" },
 };
 
 const META_TEMPLATE: ILicenseInfoMeta = {
@@ -136,7 +134,20 @@ export class LicensesForClientController extends Controller {
     public async getLicense(@Request() request: IAuthRequest): Promise<LicensesAccountResponse> {
         const client = getClientId(request);
 
-        const response = await licServerApiService.getLicensesForClient<LicensesResponse>(request, { clientToken: request.token });
+        let response: LicensesResponse;
+        try {
+            response = await licServerApiService.getLicensesForClient<LicensesResponse>(request, { clientToken: request.token });
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `getLicensesForClient error. ${err}`,
+                    }
+                ]
+            };
+        }
 
         if (!response.error) {
             let terminals: Array<ITerminalDocument>;
@@ -148,7 +159,7 @@ export class LicensesForClientController extends Controller {
                     error: [
                         {
                             code: 500,
-                            message: `Caught error. ${err}`,
+                            message: `Find terminals error. ${err}`,
                         }
                     ]
                 };

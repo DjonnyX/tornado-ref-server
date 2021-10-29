@@ -65,7 +65,7 @@ const META_TEMPLATE = {
     },
 };
 
-const RESPONSE_TEMPLATE: IAssetItem = {
+export const ASSET_RESPONSE_TEMPLATE: IAssetItem = {
     id: "107c7f79bcf86cd7994f6c0e",
     active: true,
     lastUpdate: new Date(),
@@ -150,7 +150,7 @@ export class AssetsController extends Controller {
     @OperationId("GetAll")
     @Example<IGetAssetsResponse>({
         meta: META_TEMPLATE,
-        data: [RESPONSE_TEMPLATE]
+        data: [ASSET_RESPONSE_TEMPLATE]
     })
     public async getAll(@Request() request: IAuthRequest): Promise<IGetAssetsResponse> {
         const client = getClientId(request);
@@ -185,7 +185,7 @@ export class AssetController extends Controller {
     @OperationId("Create")
     @Example<ICreateAssetsResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE,
+        data: ASSET_RESPONSE_TEMPLATE,
     })
     public async create(@Request() request: express.Request): Promise<ICreateAssetsResponse> {
         return await uploadAsset(request, [AssetExtensions.JPG, AssetExtensions.PNG, AssetExtensions.OBJ, AssetExtensions.FBX, AssetExtensions.COLLADA]);
@@ -196,7 +196,7 @@ export class AssetController extends Controller {
     @OperationId("Update")
     @Example<IUpdateAssetsResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE,
+        data: ASSET_RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() request: IAssetUpdateRequest): Promise<IUpdateAssetsResponse> {
         try {

@@ -55,9 +55,9 @@ interface ITarifInfoMeta {
 
 export const TARIF_RESPONSE_TEMPLATE: ITarifInfo = {
     id: "435c7f79bcf86cd7994f6c1t",
-    applicationId: APPLICATION_RESPONSE_TEMPLATE.id,
+    applicationId: APPLICATION_RESPONSE_TEMPLATE?.id,
     application: APPLICATION_RESPONSE_TEMPLATE,
-    integrationId: INTEGRATION_RESPONSE_TEMPLATE.id,
+    integrationId: INTEGRATION_RESPONSE_TEMPLATE?.id,
     integration: INTEGRATION_RESPONSE_TEMPLATE,
     serviceId: "KIOSK_TARIF_BASE_EVERY_MONTH",
     name: "Базовый",

@@ -7,6 +7,8 @@ import { formatAppThemeModel } from "../utils/appTheme";
 import { readFileJSONAsync } from "../utils/file";
 import { getClientId } from "../utils/account";
 import { findAllWithFilter } from "../utils/requestOptions";
+import { ACCOUNT_RESPONSE_TEMPLATE } from "./AccountController";
+import { ASSET_RESPONSE_TEMPLATE } from "./AssetsController";
 
 export interface IAppThemeItem extends IAppTheme { }
 
@@ -44,13 +46,13 @@ interface IAppThemeResponse {
 export const RESPONSE_TEMPLATE: IAppThemeItem = {
     id: "g434r34r-34r23-4t32-34215",
     isDefault: true,
-    client: "f234r34r-34r23-4t32-43434",
+    client: ACCOUNT_RESPONSE_TEMPLATE?.id,
     type: TerminalTypes.KIOSK,
     name: "light",
     version: 1,
     lastUpdate: new Date(),
-    assets: ["f234r34r-34r23-4t32-43432", "f234r34r-34r23-4t32-43431"],
-    resources: { [KioskThemeResourceTypes.AUTH__BACKGROUND_COLOR]: "f234r34r-34r23-4t32-43431" },
+    assets: [ASSET_RESPONSE_TEMPLATE?.id],
+    resources: { [KioskThemeResourceTypes.AUTH__BACKGROUND_COLOR]: ASSET_RESPONSE_TEMPLATE?.id },
     data: {
         "skinedElement": {
             "skinedProp": "some-value",

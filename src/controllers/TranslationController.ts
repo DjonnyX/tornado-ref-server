@@ -7,6 +7,7 @@ import { IRef, RefTypes } from "@djonnyx/tornado-types";
 import { ITranslate } from "@djonnyx/tornado-types/dist/interfaces/raw/ITranslation";
 import { findAllWithFilter } from "../utils/requestOptions";
 import { getClientId } from "../utils/account";
+import { LANGUAGE_RESPONSE_TEMPLATE } from "./LanguagesController";
 
 interface ITranslateItem {
     key: string;
@@ -48,9 +49,9 @@ interface TranslationUpdateRequest {
     extra?: { [key: string]: any } | null;
 }
 
-const RESPONSE_TEMPLATE: ITranslationItem = {
+export const TRANSLATION_RESPONSE_TEMPLATE: ITranslationItem = {
     id: "507c7f79bcf86cd7994f6c0e",
-    language: "RU",
+    language: LANGUAGE_RESPONSE_TEMPLATE?.code,
     items: [{
         key: "take-away",
         value: "Взять с собой",
@@ -76,7 +77,7 @@ export class TranslationsController extends Controller {
     @OperationId("GetAll")
     @Example<TranslationsResponse>({
         meta: META_TEMPLATE,
-        data: [RESPONSE_TEMPLATE],
+        data: [TRANSLATION_RESPONSE_TEMPLATE],
     })
     public async getAll(@Request() request: IAuthRequest): Promise<TranslationsResponse> {
         const client = getClientId(request);
@@ -112,7 +113,7 @@ export class TranslationController extends Controller {
     @OperationId("GetOne")
     @Example<TranslationResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE,
+        data: TRANSLATION_RESPONSE_TEMPLATE,
     })
     public async getOne(id: string, @Request() request: IAuthRequest): Promise<TranslationResponse> {
         const client = getClientId(request);
@@ -143,7 +144,7 @@ export class TranslationController extends Controller {
     @OperationId("Create")
     @Example<TranslationResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE,
+        data: TRANSLATION_RESPONSE_TEMPLATE,
     })
     public async create(@Body() request: TranslationCreateRequest): Promise<TranslationResponse> {
         try {
@@ -173,7 +174,7 @@ export class TranslationController extends Controller {
     @OperationId("Update")
     @Example<TranslationResponse>({
         meta: META_TEMPLATE,
-        data: RESPONSE_TEMPLATE,
+        data: TRANSLATION_RESPONSE_TEMPLATE,
     })
     public async update(id: string, @Body() body: TranslationUpdateRequest, @Request() request: IAuthRequest): Promise<TranslationResponse> {
         const client = getClientId(request);

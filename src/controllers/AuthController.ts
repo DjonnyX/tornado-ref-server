@@ -6,7 +6,7 @@ import { IAuthRequest } from "../interfaces";
 import { ACCOUNT_RESPONSE_TEMPLATE } from "./AccountController";
 import { initDB } from "../db/initDB";
 
-interface ISigninParams {
+export interface ISigninParams {
     email: string;
     password: string;
 }
@@ -24,18 +24,18 @@ export interface ISignupParams {
     } | null;
 }
 
-interface IResetPasswordParams {
+export interface IResetPasswordParams {
     restorePassCode: string;
     password: string;
 }
 
-interface IForgotPasswordParams {
+export interface IForgotPasswordParams {
     email: string;
     captchaId: string;
     captchaVal: string;
 }
 
-interface IVerifyResetPasswordTokenParams {
+export interface IVerifyResetPasswordTokenParams {
     token: string;
 }
 

@@ -1,15 +1,16 @@
 import { SelectorModel, ISelectorDocument, ILanguageDocument, LanguageModel } from "../models/index";
 import { Controller, Route, Post, Tags, OperationId, Example, Request, Security, Get, Delete, Body, Put } from "tsoa";
 import { riseRefVersion, getRef } from "../db/refs";
-import { ISelectorItem, RESPONSE_TEMPLATE as SELECTOR_RESPONSE_TEMPLATE } from "./SelectorController";
+import { ISelectorItem, SELECTOR_RESPONSE_TEMPLATE } from "./SelectorController";
 import { formatSelectorModel } from "../utils/selector";
 import { normalizeContents } from "../utils/entity";
-import { uploadAsset, deleteAsset, IAssetItem, ICreateAssetsResponse } from "./AssetsController";
+import { uploadAsset, deleteAsset, IAssetItem, ICreateAssetsResponse, ASSET_RESPONSE_TEMPLATE } from "./AssetsController";
 import { AssetModel, IAssetDocument } from "../models/Asset";
 import { formatAssetModel } from "../utils/asset";
 import { IAuthRequest } from "src/interfaces";
 import { AssetExtensions, IRef, ISelectorContents, RefTypes } from "@djonnyx/tornado-types";
 import { getClientId } from "../utils/account";
+import { LANGUAGE_RESPONSE_TEMPLATE } from "./LanguagesController";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface ISelectorAsset extends IAssetItem { }
@@ -120,20 +121,6 @@ const META_TEMPLATE = {
     },
 };
 
-const RESPONSE_TEMPLATE: IAssetItem = {
-    id: "107c7f79bcf86cd7994f6c0e",
-    active: true,
-    lastUpdate: new Date(),
-    name: "some_image",
-    ext: AssetExtensions.WEBP,
-    mipmap: {
-        x128: "assets/some_image_128x128.webp",
-        x32: "assets/favicon.webp",
-    },
-    path: "assets/some_image.webp",
-    extra: {},
-};
-
 @Route("/selector")
 @Tags("Selector assets")
 export class SelectorAssetsController extends Controller {
@@ -145,7 +132,7 @@ export class SelectorAssetsController extends Controller {
     @Example<ISelectorGetAllAssetsResponse>({
         meta: META_TEMPLATE,
         data: {
-            "RU": [RESPONSE_TEMPLATE],
+            [LANGUAGE_RESPONSE_TEMPLATE?.code]: [ASSET_RESPONSE_TEMPLATE],
         },
     })
     public async getAllAssets(selectorId: string): Promise<ISelectorGetAllAssetsResponse> {
@@ -214,7 +201,7 @@ export class SelectorAssetsController extends Controller {
     @OperationId("Get")
     @Example<ISelectorGetAssetsResponse>({
         meta: META_TEMPLATE,
-        data: [RESPONSE_TEMPLATE],
+        data: [ASSET_RESPONSE_TEMPLATE],
     })
     public async getAssets(selectorId: string, langCode: string): Promise<ISelectorGetAssetsResponse> {
         let selector: ISelectorDocument;
@@ -259,7 +246,7 @@ export class SelectorAssetsController extends Controller {
     @Example<ISelectorCreateAssetsResponse>({
         meta: META_TEMPLATE,
         data: {
-            asset: RESPONSE_TEMPLATE,
+            asset: ASSET_RESPONSE_TEMPLATE,
             selector: SELECTOR_RESPONSE_TEMPLATE,
         }
     })
@@ -341,7 +328,7 @@ export class SelectorAssetsController extends Controller {
     @Example<ISelectorCreateAssetsResponse>({
         meta: META_TEMPLATE,
         data: {
-            asset: RESPONSE_TEMPLATE,
+            asset: ASSET_RESPONSE_TEMPLATE,
             selector: SELECTOR_RESPONSE_TEMPLATE,
         }
     })
@@ -500,7 +487,7 @@ export class SelectorAssetsController extends Controller {
     @Example<ISelectorCreateAssetsResponse>({
         meta: META_TEMPLATE,
         data: {
-            asset: RESPONSE_TEMPLATE,
+            asset: ASSET_RESPONSE_TEMPLATE,
             selector: SELECTOR_RESPONSE_TEMPLATE,
         }
     })
