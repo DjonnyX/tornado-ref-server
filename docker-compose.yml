@@ -45,7 +45,7 @@ services:
             # Swagger Doc Path
             SWAGGER_ROUTE: /docs
             # LicServer
-            LIC_SERVER_HOST: http://192.168.8.102:8078
+            LIC_SERVER_HOST: http://192.168.8.101:8078
         ports:
             - 8080:8080
         volumes:
