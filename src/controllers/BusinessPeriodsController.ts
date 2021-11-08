@@ -210,9 +210,14 @@ export class BusinessPeriodController extends Controller {
             const item = await BusinessPeriodModel.findById(id);
 
             for (const key in body) {
-                item[key] = body[key];
-                if (key === "extra" || key === "contents") {
+                if (key === "contents") {
+                    item[key] = body[key];
                     item.markModified(key);
+                } else if (key === "extra") {
+                    item.extra = { ...item.extra, ...body[key] };
+                    item.markModified(key);
+                } else {
+                    item[key] = body[key];
                 }
             }
 

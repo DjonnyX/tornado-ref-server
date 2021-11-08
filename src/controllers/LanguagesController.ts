@@ -254,14 +254,14 @@ export class LanguageController extends Controller {
         try {
             item = await LanguageModel.findById(id);
             for (const key in body) {
-                item[key] = body[key];
-
                 if (key === "code") {
+                    item[key] = body[key];
                     languageCode = body[key];
-                }
-
-                if (key === "extra") {
+                } else if (key === "extra") {
+                    item.extra = { ...item.extra, ...body[key] };
                     item.markModified(key);
+                } else {
+                    item[key] = body[key];
                 }
             }
             isDefault = item.isDefault;

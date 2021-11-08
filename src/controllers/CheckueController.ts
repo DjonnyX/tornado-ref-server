@@ -192,23 +192,21 @@ export class CheckueController extends Controller {
             item = await CheckueModel.findById(id);
 
             for (const key in body) {
-                item[key] = body[key];
-
                 if (key === "extra") {
+                    item.extra = { ...item.extra, ...body[key] };
                     item.markModified(key);
-                } else
-                    if (key === "scenarios") {
-                        const scenarios = body.scenarios.map(scenario => ({
-                            active: scenario.active,
-                            lock: scenario.lock,
-                            action: scenario.action,
-                            value: scenario.value,
-                            extra: scenario.extra,
-                        }));
-                        item["scenarios"] = scenarios;
-                    } else {
-                        item[key] = body[key];
-                    }
+                } else if (key === "scenarios") {
+                    const scenarios = body.scenarios.map(scenario => ({
+                        active: scenario.active,
+                        lock: scenario.lock,
+                        action: scenario.action,
+                        value: scenario.value,
+                        extra: scenario.extra,
+                    }));
+                    item["scenarios"] = scenarios;
+                } else {
+                    item[key] = body[key];
+                }
             }
 
             await item.save();

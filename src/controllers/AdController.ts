@@ -89,15 +89,14 @@ export const updateAd = async (id: string, client: string, params: IAdUpdateRequ
     for (const key in params) {
         if (key === "contents") {
             lastContents = item.contents;
-        }
-
-        item[key] = params[key];
-
-        if (key === "extra" || key === "contents") {
-            if (key === "contents") {
-                normalizeContents(item.contents, defaultLanguage.code);
-            }
+            item[key] = params[key];
+            normalizeContents(item.contents, defaultLanguage.code);
             item.markModified(key);
+        } else if (key === "extra") {
+            item.extra = { ...item.extra, ...params[key] };
+            item.markModified(key);
+        } else {
+            item[key] = params[key];
         }
     }
 

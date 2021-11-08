@@ -207,15 +207,15 @@ export class TagController extends Controller {
             for (const key in body) {
                 if (key === "contents") {
                     lastContents = item.contents;
-                }
-
-                item[key] = body[key];
-
-                if (key === "extra" || key === "contents") {
-                    if (key === "contents") {
-                        normalizeContents(item.contents, defaultLanguage.code);
-                    }
+                    item[key] = body[key];
+                    normalizeContents(item.contents, defaultLanguage.code);
                     item.markModified(key);
+                } else if (key === "extra") {
+                    item[key] = body[key];
+                    item.extra = { ...item.extra, ...body[key] };
+                    item.markModified(key);
+                } else {
+                    item[key] = body[key];
                 }
             }
 
