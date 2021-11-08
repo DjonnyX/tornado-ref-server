@@ -5,15 +5,13 @@ import { ISubscription, RefTypes, IRef, SubscriptionStatuses } from "@djonnyx/to
 import { TARIF_RESPONSE_TEMPLATE } from "./TarifsController";
 import { ACCOUNT_RESPONSE_TEMPLATE } from "./AccountController";
 
-interface ISubscriptionInfo extends ISubscription { }
+export interface ISubscriptionInfo extends ISubscription { }
 
 export interface ICreateSubscriptionParams {
     client: string;
     tarifId: string;
     status: SubscriptionStatuses;
     devices: number;
-    createdDate: Date;
-    expiredDate: Date;
     extra?: {
         [key: string]: any;
     } | null;
@@ -21,11 +19,15 @@ export interface ICreateSubscriptionParams {
 
 export interface IUpdateSubscriptionParams {
     client?: string;
-    // tarifId?: string;
+    tarifId?: string;
     status?: SubscriptionStatuses;
     devices?: number;
-    // createdDate: Date;
-    expiredDate?: Date;
+    extra?: {
+        [key: string]: any;
+    } | null;
+}
+
+export interface IActivateNextPeriodSubscriptionParams {
     extra?: {
         [key: string]: any;
     } | null;
@@ -112,6 +114,33 @@ export class SubscriptionsController extends Controller {
         return response;
     }
 
+    @Get("forClient")
+    @Security("clientAccessToken")
+    @Security("integrationAccessToken")
+    @OperationId("GetAllByClient")
+    @Example<SubscriptionsResponse>({
+        meta: META_TEMPLATE,
+        data: [SUBSCRIPTION_RESPONSE_TEMPLATE],
+    })
+    public async getSubscriptionsByClient(@Request() request: IAuthRequest): Promise<SubscriptionsResponse> {
+        let response: IBaseResponse<Array<ISubscription>, ISubscriptionInfoMeta>;
+        try {
+            response = await licServerApiService.getSubscriptionsByClient(request);
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `getSubscriptions fail. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        return response;
+    }
+
     @Get("{id}")
     @Security("clientAccessToken")
     @Security("integrationAccessToken")
@@ -158,6 +187,33 @@ export class SubscriptionsController extends Controller {
                     {
                         code: 500,
                         message: `createSubscription fail. ${err}`,
+                    }
+                ]
+            };
+        }
+
+        return response;
+    }
+
+    @Post("activateNextPeriod/{id}")
+    @Security("clientAccessToken")
+    @Security("integrationAccessToken")
+    @OperationId("Update")
+    @Example<SubscriptionResponse>({
+        meta: META_TEMPLATE,
+        data: SUBSCRIPTION_RESPONSE_TEMPLATE,
+    })
+    public async activateNextPeriodSubscription(id: string, @Body() body: IActivateNextPeriodSubscriptionParams, @Request() request: IAuthRequest): Promise<SubscriptionResponse> {
+        let response: IBaseResponse<ISubscription, ISubscriptionInfoMeta>;
+        try {
+            response = await licServerApiService.activateNextPeriodSubscription(id, body, request);
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Error in activate next period. ${err}`,
                     }
                 ]
             };

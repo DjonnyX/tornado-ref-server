@@ -15,17 +15,19 @@ interface ILicenseAccountInfo extends ILicenseAccount { }
 export interface ICreateLicenseParams {
     client: string;
     tarifId: string;
-    dateStart: Date;
-    dateEnd: Date;
-    extra?: { [key: string]: any } | null;
+    subscriptionId: string;
+    extra?: {
+        [key: string]: any;
+    } | null;
 }
 
 export interface IUpdateLicenseParams {
     client?: string;
     tarifId?: string;
-    dateStart?: Date;
-    dateEnd?: Date;
-    extra?: { [key: string]: any } | null;
+    subscriptionId?: string;
+    extra?: {
+        [key: string]: any;
+    } | null;
 }
 
 interface LicenseVerifyResponse {
