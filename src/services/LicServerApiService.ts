@@ -553,6 +553,18 @@ class LicServerApiService {
             }),
         );
     }
+    
+    public async getSubscriptionsByClient<T = any>(request: IAuthRequest, options?: IRequestOptions): Promise<T> {
+        return await makeRequest<T>(
+            got.get(`${config.LIC_SERVER_HOST}/${BASE_URL}subscriptions/forClient`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": this.getToken(options),
+                },
+                query: request.query,
+            }),
+        );
+    }
 
     public async getSubscription<T = any>(id: string, request: IAuthRequest, options?: IRequestOptions): Promise<T> {
         return await makeRequest<T>(
@@ -569,6 +581,19 @@ class LicServerApiService {
     public async createSubscription<T = any>(subscription: ICreateSubscriptionParams, request: IAuthRequest, options?: IRequestOptions): Promise<T> {
         return await makeRequest<T>(
             got.post(`${config.LIC_SERVER_HOST}/${BASE_URL}subscriptions`, {
+                headers: {
+                    "content-type": "application/json",
+                    "authorization": this.getToken(options),
+                },
+                query: request.query,
+                body: JSON.stringify(subscription),
+            }),
+        );
+    }
+    
+    public async activateNextPeriodSubscription<T = any>(id: string, subscription: IUpdateSubscriptionParams, request: IAuthRequest, options?: IRequestOptions): Promise<T> {
+        return await makeRequest<T>(
+            got.post(`${config.LIC_SERVER_HOST}/${BASE_URL}subscriptions/activateNextPeriod/${id}`, {
                 headers: {
                     "content-type": "application/json",
                     "authorization": this.getToken(options),
