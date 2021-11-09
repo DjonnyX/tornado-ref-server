@@ -183,9 +183,11 @@ export class TranslationController extends Controller {
             const item = await TranslationModel.findById(id);
 
             for (const key in body) {
-                item[key] = body[key];
                 if (key === "extra") {
+                    item.extra = { ...item.extra, ...body[key] };
                     item.markModified(key);
+                } else {
+                    item[key] = body[key];
                 }
             }
 

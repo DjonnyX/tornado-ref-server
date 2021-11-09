@@ -598,21 +598,20 @@ export class NodeController extends Controller {
 
             for (const key in body) {
                 if (key === "extra") {
-                    item[key] = body[key];
+                    item.extra = { ...item.extra, ...body[key] };
                     item.markModified(key);
-                } else
-                    if (key === "scenarios") {
-                        const scenarios = body.scenarios.map(scenario => ({
-                            active: scenario.active,
-                            lock: scenario.lock,
-                            action: scenario.action,
-                            value: scenario.value,
-                            extra: scenario.extra,
-                        }));
-                        item["scenarios"] = scenarios;
-                    } else {
-                        item[key] = body[key];
-                    }
+                } else if (key === "scenarios") {
+                    const scenarios = body.scenarios.map(scenario => ({
+                        active: scenario.active,
+                        lock: scenario.lock,
+                        action: scenario.action,
+                        value: scenario.value,
+                        extra: scenario.extra,
+                    }));
+                    item["scenarios"] = scenarios;
+                } else {
+                    item[key] = body[key];
+                }
             }
 
             if (item.type === NodeTypes.SELECTOR_NODE && !!body.children && body.children.length > 0) {

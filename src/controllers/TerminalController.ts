@@ -310,6 +310,7 @@ export class TerminalController extends Controller {
             for (const key in body) {
                 item[key] = body[key];
                 if (key === "extra") {
+                    item.extra = { ...item.extra, ...body[key] };
                     item.markModified(key);
                 }
                 if (key === "config") {

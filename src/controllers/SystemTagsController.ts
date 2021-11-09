@@ -272,12 +272,12 @@ export class SystemTagController extends Controller {
             for (const key in body) {
                 if (key === "position") {
                     isPositionsEqual = item.position === body[key];
-                }
-
-                item[key] = body[key];
-
-                if (key === "extra") {
+                    item[key] = body[key];
+                } else if (key === "extra") {
+                    item.extra = { ...item.extra, ...body[key] };
                     item.markModified(key);
+                } else {
+                    item[key] = body[key];
                 }
             }
 

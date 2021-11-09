@@ -208,14 +208,14 @@ export class CurrencyController extends Controller {
             item = await CurrencyModel.findById(id);
 
             for (const key in body) {
-                item[key] = body[key];
-
                 if (key === "code") {
+                    item[key] = body[key];
                     currencyCode = body[key];
-                }
-
-                if (key === "extra") {
+                } else if (key === "extra") {
+                    item.extra = { ...item.extra, ...body[key] };
                     item.markModified(key);
+                } else {
+                    item[key] = body[key];
                 }
             }
             isDefault = item.isDefault;

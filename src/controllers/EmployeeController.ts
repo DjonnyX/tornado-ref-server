@@ -198,10 +198,11 @@ export class EmployeeController extends Controller {
             item = await EmployeeModel.findById(id);
 
             for (const key in body) {
-                item[key] = body[key];
-
                 if (key === "extra") {
+                    item.extra = { ...item.extra, ...body[key] };
                     item.markModified(key);
+                } else {
+                    item[key] = body[key];
                 }
             }
         } catch (err) {
