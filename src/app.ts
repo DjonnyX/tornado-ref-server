@@ -9,6 +9,7 @@ import { ServerError } from "./error";
 
 const app = express();
 app.use("/assets", express.static("assets"));
+app.use("/bin", express.static("bin"));
 app.use("/backups", express.static("backups"));
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");

@@ -80,7 +80,7 @@ export class RefsController extends Controller {
         try {
             const items = await findAllWithFilter(RefModel.find({ client }), request) as Array<IRefDocument>;
             return {
-                data: items.filter(v => v.name !== RefTypes.THEMES || v.extra?.type === theme).map(v => formatModel(v))
+                data: items.filter(v => v.name !== RefTypes.THEMES || Number(v.extra?.type) === Number(theme)).map(v => formatModel(v))
             };
         } catch (err) {
             this.setStatus(500);

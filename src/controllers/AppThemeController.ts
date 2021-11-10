@@ -106,9 +106,10 @@ export class AppThemesController extends Controller {
             const type = request.query.type;
 
             const refOptions = type !== undefined ? {
-                "extra.type.equals": Number(type),
+                "extra.theme.equals": Number(type),
             } : {};
             const ref = await getRef(client, RefTypes.THEMES, refOptions);
+        
             return {
                 meta: { ref },
                 data: items.map(v => formatAppThemeModel(v))

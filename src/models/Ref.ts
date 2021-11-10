@@ -34,7 +34,7 @@ const RefSchema = new Schema({
     ], required: true },
     version: { type: Number, required: true },
     lastUpdate: { type: Date, required: true },
-    extra: { type: Schema.Types.Mixed },
+    extra: { type: Schema.Types.Mixed, default: {} },
 });
 
 const RefModel = mongoose.model<IRefDocument>("Ref", RefSchema);
