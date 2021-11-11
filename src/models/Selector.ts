@@ -21,6 +21,7 @@ const SelectorSchema = new Schema({
         type: Schema.Types.String, enum: [
             SelectorTypes.MENU_CATEGORY,
             SelectorTypes.SCHEMA_CATEGORY,
+            SelectorTypes.SCHEMA_GROUP_CATEGORY,
         ], required: true
     },
     systemTag: { type: Schema.Types.String, required: false },

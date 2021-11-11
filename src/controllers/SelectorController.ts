@@ -235,7 +235,7 @@ export class SelectorController extends Controller {
 
         let jointNode: INodeDocument;
 
-        if (body.type === SelectorTypes.SCHEMA_CATEGORY) {
+        if (body.type === SelectorTypes.SCHEMA_CATEGORY || body.type === SelectorTypes.SCHEMA_GROUP_CATEGORY) {
             try {
                 // создается корневой нод
                 jointNode = new NodeModel({
