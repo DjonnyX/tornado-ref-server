@@ -118,6 +118,9 @@
                     "backgroundColor": "rgba(255,255,255)"
                 },
                 "backButton": {
+                    "backgroundColor": "transparent",
+                    "textColor": "rgba(0,0,0,0.75)",
+                    "textFontSize": 24,
                     "iconColor": "rgba(0,0,0,0.75)"
                 },
                 "sideMenu": {
@@ -125,7 +128,7 @@
                     "padding": 8,
                     "borderRadius": 14,
                     "item": {
-                        "backgroundColor": "#000",
+                        "backgroundColor": "rgba(255,255,255,1)",
                         "nameColor": "rgba(0,0,0,0.75)",
                         "nameFontSize": 14,
                         "select": {
@@ -193,11 +196,11 @@
                     "cancelButton": {
                         "backgroundColor": [
                             "#212121",
-                            "rgb(242, 62, 26)"
+                            "#212121"
                         ],
                         "disabledBackgroundColor": [
-                            "rgba(0, 0, 0, 0.15)",
-                            "rgba(0, 0, 0, 0.1)"
+                            "rgba(155,155,155,0.4)",
+                            "rgba(155,155,155,0.4)"
                         ]
                     },
                     "confirmButton": {
@@ -219,9 +222,10 @@
                 "descriptionColor": "rgba(0,0,0,0.75)",
                 "descriptionFontSize": 14,
                 "price": {
+                    "backgroundColor": "transparent",
                     "borderColor": "rgba(0,0,0,0.5)",
                     "textColor": "rgba(0,0,0,0.75)",
-                    "textFontSize": 48
+                    "textFontSize": 24
                 },
                 "group": {
                     "backgroundColor": "rgba(255,255,255, 1)",
@@ -305,6 +309,61 @@
                         "indicator": {
                             "textColor": "rgba(0,0,0,0.75)",
                             "textFontSize": 16
+                        }
+                    }
+                }
+            },
+            "details": {
+                "backgroundColor": "rgb(240,240,240)",
+                "frame": {
+                    "backgroundColor": "rgb(255,255,255)",
+                    "nameColor": "rgba(0,0,0,0.75)",
+                    "nameFontSize": 26,
+                    "descriptionColor": "rgba(0,0,0,0.75)",
+                    "descriptionFontSize": 14,
+                    "price": {
+                        "backgroundColor": "rgb(255,255,255)",
+                        "borderColor": "rgba(0,0,0,0.5)",
+                        "textColor": "rgba(0,0,0,0.75)",
+                        "textFontSize": 32
+                    },
+                    "buttonDelete": {
+                        "backgroundColor": "#212121",
+                        "disabledBackgroundColor": "transparent",
+                        "borderColor": "transparent",
+                        "disabledBorderColor": "rgba(0,0,0,0.1)",
+                        "textColor": "rgba(255,255,255,1)",
+                        "textFontSize": 24,
+                        "disabledTextColor": "rgba(0,0,0,0.1)"
+                    },
+                    "buttonApply": {
+                        "backgroundColor": "#30a02a",
+                        "disabledBackgroundColor": "transparent",
+                        "borderColor": "transparent",
+                        "disabledBorderColor": "rgba(0,0,0,0.1)",
+                        "textColor": "rgba(255,255,255,1)",
+                        "textFontSize": 24,
+                        "disabledTextColor": "rgba(0,0,0,0.1)"
+                    },
+                    "quantityStepper": {
+                        "buttons": {
+                            "backgroundColor": "transparent",
+                            "selectedBackgroundColor": "#30a02a",
+                            "disabledBackgroundColor": "transparent",
+                            "disabledSelectedBackgroundColor": "#30a02a40",
+                            "borderColor": "rgba(0,0,0,0.75)",
+                            "selectedBorderColor": "transparent",
+                            "disabledBorderColor": "rgba(0,0,0,0.75)",
+                            "disabledSelectedBorderColor": "transparent",
+                            "textColor": "rgba(0,0,0,0.75)",
+                            "textFontSize": 24,
+                            "selectedTextColor": "rgba(255,255,255,0.75)",
+                            "disabledTextColor": "rgba(0,0,0,0.75)",
+                            "disabledSelectedTextColor": "rgba(255,255,255,0.75)"
+                        },
+                        "indicator": {
+                            "textColor": "rgba(0,0,0,0.75)",
+                            "textFontSize": 24
                         }
                     }
                 }
@@ -499,6 +558,9 @@
                     "backgroundColor": "rgba(0,0,0)"
                 },
                 "backButton": {
+                    "backgroundColor": "transparent",
+                    "textColor": "rgba(255,255,255,0.75)",
+                    "textFontSize": 24,
                     "iconColor": "rgba(255,255,255,0.75)"
                 },
                 "sideMenu": {
@@ -506,7 +568,7 @@
                     "padding": 8,
                     "borderRadius": 14,
                     "item": {
-                        "backgroundColor": "#fff",
+                        "backgroundColor": "rgba(20,20,20, 1)",
                         "nameColor": "rgba(255,255,255,0.75)",
                         "nameFontSize": 14,
                         "select": {
@@ -600,9 +662,10 @@
                 "descriptionColor": "rgba(255,255,255,0.5)",
                 "descriptionFontSize": 14,
                 "price": {
-                    "borderColor": "rgba(255,255,255,0.5)",
+                    "backgroundColor": "rgb(20,20,20)",
+                    "borderColor": "transparent",
                     "textColor": "rgba(255,255,255,0.75)",
-                    "textFontSize": 48
+                    "textFontSize": 24
                 },
                 "group": {
                     "backgroundColor": "rgba(20,20,20, 1)",
@@ -686,6 +749,61 @@
                         "indicator": {
                             "textColor": "rgba(255,255,255,0.75)",
                             "textFontSize": 16
+                        }
+                    }
+                }
+            },
+            "details": {
+                "backgroundColor": "#000",
+                "frame": {
+                    "backgroundColor": "rgb(240,240,240)",
+                    "nameColor": "rgba(255,255,255,0.75)",
+                    "nameFontSize": 26,
+                    "descriptionColor": "rgba(255,255,255,0.5)",
+                    "descriptionFontSize": 14,
+                    "price": {
+                        "backgroundColor": "rgb(240,240,240)",
+                        "borderColor": "rgba(255,255,255,0.5)",
+                        "textColor": "rgba(255,255,255,0.75)",
+                        "textFontSize": 32
+                    },
+                    "buttonApply": {
+                        "backgroundColor": "#30a02a",
+                        "disabledBackgroundColor": "transparent",
+                        "borderColor": "transparent",
+                        "disabledBorderColor": "rgba(255,255,255,0.1)",
+                        "textColor": "rgba(255,255,255,1)",
+                        "textFontSize": 24,
+                        "disabledTextColor": "rgba(255,255,255,0.1)"
+                    },
+                    "buttonDelete": {
+                        "backgroundColor": "#30a02a",
+                        "disabledBackgroundColor": "transparent",
+                        "borderColor": "transparent",
+                        "disabledBorderColor": "rgba(255,255,255,0.1)",
+                        "textColor": "rgba(255,255,255,1)",
+                        "textFontSize": 24,
+                        "disabledTextColor": "rgba(255,255,255,0.1)"
+                    },
+                    "quantityStepper": {
+                        "buttons": {
+                            "backgroundColor": "transparent",
+                            "selectedBackgroundColor": "#30a02a",
+                            "disabledBackgroundColor": "transparent",
+                            "disabledSelectedBackgroundColor": "#30a02a40",
+                            "borderColor": "rgba(255,255,255,0.75)",
+                            "selectedBorderColor": "transparent",
+                            "disabledBorderColor": "rgba(255,255,255,0.75)",
+                            "disabledSelectedBorderColor": "transparent",
+                            "textColor": "rgba(255,255,255,0.75)",
+                            "textFontSize": 24,
+                            "selectedTextColor": "rgba(255,255,255,1)",
+                            "disabledTextColor": "rgba(255,255,255,0.75)",
+                            "disabledSelectedTextColor": "rgba(255,255,255,0.75)"
+                        },
+                        "indicator": {
+                            "textColor": "rgba(255,255,255,0.75)",
+                            "textFontSize": 24
                         }
                     }
                 }
