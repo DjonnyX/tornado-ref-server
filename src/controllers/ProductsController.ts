@@ -14,6 +14,7 @@ import { TAG_RESPONSE_TEMPLATE } from "./TagsController";
 import { LANGUAGE_RESPONSE_TEMPLATE } from "./LanguagesController";
 import { SYSTEM_TAG_RESPONSE_TEMPLATE } from "./SystemTagsController";
 import { CURRENCY_RESPONSE_TEMPLATE } from "./CurrencyController";
+import { WEIGHT_UNIT_RESPONSE_TEMPLATE } from "./WeightUnitsController";
 
 export interface IProductItem extends IProduct { }
 
@@ -55,6 +56,7 @@ interface IProductCreateRequest {
     receipt: Array<IReceiptItem>;
     tags: Array<string>;
     weight?: number;
+    weightUnitId?: string;
     systemTag?: string | null;
     joint?: string;
     extra?: { [key: string]: any } | null;
@@ -68,6 +70,7 @@ interface IProductUpdateRequest {
     receipt?: Array<IReceiptItem>;
     tags?: Array<string>;
     weight?: number;
+    weightUnitId?: string;
     systemTag?: string | null;
     joint?: string;
     extra?: { [key: string]: any } | null;
@@ -112,6 +115,7 @@ export const PRODUCT_RESPONSE_TEMPLATE: IProductItem = {
     ],
     tags: [TAG_RESPONSE_TEMPLATE.id],
     weight: 100,
+    weightUnitId: WEIGHT_UNIT_RESPONSE_TEMPLATE.id,
     systemTag: SYSTEM_TAG_RESPONSE_TEMPLATE.id,
     joint: "df3c7f79bcf86cd7994f9d8f",
     extra: { key: "value" },

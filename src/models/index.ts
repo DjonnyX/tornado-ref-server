@@ -17,3 +17,4 @@ export * from "./Checkue";
 export * from "./Asset";
 export * from "./SystemTag";
 export * from "./ServerInfo";
+export * from "./WeightInit";

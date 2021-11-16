@@ -80,6 +80,11 @@ export const initRefs = async (client: string) => {
             name: RefTypes.SYSTEM_TAGS,
             version: 1,
             lastUpdate,
+        }, {
+            client,
+            name: RefTypes.WEIGHT_UNITS,
+            version: 1,
+            lastUpdate,
         },
     ];
 

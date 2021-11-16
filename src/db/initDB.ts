@@ -9,6 +9,7 @@ import { createDefaultCurrencyFromTemplate } from "./createDefaultCurrencyFromTe
 import { initEnvironment } from "./initEnvironment";
 import { initRefs } from "./initRefs";
 import { createServerInfoIfNeed } from "./createServerInfo";
+import { createDefaultWeightUnits } from "./createDefaultWeightInits";
 
 export const initDB = async (client: string): Promise<void> => {
     // env
@@ -43,6 +44,9 @@ export const initDB = async (client: string): Promise<void> => {
 
     // bug fix
     await deleteUnnecessaryTagsFromProducts(client);
+
+    // weight units
+    await createDefaultWeightUnits(client);
 
     console.info(`Refs for client "${client}" are initialized.`);
 };
