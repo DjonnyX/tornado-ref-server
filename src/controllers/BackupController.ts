@@ -5,7 +5,7 @@ import { IAuthRequest } from "../interfaces";
 import {
     IAdDocument, IAppThemeDocument, IBusinessPeriodDocument,
     ICheckueDocument, ICurrencyDocument, IEmployeeDocument, ILanguageDocument, INodeDocument, IOrderTypeDocument,
-    IProductDocument, ISelectorDocument, IServerInfoDocument, IStoreDocument, ISystemTagDocument, ITagDocument, ITranslationDocument, ServerInfoModel
+    IProductDocument, ISelectorDocument, IServerInfoDocument, IStoreDocument, ISystemTagDocument, ITagDocument, ITranslationDocument, IWeightUnitDocument, ServerInfoModel
 } from "../models";
 import { LeanDocument } from "mongoose";
 import { generateBackup, uploadBackup } from "../utils/backup";
@@ -29,6 +29,7 @@ export interface IClientDBBackup {
     tags: LeanDocument<ITagDocument>[];
     translations: LeanDocument<ITranslationDocument>[];
     systemTags: LeanDocument<ISystemTagDocument>[];
+    weightUnits: LeanDocument<IWeightUnitDocument>[];
 }
 
 export interface IBackup {

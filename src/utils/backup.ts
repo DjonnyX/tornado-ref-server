@@ -6,7 +6,7 @@ import { IAuthRequest } from "../interfaces";
 import { IClientDBBackup } from "../controllers/BackupController";
 import {
     AdModel, AppThemeModel, AssetModel, BusinessPeriodModel, CheckueModel, CurrencyModel, EmployeeModel, IAppThemeDocument, LanguageModel,
-    NodeModel, OrderTypeModel, ProductModel, SelectorModel, StoreModel, SystemTagModel, TagModel, TranslationModel
+    NodeModel, OrderTypeModel, ProductModel, SelectorModel, StoreModel, SystemTagModel, TagModel, TranslationModel, WeightUnitModel
 } from "../models";
 import { copyDirectory, makeDirIfEmpty, readFile, removeDirectory, removeFile, saveDataToFile, getFileStat, zipDirectory } from "./file";
 import * as moment from "moment";
@@ -65,6 +65,9 @@ export const generateBackup = async (request: IAuthRequest): Promise<{ name: str
     const systemTags = await SystemTagModel.find({ client: client });
     const systemTagsData = systemTags.map(systemTag => systemTag.toJSON());
 
+    const weightUnits = await WeightUnitModel.find({ client: client });
+    const weightUnitsData = weightUnits.map(weightUnit => weightUnit.toJSON());
+
     const clientDBBackup: IClientDBBackup = {
         ads: adsData,
         themes: themesData,
@@ -82,6 +85,7 @@ export const generateBackup = async (request: IAuthRequest): Promise<{ name: str
         tags: tagsData,
         translations: translationsData,
         systemTags: systemTagsData,
+        weightUnits: weightUnitsData,
     };
 
     return await zipClientBackup(client, clientDBBackup);
@@ -298,6 +302,11 @@ const deleteDB = async (client: string): Promise<void> => {
         promises.push(await systemTag.delete());
     });
 
+    const weightUnits = await WeightUnitModel.find({ client });
+    weightUnits.forEach(async (weightUnit) => {
+        promises.push(await weightUnit.delete());
+    });
+
     await Promise.all(promises);
 };
 
@@ -333,6 +342,7 @@ const storeDB = async (data: IClientDBBackup): Promise<void> => {
     promises.push(TagModel.create(data.tags));
     promises.push(TranslationModel.create(data.translations));
     promises.push(SystemTagModel.create(data.systemTags));
+    promises.push(WeightUnitModel.create(data.weightUnits));
 
     await Promise.all(promises);
 }
