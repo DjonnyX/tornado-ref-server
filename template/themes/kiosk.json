@@ -102,14 +102,14 @@
                 "backgroundColor": "#fff"
             },
             "menu": {
-                "backgroundColor": "rgb(240,240,240)",
+                "backgroundColor": "#fbfbfb",
                 "header": {
                     "backgroundColor": [
-                        "rgba(240,240,240, 1)",
-                        "rgba(240,240,240, 1)",
-                        "rgba(240,240,240, 1)",
-                        "rgba(240,240,240, 1)",
-                        "rgba(240,240,240, 0)"
+                        "rgba(251,251,251, 1)",
+                        "rgba(251,251,251, 1)",
+                        "rgba(251,251,251, 1)",
+                        "rgba(251,251,251, 1)",
+                        "rgba(251,251,251, 0)"
                     ],
                     "titleColor": "rgba(0,0,0,0.75)",
                     "titleFontSize": 32
@@ -125,6 +125,7 @@
                 },
                 "sideMenu": {
                     "backgroundColor": "rgba(255,255,255,1)",
+                    "borderColor": "rgba(0,0,0,0.05)",
                     "padding": 8,
                     "borderRadius": 14,
                     "item": {
@@ -138,11 +139,13 @@
                 },
                 "navMenu": {
                     "backgroundColor": "transparent",
+                    "borderColor": "rgba(0,0,0,0.05)",
                     "item": {
-                        "backgroundColor": "transparent",
-                        "nameColor": "rgba(0,0,0,0.75)",
+                        "backgroundColor": "#ffffff",
+                        "borderColor": "rgba(0,0,0,0.05)",
+                        "nameColor": "#232731",
                         "nameFontSize": 20,
-                        "descriptionColor": "rgba(0,0,0,0.5)",
+                        "descriptionColor": "#7B7D83",
                         "descriptionFontSize": 12,
                         "discount": {
                             "backgroundColor": "red",
@@ -151,8 +154,8 @@
                         },
                         "price": {
                             "borderColor": "rgba(0,0,0,0.5)",
-                            "textColor": "rgba(0,0,0,0.5)",
-                            "textFontSize": 16
+                            "textColor": "#232731",
+                            "textFontSize": 22
                         }
                     }
                 },
@@ -164,6 +167,7 @@
                 },
                 "draftOrder": {
                     "backgroundColor": "rgba(255,255,255,1)",
+                    "borderColor": "#f0f0f0",
                     "padding": 8,
                     "borderRadius": 14,
                     "item": {
@@ -216,7 +220,7 @@
                 }
             },
             "modifiers": {
-                "backgroundColor": "rgb(240,240,240)",
+                "backgroundColor": "rgb(251,251,251)",
                 "nameColor": "rgba(0,0,0,0.75)",
                 "nameFontSize": 32,
                 "descriptionColor": "rgba(0,0,0,0.75)",
@@ -229,6 +233,7 @@
                 },
                 "group": {
                     "backgroundColor": "rgba(255,255,255, 1)",
+                    "borderColor": "rgba(0,0,0,0.05)",
                     "nameColor": "rgba(0,0,0,0.75)",
                     "descriptionColor": "rgba(0,0,0,0.75)",
                     "descriptionInvalidColor": "#ff4e4e",
@@ -266,7 +271,8 @@
                     }
                 },
                 "item": {
-                    "backgroundColor": "transparent",
+                    "backgroundColor": "rgb(251,251,251)",
+                    "borderColor": "rgba(0,0,0,0.05)",
                     "nameColor": "rgba(0,0,0,0.75)",
                     "nameFontFontSize": 20,
                     "descriptionColor": "rgba(0,0,0,0.5)",
@@ -314,9 +320,10 @@
                 }
             },
             "details": {
-                "backgroundColor": "rgb(240,240,240)",
+                "backgroundColor": "rgb(251,251,251)",
                 "frame": {
                     "backgroundColor": "rgb(255,255,255)",
+                    "borderColor": "rgba(0,0,0,0.05)",
                     "nameColor": "rgba(0,0,0,0.75)",
                     "nameFontSize": 26,
                     "descriptionColor": "rgba(0,0,0,0.75)",
@@ -493,7 +500,7 @@
             },
             "orderTypeModal": {
                 "item": {
-                    "backgroundColor": "transparent",
+                    "backgroundColor": "rgb(20,20,20)",
                     "borderColor": "transparent",
                     "textColor": "rgba(255,255,255,0.75)",
                     "textFontSize": 16
@@ -565,6 +572,7 @@
                 },
                 "sideMenu": {
                     "backgroundColor": "rgba(20,20,20, 1)",
+                    "borderColor": "rgba(255,255,255,0.15)",
                     "padding": 8,
                     "borderRadius": 14,
                     "item": {
@@ -578,8 +586,10 @@
                 },
                 "navMenu": {
                     "backgroundColor": "transparent",
+                    "borderColor": "rgba(255,255,255,0.15)",
                     "item": {
-                        "backgroundColor": "transparent",
+                        "backgroundColor": "rgb(20,20,20)",
+                        "borderColor": "rgba(255,255,255,0.15)",
                         "nameColor": "rgba(255,255,255,0.75)",
                         "nameFontSize": 20,
                         "descriptionColor": "rgba(255,255,255,0.5)",
@@ -592,7 +602,7 @@
                         "price": {
                             "borderColor": "rgba(255,255,255,0.5)",
                             "textColor": "rgba(255,255,255,0.5)",
-                            "textFontSize": 16
+                            "textFontSize": 22
                         }
                     }
                 },
@@ -604,6 +614,7 @@
                 },
                 "draftOrder": {
                     "backgroundColor": "rgba(20,20,20, 1)",
+                    "borderColor": "rgba(255,255,255,0.15)",
                     "padding": 8,
                     "borderRadius": 14,
                     "item": {
@@ -657,6 +668,7 @@
             },
             "modifiers": {
                 "backgroundColor": "#000",
+                "borderColor": "rgba(255,255,255,0.05)",
                 "nameColor": "rgba(255,255,255,0.75)",
                 "nameFontSize": 32,
                 "descriptionColor": "rgba(255,255,255,0.5)",
@@ -669,6 +681,7 @@
                 },
                 "group": {
                     "backgroundColor": "rgba(20,20,20, 1)",
+                    "borderColor": "rgba(255,255,255, 0.15)",
                     "nameColor": "rgba(255,255,255,0.75)",
                     "descriptionColor": "rgba(255,255,255,0.75)",
                     "descriptionInvalidColor": "#ff4e4e",
@@ -706,7 +719,8 @@
                     }
                 },
                 "item": {
-                    "backgroundColor": "transparent",
+                    "backgroundColor": "rgb(0,0,0)",
+                    "borderColor": "rgba(255,255,255,0.15)",
                     "nameColor": "rgba(255,255,255,0.75)",
                     "nameFontFontSize": 20,
                     "descriptionColor": "rgba(255,255,255,0.5)",
@@ -756,15 +770,16 @@
             "details": {
                 "backgroundColor": "#000",
                 "frame": {
-                    "backgroundColor": "rgb(240,240,240)",
+                    "backgroundColor": "rgb(10,10,10)",
+                    "borderColor": "rgba(255,255,255,0.15)",
                     "nameColor": "rgba(255,255,255,0.75)",
                     "nameFontSize": 26,
                     "descriptionColor": "rgba(255,255,255,0.5)",
                     "descriptionFontSize": 14,
                     "price": {
-                        "backgroundColor": "rgb(240,240,240)",
+                        "backgroundColor": "rgb(10,10,10)",
                         "borderColor": "rgba(255,255,255,0.5)",
-                        "textColor": "rgba(255,255,255,0.75)",
+                        "textColor": "rgba(0,0,0255,255,255,0.75)",
                         "textFontSize": 32
                     },
                     "buttonApply": {
