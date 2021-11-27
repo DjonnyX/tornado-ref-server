@@ -141,6 +141,21 @@ export class Deviceontroller extends Controller {
             };
         }
 
+        let theme: IAppThemeDocument;
+        try {
+            theme = await AppThemeModel.findOne({ client: setDeviceResponse.data.client, name: 'light' });
+        } catch (err) {
+            this.setStatus(500);
+            return {
+                error: [
+                    {
+                        code: 500,
+                        message: `Default theme not found. ${err}`,
+                    }
+                ]
+            };
+        }
+
         let existsTerminal: ITerminalDocument;
         try {
             existsTerminal = await TerminalModel.findOne({ imei: setDeviceResponse.data.imei });
@@ -153,6 +168,9 @@ export class Deviceontroller extends Controller {
             existsTerminal.name = body.name;
             existsTerminal.lastwork = new Date(Date.now());
             existsTerminal.licenseId = setDeviceResponse.data.id;
+            if (!existsTerminal.config) {
+                existsTerminal.config = createTerminalConfig(request.terminal.type, String(theme._id));
+            }
 
             try {
                 const savedItem = await existsTerminal.save();
@@ -172,21 +190,6 @@ export class Deviceontroller extends Controller {
                     ]
                 };
             }
-        }
-
-        let theme: IAppThemeDocument;
-        try {
-            theme = await AppThemeModel.findOne({ client: setDeviceResponse.data.client, name: 'light' });
-        } catch (err) {
-            this.setStatus(500);
-            return {
-                error: [
-                    {
-                        code: 500,
-                        message: `Default theme not found. ${err}`,
-                    }
-                ]
-            };
         }
 
         try {
