@@ -77,7 +77,6 @@ interface IOrderTypeAssetUpdateRequest {
 
 export enum OrderTypeImageTypes {
     MAIN = "main",
-    ICON = "icon",
 }
 
 const contentsToDefault = (contents: IOrderTypeContents, langCode: string) => {
@@ -93,7 +92,6 @@ const contentsToDefault = (contents: IOrderTypeContents, langCode: string) => {
     if (!result[langCode].resources) {
         result[langCode].resources = {
             main: null,
-            icon: null,
         };
     }
 

@@ -64,7 +64,6 @@ export const TAG_RESPONSE_TEMPLATE: ITagItem = {
             ],
             resources: {
                 main: ASSET_RESPONSE_TEMPLATE?.id,
-                icon: ASSET_RESPONSE_TEMPLATE?.id,
             },
         }
     },

@@ -77,7 +77,6 @@ interface ISelectorAssetUpdateRequest {
 
 export enum SelectorImageTypes {
     MAIN = "main",
-    ICON = "icon",
 }
 
 const contentsToDefault = (contents: ISelectorContents, langCode: string) => {
@@ -93,7 +92,6 @@ const contentsToDefault = (contents: ISelectorContents, langCode: string) => {
     if (!result[langCode].resources) {
         result[langCode].resources = {
             main: null,
-            icon: null,
         };
     }
 

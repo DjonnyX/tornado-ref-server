@@ -77,7 +77,6 @@ interface IProductAssetUpdateRequest {
 
 export enum ProductImageTypes {
     MAIN = "main",
-    ICON = "icon",
 }
 
 const contentsToDefault = (contents: IProductContents, langCode: string) => {
@@ -93,7 +92,6 @@ const contentsToDefault = (contents: IProductContents, langCode: string) => {
     if (!result[langCode].resources) {
         result[langCode].resources = {
             main: null,
-            icon: null,
         };
     }
 

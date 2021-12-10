@@ -75,7 +75,6 @@ export const SELECTOR_RESPONSE_TEMPLATE: ISelectorItem = {
             color: "#000000",
             resources: {
                 main: ASSET_RESPONSE_TEMPLATE?.id,
-                icon: ASSET_RESPONSE_TEMPLATE?.id,
             },
             assets: [ASSET_RESPONSE_TEMPLATE?.id],
         }

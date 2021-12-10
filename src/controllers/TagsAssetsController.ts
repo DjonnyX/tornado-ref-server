@@ -77,7 +77,6 @@ interface ITagAssetUpdateRequest {
 
 export enum TagImageTypes {
     MAIN = "main",
-    ICON = "icon",
 }
 
 const contentsToDefault = (contents: ITagContents, langCode: string) => {
@@ -93,7 +92,6 @@ const contentsToDefault = (contents: ITagContents, langCode: string) => {
     if (!result[langCode].resources) {
         result[langCode].resources = {
             main: null,
-            icon: null,
         };
     }
 

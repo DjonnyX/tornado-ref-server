@@ -62,11 +62,9 @@ export const ORDER_TYPE_RESPONSE_TEMPLATE: IOrderTypeItem = {
             color: "#000000",
             assets: [
                 ASSET_RESPONSE_TEMPLATE?.id,
-                ASSET_RESPONSE_TEMPLATE?.id,
             ],
             resources: {
                 main: ASSET_RESPONSE_TEMPLATE?.id,
-                icon: ASSET_RESPONSE_TEMPLATE?.id,
             },
         }
     },

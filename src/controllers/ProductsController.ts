@@ -87,7 +87,6 @@ export const PRODUCT_RESPONSE_TEMPLATE: IProductItem = {
             color: "#000000",
             resources: {
                 main: ASSET_RESPONSE_TEMPLATE?.id,
-                icon: ASSET_RESPONSE_TEMPLATE?.id,
             },
             gallery: [ASSET_RESPONSE_TEMPLATE?.id],
             assets: [ASSET_RESPONSE_TEMPLATE?.id],
