@@ -35,7 +35,8 @@ services:
             # Секретный ключ для проверки клиентского токена
             AUTH_PRIVATE_KEY: f91eb2d2-c8d5-4cef-9b25-fec0e7b06882
             # Токен доступа к серверу лицензирования
-            AUTH_LIC_SERVER_API_KEY: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE2MTE3NDM4MTMsImV4cCI6MTY0MzI3OTgxMywiYXVkIjoid3d3LmV4YW1wbGUuY29tIiwic3ViIjoianJvY2tldEBleGFtcGxlLmNvbSJ9.ceBR9Q3IKlGaFjBxAvJmeZ2UaOXhK5A2miMfcC2HwyY
+            AUTH_LIC_SERVER_API_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiaW50ZXJuYWwifQ.ueKapcUEpaO6FWfsPbfdEew5QSrXwkwb1R4EEUu8P4I
+
             # DB_URI
             DB_URI: dbuser:dbpassword@mongo:27017/appdata
             # Server Port
@@ -49,8 +50,8 @@ services:
         ports:
             - 8080:8080
         volumes:
-            - assets/:/app/assets
-            - backups/:/app/backups
+            - assets:/app/assets
+            - backups:/app/backups
 
 volumes:
     # Configure shared volumes to be used in the services above.
